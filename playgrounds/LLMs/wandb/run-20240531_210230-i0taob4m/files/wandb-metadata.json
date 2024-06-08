@@ -1,0 +1,44 @@
+{
+    "os": "Windows-10-10.0.19045-SP0",
+    "python": "3.12.3",
+    "heartbeatAt": "2024-05-31T12:03:02.102469",
+    "startedAt": "2024-05-31T12:02:30.740183",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/sunghoyahng/projects.git",
+        "commit": "1ca4a823217235574421f9df820d2838539cc014"
+    },
+    "email": "yahngsungho@gmail.com",
+    "root": "C:/Users/pofgi/Projects/Projects",
+    "host": "DESKTOP-9SSSNE9",
+    "username": "\uc131\ud638",
+    "executable": "c:\\Python312\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3600.0,
+        "min": 0.0,
+        "max": 3600.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3600.0,
+            "min": 0.0,
+            "max": 3600.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 953.7705001831055,
+            "used": 307.75947189331055
+        }
+    },
+    "memory": {
+        "total": 47.92746353149414
+    }
+}

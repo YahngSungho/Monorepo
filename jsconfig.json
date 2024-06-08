@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "allowJs": true,
+    "checkJs": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "strict": false,
+    "noImplicitAny": false,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+  },
+  "include": [
+    "./**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

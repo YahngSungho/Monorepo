@@ -4,17 +4,357 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write ."
+    "fix-mismatches": "pnpm dlx syncpack fix-mismatches",
+    "all-packages-update": "pnpm up --recursive"
+  },
+  "dependencies": {
+    "jsdom": "^24.0.0",
+    "mutative": "^1.0.5",
+    "nanoid": "^5.0.7",
+    "ramda": "^0.30.0",
+    "random-js": "^2.1.0",
+    "vite-node": "^1.5.0",
+    "xstate": "^5.13.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "@repo/eslint-config": "workspace:*",
-    "prettier": "^3.2.5",
-    "prettier-plugin-svelte": "^3.2.2",
+    "@babel/core": "^7.24.5",
+    "@babel/eslint-parser": "^7.24.5",
+    "@conarti/eslint-plugin-feature-sliced": "^1.0.5",
+    "@double-great/stylelint-a11y": "^3.0.2",
+    "@intlify/eslint-plugin-svelte": "^0.4.1",
+    "@playwright/test": "^1.43.1",
+    "@stylistic/stylelint-config": "^1.0.1",
+    "@types/eslint": "8.56.10",
+    "@types/ramda": "^0.30.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "9.1.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-perfectionist": "^2.10.0",
+    "eslint-plugin-ramda": "^2.5.1",
+    "eslint-plugin-regexp": "^2.5.0",
+    "eslint-plugin-sonarjs": "^0.25.1",
+    "eslint-plugin-storybook": "^0.8.0",
+    "eslint-plugin-svelte": "^2.38.0",
+    "eslint-plugin-xstate": "^3.2.1",
+    "espress": "^0.0.0",
+    "i": "^0.3.7",
+    "postcss-html": "^1.6.0",
+    "stylelint": "^16.4.0",
+    "stylelint-color-format": "^1.1.0",
+    "stylelint-config-clean-order": "^5.4.2",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.8.0",
+    "stylelint-gamut": "^1.3.4",
+    "stylelint-high-performance-animation": "^1.10.0",
+    "stylelint-no-browser-hacks": "^1.3.0",
+    "stylelint-no-indistinguishable-colors": "^2.3.0",
+    "stylelint-no-unresolved-module": "^2.2.2",
+    "stylelint-no-unsupported-browser-features": "^8.0.1",
+    "stylelint-plugin-defensive-css": "^1.0.3",
+    "stylelint-plugin-logical-css": "^1.2.0",
+    "stylelint-use-nesting": "^5.1.1",
+    "stylelint-value-no-exposed-custom-properties": "^2.3.1",
+    "stylelint-value-no-unknown-custom-properties": "^6.0.1",
+    "svelte": "^4.2.15",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10",
+    "vitest": "^1.5.3",
+    "xo": "^0.58.0",
+    "syncpack": "^12.3.2",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@8.9.0",
+  "packageManager": "pnpm@9.1.4",
   "engines": {
     "node": ">=18"
+  },
+  "type": "module",
+  "xo": {
+    "extends": [
+      "plugin:regexp/recommended",
+      "plugin:xstate/all",
+      "plugin:sonarjs/recommended",
+      "plugin:storybook/recommended",
+      "plugin:ramda/recommended",
+      "plugin:svelte/recommended",
+      "plugin:@intlify/svelte/recommended",
+      "plugin:perfectionist/recommended-natural",
+      "plugin:@conarti/feature-sliced/recommended"
+    ],
+    "extensions": [
+      "svelte",
+      "js",
+      "ts"
+    ],
+    "files": [
+      "src/**/*",
+      ".storybook/**/*"
+    ],
+    "ignores": [
+      "./node_modules/**",
+      "./build/**"
+    ],
+    "parserOptions": {
+      "project": "./jsconfig.json",
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+          "project": "./tsconfig.json"
+        },
+        "rules": {
+          "@typescript-eslint/*": "off"
+        }
+      },
+      {
+        "files": [
+          "*.svelte",
+          "**/*.svelte"
+        ],
+        "parser": "svelte-eslint-parser"
+      },
+      {
+        "files": [
+          "./drafts/**",
+          "**/*.ipynb"
+        ],
+        "rules": {
+          "@typescript-eslint/*": "off",
+          "unicorn/no-array-callback-reference": "off",
+          "perfectionist/sort-imports": "off",
+          "@typescript-eslint/no-explicit-any": "off",
+          "@typescript-eslint/no-unused-vars": "off",
+          "xstate/no-inline-implementation": "off",
+          "unicorn": "off",
+          "@conarti/eslint-plugin-feature-sliced": "off",
+          "sonarjs": "off",
+          "no-unused-vars": "off",
+          "no-console": "off",
+          "no-debugger": "off",
+          "no-alert": "off",
+          "no-constant-condition": "off",
+          "no-empty": "off",
+          "no-lone-blocks": "off",
+          "no-unreachable": "off",
+          "no-unused-expressions": "off",
+          "no-magic-numbers": "off",
+          "max-params": "off",
+          "max-depth": "off",
+          "complexity": "off",
+          "sonarjs/cognitive-complexity": "off",
+          "sonarjs/no-identical-functions": "off",
+          "sonarjs/no-duplicate-string": "off",
+          "no-unexpected-multiline": "off",
+          "no-throw-literal": "off",
+          "no-promise-executor-return": "off",
+          "no-async-promise-executor": "off",
+          "no-await-in-loop": "off",
+          "require-atomic-updates": "off",
+          "default-case": "off",
+          "no-case-declarations": "off",
+          "no-fallthrough": "off",
+          "no-useless-return": "off",
+          "no-void": "off",
+          "ramda/prefer-ramda-boolean": "off",
+          "ramda/no-redundant-not": "off",
+          "ramda/prefer-both": "off",
+          "ramda/prefer-either": "off",
+          "ramda/prefer-ramda-specific": "off",
+          "ramda/prefer-ramda-operator": "off",
+          "xstate/no-string-events": "off",
+          "xstate/no-invalid-meta-property": "off",
+          "xstate/no-unsafe-state-mutation": "off",
+          "xstate/no-invalid-invoke-target": "off",
+          "no-empty-function": "off",
+          "no-useless-catch": "off",
+          "no-useless-concat": "off",
+          "no-useless-escape": "off",
+          "no-useless-call": "off",
+          "no-useless-computed-key": "off",
+          "no-useless-constructor": "off",
+          "no-useless-rename": "off",
+          "no-var": "off",
+          "prefer-const": "off",
+          "prefer-destructuring": "off",
+          "prefer-arrow-callback": "off",
+          "prefer-template": "off",
+          "prefer-spread": "off",
+          "prefer-rest-params": "off",
+          "arrow-body-style": "off",
+          "no-confusing-arrow": "off",
+          "implicit-arrow-linebreak": "off",
+          "no-duplicate-imports": "off",
+          "no-iterator": "off",
+          "no-restricted-syntax": "off",
+          "no-tabs": "off",
+          "no-trailing-spaces": "off",
+          "no-multiple-empty-lines": "off",
+          "func-names": "off",
+          "func-style": "off",
+          "new-cap": "off",
+          "no-array-constructor": "off",
+          "no-bitwise": "off",
+          "no-continue": "off",
+          "no-inline-comments": "off",
+          "no-lonely-if": "off",
+          "no-multi-assign": "off",
+          "no-negated-condition": "off",
+          "no-nested-ternary": "off",
+          "no-new-object": "off",
+          "no-plusplus": "off",
+          "no-restricted-globals": "off",
+          "no-ternary": "off",
+          "no-underscore-dangle": "off",
+          "no-unneeded-ternary": "off",
+          "one-var": "off",
+          "operator-assignment": "off",
+          "prefer-exponentiation-operator": "off",
+          "prefer-object-spread": "off",
+          "fid-comment": "off",
+          "regexp/no-contradiction-with-assertion": "off",
+          "regexp/no-dupe-disjunctions": "off",
+          "regexp/no-empty-alternative": "off",
+          "regexp/no-empty-capturing-group": "off",
+          "regexp/no-empty-group": "off",
+          "regexp/no-empty-lookahead-assertion": "off",
+          "regexp/no-empty-lookbehind-assertion": "off",
+          "regexp/no-escape-backspace": "off",
+          "regexp/no-invisible-character": "off",
+          "regexp/no-lazy-ends": "off",
+          "regexp/no-legacy-features": "off",
+          "regexp/no-non-standard-flag": "off",
+          "regexp/no-obscure-range": "off",
+          "regexp/no-octal": "off",
+          "regexp/no-optional-assertion": "off",
+          "regexp/no-potentially-useless-backreference": "off",
+          "regexp/no-super-linear-backtracking": "off",
+          "regexp/no-super-linear-move": "off",
+          "regexp/no-unused-capturing-group": "off",
+          "regexp/no-useless-character-class": "off",
+          "regexp/no-useless-exactly-quantifier": "off",
+          "regexp/no-useless-flag": "off",
+          "regexp/no-useless-lazy": "off",
+          "regexp/no-useless-non-capturing-group": "off",
+          "regexp/no-useless-quantifier": "off",
+          "regexp/no-useless-range": "off",
+          "regexp/no-useless-two-nums-quantifier": "off",
+          "regexp/no-zero-quantifier": "off",
+          "regexp/optimal-quantifier-concatenation": "off",
+          "regexp/optimal-lookaround-quantifier": "off",
+          "regexp/prefer-character-class": "off",
+          "regexp/prefer-d": "off",
+          "regexp/prefer-plus-quantifier": "off",
+          "regexp/prefer-question-quantifier": "off",
+          "regexp/prefer-quantifier": "off",
+          "regexp/prefer-regexp-exec": "off",
+          "regexp/prefer-regexp-test": "off",
+          "regexp/prefer-star-quantifier": "off",
+          "regexp/prefer-w": "off",
+          "no-undef": "off",
+          "no-return-assign": "off",
+          "no-param-reassign": "off",
+          "no-redeclare": "off",
+          "consistent-return": "off",
+          "no-process-exit": "off"
+        }
+      }
+    ],
+    "plugins": [
+      "svelte",
+      "@intlify/eslint-plugin-svelte",
+      "perfectionist",
+      "ramda",
+      "storybook",
+      "@conarti/eslint-plugin-feature-sliced",
+      "sonarjs",
+      "xstate",
+      "regexp"
+    ],
+    "rules": {
+      "unicorn/require-array-join-separator": "off",
+      "perfectionist/sort-imports": "off",
+      "no-mixed-spaces-and-tabs": [
+        "error",
+        "smart-tabs"
+      ],
+      "@typescript-eslint/no-explicit-any": "off",
+      "svelte/html-quotes": [
+        "warn",
+        {
+          "prefer": "single",
+          "dynamic": {
+            "quoted": false,
+            "avoidInvalidUnquotedInHTML": false
+          }
+        }
+      ],
+      "svelte/indent": [
+        "error",
+        {
+          "indent": "tab",
+          "indentScript": false,
+          "ignoredNodes": [],
+          "switchCase": 1,
+          "alignAttributesVertically": false
+        }
+      ],
+      "svelte/no-spaces-around-equal-signs-in-attribute": "warn",
+      "svelte/no-reactive-reassign": "warn",
+      "svelte/no-store-async": "warn",
+      "svelte/require-store-reactive-access": "warn",
+      "svelte/no-target-blank": "warn",
+      "svelte/no-immutable-reactive-statements": "warn",
+      "svelte/no-reactive-functions": "warn",
+      "svelte/no-reactive-literals": "warn",
+      "svelte/no-unused-class-name": [
+        "warn",
+        {
+          "allowedClassNames": []
+        }
+      ],
+      "svelte/prefer-destructured-store-props": "warn",
+      "svelte/require-optimized-style-attribute": "warn",
+      "svelte/valid-each-key": "warn",
+      "svelte/require-each-key": "warn",
+      "svelte/derived-has-same-inputs-outputs": "warn",
+      "svelte/first-attribute-linebreak": "warn",
+      "svelte/html-closing-bracket-spacing": "warn",
+      "svelte/prefer-style-directive": "warn",
+      "svelte/spaced-html-comment": "warn",
+      "svelte/no-dupe-use-directives": "warn",
+      "svelte/no-dupe-on-directives": "warn",
+      "svelte/infinite-reactive-loop": "error",
+      "no-console": "off",
+      "consistent-return": "off",
+      "no-warning-comments": "off",
+      "object-curly-spacing": "off",
+      "perfectionist/sort-objects": [
+        "warn",
+        {
+          "order": "asc",
+          "type": "natural"
+        }
+      ],
+      "unicorn/filename-case": "off",
+      "capitalized-comments": "off"
+    },
+    "semicolon": false,
+    "settings": {
+      "svelte": {
+        "kit": {
+          "files": {
+            "routes": "src/routes"
+          }
+        }
+      }
+    }
   }
 }

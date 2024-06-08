@@ -1,20 +1,20 @@
 {
-  "name": "@repo/ui",
-  "version": "0.0.0",
-  "type": "module",
-  "module": "index.ts",
-  "main": "index.ts",
+  "devDependencies": {
+    "svelte": "^4.2.18"
+  },
   "exports": {
     ".": {
-      "types": "./index.ts",
-      "svelte": "./index.ts"
+      "MyCounterButton": "./components/MyCounterButton.svelte",
+      "svelte": "./index.ts",
+      "types": "./index.ts"
     }
   },
+  "main": "index.ts",
+  "module": "index.ts",
+  "name": "@repo/ui",
   "scripts": {
     "lint": "eslint ."
   },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "svelte": "^4.2.12"
-  }
+  "type": "module",
+  "version": "0.0.0"
 }
