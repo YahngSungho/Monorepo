@@ -30,6 +30,7 @@
     "@typescript-eslint/parser": "^7.8.0",
     "eslint": "9.1.1",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-config-turbo": "2.0.1",
     "eslint-plugin-perfectionist": "^2.10.0",
     "eslint-plugin-ramda": "^2.5.1",
     "eslint-plugin-regexp": "^2.5.0",
@@ -58,13 +59,13 @@
     "stylelint-value-no-exposed-custom-properties": "^2.3.1",
     "stylelint-value-no-unknown-custom-properties": "^6.0.1",
     "svelte": "^4.2.15",
+    "syncpack": "^12.3.2",
     "ts-node": "^10.9.2",
+    "turbo": "latest",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
     "vitest": "^1.5.3",
-    "xo": "^0.58.0",
-    "syncpack": "^12.3.2",
-    "turbo": "latest"
+    "xo": "^0.58.0"
   },
   "packageManager": "pnpm@9.1.4",
   "engines": {
@@ -81,7 +82,8 @@
       "plugin:svelte/recommended",
       "plugin:@intlify/svelte/recommended",
       "plugin:perfectionist/recommended-natural",
-      "plugin:@conarti/feature-sliced/recommended"
+      "plugin:@conarti/feature-sliced/recommended",
+      "turbo"
     ],
     "extensions": [
       "svelte",
@@ -107,9 +109,6 @@
           "*.ts"
         ],
         "parser": "@typescript-eslint/parser",
-        "parserOptions": {
-          "project": "./tsconfig.json"
-        },
         "rules": {
           "@typescript-eslint/*": "off"
         }
@@ -268,6 +267,7 @@
       }
     ],
     "plugins": [
+      "turbo",
       "svelte",
       "@intlify/eslint-plugin-svelte",
       "perfectionist",
@@ -279,6 +279,8 @@
       "regexp"
     ],
     "rules": {
+      "no-unused-vars": "off",
+      "no-unused-expressions": "off",
       "unicorn/require-array-join-separator": "off",
       "perfectionist/sort-imports": "off",
       "no-mixed-spaces-and-tabs": [
@@ -332,7 +334,6 @@
       "svelte/no-dupe-use-directives": "warn",
       "svelte/no-dupe-on-directives": "warn",
       "svelte/infinite-reactive-loop": "error",
-      "no-console": "off",
       "consistent-return": "off",
       "no-warning-comments": "off",
       "object-curly-spacing": "off",

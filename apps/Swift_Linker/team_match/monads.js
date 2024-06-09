@@ -1,11 +1,9 @@
 import util, { inspect } from 'node:util'
+import create from '@repo/library_wrappers/mutative'
 import { nanoid } from 'nanoid'
 import * as R from 'ramda'
 import { areAllDisjoint } from '../utilities/functions/utilities.js'
-import { shuffleArray } from '@/projects/Swift_Linker/team_match/random_engine.js'
-import create from '@/utilities/libraries/mutative.js'
-
-
+import { shuffleArray } from './random_engine.js'
 
 export {
 	AllMembers, Cohort, Member, Team, Teams,
@@ -16,7 +14,6 @@ export {
 /**
  * @typedef {string} Id
  */
-
 
 // ----------------------------------------------------------------------------------------
 class Member {
@@ -38,7 +35,6 @@ class Member {
 		return new Member(id, properties)
 	}
 }
-
 
 class AllMembers {
 	/**
@@ -109,7 +105,6 @@ class AllMembers {
 		return this.members.some(member => member.id === id)
 	}
 
-
 	/**
 	 * @returns {AllMembers}
 	 */
@@ -135,7 +130,6 @@ class Cohort {
 		return new Cohort([])
 	}
 
-
 	/**
 	 * @param {Array<Id | Cohort>} idOrCohortArray
 	 * @returns {Cohort}
@@ -143,7 +137,6 @@ class Cohort {
 	static of(idOrCohortArray) {
 		return new Cohort(idOrCohortArray)
 	}
-
 
 	/**
 	 * @param {Id | Cohort} member
@@ -167,7 +160,7 @@ class Cohort {
 	 * @returns {Array<Id>}
 	 */
 	getJoinedArray() {
-		return Array.from(this.idOrCohortArray).flatMap(idOrCohort => {
+		return [...this.idOrCohortArray].flatMap(idOrCohort => {
 			if (idOrCohort instanceof Cohort) {
 				if (idOrCohort === this) {
 					return []
@@ -194,7 +187,6 @@ class Cohort {
 	includedIn(team) {
 		return this.join().array.some((/** @type {string} */ id) => typeof id === 'string' && team.includes(id))
 	}
-
 
 	/**
 	 * @returns {Cohort<Array<Id>>}
@@ -225,7 +217,6 @@ class Cohort {
 		return `Cohort(${inspect(this.idOrCohortArray)})`
 	}
 
-
 	get array() {
 		return this.idOrCohortArray
 	}
@@ -238,7 +229,6 @@ class Cohort {
 		return this.join().array.length
 	}
 }
-
 
 class Team {
 	/**
@@ -395,7 +385,6 @@ class Teams {
 		return new Teams(teams, slots)
 	}
 
-
 	/**
 	 * @param {Id} id
 	 * @returns {boolean}
@@ -429,7 +418,6 @@ class Teams {
 		return this.teams.flatMap(team => team.idArray)
 	}
 
-
 	/**
 	 * @returns {Array<number>}
 	 */
@@ -444,7 +432,6 @@ class Teams {
 	map(f) {
 		return new Teams(this.teams.map(f), this.slots)
 	}
-
 
 	/**
 	 * @type {(idArray: Array<Id>) => Array<Id>}

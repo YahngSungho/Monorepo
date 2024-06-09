@@ -1,12 +1,16 @@
 {
-  "name": "library_wrappers",
-  "version": "1.0.0",
+  "author": "",
   "description": "",
+  "exports": {
+    "./mutative": "./mutative.js"
+  },
+  "keywords": [],
+  "license": "ISC",
   "main": "index.js",
+  "name": "@repo/library_wrappers",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "type": "module",
+  "version": "1.0.0"
 }

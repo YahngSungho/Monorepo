@@ -11,4 +11,8 @@ function myfunc(string) {
 	return st3 + 'baz'
 }
 
-myfunc(foo)
+myfunc(foo)/* ? */
+
+console.log(myfunc(foo))
+
+const myVariable = console/* ?+ */
