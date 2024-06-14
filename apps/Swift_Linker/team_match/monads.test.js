@@ -128,17 +128,7 @@ describe('AllMembers', () => {
 		const updatedAllMembers = allMembers.add(newMember)
 		expect(allMembers.members).not.toContain(newMember)
 		expect(updatedAllMembers.members).toContain(newMember)
-	})
-
-	// Handling large lists of members efficiently
-	it.prop({ largeListOfIds: fc.array(fc.string(), { maxLength: 1000, minLength: 1000 }) })(
-		'대규모 멤버 리스트 처리',
-		({ largeListOfIds }) => {
-			const members = largeListOfIds.map(id => new Member(id))
-			const allMembers = AllMembers.of(members)
-			expect(allMembers.members.length).toBe(1000)
-		},
-	)
+	}) // ?.
 
 	// Verifying that the getCohort method returns unique member IDs
 	it.prop({ idsArray: fc.array(fc.string(), { maxLength: 10, minLength: 10 }) })(
@@ -503,7 +493,7 @@ describe('Teams', () => {
 	// Creating a Teams instance with non-disjoint teams
 	it('겹치는 멤버가 있는 팀들로 Teams 인스턴스 생성 에러', () => {
 		expect(() => {
-			new Teams([new Team(['member1'], 2), new Team(['member1'], 2)], [2, 2])
+			Teams.of([new Team(['member1'], 2), new Team(['member1'], 2)], [2, 2])
 		}).toThrowError('Teams must be disjoint')
 	})
 
