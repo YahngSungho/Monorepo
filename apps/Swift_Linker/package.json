@@ -11,5 +11,8 @@
   "scripts": {
     "test": "vitest"
   },
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "devDependencies": {
+    "@fast-check/vitest": "^0.1.1"
+  }
 }

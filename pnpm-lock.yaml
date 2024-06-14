@@ -183,6 +183,10 @@ importers:
       '@repo/library_wrappers':
         specifier: workspace:*
         version: link:../../packages/library_wrappers
+    devDependencies:
+      '@fast-check/vitest':
+        specifier: ^0.1.1
+        version: 0.1.1(vitest@1.6.0)
 
   packages/config-eslint:
     dependencies:
@@ -757,6 +761,15 @@ packages:
   /@eslint/js@9.1.1:
     resolution: {integrity: sha512-5WoDz3Y19Bg2BnErkZTp0en+c/i9PvgFS7MBe1+m60HjFr0hrphlAGp4yzI7pxpt4xShln4ZyYp4neJm8hmOkQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    dev: true
+
+  /@fast-check/vitest@0.1.1(vitest@1.6.0):
+    resolution: {integrity: sha512-hxBUieogCiugTY0RZTBcFRfCVja4CxLMXwCKXyf6OtP65gGWoRI17iu/SwcGZp2hzlpxiSIgHFYfQXBEx+jxfQ==}
+    peerDependencies:
+      vitest: '>=0.28.1 <1.0.0 || ^1'
+    dependencies:
+      fast-check: 3.17.2
+      vitest: 1.6.0(@types/node@20.14.2)(jsdom@24.1.0)
     dev: true
 
   /@humanwhocodes/config-array@0.11.14:

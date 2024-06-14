@@ -1,5 +1,6 @@
 import util, { inspect } from 'node:util'
 import create from '@repo/library_wrappers/mutative'
+import { unsafe } from 'mutative'
 import { nanoid } from 'nanoid'
 import * as R from 'ramda'
 import { areAllDisjoint } from '../utilities/functions/utilities.js'
@@ -21,8 +22,7 @@ class Member {
 	 * @param {Id} id
 	 * @param {Object} properties
 	 */
-	// Fix 인자 순서 바꿔. 그리고 id default는 nanoid
-	constructor(id, properties = {}) {
+	constructor(id = nanoid(), properties = {}) {
 		this.id = id
 		this.properties = properties
 	}
@@ -109,7 +109,11 @@ class AllMembers {
 	 * @returns {AllMembers}
 	 */
 	shuffle() {
-		return new AllMembers(shuffleArray(this.members))
+		return new AllMembers(create(this.members, draft => {
+			unsafe(() => {
+				shuffleArray(draft)
+			})
+		}))
 	}
 }
 
@@ -119,6 +123,8 @@ class AllMembers {
  * @description 중첩된 Cohort join 가능
  */
 class Cohort {
+	isCohort = R.T
+
 	/**
 	 * @param {Array<Id | Cohort>} idOrCohortArray
 	 */
@@ -160,7 +166,7 @@ class Cohort {
 	 * @returns {Array<Id>}
 	 */
 	getJoinedArray() {
-		return [...this.idOrCohortArray].flatMap(idOrCohort => {
+		return R.uniq([...this.idOrCohortArray].flatMap(idOrCohort => {
 			if (idOrCohort instanceof Cohort) {
 				if (idOrCohort === this) {
 					return []
@@ -170,7 +176,7 @@ class Cohort {
 			}
 
 			return idOrCohort
-		})
+		}))
 	}
 
 	/**
@@ -185,7 +191,7 @@ class Cohort {
 	 * @returns {boolean}
 	 */
 	includedIn(team) {
-		return this.join().array.some((/** @type {string} */ id) => typeof id === 'string' && team.includes(id))
+		return this.getJoinedArray().some((/** @type {string} */ id) => typeof id === 'string' && team.includes(id))
 	}
 
 	/**
@@ -199,7 +205,7 @@ class Cohort {
 	 * @returns {{ id: Id, Cohort: Cohort<Array<Id>> }}
 	 */
 	pop() {
-		const array = R.clone(this.join().array)
+		const array = this.getJoinedArray()
 
 		if (array.length === 0) {
 			return { Cohort: this, id: null }
@@ -221,12 +227,8 @@ class Cohort {
 		return this.idOrCohortArray
 	}
 
-	get isCohort() {
-		return true
-	}
-
-	get size() {
-		return this.join().array.length
+	get totalSize() {
+		return this.getJoinedArray().length
 	}
 }
 
@@ -402,7 +404,7 @@ class Teams {
 			throw new Error('Teams must have the same number of teams')
 		}
 
-		if (this.slots !== otherTeams.slots) {
+		if (!R.equals(this.slots, otherTeams.slots)) {
 			throw new Error('Slots must be the same')
 		}
 
@@ -437,7 +439,11 @@ class Teams {
 	 * @type {(idArray: Array<Id>) => Array<Id>}
 	 */
 	removeDuplicateByThis(idArray) {
-		return R.without(this.getAllTeamMembers(), idArray)
+		if (!idArray) {
+			return []
+		}
+
+		return R.difference(idArray, this.getAllTeamMembers())
 	}
 
 	/**

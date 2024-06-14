@@ -279,6 +279,10 @@
       "regexp"
     ],
     "rules": {
+      "unicorn/prefer-spread": "off",
+      "@typescript-eslint/*": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "unicorn/no-array-callback-reference": "off",
       "no-unused-vars": "off",
       "no-unused-expressions": "off",
       "unicorn/require-array-join-separator": "off",
