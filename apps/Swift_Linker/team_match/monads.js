@@ -237,10 +237,10 @@ class Team {
 	 * @param {Id[]} memberIds
 	 * @param {number} slotFixed
 	 */
-	constructor(memberIds, slotFixed) {
+	constructor(memberIds, slotFixed, id = nanoid()) {
 		this.slotFixed = slotFixed
 		this.memberIds = R.uniq(memberIds)
-		this.id = nanoid()
+		this.id = id
 
 		if (slotFixed < this.memberIds.length) {
 			throw new Error('The number of members must be less than or equal to the slots')
@@ -264,8 +264,8 @@ class Team {
 	 * @param {number} slotFixed
 	 * @returns {Team}
 	 */
-	static of(memberIds, slotFixed) {
-		return new Team(memberIds, slotFixed)
+	static of(memberIds, slotFixed, id) {
+		return new Team(memberIds, slotFixed, id)
 	}
 
 	/**
@@ -273,7 +273,7 @@ class Team {
 	 * @returns {Team}
 	 */
 	add(id) {
-		return new Team([...this.memberIds, id], this.slotFixed)
+		return new Team([...this.memberIds, id], this.slotFixed, this.id)
 	}
 
 	/**
@@ -285,7 +285,7 @@ class Team {
 			throw new Error('The number of slots must be the same')
 		}
 
-		return new Team([...this.memberIds, ...otherTeam.memberIds], this.slotFixed)
+		return new Team([...this.memberIds, ...otherTeam.memberIds], this.slotFixed, this.id)
 	}
 
 	getRemainingSlot() {
@@ -311,7 +311,7 @@ class Team {
 	 * @param {(value: string, index: number, array: string[]) => string} f
 	 */
 	map(f) {
-		return new Team(this.memberIds.map(f), this.slotFixed)
+		return new Team(this.memberIds.map(f), this.slotFixed, this.id)
 	}
 
 	/**
@@ -319,7 +319,7 @@ class Team {
 	 * @returns {Team}
 	 */
 	update(otherMemberIds) {
-		return new Team([...this.memberIds, ...otherMemberIds], this.slotFixed)
+		return new Team([...this.memberIds, ...otherMemberIds], this.slotFixed, this.id)
 	}
 
 	[util.inspect.custom]() {

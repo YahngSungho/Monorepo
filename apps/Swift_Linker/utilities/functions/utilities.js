@@ -35,7 +35,5 @@ const areAllDisjoint = arrays => {
 
 // Test
 console.log(areAllDisjoint([[1, 2], [3, 4]]))
-console.log(areAllDisjoint([[1, 2], [3, 4], [1, 6]]))
-console.log(areAllDisjoint([[1, 2, 1, 4], [3, 5]]))
 
 export { areAllDisjoint }
