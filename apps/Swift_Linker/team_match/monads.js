@@ -340,23 +340,23 @@ class Team {
  */
 class Teams {
 	/**
-	* @param {Array<Team>} teams
+	* @param {Array<Team>} teamArray
 	* @param {Array<number>} slots 팀별 남은 자리
 	 */
-	constructor(teams, slots = teams.map(team => (team.slotFixed))) {
-		if (slots.length !== teams.length) {
-			throw new Error('Slots must be the same length as number of teams')
+	constructor(teamArray, slots = teamArray.map(team => (team.slotFixed))) {
+		if (slots.length !== teamArray.length) {
+			throw new Error('Slots must be the same length as number of teamArray')
 		}
 
-		if (!Array.isArray(teams)) {
+		if (!Array.isArray(teamArray)) {
 			throw new TypeError('Teams must be an array')
 		}
 
-		if (!areAllDisjoint(teams.map(team => team.idArray))) {
+		if (!areAllDisjoint(teamArray.map(team => team.idArray))) {
 			throw new Error('Teams must be disjoint')
 		}
 
-		this.teams = teams
+		this.teamArray = teamArray
 		this.slots = slots
 	}
 
@@ -380,11 +380,11 @@ class Teams {
 	}
 
 	/**
-	 * @param {Array<Team>} teams
+	 * @param {Array<Team>} teamArray
 	 * @param {number[]} [slots]
 	 */
-	static of(teams, slots) {
-		return new Teams(teams, slots)
+	static of(teamArray, slots) {
+		return new Teams(teamArray, slots)
 	}
 
 	/**
@@ -392,7 +392,7 @@ class Teams {
 	 * @returns {boolean}
 	 */
 	alreadyJoined(id) {
-		return this.teams.some(team => team.hasMemberId(id))
+		return this.teamArray.some(team => team.hasMemberId(id))
 	}
 
 	/**
@@ -401,14 +401,14 @@ class Teams {
 	 */
 	concat(otherTeams) {
 		if (this.numberOfTeams !== otherTeams.numberOfTeams) {
-			throw new Error('Teams must have the same number of teams')
+			throw new Error('Teams must have the same number of teamArray')
 		}
 
 		if (!R.equals(this.slots, otherTeams.slots)) {
 			throw new Error('Slots must be the same')
 		}
 
-		const newTeams = this.teams.map((team, index) => team.concat(otherTeams.teams[index]))
+		const newTeams = this.teamArray.map((team, index) => team.concat(otherTeams.teamArray[index]))
 
 		return new Teams(newTeams, this.slots)
 	}
@@ -417,14 +417,14 @@ class Teams {
 	 * @returns {Array<Id>}
 	 */
 	getAllTeamMembers() {
-		return this.teams.flatMap(team => team.idArray)
+		return this.teamArray.flatMap(team => team.idArray)
 	}
 
 	/**
 	 * @returns {Array<number>}
 	 */
 	getRemainingSlots() {
-		return this.teams.map(team => (team.getRemainingSlot()))
+		return this.teamArray.map(team => (team.getRemainingSlot()))
 	}
 
 	/**
@@ -432,7 +432,7 @@ class Teams {
 	 * @returns {Teams}
 	 */
 	map(f) {
-		return new Teams(this.teams.map(f), this.slots)
+		return new Teams(this.teamArray.map(f), this.slots)
 	}
 
 	/**
@@ -450,11 +450,11 @@ class Teams {
 	 * @param {number[]} slots
 	 */
 	setSlots(slots) {
-		if (this.teams.length !== slots.length) {
-			throw new Error('Slots must be the same length as number of teams')
+		if (this.teamArray.length !== slots.length) {
+			throw new Error('Slots must be the same length as number of teamArray')
 		}
 
-		return new Teams(this.teams, slots)
+		return new Teams(this.teamArray, slots)
 	}
 
 	/**
@@ -465,17 +465,17 @@ class Teams {
 	}
 
 	[util.inspect.custom]() {
-		return `Teams(${inspect(this.teams)}, ${inspect(this.slots)})`
+		return `Teams(${inspect(this.teamArray)}, ${inspect(this.slots)})`
 	}
 
 	/**
 	 * @returns {number}
 	 */
 	get numberOfTeams() {
-		if (this.teams.length !== this.slots.length) {
+		if (this.teamArray.length !== this.slots.length) {
 			throw new Error('Teams must have the same number of slots')
 		}
 
-		return this.teams.length
+		return this.teamArray.length
 	}
 }
