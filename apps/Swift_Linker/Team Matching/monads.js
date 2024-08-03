@@ -7,7 +7,7 @@ import { areAllDisjoint, areDisjoint } from '../utilities/functions/utilities.js
 import { shuffleArray } from './random_engine.js'
 
 export {
-	AllMembers, Cohort, Member, Team, Teams,
+	AllMembers, Cohort, Member, Role, Team, Teams,
 }
 
 // ----------------------------------------------------------------------------------------
@@ -220,6 +220,10 @@ class Role {
 	 * @param {string|null} name
 	 */
 	constructor(members, slot, name = null, id = nanoid()) {
+		if (typeof slot !== 'number' || slot <= 0) {
+			throw new Error('The number of slots must be a positive number')
+		}
+
 		if (slot < members.length) {
 			throw new Error('The number of members must be less than or equal to the slots')
 		}
@@ -417,10 +421,6 @@ class Team {
 	}
 }
 
-/**
- * @class Teams
- * @description 팀들에 나눠서 column 단위로 concat으로 추가 가능
- */
 class Teams {
 	/**
 	* @param {Array<Team>} teamArray
@@ -430,8 +430,8 @@ class Teams {
 			throw new TypeError('Teams must be an array')
 		}
 
-		if (!areDisjoint(teamArray)) {
-			throw new Error('Teams must be disjoint')
+		if (!areAllDisjoint(teamArray.map(team => team.roleArray))) {
+			throw new Error('Roles must be disjoint')
 		}
 
 		this.teamArray = teamArray

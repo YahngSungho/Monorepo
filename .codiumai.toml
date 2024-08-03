@@ -46,19 +46,27 @@ it.prop({ a: fc.string(), b: fc.string(), c: fc.string() })('서브스트링이 
 
 ## A multiline string, delimited with triple-quotes (""") serving as an example test that represents
 ## what you would like the generated tests to look like in terms of style, setup, etc.
-# example_test = """
-# describe("something", () => {
-#   it("says 'bar'", () => {
-#     // given
-#
-#     // when
-#     const res = something.say();
-#
-#     // Then
-#     expect(res).to.equal("bar");
-#   });
-# });
-# """
+example_test = """
+describe("something", () => {
+	it("'bar' 문자열이 반환됨", () => {
+		// given
+
+		// when
+		const res = something.say()
+
+		// Then
+		expect(res).to.equal("bar")
+	})
+	it.prop({ number1: fc.nat(), number2: fc.nat() })('교환법칙', ({ number1, number2 }) => {
+		return (number1 + number2 === number2 + number1)
+	})
+	it.prop({ a: fc.string(), b: fc.string(), c: fc.string() })('서브스트링이 포함', ({ a, b, c }) => {
+		expect((a + b + c).includes(a)).toBe(true)
+		expect((a + b + c).includes(b)).toBe(true)
+		expect((a + b + c).includes(c)).toBe(true)
+	})
+})
+"""
 
 
 [tests.javascript]
