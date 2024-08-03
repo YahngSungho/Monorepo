@@ -315,13 +315,6 @@ class Role {
 	}
 
 	/**
-	 * @returns {Member[]}
-	 */
-	get members() {
-		return this.members
-	}
-
-	/**
 	 * @returns {number}
 	 */
 	get remainingSlot() {
