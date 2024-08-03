@@ -237,7 +237,7 @@ class Role {
 	 * @returns {Role}
 	 */
 	static empty(slot, name = null) {
-		if (typeof slot !== 'number' || slot < 0) {
+		if (typeof slot !== 'number' || slot <= 0) {
 			throw new Error('Slot fixed must be a positive number')
 		}
 
@@ -305,6 +305,7 @@ class Role {
 
 	/**
 	 * @param {(value: Member, index: number, array: Member[]) => Member} f
+	 * @returns {Role}
 	 */
 	map(f) {
 		return new Role(this.members.map(f), this.slot, this.name, this.id)
@@ -486,7 +487,7 @@ class Teams {
 			return []
 		}
 
-		return R.difference(memberArray, this.getAllMembers())
+		return R.difference(memberArray, this.members)
 	}
 
 	[util.inspect.custom]() {
@@ -497,7 +498,7 @@ class Teams {
 	 * @returns {Member[]}
 	 */
 	get members() {
-		return this.teamArray.flatMap(team => team.members())
+		return this.teamArray.flatMap(team => team.members)
 	}
 
 	/**
