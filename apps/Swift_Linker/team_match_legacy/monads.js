@@ -232,6 +232,7 @@ class Cohort {
 	}
 }
 
+// fix 여기 역할을 추가해야함 - 그러면서도 디폴트는 같게
 class Team {
 	/**
 	 * @param {Id[]} memberIds

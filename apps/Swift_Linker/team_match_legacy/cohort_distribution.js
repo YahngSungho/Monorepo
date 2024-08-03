@@ -20,7 +20,7 @@ const getGreatestRemainingSlotTeam = R.reduce(R.maxBy(team => (team.getRemaining
 })
 
 // ---
-// todo: 어떤 사람은 팀 두개에 들어간다 이런 경우도 있어야 함
+// todo: 어떤 사람은 팀 두개에 들어간다 이런 경우도 있어야 함 -> 이거 teams를 두개 쓰는 걸로 되나?
 const splitCohorts = R.curry(
 	/**
 	* @param {AllMembers} allMembers
@@ -40,26 +40,41 @@ const splitCohorts = R.curry(
 			return teams
 		}
 
-		const withoutArrays = regularArrays.map(array => (R.without(array)))
+		const withoutFunctionArray = regularArrays.map(array => (R.without(array)))
 
 		const uniqArrays = []
 		for (const [i, array] of regularArrays.entries()) {
-			const currentWithout = R.remove(i, 1, withoutArrays)
+			const currentWithoutFunctionArray = R.remove(i, 1, withoutFunctionArray)
 
-			uniqArrays[i] = R.pipe(...currentWithout)(array)
+			uniqArrays[i] = R.pipe(...currentWithoutFunctionArray)(array)
 		}
 
 		// ---
 
-		let counts = uniqArrays.map(array => (array.length))
+		// todo: 인원 많은 쪽이 적은 쪽의 팀을 너무 침입한다 - 역시 코호트 별로 배정될 수 있는 팀들을 나눠야겠음
+
+		// unqArray를 length 작은 쪽부터 정렬 - 문제는 remainderArrays -> 이거 먼저 구하고 순서 바꿔진 거에 따라서 순서 바꿔...
+		const sortedIndices = uniqArrays
+			.map((array, index) => ({ array, index }))
+			.sort((a, b) => a.array.length - b.array.length)
+			.map(item => item.index)
+
+		const sortedArrays = sortedIndices.map(index => uniqArrays[index])
+		let counts = sortedArrays.map(array => (array.length))
 		const minCount = Math.min(...counts)
-		counts = counts.map(count => Math.round(count / minCount))
+		counts = counts.map(count => Math.max(1, Math.floor(count / minCount)))
+
+		const temporaryArrays = R.clone(sortedArrays)
 
 		const remainderArrays = regularArrays.map((array, i) => (R.remove(i, 1, regularArrays).flat()))
+		const sortedRemainderArrays = sortedIndices.map(index => remainderArrays[index])
 
-		const temporaryArrays = R.clone(uniqArrays)
+		// todo: 인원 0인 array 제거 - 대응하는 배열들에서 다 제거
 
 		const temporaryTeamArray = [...(teams.teamArray)]
+
+		// todo: 적은 쪽부터 팀 하나씩 줘.
+		// ---
 
 		while (
 			temporaryArrays.some(array => array.length > 0)
@@ -109,9 +124,9 @@ const splitCohorts = R.curry(
 
 // test
 
-const allMembers = AllMembers.of(R.range(0, 50).map(id => new Member(String(id))))
+const allMembers = AllMembers.of(R.range(0, 500).map(id => new Member(String(id))))
 const cohort1 = allMembers.getCohort(member => Number(member.id) % 2 === 0)
-const cohort2 = allMembers.getCohort(member => Number(member.id) % 3 === 0)
+const cohort2 = allMembers.getCohort(member => Number(member.id) % 5 === 0)
 const cohorts = [cohort1, cohort2]
 // const teams = Teams.of([
 // 	Team.of(allMembers.getIdArray(member => Number(member.id) % 8 === 0), 20),

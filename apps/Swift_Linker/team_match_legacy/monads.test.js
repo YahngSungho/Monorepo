@@ -2,7 +2,7 @@ import { fc, it } from '@fast-check/vitest'
 import * as R from 'ramda'
 import {
 	AllMembers, Cohort, Member, Team, Teams,
-} from 'team_match/monads.js'
+} from 'team_match_legacy/monads.js'
 import { describe, expect } from 'vitest'
 
 describe('AllMembers', () => {
