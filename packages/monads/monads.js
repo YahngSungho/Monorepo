@@ -3,7 +3,7 @@ import util, { inspect } from 'node:util'
 import { compose, curry, identity } from 'ramda'
 
 export {
-	IO, Identity, List, Map, Maybe, Task, createCompose,
+	createCompose, Identity, IO, List, Map, Maybe, Task,
 }
 
 export { default as Validator } from './validator.js'
@@ -32,7 +32,6 @@ const createCompose = curry((F, G) => class Compose {
 		return `Compose(${inspect(this.$value)})`
 	}
 })
-
 
 class Identity {
 	constructor(x) {
@@ -155,7 +154,7 @@ class Map {
 	insert(k, v) {
 		const singleton = {}
 		singleton[k] = v
-		return Map.of(Object.assign({}, this.$value, singleton))
+		return Map.of({ ...this.$value, ...singleton })
 	}
 
 	// ----- Functor (Map a)

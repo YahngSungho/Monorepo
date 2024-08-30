@@ -21,7 +21,7 @@
 	},
 	"include": [
 		"./**/*"
-	],
+, "../../packages/library_wrappers/random_engine.js"	],
 	"exclude": [
 		"node_modules",
 		"dist",

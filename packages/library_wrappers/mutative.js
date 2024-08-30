@@ -5,12 +5,5 @@ const create = makeCreator({
 	strict: true,
 })
 
-// Test
-const mySet = new Set([1, 2, 3, 4, 5])/* ? */
-const mySet2 = create(mySet, draft => {
-	draft.add(6)
-	draft.add(7)
-})
-mySet2/* ? */
-
 export default create
+export { unsafe } from 'mutative'

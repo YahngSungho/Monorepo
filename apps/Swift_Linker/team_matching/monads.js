@@ -1,10 +1,9 @@
-import util, { inspect } from 'node:util'
-import create from '@repo/library_wrappers/mutative'
-import { unsafe } from 'mutative'
+import { inspect } from 'node:util'
+import create, { unsafe } from '@repo/library_wrappers/mutative'
+import { shuffleArray } from '@repo/library_wrappers/random_engine'
 import { nanoid } from 'nanoid'
 import * as R from 'ramda'
 import { areAllDisjoint, areDisjoint } from '../utilities/functions/utilities.js'
-import { shuffleArray } from './random_engine.js'
 
 export {
 	AllMembers, Cohort, Member, Role, Team, Teams,
@@ -96,11 +95,11 @@ class AllMembers {
 	}
 
 	/**
-	 * @param {Teams} teams
+	 * @param {Member[]} members
 	 * @returns {Member[]}
 	 */
-	getRemainingMembers(teams) {
-		return this.members.filter(member => !teams.hasMember(member))
+	getRemainingMembers(members) {
+		return this.members.filter(member => !members.includes(member))
 	}
 
 	/**
@@ -171,15 +170,15 @@ class Cohort {
 		}))
 	}
 
+	[inspect.custom]() {
+		return `Cohort(${inspect(this.memberOrCohortArray)})`
+	}
+
 	/**
 	 * @returns {Cohort<Array<Member>>}
 	 */
 	join() {
 		return new Cohort(this.joinedArray)
-	}
-
-	[util.inspect.custom]() {
-		return `Cohort(${inspect(this.memberOrCohortArray)})`
 	}
 
 	get array() {
@@ -218,6 +217,7 @@ class Role {
 	 * @param {Member[]} members
 	 * @param {number} slot
 	 * @param {string|null} name
+	 * @param {string|null} id
 	 */
 	constructor(members, slot, name = null, id = nanoid()) {
 		if (typeof slot !== 'number' || slot <= 0) {
@@ -307,16 +307,16 @@ class Role {
 		return this.slot > this.members.length
 	}
 
+	[inspect.custom]() {
+		return `Role(${inspect(this.name)}, ${inspect(this.members)}, ${inspect(this.slot)}, ${inspect(this.id)})`
+	}
+
 	/**
 	 * @param {(value: Member, index: number, array: Member[]) => Member} f
 	 * @returns {Role}
 	 */
 	map(f) {
 		return new Role(this.members.map(f), this.slot, this.name, this.id)
-	}
-
-	[util.inspect.custom]() {
-		return `Role(${inspect(this.name)}, ${inspect(this.members)}, ${inspect(this.slot)}, ${inspect(this.id)})`
 	}
 
 	/**
@@ -402,7 +402,7 @@ class Team {
 		return this.roleArray.some((/** @type {{ hasRoom(): boolean; }} */ role) => role.hasRoom())
 	}
 
-	[util.inspect.custom]() {
+	[inspect.custom]() {
 		return `Team(${inspect(this.roleArray)}, ${inspect(this.id)})`
 	}
 
@@ -471,6 +471,10 @@ class Teams {
 		return this.teamArray.some(team => team.hasMember(member))
 	}
 
+	[inspect.custom]() {
+		return `Teams(${inspect(this.teamArray)}, ${inspect(this.id)})`
+	}
+
 	/**
 	 * @param {(value: Team, index: number, array: Team[]) => Team} f
 	 * @returns {Teams}
@@ -488,10 +492,6 @@ class Teams {
 		}
 
 		return R.difference(memberArray, this.members)
-	}
-
-	[util.inspect.custom]() {
-		return `Teams(${inspect(this.teamArray)}, ${inspect(this.id)})`
 	}
 
 	/**

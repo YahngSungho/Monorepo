@@ -1,12 +1,7 @@
 {
   "author": "",
-  "dependencies": {
-    "@repo/library_wrappers": "workspace:*"
-  },
+  "dependencies": {},
   "description": "",
-  "devDependencies": {
-    "@fast-check/vitest": "^0.1.1"
-  },
   "keywords": [],
   "license": "ISC",
   "main": "index.js",

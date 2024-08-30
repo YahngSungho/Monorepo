@@ -1,0 +1,152 @@
+{
+    "extends": [
+        "plugin:regexp/recommended",
+        "plugin:xstate/all",
+        "plugin:sonarjs/recommended-legacy",
+        "plugin:storybook/recommended",
+        "plugin:ramda/recommended",
+        "plugin:svelte/recommended",
+        "plugin:@intlify/svelte/recommended",
+        "plugin:perfectionist/recommended-natural-legacy",
+        "plugin:@conarti/feature-sliced/recommended",
+        "turbo"
+    ],
+    "extensions": [
+        "svelte",
+        "js",
+        "ts",
+        "jsx",
+        "tsx",
+        "mjs",
+        "cjs",
+        "mts",
+        "cts"
+    ],
+    "files": [
+        "src/**/*",
+        ".storybook/**/*"
+    ],
+    "ignores": [
+        "./node_modules/**",
+        "./build/**"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "*.ts"
+            ],
+            "parser": "@typescript-eslint/parser",
+            "rules": {
+                "@typescript-eslint/*": "off"
+            }
+        },
+        {
+            "files": [
+                "*.svelte",
+                "**/*.svelte"
+            ],
+            "parser": "svelte-eslint-parser"
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2022,
+        "project": "./jsconfig.json",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "turbo",
+        "svelte",
+        "@intlify/eslint-plugin-svelte",
+        "perfectionist",
+        "ramda",
+        "storybook",
+        "@conarti/eslint-plugin-feature-sliced",
+        "sonarjs",
+        "xstate",
+        "regexp"
+    ],
+    "rules": {
+        "@typescript-eslint/*": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "arrow-parens": "off",
+        "capitalized-comments": "off",
+        "consistent-return": "off",
+        "no-mixed-spaces-and-tabs": [
+            "error",
+            "smart-tabs"
+        ],
+        "no-unused-expressions": "off",
+        "no-unused-vars": "off",
+        "no-warning-comments": "off",
+        "object-curly-spacing": "off",
+        "perfectionist/sort-imports": "off",
+        "perfectionist/sort-objects": [
+            "warn",
+            {
+                "order": "asc",
+                "type": "natural"
+            }
+        ],
+        "svelte/derived-has-same-inputs-outputs": "warn",
+        "svelte/first-attribute-linebreak": "warn",
+        "svelte/html-closing-bracket-spacing": "warn",
+        "svelte/html-quotes": [
+            "warn",
+            {
+                "dynamic": {
+                    "avoidInvalidUnquotedInHTML": false,
+                    "quoted": false
+                },
+                "prefer": "single"
+            }
+        ],
+        "svelte/indent": [
+            "error",
+            {
+                "alignAttributesVertically": false,
+                "ignoredNodes": [],
+                "indent": "tab",
+                "indentScript": false,
+                "switchCase": 1
+            }
+        ],
+        "svelte/infinite-reactive-loop": "error",
+        "svelte/no-dupe-on-directives": "warn",
+        "svelte/no-dupe-use-directives": "warn",
+        "svelte/no-immutable-reactive-statements": "warn",
+        "svelte/no-reactive-functions": "warn",
+        "svelte/no-reactive-literals": "warn",
+        "svelte/no-reactive-reassign": "warn",
+        "svelte/no-spaces-around-equal-signs-in-attribute": "warn",
+        "svelte/no-store-async": "warn",
+        "svelte/no-target-blank": "warn",
+        "svelte/no-unused-class-name": [
+            "warn",
+            {
+                "allowedClassNames": []
+            }
+        ],
+        "svelte/prefer-destructured-store-props": "warn",
+        "svelte/prefer-style-directive": "warn",
+        "svelte/require-each-key": "warn",
+        "svelte/require-optimized-style-attribute": "warn",
+        "svelte/require-store-reactive-access": "warn",
+        "svelte/spaced-html-comment": "warn",
+        "svelte/valid-each-key": "warn",
+        "unicorn/filename-case": "off",
+        "unicorn/no-array-callback-reference": "off",
+        "unicorn/prefer-spread": "off",
+        "unicorn/require-array-join-separator": "off"
+    },
+    "semicolon": false,
+    "settings": {
+        "svelte": {
+            "kit": {
+                "files": {
+                    "routes": "src/routes"
+                }
+            }
+        }
+    }
+}

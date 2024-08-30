@@ -1,8 +1,8 @@
-import util, { inspect } from 'node:util'
+import { inspect } from 'node:util'
 import { fc, it } from '@fast-check/vitest'
 import {
 	AllMembers, Cohort, Member, Role, Team, Teams,
-} from 'Team Matching/monads.js'
+} from 'team_matching/monads.js'
 import { describe, expect } from 'vitest'
 
 describe('AllMembers', () => {
@@ -78,7 +78,7 @@ describe('AllMembers', () => {
 		const members = [Member.of('1', { name: 'Alice' }), Member.of('2', { name: 'Bob' })]
 		const allMembers = AllMembers.of(members)
 		const teams = Teams.empty()
-		const remainingMembers = allMembers.getRemainingMembers(teams)
+		const remainingMembers = allMembers.getRemainingMembers(teams.members)
 		expect(remainingMembers).toEqual(members)
 	})
 
@@ -765,11 +765,11 @@ describe('Teams', () => {
 		expect(emptyTeams.removeDuplicateByThis(undefined)).toEqual([])
 	})
 
-	// Inspecting a Teams instance using util.inspect.custom
-	it('util.inspect.custom 사용하여 인스턴스 검사', () => {
+	// Inspecting a Teams instance using inspect.custom
+	it('inspect.custom 사용하여 인스턴스 검사', () => {
 		const team1 = Team.empty()
 		const teams = new Teams([team1])
-		expect(util.inspect(teams)).toBe(`Teams(${inspect([team1])}, ${inspect(teams.id)})`)
+		expect(inspect(teams)).toBe(`Teams(${inspect([team1])}, ${inspect(teams.id)})`)
 	})
 
 	// Ensuring immutability when removing duplicates using removeDuplicateByThis

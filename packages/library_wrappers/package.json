@@ -1,15 +1,21 @@
 {
   "author": "",
+  "dependencies": {
+    "mutative": "^1.0.8",
+    "random-js": "^2.1.0"
+  },
   "description": "",
   "exports": {
-    "./mutative": "./mutative.js"
+    "./mutative": "./mutative.js",
+    "./random_engine": "./random_engine.js"
   },
   "keywords": [],
   "license": "ISC",
   "main": "index.js",
   "name": "@repo/library_wrappers",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "update": "pnpm update"
   },
   "type": "module",
   "version": "1.0.0"
