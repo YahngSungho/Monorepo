@@ -1,10 +1,9 @@
-import create from '@repo/library_wrappers/mutative'
 import * as R from 'ramda'
 import {
-	AllMembers, Cohort, Member, Role, Team, Teams,
+	AllMembers, Member, Team, Teams,
 } from './monads.js'
 
-const teamArray = R.range(0, 10).map(i => Team.getDefaultTeam(10))
+const teamArray = R.range(0, 10).map(_i => Team.getDefaultTeam(10))
 const roleArray = teamArray.flatMap(team => team.roleArray)
 
 const teams = Teams.of(teamArray)
@@ -18,7 +17,6 @@ const cohorts = [cohort1, cohort2]
  * @typedef {{ id: string, slot: number }} RoleSlot
  * @typedef {RoleSlot[]} RoleSlots
  */
-
 class SubRoleSpace {
 	/**
 	 * @constructor
@@ -140,7 +138,7 @@ class Chunk {
 	drop() {
 		const remaningRoleSlots = R.clone(this.subRoleSpace.roleSlots)
 		const remainingMembers = [...this.members]
-		for (const i of this.members.keys()) {
+		for (const _i of this.members.keys()) { // eslint-disable-line sonarjs/sonar-no-unused-vars
 			remaningRoleSlots.sort((a, b) => -1 * (a.slot - b.slot))
 			const leastRoleSlot = remaningRoleSlots[0]
 			if (leastRoleSlot.slot <= 0) {
@@ -169,7 +167,7 @@ class Chunk {
 
 	validate() {
 		if (this.subRoleSpace.allSlots < this.members.length) {
-			throw new Error('Slot of roles must be greater than or equal to the number of members')
+			return new Error('Slot of roles must be greater than or equal to the number of members')
 		}
 
 		return true
@@ -183,7 +181,10 @@ const totalRoleSpace = SubRoleSpace.of(
 )
 
 const totalChunk = Chunk.of(totalRoleSpace, allMembers.members)
-totalChunk.validate()
+const validateResult = totalChunk.validate()
+if (validateResult instanceof Error) {
+	throw validateResult
+}
 // ----------------------------------------------------------------
 
 // init
@@ -237,7 +238,7 @@ const rawRations = regularMemberArrays.map(array => (array.length / totalCount))
 
 let remainingCount = roleCount
 const roleCountPerCohort = []
-for (const [i, array] of regularMemberArrays.entries()) {
+for (const [i] of regularMemberArrays.entries()) {
 	// first cohort
 	if (i === 0) {
 		const currentRatio = rawRations[i]
@@ -263,8 +264,6 @@ for (const [i, array] of regularMemberArrays.entries()) {
 		remainingCount -= currentRoleCount
 	}
 }
-
-roleCountPerCohort
 
 const chunksForCohort = []
 for (const [i, roleCount] of roleCountPerCohort.entries()) {

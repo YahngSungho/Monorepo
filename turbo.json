@@ -7,7 +7,8 @@
       ],
       "outputs": [
         ".svelte-kit/**",
-        ".vercel/**"
+        ".vercel/**",
+        "storybook-static/**"
       ]
     },
     "dev": {

@@ -72,6 +72,7 @@
         "arrow-parens": "off",
         "capitalized-comments": "off",
         "consistent-return": "off",
+        "import/no-mutable-exports": "off",
         "no-mixed-spaces-and-tabs": [
             "error",
             "smart-tabs"
@@ -88,6 +89,7 @@
                 "type": "natural"
             }
         ],
+        "sonarjs/todo-tag": "off",
         "svelte/derived-has-same-inputs-outputs": "warn",
         "svelte/first-attribute-linebreak": "warn",
         "svelte/html-closing-bracket-spacing": "warn",

@@ -4,7 +4,6 @@ import * as yup from 'yup'
  * @module types
  */
 
-
 /**
  * @typedef {Object} Config
  * @property {number} size - 크기
@@ -56,6 +55,10 @@ export function getConditions(picks) {
 		const condition = conditions[pick]
 		if (!condition) {
 			throw new Error(`Unknown condition: ${pick}`)
+		}
+
+		if (pick === 'sizesFixed') {
+			console.log(condition)
 		}
 
 		return condition

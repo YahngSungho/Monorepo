@@ -1,0 +1,41 @@
+{
+  "author": "Chromatic <https://chromatic.com/>",
+  "bugs": {
+    "url": "https://github.com/chromaui/intro-storybook-svelte-template/issues"
+  },
+  "description": "Starter template to get up and running quickly with Svelte and Storybook",
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.2.9",
+    "@storybook/addon-interactions": "^8.2.9",
+    "@storybook/addon-links": "^8.2.9",
+    "@storybook/blocks": "^8.2.9",
+    "@storybook/svelte": "^8.2.9",
+    "@storybook/svelte-vite": "^8.2.9",
+    "@storybook/test": "^8.2.9",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "msw": "^2.4.1",
+    "msw-storybook-addon": "^2.0.3",
+    "storybook": "^8.2.9",
+    "svelte": "^4.2.19",
+    "vite": "^5.4.2"
+  },
+  "license": "MIT",
+  "name": "intro-storybook-svelte-template",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chromaui/intro-storybook-svelte-template"
+  },
+  "resolutions": {
+    "jackspeak": "2.1.1"
+  },
+  "scripts": {
+    "build-storybook": "storybook build",
+    "dev": "storybook dev -p 6006",
+    "init-msw": "msw init public/",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
