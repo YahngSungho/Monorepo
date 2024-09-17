@@ -5,5 +5,5 @@ const create = makeCreator({
 	strict: true,
 })
 
-export default create
+export { create }
 export { unsafe } from 'mutative'

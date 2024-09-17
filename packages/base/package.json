@@ -1,0 +1,24 @@
+{
+	"author": "",
+	"dependencies": {
+		"open-props": "^1.7.6"
+	},
+	"description": "",
+	"devDependencies": {
+		"postcss-jit-props": "^1.0.14"
+	},
+	"exports": {
+		"./base.css": "./base.css",
+		"./postcss.config.js": "./postcss.config.js"
+	},
+	"keywords": [],
+	"license": "ISC",
+	"main": "index.js",
+	"name": "@repo/base",
+	"scripts": {
+		"test": "vitest",
+		"update": "pnpm update"
+	},
+	"type": "module",
+	"version": "1.0.0"
+}

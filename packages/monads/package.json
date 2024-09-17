@@ -2,14 +2,15 @@
   "author": "",
   "description": "",
   "exports": {
-    ".": "./monads.js"
+    "./monads": "./monads.js"
   },
   "keywords": [],
   "license": "ISC",
   "main": "index.js",
-  "name": "monads",
+  "name": "@repo/monads",
   "scripts": {
     "test": "vitest"
   },
+  "type": "module",
   "version": "1.0.0"
 }

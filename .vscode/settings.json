@@ -1,10 +1,10 @@
 {
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
-  ],
-  "workbench.colorCustomizations": {
+	"eslint.workingDirectories": [
+		{
+			"mode": "auto"
+		}
+	],
+	"workbench.colorCustomizations": {
 		"activityBar.activeBackground": "#007c00",
 		"activityBar.background": "#007c00",
 		"activityBar.foreground": "#e7e7e7",
@@ -25,5 +25,19 @@
 		"titleBar.inactiveBackground": "#00490099",
 		"titleBar.inactiveForeground": "#e7e7e799"
 	},
-  "peacock.color": "#004900"
+	"peacock.color": "#004900",
+	"cssvar.files": [
+		"./base/node_modules/open-props/open-props.min.css",
+	],
+	// Do not ignore node_modules css files, which is ignored by default
+	"cssvar.ignore": [],
+	// add support for autocomplete in JS or JS like files
+	"cssvar.extensions": [
+		"css",
+		"postcss",
+		"svelte",
+		"html",
+		"jsx",
+		"tsx"
+	]
 }
