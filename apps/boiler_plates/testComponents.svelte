@@ -5,6 +5,9 @@
 
 <style>
 	.background-color {
+		width: 500px;
+		max-width: 100%;
+		height: 500px;
 		background-color: var(--indigo-10);
 	}
 </style>

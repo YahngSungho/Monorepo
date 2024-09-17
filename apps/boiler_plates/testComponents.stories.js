@@ -3,7 +3,7 @@ import TestComponents from './testComponents.svelte'
 export default {
 	component: TestComponents,
 	tags: ['autodocs'],
-	title: 'Boiler Plates/Test Components',
+	title: 'Boiler_Plate/Test Components',
 }
 
 export const Base = {

@@ -54,7 +54,7 @@
 		"stylelint-use-nesting": "^6.0.0",
 		"stylelint-value-no-exposed-custom-properties": "^2.3.1",
 		"stylelint-value-no-unknown-custom-properties": "^6.0.1",
-		"svelte": "^4.2.19",
+		"svelte": "^5.0.0-next.241",
 		"syncpack": "^12.4.0",
 		"ts-node": "^10.9.2",
 		"turbo": "^2.1.1",
