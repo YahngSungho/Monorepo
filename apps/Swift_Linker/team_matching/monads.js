@@ -1,5 +1,5 @@
 import { inspect } from 'node:util'
-import create, { unsafe } from '@repo/library_wrappers/mutative'
+import { create, unsafe } from '@repo/library_wrappers/mutative'
 import { shuffleArray } from '@repo/library_wrappers/random_engine'
 import { nanoid } from 'nanoid'
 import * as R from 'ramda'
