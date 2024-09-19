@@ -10,9 +10,8 @@ export let description = ''
 
 <style>
 	.background-color {
-		inline-size: var(--size-fluid-1);
 		max-inline-size: 100%;
-		block-size: var(--size-fluid-1);
-		background-color: var(--red-8);
+		max-block-size: var(--size-14);
+		background-color: var(--indigo-6);
 	}
 </style>
