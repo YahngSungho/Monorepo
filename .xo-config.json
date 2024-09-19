@@ -49,7 +49,7 @@
         }
     ],
     "parserOptions": {
-        "ecmaVersion": 2022,
+        "ecmaVersion": "latest",
         "project": "./jsconfig.json",
         "sourceType": "module"
     },
