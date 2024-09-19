@@ -1,11 +1,12 @@
-/*
-Notdone: 이거 postcss.config.js에서 사용한 postcss-jit-props가 있어서 생략해도 되는 건지 아닌지 체크해야함
-@import url("open-props/postcss/style");
-*/
-
-/* Notdone: 여기서 postcss 사용되는 거 맞음? Vite에서는 자동 사용이라고 들었는데 / 만약 아니라면 여기에 따로 postcss 설치해야하나? */
-@import url("open-props/postcss/normalize");
-@import url("open-props/postcss/buttons");
+@import url('sanitize.css');
+@import url('sanitize.css/forms.css');
+@import url('sanitize.css/typography.css');
+@import url('sanitize.css/assets.css');
+@import url('sanitize.css/reduce-motion.css');
+@import url('open-props/postcss/style');
+@import url('open-props/postcss/buttons');
+@import url('./baseVariables.css');
+@import url('./baseClasses.css');
 
 :root {
 	color-scheme: light dark;
@@ -19,12 +20,13 @@ Notdone: 이거 postcss.config.js에서 사용한 postcss-jit-props가 있어서
 	overscroll-behavior: contain;
 
 	box-sizing: border-box;
-	max-inline-size: 80ch;
+	max-inline-size: var(--size-content-4);
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	line-height: 1.5;
+	line-height: var(--font-lineheight-3);
 	hyphens: auto;
+	color: inherit;
 	text-wrap: stable;
 	word-break: keep-all;
 	line-break: strict;
@@ -39,6 +41,12 @@ nav,
 main,
 footer {
 	max-inline-size: none;
+}
+
+div {
+	overflow: auto;
+	outline: var(--size-1) solid transparent;
+	outline-offset: calc(-1 * var(--size-1));
 }
 
 img {
@@ -62,12 +70,12 @@ h6 {
 }
 
 [id] {
-	scroll-margin-block-start: 2rem;
+	scroll-margin-block-start: var(--font-size-5);
 }
 
 button:focus {
 	outline: max(1px, 0.1em) dashed currentcolor;
-	outline-offset: 0.25em;
+	outline-offset: var(--size-1);
 }
 
 /* Remove all animations and transitions
@@ -84,3 +92,6 @@ for people that prefer not to see them */
 		animation-iteration-count: 1 !important;
 	}
 }
+
+/* hover / focus가 가능한 장치인지 아닌지 구분 */
+/* @media (any-hover: hover) and (any-pointer: fine) {} */

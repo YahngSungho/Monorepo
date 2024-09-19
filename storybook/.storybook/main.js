@@ -5,7 +5,6 @@ const config = {
 		"../../apps/**/*.mdx",
 		"../../packages/**/*.stories.@(js|ts)",
 		"../../packages/**/*.mdx",
-		"../../references/**/*.mdx",
 		"../src/**/*.mdx",
 		"../src/**/*.stories.@(js|ts|svelte)",
 	],

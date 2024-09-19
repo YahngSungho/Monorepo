@@ -1,9 +1,6 @@
-import { sveltekit } from '@sveltejs/kit/vite'
+import baseConfig from '@repo/base/vite.config.js'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-	plugins: [sveltekit()],
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}'],
-	},
+	...baseConfig,
 })

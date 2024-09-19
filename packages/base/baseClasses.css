@@ -1,5 +1,78 @@
-.ellipses {
+.ellipsis {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.clip {
+	overflow: hidden;
+	text-overflow: clip;
+	white-space: nowrap;
+}
+
+.frame {
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	aspect-ratio: var(--ratio-widescreen);
+
+	& > img,
+	& > video {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+	}
+}
+
+.icon {
+	inline-size: 0.75em;
+	inline-size: 1cap;
+	block-size: 0.75em;
+	block-size: 1cap;
+}
+
+.with-icon {
+	display: inline-flex;
+	align-items: baseline;
+
+	& .icon {
+		margin-inline-end: 1rem;
+	}
+}
+
+.gradient-text-1 {
+	background: var(--gradient-1);
+	background-clip: text;
+
+	-webkit-text-fill-color: transparent;
+}
+
+.noise-noise-noise {
+	/* stack grain with a gradient */
+	background-image: var(--gradient-3), var(--noise-3);
+	/* fit noise image to element */
+	background-size: cover;
+	/* force colors and noise to collide */
+	filter: var(--noise-filter-3);
+}
+
+.cluster {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space, 1rem);
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.grid {
+	display: grid;
+	grid-gap: 1rem;
+}
+
+@supports (width: min(250px, 100%)) {
+	.grid {
+		grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+	}
 }

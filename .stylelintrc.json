@@ -30,12 +30,21 @@
     ],
     "rules": {
         "@stylistic/indentation": "tab",
+        "@stylistic/string-quotes": "single",
         "color-format/format": {
             "format": "rgb",
             "severity": "warning"
         },
+        "comment-empty-line-before": null,
         "csstools/use-nesting": "always",
-        "csstools/value-no-unknown-custom-properties": true,
+        "csstools/value-no-unknown-custom-properties": [
+            true,
+            {
+                "importFrom": [
+                    "packages/base/node_modules/open-props/open-props.min.css"
+                ]
+            }
+        ],
         "declaration-property-value-no-unknown": true,
         "gamut/color-no-out-gamut-range": true,
         "plugin/declaration-block-no-ignored-properties": true,
