@@ -8,7 +8,10 @@
     "devDependencies": {
         "@sveltejs/adapter-auto": "^3.2.5",
         "@sveltejs/kit": "^2.5.28",
+        "@swc/core": "^1.7.26",
         "postcss-jit-props": "^1.0.14",
+        "unplugin-swc": "^1.5.1",
+        "vite-plugin-legacy-swc": "^1.2.1",
         "vitest": "^2.1.1"
     },
     "exports": {

@@ -61,7 +61,7 @@ export const SpecialCharacters = {
 
 export const ExtremelyLongContent = {
 	args: {
-		description: '매우 긴 설명 '.repeat(50),
+		description: '매우 긴 설명 '.repeat(100),
 		title: '매우 긴 제목'.repeat(10),
 	},
 }

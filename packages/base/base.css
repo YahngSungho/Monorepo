@@ -4,6 +4,7 @@
 @import url('sanitize.css/assets.css');
 @import url('sanitize.css/reduce-motion.css');
 @import url('open-props/postcss/style');
+@import url('open-props/postcss/normalize');
 @import url('open-props/postcss/buttons');
 @import url('./baseVariables.css');
 @import url('./baseClasses.css');
@@ -26,7 +27,6 @@
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--font-lineheight-3);
 	hyphens: auto;
-	color: inherit;
 	text-wrap: stable;
 	word-break: keep-all;
 	line-break: strict;
@@ -45,6 +45,7 @@ footer {
 
 div {
 	overflow: auto;
+	color: inherit;
 	outline: var(--size-1) solid transparent;
 	outline-offset: calc(-1 * var(--size-1));
 }
@@ -65,7 +66,6 @@ h3,
 h4,
 h5,
 h6 {
-	margin-inline: auto;
 	text-wrap: balance;
 }
 
@@ -77,21 +77,3 @@ button:focus {
 	outline: max(1px, 0.1em) dashed currentcolor;
 	outline-offset: var(--size-1);
 }
-
-/* Remove all animations and transitions
-for people that prefer not to see them */
-@media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
-		scroll-behavior: auto !important;
-
-		transition: none !important;
-		transition-duration: 0.01ms !important;
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-	}
-}
-
-/* hover / focus가 가능한 장치인지 아닌지 구분 */
-/* @media (any-hover: hover) and (any-pointer: fine) {} */
