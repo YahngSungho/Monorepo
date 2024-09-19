@@ -28,11 +28,7 @@
 		"./**/*"
 	],
 	"exclude": [
-		"node_modules",
-		"dist",
-		"build",
-		"history",
-		"turbo",
+		".turbo/**",
 		"**/.svelte-kit/**",
 		"**/node_modules/**",
 		"**/dist/**",
