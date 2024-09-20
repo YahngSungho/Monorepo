@@ -4,6 +4,9 @@
     "tsconfig.json",
     "jsconfig.json"
   ],
+  "globalEnv": [
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": {
       "dependsOn": [

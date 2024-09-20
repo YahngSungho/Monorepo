@@ -5,7 +5,9 @@ import legacy from 'vite-plugin-legacy-swc'
 const baseConfig = {
 	plugins: [
 		sveltekit(),
-		swc.vite(),
+		swc.vite({
+			sourceMaps: process.env.NODE_ENV !== 'production',
+		}),
 		legacy({
 			targets: ['defaults'],
 		}),

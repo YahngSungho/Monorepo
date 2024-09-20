@@ -1,3 +1,9 @@
+<script>
+export let title = ''
+export let description = ''
+; // eslint-disable-line
+</script>
+
 <div class='background-color'>
 	<h1>{title}</h1>
 	<h2>{title}</h2>
@@ -8,11 +14,6 @@
 	<p>Visit <a href='https://kit.svelte.dev'>kit.svelte.dev</a> to read the documentation</p>
 	<p>{description}</p>
 </div>
-
-<script>
-export let title = ''
-export let description = ''
-</script>
 
 <style>
 	.background-color {

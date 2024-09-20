@@ -1,15 +1,16 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
-		"module": "esnext",
+		"target": "es2020",
+		"module": "es2020",
 		"allowJs": true,
 		"checkJs": true,
-		"moduleResolution": "bundler",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
 		"baseUrl": ".",
-		"strict": true,
+		"strict": false,
 		"sourceMap": true,
 		"noImplicitAny": false,
 		"typeRoots": [

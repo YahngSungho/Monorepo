@@ -49,7 +49,7 @@
         }
     ],
     "parserOptions": {
-        "ecmaVersion": "latest",
+        "ecmaVersion": "2020",
         "project": "./jsconfig.json",
         "sourceType": "module"
     },
@@ -66,13 +66,13 @@
         "regexp"
     ],
     "rules": {
-        "@typescript-eslint/*": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "arrow-parens": "off",
         "capitalized-comments": "off",
         "consistent-return": "off",
         "import/no-mutable-exports": "off",
+        "n/prefer-global/process": "off",
         "no-mixed-spaces-and-tabs": [
             "warn",
             "smart-tabs"
@@ -88,6 +88,9 @@
                 "order": "asc",
                 "type": "natural"
             }
+        ],
+        "semi": [
+            "off"
         ],
         "sonarjs/todo-tag": "off",
         "svelte/derived-has-same-inputs-outputs": "warn",
