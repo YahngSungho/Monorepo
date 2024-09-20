@@ -1,7 +1,7 @@
 <script>
 export let title = ''
 export let description = ''
-; // eslint-disable-line
+''; // eslint-disable-line sonarjs/no-unused-expressions
 </script>
 
 <div class='background-color'>
@@ -11,6 +11,7 @@ export let description = ''
 	<h4>{title}</h4>
 	<h5>{title}</h5>
 	<h6>{title}</h6>
+	<p>hi</p>
 	<p>Visit <a href='https://kit.svelte.dev'>kit.svelte.dev</a> to read the documentation</p>
 	<p>{description}</p>
 </div>
