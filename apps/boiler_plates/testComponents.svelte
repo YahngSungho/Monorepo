@@ -1,6 +1,7 @@
 <script>
 export let title = ''
 export let description = ''
+
 ''; // eslint-disable-line sonarjs/no-unused-expressions
 </script>
 

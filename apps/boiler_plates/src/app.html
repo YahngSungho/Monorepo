@@ -1,12 +1,61 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents;">%sveltekit.body%</div>
-	</body>
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>
+		(function () {
+			function loadScript(src) {
+				var script = document.createElement('script')
+				script.src = src
+				script.async = false
+
+				var firstScript = document.getElementsByTagName('script')[0]
+				if (firstScript && firstScript.parentNode) {
+					firstScript.parentNode.insertBefore(script, firstScript)
+				} else if (document.getElementsByTagName('head').length > 0) {
+					document.getElementsByTagName('head')[0].appendChild(script)
+				} else if (document.getElementsByTagName('body').length > 0) {
+					document.getElementsByTagName('body')[0].appendChild(script)
+				}
+			}
+
+			try {
+				// 기본 DOM 기능 체크
+				var hasDOMSupport = typeof document.createElement === 'function' && typeof document.getElementsByTagName === 'function'
+				if (!hasDOMSupport) return // DOM 조작이 불가능하면 폴리필 로딩을 중단
+
+				// 브라우저의 주요 기능 체크
+				var hasPromise = typeof Promise !== 'undefined'
+				var hasAssign = typeof Object.assign !== 'undefined'
+				var hasIncludes = typeof Array.prototype !== 'undefined' && typeof Array.prototype.includes !== 'undefined'
+				var hasMap = typeof window.Map !== 'undefined'
+				// 브라우저의 ES5 주요 기능 체크
+				var hasForEach = typeof Array.prototype.forEach === 'function'
+				var hasJSON = typeof JSON !== 'undefined' && typeof JSON.parse === 'function'
+				var hasObjectKeys = typeof Object.keys === 'function'
+				// 너무 오래된 브라우저(ES5 미지원) 판단 기준
+				var isVeryOldBrowser = !(hasForEach && hasJSON && hasObjectKeys)
+
+				if (isVeryOldBrowser) {
+					loadScript('https://cdnjs.cloudflare.com/ajax/libs/core-js/3.38.1/minified.js')
+				} else if (!hasPromise || !hasAssign || !hasIncludes || !hasMap) {
+					loadScript('https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es5%2Cdom4%2Ces2015%2Ces6%2Ces7%2Cdefault%2Ces2016%2Ces2017%2Ces2018%2Ces2019%2Ces2020%2Ces2021%2Ces2022%2Ces2023')
+				}
+			} catch (e) {
+				// 에러 발생 시 폴리필 로드
+				loadScript('https://cdnjs.cloudflare.com/ajax/libs/core-js/3.38.1/minified.js')
+			}
+		})();
+	</script>
+
+	%sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents;">%sveltekit.body%</div>
+</body>
+
 </html>
