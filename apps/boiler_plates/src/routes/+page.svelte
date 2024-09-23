@@ -9,7 +9,9 @@ import '@repo/base/base.css'
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit</h6>
-<p>Visit <a href='https://kit.svelte.dev'>kit.svelte.dev</a> to read the documentation</p>
+<p>
+	Visit <a href='https://kit.svelte.dev'>kit.svelte.dev</a> to read the documentation
+</p>
 
 <style>
 	p {

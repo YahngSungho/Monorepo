@@ -28,6 +28,7 @@ class SubRoleSpace {
 
 	/**
 	 * @param {RoleSlots} roleSlots
+	 * @returns {SubRoleSpace}
 	 */
 	static of(roleSlots) {
 		return new SubRoleSpace(roleSlots)
@@ -56,6 +57,7 @@ class SubRoleSpace {
 
 	/**
 	 * @param {RoleSlots} roleSlots
+	 * @returns {[SubRoleSpace, SubRoleSpace]}
 	 */
 	divide(roleSlots) {
 		return [
@@ -105,6 +107,7 @@ class Chunk {
 	/**
 	 * @param {SubRoleSpace} subRoleSpace
 	 * @param {Member[]} members
+	 * @returns {Chunk}
 	 */
 	static of(subRoleSpace, members) {
 		return new Chunk(subRoleSpace, members)
@@ -125,6 +128,7 @@ class Chunk {
 	/**
 	 * @param {RoleSlots} roleSlots
 	 * @param {Member[]} members
+	 * @returns {[Chunk, Chunk]}
 	 */
 	divide(roleSlots, members) {
 		const dividedRoleSlots = this.subRoleSpace.divide(roleSlots)
@@ -135,6 +139,9 @@ class Chunk {
 		]
 	}
 
+	/**
+	 * @returns {[Chunk, Chunk]}
+	 */
 	drop() {
 		const remaningRoleSlots = R.clone(this.subRoleSpace.roleSlots)
 		const remainingMembers = [...this.members]
@@ -149,9 +156,14 @@ class Chunk {
 			leastRoleSlot.slot -= 1
 		}
 
+		// @ts-ignore
 		return this.divide(remaningRoleSlots, remainingMembers).reverse()
 	}
 
+	/**
+	 * @param {Member[]} members
+	 * @returns {Chunk}
+	 */
 	setMembers(members) {
 		return new Chunk(this.subRoleSpace, members)
 	}
@@ -165,6 +177,9 @@ class Chunk {
 		return new Chunk(this.subRoleSpace.slice(start, end), newMembers)
 	}
 
+	/**
+	 * @returns {Error|true}
+	 */
 	validate() {
 		if (this.subRoleSpace.allSlots < this.members.length) {
 			return new Error('Slot of roles must be greater than or equal to the number of members')
