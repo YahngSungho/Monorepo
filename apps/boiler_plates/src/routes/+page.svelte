@@ -1,4 +1,5 @@
 <script>
+import '@repo/base/base.js'
 import '@repo/base/base.css'
 </script>
 

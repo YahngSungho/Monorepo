@@ -177,7 +177,11 @@ importers:
         specifier: ^0.59.3
         version: 0.59.3(@types/eslint@9.6.1)(webpack@5.94.0(@swc/core@1.7.26))
 
-  apps/Swift_Linker: {}
+  apps/Swift_Linker:
+    dependencies:
+      ramda:
+        specifier: ^0.30.1
+        version: 0.30.1
 
   apps/boiler_plates:
     dependencies:

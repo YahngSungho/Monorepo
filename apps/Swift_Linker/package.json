@@ -1,6 +1,8 @@
 {
   "author": "",
-  "dependencies": {},
+  "dependencies": {
+    "ramda": "^0.30.1"
+  },
   "description": "",
   "keywords": [],
   "license": "ISC",

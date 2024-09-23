@@ -42,7 +42,7 @@
 				if (isVeryOldBrowser) {
 					loadScript('https://cdnjs.cloudflare.com/ajax/libs/core-js/3.38.1/minified.js')
 				} else if (!hasPromise || !hasAssign || !hasIncludes || !hasMap) {
-					loadScript('https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es5%2Cdom4%2Ces2015%2Ces6%2Ces7%2Cdefault%2Ces2016%2Ces2017%2Ces2018%2Ces2019%2Ces2020%2Ces2021%2Ces2022%2Ces2023')
+					loadScript('https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es5%2Cdefault')
 				}
 			} catch (e) {
 				// 에러 발생 시 폴리필 로드

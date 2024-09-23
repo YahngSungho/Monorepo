@@ -16,6 +16,7 @@
     },
     "exports": {
         "./base.css": "./base.css",
+        "./base.js": "./base.js",
         "./postcss.config.js": "./postcss.config.js",
         "./svelte.config.js": "./svelte.config.js",
         "./vite.config.js": "./vite.config.js"
