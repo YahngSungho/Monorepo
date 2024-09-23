@@ -114,7 +114,7 @@ class Chunk {
 	}
 
 	/**
-	 * @param {Chunk|Null} otherChunk
+	 * @param {Chunk|Undefined|Null} otherChunk
 	 * @returns {Chunk}
 	 */
 	concat(otherChunk) {
