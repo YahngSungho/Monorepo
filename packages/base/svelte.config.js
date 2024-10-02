@@ -1,5 +1,5 @@
 import adapter from '@sveltejs/adapter-auto'
-import { sveltePreprocess } from 'svelte-preprocess'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 const config = {
 	compilerOptions: {
@@ -11,7 +11,7 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 	},
-	preprocess: sveltePreprocess(),
+	preprocess: vitePreprocess(),
 }
 
 export default config

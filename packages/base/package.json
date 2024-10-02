@@ -7,9 +7,14 @@
     "description": "",
     "devDependencies": {
         "@sveltejs/adapter-auto": "^3.2.5",
-        "@sveltejs/kit": "^2.5.28",
+        "@sveltejs/kit": "^2.6.1",
+        "@sveltejs/vite-plugin-svelte": "3.1.2",
         "@swc/core": "^1.7.26",
+        "@vitejs/plugin-legacy": "^5.4.2",
         "postcss-jit-props": "^1.0.14",
+        "postcss-lightningcss": "^1.0.1",
+        "postcss-preset-env": "^10.0.5",
+        "terser": "^5.34.1",
         "unplugin-swc": "^1.5.1",
         "vite-plugin-legacy-swc": "^1.2.1",
         "vitest": "^2.1.1"

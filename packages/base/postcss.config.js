@@ -1,12 +1,16 @@
-import path from 'node:path'
+import openProps from 'open-props'
 import postcssJitProps from 'postcss-jit-props'
+import presetEnv from 'postcss-preset-env'
 
 const config = {
 	plugins: [
-		postcssJitProps({
-			files: [
-				path.resolve('node_modules/open-props/open-props.min.css'),
-			],
+		postcssJitProps(openProps),
+		presetEnv({
+			autoprefixer: { grid: false },
+			browsers: '> 0.2% and not dead',
+			enableClientSidePolyfills: true,
+			minimumVendorImplementations: 2,
+			state: 2,
 		}),
 	],
 }

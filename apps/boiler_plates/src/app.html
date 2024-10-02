@@ -22,34 +22,50 @@
 				}
 			}
 
+			var polyfillURL = 'https://cdnjs.cloudflare.com/ajax/libs/polyfill.io/3.52.0/polyfill.min.js?features=fetch%2CIntl%2CIntersectionObserver%2CResizeObserver%2CArray.prototype.includes%2CObject.assign%2CPromise%2CMap%2CWeakMap%2CElement.prototype.closest%2CrequestAnimationFrame%2CCustomEvent%2CURLSearchParams'
+
 			try {
-				// 기본 DOM 기능 체크
+				// DOM 지원 여부 체크
 				var hasDOMSupport = typeof document.createElement === 'function' && typeof document.getElementsByTagName === 'function'
-				if (!hasDOMSupport) return // DOM 조작이 불가능하면 폴리필 로딩을 중단
+				if (!hasDOMSupport) return  // DOM 조작이 불가능하면 폴리필 로딩을 중단
 
-				// 브라우저의 주요 기능 체크
-				var hasPromise = typeof Promise !== 'undefined'
-				var hasAssign = typeof Object.assign !== 'undefined'
-				var hasIncludes = typeof Array.prototype !== 'undefined' && typeof Array.prototype.includes !== 'undefined'
-				var hasMap = typeof window.Map !== 'undefined'
-				// 브라우저의 ES5 주요 기능 체크
-				var hasForEach = typeof Array.prototype.forEach === 'function'
-				var hasJSON = typeof JSON !== 'undefined' && typeof JSON.parse === 'function'
-				var hasObjectKeys = typeof Object.keys === 'function'
-				// 너무 오래된 브라우저(ES5 미지원) 판단 기준
-				var isVeryOldBrowser = !(hasForEach && hasJSON && hasObjectKeys)
+				// 필요한 Web API 체크
+				var features = [
+					typeof window.fetch === 'undefined',  // fetch API 지원 여부
+					typeof window.Intl === 'undefined',  // Intl API 지원 여부
+					typeof window.IntersectionObserver === 'undefined',  // IntersectionObserver 지원 여부
+					typeof window.ResizeObserver === 'undefined',  // ResizeObserver 지원 여부
+					typeof Array.prototype.includes === 'undefined',  // Array.prototype.includes 지원 여부
+					typeof Object.assign === 'undefined',  // Object.assign 지원 여부
+					typeof Promise === 'undefined',  // Promise 지원 여부
+					typeof window.Map === 'undefined',  // Map 지원 여부
+					typeof window.WeakMap === 'undefined',  // WeakMap 지원 여부
+					typeof Element.prototype.closest === 'undefined',  // closest 지원 여부
+					typeof window.requestAnimationFrame === 'undefined',  // requestAnimationFrame 지원 여부
+					typeof window.CustomEvent === 'undefined',  // CustomEvent 지원 여부
+					typeof window.URLSearchParams === 'undefined'  // URLSearchParams 지원 여부
+				]
 
-				if (isVeryOldBrowser) {
-					loadScript('https://cdnjs.cloudflare.com/ajax/libs/core-js/3.38.1/minified.js')
-				} else if (!hasPromise || !hasAssign || !hasIncludes || !hasMap) {
-					loadScript('https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es5%2Cdefault')
+				// 하나라도 지원되지 않으면 true
+				var needsPolyfill = false
+				for (var i = 0;i < features.length;i++) {
+					if (features[i]) {
+						needsPolyfill = true
+						break
+					}
+				}
+
+				if (needsPolyfill) {
+					loadScript(polyfillURL)
 				}
 			} catch (e) {
-				// 에러 발생 시 폴리필 로드
-				loadScript('https://cdnjs.cloudflare.com/ajax/libs/core-js/3.38.1/minified.js')
+				// 예외 발생 시 폴리필 로드
+				loadScript(polyfillURL)
 			}
 		})();
 	</script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/container-query-polyfill@1/dist/container-query-polyfill.modern.js"></script>
 
 	%sveltekit.head%
 </head>

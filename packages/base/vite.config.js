@@ -1,19 +1,19 @@
 import { sveltekit } from '@sveltejs/kit/vite'
-import swc from 'unplugin-swc'
-import legacy from 'vite-plugin-legacy-swc'
+import { defineConfig } from 'vitest/config'
 
-const baseConfig = {
+const baseConfig = defineConfig({
+	build: {
+		cssMinify: 'lightningcss',
+	},
+	css: {
+		devSourcemap: true,
+	},
 	plugins: [
 		sveltekit(),
-		swc.vite({
-			sourceMaps: process.env.NODE_ENV !== 'production',
-		}),
-		legacy({
-			targets: ['defaults'],
-		}),
 	],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 	},
-}
+})
+
 export default baseConfig

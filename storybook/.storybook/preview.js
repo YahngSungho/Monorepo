@@ -1,3 +1,4 @@
+import 'open-props/postcss/style.css'
 import '@repo/base/base.css'
 
 /** @type { import('@storybook/svelte').Preview } */
