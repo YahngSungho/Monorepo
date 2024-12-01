@@ -5,67 +5,6 @@
 	<meta charset="utf-8" />
 	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<script>
-		(function () {
-			function loadScript(src) {
-				var script = document.createElement('script')
-				script.src = src
-				script.async = false
-
-				var firstScript = document.getElementsByTagName('script')[0]
-				if (firstScript && firstScript.parentNode) {
-					firstScript.parentNode.insertBefore(script, firstScript)
-				} else if (document.getElementsByTagName('head').length > 0) {
-					document.getElementsByTagName('head')[0].appendChild(script)
-				} else if (document.getElementsByTagName('body').length > 0) {
-					document.getElementsByTagName('body')[0].appendChild(script)
-				}
-			}
-
-			var polyfillURL = 'https://cdnjs.cloudflare.com/ajax/libs/polyfill.io/3.52.0/polyfill.min.js?features=fetch%2CIntl%2CIntersectionObserver%2CResizeObserver%2CArray.prototype.includes%2CObject.assign%2CPromise%2CMap%2CWeakMap%2CElement.prototype.closest%2CrequestAnimationFrame%2CCustomEvent%2CURLSearchParams'
-
-			try {
-				// DOM 지원 여부 체크
-				var hasDOMSupport = typeof document.createElement === 'function' && typeof document.getElementsByTagName === 'function'
-				if (!hasDOMSupport) return  // DOM 조작이 불가능하면 폴리필 로딩을 중단
-
-				// 필요한 Web API 체크
-				var features = [
-					typeof window.fetch === 'undefined',  // fetch API 지원 여부
-					typeof window.Intl === 'undefined',  // Intl API 지원 여부
-					typeof window.IntersectionObserver === 'undefined',  // IntersectionObserver 지원 여부
-					typeof window.ResizeObserver === 'undefined',  // ResizeObserver 지원 여부
-					typeof Array.prototype.includes === 'undefined',  // Array.prototype.includes 지원 여부
-					typeof Object.assign === 'undefined',  // Object.assign 지원 여부
-					typeof Promise === 'undefined',  // Promise 지원 여부
-					typeof window.Map === 'undefined',  // Map 지원 여부
-					typeof window.WeakMap === 'undefined',  // WeakMap 지원 여부
-					typeof Element.prototype.closest === 'undefined',  // closest 지원 여부
-					typeof window.requestAnimationFrame === 'undefined',  // requestAnimationFrame 지원 여부
-					typeof window.CustomEvent === 'undefined',  // CustomEvent 지원 여부
-					typeof window.URLSearchParams === 'undefined'  // URLSearchParams 지원 여부
-				]
-
-				// 하나라도 지원되지 않으면 true
-				var needsPolyfill = false
-				for (var i = 0;i < features.length;i++) {
-					if (features[i]) {
-						needsPolyfill = true
-						break
-					}
-				}
-
-				if (needsPolyfill) {
-					loadScript(polyfillURL)
-				}
-			} catch (e) {
-				// 예외 발생 시 폴리필 로드
-				loadScript(polyfillURL)
-			}
-		})();
-	</script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/container-query-polyfill@1/dist/container-query-polyfill.modern.js"></script>
 
 	%sveltekit.head%
 </head>
