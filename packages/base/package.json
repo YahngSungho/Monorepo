@@ -1,23 +1,23 @@
 {
     "author": "",
     "dependencies": {
-        "open-props": "^1.7.6",
+        "open-props": "^1.7.7",
         "sanitize.css": "^13.0.0"
     },
     "description": "",
     "devDependencies": {
-        "@sveltejs/adapter-auto": "^3.2.5",
-        "@sveltejs/kit": "^2.6.1",
+        "@sveltejs/adapter-auto": "^3.3.1",
+        "@sveltejs/kit": "^2.9.0",
         "@sveltejs/vite-plugin-svelte": "3.1.2",
-        "@swc/core": "^1.7.26",
-        "@vitejs/plugin-legacy": "^5.4.2",
+        "@swc/core": "^1.9.3",
+        "@vitejs/plugin-legacy": "^5.4.3",
         "postcss-jit-props": "^1.0.14",
         "postcss-lightningcss": "^1.0.1",
-        "postcss-preset-env": "^10.0.5",
-        "terser": "^5.34.1",
+        "postcss-preset-env": "^10.1.1",
+        "terser": "^5.36.0",
         "unplugin-swc": "^1.5.1",
         "vite-plugin-legacy-swc": "^1.2.1",
-        "vitest": "^2.1.1"
+        "vitest": "^2.1.6"
     },
     "exports": {
         "./base.css": "./base.css",

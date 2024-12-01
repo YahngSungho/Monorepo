@@ -1,7 +1,7 @@
 {
   "author": "",
   "dependencies": {
-    "mutative": "^1.0.10",
+    "mutative": "^1.1.0",
     "random-js": "^2.1.0"
   },
   "description": "",
