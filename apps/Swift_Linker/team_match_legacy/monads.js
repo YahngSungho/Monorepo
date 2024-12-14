@@ -1,5 +1,5 @@
 import util, { inspect } from 'node:util'
-import create from '@repo/library_wrappers/mutative'
+import { create } from '@repo/library_wrappers/mutative'
 import { unsafe } from 'mutative'
 import { nanoid } from 'nanoid'
 import * as R from 'ramda'
@@ -125,6 +125,14 @@ class AllMembers {
 class Cohort {
 	isCohort = R.T
 
+	get array() {
+		return this.idOrCohortArray
+	}
+
+	get totalSize() {
+		return this.getJoinedArray().length
+	}
+
 	/**
 	 * @param {Array<Id | Cohort>} idOrCohortArray
 	 */
@@ -222,18 +230,17 @@ class Cohort {
 	[util.inspect.custom]() {
 		return `Cohort(${inspect(this.idOrCohortArray)})`
 	}
-
-	get array() {
-		return this.idOrCohortArray
-	}
-
-	get totalSize() {
-		return this.getJoinedArray().length
-	}
 }
 
 // fix 여기 역할을 추가해야함 - 그러면서도 디폴트는 같게
 class Team {
+	/**
+	 * @returns {Id[]}
+	 */
+	get idArray() {
+		return this.memberIds
+	}
+
 	/**
 	 * @param {Id[]} memberIds
 	 * @param {number} slotFixed
@@ -326,13 +333,6 @@ class Team {
 	[util.inspect.custom]() {
 		return `Team(${inspect(this.memberIds)}, ${inspect(this.slotFixed)})`
 	}
-
-	/**
-	 * @returns {Id[]}
-	 */
-	get idArray() {
-		return this.memberIds
-	}
 }
 
 /**
@@ -340,6 +340,17 @@ class Team {
  * @description 팀들에 나눠서 column 단위로 concat으로 추가 가능
  */
 class Teams {
+	/**
+	 * @returns {number}
+	 */
+	get numberOfTeams() {
+		if (this.teamArray.length !== this.slots.length) {
+			throw new Error('Teams must have the same number of slots')
+		}
+
+		return this.teamArray.length
+	}
+
 	/**
 	* @param {Array<Team>} teamArray
 	* @param {Array<number>} slots 팀별 남은 자리
@@ -467,16 +478,5 @@ class Teams {
 
 	[util.inspect.custom]() {
 		return `Teams(${inspect(this.teamArray)}, ${inspect(this.slots)})`
-	}
-
-	/**
-	 * @returns {number}
-	 */
-	get numberOfTeams() {
-		if (this.teamArray.length !== this.slots.length) {
-			throw new Error('Teams must have the same number of slots')
-		}
-
-		return this.teamArray.length
 	}
 }

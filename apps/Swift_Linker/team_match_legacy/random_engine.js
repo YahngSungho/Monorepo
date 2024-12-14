@@ -1,4 +1,4 @@
-import { Random, nodeCrypto, shuffle } from 'random-js'
+import { nodeCrypto, Random, shuffle } from 'random-js'
 
 export const random = new Random(nodeCrypto)
 

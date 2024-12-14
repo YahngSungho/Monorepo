@@ -1,9 +1,9 @@
 import { inspect } from 'node:util'
 import { fc, it } from '@fast-check/vitest'
+import { describe, expect } from 'vitest'
 import {
 	AllMembers, Cohort, Member, Role, Team, Teams,
-} from 'team_matching/monads.js'
-import { describe, expect } from 'vitest'
+} from './monads.js'
 
 describe('AllMembers', () => {
 	// Creating an empty AllMembers instance using the static empty method
@@ -124,7 +124,7 @@ describe('AllMembers', () => {
 
 	// Checking if a non-existent member is in the AllMembers instance
 	it('존재하지 않는 멤버 확인', () => {
-		const members = [Member.of('1', { name: 'Alice' })]
+		const members = [Member.of('1', { name: 'Alice' })] /* ?. $ */
 		const allMembers = AllMembers.of(members)
 		const nonExistentMember = Member.of('2', { name: 'Bob' })
 		expect(allMembers.hasMember(nonExistentMember)).toBe(false)

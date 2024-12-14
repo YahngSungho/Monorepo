@@ -32,5 +32,7 @@
 		"**/*.scss",
 		"**/*.sass",
 		"**/*.less"
-	]
+	],
+	"editor.defaultFormatter": "samverschueren.linter-xo",
+	"console-ninja.dateTimeDisplayMode": "Relative To Previous"
 }

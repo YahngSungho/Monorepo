@@ -20,7 +20,6 @@
 	overscroll-behavior: contain;
 
 	box-sizing: border-box;
-	max-inline-size: var(--size-content-4);
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -49,6 +48,10 @@ div {
 	outline-offset: calc(-1 * var(--size-1));
 }
 
+p {
+	max-inline-size: var(--size-content-4);
+}
+
 img {
 	max-inline-size: 100%;
 	object-fit: cover;
@@ -75,4 +78,8 @@ h6 {
 button:focus {
 	outline: max(1px, 0.1em) dashed currentcolor;
 	outline-offset: var(--size-1);
+}
+
+::-webkit-scrollbar-track {
+	background: transparent; /* 스크롤바 뒷 배경 색상 */
 }

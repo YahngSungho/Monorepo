@@ -1,6 +1,41 @@
 <script>
-import '@repo/base/base.js'
 import '@repo/base/base.css'
+import '@repo/base/base.js'
+
+const fo = 'bigCommandKEnabled'
+
+let foo = $state(fo + ' foo')
+
+foo += ' bar123'
+
+const myObject = {
+	bar: {
+		deeplyNested: {
+			inner: {
+				moreInner: {
+					evenMoreInner: {
+						almostThere: {
+							gettingDeeper: {
+								bottle: 'done',
+								deepestYet: {
+									finalLevel: '이제 정말로 충분히 깊습니다.',
+								},
+
+							},
+						},
+					},
+				},
+			},
+		},
+		eo: 'vgf2',
+		eov: 'fgv',
+		wo: 'sw',
+	},
+	foo: 'bar',
+	tor: 'boo',
+}
+
+;
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -9,6 +44,12 @@ import '@repo/base/base.css'
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit</h6>
+<div>
+	{foo}
+</div>
+<div>
+	Hi
+</div>
 <p>
 	Visit <a href='https://kit.svelte.dev'>kit.svelte.dev</a> to read the documentation
 </p>

@@ -13,86 +13,6 @@ const cohort1 = allMembers.getCohort(member => Number(member.id) % 2 === 0)
 const cohort2 = allMembers.getCohort(member => Number(member.id) % 5 === 0)
 const cohorts = [cohort1, cohort2]
 
-/**
- * @typedef {{ id: string, slot: number }} RoleSlot
- * @typedef {RoleSlot[]} RoleSlots
- */
-class SubRoleSpace {
-	/**
-	 * @constructor
-	 * @param {RoleSlots} roleSlots
-	 */
-	constructor(roleSlots) {
-		this.roleSlots = roleSlots.filter(roleSlot => roleSlot.slot > 0).sort((a, b) => a.slot - b.slot)
-	}
-
-	/**
-	 * @param {RoleSlots} roleSlots
-	 * @returns {SubRoleSpace}
-	 */
-	static of(roleSlots) {
-		return new SubRoleSpace(roleSlots)
-	}
-
-	/**
-	 *
-	 * @param {SubRoleSpace} otherSubRoleSpace
-	 * @returns {SubRoleSpace}
-	 */
-	concat(otherSubRoleSpace) {
-		const newRoleSlots = R.clone(this.roleSlots)
-		const otherRoleSlots = otherSubRoleSpace.roleSlots
-		for (const currentRoleSlot of otherRoleSlots) {
-			const matchedRoleSlot = newRoleSlots.find(matchedRoleSlot => matchedRoleSlot.id === currentRoleSlot.id)
-			if (matchedRoleSlot) {
-				const matchedRoleSlotIndex = newRoleSlots.indexOf(matchedRoleSlot)
-				newRoleSlots[matchedRoleSlotIndex] = { ...matchedRoleSlot, slot: matchedRoleSlot.slot + currentRoleSlot.slot }
-			} else {
-				newRoleSlots.push(currentRoleSlot)
-			}
-		}
-
-		return new SubRoleSpace(newRoleSlots)
-	}
-
-	/**
-	 * @param {RoleSlots} roleSlots
-	 * @returns {[SubRoleSpace, SubRoleSpace]}
-	 */
-	divide(roleSlots) {
-		return [
-			new SubRoleSpace(roleSlots),
-			new SubRoleSpace(roleSlots
-				.map((roleSlot) => {
-					const matchedRoleSlot = this.roleSlots.find(matchedRoleSlot => matchedRoleSlot.id === roleSlot.id)
-
-					if (matchedRoleSlot) {
-						return { ...roleSlot, slot: matchedRoleSlot.slot - roleSlot.slot }
-					}
-
-					return roleSlot
-				}),
-			),
-		]
-	}
-
-	/**
-	 * @param {number} start
-	 * @param {number} end
-	 * @returns {SubRoleSpace}
-	 */
-	slice(start, end) {
-		return new SubRoleSpace(this.roleSlots.slice(start, end))
-	}
-
-	/**
-	 * @returns {number}
-	 */
-	get allSlots() {
-		return this.roleSlots.reduce((accumulator, current) => accumulator + current.slot, 0)
-	}
-}
-
 // todo 여기서 안되는 애들 rest로 빼는거 어케함?
 class Chunk {
 	/**
@@ -186,6 +106,86 @@ class Chunk {
 		}
 
 		return true
+	}
+}
+
+/**
+ * @typedef {{ id: string, slot: number }} RoleSlot
+ * @typedef {RoleSlot[]} RoleSlots
+ */
+class SubRoleSpace {
+	/**
+	 * @constructor
+	 * @param {RoleSlots} roleSlots
+	 */
+	constructor(roleSlots) {
+		this.roleSlots = roleSlots.filter(roleSlot => roleSlot.slot > 0).sort((a, b) => a.slot - b.slot)
+	}
+
+	/**
+	 * @param {RoleSlots} roleSlots
+	 * @returns {SubRoleSpace}
+	 */
+	static of(roleSlots) {
+		return new SubRoleSpace(roleSlots)
+	}
+
+	/**
+	 *
+	 * @param {SubRoleSpace} otherSubRoleSpace
+	 * @returns {SubRoleSpace}
+	 */
+	concat(otherSubRoleSpace) {
+		const newRoleSlots = R.clone(this.roleSlots)
+		const otherRoleSlots = otherSubRoleSpace.roleSlots
+		for (const currentRoleSlot of otherRoleSlots) {
+			const matchedRoleSlot = newRoleSlots.find(matchedRoleSlot => matchedRoleSlot.id === currentRoleSlot.id)
+			if (matchedRoleSlot) {
+				const matchedRoleSlotIndex = newRoleSlots.indexOf(matchedRoleSlot)
+				newRoleSlots[matchedRoleSlotIndex] = { ...matchedRoleSlot, slot: matchedRoleSlot.slot + currentRoleSlot.slot }
+			} else {
+				newRoleSlots.push(currentRoleSlot)
+			}
+		}
+
+		return new SubRoleSpace(newRoleSlots)
+	}
+
+	/**
+	 * @param {RoleSlots} roleSlots
+	 * @returns {[SubRoleSpace, SubRoleSpace]}
+	 */
+	divide(roleSlots) {
+		return [
+			new SubRoleSpace(roleSlots),
+			new SubRoleSpace(roleSlots
+				.map((roleSlot) => {
+					const matchedRoleSlot = this.roleSlots.find(matchedRoleSlot => matchedRoleSlot.id === roleSlot.id)
+
+					if (matchedRoleSlot) {
+						return { ...roleSlot, slot: matchedRoleSlot.slot - roleSlot.slot }
+					}
+
+					return roleSlot
+				}),
+			),
+		]
+	}
+
+	/**
+	 * @param {number} start
+	 * @param {number} end
+	 * @returns {SubRoleSpace}
+	 */
+	slice(start, end) {
+		return new SubRoleSpace(this.roleSlots.slice(start, end))
+	}
+
+	/**
+	 * @returns {number}
+	 */
+	get allSlots() {
+		return this.roleSlots.reduce((accumulator, current) => accumulator + current.slot, 0)
 	}
 }
 

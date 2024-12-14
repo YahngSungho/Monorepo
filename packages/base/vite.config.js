@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite'
+import { configDefaults, defineConfig as defineConfig2, mergeConfig } from 'vitest/config'
 
 const baseConfig = defineConfig({
 	build: {
@@ -11,9 +12,13 @@ const baseConfig = defineConfig({
 	plugins: [
 		sveltekit(),
 	],
+})
+
+const testConfig = defineConfig2({
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 	},
 })
 
-export default baseConfig
+// @ts-ignore
+export default mergeConfig(configDefaults, mergeConfig(baseConfig), testConfig)

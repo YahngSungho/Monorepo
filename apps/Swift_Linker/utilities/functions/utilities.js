@@ -25,8 +25,8 @@ const areAllDisjoint = arrays => {
 	}
 
 	// 모든 배열 쌍에 대해 공통된 요소가 있는지 확인
-	for (let i = 0;i < arrays.length;i++) {
-		for (let index = i + 1;index < arrays.length;index++) {
+	for (let i = 0; i < arrays.length; i++) {
+		for (let index = i + 1; index < arrays.length; index++) {
 			if (hasCommonElements(arrays[i], arrays[index])) {
 				return false
 			}
