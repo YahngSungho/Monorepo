@@ -91,7 +91,11 @@ button:focus {
 }
 
 ::-webkit-scrollbar-track {
-	background: transparent; /* 스크롤바 뒷 배경 색상 */
+	background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
 }
 
 @container (max-width: 30ch) {
@@ -100,34 +104,38 @@ button:focus {
 	}
 }
 
-@container (max-height: 30ch) {
+@container (max-height: 30ex) {
 	::-webkit-scrollbar-button:vertical {
 		display: none;
 	}
 }
 
-@container (max-width: 20ch) {
-	* {
-		scrollbar-width: thin;
+@media only screen and (hover: hover) and (pointer: fine) {
+	/* 마우스와 같은 정밀 포인터가 있는 장치에 적용될 스타일 */
+
+	@container (max-width: 20ch) {
+		* {
+			scrollbar-width: thin;
+		}
+
+		::-webkit-scrollbar {
+			/* stylelint-disable-next-line */
+			width: 1ch;
+			/* stylelint-disable-next-line */
+			width: calc(1ch + 5cqw);
+		}
 	}
 
-	::-webkit-scrollbar {
-		/* stylelint-disable-next-line */
-		width: 2ch;
-		/* stylelint-disable-next-line */
-		width: calc(1ch + 10cqw);
-	}
-}
+	@container (max-height: 20ex) {
+		* {
+			scrollbar-width: thin;
+		}
 
-@container (max-height: 20ch) {
-	* {
-		scrollbar-width: thin;
-	}
-
-	::-webkit-scrollbar {
-		/* stylelint-disable-next-line */
-		height: 2ch;
-		/* stylelint-disable-next-line */
-		height: calc(1ch + 10cqh);
+		::-webkit-scrollbar {
+			/* stylelint-disable-next-line */
+			height: 1ex;
+			/* stylelint-disable-next-line */
+			height: calc(1ex + 5cqh);
+		}
 	}
 }
