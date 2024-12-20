@@ -7,6 +7,7 @@
 @import url('open-props/postcss/buttons');
 @import url('./baseVariables.css');
 @import url('./baseClasses.css');
+/* open-props의 variable들은 postcss 설정 파일에서 동적으로 가져옴 */
 
 :root {
 	color-scheme: light dark;
@@ -29,6 +30,7 @@
 	overflow-wrap: break-word;
 }
 
+/*
 html,
 body,
 div,
@@ -37,7 +39,7 @@ nav,
 main,
 footer {
 	max-inline-size: none;
-}
+} */
 
 div {
 	overflow: auto;
@@ -111,6 +113,8 @@ button:focus {
 
 	::-webkit-scrollbar {
 		/* stylelint-disable-next-line */
+		width: 2ch;
+		/* stylelint-disable-next-line */
 		width: calc(1ch + 10cqw);
 	}
 }
@@ -121,6 +125,8 @@ button:focus {
 	}
 
 	::-webkit-scrollbar {
+		/* stylelint-disable-next-line */
+		height: 2ch;
 		/* stylelint-disable-next-line */
 		height: calc(1ch + 10cqh);
 	}
