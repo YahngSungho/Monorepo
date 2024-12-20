@@ -15,8 +15,6 @@
 *,
 *::before,
 *::after {
-	scrollbar-gutter: stable both-edges;
-
 	overscroll-behavior: contain;
 
 	box-sizing: border-box;
@@ -80,6 +78,50 @@ button:focus {
 	outline-offset: var(--size-1);
 }
 
+/* Scrollbar */
+
+*,
+*::after,
+*::before {
+	/* stylelint-disable-next-line declaration-property-value-no-unknown */
+	scrollbar-color: auto transparent;
+	scrollbar-gutter: stable both-edges;
+}
+
 ::-webkit-scrollbar-track {
 	background: transparent; /* 스크롤바 뒷 배경 색상 */
+}
+
+@container (max-width: 30ch) {
+	::-webkit-scrollbar-button:horizontal {
+		display: none;
+	}
+}
+
+@container (max-height: 30ch) {
+	::-webkit-scrollbar-button:vertical {
+		display: none;
+	}
+}
+
+@container (max-width: 20ch) {
+	* {
+		scrollbar-width: thin;
+	}
+
+	::-webkit-scrollbar {
+		/* stylelint-disable-next-line */
+		width: calc(1ch + 10cqw);
+	}
+}
+
+@container (max-height: 20ch) {
+	* {
+		scrollbar-width: thin;
+	}
+
+	::-webkit-scrollbar {
+		/* stylelint-disable-next-line */
+		height: calc(1ch + 10cqh);
+	}
 }

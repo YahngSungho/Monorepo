@@ -47,6 +47,7 @@
         ],
         "declaration-property-value-no-unknown": true,
         "gamut/color-no-out-gamut-range": true,
+				"no-duplicate-selectors": null,
         "plugin/declaration-block-no-ignored-properties": true,
         "plugin/no-browser-hacks": [
             true

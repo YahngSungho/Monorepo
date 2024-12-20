@@ -21,4 +21,4 @@ const testConfig = defineConfig2({
 })
 
 // @ts-ignore
-export default mergeConfig(configDefaults, mergeConfig(baseConfig), testConfig)
+export default mergeConfig(configDefaults, mergeConfig(baseConfig, testConfig))
