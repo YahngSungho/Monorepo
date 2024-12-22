@@ -6,7 +6,7 @@ const fo = 'bigCommandKEnabled'
 
 let foo = $state(fo + ' foo')
 
-foo += ' bar123'
+foo += ' bar133322222223'
 
 const myObject = {
 	bar: {
