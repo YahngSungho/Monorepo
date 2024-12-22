@@ -4,7 +4,7 @@ import '@repo/base/base.js'
 
 const fo = 'bigCommandKEnabled'
 
-let foo = $state(fo + ' foo')
+let foo = $state(fo + ' foifoifo')
 
 foo += ' bar133322222223'
 
