@@ -1,8 +1,7 @@
 <script>
 import TestComponents from './testComponents.svelte'
 
-export let title = ''
-export let description = ''
+const { description, title } = $$props
 </script>
 
 <div class='background-color'>

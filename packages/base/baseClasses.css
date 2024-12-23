@@ -1,3 +1,7 @@
+.gutter {
+	scrollbar-gutter: stable both-edges;
+}
+
 .ellipsis {
 	overflow: hidden;
 	text-overflow: ellipsis;

@@ -1,9 +1,9 @@
-import 'open-props/postcss/style.css'
+import './default.css'
 import '@repo/base/base.css'
 
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
-	parameters: {
+    parameters: {
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,
@@ -11,6 +11,8 @@ const preview = {
 			},
 		},
 	},
+
+    tags: ['autodocs']
 }
 
 export default preview

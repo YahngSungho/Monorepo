@@ -82,12 +82,9 @@ button:focus {
 
 /* Scrollbar */
 
-*,
-*::after,
-*::before {
+div {
 	/* stylelint-disable-next-line declaration-property-value-no-unknown */
 	scrollbar-color: auto transparent;
-	scrollbar-gutter: stable both-edges;
 }
 
 ::-webkit-scrollbar-track {

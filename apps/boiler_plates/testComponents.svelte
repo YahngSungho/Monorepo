@@ -1,6 +1,6 @@
 <script>
-export let title = ''
-export let description = ''
+const { description, title } = $props()
+let forodo = $state(title + ' foifoifo')
 
 const foo = 'foo'
 console.log(foo)
@@ -22,7 +22,7 @@ console.log(myObject)
 
 <div class='background-color'>
 	<h1>{title}</h1>
-	<h2>{title}</h2>
+	<h2>{forodo}</h2>
 	<h3>{title}</h3>
 	<h4>{title}</h4>
 	<h5>{title}</h5>
