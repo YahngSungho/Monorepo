@@ -1,0 +1,16 @@
+{
+	"author": "",
+	"description": "",
+	"exports": {
+		"./monads": "./monads.js"
+	},
+	"keywords": [],
+	"license": "ISC",
+	"main": "index.js",
+	"name": "@repo/helpers",
+	"scripts": {
+		"test": "vitest"
+	},
+	"type": "module",
+	"version": "1.0.0"
+}

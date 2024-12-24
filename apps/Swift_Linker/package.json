@@ -3,7 +3,7 @@
     "dependencies": {
         "@repo/base": "workspace:*",
         "@repo/library_wrappers": "workspace:*",
-        "@repo/monads": "workspace:*",
+				"@repo/helpers": "workspace:*",
         "mutative": "^1.1.0",
         "nanoid": "^5.0.9",
         "ramda": "^0.30.1",

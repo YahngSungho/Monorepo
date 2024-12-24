@@ -1,4 +1,4 @@
-import { dirname, join } from "path";
+import path, { dirname, join } from "path";
 /** @type { import('@storybook/svelte-vite').StorybookConfig } */
 const config = {
     stories: [
@@ -11,22 +11,38 @@ const config = {
 	],
 
     addons: [
-        getAbsolutePath("@storybook/addon-links"),
-        getAbsolutePath("@storybook/addon-essentials"),
-        getAbsolutePath("@chromatic-com/storybook"),
-        getAbsolutePath("@storybook/addon-interactions"),
-        getAbsolutePath("@storybook/addon-mdx-gfm"),
-        "@chromatic-com/storybook"
+        "@storybook/addon-links",
+        "@storybook/addon-essentials",
+        "@chromatic-com/storybook",
+        "@storybook/addon-interactions",
+        "@storybook/addon-mdx-gfm",
     ],
 
     framework: {
-		name: getAbsolutePath("@storybook/svelte-vite"),
+		name: "@storybook/svelte-vite",
 		options: {
-			enablSvelte5: true,
+			enableSvelte5: true,
+			sveltekit: {
+				configFile: path.resolve(__dirname, '../../svelte.config.js'), // 명시적으로 svelte.config.js 경로 지정
+			},
 		},
 	},
 
-    docs: {}
+    docs: {
+			autodocs: true
+	},
+
+	async viteFinal(config, { configType }) {
+      if (configType === 'PRODUCTION') {
+        config.base = '/my-storybook-app/'
+      }
+			config.resolve.alias = {
+				...config.resolve.alias,
+				'$shadcn': path.resolve(__dirname, '../../packages/ui/src/shadcn'),
+				'$shadcn/*': path.resolve(__dirname, '../../packages/ui/src/shadcn/*'),
+							};
+      return config
+    },
 }
 export default config
 

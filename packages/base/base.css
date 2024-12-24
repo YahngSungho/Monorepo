@@ -5,8 +5,9 @@
 @import url('sanitize.css/reduce-motion.css');
 @import url('open-props/postcss/normalize');
 @import url('open-props/postcss/buttons');
-@import url('./baseVariables.css');
 @import url('./baseClasses.css');
+@import url('./baseVariables.css');
+
 /* open-props의 variable들은 postcss 설정 파일에서 동적으로 가져옴 */
 
 :root {
@@ -42,7 +43,6 @@ footer {
 } */
 
 div {
-	overflow: auto;
 	color: inherit;
 	outline: var(--size-1) solid transparent;
 	outline-offset: calc(-1 * var(--size-1));
