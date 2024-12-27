@@ -6,10 +6,4 @@ export default defineConfig({
 	// Consult https://svelte.dev/docs#compile-time-svelte-preprocess
 	// for more information about preprocessors
 	preprocess: vitePreprocess(),
-	resolve: {
-		alias: {
-			$shadcn: '../packages/ui/src/shadcn',
-			'$shadcn/*': '../packages/ui/src/shadcn/*',
-		},
-	},
 })

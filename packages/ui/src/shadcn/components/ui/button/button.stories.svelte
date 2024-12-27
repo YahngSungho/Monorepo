@@ -13,8 +13,14 @@ const { Story } = defineMeta({
 });
 </script>
 
-<Story name='Primary' args={{ primary: true }} />
+<Story name='Primary' args={{ variant: 'primary' }}>
+	<Button>Hi. I am children</Button>
+</Story>
 
-<Story name='Secondary' />
+<Story name='Secondary'>
+	<Button variant='secondary'>Secondary</Button>
+</Story>
 
-<Story name='Large' args={{ size: 'large' }} />
+<Story name='Third' args={{ variant: 'outline' }}>
+	<Button variant='outline'>Hi. I am children</Button>
+</Story>
