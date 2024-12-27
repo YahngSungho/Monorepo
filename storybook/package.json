@@ -29,7 +29,7 @@
 			"build-storybook": "storybook build",
 			"dev": "vite",
 			"preview": "vite preview",
-				"storybook": "NODE_OPTIONS='--no-experimental-require-module' storybook dev -p 6006"
+				"storybook": "storybook dev -p 6006"
 			},
 			"type": "module",
 			"version": "0.0.0"
