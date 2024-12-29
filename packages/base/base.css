@@ -109,32 +109,24 @@ div {
 	}
 }
 
-@media only screen and (hover: hover) and (pointer: fine) {
-	/* 마우스와 같은 정밀 포인터가 있는 장치에 적용될 스타일 */
-
-	@container (max-width: 20ch) {
-		* {
-			scrollbar-width: thin;
-		}
-
-		::-webkit-scrollbar {
-			/* stylelint-disable-next-line */
-			width: 1ch;
-			/* stylelint-disable-next-line */
-			width: calc(1ch + 5cqw);
-		}
+@container (max-width: 15ch) {
+	* {
+		scrollbar-width: thin;
 	}
 
-	@container (max-height: 20ex) {
-		* {
-			scrollbar-width: thin;
-		}
+	::-webkit-scrollbar {
+		/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+		width: 1ch;
+	}
+}
 
-		::-webkit-scrollbar {
-			/* stylelint-disable-next-line */
-			height: 1ex;
-			/* stylelint-disable-next-line */
-			height: calc(1ex + 5cqh);
-		}
+@container (max-height: 15ex) {
+	* {
+		scrollbar-width: thin;
+	}
+
+	::-webkit-scrollbar {
+		/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+		height: 1ex;
 	}
 }
