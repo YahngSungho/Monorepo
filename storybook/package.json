@@ -1,36 +1,23 @@
 {
-		"devDependencies": {
-			"@chromatic-com/storybook": "^3.2.3",
-			"@repo/base": "workspace:*",
-			"@storybook/addon-essentials": "^8.4.7",
-			"@storybook/addon-interactions": "^8.4.7",
-			"@storybook/addon-links": "^8.4.7",
-			"@storybook/addon-svelte-csf": "5.0.0-next.21",
-			"@storybook/blocks": "^8.4.7",
-			"@storybook/core": "^8.4.7",
-			"@storybook/svelte": "^8.4.7",
-			"@storybook/svelte-vite": "^8.4.7",
-			"@storybook/sveltekit": "^8.4.7",
-			"@storybook/test": "^8.4.7",
-			"@sveltejs/adapter-auto": "^3.3.1",
-			"@sveltejs/vite-plugin-svelte": "^5.0.3",
-			"open-props": "^1.7.9",
-			"postcss": "^8.4.49",
-			"postcss-import": "^16.1.0",
-			"storybook": "^8.4.7",
-			"svelte": "^5.15.0",
-			"svelte-preprocess": "^6.0.3",
-			"vite": "^6.0.5"
-		},
-		"name": "before-storybook",
-		"private": true,
-		"scripts": {
-			"build": "vite build",
-			"build-storybook": "storybook build",
-			"dev": "vite",
-			"preview": "vite preview",
-				"storybook": "storybook dev -p 6006"
-			},
-			"type": "module",
-			"version": "0.0.0"
+    "devDependencies": {
+        "@chromatic-com/storybook": "^3.2.3",
+        "@repo/base": "workspace:*",
+        "@sveltejs/adapter-auto": "^3.3.1",
+        "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "open-props": "^1.7.9",
+        "postcss": "^8.4.49",
+        "postcss-import": "^16.1.0",
+        "svelte": "^5.15.0",
+        "svelte-preprocess": "^6.0.3",
+        "vite": "^6.0.5",
+        "vite-tsconfig-paths": "^5.1.4"
+    },
+    "name": "before-storybook",
+    "private": true,
+    "scripts": {
+        "build:storybook": "storybook build",
+        "storybook": "storybook dev -p 6006"
+    },
+    "type": "module",
+    "version": "0.0.0"
 }

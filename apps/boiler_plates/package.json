@@ -1,8 +1,8 @@
 {
     "dependencies": {
         "@repo/base": "workspace:*",
+        "@repo/helpers": "workspace:*",
         "@repo/library_wrappers": "workspace:*",
-				"@repo/helpers": "workspace:*",
         "nanoid": "^5.0.9",
         "ramda": "^0.30.1",
         "xstate": "^5.19.0",

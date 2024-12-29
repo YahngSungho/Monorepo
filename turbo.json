@@ -1,28 +1,39 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "tsconfig.json",
-    "jsconfig.json"
-  ],
-  "globalEnv": [
-    "NODE_ENV"
-  ],
-  "tasks": {
-    "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".svelte-kit/**",
-        ".vercel/**",
-        "storybook-static/**"
-      ]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "lint": {},
-    "test": {}
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"globalDependencies": [
+		"tsconfig.json",
+		"jsconfig.json"
+	],
+	"globalEnv": [
+		"NODE_ENV"
+	],
+	"tasks": {
+		"build": {
+			"dependsOn": [
+				"^build"
+			],
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}"
+			],
+			"outputs": [
+				".svelte-kit/**",
+				".vercel/**"
+			]
+		},
+		"build:storybook": {
+			"dependsOn": [
+				"^build:storybook"
+			],
+			"outputs": [
+				"storybook-static/**"
+			]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"lint": {},
+		"test": {}
+	}
 }
