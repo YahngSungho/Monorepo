@@ -1,5 +1,4 @@
 import './default.css'
-import '@repo/ui/app.css'
 
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {

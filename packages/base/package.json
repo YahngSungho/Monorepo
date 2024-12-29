@@ -9,17 +9,22 @@
         "@sveltejs/adapter-auto": "^3.3.1",
         "@sveltejs/kit": "^2.15.0",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "postcss": "^8.4.49",
         "postcss-jit-props": "^1.0.15",
         "postcss-lightningcss": "^1.0.1",
         "postcss-preset-env": "^10.1.2",
+        "tailwindcss": "^3.4.17",
+        "tailwindcss-animate": "^1.0.7",
         "terser": "^5.37.0",
         "vitest": "^2.1.8"
     },
     "exports": {
         "./base.css": "./base.css",
         "./base.js": "./base.js",
+        "./forTailwind.css": "./forTailwind.css",
         "./postcss.config.js": "./postcss.config.js",
         "./svelte.config.js": "./svelte.config.js",
+        "./tailwind.config": "./tailwind.config.ts",
         "./vite.config.js": "./vite.config.js"
     },
     "keywords": [],

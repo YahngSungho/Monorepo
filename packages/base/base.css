@@ -26,6 +26,8 @@
 	line-height: var(--font-lineheight-3);
 	hyphens: auto;
 	text-wrap: stable;
+	/* stylelint-disable-next-line value-keyword-case */
+	text-rendering: optimizeLegibility;
 	word-break: keep-all;
 	line-break: strict;
 	overflow-wrap: break-word;

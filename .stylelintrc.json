@@ -3,8 +3,8 @@
         "@stylistic/stylelint-config",
         "stylelint-config-standard",
         "stylelint-config-html",
-        "stylelint-config-clean-order",
-        "@double-great/stylelint-a11y"
+        "@double-great/stylelint-a11y",
+        "stylelint-config-clean-order/error"
     ],
     "overrides": [
         {
@@ -47,7 +47,7 @@
         ],
         "declaration-property-value-no-unknown": true,
         "gamut/color-no-out-gamut-range": true,
-				"no-duplicate-selectors": null,
+        "no-duplicate-selectors": null,
         "plugin/declaration-block-no-ignored-properties": true,
         "plugin/no-browser-hacks": [
             true

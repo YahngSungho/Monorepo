@@ -4,17 +4,24 @@ import { fn } from '@storybook/test';
 import Button from './button.svelte';
 
 const { Story } = defineMeta({
-	args: {
-		label: 'Click me',
-		onclick: fn(),
-	},
 	component: Button,
 	tags: ['autodocs'],
 });
+
+const defaultArgs = {
+	label: 'Click me',
+	onclick: fn(),
+	size: 'lg',
+}
+
 </script>
 
-<Story name='Primary' args={{ variant: 'primary' }}>
-	<Button>Hi. I am children</Button>
+<Story name='default'>
+	<Button {...defaultArgs}>Hi. I am children</Button>
+</Story>
+
+<Story name='default-2'>
+	<Button size='sm'>Hi. I am children</Button>
 </Story>
 
 <Story name='Secondary'>
