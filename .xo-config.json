@@ -114,7 +114,8 @@
         ],
         "prefer-const": "off",
         "semi": [
-            "off"
+            "warn",
+            "never"
         ],
         "semi-style": "off",
         "sonarjs/todo-tag": "off",

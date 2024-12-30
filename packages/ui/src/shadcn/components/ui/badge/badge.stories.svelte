@@ -6,21 +6,21 @@ import Badge from './badge.svelte'
 const { Story } = defineMeta({
 	component: Badge,
 	tags: ['autodocs'],
-});
+})
 
 // 다양한 variant 세트 정의
 const argSet1 = {
 	variant: 'default',
-};
+}
 const argSet2 = {
 	variant: 'secondary',
-};
+}
 const argSet3 = {
 	variant: 'destructive',
-};
+}
 const argSet4 = {
 	variant: 'outline',
-};
+}
 
 </script>
 
