@@ -141,3 +141,4 @@ dist
 *storybook.log
 storybook-static
 /others
+pnpm-lock.yaml
