@@ -30,7 +30,7 @@
 		"@storybook/test": "^8.4.7",
 		"@stylistic/stylelint-config": "^2.0.0",
 		"@types/eslint": "^9.6.1",
-		"@typescript-eslint/parser": "^8.18.1",
+		"@typescript-eslint/parser": "^8.18.2",
 		"eslint": "9.11.1",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-config-turbo": "^2.3.3",
@@ -67,14 +67,14 @@
 		"stylelint-use-nesting": "^6.0.0",
 		"stylelint-value-no-exposed-custom-properties": "^2.3.1",
 		"stylelint-value-no-unknown-custom-properties": "^6.0.1",
-		"svelte": "^5.15.0",
+		"svelte": "^5.16.0",
 		"svelte-eslint-parser": "^0.43.0",
 		"svelte-language-server": "^0.17.8",
 		"syncpack": "^13.0.0",
 		"ts-node": "^10.9.2",
 		"turbo": "^2.3.3",
 		"typescript": "^5.7.2",
-		"vite": "^6.0.5",
+		"vite": "^6.0.6",
 		"vite-node": "^2.1.8",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^2.1.8",
@@ -86,6 +86,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"pnpm": "^9.15.1"
+		"pnpm": "^9.15.2"
 	}
 }
