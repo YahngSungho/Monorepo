@@ -3,6 +3,7 @@
 @import url('sanitize.css/typography.css');
 @import url('sanitize.css/assets.css');
 @import url('sanitize.css/reduce-motion.css');
+@import url('open-props/postcss/style');
 @import url('open-props/postcss/normalize');
 @import url('open-props/postcss/buttons');
 @import url('./baseClasses.css');

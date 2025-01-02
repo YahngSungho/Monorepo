@@ -1,7 +1,4 @@
 <script>
-import '@repo/base/base.css'
-import '@repo/base/base.js'
-
 const fo = 'bigCommandKEnabled'
 
 let foo = $state(fo + ' foifoifo')
@@ -35,7 +32,6 @@ const myObject = {
 	tor: 'boo',
 }
 
-;
 </script>
 
 <h1>Welcome to SvelteKit</h1>
