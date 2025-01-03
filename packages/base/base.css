@@ -16,6 +16,10 @@
 	color-scheme: light dark;
 }
 
+body {
+	font-size: var(--font-size-fluid-0);
+}
+
 *,
 *::before,
 *::after {

@@ -24,10 +24,10 @@ const config: Config = {
        			'caret-blink': 'caret-blink 1.25s ease-out infinite',
       		},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)',
-				xl: 'calc(var(--radius) + 4px)',
+				lg: 'var(--radius-4)',
+				md: 'var(--radius-3)',
+				sm: 'var(--radius-2)',
+				xl: 'var(--radius-5)',
 			},
 			colors: {
 				accent: {
