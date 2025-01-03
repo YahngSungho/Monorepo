@@ -90,6 +90,7 @@
         "capitalized-comments": "off",
         "consistent-return": "off",
         "import/no-mutable-exports": "off",
+        "import/no-unassigned-import": "off",
         "indent": [
             "warn",
             "tab"

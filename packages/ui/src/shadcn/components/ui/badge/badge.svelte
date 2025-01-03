@@ -46,5 +46,5 @@
 	class={cn(badgeVariants({ variant }), className)}
 	{...restProps}
 >
-		{@render children?.()}
+	{@render children?.()}
 </svelte:element>

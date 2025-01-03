@@ -1,7 +1,7 @@
 {
     "author": "",
     "dependencies": {
-        "open-props": "^1.7.9",
+        "open-props": "^1.7.10",
         "sanitize.css": "^13.0.0"
     },
     "description": "",

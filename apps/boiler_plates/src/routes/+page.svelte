@@ -1,6 +1,7 @@
 <script>
 import { Button } from '@repo/ui/button'
 import { Badge } from '@repo/ui/badge'
+import { Calendar } from '@repo/ui/calendar'
 
 const fo = 'bigCommandKEnabled'
 
@@ -49,6 +50,8 @@ const myObject = {
 	<Button variant={'default'}> 안니옹하시오 </Button>
 	{foo}
 </div>
+
+<Calendar />
 
 <p>
 	<Badge> 안니옹하시오 </Badge>
