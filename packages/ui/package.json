@@ -7,7 +7,7 @@
         "@sveltejs/package": "^2.3.7",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
         "autoprefixer": "^10.4.20",
-        "bits-ui": "1.0.0-next.74",
+        "bits-ui": "1.0.0-next.77",
         "clsx": "^2.1.1",
         "lucide-svelte": "^0.469.0",
         "postcss": "^8.4.49",
@@ -22,7 +22,7 @@
         "vite": "^6.0.6"
     },
     "exports": {
-        "./badge": "./src/shadcn/components/ui/badge/index.js",
+        "./badge": "./src/shadcn/components/ui/badge/index.ts",
         "./button": "./src/shadcn/components/ui/button/index.ts"
     },
     "files": [
@@ -38,7 +38,8 @@
         "dev": "vite dev",
         "package": "svelte-kit sync && svelte-package && publint",
         "prepublishOnly": "npm run package",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "shadcn": "pnpm dlx shadcn-svelte@next add"
     },
     "sideEffects": [
         "**/*.css"

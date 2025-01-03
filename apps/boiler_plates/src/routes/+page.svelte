@@ -35,26 +35,24 @@ const myObject = {
 	tor: 'boo',
 }
 
+''; // eslint-disable-line sonarjs/no-unused-expressions, semi
 </script>
 
-<h1 class='bg-primary bg-red bg-blue-200'>Welcome to SvelteKit</h1>
+<h1 class={'bg-primary'}>Welcome to SvelteKit</h1>
 <h2>Welcome to SvelteKit</h2>
 <h3>Welcome to SvelteKit</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit</h6>
+
 <div>
+	<Button variant={'default'}> 안니옹하시오 </Button>
 	{foo}
 </div>
-<div>
-	Hi
-</div>
-<p>
-	Visit <a href='https://kit.svelte.dev'>kit.svelte.dev</a> to read the documentation
-</p>
 
-<Button variant='default'>안니옹하시오</Button>
-<Badge variant='default'>안니옹하시오</Badge>
+<p>
+	<Badge> 안니옹하시오 </Badge>
+</p>
 
 <style>
 	p {
