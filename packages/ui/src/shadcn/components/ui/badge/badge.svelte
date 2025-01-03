@@ -1,5 +1,5 @@
 <script module>
-import { tv } from 'tailwind-variants';
+import { tv } from 'tailwind-variants'
 
 export const badgeVariants = tv({
 	base: 'focus:ring-ring inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2',
@@ -16,11 +16,11 @@ export const badgeVariants = tv({
 				'bg-secondary text-secondary-foreground hover:bg-secondary/80 border-transparent',
 		},
 	},
-});
+})
 </script>
 
 <script>
-import { cn } from '$shadcn/utils.js';
+import { cn } from '$shadcn/utils.js'
 
 let {
 	children,
@@ -29,7 +29,7 @@ let {
 	ref = $bindable(null),
 	variant = 'default',
 	...restProps
-} = $props();
+} = $props()
 </script>
 
 <svelte:element

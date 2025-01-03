@@ -22,7 +22,7 @@
     "private": true,
     "scripts": {
         "build:storybook": "storybook build",
-        "storybook": "storybook dev -p 6006"
+        "storybook": "storybook dev -p 6006 -- --open"
     },
     "type": "module",
     "version": "0.0.0"

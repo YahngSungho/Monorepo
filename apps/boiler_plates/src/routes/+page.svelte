@@ -1,4 +1,7 @@
 <script>
+import { Button } from '@repo/ui/button'
+import { Badge } from '@repo/ui/badge'
+
 const fo = 'bigCommandKEnabled'
 
 let foo = $state(fo + ' foifoifo')
@@ -34,7 +37,7 @@ const myObject = {
 
 </script>
 
-<h1>Welcome to SvelteKit</h1>
+<h1 class='bg-primary bg-red bg-blue-200'>Welcome to SvelteKit</h1>
 <h2>Welcome to SvelteKit</h2>
 <h3>Welcome to SvelteKit</h3>
 <h4>Welcome to SvelteKit</h4>
@@ -49,6 +52,9 @@ const myObject = {
 <p>
 	Visit <a href='https://kit.svelte.dev'>kit.svelte.dev</a> to read the documentation
 </p>
+
+<Button variant='default'>안니옹하시오</Button>
+<Badge variant='default'>안니옹하시오</Badge>
 
 <style>
 	p {

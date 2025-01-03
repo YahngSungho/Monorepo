@@ -33,6 +33,9 @@
 		"**/*.sass",
 		"**/*.less"
 	],
-	"editor.defaultFormatter": "samverschueren.linter-xo",
-	"console-ninja.dateTimeDisplayMode": "Relative To Previous"
+	"editor.defaultFormatter": null,
+	"console-ninja.dateTimeDisplayMode": "Relative To Previous",
+	"[svelte]": {
+		"editor.defaultFormatter": "samverschueren.linter-xo"
+	}
 }

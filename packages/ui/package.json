@@ -22,7 +22,8 @@
         "vite": "^6.0.6"
     },
     "exports": {
-        "./app.css": "./src/app.css"
+        "./badge": "./src/shadcn/components/ui/badge/index.js",
+        "./button": "./src/shadcn/components/ui/button/index.ts"
     },
     "files": [
         "dist",
@@ -42,7 +43,6 @@
     "sideEffects": [
         "**/*.css"
     ],
-    "svelte": "./dist/index.js",
     "type": "module",
     "types": "./dist/index.d.ts",
     "version": "0.0.1"
