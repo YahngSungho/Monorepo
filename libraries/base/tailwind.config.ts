@@ -1,7 +1,6 @@
 import {fontFamily} from 'tailwindcss/defaultTheme'
 import type {Config} from 'tailwindcss'
 import tailwindcssAnimate from 'tailwindcss-animate'
-import daisyui from 'daisyui'
 
 const config: Config = {
 	content: [
@@ -16,7 +15,7 @@ const config: Config = {
 		styled: false,
 	},
 	darkMode: ['class'],
-	plugins: [daisyui, tailwindcssAnimate],
+	plugins: [tailwindcssAnimate],
 	safelist: ['dark'],
 	theme: {
 		container: {
