@@ -3,8 +3,8 @@ const config = {
     stories: [
 		"../../apps/**/*.stories.@(js|ts|svelte)",
 		"../../apps/**/*.mdx",
-		"../../packages/**/*.stories.@(js|ts|svelte)",
-		"../../packages/**/*.mdx",
+		"../../libraries/**/*.stories.@(js|ts|svelte)",
+		"../../libraries/**/*.mdx",
 		"../src/**/*.mdx",
 		"../src/**/*.stories.@(js|ts|svelte)",
 	],

@@ -41,7 +41,7 @@
             true,
             {
                 "importFrom": [
-                    "packages/base/node_modules/open-props/open-props.min.css"
+                    "libraries/base/node_modules/open-props/open-props.min.css"
                 ]
             }
         ],

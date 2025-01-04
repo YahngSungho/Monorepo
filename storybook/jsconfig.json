@@ -2,10 +2,10 @@
 	"compilerOptions": {
 		"paths": {
 			"$shadcn/*": [
-				"../packages/ui/src/shadcn/*"
+				"../libraries/ui/src/shadcn/*"
 			],
 			"$shadcn": [
-				"../packages/ui/src/shadcn"
+				"../libraries/ui/src/shadcn"
 			],
 		},
 		"moduleResolution": "bundler",

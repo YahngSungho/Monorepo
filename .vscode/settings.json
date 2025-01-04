@@ -27,7 +27,7 @@
 	},
 	"peacock.color": "#004900",
 	"cssVariables.lookupFiles": [
-		"packages/base/node_modules/open-props/open-props.min.css",
+		"libraries/base/node_modules/open-props/open-props.min.css",
 		"**/*.css",
 		"**/*.scss",
 		"**/*.sass",
