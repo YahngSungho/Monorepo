@@ -1,13 +1,22 @@
 import {fontFamily} from 'tailwindcss/defaultTheme'
 import type {Config} from 'tailwindcss'
 import tailwindcssAnimate from 'tailwindcss-animate'
+import daisyui from 'daisyui'
 
 const config: Config = {
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
 	],
+	corePlugins: {
+		preflight: false,
+	},
+	daisyui: {
+		base: false,
+		log: false,
+		styled: false,
+	},
 	darkMode: ['class'],
-	plugins: [tailwindcssAnimate],
+	plugins: [daisyui, tailwindcssAnimate],
 	safelist: ['dark'],
 	theme: {
 		container: {

@@ -1,3 +1,4 @@
+@import url('./forTailwind.css');
 @import url('sanitize.css');
 @import url('sanitize.css/forms.css');
 @import url('sanitize.css/typography.css');
@@ -8,7 +9,6 @@
 @import url('open-props/postcss/buttons');
 @import url('./baseClasses.css');
 @import url('./baseVariables.css');
-@import url('./forTailwind.css');
 
 /* open-props의 variable들은 postcss 설정 파일에서 동적으로 가져옴 */
 

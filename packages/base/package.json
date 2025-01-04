@@ -9,6 +9,7 @@
         "@sveltejs/adapter-auto": "^3.3.1",
         "@sveltejs/kit": "^2.15.1",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "daisyui": "^4.12.23",
         "postcss": "^8.4.49",
         "postcss-jit-props": "^1.0.15",
         "postcss-lightningcss": "^1.0.1",

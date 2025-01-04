@@ -1,0 +1,21 @@
+<script>
+
+import {defineMeta} from '@storybook/addon-svelte-csf'
+
+const {Story} = defineMeta({
+	component: 'div',
+	tags: ['autodocs'],
+})
+
+''; // eslint-disable-line sonarjs/no-unused-expressions, semi
+</script>
+
+<Story name='Try'>
+	<button class='btn'>Button</button>
+	<button class='btn btn-neutral'>Neutral</button>
+	<button class='btn btn-primary'>Primary</button>
+	<button class='btn btn-secondary'>Secondary</button>
+	<button class='btn btn-accent'>Accent</button>
+	<button class='btn btn-ghost'>Ghost</button>
+	<button class='btn btn-link'>Link</button>
+</Story>
