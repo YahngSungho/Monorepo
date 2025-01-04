@@ -2,7 +2,7 @@
 @tailwind utilities;
 
 :root {
-	--radius: var(--radius-3);
+	--radius: var(--radius-2);
 }
 
 :root {

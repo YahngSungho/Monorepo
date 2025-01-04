@@ -18,6 +18,8 @@
 
 body {
 	container: body / inline-size;
+	inline-size: 100svi;
+	block-size: 100svb;
 }
 
 *,
@@ -38,17 +40,6 @@ body {
 	line-break: strict;
 	overflow-wrap: break-word;
 }
-
-/*
-html,
-body,
-div,
-header,
-nav,
-main,
-footer {
-	max-inline-size: none;
-} */
 
 div {
 	color: inherit;
