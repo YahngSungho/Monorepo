@@ -121,7 +121,7 @@
         "semi-style": "off",
         "sonarjs/todo-tag": "off",
         "svelte/derived-has-same-inputs-outputs": "warn",
-        "svelte/first-attribute-linebreak": "warn",
+        "svelte/first-attribute-linebreak": "off",
         "svelte/html-closing-bracket-spacing": "warn",
         "svelte/html-quotes": [
             "warn",
