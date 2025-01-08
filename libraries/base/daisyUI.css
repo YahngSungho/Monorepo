@@ -2,13 +2,13 @@
 
 :root {
 	--radius-selector: var(--radius-2-5);
-  --radius-field: var(--radius-2);
-  --radius-box: var(--radius-2-5);
-  --size-selector: var(--size-00);
-  --size-field: var(--size-00);
-  --border: 1px;
-  --depth: 1;
-  --noise: 0;
+	--radius-field: var(--radius-2);
+	--radius-box: var(--radius-2-5);
+	--size-selector: var(--size-1);
+	--size-field: var(--size-1);
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
 	--rounded-box: var(--radius-3);
 	--rounded-btn: var(--radius-2-5);
 	--rounded-badge: var(--radius-4);

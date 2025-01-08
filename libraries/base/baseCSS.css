@@ -27,6 +27,37 @@ body {
 	overflow-wrap: break-word;
 }
 
+button {
+	cursor: pointer;
+	user-select: none;
+
+	overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	inline-size: fit-content;
+	max-inline-size: min(100%, 100cqi);
+	padding: max(0.5em, 0.5rem) max(1.5em, 1.5rem);
+
+	text-align: center;
+	text-decoration: none;
+	text-transform: capitalize;
+	white-space: nowrap;
+	vertical-align: middle;
+
+	appearance: button;
+
+	&:active,
+	&:hover {
+		opacity: 0.7;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}
+
 div {
 	color: inherit;
 	outline: var(--size-1) solid transparent;

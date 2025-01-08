@@ -29,6 +29,7 @@
         "stylelint-gamut"
     ],
     "rules": {
+			"number-max-precision": null,
         "@stylistic/indentation": "tab",
         "@stylistic/string-quotes": "single",
         "at-rule-no-unknown": null,
@@ -38,15 +39,6 @@
         },
         "comment-empty-line-before": null,
         "csstools/use-nesting": "always",
-        "csstools/value-no-unknown-custom-properties": [
-            true,
-            {
-                "importFrom": [
-                    "libraries/base/node_modules/open-props/open-props.min.css",
-                    "libraries/base/base.css"
-                ]
-            }
-        ],
         "declaration-property-value-no-unknown": true,
         "gamut/color-no-out-gamut-range": true,
         "no-duplicate-selectors": null,
@@ -54,7 +46,6 @@
         "plugin/no-browser-hacks": [
             true
         ],
-        "plugin/no-low-performance-animation-properties": true,
         "plugin/no-unresolved-module": {
             "alias": {
                 "assets": "pebbles"
