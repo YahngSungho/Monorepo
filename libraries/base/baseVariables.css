@@ -4,23 +4,7 @@ body {
 	--radius-2-5: 0.5rem;
 }
 
-/* DaisyUI variables 덮어쓰기 Or 확장 */
-body {
-	--rounded-box: var(--radius-3);
-	--rounded-btn: var(--radius-2-5);
-	--rounded-badge: var(--radius-4);
-	--animation-btn: 0.25s;
-	--animation-input: 0.2s;
-	--btn-focus-scale: 0.95;
-	--border-btn: 1px;
-	--tab-border: 1px;
-	--tab-radius: var(--radius-2-5);
-}
-
 /* 다크 테마일 때 색깔 변수 거꾸로 매핑 */
-/* 이건 OS 설정이 기준임 */
-/* @media (prefers-color-scheme: dark) {} */
-
 .dark {
 	--gray-0: var(--gray-12);
 	--gray-1: var(--gray-11);

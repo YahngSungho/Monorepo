@@ -80,12 +80,13 @@ const argSet6 = {
 	<Button size='lg' {...argSet6}>Large Outline Button</Button>
 </Story>
 
-<Story name='Try'>
-	<button class='btn'>Button</button>
-	<button class='btn btn-neutral'>Neutral</button>
+<Story name='DaisiUI Buttons'>
 	<button class='btn btn-primary'>Primary</button>
 	<button class='btn btn-secondary'>Secondary</button>
 	<button class='btn btn-accent'>Accent</button>
-	<button class='btn btn-ghost'>Ghost</button>
-	<button class='btn btn-link'>Link</button>
+	<button class='btn btn-neutral'>Neutral</button>
+	<button class='btn btn-info'>Info</button>
+	<button class='btn btn-success'>Success</button>
+	<button class='btn btn-warning'>Warning</button>
+	<button class='btn btn-error'>Error</button>
 </Story>

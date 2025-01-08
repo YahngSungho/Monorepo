@@ -31,6 +31,7 @@
     "rules": {
         "@stylistic/indentation": "tab",
         "@stylistic/string-quotes": "single",
+        "at-rule-no-unknown": null,
         "color-format/format": {
             "format": "rgb",
             "severity": "warning"
@@ -41,7 +42,8 @@
             true,
             {
                 "importFrom": [
-                    "libraries/base/node_modules/open-props/open-props.min.css"
+                    "libraries/base/node_modules/open-props/open-props.min.css",
+                    "libraries/base/base.css"
                 ]
             }
         ],

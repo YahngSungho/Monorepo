@@ -1,129 +1,20 @@
-@import url('./forTailwind.css');
-@import url('sanitize.css');
-@import url('sanitize.css/forms.css');
-@import url('sanitize.css/typography.css');
-@import url('sanitize.css/assets.css');
-@import url('sanitize.css/reduce-motion.css');
-@import url('open-props/postcss/style');
-@import url('open-props/postcss/normalize');
-@import url('open-props/postcss/buttons');
+/* Tailwind CSS의 default layer는
+@layer theme, base, components, utilities;
+*/
+@layer base, base0, base1, theme, components, utilities;
+
+@import url('sanitize.css') layer(base0);
+@import url('sanitize.css/forms.css') layer(base0);
+@import url('sanitize.css/typography.css') layer(base0);
+@import url('sanitize.css/assets.css') layer(base0);
+@import url('sanitize.css/reduce-motion.css') layer(base0);
+
+@import url('open-props/postcss/style') layer(base1);
+@import url('open-props/postcss/normalize') layer(base1);
+/* @import url('open-props/postcss/buttons') layer(base0); */
+
+@import url('./tailwind.css');
+
 @import url('./baseClasses.css');
 @import url('./baseVariables.css');
-
-/* open-props의 variable들은 postcss 설정 파일에서 동적으로 가져옴 */
-
-:root {
-	color-scheme: light dark;
-}
-
-body {
-	container: body / inline-size;
-	inline-size: 100svi;
-	block-size: 100svb;
-}
-
-*,
-*::before,
-*::after {
-	overscroll-behavior: contain;
-
-	box-sizing: border-box;
-
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	line-height: var(--font-lineheight-3);
-	hyphens: auto;
-	text-wrap: stable;
-	/* stylelint-disable-next-line value-keyword-case */
-	text-rendering: optimizeLegibility;
-	word-break: keep-all;
-	line-break: strict;
-	overflow-wrap: break-word;
-}
-
-div {
-	color: inherit;
-	outline: var(--size-1) solid transparent;
-	outline-offset: calc(-1 * var(--size-1));
-}
-
-p {
-	max-inline-size: var(--size-content-4);
-}
-
-img {
-	max-inline-size: 100%;
-	object-fit: cover;
-}
-
-a {
-	hyphens: none;
-	overflow-wrap: anywhere;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	text-wrap: balance;
-}
-
-[id] {
-	scroll-margin-block-start: var(--font-size-5);
-}
-
-button:focus {
-	outline: max(1px, 0.1em) dashed currentcolor;
-	outline-offset: var(--size-1);
-}
-
-/* Scrollbar */
-
-div {
-	/* stylelint-disable-next-line declaration-property-value-no-unknown */
-	scrollbar-color: auto transparent;
-}
-
-::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-::-webkit-scrollbar-corner {
-	background: transparent;
-}
-
-@container (max-width: 30ch) {
-	::-webkit-scrollbar-button:horizontal {
-		display: none;
-	}
-}
-
-@container (max-height: 30ex) {
-	::-webkit-scrollbar-button:vertical {
-		display: none;
-	}
-}
-
-@container (max-width: 15ch) {
-	* {
-		scrollbar-width: thin;
-	}
-
-	::-webkit-scrollbar {
-		/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-		width: 1ch;
-	}
-}
-
-@container (max-height: 15ex) {
-	* {
-		scrollbar-width: thin;
-	}
-
-	::-webkit-scrollbar {
-		/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-		height: 1ex;
-	}
-}
+@import url('./baseCSS.css');

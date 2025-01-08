@@ -12,7 +12,7 @@ const config: Config = {
 	daisyui: {
 		base: false,
 		log: false,
-		styled: true,
+		styled: false,
 	},
 	darkMode: ['class'],
 	plugins: [tailwindcssAnimate],

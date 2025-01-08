@@ -100,8 +100,8 @@
             "warn",
             "smart-tabs"
         ],
-        "no-unused-expressions": "off",
-        "no-unused-vars": "off",
+        "no-unused-expressions": 1,
+        "no-unused-vars": 1,
         "no-warning-comments": "off",
         "object-curly-spacing": "off",
         "perfectionist/sort-imports": "off",
@@ -154,7 +154,7 @@
         "svelte/no-store-async": "warn",
         "svelte/no-target-blank": "warn",
         "svelte/no-unused-class-name": [
-            "warn",
+            "off",
             {
                 "allowedClassNames": []
             }
