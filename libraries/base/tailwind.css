@@ -46,7 +46,7 @@
 	--secondary: hsl(210deg 16.7% 95.3%); /* gray-1 */
 	--secondary-foreground: hsl(214deg 13.7% 10%); /* gray-10 */
 	--secondary-content: hsl(214deg 13.7% 10%); /* gray-10 */
-	--accent: var(--indigo-3);
+	--accent: var(--gray-5);
 	--accent-foreground: var(--gray-10);
 	--accent-content: var(--gray-10);
 	--destructive: hsl(0deg 73.8% 53.5%); /* red-8 */
