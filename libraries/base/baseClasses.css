@@ -1,3 +1,8 @@
+.boxed {
+	position: relative;
+	container: inline-size;
+}
+
 .gutter {
 	scrollbar-gutter: stable both-edges;
 }

@@ -14,10 +14,6 @@ const {Story} = defineMeta({
 	<Button variant='primary'>Primary Button</Button>
 </Story>
 
-<Story name='Primary / Active'>
-	<Button variant='primary' active>Primary Button</Button>
-</Story>
-
 <Story name='Secondary / Default'>
 	<Button variant='secondary'>Secondary Button</Button>
 </Story>
