@@ -1,6 +1,26 @@
 @plugin 'daisyui';
 
 :root {
+	--radius-selector: var(--radius-2-5);
+  --radius-field: var(--radius-2);
+  --radius-box: var(--radius-2-5);
+  --size-selector: var(--size-00);
+  --size-field: var(--size-00);
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+	--rounded-box: var(--radius-3);
+	--rounded-btn: var(--radius-2-5);
+	--rounded-badge: var(--radius-4);
+	--animation-btn: 0.25s;
+	--animation-input: 0.2s;
+	--btn-focus-scale: 0.95;
+	--border-btn: 1px;
+	--tab-border: 1px;
+	--tab-radius: var(--radius-2-5);
+}
+
+:root {
 	--color-base-100: var(--gray-0);
 	--color-base-200: var(--gray-2);
 	--color-base-300: var(--gray-4);
@@ -15,13 +35,4 @@
 	--color-warning-content: var(--gray-0);
 	--color-error: var(--red-9);
 	--color-error-content: var(--gray-0);
-	--rounded-box: var(--radius-3);
-	--rounded-btn: var(--radius-2-5);
-	--rounded-badge: var(--radius-4);
-	--animation-btn: 0.25s;
-	--animation-input: 0.2s;
-	--btn-focus-scale: 0.95;
-	--border-btn: 1px;
-	--tab-border: 1px;
-	--tab-radius: var(--radius-2-5);
 }
