@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "@formkit/auto-animate": "^0.8.2",
         "@repo/base": "workspace:*",
         "@repo/helpers": "workspace:*",
         "@repo/library_wrappers": "workspace:*",

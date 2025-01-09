@@ -29,7 +29,6 @@
         "stylelint-gamut"
     ],
     "rules": {
-			"number-max-precision": null,
         "@stylistic/indentation": "tab",
         "@stylistic/string-quotes": "single",
         "at-rule-no-unknown": null,
@@ -42,6 +41,7 @@
         "declaration-property-value-no-unknown": true,
         "gamut/color-no-out-gamut-range": true,
         "no-duplicate-selectors": null,
+        "number-max-precision": null,
         "plugin/declaration-block-no-ignored-properties": true,
         "plugin/no-browser-hacks": [
             true

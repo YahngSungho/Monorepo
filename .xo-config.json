@@ -54,7 +54,15 @@
                 "depend"
             ],
             "rules": {
-                "depend/ban-dependencies": "warn"
+                "depend/ban-dependencies": [
+                    "warn",
+                    {
+                        "presets": [
+                            "native",
+                            "preferred"
+                        ]
+                    }
+                ]
             }
         },
         {
@@ -84,6 +92,14 @@
         "regexp"
     ],
     "rules": {
+				"depend/ban-dependencies": [
+                    "warn",
+                    {
+                        "presets": [
+                            "native", "preferred"
+                        ]
+                    }
+                ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "arrow-parens": "off",
