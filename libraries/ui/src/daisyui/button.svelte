@@ -9,8 +9,7 @@ let { children, variant, ...restProps } = $props()
 </script>
 
 <button class={`btn btn-${variant}`}
-	type='button'
-	{...restProps}
+	type='button' {...restProps}
 >
 	{@render children?.()}
 </button>
@@ -22,12 +21,13 @@ button {
 }
 
 .btn-outline {
-	border-width: 1px;
+	border-width: var(--border-size-2);
 	background-color: transparent;
 }
 
 .btn-text {
 	border: none;
 	background-color: transparent;
+	box-shadow: none;
 }
 </style>

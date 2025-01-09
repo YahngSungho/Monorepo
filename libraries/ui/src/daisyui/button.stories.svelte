@@ -10,6 +10,22 @@ const {Story} = defineMeta({
 ''; // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions, semi
 </script>
 
+<Story name='Bunch'>
+	<div class={'boxed'} style:width='calc(100% / 2)'>
+		<Button variant='primary'>Primary Button</Button>
+		<Button variant='secondary'>Secondary Button</Button>
+		<Button variant='outline'>Outline Button</Button>
+		<Button variant='text'>Text Button</Button>
+		<Button variant='accent'>Accent Button</Button>
+		<Button variant='info'>Info Button</Button>
+		<Button variant='success'>Success Button</Button>
+		<Button variant='warning'>Warning Button</Button>
+		<Button variant='error'>Error Button</Button>
+		<Button variant='primary' disabled>Disabled Primary Button</Button>
+		<Button variant='secondary' disabled>Disabled Secondary Button</Button>
+	</div>
+</Story>
+
 <Story name='Primary / Default'>
 	<Button variant='primary'>Primary Button</Button>
 </Story>

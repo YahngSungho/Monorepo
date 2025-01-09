@@ -1,12 +1,15 @@
 @plugin 'daisyui';
 
 :root {
-	--radius-selector: var(--radius-2-5);
-	--radius-field: var(--radius-2);
-	--radius-box: var(--radius-2-5);
+	/* --radius-selector: var(--radius-2-5); */
+	--radius-selector: var(--radius-1);
+	/* --radius-field: var(--radius-2); */
+	--radius-field: var(--radius-1);
+	/* --radius-box: var(--radius-2-5); */
+	--radius-box: var(--radius-1);
 	--size-selector: var(--size-1);
 	--size-field: var(--size-1);
-	--border: 1px;
+	--border: var(--border-size-1);
 	--depth: 1;
 	--noise: 0;
 	--rounded-box: var(--radius-3);
@@ -15,9 +18,9 @@
 	--animation-btn: 0.25s;
 	--animation-input: 0.2s;
 	--btn-focus-scale: 0.95;
-	--border-btn: 1px;
-	--tab-border: 1px;
-	--tab-radius: var(--radius-2-5);
+	--border-btn: var(--border-size-1);
+	--tab-border: var(--border-size-1);
+	--tab-radius: var(--radius-1);
 }
 
 :root {
