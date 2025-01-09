@@ -2,6 +2,7 @@
 import { Button } from '@repo/ui/button'
 import { Badge } from '@repo/ui/badge'
 import { Calendar } from '@repo/ui/calendar'
+import Icon from '@repo/ui/icon'
 
 const fo = 'bigCommandKEnabled'
 
@@ -48,7 +49,11 @@ const myObject = {
 
 <div>
 	<Button variant={'default'}> 안니옹하시오 </Button>
-	{foo}
+	<Icon icon={'mdi:home'} style={'font-size: 2em;'}>My Icon</Icon>
+	<div>
+		<Icon icon={'mdi:home'} style={'font-size: 2em;'}>아이콘</Icon>
+		{foo}
+	</div>
 </div>
 
 <Calendar />

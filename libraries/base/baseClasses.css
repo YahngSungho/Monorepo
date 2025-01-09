@@ -35,22 +35,6 @@
 	}
 }
 
-.icon {
-	inline-size: 0.75em;
-	inline-size: 1cap;
-	block-size: 0.75em;
-	block-size: 1cap;
-}
-
-.with-icon {
-	display: inline-flex;
-	align-items: baseline;
-
-	& .icon {
-		margin-inline-end: 1rem;
-	}
-}
-
 .gradient-text-1 {
 	background: var(--gradient-1);
 	background-clip: text;
