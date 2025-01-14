@@ -36,7 +36,20 @@
                 "*.svelte",
                 "**/*.svelte"
             ],
-            "parser": "svelte-eslint-parser"
+            "parser": "svelte-eslint-parser",
+            "rules": {
+                "sonarjs/no-use-of-empty-return-value": "off",
+                "sonarjs/sonar-no-unused-vars": "off"
+            }
+        },
+        {
+            "files": [
+                "*.stories.svelte",
+                "**/*.stories.svelte"
+            ],
+            "rules": {
+                "@intlify/svelte/no-raw-text": "off"
+            }
         },
         {
             "files": [
@@ -49,7 +62,6 @@
             "files": [
                 "package.json"
             ],
-            "parser": "jsonc-eslint-parser",
             "plugins": [
                 "depend"
             ],
@@ -92,19 +104,20 @@
         "regexp"
     ],
     "rules": {
-				"depend/ban-dependencies": [
-                    "warn",
-                    {
-                        "presets": [
-                            "native", "preferred"
-                        ]
-                    }
-                ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "arrow-parens": "off",
         "capitalized-comments": "off",
         "consistent-return": "off",
+        "depend/ban-dependencies": [
+            "warn",
+            {
+                "presets": [
+                    "native",
+                    "preferred"
+                ]
+            }
+        ],
         "import/no-mutable-exports": "off",
         "import/no-unassigned-import": "off",
         "indent": [

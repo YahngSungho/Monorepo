@@ -1,3 +1,4 @@
+import { dirname, join } from "path";
 /** @type { import('@storybook/svelte-vite').StorybookConfig } */
 const config = {
     stories: [
@@ -10,20 +11,23 @@ const config = {
 	],
 
 	addons: [
-    "@storybook/addon-svelte-csf",
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@chromatic-com/storybook",
-    "@storybook/addon-interactions",
-	],
+				"@storybook/addon-svelte-csf",
+				"@storybook/addon-links",
+        "@storybook/addon-essentials",
+        "@chromatic-com/storybook",
+        "@storybook/addon-interactions",
+        "@storybook/addon-mdx-gfm",
+    ],
 
     framework: {
-			name: "@storybook/svelte-vite",
+			name: "@storybook/sveltekit",
 			options: {},
 	},
 
-    docs: {
-			autodocs: true
-	},
+    docs: {},
 }
 export default config
+
+function getAbsolutePath(value) {
+    return dirname(require.resolve(join(value, "package.json")));
+}
