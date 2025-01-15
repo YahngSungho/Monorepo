@@ -20,7 +20,7 @@ const config = {
     ],
 
     framework: {
-			name: "@storybook/sveltekit",
+			name: "@storybook/svelte-vite",
 			options: {},
 	},
 
