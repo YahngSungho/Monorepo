@@ -43,6 +43,7 @@
     "name": "@repo/base",
     "scripts": {
         "test": "vitest",
+        "translate": "npx @inlang/cli machine translate --project ./project.inlang",
         "update": "pnpm update"
     },
     "type": "module",
