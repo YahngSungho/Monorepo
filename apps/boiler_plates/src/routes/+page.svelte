@@ -3,9 +3,9 @@ import { Button } from '@repo/ui/button'
 import { Badge } from '@repo/ui/badge'
 import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
-import { m, switchToLanguage } from '@repo/base/paraglide'
+import { switchToLanguage } from '@repo/base/paraglide'
 // Todo: '* as m' 이렇게 m을 가져와서 쓸 수 있게 만들기
-// import * as m from '@repo/base'
+import * as m from '@repo/base/messages.js'
 
 const fo = 'bigCommandKEnabled'
 

@@ -28,6 +28,7 @@
         "./baseLayout": "./src/routes/+layout.svelte",
         "./forTailwind.css": "./src/forTailwind.css",
         "./i18n.ts": "./src/lib/i18n.ts",
+        "./messages.js": "./src/lib/paraglide/messages.js",
         "./paraglide": "./src/paraglide.ts",
         "./paraglide_outdir": "./src/lib/paraglide",
         "./paraglide_project": "./project.inlang",
