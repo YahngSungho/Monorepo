@@ -1,9 +1,16 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import tailwindcss2 from '@tailwindcss/postcss'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vite'
 import { configDefaults, defineConfig as defineConfig2, mergeConfig } from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { paraglide } from '@inlang/paraglide-sveltekit/vite'
+
+// Simulate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const baseConfig = defineConfig({
 	build: {
@@ -18,10 +25,17 @@ const baseConfig = defineConfig({
 		},
 	},
 	plugins: [
+		paraglide({
+			outdir: path.resolve(__dirname, './src/lib/paraglide'),
+			project: path.resolve(__dirname, './project.inlang'),
+		}),
 		sveltekit(),
 		tsconfigPaths(),
 		tailwindcss(),
 	],
+	ssr: {
+		noExternal: ['@inlang/paraglide-sveltekit'],
+	},
 })
 
 const testConfig = defineConfig2({

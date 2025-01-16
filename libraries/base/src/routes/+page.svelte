@@ -3,9 +3,6 @@ import { Button } from '@repo/ui/button'
 import { Badge } from '@repo/ui/badge'
 import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
-import { m, switchToLanguage } from '@repo/base/paraglide'
-// Todo: '* as m' 이렇게 m을 가져와서 쓸 수 있게 만들기
-// import * as m from '@repo/base'
 
 const fo = 'bigCommandKEnabled'
 
@@ -43,14 +40,15 @@ const myObject = {
 ''; // eslint-disable-line sonarjs/no-unused-expressions, semi
 </script>
 
-<h1 class={'bg-primary'}>{m.welcome()}</h1>
+<h1 class={'bg-primary'}>Welcome to SvelteKit</h1>
+<h2>Welcome to SvelteKit</h2>
 <h3>Welcome to SvelteKit</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit</h6>
 
 <div>
-	<Button variant={'default'}> {m.deft_east_mouse_hope()} </Button>
+	<Button variant={'default'}> 안니옹하시오 </Button>
 	<Icon icon={'mdi:home'} style={'font-size: 2em;'}>My Icon</Icon>
 	<div>
 		<Icon icon={'mdi:home'} style={'font-size: 2em;'}>아이콘</Icon>
@@ -61,9 +59,7 @@ const myObject = {
 <Calendar />
 
 <p>
-	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>
-	<Button onclick={() => switchToLanguage('en')}>en</Button>
-	<Button onclick={() => switchToLanguage('ko')}>ko</Button>
+	<Badge> 안니옹하시오 </Badge>
 </p>
 
 <style>

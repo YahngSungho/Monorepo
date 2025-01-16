@@ -23,9 +23,14 @@
         "vitest": "^2.1.8"
     },
     "exports": {
-        "./base.css": "./base.css",
-        "./base.js": "./base.js",
-        "./forTailwind.css": "./forTailwind.css",
+        "./base.css": "./src/base.css",
+        "./base.js": "./src/base.js",
+        "./baseLayout": "./src/routes/+layout.svelte",
+        "./forTailwind.css": "./src/forTailwind.css",
+        "./i18n.ts": "./src/lib/i18n.ts",
+        "./paraglide": "./src/paraglide.ts",
+        "./paraglide_outdir": "./src/lib/paraglide",
+        "./paraglide_project": "./project.inlang",
         "./postcss.config.js": "./postcss.config.js",
         "./svelte.config.js": "./svelte.config.js",
         "./tailwind.config": "./tailwind.config.ts",

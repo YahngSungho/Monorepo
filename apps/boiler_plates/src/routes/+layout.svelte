@@ -1,10 +1,11 @@
 <script>
-import '@repo/base/base.js'
-import '../app.css'
+import BaseLayout from '@repo/base/baseLayout'
 
 let { children } = $props()
 
-''; // eslint-disable-line sonarjs/no-unused-expressions, semi
+''; // eslint-disable-line sonarjs/no-unused-expressions, semi, no-unused-expressions
 </script>
 
-{@render children()}
+<BaseLayout>
+	{@render children()}
+</BaseLayout>
