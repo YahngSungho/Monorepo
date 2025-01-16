@@ -9,8 +9,9 @@
 @import url('sanitize.css/assets.css') layer(base0);
 @import url('sanitize.css/reduce-motion.css') layer(base0);
 
-@import url('open-props/postcss/style') layer(base1);
-@import url('open-props/postcss/normalize') layer(base1);
+@import url('open-props/style') layer(base1);
+@import url('open-props/normalize') layer(base1);
+@import url('open-props/media') layer(base1);
 /* @import url('open-props/postcss/buttons') layer(base0); */
 
 @import url('./tailwind.css');
