@@ -1,5 +1,5 @@
 /* stylelint-disable */
-/* :where(html) {
+:where(html) {
 	--font-system-ui: system-ui, -apple-system, segoe ui, roboto, ubuntu, cantarell, noto sans, sans-serif;
 	--font-transitional: charter, bitstream charter, sitka text, cambria, serif;
 	--font-old-style: iowan old style, palatino linotype, urw palladio l, p052, serif;
@@ -662,4 +662,4 @@
 		10% { opacity: 1; filter: brightness(0.5) blur(10px); }
 		0% { opacity: 1; filter: brightness(1) blur(0); }
 	}
-} */
+}
