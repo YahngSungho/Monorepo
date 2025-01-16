@@ -12,7 +12,7 @@
   "plugin.inlang.messageFormat": {
     "pathPattern": "./messages/{languageTag}.json"
   },
-  "sourceLanguageTag": "ko",
+  "sourceLanguageTag": "en",
   "languageTags": [
     "en",
     "ko"

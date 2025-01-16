@@ -7,7 +7,7 @@ import { defineConfig } from 'vite'
 import { configDefaults, defineConfig as defineConfig2, mergeConfig } from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { paraglide } from '@inlang/paraglide-sveltekit/vite'
-
+import { partytownVite } from '@qwik.dev/partytown/utils'
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -32,6 +32,7 @@ const baseConfig = defineConfig({
 		sveltekit(),
 		tsconfigPaths(),
 		tailwindcss(),
+		partytownVite({}),
 	],
 	ssr: {
 		noExternal: ['@inlang/paraglide-sveltekit'],

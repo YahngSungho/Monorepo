@@ -1,11 +1,13 @@
 <script>
 import BaseLayout from '@repo/base/baseLayout'
 
+const appName = 'boiler_plate'
+
 let { children } = $props()
 
-''; // eslint-disable-line sonarjs/no-unused-expressions, semi, no-unused-expressions
+''; // eslint-disable-line semi, no-unused-expressions
 </script>
 
-<BaseLayout>
+<BaseLayout {appName}>
 	{@render children()}
 </BaseLayout>

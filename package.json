@@ -11,6 +11,14 @@
 		"clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f package-lock.json + && pnpm store prune && pnpm install"
 	},
 	"name": "@repo/root",
+	"dependencies": {
+		"@inlang/paraglide-sveltekit": "^0.15.5",
+		"@qwik.dev/partytown": "^0.11.0",
+		"dotenv": "^16.4.7",
+		"luxon": "^3.5.0",
+		"pnpm": "^9.15.4",
+		"ufo": "^1.5.4"
+	},
 	"devDependencies": {
 		"@babel/core": "^7.26.0",
 		"@babel/eslint-parser": "^7.26.5",
@@ -76,10 +84,5 @@
 	"engines": {
 		"node": "23.5.0"
 	},
-	"type": "module",
-	"dependencies": {
-		"@inlang/paraglide-sveltekit": "^0.15.5",
-		"luxon": "^3.5.0",
-		"pnpm": "^9.15.4"
-	}
+	"type": "module"
 }

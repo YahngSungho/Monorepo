@@ -148,6 +148,7 @@
             "never"
         ],
         "semi-style": "off",
+        "sonarjs/no-unused-expressions": "off",
         "sonarjs/todo-tag": "off",
         "svelte/derived-has-same-inputs-outputs": "warn",
         "svelte/first-attribute-linebreak": "off",
