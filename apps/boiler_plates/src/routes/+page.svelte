@@ -4,7 +4,7 @@ import { Badge } from '@repo/ui/badge'
 import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
 import { switchToLanguage } from '@repo/base/paraglide'
-// 'as * from m'이 Sherlock extension을
+// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@repo/base/messages.js'
 
 const fo = 'bigCommandKEnabled'
