@@ -7,7 +7,7 @@ import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vite'
 import { configDefaults, defineConfig as defineConfig2, mergeConfig } from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { paraglide } from '@inlang/paraglide-sveltekit/vite'
+// import { paraglide } from '@inlang/paraglide-sveltekit/vite'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 
 // Simulate __dirname in ESM
@@ -27,14 +27,14 @@ const baseConfig = defineConfig({
 		},
 	},
 	plugins: [
-		paraglide({
-			outdir: path.resolve(__dirname, './src/lib/paraglide'),
-			project: path.resolve(__dirname, './project.inlang'),
-		}),
 		sveltekit(),
 		tsconfigPaths(),
 		tailwindcss(),
 		partytownVite({}),
+		// paraglide({
+		// 	outdir: path.resolve(__dirname, './src/lib/paraglide'),
+		// 	project: path.resolve(__dirname, './project.inlang'),
+		// }),
 		FontaineTransform.vite({
 			fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Noto Sans', 'Arial'],
 			resolvePath(id) {

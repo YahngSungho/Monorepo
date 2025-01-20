@@ -2,10 +2,12 @@
 // @ts-nocheck
 
 import { partytownSnippet } from '@qwik.dev/partytown/integration'
-import { ParaglideJS } from '@inlang/paraglide-sveltekit'
-import { i18n } from '../lib/i18n.ts'
+import { createI18n, ParaglideJS } from '@inlang/paraglide-sveltekit'
+import * as runtime from '../lib/paraglide/runtime.js'
 import '../base.js'
 import '../base.css'
+
+const i18n = createI18n(runtime)
 
 let { appName, children } = $props()
 ''; // eslint-disable-line semi, no-unused-expressions

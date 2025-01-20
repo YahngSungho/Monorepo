@@ -1,5 +1,5 @@
-import type {AvailableLanguageTag} from './lib/paraglide/runtime.js'
-import {i18n} from './lib/i18n.js'
+import type {AvailableLanguageTag} from '@repo/base/runtime.js'
+import {i18n} from './i18n.js'
 import {page} from '$app/state'
 import {goto} from '$app/navigation'
 
@@ -12,5 +12,5 @@ function switchToLanguage(newLanguage: AvailableLanguageTag) {
 export {switchToLanguage}
 
 export {
-	availableLanguageTags, isAvailableLanguageTag, languageTag as getLanguageTag, onSetLanguageTag,  setLanguageTag,
-} from './lib/paraglide/runtime.js'
+	availableLanguageTags, languageTag as getLanguageTag, isAvailableLanguageTag, onSetLanguageTag, setLanguageTag,
+} from '@repo/base/runtime.js'

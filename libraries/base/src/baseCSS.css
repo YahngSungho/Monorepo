@@ -11,6 +11,8 @@ body {
 
 	inline-size: 100svi;
 	block-size: 100svb;
+
+	font-size: var(--font-size-0);
 }
 
 *,

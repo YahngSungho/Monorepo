@@ -1,3 +1,66 @@
+:root {
+	/* Space 3xs: 5px → 5px */
+	--space-3xs: clamp(0.3125rem, 0.3125rem + 0vi, 0.3125rem);
+	/* Space 2xs: 9px → 10px */
+	--space-2xs: clamp(0.5625rem, 0.5408rem + 0.1087vi, 0.625rem);
+	/* Space xs: 14px → 15px */
+	--space-xs: clamp(0.875rem, 0.8533rem + 0.1087vi, 0.9375rem);
+	/* Space s: 18px → 20px */
+	--space-s: clamp(1.125rem, 1.0815rem + 0.2174vi, 1.25rem);
+	/* Space m: 27px → 30px */
+	--space-m: clamp(1.6875rem, 1.6223rem + 0.3261vi, 1.875rem);
+	/* Space l: 36px → 40px */
+	--space-l: clamp(2.25rem, 2.163rem + 0.4348vi, 2.5rem);
+	/* Space xl: 54px → 60px */
+	--space-xl: clamp(3.375rem, 3.2446rem + 0.6522vi, 3.75rem);
+	/* Space 2xl: 72px → 80px */
+	--space-2xl: clamp(4.5rem, 4.3261rem + 0.8696vi, 5rem);
+	/* Space 3xl: 108px → 120px */
+	--space-3xl: clamp(6.75rem, 6.4891rem + 1.3043vi, 7.5rem);
+
+	/* One-up pairs */
+	/* Space 3xs-2xs: 5px → 10px */
+	--space-3xs-2xs: clamp(0.3125rem, 0.2038rem + 0.5435vi, 0.625rem);
+	/* Space 2xs-xs: 9px → 15px */
+	--space-2xs-xs: clamp(0.5625rem, 0.4321rem + 0.6522vi, 0.9375rem);
+	/* Space xs-s: 14px → 20px */
+	--space-xs-s: clamp(0.875rem, 0.7446rem + 0.6522vi, 1.25rem);
+	/* Space s-m: 18px → 30px */
+	--space-s-m: clamp(1.125rem, 0.8641rem + 1.3043vi, 1.875rem);
+	/* Space m-l: 27px → 40px */
+	--space-m-l: clamp(1.6875rem, 1.4049rem + 1.413vi, 2.5rem);
+	/* Space l-xl: 36px → 60px */
+	--space-l-xl: clamp(2.25rem, 1.7283rem + 2.6087vi, 3.75rem);
+	/* Space xl-2xl: 54px → 80px */
+	--space-xl-2xl: clamp(3.375rem, 2.8098rem + 2.8261vi, 5rem);
+	/* Space 2xl-3xl: 72px → 120px */
+	--space-2xl-3xl: clamp(4.5rem, 3.4565rem + 5.2174vi, 7.5rem);
+
+	/* Custom pairs */
+	/* Space s-l: 18px → 40px */
+	--space-s-l: clamp(1.125rem, 0.6467rem + 2.3913vi, 2.5rem);
+}
+
+:root {
+	/* Step -2: 9.7222px → 10.24px */
+	--font-size-02: clamp(0.6076rem, 0.5964rem + 0.0563vi, 0.64rem);
+	/* Step -1: 11.6667px → 12.8px */
+	--font-size-01: clamp(0.7292rem, 0.7045rem + 0.1232vi, 0.8rem);
+	/* Step 0: 14px → 16px */
+	--font-size-0: clamp(0.875rem, 0.8315rem + 0.2174vi, 1rem);
+	/* Step 1: 16.8px → 20px */
+	--font-size-1: clamp(1.05rem, 0.9804rem + 0.3478vi, 1.25rem);
+	/* Step 2: 20.16px → 25px */
+	--font-size-2: clamp(1.26rem, 1.1548rem + 0.5261vi, 1.5625rem);
+	/* Step 3: 24.192px → 31.25px */
+	--font-size-3: clamp(1.512rem, 1.3586rem + 0.7672vi, 1.9531rem);
+	/* Step 4: 29.0304px → 39.0625px */
+	--font-size-4: clamp(1.8144rem, 1.5963rem + 1.0904vi, 2.4414rem);
+	/* Step 5: 34.8365px → 48.8281px */
+	--font-size-5: clamp(2.1773rem, 1.8731rem + 1.5208vi, 3.0518rem);
+}
+
+
 /* Open Props variables 덮어쓰기 Or 확장 */
 body {
 	--size-content-4: 80ch;
