@@ -1,6 +1,7 @@
 <script>
 import BaseLayout from '@repo/base/baseLayout'
 import '@repo/base/fontStyle.css'
+import { i18n } from '../i18n.ts'
 
 const appName = 'boiler_plate'
 
@@ -9,6 +10,6 @@ let { children } = $props()
 ''; // eslint-disable-line semi, no-unused-expressions
 </script>
 
-<BaseLayout {appName}>
+<BaseLayout {appName} {i18n}>
 	{@render children()}
 </BaseLayout>
