@@ -12,5 +12,5 @@ function switchToLanguage(newLanguage: AvailableLanguageTag) {
 export {switchToLanguage}
 
 export {
-	availableLanguageTags, isAvailableLanguageTag, languageTag, onSetLanguageTag, setLanguageTag,
+	availableLanguageTags, isAvailableLanguageTag, languageTag as getLanguageTag, onSetLanguageTag,  setLanguageTag,
 } from './lib/paraglide/runtime.js'

@@ -1,5 +1,6 @@
 <script>
 import BaseLayout from '@repo/base/baseLayout'
+import '@repo/base/fontStyle.css'
 
 const appName = 'boiler_plate'
 

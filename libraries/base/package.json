@@ -13,6 +13,7 @@
         "@tailwindcss/postcss": "4.0.0-beta.8",
         "@tailwindcss/vite": "4.0.0-beta.8",
         "daisyui": "5.0.0-beta.1",
+        "fontaine": "^0.5.0",
         "postcss": "^8.4.49",
         "postcss-jit-props": "^1.0.15",
         "postcss-lightningcss": "^1.0.1",
@@ -23,9 +24,14 @@
         "vitest": "^2.1.8"
     },
     "exports": {
+        "./assets": "./assets",
+        "./assets/fonts/IBMPlexSansVar-Italic.woff2": "./assets/fonts/IBMPlexSansVar-Italic.woff2",
+        "./assets/fonts/IBMPlexSansVar-Roman.woff2": "./assets/fonts/IBMPlexSansVar-Roman.woff2",
         "./base.css": "./src/base.css",
         "./base.js": "./src/base.js",
+        "./baseCSS.css": "./src/baseCSS.css",
         "./baseLayout": "./src/routes/+layout.svelte",
+        "./fontStyle.css": "./src/fontStyle.css",
         "./forTailwind.css": "./src/forTailwind.css",
         "./i18n.ts": "./src/lib/i18n.ts",
         "./messages.js": "./src/lib/paraglide/messages.js",

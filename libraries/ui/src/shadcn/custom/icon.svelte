@@ -1,7 +1,7 @@
 <script>
 let { children, icon, ...restProps } = $props()
 
-''; // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions, semi
+''; // eslint-disable-line no-unused-expressions, semi
 </script>
 
 <span class='with-icon' {...restProps}>
@@ -25,6 +25,7 @@ let { children, icon, ...restProps } = $props()
 
 	& .icon {
 		position: relative;
+		/* IBM Plex Sans 기준 */
 		inset-block-end: 0.125em;
 		margin-inline-end: 0.5em;
 	}

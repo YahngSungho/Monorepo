@@ -47,7 +47,7 @@ const myObject = {
 <h3>Welcome to SvelteKit</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
-<h6>Welcome to SvelteKit</h6>
+<h6>Welcome to SvelteKit 000</h6>
 
 <div class={'boxed'}>
 	<Button variant={'default'}> {m.deft_east_mouse_hope()} </Button>

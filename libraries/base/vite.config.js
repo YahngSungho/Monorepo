@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { FontaineTransform } from 'fontaine'
 import tailwindcss from '@tailwindcss/vite'
 import tailwindcss2 from '@tailwindcss/postcss'
 import { sveltekit } from '@sveltejs/kit/vite'
@@ -8,6 +9,9 @@ import { configDefaults, defineConfig as defineConfig2, mergeConfig } from 'vite
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { paraglide } from '@inlang/paraglide-sveltekit/vite'
 import { partytownVite } from '@qwik.dev/partytown/utils'
+
+console.log('[Fontaine Plugin] Loading...')
+
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -25,15 +29,23 @@ const baseConfig = defineConfig({
 		},
 	},
 	plugins: [
-		paraglide({
-			outdir: path.resolve(__dirname, './src/lib/paraglide'),
-			project: path.resolve(__dirname, './project.inlang'),
-		}),
 		sveltekit(),
 		tsconfigPaths(),
 		tailwindcss(),
 		partytownVite({}),
+		FontaineTransform.vite({
+			fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Noto Sans', 'Arial'],
+			resolvePath(id) {
+				const absolutePath = path.join(__dirname, 'static', id)
+				return absolutePath
+			},
+		}),
 	],
+	server: {
+		fs: {
+			allow: ['.', path.resolve(__dirname, './assets')],
+		},
+	},
 	ssr: {
 		noExternal: ['@inlang/paraglide-sveltekit'],
 	},
