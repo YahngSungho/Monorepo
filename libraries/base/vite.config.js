@@ -29,6 +29,10 @@ const baseConfig = defineConfig({
 		},
 	},
 	plugins: [
+		paraglide({
+			outdir: path.resolve(__dirname, './src/lib/paraglide'),
+			project: path.resolve(__dirname, './project.inlang'),
+		}),
 		sveltekit(),
 		tsconfigPaths(),
 		tailwindcss(),
