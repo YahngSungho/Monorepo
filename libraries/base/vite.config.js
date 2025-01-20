@@ -10,8 +10,6 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { paraglide } from '@inlang/paraglide-sveltekit/vite'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 
-console.log('[Fontaine Plugin] Loading...')
-
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
