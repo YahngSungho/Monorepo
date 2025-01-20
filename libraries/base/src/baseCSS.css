@@ -92,6 +92,7 @@ h3,
 h4,
 h5,
 h6 {
+	line-height: var(--font-lineheight-1);
 	text-wrap: balance;
 }
 
