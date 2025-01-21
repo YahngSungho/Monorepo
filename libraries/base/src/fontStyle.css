@@ -80,9 +80,7 @@
 }
 
 :root {
-	--default-font-family: 'IBM Plex Sans';
-
-	font-family: var(--default-font-family);
+	font-family: 'IBM Plex Sans';
 	font-feature-settings: 'ss02', 'ss03';
 	text-size-adjust: 100%;
 	color-scheme: light dark;
