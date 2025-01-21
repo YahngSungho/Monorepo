@@ -30,6 +30,7 @@
     ],
     "rules": {
         "@stylistic/indentation": "tab",
+        "@stylistic/max-line-length": null,
         "@stylistic/string-quotes": "single",
         "at-rule-no-unknown": null,
         "color-format/format": {
@@ -39,6 +40,7 @@
         "comment-empty-line-before": null,
         "csstools/use-nesting": "always",
         "declaration-property-value-no-unknown": true,
+        "font-family-no-missing-generic-family-keyword": null,
         "gamut/color-no-out-gamut-range": true,
         "no-duplicate-selectors": null,
         "number-max-precision": null,
