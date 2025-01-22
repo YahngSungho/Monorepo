@@ -45,7 +45,7 @@ const baseConfig = defineConfig({
 	],
 	server: {
 		fs: {
-			allow: ['.', path.resolve(__dirname, './assets')],
+			allow: ['.', path.resolve(__dirname, './static')],
 		},
 	},
 	ssr: {
