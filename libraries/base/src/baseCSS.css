@@ -31,8 +31,7 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--font-lineheight-3);
 	text-wrap: stable;
-	/* stylelint-disable-next-line value-keyword-case */
-	text-rendering: optimizeLegibility;
+	text-rendering: optimizelegibility;
 	word-break: keep-all;
 	line-break: strict;
 	overflow-wrap: break-word;
@@ -109,36 +108,46 @@ h6 {
 
 /* Scrollbar */
 
-@container (max-width: 30ch) {
-	::-webkit-scrollbar-button:horizontal {
-		display: none;
-	}
-}
-
-@container (max-height: 30ex) {
-	::-webkit-scrollbar-button:vertical {
-		display: none;
-	}
-}
-
-@container (max-width: 15ch) {
+@media (forced-colors: none) {
+	/* 1. 모든 브라우저에 적용되는 기본 스타일 */
 	* {
-		scrollbar-width: thin;
+		scrollbar-color: color-mix(in oklch, currentcolor 35%, transparent) transparent;
 	}
 
-	::-webkit-scrollbar {
-		/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-		width: 1ch;
+	/* 4. Firefox용 컨테이너 쿼리 */
+	@container (max-width: 15ch) {
+		* {
+			scrollbar-width: thin;
+		}
 	}
-}
+	/* 2. WebKit 계열 브라우저 전용 스타일 */
+	@supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
+		* {
+			scrollbar-color: initial; /* 웹킷 스크롤바 활성화 */
+		}
 
-@container (max-height: 15ex) {
-	* {
-		scrollbar-width: thin;
-	}
+		::-webkit-scrollbar {
+			inline-size: 1.5ch;
+			block-size: 1.5ex;
+		}
 
-	::-webkit-scrollbar {
-		/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-		height: 1ex;
+		::-webkit-scrollbar-thumb {
+			background-color: color-mix(in oklch, currentcolor 35%, transparent);
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: transparent;
+		}
+
+		/* 3. 컨테이너 쿼리 대응 */
+		@container (max-width: 15ch) {
+			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+			::-webkit-scrollbar { width: 0.5ch; }
+		}
+
+		@container (max-height: 15ex) {
+			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+			::-webkit-scrollbar { height: 0.5ex; }
+		}
 	}
 }
