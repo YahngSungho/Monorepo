@@ -802,54 +802,54 @@
 
 /* Arabic */
 html[lang^='ar'] {
-	font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans Arabic';
 }
 
 /* Chinese Traditional */
 html[lang='zh-tw'],
 html[lang='zh-hk'] {
-	font-family: 'IBM Plex Sans TC', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans TC';
 }
 
 /* Chinese Simplified */
 html[lang='zh-cn'],
 html[lang='zh-sg'],
 html[lang^='zh'] {
-	font-family: 'IBM Plex Sans SC', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans SC';
 }
 
 /* Hebrew */
 html[lang='he'] {
-	font-family: 'IBM Plex Sans Hebrew', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans Hebrew';
 }
 
 /* Hindi and other Devanagari-based languages */
 html[lang='hi'],
 html[lang='sa'],
 html[lang='ne'] {
-	font-family: 'IBM Plex Sans Devanagari', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans Devanagari';
 }
 
 /* Japanese */
 html[lang='ja'] {
-	font-family: 'IBM Plex Sans JP', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans JP';
 }
 
 /* Korean */
 html[lang='ko'],
 html[lang='ko-kr'],
 html[lang='ko-kp'] {
-	font-family: 'IBM Plex Sans KR', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans KR';
 }
 
 /* Thai */
 html[lang='th'] {
-	font-family: 'IBM Plex Sans Thai', 'IBM Plex Sans';
+	font-family: 'IBM Plex Sans Thai';
 }
 
 code,
 kbd,
 samp,
 pre {
-	font-family: 'IBM Plex Mono', 'IBM Plex Sans';
+	font-family: 'IBM Plex Mono';
 }
