@@ -805,17 +805,18 @@ html[lang^='ar'] {
 	font-family: 'IBM Plex Sans Arabic';
 }
 
-/* Chinese Traditional */
-html[lang='zh-tw'],
-html[lang='zh-hk'] {
-	font-family: 'IBM Plex Sans TC';
-}
-
 /* Chinese Simplified */
-html[lang='zh-cn'],
-html[lang='zh-sg'],
 html[lang^='zh'] {
 	font-family: 'IBM Plex Sans SC';
+}
+/* Chinese Traditional */
+html[lang='zh-tw'],
+html[lang='zh-hk'],
+html[lang='zh-Hant'],
+html[lang='zh-TW'],
+html[lang='zh-HK'],
+html[lang='zh-tTW'] {
+	font-family: 'IBM Plex Sans TC';
 }
 
 /* Hebrew */
