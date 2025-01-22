@@ -1,2 +1,5 @@
-NODE_VERSION = 23.5.0
-PNPM_VERSION = 9.15.0
+name = "Monorepo"
+
+[vars]
+NODE_VERSION = "23.5.0"
+PNPM_VERSION = "9.15.0"
