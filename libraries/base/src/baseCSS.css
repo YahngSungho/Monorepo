@@ -1,4 +1,5 @@
 :root {
+	font-size: var(--font-size-1);
 	text-size-adjust: 100%;
 	color-scheme: light dark;
 }
@@ -16,8 +17,6 @@ body {
 
 	inline-size: 100svi;
 	block-size: 100svb;
-
-	font-size: var(--font-size-0);
 }
 
 *,
@@ -127,8 +126,8 @@ h6 {
 		}
 
 		::-webkit-scrollbar {
-			inline-size: 1.5ch;
-			block-size: 1.5ex;
+			inline-size: min(1.5ch, var(--font-size-3));
+			block-size: min(1.5ex, var(--font-size-3));
 		}
 
 		::-webkit-scrollbar-thumb {
@@ -142,12 +141,12 @@ h6 {
 		/* 3. 컨테이너 쿼리 대응 */
 		@container (max-width: 15ch) {
 			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-			::-webkit-scrollbar { width: 0.5ch; }
+			::-webkit-scrollbar { width: min(0.5ch, var(--font-size-1)); }
 		}
 
 		@container (max-height: 15ex) {
 			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-			::-webkit-scrollbar { height: 0.5ex; }
+			::-webkit-scrollbar { height: min(0.5ex, var(--font-size-1)); }
 		}
 	}
 }
