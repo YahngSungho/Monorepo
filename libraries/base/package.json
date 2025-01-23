@@ -1,17 +1,13 @@
 {
     "author": "",
     "dependencies": {
-        "@inlang/paraglide-sveltekit": "^0.15.5",
         "@qwik.dev/partytown": "^0.11.0",
         "open-props": "^1.7.10",
         "sanitize.css": "^13.0.0"
     },
     "description": "",
     "devDependencies": {
-        "@sveltejs/adapter-auto": "^3.3.1",
-        "@sveltejs/adapter-cloudflare": "^5.0.1",
         "@sveltejs/kit": "^2.15.1",
-        "@sveltejs/vite-plugin-svelte": "^5.0.3",
         "@tailwindcss/postcss": "4.0.0-beta.8",
         "@tailwindcss/vite": "4.0.0-beta.8",
         "daisyui": "5.0.0-beta.1",
