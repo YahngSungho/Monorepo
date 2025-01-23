@@ -14,8 +14,7 @@
   "main": "index.js",
   "name": "@repo/library_wrappers",
   "scripts": {
-    "test": "vitest",
-    "update": "pnpm update"
+    "test": "vitest"
   },
   "type": "module",
   "version": "1.0.0"

@@ -19,7 +19,7 @@
         "tailwindcss": "4.0.0-beta.8",
         "tailwindcss-animate": "^1.0.7"
     },
-    "name": "boiler-plates",
+    "name": "boiler_plates",
     "private": true,
     "scripts": {
         "build": "vite build",

@@ -80,5 +80,9 @@
 		"wrangler": "^3.105.0",
 		"xo": "^0.59.3"
 	},
-	"type": "module"
+	"type": "module",
+	"packageManager": "pnpm@9.15.4",
+	"engines": {
+		"node": "23.5.0"
+	}
 }

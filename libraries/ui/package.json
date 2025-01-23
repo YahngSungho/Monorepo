@@ -75,14 +75,8 @@
     ],
     "name": "@repo/ui",
     "scripts": {
-        "build": "vite build && npm run package",
-        "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-        "dev": "vite dev",
-        "package": "svelte-kit sync && svelte-package && publint",
-        "prepublishOnly": "npm run package",
-        "preview": "vite preview",
-        "shadcn": "pnpm dlx shadcn-svelte@next add"
+        "shadcn": "pnpm dlx shadcn-svelte@next add",
+        "test": "vitest"
     },
     "sideEffects": [
         "**/*.css"

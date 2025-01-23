@@ -38,8 +38,7 @@
             ],
             "parser": "svelte-eslint-parser",
             "rules": {
-                "sonarjs/no-use-of-empty-return-value": "off",
-                "sonarjs/sonar-no-unused-vars": "off"
+                "sonarjs/no-use-of-empty-return-value": "off"
             }
         },
         {
@@ -54,7 +53,8 @@
         {
             "files": [
                 "*.json",
-                "*.json5"
+                "*.json5",
+                "*.jsonc"
             ],
             "parser": "jsonc-eslint-parser"
         },
@@ -87,12 +87,8 @@
             }
         }
     ],
-    "parserOptions": {
-        "ecmaVersion": "2022",
-        "project": "./jsconfig.json",
-        "sourceType": "module"
-    },
     "plugins": [
+        "depend",
         "turbo",
         "svelte",
         "@intlify/eslint-plugin-svelte",
@@ -149,6 +145,7 @@
         ],
         "semi-style": "off",
         "sonarjs/no-unused-expressions": "off",
+        "sonarjs/sonar-no-unused-vars": "off",
         "sonarjs/todo-tag": "off",
         "svelte/derived-has-same-inputs-outputs": "warn",
         "svelte/first-attribute-linebreak": "off",
