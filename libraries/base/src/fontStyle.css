@@ -3,6 +3,7 @@
 	font-weight: 100 900;
 	font-style: normal;
 	font-display: swap;
+	/* url에 주어진 path가 상대 경로일 시 Fontaine 작동 안하는 문제 */
 	src: url('@repo/base/IBMPlexSansVar-Roman.woff2') format('woff2-variations');
 }
 
