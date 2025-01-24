@@ -3,7 +3,10 @@ node_modules
 # Output
 .output
 .vercel
-/.svelte-kit
+/.svelte-kit/cloudflare
+/.svelte-kit/cloudflare-tmp
+/.svelte-kit/generated
+/.svelte-kit/output
 /build
 
 # OS
