@@ -11,9 +11,14 @@
             ],
             "inputs": [
                 "$TURBO_DEFAULT$",
-                "!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}"
+								"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
+								".env.production.local",
+								".env.local",
+								".env.production",
+								".env"
             ],
             "outputs": [
+								"dist",
                 ".svelte-kit/**",
                 ".vercel/**"
             ]
