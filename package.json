@@ -1,6 +1,7 @@
 {
 	"private": true,
 	"scripts": {
+		"generate-app": "sh -c 'turbo gen workspace --type app --copy boiler_plates --name $1 --destination ./apps/$1' dummy",
 		"build": "turbo run build",
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",
