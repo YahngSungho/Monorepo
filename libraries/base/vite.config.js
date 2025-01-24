@@ -3,7 +3,6 @@ import { fileURLToPath } from 'node:url'
 import { FontaineTransform } from 'fontaine'
 import tailwindcss from '@tailwindcss/vite'
 import tailwindcss2 from '@tailwindcss/postcss'
-import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vite'
 import { configDefaults, defineConfig as defineConfig2, mergeConfig } from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -26,7 +25,6 @@ const baseConfig = defineConfig({
 		},
 	},
 	plugins: [
-		sveltekit(),
 		tsconfigPaths(),
 		tailwindcss(),
 		partytownVite({}),
