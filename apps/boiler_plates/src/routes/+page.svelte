@@ -13,33 +13,6 @@ let foo = $state(fo + ' foifoifo')
 
 foo += ' bar133322222223'
 
-const myObject = {
-	bar: {
-		deeplyNested: {
-			inner: {
-				moreInner: {
-					evenMoreInner: {
-						almostThere: {
-							gettingDeeper: {
-								bottle: 'done',
-								deepestYet: {
-									finalLevel: '이제 정말로 충분히 깊습니다.',
-								},
-
-							},
-						},
-					},
-				},
-			},
-		},
-		eo: 'vgf2',
-		eov: 'fgv',
-		wo: 'sw',
-	},
-	foo: 'bar',
-	tor: 'boo',
-}
-
 ''; // eslint-disable-line semi
 </script>
 
@@ -49,13 +22,21 @@ const myObject = {
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<div class={'boxed'}>
-	<Button variant={'default'}> {m.deft_east_mouse_hope()} </Button>
-	<Icon icon={'mdi:home'} style={'font-size: 2em;'}>My Icon</Icon>
-	<div class={'gutter'} style:overflow={'auto'} style:height={'100px'}>
-		<Icon icon={'mdi:home'} style={'font-size: 2em;'}>아이콘</Icon>
+<Icon icon={'mdi:home'} style={'font-size: 2em;'}>아이콘</Icon>
+<Button variant={'default'}> {m.deft_east_mouse_hope()} </Button>
+<Icon icon={'mdi:home'} style={'font-size: 2em;'}>My Icon</Icon>
 
-		Minim <i>anim</i> esse nostrud<i>pariatur ex ullamco. Pariatur</i>u ut deserunt consequat officia non quis irure tempor adipisicing veniam 안녕 <i>가나다라마바사아</i>을를 <i>qui</i>를 irure esse. Proident amet incididunt officia sit tempor excepteur occaecat. Ipsum cupidatat sunt quis excepteur duis enim voluptate quis consequat quis officia. Excepteur exercitation incididunt do ad aute enim cupidatat pariatur aliquip. Lorem anim in anim. Mollit eu sunt ad dolore dolor incididunt enim amet consectetur eu deserunt quis cillum.
+<div class={'p1 boxed long-text gutter'}>
+	<h1>Aute aliquip laborum tempor</h1>
+	<blockquote>
+		incididunt officia sit tempor excepteur occaecat. Ipsum cupidatat sunt quis excepteur duis enim voluptate quis consequat quis officia. Excepteur exercitation incididunt do ad aute enim cupidatat pariatur aliquip.
+		<br />
+		- sungho
+	</blockquote>
+	<h2>Ea consequat irure dolor proident</h2>
+	<h3>Eiusmod voluptate non nostrud labore</h3>
+	<p class={'boxed gutter'}>
+		Minim <i>anim</i> esse nostrud<i>pariatur ex ullamco. Pariatur</i>u ut deserunt consequat officia non quis irure <q>tempor adipisicing</q> veniam 안녕 <i>가나다라마바사아</i>을를 <i>qui</i>를 irure esse. Proident amet Lorem anim in anim. Mollit eu sunt ad dolore dolor incididunt enim amet consectetur eu deserunt quis cillum.
 		Ea cillum cupidatat sint velit amet dolore id. Dolore culpa ex in et sunt labore dolore est magna tempor. Aute aliquip laborum tempor ea dolore sunt excepteur anim sit. Cupidatat duis laboris qui do labore. Ea consequat irure dolor proident pariatur cillum fugiat nostrud minim.
 		Ut voluptate nisi tempor laborum adipisicing exercitation quis voluptate adipisicing. Laborum culpa qui dolore officia. Nisi nostrud deserunt esse ad esse labore. Ad ipsum exercitation veniam sint magna officia aute nostrud anim eu officia eu aliquip.
 		Eiusmod voluptate non nostrud labore ullamco consectetur aliquip id voluptate dolore exercitation id enim quis. Consectetur ex minim irure id velit nisi. Reprehenderit reprehenderit cupidatat excepteur duis excepteur dolor elit ad qui labore laboris. Eu enim ullamco enim irure anim magna velit velit laboris consequat nulla amet officia occaecat. Nulla incididunt cillum consectetur reprehenderit eiusmod labore anim exercitation commodo esse commodo. Amet mollit consectetur aliquip elit.
@@ -71,19 +52,26 @@ const myObject = {
 		Eiusmod magna officia ullamco sit laborum deserunt consequat velit cupidatat Lorem commodo consectetur magna. Consectetur consectetur deserunt esse velit adipisicing irure fugiat sit nulla esse dolor id minim non. Sit enim quis eu anim id adipisicing proident officia elit enim elit id. Mollit adipisicing exercitation labore ut. Labore et sunt incididunt nostrud nostrud et nisi eu fugiat adipisicing magna quis pariatur officia. Do voluptate ipsum cillum consectetur sunt esse commodo cupidatat deserunt labore Lorem fugiat cupidatat in. Consequat dolore velit reprehenderit esse minim id reprehenderit.
 		Laboris amet culpa in cillum aute est adipisicing in cupidatat exercitation labore Lorem sunt. Est proident non proident fugiat do do velit eu exercitation consectetur magna ad. Amet labore aliquip occaecat enim sint incididunt fugiat dolor eu commodo adipisicing cupidatat. Irure ex sint excepteur ipsum id ex id. Eu cupidatat velit est do elit nostrud culpa culpa nostrud magna reprehenderit qui eiusmod pariatur veniam. Sunt sunt velit Lorem ut fugiat mollit consectetur irure.
 
-	</div>
+	</p>
 </div>
 
 <Calendar />
 
-<p>
+<div class='colored'>
 	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>
 	<Button onclick={() => switchToLanguage('en')}>en</Button>
 	<Button onclick={() => switchToLanguage('ko')}>ko</Button>
-</p>
+</div>
 
 <style>
-	p {
+	.p1 {
+		overflow: auto;
+		max-block-size: 30rem;
+		margin: auto;
+		border-width: var(--border-size-3);
+	}
+
+	.colored {
 		max-inline-size: 1000px;
 		background-color: var(--red-10);
 	}

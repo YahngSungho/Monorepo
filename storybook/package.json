@@ -33,11 +33,11 @@
     "vite": "^6.0.11",
     "vite-tsconfig-paths": "^5.1.4"
   },
-  "name": "before-storybook",
+	"name": "storybook",
   "private": true,
   "scripts": {
     "build:storybook": "storybook build",
-    "storybook": "storybook dev -p 6006 -- --open"
+		"dev": "storybook dev -p 6006"
   },
   "type": "module",
   "version": "0.0.0"

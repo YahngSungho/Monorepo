@@ -1,8 +1,9 @@
 {
 	"private": true,
 	"scripts": {
-		"generate-app": "sh -c 'turbo gen workspace --type app --copy boiler_plates --name $1 --destination ./apps/$1' dummy",
+		"generate:app": "sh -c 'turbo gen workspace --type app --copy boiler_plates --name $1 --destination ./apps/$1' dummy",
 		"build": "turbo run build",
+		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook",
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",
 		"test": "turbo run test",

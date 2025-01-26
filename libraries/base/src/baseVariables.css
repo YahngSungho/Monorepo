@@ -60,7 +60,6 @@
 	--font-size-5: clamp(2.1773rem, 1.8731rem + 1.5208vi, 3.0518rem);
 }
 
-
 /* Open Props variables 덮어쓰기 Or 확장 */
 body {
 	--size-content-4: 80ch;
