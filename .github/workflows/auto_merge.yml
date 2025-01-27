@@ -3,10 +3,6 @@ name: Auto-Merge Pull Request
 
 on:
   # Try enabling auto-merge for all open pull requests.
-  # (Only recommended for testing.)
-  push:
-
-  # Try enabling auto-merge for all open pull requests.
   schedule:
     - cron: 0 * * * *
 
@@ -38,8 +34,7 @@ jobs:
       - uses: reitermarkus/automerge@v2.8.0
         with:
           token: ${{ secrets.TOKEN1 }}
-          merge-method: rebase
+          merge-method: merge
           do-not-merge-labels: never-merge
-          required-labels: automerge
           pull-request: ${{ github.event.inputs.pull-request }}
           review: ${{ github.event.inputs.review }}
