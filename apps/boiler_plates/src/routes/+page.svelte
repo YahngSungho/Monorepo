@@ -47,6 +47,9 @@ foo += ' bar133322222223'
 			<li>
 				Good
 			</li>
+			<li>
+				Power
+			</li>
 		</ol>
 		Ea cillum cupidatat sint velit amet dolore id. Dolore culpa ex in et sunt labore dolore est magna tempor. Aute aliquip laborum tempor ea dolore sunt excepteur anim sit. Cupidatat duis laboris qui do labore. Ea consequat irure dolor proident pariatur cillum fugiat nostrud minim.
 		Ut voluptate nisi tempor laborum adipisicing exercitation quis voluptate adipisicing. Laborum culpa qui dolore officia. Nisi nostrud deserunt esse ad esse labore. Ad ipsum exercitation veniam sint magna officia aute nostrud anim eu officia eu aliquip.
