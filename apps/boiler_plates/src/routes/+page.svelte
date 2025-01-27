@@ -22,9 +22,8 @@ foo += ' bar133322222223'
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<Icon icon={'mdi:home'} style={'font-size: 2em;'}>아이콘</Icon>
+<Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
 <Button variant={'default'}> {m.deft_east_mouse_hope()} </Button>
-<Icon icon={'mdi:home'} style={'font-size: 2em;'}>My Icon</Icon>
 
 <div class={'p1 boxed long-text gutter'}>
 	<h1>Aute aliquip laborum tempor</h1>
@@ -35,7 +34,7 @@ foo += ' bar133322222223'
 	</blockquote>
 	<h2>Ea consequat irure dolor proident</h2>
 	<h3>Eiusmod voluptate non nostrud labore</h3>
-	<p class={'boxed gutter'}>
+	<p>
 		Minim <i>anim</i> esse nostrud<i>pariatur ex ullamco. Pariatur</i>u ut deserunt consequat officia non quis irure <q>tempor adipisicing</q> veniam 안녕 <i>가나다라마바사아</i>을를 <i>qui</i>를 irure esse. Proident amet Lorem anim in anim. Mollit eu sunt ad dolore dolor incididunt enim amet consectetur eu deserunt quis cillum.
 		Ea cillum cupidatat sint velit amet dolore id. Dolore culpa ex in et sunt labore dolore est magna tempor. Aute aliquip laborum tempor ea dolore sunt excepteur anim sit. Cupidatat duis laboris qui do labore. Ea consequat irure dolor proident pariatur cillum fugiat nostrud minim.
 		Ut voluptate nisi tempor laborum adipisicing exercitation quis voluptate adipisicing. Laborum culpa qui dolore officia. Nisi nostrud deserunt esse ad esse labore. Ad ipsum exercitation veniam sint magna officia aute nostrud anim eu officia eu aliquip.
