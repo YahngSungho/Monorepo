@@ -9,7 +9,7 @@ import { switchToLanguage } from '../paraglide.ts'
 
 const fo = 'bigCommandKEnabled'
 
-let foo = $state(fo + ' foifoifo')
+let foo = $state(fo + 'foifoifo')
 
 foo += ' bar133322222223'
 
