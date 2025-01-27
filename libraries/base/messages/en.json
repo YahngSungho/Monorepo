@@ -1,8 +1,9 @@
 {
-    "$schema": "https://inlang.com/schema/inlang-message-format",
-    "hello_world": "Hello, {name} from en! 123",
-    "deft_east_mouse_hope": "Hello",
-    "welcome": "Welcome to SvelteKit",
-    "whole_still_oryx_shine": "{'안녕안녕?'}",
-    "tangy_late_wallaby_grip": "Welcome to SvelteKit"
+"$schema": "https://inlang.com/schema/inlang-message-format",
+"antsy_aloof_barbel_read": "Icon",
+"deft_east_mouse_hope": "Hello",
+"hello_world": "Hello, {name} from en! 123",
+"tangy_late_wallaby_grip": "Welcome to SvelteKit",
+"welcome": "Welcome to SvelteKit",
+"whole_still_oryx_shine": "{'안녕안녕?'}"
 }
