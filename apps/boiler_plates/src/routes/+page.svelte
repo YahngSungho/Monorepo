@@ -13,7 +13,7 @@ let foo = $state(fo + 'foifoifo')
 
 foo += ' bar133322222223'
 
-''; // eslint-disable-line semi
+''; // eslint-disable-line semi, no-unused-expressions
 </script>
 
 <h1 class={'bg-primary'}>{m.welcome()}</h1>
