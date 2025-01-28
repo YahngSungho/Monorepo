@@ -1,6 +1,9 @@
 {
 		"$schema": "https://turbo.build/schema.json",
-		"globalDependencies": [],
+		"globalDependencies": [
+			"**/.env.*",
+			"CI"
+		],
 		"globalEnv": [
 			"NODE_ENV"
 		],
@@ -33,10 +36,14 @@
 				"dependsOn": [
 					"^build"
 				],
-				"outputs": [],
-				"passThroughEnv": [
-					"PLAYWRIGHT_*"
-				]
-			}
-		}
+						"env": [
+							"CI"
+						],
+						"outputs": [],
+						"passThroughEnv": [
+								"PLAYWRIGHT_*",
+								"CI"
+							]
+						}
+					}
 }

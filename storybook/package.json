@@ -39,7 +39,7 @@
 		"name": "storybook",
 		"private": true,
 		"scripts": {
-			"build": "storybook build",
+				"build": "storybook build --output-dir storybook-static",
 				"dev": "storybook dev -p 6006",
 				"preview": "vite preview --outDir storybook-static",
 				"test:e2e": "playwright test"
