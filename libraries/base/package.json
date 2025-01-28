@@ -133,7 +133,8 @@
     "main": "index.js",
     "name": "@repo/base",
     "scripts": {
-        "test": "vitest",
+				"test": "vitest && pnpm run test:e2e",
+				"test:e2e": "playwright test",
         "translate": "npx @inlang/cli machine translate --project ./project.inlang",
         "update": "pnpm update"
     },
