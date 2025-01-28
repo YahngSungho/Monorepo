@@ -115,6 +115,7 @@
         "./base.js": "./src/base.js",
         "./baseCSS.css": "./src/baseCSS.css",
         "./baseLayout": "./src/routes/+layout.svelte",
+				"./basic.test.js": "./e2e/basic.test.js",
         "./fontStyle.css": "./src/fontStyle.css",
         "./forTailwind.css": "./src/forTailwind.css",
         "./i18n.ts": "./src/lib/i18n.ts",

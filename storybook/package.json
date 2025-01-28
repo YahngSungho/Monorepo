@@ -1,4 +1,7 @@
 {
+		"dependencies": {
+			"nanoid": "^5.0.9"
+		},
 		"devDependencies": {
 			"@chromatic-com/storybook": "^3.2.4",
 			"@repo/base": "workspace:*",
@@ -36,8 +39,10 @@
 		"name": "storybook",
 		"private": true,
 		"scripts": {
-				"build": "storybook build",
-				"dev": "storybook dev -p 6006"
+			"build": "storybook build",
+				"dev": "storybook dev -p 6006",
+				"preview": "vite preview --outDir storybook-static",
+				"test:e2e": "playwright test"
 			},
 			"type": "module",
 			"version": "0.0.0"

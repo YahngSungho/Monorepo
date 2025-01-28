@@ -33,10 +33,10 @@
 				"dependsOn": [
 					"^build"
 				],
-						"outputs": [],
-						"passThroughEnv": [
-							"PLAYWRIGHT_*"
-						]
-					}
-				}
+				"outputs": [],
+				"passThroughEnv": [
+					"PLAYWRIGHT_*"
+				]
+			}
+		}
 }
