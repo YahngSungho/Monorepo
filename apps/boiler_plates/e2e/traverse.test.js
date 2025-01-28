@@ -12,9 +12,13 @@ const projectRouteRoot = join(__dirname, '../src/routes')
 
 // Define parameter examples for dynamic routes
 // You can extend this object with more routes and parameters
+
+/**
+ * @type {{ [key: string]: string[] }} dynamicRouteParams
+ */
 const dynamicRouteParams = {
-	'/blog/[slug]': ['hello-world', 'sveltekit-example'],
-	'/products/[id]': ['123', '456'],
+	// '/blog/[slug]': ['hello-world', 'sveltekit-example'],
+	// '/products/[id]': ['123', '456'],
 	// Add more dynamic routes and parameter examples as needed
 }
 
