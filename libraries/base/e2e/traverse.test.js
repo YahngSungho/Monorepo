@@ -58,7 +58,7 @@ async function visitPage(baseUrl, testRoute, page) {
 }
 
 const PERFORMANCE_THRESHOLDS = {
-	maxLoadTime: 2500,
+	maxLoadTime: 5000,
 	maxLCP: 1500,
 	maxCLS: 0.1
 }

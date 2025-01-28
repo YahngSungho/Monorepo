@@ -122,6 +122,7 @@
         "./paraglide": "./src/paraglide.ts",
         "./paraglide_outdir": "./src/lib/paraglide",
         "./paraglide_project": "./project.inlang",
+				"./playwright.config.js": "./playwright.config.js",
         "./postcss.config.js": "./postcss.config.js",
         "./runtime.js": "./src/lib/paraglide/runtime.js",
         "./svelte.config.js": "./svelte.config.js",
@@ -134,10 +135,10 @@
     "main": "index.js",
     "name": "@repo/base",
     "scripts": {
+				"test": "npm run test:unit -- --run",
+				"test:unit": "vitest",
         "translate": "npx @inlang/cli machine translate --project ./project.inlang",
-        "update": "pnpm update",
-        "test:unit": "vitest",
-        "test": "npm run test:unit -- --run"
+				"update": "pnpm update"
     },
     "type": "module",
     "version": "1.0.0"

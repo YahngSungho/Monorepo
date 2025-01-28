@@ -24,10 +24,12 @@ const baseConfig = defineConfig({
 		},
 	},
 	plugins: [
+		// @ts-ignore
 		tsconfigPaths(),
 		// @ts-ignore
 		tailwindcss(),
 		partytownVite({}),
+		// @ts-ignore
 		FontaineTransform.vite({
 			fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Noto Sans', 'Arial'],
 			resolvePath(id) {

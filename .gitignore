@@ -152,4 +152,3 @@ output
 **/.svelte-kit/types
 **/.svelte-kit/ambient.d.ts
 **/.svelte-kit/non-ambient.d.ts
-ambient.d.ts
