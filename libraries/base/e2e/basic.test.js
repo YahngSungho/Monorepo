@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test('Playwright Running', async ({ page }) => {
+test('실행: Playwright', async ({ page }) => {
 	await page.goto('/')
 
 	await expect(page.locator('html')).toBeVisible()

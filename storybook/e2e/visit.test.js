@@ -2,13 +2,13 @@ import { expect, test } from '@playwright/test'
 import manifest from '../storybook-static/index.json' assert { type: "json"}
 
 for (const key of Object.keys(manifest.entries)) {
-	const { id, title } = manifest.entries[key]
+	const { id } = manifest.entries[key]
 
 	if (id.endsWith('docs')) {
 		continue
 	}
 
-	test(`Visiting ${title}: ${id}`, async ({ page }) => {
+	test(`방문: ${id.replace(/\-/g, ' > ')}`, async ({ page }) => {
 		// 콘솔 오류 감지 설정 (페이지 이동 전에 설정)
 		const consoleErrors = []
 		page.on('console', msg => {
