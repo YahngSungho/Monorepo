@@ -64,8 +64,9 @@ const PERFORMANCE_THRESHOLDS = {
 }
 
 async function speedCheck(page) {
+	await page.waitForTimeout(1000)
 	// 네트워크 유휴 상태까지 대기
-	await page.waitForLoadState('networkidle')
+	await page.waitForLoadState('networkidle', { timeout: 10000 })
 
 	// Navigation Timing API 대신 Performance API 사용
 	const loadTime = await page.evaluate(() => {
@@ -126,7 +127,7 @@ async function speedCheck(page) {
 
 	// Playwright 내장 메트릭과 결합
 	const performanceMetrics = await page.evaluate(() =>
-		JSON.parse(JSON.stringify(window.performance.timing))
+		JSON.parse(JSON.stringify(window.performance.timeOrigin))
 	)
 
 	console.log(`성능 메트릭 - LCP: ${lcp}ms, CLS: ${cls}, Load: ${loadTime}ms`)
@@ -155,12 +156,16 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 						// 파라미터 배열을 순차적으로 적용 (예: [id]/[slug] → 123/my-post)
 						test(`방문: ${dynamicTestRoute} (dynamic)`, async ({ page }) => {
 							const params = paramExample.split('/') // 예시: "123/my-post" → ["123", "my-post"]
-							let replacedRoute = testRoute
-							let paramIndex = 0
+							if (params.length !== (testRoute.match(DYNAMIC_ROUTE_PATTERN) || []).length) {
+								throw new Error(`파라미터 개수 불일치: ${routePath} → ${paramExample}`)
+							}
+							const encodedParams = params.map(p => encodeURIComponent(p))
 
 							// 모든 동적 세그먼트를 순차적으로 치환
+							let replacedRoute = testRoute
+							let paramIndex = 0
 							replacedRoute = replacedRoute.replaceAll(DYNAMIC_ROUTE_PATTERN, () => {
-								return params[paramIndex++] || 'MISSING_PARAM'
+								return encodedParams[paramIndex++] || 'MISSING_PARAM'
 							})
 
 							await visitPage(baseUrl, replacedRoute, page)
