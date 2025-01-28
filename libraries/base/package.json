@@ -17,8 +17,7 @@
         "postcss-preset-env": "^10.1.3",
         "tailwindcss": "4.0.0-beta.8",
         "tailwindcss-animate": "^1.0.7",
-        "terser": "^5.37.0",
-        "vitest": "^2.1.8"
+        "terser": "^5.37.0"
     },
     "exports": {
         "./IBMPlexMath.woff2": "./static/fonts/math/IBMPlexMath-Regular.woff2",
@@ -115,7 +114,7 @@
         "./base.js": "./src/base.js",
         "./baseCSS.css": "./src/baseCSS.css",
         "./baseLayout": "./src/routes/+layout.svelte",
-				"./basic.test.js": "./e2e/basic.test.js",
+        "./basic.test.js": "./e2e/basic.test.js",
         "./fontStyle.css": "./src/fontStyle.css",
         "./forTailwind.css": "./src/forTailwind.css",
         "./i18n.ts": "./src/lib/i18n.ts",
@@ -127,16 +126,18 @@
         "./runtime.js": "./src/lib/paraglide/runtime.js",
         "./svelte.config.js": "./svelte.config.js",
         "./tailwind.config": "./tailwind.config.ts",
-				"./traverse.test.js": "./e2e/traverse.test.js",
+        "./traverse.test.js": "./e2e/traverse.test.js",
         "./vite.config.js": "./vite.config.js"
     },
     "keywords": [],
     "license": "ISC",
     "main": "index.js",
     "name": "@repo/base",
-		"scripts": {
+    "scripts": {
         "translate": "npx @inlang/cli machine translate --project ./project.inlang",
-        "update": "pnpm update"
+        "update": "pnpm update",
+        "test:unit": "vitest",
+        "test": "npm run test:unit -- --run"
     },
     "type": "module",
     "version": "1.0.0"

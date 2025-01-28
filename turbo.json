@@ -34,19 +34,19 @@
 			"test": {},
 			"test:e2e": {
 				"dependsOn": [
-					"^build"
-				],
-				"env": [
-					"CI"
-				],
-						"outputs": [
-							"test-results",
-							"playwright-report"
-						],
-						"passThroughEnv": [
-							"PLAYWRIGHT_*",
-							"CI"
-						]
+								"build"
+							],
+							"env": [
+								"CI"
+							],
+							"outputs": [
+								"test-results",
+								"playwright-report"
+							],
+							"passThroughEnv": [
+								"PLAYWRIGHT_*",
+								"CI"
+							]
+						}
 					}
-				}
 }
