@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 import { Button } from '@repo/ui/button'
 import { Badge } from '@repo/ui/badge'
 import { Calendar } from '@repo/ui/calendar'

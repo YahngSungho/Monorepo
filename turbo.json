@@ -1,41 +1,41 @@
 {
-    "$schema": "https://turbo.build/schema.json",
-    "globalDependencies": [],
-    "globalEnv": [
-        "NODE_ENV"
-    ],
-    "tasks": {
-        "build": {
-            "dependsOn": [
-                "^build"
-            ],
-            "inputs": [
-                "$TURBO_DEFAULT$",
-								"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
-								".env.production.local",
-								".env.local",
-								".env.production",
-								".env"
-            ],
-            "outputs": [
-								"dist",
-								".svelte-kit/**",
-                "storybook-static/**"
-            ]
-        },
-        "dev": {
-            "cache": false,
-            "persistent": true
-        },
-        "lint": {},
-				"test": {},
-				"test:e2e": {
-					"dependsOn": [
-						"build"
-					],
-					"outputs": [
-						"playwright-report/**"
-					]
-				}
-    }
+	"$schema": "https://turbo.build/schema.json",
+	"globalDependencies": [],
+	"globalEnv": [
+		"NODE_ENV"
+	],
+	"tasks": {
+		"build": {
+			"dependsOn": [
+				"^build"
+			],
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
+				".env.production.local",
+				".env.local",
+				".env.production",
+				".env"
+			],
+			"outputs": [
+				"dist",
+				".svelte-kit/**",
+				"storybook-static/**"
+			]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"lint": {},
+		"test": {},
+		"test:e2e": {
+			"dependsOn": [
+				"build"
+			],
+			"outputs": [
+				"test-report/**"
+			]
+		}
+	}
 }
