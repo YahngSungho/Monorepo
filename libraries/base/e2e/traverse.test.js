@@ -3,14 +3,15 @@ import { readdirSync } from 'fs'
 import { join } from 'path'
 
 const VALID_ROUTE_FILE = '+page.svelte' // Valid SvelteKit page route file
-const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/ // 패턴 재활용
+const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/
+
 
 /**
  * @param {string} baseUrl
  * @param {string} testRoute
  * @param {import('@playwright/test').Page} page
  */
-async function testOnPage(baseUrl, testRoute, page) {
+async function visitPage(baseUrl, testRoute, page) {
 	// 콘솔 오류 감지 설정 (페이지 이동 전에 설정)
 	const consoleErrors = []
 	page.on('console', msg => {
@@ -28,11 +29,14 @@ async function testOnPage(baseUrl, testRoute, page) {
 	})
 
 	const targetUrl = `${baseUrl}${testRoute}`
-	const response = await page.goto(targetUrl)
+	const response = await page.goto(targetUrl, { waitUntil: 'load' })
+
 	expect(response?.status()).toBeGreaterThanOrEqual(200)
 	expect(response?.status()).toBeLessThan(400)
 	await expect(page.locator('html')).toBeVisible()
 	await expect(page.locator('body')).toBeVisible()
+
+	await sppeedCheck(page)
 
 	// 약간의 대기 시간 추가 (비동기 오류 수집을 위해)
 	await page.waitForTimeout(500)
@@ -47,13 +51,75 @@ async function testOnPage(baseUrl, testRoute, page) {
 }
 
 
+const PERFORMANCE_THRESHOLDS = {
+	maxLoadTime: 2000,
+	maxLCP: 1500,
+	maxCLS: 0.1
+}
+
+async function sppeedCheck(page) {
+	const metrics = await page.evaluate(() =>
+		JSON.parse(JSON.stringify(window.performance))
+	)
+
+	const navigationTiming = metrics.timing
+	const loadTime = navigationTiming.loadEventEnd - navigationTiming.navigationStart
+
+	expect(loadTime).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLoadTime)
+
+	const lcp = await page.evaluate(() =>
+		new Promise(resolve => {
+			let observer
+			observer = new PerformanceObserver(list => {
+				observer.disconnect()
+				const entries = list.getEntries()
+				const lastEntry = entries[entries.length - 1]
+				resolve(lastEntry ? lastEntry.startTime : 0)
+			})
+			observer.observe({ type: 'largest-contentful-paint', buffered: true })
+		})
+	)
+	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
+
+	const cls = await page.evaluate(() =>
+		new Promise(resolve => {
+			let clsValue = 0
+			let observer
+			observer = new PerformanceObserver(list => {
+				/** @type {PerformanceEntry[]} entries */
+				const entries = list.getEntries()
+				entries.forEach(entry => {
+					if (entry.entryType === 'layout-shift') {
+						const layoutShiftEntry = entry
+						// hadRecentInput 속성 존재 여부 체크 후 접근
+						const hadRecentInput = 'hadRecentInput' in layoutShiftEntry ? layoutShiftEntry.hadRecentInput : false
+						// value 속성 존재 여부 체크 후 접근
+
+						const value = 'value' in layoutShiftEntry ? Number(layoutShiftEntry.value) : 0
+
+						if (!hadRecentInput) {
+							clsValue += value
+						} else {
+							clsValue += value
+						}
+					}
+				})
+				resolve(clsValue)
+			})
+			observer.observe({ type: 'layout-shift', buffered: true })
+		})
+	)
+	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
+}
+
+
 /**
  *
  * @param {string} projectRouteRoot
  * @param {{ [key: string]: string[] }} dynamicRouteParams
  */
 function runTests(projectRouteRoot, dynamicRouteParams) {
-	test.describe('SvelteKit Route Smoke Tests', () => {
+	test.describe('스모크 테스트', () => {
 		const routes = getRoutes(projectRouteRoot)
 		const uniqueRoutes = [...new Set(routes.map(r => r.route))].filter(route => route !== '')
 		const baseUrl = '.'
@@ -69,13 +135,13 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 				for (const paramExample of paramExamples) {
 					const dynamicTestRoute = testRoute.replace(DYNAMIC_ROUTE_PATTERN, paramExample) // 파라미터 적용
 					test(`방문: ${dynamicTestRoute} (dynamic)`, async ({ page }) => {
-						await testOnPage(baseUrl, dynamicTestRoute, page)
+						await visitPage(baseUrl, dynamicTestRoute, page)
 					})
 				}
 			} else {
 				// Test static routes
-				test(`방문: ${testRoute} successfully`, async ({ page }) => {
-					await testOnPage(baseUrl, testRoute, page)
+				test(`방문: ${testRoute}`, async ({ page }) => {
+					await visitPage(baseUrl, testRoute, page)
 				})
 			}
 		}
