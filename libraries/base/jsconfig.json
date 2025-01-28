@@ -1,0 +1,44 @@
+{
+	"extends": "./.svelte-kit/tsconfig.json",
+	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
+	// except $lib which is handled by https://kit.svelte.dev/docs/configuration#files
+	//
+	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
+	// from the referenced tsconfig.json - TypeScript does not merge them in
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "es2020",
+		"allowJs": true,
+		"checkJs": true,
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": false,
+		"sourceMap": true,
+		"noImplicitAny": false,
+		"typeRoots": [
+			"./node_modules/@types",
+		],
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"allowImportingTsExtensions": true
+	},
+	"include": [
+		"./**/*"
+	],
+	"exclude": [
+		".turbo/**",
+		"**/.svelte-kit/**",
+		"**/node_modules/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/.svelte/**",
+		"**/.vercel_build_output/**",
+		"**/.vercel/**",
+		"**/coverage/**",
+		"**/.history/**"
+	]
+}

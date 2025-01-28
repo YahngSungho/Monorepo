@@ -3,19 +3,33 @@
 /**
  * @typedef {('primary'|'secondary'|'accent'|'info'|'success'|'warning'|'error'|'outline'|'text')} variant
  */
-let { children, variant, ...restProps } = $props()
+let { children, variant, href, ...restProps } = $props()
 
-''; // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions, semi
+''; // eslint-disable-line
 </script>
 
-<button class={`btn btn-${variant}`}
+
+{#if href}
+
+<a href={href} class={`button-type btn btn-${variant}`}
+	type='button' role='button' {...restProps}
+>
+	{@render children?.()}
+</a>
+
+{:else}
+
+<button class={`button-type btn btn-${variant}`}
 	type='button' {...restProps}
 >
 	{@render children?.()}
 </button>
 
+{/if}
+
+
 <style>
-button {
+.button-type {
 	font-size: var(--font-size-2);
 	font-weight: var(--font-weight-5);
 }

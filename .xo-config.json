@@ -23,12 +23,15 @@
         "cts"
     ],
     "files": [
-        "src/**/*",
-        ".storybook/**/*"
+				"**/src/**/*",
+				"**/.storybook/**/*"
     ],
     "ignores": [
-        "./node_modules/**",
-        "./build/**"
+				"**/node_modules/**",
+				"**/build/**",
+				"**/dist/**",
+				"**/.svelte-kit/**",
+				"**/storybook-static/**"
     ],
     "overrides": [
         {

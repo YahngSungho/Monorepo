@@ -3,6 +3,7 @@
 	"scripts": {
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy boiler_plates --name $1 --destination ./apps/$1' dummy",
 		"build": "turbo run build",
+		"test:e2e": "turbo run test:e2e",
 		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook",
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",

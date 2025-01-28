@@ -1,5 +1,8 @@
 <script>
-import { Button } from '@repo/ui/button'
+// @ts-nocheck
+
+import { Button as Button1 } from '@repo/ui/button_shadcn'
+import Button2 from '@repo/ui/button_daisy.svelte'
 import { Badge } from '@repo/ui/badge'
 import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
@@ -16,14 +19,18 @@ foo += ' bar133322222223'
 ''; // eslint-disable-line semi, no-unused-expressions
 </script>
 
-<h1 class={'bg-primary'}>{m.welcome()}</h1>
+<h2 class={'bg-primary'}>{m.welcome()}</h2>
 <h3>Welcome to SvelteKit</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
 <Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
-<Button variant={'default'}> {m.deft_east_mouse_hope()} </Button>
+<Button2 variant='success'>
+	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>
+</Button2>
+<Button2 href='/about'  variant={'warning'}> {m.deft_east_mouse_hope()} </Button2>
+<Button1 href='/lorem'  variant={'default'}> {m.welcome()} </Button1>
 
 <div class={'p1 boxed long-text gutter'}>
 	<h1>Aute aliquip laborum tempor</h1>
@@ -37,11 +44,6 @@ foo += ' bar133322222223'
 	<p>
 		abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz
 		Minim <i>anim</i> esse nostrud<i>pariatur ex ullamco. Pariatur</i>u ut deserunt consequat officia non quis irure <q>tempor adipisicing</q> veniam 안녕 <i>가나다라마바사아</i>을를 <i>qui</i>를 irure esse. Proident amet Lorem anim in anim. Mollit eu sunt ad dolore dolor incididunt enim amet consectetur eu deserunt quis cillum.
-		<ol>
-			<li>
-				hi
-			</li>
-		</ol>
 		Ea cillum cupidatat sint velit amet dolore id. Dolore culpa ex in et sunt labore dolore est magna tempor. Aute aliquip laborum tempor ea dolore sunt excepteur anim sit. Cupidatat duis laboris qui do labore. Ea consequat irure dolor proident pariatur cillum fugiat nostrud minim.
 		Ut voluptate nisi tempor laborum adipisicing exercitation quis voluptate adipisicing. Laborum culpa qui dolore officia. Nisi nostrud deserunt esse ad esse labore. Ad ipsum exercitation veniam sint magna officia aute nostrud anim eu officia eu aliquip.
 		Eiusmod voluptate non nostrud labore ullamco consectetur aliquip id voluptate dolore exercitation id enim quis. Consectetur ex minim irure id velit nisi. Reprehenderit reprehenderit cupidatat excepteur duis excepteur dolor elit ad qui labore laboris. Eu enim ullamco enim irure anim magna velit velit laboris consequat nulla amet officia occaecat. Nulla incididunt cillum consectetur reprehenderit eiusmod labore anim exercitation commodo esse commodo. Amet mollit consectetur aliquip elit.
@@ -64,8 +66,8 @@ foo += ' bar133322222223'
 
 <div class='colored'>
 	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>
-	<Button onclick={() => switchToLanguage('en')}>en</Button>
-	<Button onclick={() => switchToLanguage('ko')}>ko</Button>
+	<Button1 onclick={() => switchToLanguage('en')}>en</Button1>
+	<Button1 onclick={() => switchToLanguage('ko')}>ko</Button1>
 </div>
 
 <style>

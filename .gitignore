@@ -143,3 +143,12 @@ dist
 storybook-static
 /others
 pnpm-lock.yaml
+test-results
+playwright-report
+generated
+output
+**/.svelte-kit/cloudflare
+**/.svelte-kit/cloudflare-tmp
+**/.svelte-kit/types
+**/.svelte-kit/ambient.d.ts
+**/.svelte-kit/non-ambient.d.ts

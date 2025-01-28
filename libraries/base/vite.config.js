@@ -8,7 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 
 // Simulate __dirname in ESM
-const __filename = fileURLToPath(import.meta.url)
+const __filename = fileURLToPath(import.meta.url) // eslint-disable-line
 const __dirname = path.dirname(__filename)
 
 const baseConfig = defineConfig({
@@ -24,9 +24,12 @@ const baseConfig = defineConfig({
 		},
 	},
 	plugins: [
+		// @ts-ignore
 		tsconfigPaths(),
+		// @ts-ignore
 		tailwindcss(),
 		partytownVite({}),
+		// @ts-ignore
 		FontaineTransform.vite({
 			fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Noto Sans', 'Arial'],
 			resolvePath(id) {
