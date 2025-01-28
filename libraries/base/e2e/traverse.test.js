@@ -39,7 +39,7 @@ async function visitPage(baseUrl, testRoute, page) {
 	const topDivCount = await page.locator('#topDivForSmokeTest').count()
 	expect(topDivCount).toBe(1)
 
-	await speedCheck(page)
+	await speedCheck(page, testRoute)
 
 	// 비동기 오류 수집을 위한 대기
 	await page.waitForTimeout(500)
@@ -63,10 +63,14 @@ const PERFORMANCE_THRESHOLDS = {
 	maxCLS: 0.1
 }
 
-async function speedCheck(page) {
+async function speedCheck(page, testRoute) {
 	await page.waitForTimeout(1000)
 	// 네트워크 유휴 상태까지 대기
-	await page.waitForLoadState('networkidle', { timeout: 10000 })
+	try {
+		await page.waitForLoadState('networkidle', { timeout: 10000 })
+	} catch (error) {
+		throw new Error(`Page load timeout: ${error.message}`)
+	}
 
 	// Navigation Timing API 대신 Performance API 사용
 	const loadTime = await page.evaluate(() => {
@@ -126,10 +130,18 @@ async function speedCheck(page) {
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
 
 	// Playwright 내장 메트릭과 결합
-	const performanceMetrics = await page.evaluate(() =>
-		JSON.parse(JSON.stringify(window.performance.timeOrigin))
-	)
-
+	// 제안: 성능 메트릭 수집을 위한 구조체
+	const performanceMetrics = {
+		timestamp: Date.now(),
+		route: testRoute,
+		metrics: {
+			loadTime,
+			lcp,
+			cls,
+			timeOrigin: window.performance.timeOrigin
+		}
+	}
+	test.info().attach('performance-metrics', { body: JSON.stringify(performanceMetrics) })
 	console.log(`성능 메트릭 - LCP: ${lcp}ms, CLS: ${cls}, Load: ${loadTime}ms`)
 }
 
@@ -156,8 +168,12 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 						// 파라미터 배열을 순차적으로 적용 (예: [id]/[slug] → 123/my-post)
 						test(`방문: ${dynamicTestRoute} (dynamic)`, async ({ page }) => {
 							const params = paramExample.split('/') // 예시: "123/my-post" → ["123", "my-post"]
-							if (params.length !== (testRoute.match(DYNAMIC_ROUTE_PATTERN) || []).length) {
-								throw new Error(`파라미터 개수 불일치: ${routePath} → ${paramExample}`)
+							const expectedParams = (testRoute.match(DYNAMIC_ROUTE_PATTERN) || [])
+							if (params.length !== expectedParams.length) {
+								throw new Error(
+									`Parameter count mismatch for route ${testRoute}. ` +
+									`Expected ${expectedParams.length}, got ${params.length}`
+								)
 							}
 							const encodedParams = params.map(p => encodeURIComponent(p))
 
