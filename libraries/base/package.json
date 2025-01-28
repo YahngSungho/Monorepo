@@ -127,6 +127,7 @@
         "./runtime.js": "./src/lib/paraglide/runtime.js",
         "./svelte.config.js": "./svelte.config.js",
         "./tailwind.config": "./tailwind.config.ts",
+				"./traverse.test.js": "./e2e/traverse.test.js",
         "./vite.config.js": "./vite.config.js"
     },
     "keywords": [],
