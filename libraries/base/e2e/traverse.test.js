@@ -3,7 +3,7 @@ import { readdirSync } from 'fs'
 import path, { join } from 'path'
 
 const VALID_ROUTE_FILE = '+page.svelte'
-const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/
+const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/g
 
 /**
  * @param {string} baseUrl
@@ -64,6 +64,9 @@ const PERFORMANCE_THRESHOLDS = {
 }
 
 async function speedCheck(page) {
+	// 네트워크 유휴 상태까지 대기
+	await page.waitForLoadState('networkidle')
+
 	// Navigation Timing API 대신 Performance API 사용
 	const loadTime = await page.evaluate(() => {
 		const navigation = performance.getEntriesByType('navigation')[0]
@@ -120,6 +123,13 @@ async function speedCheck(page) {
 		})
 	)
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
+
+	// Playwright 내장 메트릭과 결합
+	const performanceMetrics = await page.evaluate(() =>
+		JSON.parse(JSON.stringify(window.performance.timing))
+	)
+
+	console.log(`성능 메트릭 - LCP: ${lcp}ms, CLS: ${cls}, Load: ${loadTime}ms`)
 }
 
 /**
@@ -142,8 +152,18 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 					// 동적 라우트 테스트
 					for (const paramExample of dynamicRouteParams[routePath]) {
 						const dynamicTestRoute = testRoute.replace(DYNAMIC_ROUTE_PATTERN, paramExample)
+						// 파라미터 배열을 순차적으로 적용 (예: [id]/[slug] → 123/my-post)
 						test(`방문: ${dynamicTestRoute} (dynamic)`, async ({ page }) => {
-							await visitPage(baseUrl, dynamicTestRoute, page)
+							const params = paramExample.split('/') // 예시: "123/my-post" → ["123", "my-post"]
+							let replacedRoute = testRoute
+							let paramIndex = 0
+
+							// 모든 동적 세그먼트를 순차적으로 치환
+							replacedRoute = replacedRoute.replaceAll(DYNAMIC_ROUTE_PATTERN, () => {
+								return params[paramIndex++] || 'MISSING_PARAM'
+							})
+
+							await visitPage(baseUrl, replacedRoute, page)
 						})
 					}
 				} else {
