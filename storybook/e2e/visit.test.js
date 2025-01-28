@@ -2,7 +2,7 @@
 /* eslint-disable unicorn/numeric-separators-style */
 
 import { expect, test } from '@playwright/test'
-import manifest from '../storybook-static/index.json' assert{ type: "json"}
+import manifest from '../storybook-static/index.json' assert { type: "json"}
 
 for (const key of Object.keys(manifest.entries)) {
 	const { id, title } = manifest.entries[key]
