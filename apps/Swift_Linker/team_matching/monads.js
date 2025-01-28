@@ -439,6 +439,10 @@ class Teams {
 		this.type = 'Teams'
 	}
 
+	includes(member) {
+		return this.teamArray.some(team => team.hasMember(member))
+	}
+
 	/**
 	 * @returns {Teams}
 	 */

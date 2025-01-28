@@ -78,7 +78,7 @@ describe('AllMembers', () => {
 		const members = [Member.of('1', { name: 'Alice' }), Member.of('2', { name: 'Bob' })]
 		const allMembers = AllMembers.of(members)
 		const teams = Teams.empty()
-		const remainingMembers = allMembers.getRemainingMembers(teams.members)
+		const remainingMembers = allMembers.getRemainingMembers(teams)
 		expect(remainingMembers).toEqual(members)
 	})
 
