@@ -20,4 +20,10 @@ export default defineConfig({
 			NODE_ENV: 'production'
 		}
 	},
+
+	use: {
+		trace: 'on-first-retry',
+		screenshot: 'only-on-failure',
+		video: 'retain-on-failure'
+	}
 })
