@@ -87,6 +87,11 @@
             }
         }
     ],
+		"parser": "@babel/eslint-parser",
+		"parserOptions": {
+			"ecmaVersion": "ESNext",
+			"sourceType": "module"
+		},
     "plugins": [
         "depend",
         "turbo",
