@@ -1,8 +1,6 @@
 import { defineConfig } from '@playwright/test'
-import { customAlphabet } from 'nanoid'
 
-const nanoid = customAlphabet('1234567890', 4)
-const portNumber = Number(nanoid()) + 25
+const portNumber = 6173
 
 export default defineConfig({
 	testDir: 'e2e',
@@ -24,6 +22,6 @@ export default defineConfig({
 	use: {
 		trace: 'on-first-retry',
 		screenshot: 'only-on-failure',
-		video: 'retain-on-failure'
+		// video: 'retain-on-failure'
 	}
 })

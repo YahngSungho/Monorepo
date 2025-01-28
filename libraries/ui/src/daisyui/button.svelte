@@ -5,7 +5,7 @@
  */
 let { children, variant, ...restProps } = $props()
 
-''; // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions, semi
+''; // eslint-disable-line
 </script>
 
 <button class={`btn btn-${variant}`}

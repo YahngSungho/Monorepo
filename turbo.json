@@ -36,14 +36,17 @@
 				"dependsOn": [
 					"^build"
 				],
-						"env": [
-							"CI"
+				"env": [
+					"CI"
+				],
+						"outputs": [
+							"test-results",
+							"playwright-report"
 						],
-						"outputs": [],
 						"passThroughEnv": [
-								"PLAYWRIGHT_*",
-								"CI"
-							]
-						}
+							"PLAYWRIGHT_*",
+							"CI"
+						]
 					}
+				}
 }
