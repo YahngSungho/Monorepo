@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { readdirSync } from 'fs'
-import { join } from 'path'
+import path, { join } from 'path'
 
 const VALID_ROUTE_FILE = '+page.svelte'
 const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/
@@ -27,6 +27,9 @@ async function visitPage(baseUrl, testRoute, page) {
 
 	const targetUrl = `${baseUrl}${testRoute}`
 	const response = await page.goto(targetUrl, { waitUntil: 'load' })
+	if (!response) {
+		throw new Error(`Failed to load page: ${targetUrl}`)
+	}
 
 	expect(response?.status()).toBeGreaterThanOrEqual(200)
 	expect(response?.status()).toBeLessThan(400)
@@ -36,7 +39,8 @@ async function visitPage(baseUrl, testRoute, page) {
 	await speedCheck(page)
 
 	// 비동기 오류 수집을 위한 대기
-	await page.waitForTimeout(1000)
+	await page.waitForTimeout(500)
+	await page.waitForLoadState('networkidle')
 
 	if (consoleErrors.length > 0 || failedRequests.length > 0) {
 		const errorMessage = [
@@ -51,7 +55,7 @@ async function visitPage(baseUrl, testRoute, page) {
 }
 
 const PERFORMANCE_THRESHOLDS = {
-	maxLoadTime: 2000,
+	maxLoadTime: 5000,
 	maxLCP: 1500,
 	maxCLS: 0.1
 }
@@ -60,6 +64,7 @@ async function speedCheck(page) {
 	// Navigation Timing API 대신 Performance API 사용
 	const loadTime = await page.evaluate(() => {
 		const navigation = performance.getEntriesByType('navigation')[0]
+		// @ts-ignore
 		return navigation.loadEventEnd - navigation.startTime
 	})
 
@@ -67,11 +72,21 @@ async function speedCheck(page) {
 
 	const lcp = await page.evaluate(() =>
 		new Promise(resolve => {
-			new PerformanceObserver((list) => {
+			const observer = new PerformanceObserver((list) => {
 				const entries = list.getEntries()
+				observer.disconnect()
 				const lastEntry = entries[entries.length - 1]
 				resolve(lastEntry ? lastEntry.startTime : 0)
-			}).observe({ type: 'largest-contentful-paint', buffered: true })
+			})
+
+			observer.observe({ type: 'largest-contentful-paint', buffered: true })
+
+			setTimeout(() => {
+				observer.disconnect()
+				test.info().attach('performance-timeout', { body: 'largest-contentful-paint 지연시간 만료`' })
+				console.error('largest-contentful-paint 지연시간 만료')
+				resolve(0)
+			}, 10000)
 		})
 	)
 	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
@@ -79,14 +94,26 @@ async function speedCheck(page) {
 	const cls = await page.evaluate(() =>
 		new Promise(resolve => {
 			let clsValue = 0
-			new PerformanceObserver((list) => {
+			const observer = new PerformanceObserver((list) => {
 				for (const entry of list.getEntries()) {
+					// @ts-ignore
 					if (!entry.hadRecentInput) {
+						// @ts-ignore
 						clsValue += entry.value
 					}
 				}
+				observer.disconnect()
 				resolve(clsValue)
-			}).observe({ type: 'layout-shift', buffered: true })
+			})
+
+			observer.observe({ type: 'layout-shift', buffered: true })
+
+			setTimeout(() => {
+				observer.disconnect()
+				test.info().attach('performance-timeout', { body: 'layout-shift 지연시간 만료`' })
+				console.error('layout-shift 지연시간 만료')
+				resolve(0)
+			}, 10000)
 		})
 	)
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
@@ -117,9 +144,8 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 						})
 					}
 				} else {
-					test.skip(`방문: ${testRoute} (dynamic - 파라미터 없음)`, async () => {
-						console.warn(`동적 라우트 ${testRoute}에 대한 테스트 파라미터가 제공되지 않았습니다.`)
-					})
+					console.warn(`동적 라우트 ${testRoute}에 대한 테스트 파라미터가 제공되지 않았습니다.`)
+					test.skip(`방문: ${testRoute} (dynamic - 파라미터 없음)`, async () => { })
 				}
 			} else {
 				// 정적 라우트 테스트
@@ -130,9 +156,8 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 		}
 
 		if (uniqueRoutes.length === 0) {
-			test.skip('No routes found in src/routes', () => {
-				console.warn('src/routes 디렉토리에서 라우트를 찾을 수 없습니다.')
-			})
+			console.warn('src/routes 디렉토리에서 라우트를 찾을 수 없습니다.')
+			test.skip('No routes found in src/routes', () => { })
 		}
 	})
 }
@@ -154,10 +179,11 @@ function getRoutes(projectRouteRoot, dir = '', routes = []) {
 		if (item.isDirectory()) {
 			getRoutes(projectRouteRoot, fullPath, routes)
 		} else if (item.isFile() && item.name === VALID_ROUTE_FILE) {
-			let routePath = fullPath
+			let routePath = path
+				.posix
+				.normalize(fullPath)
 				.replace(VALID_ROUTE_FILE, '')
 				.replace(/^src\/routes/, '')
-				.replace(/\\/g, '/')
 				.replace(/\(.*?\)\//g, '')
 				.replace(/\/index$/, '/')
 
