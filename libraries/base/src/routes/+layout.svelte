@@ -1,12 +1,11 @@
 <script>
-// @ts-nocheck
-
 import { partytownSnippet } from '@qwik.dev/partytown/integration'
 import { ParaglideJS } from '@inlang/paraglide-sveltekit'
 import '../base.js'
 import '../base.css'
 
-let { appName, children, i18n } = $props()
+let props = $props()
+let { appName, children, i18n } = props
 ''; // eslint-disable-line semi, no-unused-expressions
 </script>
 

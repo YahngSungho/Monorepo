@@ -7,7 +7,7 @@ const appName = 'boiler_plate'
 
 let { children } = $props()
 
-''; // eslint-disable-line semi, no-unused-expressions
+''; // eslint-disable-line
 </script>
 
 <BaseLayout {appName} {i18n}>
