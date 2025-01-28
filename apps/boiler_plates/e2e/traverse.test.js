@@ -18,7 +18,9 @@ const projectRouteRoot = join(__dirname, '../src/routes')
  */
 const dynamicRouteParams = {
 	// '/blog/[slug]': ['hello-world', 'sveltekit-example'],
+	// '/blog/[id]/[slug]': ['123/my-post', '456/another-post'], <- 이렇게 path에 param 여러개 넣기
 	// '/products/[id]': ['123', '456'],
+	// '/user/[userId]': ['john_doe', 'jane_smith']
 	// Add more dynamic routes and parameter examples as needed
 }
 
