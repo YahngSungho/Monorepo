@@ -35,6 +35,9 @@ async function visitPage(baseUrl, testRoute, page) {
 	expect(response?.status()).toBeLessThan(400)
 	await expect(page.locator('html')).toBeVisible()
 	await expect(page.locator('body')).toBeVisible()
+	// 스모크 테스트 div 체크 추가: 페이지에 #topDivForSmokeTest div가 하나 존재해야 합니다
+	const topDivCount = await page.locator('#topDivForSmokeTest').count()
+	expect(topDivCount).toBe(1)
 
 	await speedCheck(page)
 
@@ -55,7 +58,7 @@ async function visitPage(baseUrl, testRoute, page) {
 }
 
 const PERFORMANCE_THRESHOLDS = {
-	maxLoadTime: 5000,
+	maxLoadTime: 2500,
 	maxLCP: 1500,
 	maxCLS: 0.1
 }

@@ -4,6 +4,7 @@ const portNumber = 5173
 
 export default defineConfig({
 	testDir: 'e2e',
+	retries: process.env.CI ? 2 : 1,
 	fullyParallel: true,
 	workers: process.env.CI ? 2 : '50%',
 	timeout: 60_000,

@@ -12,4 +12,5 @@ let { children } = $props()
 
 <BaseLayout {appName} {i18n}>
 	{@render children()}
+	<div id='topDivForSmokeTest'></div>
 </BaseLayout>
