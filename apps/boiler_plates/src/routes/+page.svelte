@@ -1,7 +1,8 @@
 <script>
 // @ts-nocheck
 
-import { Button } from '@repo/ui/button'
+import { Button as Button1 } from '@repo/ui/button_shadcn'
+import Button2 from '@repo/ui/button_daisy.svelte'
 import { Badge } from '@repo/ui/badge'
 import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
@@ -25,7 +26,11 @@ foo += ' bar133322222223'
 <h6>Welcome to SvelteKit 000</h6>
 
 <Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
-<Button variant={'default'}> {m.deft_east_mouse_hope()} </Button>
+<Button2 variant='success'>
+	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>
+</Button2>
+<Button2 href='/about'  variant={'warning'}> {m.deft_east_mouse_hope()} </Button2>
+<Button1 href='/lorem'  variant={'default'}> {m.welcome()} </Button1>
 
 <div class={'p1 boxed long-text gutter'}>
 	<h1>Aute aliquip laborum tempor</h1>
@@ -61,8 +66,8 @@ foo += ' bar133322222223'
 
 <div class='colored'>
 	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>
-	<Button onclick={() => switchToLanguage('en')}>en</Button>
-	<Button onclick={() => switchToLanguage('ko')}>ko</Button>
+	<Button1 onclick={() => switchToLanguage('en')}>en</Button1>
+	<Button1 onclick={() => switchToLanguage('ko')}>ko</Button1>
 </div>
 
 <style>
