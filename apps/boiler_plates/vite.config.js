@@ -1,9 +1,9 @@
-import { defineConfig, mergeConfig } from 'vite'
+import { defineConfig, mergeConfig } from 'vitest/config'
 import defaultConfig from '@repo/base/vite.config.js'
 import { paraglide } from '@inlang/paraglide-sveltekit/vite'
 import { sveltekit } from '@sveltejs/kit/vite'
 
-export default mergeConfig(defineConfig({
+export default mergeConfig(defaultConfig, defineConfig({
 	plugins: [
 		paraglide({
 			outdir: '../../libraries/base/src/lib/paraglide',
@@ -11,4 +11,4 @@ export default mergeConfig(defineConfig({
 		}),
 		sveltekit(),
 	],
-}), defaultConfig)
+}))

@@ -3,8 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { FontaineTransform } from 'fontaine'
 import tailwindcss from '@tailwindcss/vite'
 import tailwindcss2 from '@tailwindcss/postcss'
-import { defineConfig } from 'vite'
-import { configDefaults, defineConfig as defineConfig2, mergeConfig } from 'vitest/config'
+import { defineConfig, configDefaults, mergeConfig } from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 
@@ -45,13 +44,10 @@ const baseConfig = defineConfig({
 	ssr: {
 		noExternal: ['@inlang/paraglide-sveltekit'],
 	},
-})
-
-const testConfig = defineConfig2({
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 	},
 })
 
 // @ts-ignore
-export default mergeConfig(configDefaults, mergeConfig(baseConfig, testConfig))
+export default mergeConfig(configDefaults, baseConfig)
