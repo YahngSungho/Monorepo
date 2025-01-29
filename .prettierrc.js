@@ -6,6 +6,7 @@ export default {
 	semi: false,
 	printWidth: 100,
 	plugins: [
+		'prettier-plugin-sh',
 		'prettier-plugin-jsdoc',
 		'prettier-plugin-sort-json',
 		'prettier-plugin-package-perfection',
