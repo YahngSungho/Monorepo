@@ -30,7 +30,11 @@
 		"**/*.less"
 	],
 	"console-ninja.dateTimeDisplayMode": "Relative To Previous",
-	"stylelint.validate": ["css", "scss", "svelte"],
+	"stylelint.validate": [
+		"css",
+		"scss",
+		"svelte"
+	],
 	"prettier.configPath": ".prettierrc.js",
 	"prettier.jsxSingleQuote": true,
 	"prettier.semi": false,

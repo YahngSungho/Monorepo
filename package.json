@@ -1,5 +1,8 @@
 {
 	"private": true,
+	"simple-git-hooks": {
+		"pre-commit": "pnpm dlx pretty-quick --staged"
+	},
 	"scripts": {
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy boiler_plates --name $1 --destination ./apps/$1' dummy",
 		"build": "turbo run build",
@@ -64,6 +67,7 @@
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"pretty-quick": "^4.0.0",
+		"simple-git-hooks": "^2.11.1",
 		"stylelint": "^16.13.2",
 		"stylelint-color-format": "^1.1.0",
 		"stylelint-config-clean-order": "^7.0.0",
