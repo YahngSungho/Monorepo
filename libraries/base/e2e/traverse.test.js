@@ -136,8 +136,7 @@ async function speedCheck(page, testRoute) {
 
 	console.log(`
 	< 성능: ${routeName} >
-	Load: ${loadTime0}ms | LCP: ${lcp0}ms | CLS: ${cls0}
-	`)
+	Load: ${loadTime0}ms | LCP: ${lcp0}ms | CLS: ${cls0}`)
 
 	// Playwright 내장 메트릭과 결합
 	const performanceMetrics = {
