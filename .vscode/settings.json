@@ -35,9 +35,14 @@
 		"scss",
 		"svelte"
 	],
+	"editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+	"vs-code-prettier-eslint.prettierLast": false,
 	"prettier.configPath": ".prettierrc.js",
 	"prettier.jsxSingleQuote": true,
 	"prettier.semi": false,
 	"prettier.singleQuote": true,
-	"prettier.useTabs": true
+	"prettier.useTabs": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+	}
 }

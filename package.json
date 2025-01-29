@@ -65,6 +65,7 @@
 		"postcss-html": "^1.8.0",
 		"postcss-syntax": "^0.36.2",
 		"prettier": "^3.4.2",
+		"prettier-eslint": "^16.3.0",
 		"prettier-plugin-svelte": "^3.3.3",
 		"pretty-quick": "^4.0.0",
 		"simple-git-hooks": "^2.11.1",
