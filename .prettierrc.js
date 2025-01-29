@@ -12,7 +12,8 @@ export default {
 		'prettier-plugin-classnames',
 		'prettier-plugin-svelte',
 		'prettier-plugin-sql',
-		'prettier-plugin-tailwindcss', // MUST come last
+		'prettier-plugin-tailwindcss',
+		'prettier-plugin-merge', // MUST come last
 	],
 	overrides: [
 		{
