@@ -135,13 +135,13 @@
 	"main": "index.js",
 	"name": "@repo/base",
 	"scripts": {
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint",
 		"test:unit": "vitest",
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
-		"fix": "xo --fix",
-		"lint": "xo && stylelint '**/*.css'",
 		"preview": "vite preview",
-		"styleLint": "stylelint '**/*.css'",
 		"test": "pnpm test:unit",
 		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
 		"update": "pnpm update"
