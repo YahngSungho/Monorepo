@@ -82,7 +82,15 @@
 	"name": "@repo/ui",
 	"scripts": {
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
-		"test": "vitest"
+		"test:unit": "vitest",
+		"depCheck": "npx depcheck",
+		"dev": "vite dev",
+		"fix": "xo --fix",
+		"lint": "xo && stylelint '**/*.css'",
+		"preview": "vite preview",
+		"styleLint": "stylelint '**/*.css'",
+		"test": "pnpm test:unit",
+		"update": "pnpm update"
 	},
 	"sideEffects": [
 		"**/*.css"

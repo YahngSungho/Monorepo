@@ -24,10 +24,15 @@
 		"build": "vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"test:unit": "vitest",
+		"test:e2e": "playwright test",
+		"depCheck": "npx depcheck",
 		"dev": "vite dev",
+		"fix": "xo --fix",
+		"lint": "xo && stylelint '**/*.css'",
 		"preview": "vite preview",
-		"test": "vitest",
-		"test:e2e": "playwright test"
+		"styleLint": "stylelint '**/*.css'",
+		"test": "xo && pnpm test:unit && pnpm run test:e2e"
 	},
 	"type": "module",
 	"version": "0.0.1"

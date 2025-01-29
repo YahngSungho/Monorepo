@@ -9,7 +9,11 @@
 		"plugin:svelte/recommended",
 		"plugin:@intlify/svelte/recommended",
 		"plugin:perfectionist/recommended-natural-legacy",
-		"turbo"
+		"turbo",
+		"plugin:json-schema-validator/recommended",
+		"plugin:jsonc/recommended-with-json",
+		"plugin:jsonc/recommended-with-jsonc",
+		"plugin:jsonc/recommended-with-json5"
 	],
 	"extensions": [
 		"svelte",
@@ -60,28 +64,14 @@
 				"*.jsonc"
 			],
 			"parser": "jsonc-eslint-parser",
-			"extends": [
-				"plugin:json/recommended-legacy"
-			]
+			"parserOptions": {
+				"jsonSyntax": "JSON5"
+			}
 		},
 		{
 			"files": [
 				"package.json"
-			],
-			"plugins": [
-				"depend"
-			],
-			"rules": {
-				"depend/ban-dependencies": [
-					"warn",
-					{
-						"presets": [
-							"native",
-							"preferred"
-						]
-					}
-				]
-			}
+			]
 		},
 		{
 			"files": [
@@ -111,6 +101,16 @@
 		"regexp"
 	],
 	"rules": {
+		"jsonc/sort-keys": [
+			"warn",
+			"asc",
+			{
+				"caseSensitive": true,
+				"natural": false,
+				"minKeys": 2,
+				"allowLineSeparatedGroups": false
+			}
+		],
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-unused-vars": "off",
 		"arrow-parens": "off",

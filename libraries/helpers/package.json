@@ -9,7 +9,15 @@
 	"main": "index.js",
 	"name": "@repo/helpers",
 	"scripts": {
-		"test": "vitest"
+		"test:unit": "vitest",
+		"depCheck": "npx depcheck",
+		"dev": "vite dev",
+		"fix": "xo --fix",
+		"lint": "xo && stylelint '**/*.css'",
+		"preview": "vite preview",
+		"styleLint": "stylelint '**/*.css'",
+		"test": "pnpm test:unit",
+		"update": "pnpm update"
 	},
 	"type": "module",
 	"version": "1.0.0"
