@@ -59,7 +59,10 @@
 				"*.json5",
 				"*.jsonc"
 			],
-			"parser": "jsonc-eslint-parser"
+			"parser": "jsonc-eslint-parser",
+			"extends": [
+				"plugin:json/recommended-legacy"
+			]
 		},
 		{
 			"files": [
