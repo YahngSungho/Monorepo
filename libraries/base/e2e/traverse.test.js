@@ -129,20 +129,26 @@ async function speedCheck(page, testRoute) {
 	)
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
 
+	const routeName = testRoute.slice(1, -1).replace('\\', '/') || 'ROOT'
+	const loadTime0 = Math.round(loadTime)
+	const lcp0 = Math.round(lcp)
+	const cls0 = Number(cls).toFixed(5)
+
 	// Playwright 내장 메트릭과 결합
-	// 제안: 성능 메트릭 수집을 위한 구조체
 	const performanceMetrics = {
 		timestamp: Date.now(),
-		route: testRoute,
+		route: routeName,
 		metrics: {
-			loadTime,
-			lcp,
-			cls,
-			timeOrigin: window.performance.timeOrigin
+			loadTime0,
+			lcp0,
+			cls0,
 		}
 	}
-	test.info().attach('performance-metrics', { body: JSON.stringify(performanceMetrics) })
-	console.log(`성능 메트릭 - LCP: ${lcp}ms, CLS: ${cls}, Load: ${loadTime}ms`)
+	test.info().attach(`성능: ${routeName}`, { body: JSON.stringify(performanceMetrics) })
+	console.log(`
+	< 성능: ${routeName} >
+	Load: ${loadTime0}ms | LCP: ${lcp0}ms | CLS: ${cls0}
+	`)
 }
 
 /**
