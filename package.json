@@ -11,7 +11,8 @@
 		"fix-mismatches": "pnpm dlx syncpack fix-mismatches",
 		"all-packages-update": "pnpm up --recursive",
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches",
-		"clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f package-lock.json + && pnpm store prune && pnpm install"
+		"clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f package-lock.json + && pnpm store prune && pnpm install",
+		"format": "prettier --write ."
 	},
 	"name": "@repo/root",
 	"dependencies": {
@@ -56,6 +57,8 @@
 		"postcss": "^8.5.1",
 		"postcss-html": "^1.8.0",
 		"postcss-syntax": "^0.36.2",
+		"prettier": "^3.4.2",
+		"prettier-plugin-svelte": "^3.3.3",
 		"stylelint": "^16.13.2",
 		"stylelint-color-format": "^1.1.0",
 		"stylelint-config-clean-order": "^7.0.0",
