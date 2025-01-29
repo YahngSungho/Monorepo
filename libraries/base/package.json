@@ -1,11 +1,28 @@
 {
+	"name": "@repo/base",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
 	"author": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"depCheck": "npx depcheck",
+		"dev": "vite dev",
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint",
+		"test": "pnpm test:unit",
+		"test:unit": "vitest",
+		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
+		"update": "pnpm update",
+		"preview": "vite preview"
+	},
 	"dependencies": {
 		"@qwik.dev/partytown": "^0.11.0",
 		"open-props": "^1.7.10",
 		"sanitize.css": "^13.0.0"
 	},
-	"description": "",
 	"devDependencies": {
 		"@tailwindcss/postcss": "4.0.0-beta.8",
 		"@tailwindcss/vite": "4.0.0-beta.8",
@@ -19,6 +36,7 @@
 		"tailwindcss-animate": "^1.0.7",
 		"terser": "^5.37.0"
 	},
+	"keywords": [],
 	"exports": {
 		"./IBMPlexMath.woff2": "./static/fonts/math/IBMPlexMath-Regular.woff2",
 		"./IBMPlexMono-Bold.woff2": "./static/fonts/mono/IBMPlexMono-Bold.woff2",
@@ -129,23 +147,5 @@
 		"./tailwind.config": "./tailwind.config.ts",
 		"./traverse.test.js": "./e2e/traverse.test.js",
 		"./vite.config.js": "./vite.config.js"
-	},
-	"keywords": [],
-	"license": "ISC",
-	"main": "index.js",
-	"name": "@repo/base",
-	"scripts": {
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
-		"styleLint": "stylelint",
-		"test:unit": "vitest",
-		"depCheck": "npx depcheck",
-		"dev": "vite dev",
-		"preview": "vite preview",
-		"test": "pnpm test:unit",
-		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
-		"update": "pnpm update"
-	},
-	"type": "module",
-	"version": "1.0.0"
+	}
 }

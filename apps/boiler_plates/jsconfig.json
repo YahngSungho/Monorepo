@@ -1,5 +1,4 @@
 {
-	"extends": "./.svelte-kit/tsconfig.json",
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	// except $lib which is handled by https://kit.svelte.dev/docs/configuration#files
 	//
@@ -24,7 +23,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"allowImportingTsExtensions": true
 	},
-	"include": ["./**/*"],
 	"exclude": [
 		".turbo/**",
 		"**/.svelte-kit/**",
@@ -36,5 +34,7 @@
 		"**/.vercel/**",
 		"**/coverage/**",
 		"**/.history/**"
-	]
+	],
+	"extends": "./.svelte-kit/tsconfig.json",
+	"include": ["./**/*"]
 }

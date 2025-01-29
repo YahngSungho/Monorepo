@@ -6,8 +6,13 @@ export default {
 	semi: false,
 	printWidth: 100,
 	plugins: [
-		        "prettier-plugin-svelte",
-        "prettier-plugin-tailwindcss"
+		'prettier-plugin-jsdoc',
+		'prettier-plugin-sort-json',
+		'prettier-plugin-package-perfection',
+		'prettier-plugin-classnames',
+		'prettier-plugin-svelte',
+		'prettier-plugin-sql',
+		'prettier-plugin-tailwindcss', // MUST come last
 	],
 	overrides: [
 		{
@@ -17,5 +22,4 @@ export default {
 			},
 		},
 	],
-
 }

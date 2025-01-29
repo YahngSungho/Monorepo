@@ -1,5 +1,17 @@
 {
+	"name": "swift_linker",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
 	"author": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint",
+		"test": "vitest"
+	},
 	"dependencies": {
 		"@repo/base": "workspace:*",
 		"@repo/helpers": "workspace:*",
@@ -10,17 +22,5 @@
 		"random-js": "^2.1.0",
 		"yup": "^1.6.1"
 	},
-	"description": "",
-	"keywords": [],
-	"license": "ISC",
-	"main": "index.js",
-	"name": "swift_linker",
-	"scripts": {
-		"test": "vitest",
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
-		"styleLint": "stylelint"
-	},
-	"type": "module",
-	"version": "1.0.0"
+	"keywords": []
 }

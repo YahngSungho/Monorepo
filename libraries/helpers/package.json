@@ -1,24 +1,24 @@
 {
-	"author": "",
-	"description": "",
-	"exports": {
-		"./monads": "./monads.js"
-	},
-	"keywords": [],
-	"license": "ISC",
-	"main": "index.js",
 	"name": "@repo/helpers",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"type": "module",
+	"main": "index.js",
 	"scripts": {
-		"test:unit": "vitest",
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
-		"preview": "vite preview",
-		"test": "pnpm test:unit",
-		"update": "pnpm update",
 		"fix": "xo --fix && stylelint --fix",
 		"lint": "xo && stylelint",
-		"styleLint": "stylelint"
+		"styleLint": "stylelint",
+		"test": "pnpm test:unit",
+		"test:unit": "vitest",
+		"update": "pnpm update",
+		"preview": "vite preview"
 	},
-	"type": "module",
-	"version": "1.0.0"
+	"keywords": [],
+	"exports": {
+		"./monads": "./monads.js"
+	}
 }

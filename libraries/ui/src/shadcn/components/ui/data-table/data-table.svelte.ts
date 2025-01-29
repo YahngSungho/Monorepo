@@ -8,29 +8,31 @@ import {
 
 /**
  * Creates a reactive TanStack table object for Svelte.
+ *
+ * @example
+ * 	;```svelte
+ * 	<script>
+ * 	  const table = createSvelteTable({ ... })
+ * 	</script>
+ *
+ * 	<table>
+ * 	  <thead>
+ * 	    {#each table.getHeaderGroups() as headerGroup}
+ * 	      <tr>
+ * 	        {#each headerGroup.headers as header}
+ * 	          <th colspan={header.colSpan}>
+ * 	        	   <FlexRender content={header.column.columnDef.header} context={header.getContext()} />
+ * 	        	 </th>
+ * 	        {/each}
+ * 	      </tr>
+ * 	    {/each}
+ * 	  </thead>
+ * 		 <!-- ... -->
+ * 	</table>
+ * 	```
+ *
  * @param options Table options to create the table with.
  * @returns A reactive table object.
- * @example
- * ```svelte
- * <script>
- *   const table = createSvelteTable({ ... })
- * </script>
- *
- * <table>
- *   <thead>
- *     {#each table.getHeaderGroups() as headerGroup}
- *       <tr>
- *         {#each headerGroup.headers as header}
- *           <th colspan={header.colSpan}>
- *         	   <FlexRender content={header.column.columnDef.header} context={header.getContext()} />
- *         	 </th>
- *         {/each}
- *       </tr>
- *     {/each}
- *   </thead>
- * 	 <!-- ... -->
- * </table>
- * ```
  */
 export function createSvelteTable<TData extends RowData>(options: TableOptions<TData>) {
 	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
@@ -77,8 +79,8 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 }
 
 /**
- * Merges objects together while keeping their getters alive.
- * Taken from SolidJS: {@link https://github.com/solidjs/solid/blob/24abc825c0996fd2bc8c1de1491efe9a7e743aff/packages/solid/src/server/rendering.ts#L82-L115}
+ * Merges objects together while keeping their getters alive. Taken from SolidJS:
+ * {@link https://github.com/solidjs/solid/blob/24abc825c0996fd2bc8c1de1491efe9a7e743aff/packages/solid/src/server/rendering.ts#L82-L115}
  */
 function mergeObjects<T>(source: T): T
 function mergeObjects<T, U>(source: T, source1: U): T & U

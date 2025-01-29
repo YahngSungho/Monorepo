@@ -1,4 +1,14 @@
 {
+	"private": true,
+	"name": "storybook",
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "storybook build --output-dir storybook-static",
+		"dev": "storybook dev -p 6006",
+		"test:e2e": "playwright test",
+		"preview": "vite preview --outDir storybook-static"
+	},
 	"dependencies": {
 		"nanoid": "^5.0.9"
 	},
@@ -35,15 +45,5 @@
 		"tailwindcss-animate": "^1.0.7",
 		"vite": "^6.0.11",
 		"vite-tsconfig-paths": "^5.1.4"
-	},
-	"name": "storybook",
-	"private": true,
-	"scripts": {
-		"build": "storybook build --output-dir storybook-static",
-		"dev": "storybook dev -p 6006",
-		"preview": "vite preview --outDir storybook-static",
-		"test:e2e": "playwright test"
-	},
-	"type": "module",
-	"version": "0.0.0"
+	}
 }

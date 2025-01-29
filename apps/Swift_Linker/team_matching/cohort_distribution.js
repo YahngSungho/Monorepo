@@ -32,7 +32,7 @@ class Chunk {
 	}
 
 	/**
-	 * @param {Chunk|Undefined|Null} otherChunk
+	 * @param {Chunk | Undefined | Null} otherChunk
 	 * @returns {Chunk}
 	 */
 	concat(otherChunk) {
@@ -57,9 +57,7 @@ class Chunk {
 		return [new Chunk(dividedRoleSlots[0], members), new Chunk(dividedRoleSlots[1], dividedMembers)]
 	}
 
-	/**
-	 * @returns {[Chunk, Chunk]}
-	 */
+	/** @returns {[Chunk, Chunk]} */
 	drop() {
 		const remaningRoleSlots = R.clone(this.subRoleSpace.roleSlots)
 		const remainingMembers = [...this.members]
@@ -96,9 +94,7 @@ class Chunk {
 		return new Chunk(this.subRoleSpace.slice(start, end), newMembers)
 	}
 
-	/**
-	 * @returns {Error|true}
-	 */
+	/** @returns {Error | true} */
 	validate() {
 		if (this.subRoleSpace.allSlots < this.members.length) {
 			return new Error('Slot of roles must be greater than or equal to the number of members')
@@ -109,12 +105,13 @@ class Chunk {
 }
 
 /**
- * @typedef {{ id: string, slot: number }} RoleSlot
+ * @typedef {{ id: string; slot: number }} RoleSlot
+ *
  * @typedef {RoleSlot[]} RoleSlots
  */
 class SubRoleSpace {
 	/**
-	 * @constructor
+	 * @class
 	 * @param {RoleSlots} roleSlots
 	 */
 	constructor(roleSlots) {
@@ -132,7 +129,6 @@ class SubRoleSpace {
 	}
 
 	/**
-	 *
 	 * @param {SubRoleSpace} otherSubRoleSpace
 	 * @returns {SubRoleSpace}
 	 */
@@ -189,9 +185,7 @@ class SubRoleSpace {
 		return new SubRoleSpace(this.roleSlots.slice(start, end))
 	}
 
-	/**
-	 * @returns {number}
-	 */
+	/** @returns {number} */
 	get allSlots() {
 		return this.roleSlots.reduce((accumulator, current) => accumulator + current.slot, 0)
 	}

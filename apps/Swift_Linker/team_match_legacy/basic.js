@@ -4,6 +4,7 @@ import { getConditions } from './config_conditions.js'
 
 /**
  * @typedef {import('./config_conditions.js').Config} Config
+ *
  * @typedef {import('./config_conditions.js').Condition} Condition
  */
 

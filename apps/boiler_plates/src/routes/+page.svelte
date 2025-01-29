@@ -15,7 +15,6 @@
 	let foo = $state(fo + 'foifoifo')
 
 	foo += ' bar133322222223'
-
 	;('') // eslint-disable-line semi, no-unused-expressions
 </script>
 

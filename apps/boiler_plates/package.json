@@ -1,4 +1,22 @@
 {
+	"private": true,
+	"name": "boiler_plates",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"build": "vite build",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"depCheck": "npx depcheck",
+		"dev": "vite dev",
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint",
+		"test": "xo && pnpm test:unit && pnpm run test:e2e",
+		"test:e2e": "playwright test",
+		"test:unit": "vitest",
+		"preview": "vite preview"
+	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
 		"@repo/base": "workspace:*",
@@ -17,23 +35,5 @@
 		"daisyui": "5.0.0-beta.1",
 		"tailwindcss": "4.0.0-beta.8",
 		"tailwindcss-animate": "^1.0.7"
-	},
-	"name": "boiler_plates",
-	"private": true,
-	"scripts": {
-		"build": "vite build",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"test:unit": "vitest",
-		"test:e2e": "playwright test",
-		"depCheck": "npx depcheck",
-		"dev": "vite dev",
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
-		"styleLint": "stylelint",
-		"preview": "vite preview",
-		"test": "xo && pnpm test:unit && pnpm run test:e2e"
-	},
-	"type": "module",
-	"version": "0.0.1"
+	}
 }

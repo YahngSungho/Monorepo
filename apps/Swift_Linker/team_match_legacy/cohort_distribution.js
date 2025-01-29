@@ -2,9 +2,7 @@
 import * as R from 'ramda'
 import { AllMembers, Cohort, Member, Team, Teams } from './monads.js'
 
-/**
- * @typedef {import('./monads.js').Id} Id
- */
+/** @typedef {import('./monads.js').Id} Id */
 
 // ---
 const includedIn = R.curry((hasMemberId, idArray) => idArray.some((id) => hasMemberId(id)))

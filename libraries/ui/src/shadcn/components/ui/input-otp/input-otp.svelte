@@ -15,7 +15,7 @@
 	bind:ref
 	bind:value
 	class={cn(
-		'flex items-center gap-2 has-disabled:opacity-50 disabled:[&_input]:cursor-not-allowed',
+		'has-disabled:opacity-50 flex items-center gap-2 disabled:[&_input]:cursor-not-allowed',
 		className,
 	)}
 	{...restProps}
