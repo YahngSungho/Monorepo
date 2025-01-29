@@ -17,10 +17,10 @@
 		"test:unit": "vitest",
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
-		"fix": "xo --fix",
-		"lint": "xo && stylelint '**/*.css'",
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint",
 		"preview": "vite preview",
-		"styleLint": "stylelint '**/*.css'",
 		"test": "pnpm test:unit",
 		"update": "pnpm update"
 	},

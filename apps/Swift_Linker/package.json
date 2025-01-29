@@ -16,7 +16,10 @@
 	"main": "index.js",
 	"name": "swift_linker",
 	"scripts": {
-		"test": "vitest"
+		"test": "vitest",
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint"
 	},
 	"type": "module",
 	"version": "1.0.0"

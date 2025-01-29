@@ -28,10 +28,10 @@
 		"test:e2e": "playwright test",
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
-		"fix": "xo --fix",
-		"lint": "xo && stylelint '**/*.css'",
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint",
 		"preview": "vite preview",
-		"styleLint": "stylelint '**/*.css'",
 		"test": "xo && pnpm test:unit && pnpm run test:e2e"
 	},
 	"type": "module",

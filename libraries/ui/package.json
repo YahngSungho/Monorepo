@@ -85,12 +85,12 @@
 		"test:unit": "vitest",
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
-		"fix": "xo --fix",
-		"lint": "xo && stylelint '**/*.css'",
 		"preview": "vite preview",
-		"styleLint": "stylelint '**/*.css'",
 		"test": "pnpm test:unit",
-		"update": "pnpm update"
+		"update": "pnpm update",
+		"fix": "xo --fix && stylelint --fix",
+		"lint": "xo && stylelint",
+		"styleLint": "stylelint"
 	},
 	"sideEffects": [
 		"**/*.css"
