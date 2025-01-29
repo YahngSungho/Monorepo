@@ -18,9 +18,7 @@ const baseConfig = defineConfig({
 	css: {
 		devSourcemap: true,
 		postcss: {
-			plugins: [
-				tailwindcss2(),
-			],
+			plugins: [tailwindcss2()],
 		},
 	},
 	plugins: [

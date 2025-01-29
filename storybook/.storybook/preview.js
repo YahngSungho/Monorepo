@@ -2,7 +2,7 @@ import './default.css'
 
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
-    parameters: {
+	parameters: {
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,
@@ -11,7 +11,7 @@ const preview = {
 		},
 	},
 
-    tags: ['autodocs', 'autodocs']
+	tags: ['autodocs', 'autodocs'],
 }
 
 export default preview

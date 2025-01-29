@@ -17,21 +17,8 @@
 		"plugin:yml/standard",
 		"plugin:toml/standard"
 	],
-	"extensions": [
-		"svelte",
-		"js",
-		"ts",
-		"jsx",
-		"tsx",
-		"mjs",
-		"cjs",
-		"mts",
-		"cts"
-	],
-	"files": [
-		"**/src/**/*",
-		"**/.storybook/**/*"
-	],
+	"extensions": ["svelte", "js", "ts", "jsx", "tsx", "mjs", "cjs", "mts", "cts"],
+	"files": ["**/src/**/*", "**/.storybook/**/*"],
 	"ignores": [
 		"**/node_modules/**",
 		"**/build/**",
@@ -41,57 +28,38 @@
 	],
 	"overrides": [
 		{
-			"files": [
-				"*.svelte",
-				"**/*.svelte"
-			],
+			"files": ["*.svelte", "**/*.svelte"],
 			"parser": "svelte-eslint-parser",
 			"rules": {
 				"sonarjs/no-use-of-empty-return-value": "off"
 			}
 		},
 		{
-			"files": [
-				"*.stories.svelte",
-				"**/*.stories.svelte"
-			],
+			"files": ["*.stories.svelte", "**/*.stories.svelte"],
 			"rules": {
 				"@intlify/svelte/no-raw-text": "off"
 			}
 		},
 		{
-			"files": [
-				"*.json",
-				"*.json5",
-				"*.jsonc"
-			],
+			"files": ["*.json", "*.json5", "*.jsonc"],
 			"parser": "jsonc-eslint-parser",
 			"parserOptions": {
 				"jsonSyntax": "JSON5"
 			}
 		},
 		{
-			"files": [
-				"package.json"
-			]
+			"files": ["package.json"]
 		},
 		{
-			"files": [
-				"*.yaml",
-				"*.yml"
-			],
+			"files": ["*.yaml", "*.yml"],
 			"parser": "yaml-eslint-parser"
 		},
 		{
-			"files": [
-				"*.toml"
-			],
+			"files": ["*.toml"],
 			"parser": "toml-eslint-parser"
 		},
 		{
-			"files": [
-				"*.ts"
-			],
+			"files": ["*.ts"],
 			"parser": "@typescript-eslint/parser",
 			"rules": {
 				"@typescript-eslint/*": "off"
@@ -134,23 +102,14 @@
 		"depend/ban-dependencies": [
 			"warn",
 			{
-				"presets": [
-					"native",
-					"preferred"
-				]
+				"presets": ["native", "preferred"]
 			}
 		],
 		"import/no-mutable-exports": "off",
 		"import/no-unassigned-import": "off",
-		"indent": [
-			"warn",
-			"tab"
-		],
+		"indent": ["warn", "tab"],
 		"n/prefer-global/process": "off",
-		"no-mixed-spaces-and-tabs": [
-			"warn",
-			"smart-tabs"
-		],
+		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
 		"no-unused-expressions": 1,
 		"no-unused-vars": 1,
 		"no-warning-comments": "off",
@@ -165,10 +124,7 @@
 			}
 		],
 		"prefer-const": "off",
-		"semi": [
-			"warn",
-			"never"
-		],
+		"semi": ["warn", "never"],
 		"semi-style": "off",
 		"sonarjs/no-unused-expressions": "off",
 		"sonarjs/sonar-no-unused-vars": "off",

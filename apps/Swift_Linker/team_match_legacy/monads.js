@@ -6,9 +6,7 @@ import * as R from 'ramda'
 import { areAllDisjoint } from '../utilities/functions/utilities.js'
 import { shuffleArray } from './random_engine.js'
 
-export {
-	AllMembers, Cohort, Member, Team, Teams,
-}
+export { AllMembers, Cohort, Member, Team, Teams }
 
 // ----------------------------------------------------------------------------------------
 
@@ -56,19 +54,21 @@ class AllMembers {
 	}
 
 	/**
-	* @param {Member} member
-	* @returns {AllMembers}
-	*/
+	 * @param {Member} member
+	 * @returns {AllMembers}
+	 */
 	add(member) {
-		return new AllMembers(create(this.members, draft => {
-			draft.push(member)
-		}))
+		return new AllMembers(
+			create(this.members, (draft) => {
+				draft.push(member)
+			}),
+		)
 	}
 
 	/**
-	* @param {Array<Member>} members
-	* @returns {AllMembers}
-	*/
+	 * @param {Array<Member>} members
+	 * @returns {AllMembers}
+	 */
 	addMembers(members) {
 		return new AllMembers([...this.members, ...members])
 	}
@@ -86,7 +86,7 @@ class AllMembers {
 	 * @returns {Cohort}
 	 */
 	getCohort(filterF) {
-		return new Cohort(this.members.filter(filterF).map(member => (member.id)))
+		return new Cohort(this.members.filter(filterF).map((member) => member.id))
 	}
 
 	/**
@@ -94,7 +94,9 @@ class AllMembers {
 	 * @returns {AllMembers}
 	 */
 	getRemainingMembers(teams) {
-		return new AllMembers(this.members.filter(member => !teams.teams.some(team => team.hasMemberId(member.id))))
+		return new AllMembers(
+			this.members.filter((member) => !teams.teams.some((team) => team.hasMemberId(member.id))),
+		)
 	}
 
 	/**
@@ -102,18 +104,20 @@ class AllMembers {
 	 * @returns {boolean}
 	 */
 	hasMemberId(id) {
-		return this.members.some(member => member.id === id)
+		return this.members.some((member) => member.id === id)
 	}
 
 	/**
 	 * @returns {AllMembers}
 	 */
 	shuffle() {
-		return new AllMembers(create(this.members, draft => {
-			unsafe(() => {
-				shuffleArray(draft)
-			})
-		}))
+		return new AllMembers(
+			create(this.members, (draft) => {
+				unsafe(() => {
+					shuffleArray(draft)
+				})
+			}),
+		)
 	}
 }
 
@@ -157,9 +161,11 @@ class Cohort {
 	 * @returns {Cohort}
 	 */
 	add(member) {
-		return new Cohort(create(this.idOrCohortArray, draft => {
-			draft.push(member)
-		}))
+		return new Cohort(
+			create(this.idOrCohortArray, (draft) => {
+				draft.push(member)
+			}),
+		)
 	}
 
 	/**
@@ -174,17 +180,19 @@ class Cohort {
 	 * @returns {Array<Id>}
 	 */
 	getJoinedArray() {
-		return R.uniq([...this.idOrCohortArray].flatMap(idOrCohort => {
-			if (idOrCohort instanceof Cohort) {
-				if (idOrCohort === this) {
-					return []
+		return R.uniq(
+			[...this.idOrCohortArray].flatMap((idOrCohort) => {
+				if (idOrCohort instanceof Cohort) {
+					if (idOrCohort === this) {
+						return []
+					}
+
+					return idOrCohort.getJoinedArray()
 				}
 
-				return idOrCohort.getJoinedArray()
-			}
-
-			return idOrCohort
-		}))
+				return idOrCohort
+			}),
+		)
 	}
 
 	/**
@@ -199,7 +207,9 @@ class Cohort {
 	 * @returns {boolean}
 	 */
 	includedIn(team) {
-		return this.getJoinedArray().some((/** @type {string} */ id) => typeof id === 'string' && team.includes(id))
+		return this.getJoinedArray().some(
+			(/** @type {string} */ id) => typeof id === 'string' && team.includes(id),
+		)
 	}
 
 	/**
@@ -352,10 +362,10 @@ class Teams {
 	}
 
 	/**
-	* @param {Array<Team>} teamArray
-	* @param {Array<number>} slots 팀별 남은 자리
+	 * @param {Array<Team>} teamArray
+	 * @param {Array<number>} slots 팀별 남은 자리
 	 */
-	constructor(teamArray, slots = teamArray.map(team => (team.slotFixed))) {
+	constructor(teamArray, slots = teamArray.map((team) => team.slotFixed)) {
 		if (slots.length !== teamArray.length) {
 			throw new Error('Slots must be the same length as number of teamArray')
 		}
@@ -364,7 +374,7 @@ class Teams {
 			throw new TypeError('Teams must be an array')
 		}
 
-		if (!areAllDisjoint(teamArray.map(team => team.idArray))) {
+		if (!areAllDisjoint(teamArray.map((team) => team.idArray))) {
 			throw new Error('Teams must be disjoint')
 		}
 
@@ -378,7 +388,10 @@ class Teams {
 	 * @returns {Teams}
 	 */
 	static empty(slots) {
-		return new Teams(R.range(0, slots.length).map((n, i) => Team.empty(slots[i])), slots)
+		return new Teams(
+			R.range(0, slots.length).map((n, i) => Team.empty(slots[i])),
+			slots,
+		)
 	}
 
 	/**
@@ -388,7 +401,10 @@ class Teams {
 	 * @returns {Teams}
 	 */
 	static init(idArrayArray, slots) {
-		return new Teams(idArrayArray.map((idArray, i) => Team.of(idArray, slots[i])), slots)
+		return new Teams(
+			idArrayArray.map((idArray, i) => Team.of(idArray, slots[i])),
+			slots,
+		)
 	}
 
 	/**
@@ -404,7 +420,7 @@ class Teams {
 	 * @returns {boolean}
 	 */
 	alreadyJoined(id) {
-		return this.teamArray.some(team => team.hasMemberId(id))
+		return this.teamArray.some((team) => team.hasMemberId(id))
 	}
 
 	/**
@@ -429,14 +445,14 @@ class Teams {
 	 * @returns {Array<Id>}
 	 */
 	getAllTeamMembers() {
-		return this.teamArray.flatMap(team => team.idArray)
+		return this.teamArray.flatMap((team) => team.idArray)
 	}
 
 	/**
 	 * @returns {Array<number>}
 	 */
 	getRemainingSlots() {
-		return this.teamArray.map(team => (team.getRemainingSlot()))
+		return this.teamArray.map((team) => team.getRemainingSlot())
 	}
 
 	/**

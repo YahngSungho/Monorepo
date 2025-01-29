@@ -8,12 +8,8 @@
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"paths": {
-			"$shadcn/*": [
-				"./src/shadcn/*"
-			],
-			"$shadcn": [
-				"./src/shadcn"
-			],
+			"$shadcn/*": ["./src/shadcn/*"],
+			"$shadcn": ["./src/shadcn"]
 		}
 	}
 }

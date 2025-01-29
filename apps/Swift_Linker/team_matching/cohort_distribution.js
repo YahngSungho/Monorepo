@@ -1,16 +1,14 @@
 import * as R from 'ramda'
-import {
-	AllMembers, Member, Team, Teams,
-} from './monads.js'
+import { AllMembers, Member, Team, Teams } from './monads.js'
 
-const teamArray = R.range(0, 10).map(_i => Team.getDefaultTeam(10))
-const roleArray = teamArray.flatMap(team => team.roleArray)
+const teamArray = R.range(0, 10).map((_i) => Team.getDefaultTeam(10))
+const roleArray = teamArray.flatMap((team) => team.roleArray)
 
 const teams = Teams.of(teamArray)
 
-const allMembers = AllMembers.of(R.range(0, 100).map(id => Member.of(String(id))))
-const cohort1 = allMembers.getCohort(member => Number(member.id) % 2 === 0)
-const cohort2 = allMembers.getCohort(member => Number(member.id) % 5 === 0)
+const allMembers = AllMembers.of(R.range(0, 100).map((id) => Member.of(String(id))))
+const cohort1 = allMembers.getCohort((member) => Number(member.id) % 2 === 0)
+const cohort2 = allMembers.getCohort((member) => Number(member.id) % 5 === 0)
 const cohorts = [cohort1, cohort2]
 
 // todo 여기서 안되는 애들 rest로 빼는거 어케함?
@@ -18,7 +16,7 @@ class Chunk {
 	/**
 	 * @param {SubRoleSpace} subRoleSpace
 	 * @param {Member[]} members
-	*/
+	 */
 	constructor(subRoleSpace, members) {
 		this.subRoleSpace = subRoleSpace
 		this.members = R.uniq(members)
@@ -42,7 +40,10 @@ class Chunk {
 			return this
 		}
 
-		return new Chunk(this.subRoleSpace.concat(otherChunk.subRoleSpace), this.members.concat(otherChunk.members))
+		return new Chunk(
+			this.subRoleSpace.concat(otherChunk.subRoleSpace),
+			this.members.concat(otherChunk.members),
+		)
 	}
 
 	/**
@@ -52,11 +53,8 @@ class Chunk {
 	 */
 	divide(roleSlots, members) {
 		const dividedRoleSlots = this.subRoleSpace.divide(roleSlots)
-		const dividedMembers = this.members.filter(member => !members.includes(member))
-		return [
-			new Chunk(dividedRoleSlots[0], members),
-			new Chunk(dividedRoleSlots[1], dividedMembers),
-		]
+		const dividedMembers = this.members.filter((member) => !members.includes(member))
+		return [new Chunk(dividedRoleSlots[0], members), new Chunk(dividedRoleSlots[1], dividedMembers)]
 	}
 
 	/**
@@ -65,7 +63,8 @@ class Chunk {
 	drop() {
 		const remaningRoleSlots = R.clone(this.subRoleSpace.roleSlots)
 		const remainingMembers = [...this.members]
-		for (const _i of this.members.keys()) { // eslint-disable-line sonarjs/sonar-no-unused-vars
+		for (const _i of this.members.keys()) {
+			// eslint-disable-line sonarjs/sonar-no-unused-vars
 			remaningRoleSlots.sort((a, b) => -1 * (a.slot - b.slot))
 			const leastRoleSlot = remaningRoleSlots[0]
 			if (leastRoleSlot.slot <= 0) {
@@ -119,7 +118,9 @@ class SubRoleSpace {
 	 * @param {RoleSlots} roleSlots
 	 */
 	constructor(roleSlots) {
-		this.roleSlots = roleSlots.filter(roleSlot => roleSlot.slot > 0).sort((a, b) => a.slot - b.slot)
+		this.roleSlots = roleSlots
+			.filter((roleSlot) => roleSlot.slot > 0)
+			.sort((a, b) => a.slot - b.slot)
 	}
 
 	/**
@@ -139,10 +140,15 @@ class SubRoleSpace {
 		const newRoleSlots = R.clone(this.roleSlots)
 		const otherRoleSlots = otherSubRoleSpace.roleSlots
 		for (const currentRoleSlot of otherRoleSlots) {
-			const matchedRoleSlot = newRoleSlots.find(matchedRoleSlot => matchedRoleSlot.id === currentRoleSlot.id)
+			const matchedRoleSlot = newRoleSlots.find(
+				(matchedRoleSlot) => matchedRoleSlot.id === currentRoleSlot.id,
+			)
 			if (matchedRoleSlot) {
 				const matchedRoleSlotIndex = newRoleSlots.indexOf(matchedRoleSlot)
-				newRoleSlots[matchedRoleSlotIndex] = { ...matchedRoleSlot, slot: matchedRoleSlot.slot + currentRoleSlot.slot }
+				newRoleSlots[matchedRoleSlotIndex] = {
+					...matchedRoleSlot,
+					slot: matchedRoleSlot.slot + currentRoleSlot.slot,
+				}
 			} else {
 				newRoleSlots.push(currentRoleSlot)
 			}
@@ -158,9 +164,11 @@ class SubRoleSpace {
 	divide(roleSlots) {
 		return [
 			new SubRoleSpace(roleSlots),
-			new SubRoleSpace(roleSlots
-				.map((roleSlot) => {
-					const matchedRoleSlot = this.roleSlots.find(matchedRoleSlot => matchedRoleSlot.id === roleSlot.id)
+			new SubRoleSpace(
+				roleSlots.map((roleSlot) => {
+					const matchedRoleSlot = this.roleSlots.find(
+						(matchedRoleSlot) => matchedRoleSlot.id === roleSlot.id,
+					)
 
 					if (matchedRoleSlot) {
 						return { ...roleSlot, slot: matchedRoleSlot.slot - roleSlot.slot }
@@ -191,9 +199,7 @@ class SubRoleSpace {
 
 // X 우선 cohort1과 cohort2 분리만 구현해보기 - 단 2개의 cohort / 1개의 규칙
 
-const totalRoleSpace = SubRoleSpace.of(
-	roleArray.map(role => ({ id: role.id, slot: role.slot })),
-)
+const totalRoleSpace = SubRoleSpace.of(roleArray.map((role) => ({ id: role.id, slot: role.slot })))
 
 const totalChunk = Chunk.of(totalRoleSpace, allMembers.members)
 const validateResult = totalChunk.validate()
@@ -214,19 +220,19 @@ if (currentRoleSpace.roleSlots.length === 0) {
 }
 
 const getRegularArray = R.pipe(
-	R.filter(member => allMembers.hasMember(member)),
-	array => Array.isArray(array) ? teams.removeDuplicateByThis(array) : array,
+	R.filter((member) => allMembers.hasMember(member)),
+	(array) => (Array.isArray(array) ? teams.removeDuplicateByThis(array) : array),
 )
 
 let regularMemberArrays = cohorts
-	.map(cohort => getRegularArray(cohort.joinedArray))
-	.filter(array => array.length > 0)
+	.map((cohort) => getRegularArray(cohort.joinedArray))
+	.filter((array) => array.length > 0)
 const flatDepthForMembers = 2
 // if (regularArrays.every(array => array.length === 0)) {
 // 	return teams
 // }
 
-const withoutFunctionArray = regularMemberArrays.map(array => (R.without(array)))
+const withoutFunctionArray = regularMemberArrays.map((array) => R.without(array))
 for (const [i, array] of regularMemberArrays.entries()) {
 	const currentWithoutFunctionArray = R.remove(Number(i), 1, withoutFunctionArray)
 	// @ts-ignore
@@ -243,13 +249,13 @@ const cohortCount = regularMemberArrays.length
 if (cohortCount > roleCount) {
 	const difference = currentRoleSpace.roleSlots.length - regularMemberArrays.length
 
-	restMembers.push(...(R.take(difference, regularMemberArrays).flat(flatDepthForMembers)))
+	restMembers.push(...R.take(difference, regularMemberArrays).flat(flatDepthForMembers))
 	regularMemberArrays = R.drop(difference, regularMemberArrays)
 }
 
-const counts = regularMemberArrays.map(array => (array.length))
+const counts = regularMemberArrays.map((array) => array.length)
 const totalCount = counts.reduce((accumulator, current) => accumulator + current, 0)
-const rawRations = regularMemberArrays.map(array => (array.length / totalCount))
+const rawRations = regularMemberArrays.map((array) => array.length / totalCount)
 
 let remainingCount = roleCount
 const roleCountPerCohort = []
@@ -264,7 +270,7 @@ for (const [i] of regularMemberArrays.entries()) {
 	}
 
 	// last cohort
-	if (i === (cohortCount - 1)) {
+	if (i === cohortCount - 1) {
 		roleCountPerCohort[i] = remainingCount
 		continue
 	}
@@ -290,11 +296,15 @@ for (const [i, roleCount] of roleCountPerCohort.entries()) {
 	}
 
 	const previousRoleCount = roleCountPerCohort[i - 1]
-	chunksForCohort[i] = currentChunk.slice(previousRoleCount, previousRoleCount + roleCount, currentMembers)
+	chunksForCohort[i] = currentChunk.slice(
+		previousRoleCount,
+		previousRoleCount + roleCount,
+		currentMembers,
+	)
 }
 
 const [regularChunks, droppedChunks] = R.pipe(
-	R.map(chunk => chunk.drop()),
+	R.map((chunk) => chunk.drop()),
 	R.transpose,
 )(chunksForCohort)
 

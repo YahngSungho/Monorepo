@@ -7,23 +7,21 @@ import * as R from 'ramda'
  * @property {(config: Object) => boolean} function - 조건 함수
  */
 
-
 const getErrors = R.curry(
-/**
- * @function getErrors
- * @description 조건 배열에 대한 오류 배열을 반환하는 함수
- * @param {Object} config - 조건 배열에 대한 config
- * @param {Condition[]} conditions - 조건 배열
- * @returns {string[]} - 오류 배열
- */
+	/**
+	 * @function getErrors
+	 * @description 조건 배열에 대한 오류 배열을 반환하는 함수
+	 * @param {Object} config - 조건 배열에 대한 config
+	 * @param {Condition[]} conditions - 조건 배열
+	 * @returns {string[]} - 오류 배열
+	 */
 
-	(config, conditions) => (
+	(config, conditions) =>
 		R.pipe(
-			R.reject(condition => condition.function(config)),
-			R.map(condition => condition.error),
-		)(conditions)
-	))
-
+			R.reject((condition) => condition.function(config)),
+			R.map((condition) => condition.error),
+		)(conditions),
+)
 
 /**
  * @template T - The type of the inner value that Validator holds.
@@ -180,10 +178,10 @@ export default class Validator {
 
 		if (Array.isArray(validators)) {
 			this.errors = R.pipe(
-				R.map(validator => validator.errors),
+				R.map((validator) => validator.errors),
 				R.flatten,
 				R.concat(this.errors),
-			)(validators)/* ? */
+			)(validators) /* ? */
 		} else {
 			this.errors = R.concat(this.errors, validators.errors)
 		}
@@ -221,9 +219,6 @@ export default class Validator {
 	}
 }
 
-
-
-
 // Tests
 const config1 = Validator.fail([1])
 const config2 = Validator.fail([2])
@@ -233,21 +228,18 @@ config1.mergeErrors([config2, config3])
 
 console.log(config1)
 
-
 // Tests
 const gt0 = R.both(R.is(Number), R.gt(R.__, 0))
 
 const conditions = {
 	size: {
 		error: 'size must be greater than 0',
-		function: ({ size }) => (gt0(size)),
-
+		function: ({ size }) => gt0(size),
 	},
 	sizesFixed: {
 		error: 'Fixed size must be greater than 0',
-		function: ({ sizesFixed }) => (R.all(gt0)(sizesFixed)),
+		function: ({ sizesFixed }) => R.all(gt0)(sizesFixed),
 	},
 }
 
-
-Validator.of({ size: 2 }).isValidWith([conditions.size])/* ? */
+Validator.of({ size: 2 }).isValidWith([conditions.size]) /* ? */
