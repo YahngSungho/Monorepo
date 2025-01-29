@@ -183,12 +183,16 @@ blockquote {
 		/* Fix  */
 		@container (max-width: 15ch) {
 			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-			::-webkit-scrollbar { width: min(0.5ch, var(--font-size-1)); }
+			::-webkit-scrollbar {
+				width: min(0.5ch, var(--font-size-1));
+			}
 		}
 
 		@container (max-height: 15ex) {
 			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
-			::-webkit-scrollbar { height: min(0.5ex, var(--font-size-1)); }
+			::-webkit-scrollbar {
+				height: min(0.5ex, var(--font-size-1));
+			}
 		}
 	}
 }

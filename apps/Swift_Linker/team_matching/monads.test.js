@@ -1,9 +1,7 @@
 import { inspect } from 'node:util'
 import { fc, it } from '@fast-check/vitest'
 import { describe, expect } from 'vitest'
-import {
-	AllMembers, Cohort, Member, Role, Team, Teams,
-} from './monads.js'
+import { AllMembers, Cohort, Member, Role, Team, Teams } from './monads.js'
 
 describe('AllMembers', () => {
 	// Creating an empty AllMembers instance using the static empty method
@@ -46,14 +44,16 @@ describe('AllMembers', () => {
 		const allMembers1 = AllMembers.of(members1)
 		const allMembers2 = AllMembers.of(members2)
 		const concatenatedAllMembers = allMembers1.concat(allMembers2)
-		expect(concatenatedAllMembers.members).toEqual(expect.arrayContaining([...members1, ...members2]))
+		expect(concatenatedAllMembers.members).toEqual(
+			expect.arrayContaining([...members1, ...members2]),
+		)
 	})
 
 	// Filtering members to create a Cohort using the getCohort method
 	it('필터링으로 코호트 생성', () => {
 		const members = [Member.of('1', { name: 'Alice' }), Member.of('2', { name: 'Bob' })]
 		const allMembers = AllMembers.of(members)
-		const cohort = allMembers.getCohort(member => member.properties.name === 'Alice')
+		const cohort = allMembers.getCohort((member) => member.properties.name === 'Alice')
 		expect(cohort.array).toEqual([members[0]])
 	})
 
@@ -66,7 +66,11 @@ describe('AllMembers', () => {
 
 	// Shuffling the members in an AllMembers instance using the shuffle method
 	it('멤버 셔플링', () => {
-		const members = [Member.of('1', { name: 'Alice' }), Member.of('2', { name: 'Bob' }), Member.of('3', { name: 'Charlie' })]
+		const members = [
+			Member.of('1', { name: 'Alice' }),
+			Member.of('2', { name: 'Bob' }),
+			Member.of('3', { name: 'Charlie' }),
+		]
 		const allMembers = AllMembers.of(members)
 		const shuffledAllMembers = allMembers.shuffle()
 		expect(shuffledAllMembers.members).toHaveLength(3)
@@ -137,7 +141,10 @@ describe('AllMembers', () => {
 
 		const allMembers = AllMembers.of([member1, member2])
 
-		const teams = new Teams([new Team([new Role([member1], 1)]), new Team([new Role([member2], 1)])])
+		const teams = new Teams([
+			new Team([new Role([member1], 1)]),
+			new Team([new Role([member2], 1)]),
+		])
 
 		const remainingMembers = allMembers.getRemainingMembers(teams)
 
@@ -378,8 +385,11 @@ describe('Role', () => {
 		const member1 = new Member()
 		const member2 = new Member()
 		const role = new Role([member1, member2], 2, 'Developer')
-		const mappedRole = role.map(member => ({ ...member, properties: { ...member.properties, active: true } }))
-		expect(mappedRole.members.every(member => member.properties.active)).toBe(true)
+		const mappedRole = role.map((member) => ({
+			...member,
+			properties: { ...member.properties, active: true },
+		}))
+		expect(mappedRole.members.every((member) => member.properties.active)).toBe(true)
 	})
 
 	// Creating an empty Role with a valid slot number
@@ -398,7 +408,9 @@ describe('Role', () => {
 
 	// Creating a Role with more members than slots
 	it('슬롯보다 많은 멤버로 Role 생성 시 에러', () => {
-		expect(() => new Role([new Member(), new Member()], 1, 'Admin')).toThrowError('The number of members must be less than or equal to the slots')
+		expect(() => new Role([new Member(), new Member()], 1, 'Admin')).toThrowError(
+			'The number of members must be less than or equal to the slots',
+		)
 	})
 
 	// Creating a Role with a negative or zero slot number
@@ -684,7 +696,7 @@ describe('Teams', () => {
 		const team1 = Team.empty()
 		const team2 = Team.empty()
 		const teams = new Teams([team1, team2])
-		const mappedTeams = teams.map(team => team)
+		const mappedTeams = teams.map((team) => team)
 		expect(mappedTeams.teamArray).toEqual([team1, team2])
 	})
 
@@ -748,7 +760,7 @@ describe('Teams', () => {
 	// Mapping over an empty teamArray
 	it('빈 팀 배열 매핑', () => {
 		const emptyTeams = Teams.empty()
-		const mappedTeams = emptyTeams.map(team => team)
+		const mappedTeams = emptyTeams.map((team) => team)
 		expect(mappedTeams.teamArray).toEqual([])
 	})
 
@@ -805,7 +817,7 @@ describe('Teams', () => {
 		const teams = new Teams([team1, team2])
 
 		// when
-		const mappedTeams = teams.map(team => team.add(Role.of([], 3, 'role3')))
+		const mappedTeams = teams.map((team) => team.add(Role.of([], 3, 'role3')))
 
 		// then
 		expect(mappedTeams).not.to.equal(teams)

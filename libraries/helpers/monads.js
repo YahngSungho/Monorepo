@@ -2,36 +2,37 @@
 import util, { inspect } from 'node:util'
 import { compose, curry, identity } from 'ramda'
 
-export {
-	createCompose, Identity, IO, List, Map, Maybe, Task,
-}
+export { createCompose, Identity, IO, List, Map, Maybe, Task }
 
 export { default as Validator } from './validator.js'
 
-const createCompose = curry((F, G) => class Compose {
-	constructor(x) {
-		this.$value = x
-	}
+const createCompose = curry(
+	(F, G) =>
+		class Compose {
+			constructor(x) {
+				this.$value = x
+			}
 
-	// ----- Pointed (Compose F G)
-	static of(x) {
-		return new Compose(F(G(x)))
-	}
+			// ----- Pointed (Compose F G)
+			static of(x) {
+				return new Compose(F(G(x)))
+			}
 
-	// ----- Applicative (Compose F G)
-	ap(f) {
-		return f.map(this.$value)
-	}
+			// ----- Applicative (Compose F G)
+			ap(f) {
+				return f.map(this.$value)
+			}
 
-	// ----- Functor (Compose F G)
-	map(function_) {
-		return new Compose(this.$value.map(x => x.map(function_)))
-	}
+			// ----- Functor (Compose F G)
+			map(function_) {
+				return new Compose(this.$value.map((x) => x.map(function_)))
+			}
 
-	[util.inspect.custom]() {
-		return `Compose(${inspect(this.$value)})`
-	}
-})
+			[util.inspect.custom]() {
+				return `Compose(${inspect(this.$value)})`
+			}
+		},
+)
 
 class Identity {
 	constructor(x) {
@@ -88,7 +89,7 @@ class IO {
 
 	// ----- Applicative IO
 	ap(f) {
-		return this.chain(function_ => f.map(function_))
+		return this.chain((function_) => f.map(function_))
 	}
 
 	// ----- Monad IO
@@ -136,7 +137,10 @@ class List {
 
 	traverse(of, function_) {
 		return this.$value.reduce(
-			(f, a) => function_(a).map(b => bs => bs.concat(b)).ap(f),
+			(f, a) =>
+				function_(a)
+					.map((b) => (bs) => bs.concat(b))
+					.ap(f),
 			of(new List([])),
 		)
 	}
@@ -159,15 +163,14 @@ class Map {
 
 	// ----- Functor (Map a)
 	map(function_) {
-		return this.reduceWithKeys(
-			(m, v, k) => m.insert(k, function_(v)),
-			new Map({}),
-		)
+		return this.reduceWithKeys((m, v, k) => m.insert(k, function_(v)), new Map({}))
 	}
 
 	reduceWithKeys(function_, zero) {
-		return Object.keys(this.$value)
-			.reduce((accumulator, k) => function_(accumulator, this.$value[k], k), zero)
+		return Object.keys(this.$value).reduce(
+			(accumulator, k) => function_(accumulator, this.$value[k], k),
+			zero,
+		)
 	}
 
 	// ----- Traversable (Map a)
@@ -177,7 +180,10 @@ class Map {
 
 	traverse(of, function_) {
 		return this.reduceWithKeys(
-			(f, a, k) => function_(a).map(b => m => m.insert(k, b)).ap(f),
+			(f, a, k) =>
+				function_(a)
+					.map((b) => (m) => m.insert(k, b))
+					.ap(f),
 			of(new Map({})),
 		)
 	}
@@ -272,12 +278,14 @@ class Task {
 
 	// ----- Applicative (Task a)
 	ap(f) {
-		return this.chain(function_ => f.map(function_))
+		return this.chain((function_) => f.map(function_))
 	}
 
 	// ----- Monad (Task a)
 	chain(function_) {
-		return new Task((reject, resolve) => this.fork(reject, x => function_(x).fork(reject, resolve)))
+		return new Task((reject, resolve) =>
+			this.fork(reject, (x) => function_(x).fork(reject, resolve)),
+		)
 	}
 
 	join() {

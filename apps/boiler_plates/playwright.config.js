@@ -9,8 +9,8 @@ const config = Object.assign(defaultConfigObject, {
 		port: portNumber,
 		timeout: 120_000,
 		env: {
-			NODE_ENV: 'production'
-		}
+			NODE_ENV: 'production',
+		},
 	},
 })
 

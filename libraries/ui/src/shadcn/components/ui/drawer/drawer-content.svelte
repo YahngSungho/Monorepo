@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Drawer as DrawerPrimitive } from "vaul-svelte";
-	import DrawerOverlay from "./drawer-overlay.svelte";
-	import { cn } from "$shadcn/utils.js";
+	import { Drawer as DrawerPrimitive } from 'vaul-svelte'
+	import DrawerOverlay from './drawer-overlay.svelte'
+	import { cn } from '$shadcn/utils.js'
 
 	let {
 		ref = $bindable(null),
@@ -10,8 +10,8 @@
 		children,
 		...restProps
 	}: DrawerPrimitive.ContentProps & {
-		portalProps?: DrawerPrimitive.PortalProps;
-	} = $props();
+		portalProps?: DrawerPrimitive.PortalProps
+	} = $props()
 </script>
 
 <DrawerPrimitive.Portal {...portalProps}>
@@ -19,8 +19,8 @@
 	<DrawerPrimitive.Content
 		bind:ref
 		class={cn(
-			"bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border",
-			className
+			'bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border',
+			className,
 		)}
 		{...restProps}
 	>

@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { Slider as SliderPrimitive, type WithoutChildrenOrChild } from "bits-ui";
-	import { cn } from "$shadcn/utils.js";
+	import { Slider as SliderPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
+	import { cn } from '$shadcn/utils.js'
 
 	let {
 		ref = $bindable(null),
 		value = $bindable(),
 		class: className,
 		...restProps
-	}: WithoutChildrenOrChild<SliderPrimitive.RootProps> = $props();
+	}: WithoutChildrenOrChild<SliderPrimitive.RootProps> = $props()
 </script>
 
 <!--
@@ -17,7 +17,7 @@ get along, so we shut typescript up by casting `value` to `never`.
 <SliderPrimitive.Root
 	bind:value={value as never}
 	bind:ref
-	class={cn("relative flex w-full touch-none select-none items-center", className)}
+	class={cn('relative flex w-full touch-none select-none items-center', className)}
 	{...restProps}
 >
 	{#snippet children({ thumbs })}

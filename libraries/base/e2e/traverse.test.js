@@ -12,14 +12,14 @@ const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/g
  */
 async function visitPage(baseUrl, testRoute, page) {
 	const consoleErrors = []
-	page.on('console', msg => {
+	page.on('console', (msg) => {
 		if (msg.type() === 'error') {
 			consoleErrors.push(msg.text())
 		}
 	})
 
 	const failedRequests = []
-	page.on('response', response => {
+	page.on('response', (response) => {
 		if (response.status() >= 400) {
 			failedRequests.push(`${response.url()} (${response.status()})`)
 		}
@@ -50,8 +50,10 @@ async function visitPage(baseUrl, testRoute, page) {
 			consoleErrors.length > 0 ? '콘솔 에러:' : '',
 			...consoleErrors,
 			failedRequests.length > 0 ? '네트워크 에러:' : '',
-			...failedRequests
-		].filter(Boolean).join('\n')
+			...failedRequests,
+		]
+			.filter(Boolean)
+			.join('\n')
 
 		throw new Error(errorMessage)
 	}
@@ -60,7 +62,7 @@ async function visitPage(baseUrl, testRoute, page) {
 const PERFORMANCE_THRESHOLDS = {
 	maxLoadTime: 5000,
 	maxLCP: 1500,
-	maxCLS: 0.1
+	maxCLS: 0.1,
 }
 
 async function speedCheck(page, testRoute) {
@@ -81,51 +83,55 @@ async function speedCheck(page, testRoute) {
 
 	expect(loadTime).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLoadTime)
 
-	const lcp = await page.evaluate(() =>
-		new Promise(resolve => {
-			const observer = new PerformanceObserver((list) => {
-				const entries = list.getEntries()
-				observer.disconnect()
-				const lastEntry = entries[entries.length - 1]
-				resolve(lastEntry ? lastEntry.startTime : 0)
-			})
+	const lcp = await page.evaluate(
+		() =>
+			new Promise((resolve) => {
+				const observer = new PerformanceObserver((list) => {
+					const entries = list.getEntries()
+					observer.disconnect()
+					const lastEntry = entries[entries.length - 1]
+					resolve(lastEntry ? lastEntry.startTime : 0)
+				})
 
-			observer.observe({ type: 'largest-contentful-paint', buffered: true })
+				observer.observe({ type: 'largest-contentful-paint', buffered: true })
 
-			setTimeout(() => {
-				observer.disconnect()
-				test.info().attach('performance-timeout', { body: 'largest-contentful-paint 지연시간 만료`' })
-				console.error('largest-contentful-paint 지연시간 만료')
-				resolve(0)
-			}, 10000)
-		})
+				setTimeout(() => {
+					observer.disconnect()
+					test
+						.info()
+						.attach('performance-timeout', { body: 'largest-contentful-paint 지연시간 만료`' })
+					console.error('largest-contentful-paint 지연시간 만료')
+					resolve(0)
+				}, 10000)
+			}),
 	)
 	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
 
-	const cls = await page.evaluate(() =>
-		new Promise(resolve => {
-			let clsValue = 0
-			const observer = new PerformanceObserver((list) => {
-				for (const entry of list.getEntries()) {
-					// @ts-ignore
-					if (!entry.hadRecentInput) {
+	const cls = await page.evaluate(
+		() =>
+			new Promise((resolve) => {
+				let clsValue = 0
+				const observer = new PerformanceObserver((list) => {
+					for (const entry of list.getEntries()) {
 						// @ts-ignore
-						clsValue += entry.value
+						if (!entry.hadRecentInput) {
+							// @ts-ignore
+							clsValue += entry.value
+						}
 					}
-				}
-				observer.disconnect()
-				resolve(clsValue)
-			})
+					observer.disconnect()
+					resolve(clsValue)
+				})
 
-			observer.observe({ type: 'layout-shift', buffered: true })
+				observer.observe({ type: 'layout-shift', buffered: true })
 
-			setTimeout(() => {
-				observer.disconnect()
-				test.info().attach('performance-timeout', { body: 'layout-shift 지연시간 만료`' })
-				console.error('layout-shift 지연시간 만료')
-				resolve(0)
-			}, 10000)
-		})
+				setTimeout(() => {
+					observer.disconnect()
+					test.info().attach('performance-timeout', { body: 'layout-shift 지연시간 만료`' })
+					console.error('layout-shift 지연시간 만료')
+					resolve(0)
+				}, 10000)
+			}),
 	)
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
 
@@ -146,7 +152,7 @@ async function speedCheck(page, testRoute) {
 			loadTime0,
 			lcp0,
 			cls0,
-		}
+		},
 	}
 	test.info().attach(`성능: ${routeName}`, { body: JSON.stringify(performanceMetrics) })
 }
@@ -158,9 +164,9 @@ async function speedCheck(page, testRoute) {
 function runTests(projectRouteRoot, dynamicRouteParams) {
 	test.describe('스모크 테스트', () => {
 		const routes = getRoutes(projectRouteRoot)
-		const uniqueRoutes = [...new Set(routes.map(r => r.route))].filter(route => route !== '')
+		const uniqueRoutes = [...new Set(routes.map((r) => r.route))].filter((route) => route !== '')
 		const baseUrl = '.'
-		const routeMap = new Map(routes.map(r => [r.route, r]))
+		const routeMap = new Map(routes.map((r) => [r.route, r]))
 
 		for (const routePath of uniqueRoutes) {
 			const routeInfo = routeMap.get(routePath)
@@ -174,14 +180,14 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 						// 파라미터 배열을 순차적으로 적용 (예: [id]/[slug] → 123/my-post)
 						test(`방문: ${dynamicTestRoute} (dynamic)`, async ({ page }) => {
 							const params = paramExample.split('/') // 예시: "123/my-post" → ["123", "my-post"]
-							const expectedParams = (testRoute.match(DYNAMIC_ROUTE_PATTERN) || [])
+							const expectedParams = testRoute.match(DYNAMIC_ROUTE_PATTERN) || []
 							if (params.length !== expectedParams.length) {
 								throw new Error(
 									`Parameter count mismatch for route ${testRoute}. ` +
-									`Expected ${expectedParams.length}, got ${params.length}`
+										`Expected ${expectedParams.length}, got ${params.length}`,
 								)
 							}
-							const encodedParams = params.map(p => encodeURIComponent(p))
+							const encodedParams = params.map((p) => encodeURIComponent(p))
 
 							// 모든 동적 세그먼트를 순차적으로 치환
 							let replacedRoute = testRoute
@@ -195,7 +201,7 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 					}
 				} else {
 					console.warn(`동적 라우트 ${testRoute}에 대한 테스트 파라미터가 제공되지 않았습니다.`)
-					test.skip(`방문: ${testRoute} (dynamic - 파라미터 없음)`, async () => { })
+					test.skip(`방문: ${testRoute} (dynamic - 파라미터 없음)`, async () => {})
 				}
 			} else {
 				// 정적 라우트 테스트
@@ -207,7 +213,7 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 
 		if (uniqueRoutes.length === 0) {
 			console.warn('src/routes 디렉토리에서 라우트를 찾을 수 없습니다.')
-			test.skip('No routes found in src/routes', () => { })
+			test.skip('No routes found in src/routes', () => {})
 		}
 	})
 }
@@ -229,8 +235,7 @@ function getRoutes(projectRouteRoot, dir = '', routes = []) {
 		if (item.isDirectory()) {
 			getRoutes(projectRouteRoot, fullPath, routes)
 		} else if (item.isFile() && item.name === VALID_ROUTE_FILE) {
-			let routePath = path
-				.posix
+			let routePath = path.posix
 				.normalize(fullPath)
 				.replace(VALID_ROUTE_FILE, '')
 				.replace(/^src\/routes/, '')

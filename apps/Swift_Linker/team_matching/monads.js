@@ -5,9 +5,7 @@ import { nanoid } from 'nanoid'
 import * as R from 'ramda'
 import { areAllDisjoint, areDisjoint } from '../utilities/functions/utilities.js'
 
-export {
-	AllMembers, Cohort, Member, Role, Team, Teams,
-}
+export { AllMembers, Cohort, Member, Role, Team, Teams }
 
 // ----------------------------------------------------------------------------------------
 
@@ -57,23 +55,27 @@ class AllMembers {
 	}
 
 	/**
-	* @param {Member} member
-	* @returns {AllMembers}
-	*/
+	 * @param {Member} member
+	 * @returns {AllMembers}
+	 */
 	add(member) {
-		return new AllMembers(create(this.members, draft => {
-			draft.push(member)
-		}))
+		return new AllMembers(
+			create(this.members, (draft) => {
+				draft.push(member)
+			}),
+		)
 	}
 
 	/**
-	* @param {Array<Member>} members
-	* @returns {AllMembers}
-	*/
+	 * @param {Array<Member>} members
+	 * @returns {AllMembers}
+	 */
 	addMembers(members) {
-		return new AllMembers(create(this.members, draft => {
-			draft.push(...members)
-		}))
+		return new AllMembers(
+			create(this.members, (draft) => {
+				draft.push(...members)
+			}),
+		)
 	}
 
 	/**
@@ -81,9 +83,11 @@ class AllMembers {
 	 * @returns {AllMembers}
 	 */
 	concat(other) {
-		return new AllMembers(create(this.members, draft => {
-			draft.push(...other.members)
-		}))
+		return new AllMembers(
+			create(this.members, (draft) => {
+				draft.push(...other.members)
+			}),
+		)
 	}
 
 	/**
@@ -99,7 +103,7 @@ class AllMembers {
 	 * @returns {Member[]}
 	 */
 	getRemainingMembers(members) {
-		return this.members.filter(member => !members.includes(member))
+		return this.members.filter((member) => !members.includes(member))
 	}
 
 	/**
@@ -114,11 +118,13 @@ class AllMembers {
 	 * @returns {AllMembers}
 	 */
 	shuffle() {
-		return new AllMembers(create(this.members, draft => {
-			unsafe(() => {
-				shuffleArray(draft)
-			})
-		}))
+		return new AllMembers(
+			create(this.members, (draft) => {
+				unsafe(() => {
+					shuffleArray(draft)
+				})
+			}),
+		)
 	}
 }
 
@@ -155,9 +161,11 @@ class Cohort {
 	 * @returns {Cohort}
 	 */
 	add(memberOrCohort) {
-		return new Cohort(create(this.memberOrCohortArray, draft => {
-			draft.push(memberOrCohort)
-		}))
+		return new Cohort(
+			create(this.memberOrCohortArray, (draft) => {
+				draft.push(memberOrCohort)
+			}),
+		)
 	}
 
 	/**
@@ -165,9 +173,11 @@ class Cohort {
 	 * @returns {Cohort}
 	 */
 	addMemberOrCohortArray(memberOrCohortArray) {
-		return new Cohort(create(this.memberOrCohortArray, draft => {
-			draft.push(...memberOrCohortArray)
-		}))
+		return new Cohort(
+			create(this.memberOrCohortArray, (draft) => {
+				draft.push(...memberOrCohortArray)
+			}),
+		)
 	}
 
 	[inspect.custom]() {
@@ -193,17 +203,19 @@ class Cohort {
 			throw new TypeError('Cohort must be an array')
 		}
 
-		return R.uniq(this.memberOrCohortArray.flatMap(memberOrCohort => {
-			if (memberOrCohort instanceof Cohort) {
-				if (memberOrCohort === this) {
-					return []
+		return R.uniq(
+			this.memberOrCohortArray.flatMap((memberOrCohort) => {
+				if (memberOrCohort instanceof Cohort) {
+					if (memberOrCohort === this) {
+						return []
+					}
+
+					return memberOrCohort.joinedArray
 				}
 
-				return memberOrCohort.joinedArray
-			}
-
-			return memberOrCohort
-		}))
+				return memberOrCohort
+			}),
+		)
 	}
 
 	get numberOfMembers() {
@@ -263,9 +275,14 @@ class Role {
 	 * @returns {Role}
 	 */
 	add(member) {
-		return new Role(create(this.members, draft => {
-			draft.push(member)
-		}), this.slot, this.name, this.id)
+		return new Role(
+			create(this.members, (draft) => {
+				draft.push(member)
+			}),
+			this.slot,
+			this.name,
+			this.id,
+		)
 	}
 
 	/**
@@ -273,9 +290,14 @@ class Role {
 	 * @returns {Role}
 	 */
 	addMembers(otherMembers) {
-		return new Role(create(this.members, draft => {
-			draft.push(...otherMembers)
-		}), this.slot, this.name, this.id)
+		return new Role(
+			create(this.members, (draft) => {
+				draft.push(...otherMembers)
+			}),
+			this.slot,
+			this.name,
+			this.id,
+		)
 	}
 
 	/**
@@ -287,9 +309,14 @@ class Role {
 			throw new Error('The number of slots must be the same')
 		}
 
-		return new Role(create(this.members, draft => {
-			draft.push(...otherRole.members)
-		}), this.slot, this.name, this.id)
+		return new Role(
+			create(this.members, (draft) => {
+				draft.push(...otherRole.members)
+			}),
+			this.slot,
+			this.name,
+			this.id,
+		)
 	}
 
 	/**
@@ -333,7 +360,7 @@ class Team {
 	 * @param {string|null} id
 	 */
 	constructor(roleArray, id = nanoid()) {
-		if (!areDisjoint(roleArray.map(role => role.name))) {
+		if (!areDisjoint(roleArray.map((role) => role.name))) {
 			throw new Error('Roles must have unique names')
 		}
 
@@ -366,18 +393,24 @@ class Team {
 	 * @param {Role} role
 	 */
 	add(role) {
-		return new Team(create(this.roleArray, draft => {
-			draft.push(role)
-		}), this.id)
+		return new Team(
+			create(this.roleArray, (draft) => {
+				draft.push(role)
+			}),
+			this.id,
+		)
 	}
 
 	/**
 	 * @param {Team} otherTeam
 	 */
 	concat(otherTeam) {
-		return new Team(create(this.roleArray, draft => {
-			draft.push(...otherTeam.roleArray)
-		}), this.id)
+		return new Team(
+			create(this.roleArray, (draft) => {
+				draft.push(...otherTeam.roleArray)
+			}),
+			this.id,
+		)
 	}
 
 	/**
@@ -392,12 +425,12 @@ class Team {
 	 * @returns {boolean}
 	 */
 	hasMember(member) {
-		return this.roleArray.some(role => role.hasMember(member))
+		return this.roleArray.some((role) => role.hasMember(member))
 	}
 
 	/**
- * @returns {boolean}
- */
+	 * @returns {boolean}
+	 */
 	hasRoom() {
 		return this.roleArray.some((/** @type {{ hasRoom(): boolean; }} */ role) => role.hasRoom())
 	}
@@ -410,27 +443,27 @@ class Team {
 	 * @returns {Member[]}
 	 */
 	get members() {
-		return this.roleArray.flatMap(role => role.members)
+		return this.roleArray.flatMap((role) => role.members)
 	}
 
 	/**
 	 * @returns {number}
 	 */
 	get remainingSlot() {
-		return this.roleArray.map(role => role.remainingSlot).reduce((a, b) => a + b, 0)
+		return this.roleArray.map((role) => role.remainingSlot).reduce((a, b) => a + b, 0)
 	}
 }
 
 class Teams {
 	/**
-	* @param {Array<Team>} teamArray
+	 * @param {Array<Team>} teamArray
 	 */
 	constructor(teamArray, id = nanoid()) {
 		if (!Array.isArray(teamArray)) {
 			throw new TypeError('Teams must be an array')
 		}
 
-		if (!areAllDisjoint(teamArray.map(team => team.roleArray))) {
+		if (!areAllDisjoint(teamArray.map((team) => team.roleArray))) {
 			throw new Error('Roles must be disjoint')
 		}
 
@@ -440,7 +473,7 @@ class Teams {
 	}
 
 	includes(member) {
-		return this.teamArray.some(team => team.hasMember(member))
+		return this.teamArray.some((team) => team.hasMember(member))
 	}
 
 	/**
@@ -462,9 +495,11 @@ class Teams {
 	 * @returns {Teams}
 	 */
 	concat(otherTeams) {
-		return new Teams(create(this.teamArray, draft => {
-			draft.push(...otherTeams.teamArray)
-		}))
+		return new Teams(
+			create(this.teamArray, (draft) => {
+				draft.push(...otherTeams.teamArray)
+			}),
+		)
 	}
 
 	/**
@@ -472,7 +507,7 @@ class Teams {
 	 * @returns {boolean}
 	 */
 	hasMember(member) {
-		return this.teamArray.some(team => team.hasMember(member))
+		return this.teamArray.some((team) => team.hasMember(member))
 	}
 
 	[inspect.custom]() {
@@ -502,13 +537,13 @@ class Teams {
 	 * @returns {Member[]}
 	 */
 	get members() {
-		return this.teamArray.flatMap(team => team.members)
+		return this.teamArray.flatMap((team) => team.members)
 	}
 
 	/**
 	 * @returns {number}
 	 */
 	get remainingSlot() {
-		return this.teamArray.map(team => team.remainingSlot).reduce((a, b) => a + b, 0)
+		return this.teamArray.map((team) => team.remainingSlot).reduce((a, b) => a + b, 0)
 	}
 }

@@ -10,7 +10,7 @@ import * as R from 'ramda'
 const hasCommonElements = (list1, list2) => !R.isEmpty(R.intersection(list1, list2))
 
 // 한 배열 안에 중복되는 요소가 이미 있는지 확인
-const areDisjoint = array => array.length === R.uniq(array).length
+const areDisjoint = (array) => array.length === R.uniq(array).length
 
 /**
  * @function areAllDisjoint
@@ -18,9 +18,9 @@ const areDisjoint = array => array.length === R.uniq(array).length
  * @param {Array<Array>} arrays 배열들의 배열
  * @returns {boolean} 모든 배열들이 서로소이면 true, 아니면 false
  */
-const areAllDisjoint = arrays => {
+const areAllDisjoint = (arrays) => {
 	// 한 배열 안에 중복되는 요소가 이미 있는지 확인
-	if (arrays.some(array => !areDisjoint(array))) {
+	if (arrays.some((array) => !areDisjoint(array))) {
 		return false
 	}
 
@@ -37,6 +37,11 @@ const areAllDisjoint = arrays => {
 }
 
 // Test
-console.log(areAllDisjoint([[1, 2], [3, 4]]))
+console.log(
+	areAllDisjoint([
+		[1, 2],
+		[3, 4],
+	]),
+)
 
 export { areAllDisjoint, areDisjoint }

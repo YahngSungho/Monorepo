@@ -39,7 +39,8 @@ const conditions = {
 	 */
 	sizesFixed: {
 		error: 'Fixed size must be greater than 0',
-		function: ({ sizesFixed }) => yup.array().of(yup.number().integer().positive()).isValidSync(sizesFixed),
+		function: ({ sizesFixed }) =>
+			yup.array().of(yup.number().integer().positive()).isValidSync(sizesFixed),
 	},
 }
 
@@ -51,7 +52,7 @@ const conditions = {
  * @returns {Condition[]}
  */
 export function getConditions(picks) {
-	return picks.map(pick => {
+	return picks.map((pick) => {
 		const condition = conditions[pick]
 		if (!condition) {
 			throw new Error(`Unknown condition: ${pick}`)
@@ -65,4 +66,4 @@ export function getConditions(picks) {
 	})
 }
 
-getConditions(['size', 'sizesFixed'])/* ? */
+getConditions(['size', 'sizesFixed']) /* ? */

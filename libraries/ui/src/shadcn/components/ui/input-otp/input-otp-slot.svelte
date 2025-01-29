@@ -1,23 +1,23 @@
 <script lang="ts">
-	import { PinInput as InputOTPPrimitive } from "bits-ui";
-	import type { ComponentProps } from "svelte";
-	import { cn } from "$shadcn/utils.js";
+	import { PinInput as InputOTPPrimitive } from 'bits-ui'
+	import type { ComponentProps } from 'svelte'
+	import { cn } from '$shadcn/utils.js'
 
 	let {
 		ref = $bindable(null),
 		cell,
 		class: className,
 		...restProps
-	}: ComponentProps<typeof InputOTPPrimitive.Cell> = $props();
+	}: ComponentProps<typeof InputOTPPrimitive.Cell> = $props()
 </script>
 
 <InputOTPPrimitive.Cell
 	{cell}
 	bind:ref
 	class={cn(
-		"border-input relative flex h-10 w-10 items-center justify-center border-y border-r text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-		cell.isActive && "ring-ring ring-offset-background z-10 ring-2",
-		className
+		'border-input relative flex h-10 w-10 items-center justify-center border-y border-r text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md',
+		cell.isActive && 'ring-ring ring-offset-background z-10 ring-2',
+		className,
 	)}
 	{...restProps}
 >

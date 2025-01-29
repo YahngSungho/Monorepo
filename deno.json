@@ -1,6 +1,6 @@
 {
-    "imports": {
-        "random-js": "https://esm.sh/random-js",
-        "xstate": "https://esm.sh/xstate"
-    }
+	"imports": {
+		"random-js": "https://esm.sh/random-js",
+		"xstate": "https://esm.sh/xstate"
+	}
 }
