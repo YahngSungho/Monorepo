@@ -35,4 +35,9 @@
 		"scss",
 		"svelte"
 	],
+	"prettier.configPath": ".prettierrc.js",
+	"prettier.jsxSingleQuote": true,
+	"prettier.semi": false,
+	"prettier.singleQuote": true,
+	"prettier.useTabs": true,
 }
