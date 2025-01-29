@@ -13,7 +13,8 @@
 		"plugin:json-schema-validator/recommended",
 		"plugin:jsonc/recommended-with-json",
 		"plugin:jsonc/recommended-with-jsonc",
-		"plugin:jsonc/recommended-with-json5"
+		"plugin:jsonc/recommended-with-json5",
+		"plugin:yml/standard"
 	],
 	"extensions": [
 		"svelte",
@@ -72,6 +73,13 @@
 			"files": [
 				"package.json"
 			]
+		},
+		{
+			"files": [
+				"*.yaml",
+				"*.yml"
+			],
+			"parser": "yaml-eslint-parser"
 		},
 		{
 			"files": [

@@ -47,6 +47,7 @@
 		"eslint-plugin-storybook": "^0.11.2",
 		"eslint-plugin-svelte": "^2.46.1",
 		"eslint-plugin-xstate": "^3.2.1",
+		"eslint-plugin-yml": "^1.16.0",
 		"espress": "^0.0.0",
 		"i": "^0.3.7",
 		"jsdom": "^25.0.1",
@@ -83,7 +84,8 @@
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.0.4",
 		"wrangler": "^3.105.0",
-		"xo": "^0.59.3"
+		"xo": "^0.59.3",
+		"yaml-eslint-parser": "^1.2.3"
 	},
 	"type": "module",
 	"packageManager": "pnpm@9.15.4",
