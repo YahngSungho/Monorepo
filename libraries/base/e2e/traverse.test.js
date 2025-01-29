@@ -134,6 +134,11 @@ async function speedCheck(page, testRoute) {
 	const lcp0 = Math.round(lcp)
 	const cls0 = Number(cls).toFixed(5)
 
+	console.log(`
+	< 성능: ${routeName} >
+	Load: ${loadTime0}ms | LCP: ${lcp0}ms | CLS: ${cls0}
+	`)
+
 	// Playwright 내장 메트릭과 결합
 	const performanceMetrics = {
 		timestamp: Date.now(),
@@ -145,10 +150,6 @@ async function speedCheck(page, testRoute) {
 		}
 	}
 	test.info().attach(`성능: ${routeName}`, { body: JSON.stringify(performanceMetrics) })
-	console.log(`
-	< 성능: ${routeName} >
-	Load: ${loadTime0}ms | LCP: ${lcp0}ms | CLS: ${cls0}
-	`)
 }
 
 /**
