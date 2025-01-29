@@ -14,7 +14,8 @@
 		"plugin:jsonc/recommended-with-json",
 		"plugin:jsonc/recommended-with-jsonc",
 		"plugin:jsonc/recommended-with-json5",
-		"plugin:yml/standard"
+		"plugin:yml/standard",
+		"plugin:toml/standard"
 	],
 	"extensions": [
 		"svelte",
@@ -80,6 +81,12 @@
 				"*.yml"
 			],
 			"parser": "yaml-eslint-parser"
+		},
+		{
+			"files": [
+				"*.toml"
+			],
+			"parser": "toml-eslint-parser"
 		},
 		{
 			"files": [
