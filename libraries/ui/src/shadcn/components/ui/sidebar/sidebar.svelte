@@ -40,7 +40,9 @@
 			data-sidebar="sidebar"
 			data-mobile="true"
 			class="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
-			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
+			style="
+
+--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
 			{side}
 		>
 			<div class="flex h-full w-full flex-col">
