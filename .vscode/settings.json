@@ -6,6 +6,12 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[javascript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"console-ninja.dateTimeDisplayMode": "Relative To Previous",
@@ -18,18 +24,47 @@
 		"**/*.less"
 	],
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"eslint.format.enable": true,
+	"eslint.lintTask.enable": true,
+	"eslint.probe": [
+		"astro",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html",
+		"mdx",
+		"vue",
+		"markdown",
+		"json",
+		"jsonc",
+		"svelte"
+	],
+	"eslint.run": "onSave",
+	"eslint.useESLintClass": true,
+	"eslint.useFlatConfig": true,
+	"eslint.validate": [
+		"css",
+		"svelte",
+		"html",
+		"postcss",
+		"jsx",
+		"tsx",
+		"js",
+		"ts",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"javascriptsvelte"
+	],
 	"peacock.color": "#dd0531",
 	"prettier.configPath": ".prettierrc.js",
 	"prettier.jsxSingleQuote": true,
 	"prettier.semi": false,
 	"prettier.singleQuote": true,
 	"prettier.useTabs": true,
-	"stylelint.validate": [
-		"css",
-		"scss",
-		"svelte"
-	],
-	"vs-code-prettier-eslint.prettierLast": true,
+	"stylelint.validate": ["css", "scss", "svelte"],
 	"workbench.colorCustomizations": {
 		"activityBar.activeBackground": "#fa1b49",
 		"activityBar.background": "#fa1b49",
@@ -38,7 +73,9 @@
 		"activityBarBadge.background": "#155e02",
 		"activityBarBadge.foreground": "#e7e7e7",
 		"commandCenter.border": "#e7e7e799",
+		"editorGroup.border": "#fa1b49",
 		"sash.hoverBorder": "#fa1b49",
+		"sideBar.border": "#fa1b49",
 		"statusBar.background": "#dd0531",
 		"statusBar.foreground": "#e7e7e7",
 		"statusBarItem.hoverBackground": "#fa1b49",
@@ -47,8 +84,6 @@
 		"titleBar.activeBackground": "#dd0531",
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#dd053199",
-		"titleBar.inactiveForeground": "#e7e7e799",
-		"sideBar.border": "#fa1b49",
-		"editorGroup.border": "#fa1b49"
-	},
+		"titleBar.inactiveForeground": "#e7e7e799"
+	}
 }
