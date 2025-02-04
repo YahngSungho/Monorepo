@@ -1,0 +1,28 @@
+{
+	"jsxSingleQuote": true,
+	"overrides": [
+		{
+			"files": "*.svelte",
+			"options": {
+				"parser": "svelte"
+			}
+		}
+	],
+	"plugins": [
+		"prettier-plugin-sh",
+		"prettier-plugin-jsdoc",
+		"prettier-plugin-sort-json",
+		"prettier-plugin-package-perfection",
+		"prettier-plugin-classnames",
+		"prettier-plugin-svelte",
+		"prettier-plugin-sql",
+		"prettier-plugin-tailwindcss",
+		"prettier-plugin-merge"
+	],
+	"printWidth": 100,
+	"semi": false,
+	"singleQuote": true,
+	"svelteIndentScriptAndStyle": false,
+	"trailingComma": "all",
+	"useTabs": true
+}
