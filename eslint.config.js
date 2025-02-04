@@ -12,7 +12,6 @@ import parser_svelte from 'svelte-eslint-parser'
 import parser_jsonc from 'jsonc-eslint-parser'
 import parser_yaml from 'yaml-eslint-parser'
 import parser_toml from 'toml-eslint-parser'
-import tsParser from '@typescript-eslint/parser'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
@@ -229,7 +228,10 @@ export default [
 		files: ['**/*.ts', '**/*.tsx'],
 
 		languageOptions: {
-			parser: tsParser,
+			parser: '@typescript-eslint/parser',
+			parserOptions: {
+				allowDefaultProject: ['*.svelte'],
+			},
 		},
 
 		rules: {
