@@ -19,10 +19,14 @@ import js from '@eslint/js'
 import { FlatCompat } from '@eslint/eslintrc'
 import { includeIgnoreFile } from '@eslint/compat'
 import globals from 'globals'
-import eslintConfigPrettier from "eslint-config-prettier"
+import eslintConfigPrettier from 'eslint-config-prettier'
 import importPlugin from 'eslint-plugin-import-x'
+import eslintPluginNoUseExtendNative from 'eslint-plugin-no-use-extend-native'
+import pluginPromise from 'eslint-plugin-promise'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import nodePlugin from 'eslint-plugin-n'
 
-const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url))
+const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const compat = new FlatCompat({
@@ -48,10 +52,14 @@ export default [
 		},
 	},
 	js.configs.recommended,
+	eslintPluginUnicorn.configs['flat/recommended'],
 	importPlugin.flatConfigs.recommended,
 	...svelte.configs['flat/recommended'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
+	nodePlugin.configs['flat/recommended-module'],
+	eslintPluginNoUseExtendNative.configs.recommended,
+	pluginPromise.configs['flat/recommended'],
 	...compat.extends(
 		'plugin:depend/recommended',
 		'plugin:regexp/recommended',
@@ -87,7 +95,7 @@ export default [
 				},
 			],
 
-			'import-x/no-unresolved': null,
+			'import-x/no-unresolved': 'off',
 
 			'import/no-mutable-exports': 'off',
 			'import/no-unassigned-import': 'off',
@@ -236,5 +244,5 @@ export default [
 			'@typescript-eslint/*': 'off',
 		},
 	},
-	eslintConfigPrettier
+	eslintConfigPrettier,
 ]
