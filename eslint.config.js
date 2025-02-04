@@ -94,9 +94,6 @@ export default [
 					presets: ['native', 'preferred'],
 				},
 			],
-
-			'import-x/no-unresolved': 'off',
-
 			'import/no-mutable-exports': 'off',
 			'import/no-unassigned-import': 'off',
 			indent: ['warn', 'tab'],
@@ -108,7 +105,6 @@ export default [
 			'object-curly-spacing': 'off',
 			'perfectionist/sort-imports': 'off',
 			'perfectionist/sort-modules': 'off',
-
 			'perfectionist/sort-objects': [
 				'warn',
 				{
@@ -116,7 +112,6 @@ export default [
 					type: 'natural',
 				},
 			],
-
 			'prefer-const': 'off',
 			semi: ['warn', 'never'],
 			'semi-style': 'off',
@@ -126,7 +121,6 @@ export default [
 			'svelte/derived-has-same-inputs-outputs': 'warn',
 			'svelte/first-attribute-linebreak': 'off',
 			'svelte/html-closing-bracket-spacing': 'warn',
-
 			'svelte/html-quotes': [
 				'warn',
 				{
@@ -138,7 +132,6 @@ export default [
 					prefer: 'single',
 				},
 			],
-
 			'svelte/indent': [
 				'warn',
 				{
@@ -160,14 +153,12 @@ export default [
 			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 			'svelte/no-store-async': 'warn',
 			'svelte/no-target-blank': 'warn',
-
 			'svelte/no-unused-class-name': [
 				'off',
 				{
 					allowedClassNames: [],
 				},
 			],
-
 			'svelte/prefer-destructured-store-props': 'warn',
 			'svelte/prefer-style-directive': 'warn',
 			'svelte/require-each-key': 'warn',
