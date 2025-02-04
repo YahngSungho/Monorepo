@@ -24,6 +24,7 @@ import eslintPluginNoUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import pluginPromise from 'eslint-plugin-promise'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import nodePlugin from 'eslint-plugin-n'
+import tsPlugin from '@typescript-eslint/parser'
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
@@ -45,6 +46,7 @@ export default [
 			},
 			parser: babelParser,
 			parserOptions: {
+				extraFileExtensions: ['.svelte'],
 				requireConfigFile: false,
 			},
 			sourceType: 'module',
@@ -177,17 +179,20 @@ export default [
 			svelte: {
 				kit: {
 					files: {
-						routes: 'src/routes',
+						routes: '**/src/routes',
 					},
 				},
 			},
 		},
 	},
 	{
-		files: ['**/*.svelte'],
+		files: ['**/*.svelte', '*.svelte'],
 
 		languageOptions: {
 			parser: parser_svelte,
+			parserOptions: {
+				parser: tsPlugin,
+			},
 		},
 	},
 	{
@@ -228,9 +233,9 @@ export default [
 		files: ['**/*.ts', '**/*.tsx'],
 
 		languageOptions: {
-			parser: '@typescript-eslint/parser',
+			parser: tsPlugin,
 			parserOptions: {
-				allowDefaultProject: ['*.svelte'],
+				extraFileExtensions: ['.svelte'],
 			},
 		},
 
