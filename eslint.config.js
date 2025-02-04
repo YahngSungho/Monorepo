@@ -94,6 +94,7 @@ export default [
 					presets: ['native', 'preferred'],
 				},
 			],
+			'import-x/no-unresolved': 'off',
 			'import/no-mutable-exports': 'off',
 			'import/no-unassigned-import': 'off',
 			indent: ['warn', 'tab'],
