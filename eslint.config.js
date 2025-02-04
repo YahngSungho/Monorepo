@@ -19,33 +19,36 @@ import js from '@eslint/js'
 import { FlatCompat } from '@eslint/eslintrc'
 import { includeIgnoreFile } from '@eslint/compat'
 import globals from 'globals'
+import eslintConfigPrettier from "eslint-config-prettier"
+import importPlugin from 'eslint-plugin-import-x'
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const compat = new FlatCompat({
+	allConfig: js.configs.all,
 	baseDirectory: __dirname,
 	recommendedConfig: js.configs.recommended,
-	allConfig: js.configs.all,
 })
 
 export default [
 	includeIgnoreFile(gitignorePath),
 	{
 		languageOptions: {
-			parser: babelParser,
-			parserOptions: {
-				requireConfigFile: false,
-			},
 			ecmaVersion: 'latest',
-			sourceType: 'module',
 			globals: {
 				...globals.browser,
 				...globals.node,
 			},
+			parser: babelParser,
+			parserOptions: {
+				requireConfigFile: false,
+			},
+			sourceType: 'module',
 		},
 	},
 	js.configs.recommended,
+	importPlugin.flatConfigs.recommended,
 	...svelte.configs['flat/recommended'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
@@ -62,23 +65,13 @@ export default [
 	),
 	{
 		plugins: {
-			depend,
-			svelte,
 			'@intlify/svelte': intlifyEslintPluginSvelte,
-			storybook,
-			sonarjs,
-			xstate,
+			depend,
 			regexp,
-		},
-
-		settings: {
-			svelte: {
-				kit: {
-					files: {
-						routes: 'src/routes',
-					},
-				},
-			},
+			sonarjs,
+			storybook,
+			svelte,
+			xstate,
 		},
 
 		rules: {
@@ -87,13 +80,14 @@ export default [
 			'arrow-parens': 'off',
 			'capitalized-comments': 'off',
 			'consistent-return': 'off',
-
 			'depend/ban-dependencies': [
 				'warn',
 				{
 					presets: ['native', 'preferred'],
 				},
 			],
+
+			'import-x/no-unresolved': null,
 
 			'import/no-mutable-exports': 'off',
 			'import/no-unassigned-import': 'off',
@@ -179,16 +173,22 @@ export default [
 			'unicorn/prevent-abbreviations': 'off',
 			'unicorn/require-array-join-separator': 'off',
 		},
+
+		settings: {
+			svelte: {
+				kit: {
+					files: {
+						routes: 'src/routes',
+					},
+				},
+			},
+		},
 	},
 	{
-		files: ['**/*.svelte', '**/*.svelte'],
+		files: ['**/*.svelte'],
 
 		languageOptions: {
 			parser: parser_svelte,
-		},
-
-		rules: {
-			'sonarjs/no-use-of-empty-return-value': 'off',
 		},
 	},
 	{
@@ -202,13 +202,13 @@ export default [
 		files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
 
 		languageOptions: {
-			parser: parser_jsonc,
 			ecmaVersion: 5,
-			sourceType: 'script',
-
+			parser: parser_jsonc,
 			parserOptions: {
 				jsonSyntax: 'JSON5',
 			},
+
+			sourceType: 'script',
 		},
 	},
 	{
@@ -236,4 +236,5 @@ export default [
 			'@typescript-eslint/*': 'off',
 		},
 	},
+	eslintConfigPrettier
 ]
