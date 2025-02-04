@@ -9,8 +9,9 @@ import * as R from 'ramda'
 
 const getErrors = R.curry(
 	/**
+	 * 조건 배열에 대한 오류 배열을 반환하는 함수
+	 *
 	 * @function getErrors
-	 * @description 조건 배열에 대한 오류 배열을 반환하는 함수
 	 * @param {Object} config - 조건 배열에 대한 config
 	 * @param {Condition[]} conditions - 조건 배열
 	 * @returns {string[]} - 오류 배열
@@ -23,13 +24,11 @@ const getErrors = R.curry(
 		)(conditions),
 )
 
-/**
- * @template T - The type of the inner value that Validator holds.
- */
+/** @template T - The type of the inner value that Validator holds. */
 export default class Validator {
 	/**
 	 * @param {Object} config - 설정 객체
-	 * @param {string[]} [errors=[]] - 오류 배열
+	 * @param {string[]} [errors=[]] - 오류 배열. Default is `[]`
 	 */
 	constructor(config, errors = []) {
 		/** @type {Object} */
@@ -93,36 +92,29 @@ export default class Validator {
 		return validator.map(this.config)
 	}
 
-	/**
-	 * @returns {Object} - 설정 객체
-	 */
+	/** @returns {Object} - 설정 객체 */
 	getConfig() {
 		return this.config
 	}
 
-	/**
-	 * @returns {string[]} - 오류 배열
-	 */
+	/** @returns {string[]} - 오류 배열 */
 	getErrors() {
 		return this.errors
 	}
 
-	/**
-	 * @returns {{config: Object, errors: string[]}} - 내부 값 객체
-	 */
+	/** @returns {{ config: Object; errors: string[] }} - 내부 값 객체 */
 	getInnerValue() {
 		return { config: this.config, errors: this.errors }
 	}
 
-	/**
-	 * @returns {boolean} - 설정 객체가 null 또는 undefined인지 여부
-	 */
+	/** @returns {boolean} - 설정 객체가 null 또는 undefined인지 여부 */
 	isNothing() {
 		return this.config === null || this.config === undefined
 	}
 
 	/**
-	 * @description Mutable Method
+	 * Mutable Method
+	 *
 	 * @param {Condition[]} newConditions - 새로운 조건 배열
 	 * @returns {boolean} - 전체 조건 배열이 유효한지 여부
 	 */
@@ -170,7 +162,7 @@ export default class Validator {
 	}
 
 	/**
-	 * @param {Validator|Validator[]} validators - Validator 인스턴스 또는 배열
+	 * @param {Validator | Validator[]} validators - Validator 인스턴스 또는 배열
 	 * @returns {Validator}
 	 */
 	mergeErrors(validators) {
@@ -211,9 +203,7 @@ export default class Validator {
 		return function_(this.config).map(Validator.of)
 	}
 
-	/**
-	 * @returns {string} - 커스텀 인스펙트 결과
-	 */
+	/** @returns {string} - 커스텀 인스펙트 결과 */
 	[util.inspect.custom]() {
 		return this.isNothing() ? `Invalid(${inspect(this.errors)})` : `Valid(${inspect(this.config)})`
 	}

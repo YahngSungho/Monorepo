@@ -1,26 +1,20 @@
 {
-	"workbench.colorCustomizations": {
-		"activityBar.activeBackground": "#fa1b49",
-		"activityBar.background": "#fa1b49",
-		"activityBar.foreground": "#e7e7e7",
-		"activityBar.inactiveForeground": "#e7e7e799",
-		"activityBarBadge.background": "#155e02",
-		"activityBarBadge.foreground": "#e7e7e7",
-		"commandCenter.border": "#e7e7e799",
-		"sash.hoverBorder": "#fa1b49",
-		"statusBar.background": "#dd0531",
-		"statusBar.foreground": "#e7e7e7",
-		"statusBarItem.hoverBackground": "#fa1b49",
-		"statusBarItem.remoteBackground": "#dd0531",
-		"statusBarItem.remoteForeground": "#e7e7e7",
-		"titleBar.activeBackground": "#dd0531",
-		"titleBar.activeForeground": "#e7e7e7",
-		"titleBar.inactiveBackground": "#dd053199",
-		"titleBar.inactiveForeground": "#e7e7e799",
-		"sideBar.border": "#fa1b49",
-		"editorGroup.border": "#fa1b49"
+	"[gitignore]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"peacock.color": "#dd0531",
+	"[ignore]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"console-ninja.dateTimeDisplayMode": "Relative To Previous",
 	"cssVariables.lookupFiles": [
 		"libraries/base/node_modules/open-props/open-props.min.css",
 		"libraries/base/base.css",
@@ -29,11 +23,67 @@
 		"**/*.sass",
 		"**/*.less"
 	],
-	"console-ninja.dateTimeDisplayMode": "Relative To Previous",
-	"stylelint.validate": ["css", "scss", "svelte"],
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"eslint.format.enable": true,
+	"eslint.lintTask.enable": true,
+	"eslint.probe": [
+		"astro",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html",
+		"mdx",
+		"vue",
+		"markdown",
+		"json",
+		"jsonc",
+		"svelte"
+	],
+	"eslint.run": "onSave",
+	"eslint.useESLintClass": true,
+	"eslint.useFlatConfig": true,
+	"eslint.validate": [
+		"css",
+		"svelte",
+		"html",
+		"postcss",
+		"jsx",
+		"tsx",
+		"js",
+		"ts",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"javascriptsvelte"
+	],
+	"peacock.color": "#dd0531",
 	"prettier.configPath": ".prettierrc.js",
 	"prettier.jsxSingleQuote": true,
 	"prettier.semi": false,
 	"prettier.singleQuote": true,
-	"prettier.useTabs": true
+	"prettier.useTabs": true,
+	"stylelint.validate": ["css", "scss", "svelte"],
+	"workbench.colorCustomizations": {
+		"activityBar.activeBackground": "#fa1b49",
+		"activityBar.background": "#fa1b49",
+		"activityBar.foreground": "#e7e7e7",
+		"activityBar.inactiveForeground": "#e7e7e799",
+		"activityBarBadge.background": "#155e02",
+		"activityBarBadge.foreground": "#e7e7e7",
+		"commandCenter.border": "#e7e7e799",
+		"editorGroup.border": "#fa1b49",
+		"sash.hoverBorder": "#fa1b49",
+		"sideBar.border": "#fa1b49",
+		"statusBar.background": "#dd0531",
+		"statusBar.foreground": "#e7e7e7",
+		"statusBarItem.hoverBackground": "#fa1b49",
+		"statusBarItem.remoteBackground": "#dd0531",
+		"statusBarItem.remoteForeground": "#e7e7e7",
+		"titleBar.activeBackground": "#dd0531",
+		"titleBar.activeForeground": "#e7e7e7",
+		"titleBar.inactiveBackground": "#dd053199",
+		"titleBar.inactiveForeground": "#e7e7e799"
+	}
 }

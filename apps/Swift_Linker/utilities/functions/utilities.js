@@ -1,8 +1,9 @@
 import * as R from 'ramda'
 
 /**
+ * 두 배열 간에 공통된 요소가 있는지 확인하는 함수
+ *
  * @function hasCommonElements
- * @description 두 배열 간에 공통된 요소가 있는지 확인하는 함수
  * @param {Array} list1
  * @param {Array} list2
  * @returns {boolean} - 공통된 요소가 있으면 true, 없으면 false
@@ -13,9 +14,10 @@ const hasCommonElements = (list1, list2) => !R.isEmpty(R.intersection(list1, lis
 const areDisjoint = (array) => array.length === R.uniq(array).length
 
 /**
+ * 모든 배열들이 서로소인지 확인하는 함수
+ *
  * @function areAllDisjoint
- * @description 모든 배열들이 서로소인지 확인하는 함수
- * @param {Array<Array>} arrays 배열들의 배열
+ * @param {Array[]} arrays 배열들의 배열
  * @returns {boolean} 모든 배열들이 서로소이면 true, 아니면 false
  */
 const areAllDisjoint = (arrays) => {

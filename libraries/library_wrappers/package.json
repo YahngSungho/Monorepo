@@ -1,29 +1,29 @@
 {
-	"author": "",
-	"dependencies": {
-		"mutative": "^1.1.0",
-		"random-js": "^2.1.0"
-	},
-	"description": "",
-	"exports": {
-		"./mutative": "./mutative.js",
-		"./random_engine": "./random_engine.js"
-	},
-	"keywords": [],
-	"license": "ISC",
-	"main": "index.js",
 	"name": "@repo/library_wrappers",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"type": "module",
+	"main": "index.js",
 	"scripts": {
-		"test:unit": "vitest",
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
 		"fix": "xo --fix && stylelint --fix",
 		"lint": "xo && stylelint",
 		"styleLint": "stylelint",
-		"preview": "vite preview",
 		"test": "pnpm test:unit",
-		"update": "pnpm update"
+		"test:unit": "vitest",
+		"update": "pnpm update",
+		"preview": "vite preview"
 	},
-	"type": "module",
-	"version": "1.0.0"
+	"dependencies": {
+		"mutative": "^1.1.0",
+		"random-js": "^2.1.0"
+	},
+	"keywords": [],
+	"exports": {
+		"./mutative": "./mutative.js",
+		"./random_engine": "./random_engine.js"
+	}
 }

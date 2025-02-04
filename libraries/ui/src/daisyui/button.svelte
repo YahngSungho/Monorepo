@@ -1,6 +1,14 @@
 <script>
 	/**
-	 * @typedef {('primary'|'secondary'|'accent'|'info'|'success'|'warning'|'error'|'outline'|'text')} variant
+	 * @typedef {'primary'
+	 * 	| 'secondary'
+	 * 	| 'accent'
+	 * 	| 'info'
+	 * 	| 'success'
+	 * 	| 'warning'
+	 * 	| 'error'
+	 * 	| 'outline'
+	 * 	| 'text'} variant
 	 */
 	let { children, variant, href, ...restProps } = $props()
 

@@ -5,7 +5,17 @@ export default {
 	trailingComma: 'all',
 	semi: false,
 	printWidth: 100,
-	plugins: ['prettier-plugin-svelte'],
+	plugins: [
+		'prettier-plugin-sh',
+		'prettier-plugin-jsdoc',
+		'prettier-plugin-sort-json',
+		'prettier-plugin-package-perfection',
+		'prettier-plugin-classnames',
+		'prettier-plugin-svelte',
+		'prettier-plugin-sql',
+		'prettier-plugin-tailwindcss',
+		'prettier-plugin-merge', // MUST come last
+	],
 	overrides: [
 		{
 			files: '*.svelte',

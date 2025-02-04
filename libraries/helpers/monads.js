@@ -195,6 +195,7 @@ class Map {
 
 /**
  * Maybe monad represents an optional value that either holds a value of type T or nothing.
+ *
  * @template T - The type of the inner value that Maybe holds.
  */
 class Maybe {
@@ -232,9 +233,10 @@ class Maybe {
 	// ----- Functor Maybe
 	/**
 	 * Applies a function to the inner value of Maybe, if it exists.
+	 *
+	 * @template U
 	 * @param {function(T): U} function_ - A function to apply to the inner value.
 	 * @returns {Maybe<U>} - A new Maybe instance with the transformed value.
-	 * @template U
 	 */
 	map(function_) {
 		return this.isNothing ? this : Maybe.of(function_(this.$value))

@@ -1,5 +1,5 @@
 import { dirname, join } from 'path'
-/** @type { import('@storybook/svelte-vite').StorybookConfig } */
+/** @type {import('@storybook/svelte-vite').StorybookConfig} */
 const config = {
 	stories: [
 		'../../apps/**/*.stories.@(js|ts|svelte)',

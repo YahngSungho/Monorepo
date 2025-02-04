@@ -10,9 +10,7 @@ export { AllMembers, Cohort, Member, Team, Teams }
 
 // ----------------------------------------------------------------------------------------
 
-/**
- * @typedef {string} Id
- */
+/** @typedef {string} Id */
 
 // ----------------------------------------------------------------------------------------
 class Member {
@@ -35,9 +33,7 @@ class Member {
 }
 
 class AllMembers {
-	/**
-	 * @param {Array<Member>} members
-	 */
+	/** @param {Member[]} members */
 	constructor(members) {
 		this.members = members
 	}
@@ -46,9 +42,7 @@ class AllMembers {
 		return new AllMembers([])
 	}
 
-	/**
-	 * @param {Array<Member>} members
-	 */
+	/** @param {Member[]} members */
 	static of(members) {
 		return new AllMembers(members)
 	}
@@ -66,7 +60,7 @@ class AllMembers {
 	}
 
 	/**
-	 * @param {Array<Member>} members
+	 * @param {Member[]} members
 	 * @returns {AllMembers}
 	 */
 	addMembers(members) {
@@ -107,9 +101,7 @@ class AllMembers {
 		return this.members.some((member) => member.id === id)
 	}
 
-	/**
-	 * @returns {AllMembers}
-	 */
+	/** @returns {AllMembers} */
 	shuffle() {
 		return new AllMembers(
 			create(this.members, (draft) => {
@@ -122,9 +114,10 @@ class AllMembers {
 }
 
 /**
- * @class Cohort
+ * 중첩된 Cohort join 가능
+ *
  * @template idOrCohortArray
- * @description 중첩된 Cohort join 가능
+ * @class Cohort
  */
 class Cohort {
 	isCohort = R.T
@@ -137,9 +130,7 @@ class Cohort {
 		return this.getJoinedArray().length
 	}
 
-	/**
-	 * @param {Array<Id | Cohort>} idOrCohortArray
-	 */
+	/** @param {(Id | Cohort)[]} idOrCohortArray */
 	constructor(idOrCohortArray) {
 		this.idOrCohortArray = R.uniq(idOrCohortArray)
 	}
@@ -149,7 +140,7 @@ class Cohort {
 	}
 
 	/**
-	 * @param {Array<Id | Cohort>} idOrCohortArray
+	 * @param {(Id | Cohort)[]} idOrCohortArray
 	 * @returns {Cohort}
 	 */
 	static of(idOrCohortArray) {
@@ -169,16 +160,14 @@ class Cohort {
 	}
 
 	/**
-	 * @param {Array<Id | Cohort>} idOrCohortArray
+	 * @param {(Id | Cohort)[]} idOrCohortArray
 	 * @returns {Cohort}
 	 */
 	addMembers(idOrCohortArray) {
 		return new Cohort([...this.idOrCohortArray, ...idOrCohortArray])
 	}
 
-	/**
-	 * @returns {Array<Id>}
-	 */
+	/** @returns {Id[]} */
 	getJoinedArray() {
 		return R.uniq(
 			[...this.idOrCohortArray].flatMap((idOrCohort) => {
@@ -195,9 +184,7 @@ class Cohort {
 		)
 	}
 
-	/**
-	 * @returns {Array<Id | Cohort>}
-	 */
+	/** @returns {(Id | Cohort)[]} */
 	getValue() {
 		return this.idOrCohortArray
 	}
@@ -212,16 +199,12 @@ class Cohort {
 		)
 	}
 
-	/**
-	 * @returns {Cohort<Array<Id>>}
-	 */
+	/** @returns {Cohort<Id[]>} */
 	join() {
 		return new Cohort(this.getJoinedArray())
 	}
 
-	/**
-	 * @returns {{ id: Id, Cohort: Cohort<Array<Id>> }}
-	 */
+	/** @returns {{ id: Id; Cohort: Cohort<Id[]> }} */
 	pop() {
 		const array = this.getJoinedArray()
 
@@ -244,9 +227,7 @@ class Cohort {
 
 // fix 여기 역할을 추가해야함 - 그러면서도 디폴트는 같게
 class Team {
-	/**
-	 * @returns {Id[]}
-	 */
+	/** @returns {Id[]} */
 	get idArray() {
 		return this.memberIds
 	}
@@ -318,16 +299,12 @@ class Team {
 		return this.memberIds.includes(id)
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
+	/** @returns {boolean} */
 	hasRoom() {
 		return this.slotFixed > this.memberIds.length
 	}
 
-	/**
-	 * @param {(value: string, index: number, array: string[]) => string} f
-	 */
+	/** @param {(value: string, index: number, array: string[]) => string} f */
 	map(f) {
 		return new Team(this.memberIds.map(f), this.slotFixed, this.id)
 	}
@@ -346,13 +323,12 @@ class Team {
 }
 
 /**
+ * 팀들에 나눠서 column 단위로 concat으로 추가 가능
+ *
  * @class Teams
- * @description 팀들에 나눠서 column 단위로 concat으로 추가 가능
  */
 class Teams {
-	/**
-	 * @returns {number}
-	 */
+	/** @returns {number} */
 	get numberOfTeams() {
 		if (this.teamArray.length !== this.slots.length) {
 			throw new Error('Teams must have the same number of slots')
@@ -362,8 +338,8 @@ class Teams {
 	}
 
 	/**
-	 * @param {Array<Team>} teamArray
-	 * @param {Array<number>} slots 팀별 남은 자리
+	 * @param {Team[]} teamArray
+	 * @param {number[]} slots 팀별 남은 자리
 	 */
 	constructor(teamArray, slots = teamArray.map((team) => team.slotFixed)) {
 		if (slots.length !== teamArray.length) {
@@ -384,7 +360,7 @@ class Teams {
 
 	/**
 	 * @param {number[]} slots
-	 * @param {Array<number>} slots
+	 * @param {number[]} slots
 	 * @returns {Teams}
 	 */
 	static empty(slots) {
@@ -395,10 +371,10 @@ class Teams {
 	}
 
 	/**
-	 * @static
-	 * @param {Array<Array<Id>>} idArrayArray
-	 * @param {Array<number>} slots
+	 * @param {Id[][]} idArrayArray
+	 * @param {number[]} slots
 	 * @returns {Teams}
+	 * @static
 	 */
 	static init(idArrayArray, slots) {
 		return new Teams(
@@ -408,7 +384,7 @@ class Teams {
 	}
 
 	/**
-	 * @param {Array<Team>} teamArray
+	 * @param {Team[]} teamArray
 	 * @param {number[]} [slots]
 	 */
 	static of(teamArray, slots) {
@@ -441,16 +417,12 @@ class Teams {
 		return new Teams(newTeams, this.slots)
 	}
 
-	/**
-	 * @returns {Array<Id>}
-	 */
+	/** @returns {Id[]} */
 	getAllTeamMembers() {
 		return this.teamArray.flatMap((team) => team.idArray)
 	}
 
-	/**
-	 * @returns {Array<number>}
-	 */
+	/** @returns {number[]} */
 	getRemainingSlots() {
 		return this.teamArray.map((team) => team.getRemainingSlot())
 	}
@@ -463,9 +435,7 @@ class Teams {
 		return new Teams(this.teamArray.map(f), this.slots)
 	}
 
-	/**
-	 * @type {(idArray: Array<Id>) => Array<Id>}
-	 */
+	/** @type {(idArray: Id[]) => Id[]} */
 	removeDuplicateByThis(idArray) {
 		if (!idArray) {
 			return []
@@ -474,9 +444,7 @@ class Teams {
 		return R.difference(idArray, this.getAllTeamMembers())
 	}
 
-	/**
-	 * @param {number[]} slots
-	 */
+	/** @param {number[]} slots */
 	setSlots(slots) {
 		if (this.teamArray.length !== slots.length) {
 			throw new Error('Slots must be the same length as number of teamArray')
@@ -485,9 +453,7 @@ class Teams {
 		return new Teams(this.teamArray, slots)
 	}
 
-	/**
-	 * @param {Array<Team>} nextTeams
-	 */
+	/** @param {Team[]} nextTeams */
 	update(nextTeams) {
 		return this.concat(Teams.of(nextTeams))
 	}

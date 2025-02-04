@@ -1,6 +1,5 @@
 <script>
 	// @ts-nocheck
-
 	import { Button as Button1 } from '@repo/ui/button_shadcn'
 	import Button2 from '@repo/ui/button_daisy.svelte'
 	import { Badge } from '@repo/ui/badge'
@@ -15,12 +14,11 @@
 	let foo = $state(fo + 'foifoifo')
 
 	foo += ' bar133322222223'
-
-	;('') // eslint-disable-line semi, no-unused-expressions
+	;('')
 </script>
 
 <h2 class={'bg-primary'}>{m.welcome()}</h2>
-<h3>Welcome to SvelteKit</h3>
+<h3>{foo}</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>

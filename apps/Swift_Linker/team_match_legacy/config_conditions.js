@@ -1,8 +1,6 @@
 import * as yup from 'yup'
 
-/**
- * @module types
- */
+/** @module types */
 
 /**
  * @typedef {Object} Config
@@ -21,21 +19,24 @@ import * as yup from 'yup'
  */
 
 /**
- * @type {Object.<string, Condition>}
- * @description 여러 조건을 포함하는 객체
+ * 여러 조건을 포함하는 객체
+ *
+ * @type {Object<string, Condition>}
  */
 const conditions = {
 	/**
+	 * Size가 0보다 큰지 확인하는 조건
+	 *
 	 * @type {Condition}
-	 * @description size가 0보다 큰지 확인하는 조건
 	 */
 	size: {
 		error: 'size must be greater than 0',
 		function: ({ size }) => yup.number().integer().positive().isValidSync(size),
 	},
 	/**
+	 * SizesFixed 배열의 모든 요소가 0보다 큰지 확인하는 조건
+	 *
 	 * @type {Condition}
-	 * @description sizesFixed 배열의 모든 요소가 0보다 큰지 확인하는 조건
 	 */
 	sizesFixed: {
 		error: 'Fixed size must be greater than 0',
@@ -47,9 +48,9 @@ const conditions = {
 // ---
 
 /**
- * @export
  * @param {string[]} picks - 조건 선택 배열
  * @returns {Condition[]}
+ * @export
  */
 export function getConditions(picks) {
 	return picks.map((pick) => {

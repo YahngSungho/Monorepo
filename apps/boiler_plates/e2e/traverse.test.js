@@ -13,9 +13,7 @@ const projectRouteRoot = join(__dirname, '../src/routes')
 // Define parameter examples for dynamic routes
 // You can extend this object with more routes and parameters
 
-/**
- * @type {{ [key: string]: string[] }} dynamicRouteParams
- */
+/** @type {{ [key: string]: string[] }} dynamicRouteParams */
 const dynamicRouteParams = {
 	// '/blog/[slug]': ['hello-world', 'sveltekit-example'],
 	// '/blog/[id]/[slug]': ['123/my-post', '456/another-post'], <- 이렇게 path에 param 여러개 넣기

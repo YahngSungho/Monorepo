@@ -9,9 +9,7 @@ export { AllMembers, Cohort, Member, Role, Team, Teams }
 
 // ----------------------------------------------------------------------------------------
 
-/**
- * @typedef {string} Id
- */
+/** @typedef {string} Id */
 
 // ----------------------------------------------------------------------------------------
 class Member {
@@ -35,9 +33,7 @@ class Member {
 }
 
 class AllMembers {
-	/**
-	 * @param {Array<Member>} members
-	 */
+	/** @param {Member[]} members */
 	constructor(members) {
 		this.members = members
 		this.type = 'AllMembers'
@@ -47,9 +43,7 @@ class AllMembers {
 		return new AllMembers([])
 	}
 
-	/**
-	 * @param {Array<Member>} members
-	 */
+	/** @param {Member[]} members */
 	static of(members) {
 		return new AllMembers(members)
 	}
@@ -67,7 +61,7 @@ class AllMembers {
 	}
 
 	/**
-	 * @param {Array<Member>} members
+	 * @param {Member[]} members
 	 * @returns {AllMembers}
 	 */
 	addMembers(members) {
@@ -114,9 +108,7 @@ class AllMembers {
 		return this.members.includes(member)
 	}
 
-	/**
-	 * @returns {AllMembers}
-	 */
+	/** @returns {AllMembers} */
 	shuffle() {
 		return new AllMembers(
 			create(this.members, (draft) => {
@@ -129,14 +121,13 @@ class AllMembers {
 }
 
 /**
- * @class Cohort
+ * 중첩된 Cohort join 가능
+ *
  * @template memberOrCohortArray
- * @description 중첩된 Cohort join 가능
+ * @class Cohort
  */
 class Cohort {
-	/**
-	 * @param {Array<Member | Cohort>} memberOrCohortArray
-	 */
+	/** @param {(Member | Cohort)[]} memberOrCohortArray */
 	constructor(memberOrCohortArray) {
 		this.memberOrCohortArray = R.uniq(memberOrCohortArray)
 		this.type = 'Cohort'
@@ -149,7 +140,7 @@ class Cohort {
 	// fix 타입을 다 Member | Cohort로 바꿔
 
 	/**
-	 * @param {Array<Member | Cohort>} memberOrCohortArray
+	 * @param {(Member | Cohort)[]} memberOrCohortArray
 	 * @returns {Cohort}
 	 */
 	static of(memberOrCohortArray) {
@@ -169,7 +160,7 @@ class Cohort {
 	}
 
 	/**
-	 * @param {Array<Member | Cohort>} memberOrCohortArray
+	 * @param {(Member | Cohort)[]} memberOrCohortArray
 	 * @returns {Cohort}
 	 */
 	addMemberOrCohortArray(memberOrCohortArray) {
@@ -184,9 +175,7 @@ class Cohort {
 		return `Cohort(${inspect(this.memberOrCohortArray)})`
 	}
 
-	/**
-	 * @returns {Cohort<Array<Member>>}
-	 */
+	/** @returns {Cohort<Member[]>} */
 	join() {
 		return new Cohort(this.joinedArray)
 	}
@@ -195,9 +184,7 @@ class Cohort {
 		return this.memberOrCohortArray
 	}
 
-	/**
-	 * @returns {Array<Member>}
-	 */
+	/** @returns {Member[]} */
 	get joinedArray() {
 		if (!Array.isArray(this.memberOrCohortArray)) {
 			throw new TypeError('Cohort must be an array')
@@ -228,8 +215,8 @@ class Role {
 	/**
 	 * @param {Member[]} members
 	 * @param {number} slot
-	 * @param {string|null} name
-	 * @param {string|null} id
+	 * @param {string | null} name
+	 * @param {string | null} id
 	 */
 	constructor(members, slot, name = null, id = nanoid()) {
 		if (typeof slot !== 'number' || slot <= 0) {
@@ -248,7 +235,7 @@ class Role {
 	}
 
 	/**
-	 * @param {string|null} name
+	 * @param {string | null} name
 	 * @param {number} slot
 	 * @returns {Role}
 	 */
@@ -261,7 +248,7 @@ class Role {
 	}
 
 	/**
-	 * @param {string|null} name
+	 * @param {string | null} name
 	 * @param {Member[]} members
 	 * @param {number} slot
 	 * @returns {Role}
@@ -327,9 +314,7 @@ class Role {
 		return this.members.includes(member)
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
+	/** @returns {boolean} */
 	hasRoom() {
 		return this.slot > this.members.length
 	}
@@ -346,9 +331,7 @@ class Role {
 		return new Role(this.members.map(f), this.slot, this.name, this.id)
 	}
 
-	/**
-	 * @returns {number}
-	 */
+	/** @returns {number} */
 	get remainingSlot() {
 		return this.slot - this.members.length
 	}
@@ -357,7 +340,7 @@ class Role {
 class Team {
 	/**
 	 * @param {Role[]} roleArray
-	 * @param {string|null} id
+	 * @param {string | null} id
 	 */
 	constructor(roleArray, id = nanoid()) {
 		if (!areDisjoint(roleArray.map((role) => role.name))) {
@@ -373,9 +356,7 @@ class Team {
 		return new Team([])
 	}
 
-	/**
-	 * @param {number} slot
-	 */
+	/** @param {number} slot */
 	static getDefaultTeam(slot) {
 		// todo role의 slot 수는 어떻게 설정됨?
 		return new Team([Role.of([], slot)])
@@ -383,15 +364,13 @@ class Team {
 
 	/**
 	 * @param {Role[]} roleArray
-	 * @param {string|null} id
+	 * @param {string | null} id
 	 */
 	static of(roleArray, id = nanoid()) {
 		return new Team(roleArray, id)
 	}
 
-	/**
-	 * @param {Role} role
-	 */
+	/** @param {Role} role */
 	add(role) {
 		return new Team(
 			create(this.roleArray, (draft) => {
@@ -401,9 +380,7 @@ class Team {
 		)
 	}
 
-	/**
-	 * @param {Team} otherTeam
-	 */
+	/** @param {Team} otherTeam */
 	concat(otherTeam) {
 		return new Team(
 			create(this.roleArray, (draft) => {
@@ -413,11 +390,9 @@ class Team {
 		)
 	}
 
-	/**
-	 * @param {Id} id
-	 */
+	/** @param {Id} id */
 	getRoleById(id) {
-		return this.roleArray.find((/** @type {{ id: Id; }} */ role) => role.id === id)
+		return this.roleArray.find((/** @type {{ id: Id }} */ role) => role.id === id)
 	}
 
 	/**
@@ -428,36 +403,28 @@ class Team {
 		return this.roleArray.some((role) => role.hasMember(member))
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
+	/** @returns {boolean} */
 	hasRoom() {
-		return this.roleArray.some((/** @type {{ hasRoom(): boolean; }} */ role) => role.hasRoom())
+		return this.roleArray.some((/** @type {{ hasRoom(): boolean }} */ role) => role.hasRoom())
 	}
 
 	[inspect.custom]() {
 		return `Team(${inspect(this.roleArray)}, ${inspect(this.id)})`
 	}
 
-	/**
-	 * @returns {Member[]}
-	 */
+	/** @returns {Member[]} */
 	get members() {
 		return this.roleArray.flatMap((role) => role.members)
 	}
 
-	/**
-	 * @returns {number}
-	 */
+	/** @returns {number} */
 	get remainingSlot() {
 		return this.roleArray.map((role) => role.remainingSlot).reduce((a, b) => a + b, 0)
 	}
 }
 
 class Teams {
-	/**
-	 * @param {Array<Team>} teamArray
-	 */
+	/** @param {Team[]} teamArray */
 	constructor(teamArray, id = nanoid()) {
 		if (!Array.isArray(teamArray)) {
 			throw new TypeError('Teams must be an array')
@@ -476,16 +443,12 @@ class Teams {
 		return this.teamArray.some((team) => team.hasMember(member))
 	}
 
-	/**
-	 * @returns {Teams}
-	 */
+	/** @returns {Teams} */
 	static empty() {
 		return new Teams([])
 	}
 
-	/**
-	 * @param {Array<Team>} teamArray
-	 */
+	/** @param {Team[]} teamArray */
 	static of(teamArray) {
 		return new Teams(teamArray)
 	}
@@ -522,9 +485,7 @@ class Teams {
 		return new Teams(this.teamArray.map(f))
 	}
 
-	/**
-	 * @type {(memberArray: Array<Member>) => Array<Member>}
-	 */
+	/** @type {(memberArray: Member[]) => Member[]} */
 	removeDuplicateByThis(memberArray) {
 		if (!memberArray) {
 			return []
@@ -533,16 +494,12 @@ class Teams {
 		return R.difference(memberArray, this.members)
 	}
 
-	/**
-	 * @returns {Member[]}
-	 */
+	/** @returns {Member[]} */
 	get members() {
 		return this.teamArray.flatMap((team) => team.members)
 	}
 
-	/**
-	 * @returns {number}
-	 */
+	/** @returns {number} */
 	get remainingSlot() {
 		return this.teamArray.map((team) => team.remainingSlot).reduce((a, b) => a + b, 0)
 	}

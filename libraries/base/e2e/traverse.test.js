@@ -223,8 +223,10 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
  *
  * @param {string} projectRouteRoot - The root directory of the SvelteKit project's routes.
  * @param {string} [dir=''] - The current directory being scanned (relative to projectRouteRoot).
- * @param {Array<{route: string, dynamic: boolean}>} [routes=[]] - Accumulator for discovered routes.
- * @returns {Array<{route: string, dynamic: boolean}>} - An array of route objects.
+ *   Default is `''`
+ * @param {{ route: string; dynamic: boolean }[]} [routes=[]] - Accumulator for discovered routes.
+ *   Default is `[]`
+ * @returns {{ route: string; dynamic: boolean }[]} - An array of route objects.
  */
 function getRoutes(projectRouteRoot, dir = '', routes = []) {
 	const items = readdirSync(join(projectRouteRoot, dir), { withFileTypes: true })

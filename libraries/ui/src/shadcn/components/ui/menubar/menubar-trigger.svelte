@@ -12,7 +12,9 @@
 <MenubarPrimitive.Trigger
 	bind:ref
 	class={cn(
-		'data-highlighted:bg-accent data-[state=open]:bg-accent data-highlighted:text-accent-foreground data-[state=open]:text-accent-foreground flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-hidden',
+		`data-highlighted:bg-accent data-[state=open]:bg-accent data-highlighted:text-accent-foreground
+		data-[state=open]:text-accent-foreground outline-hidden flex cursor-default select-none items-center
+		rounded-sm px-3 py-1.5 text-sm font-medium`,
 		className,
 	)}
 	{...restProps}
