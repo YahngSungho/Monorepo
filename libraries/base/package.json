@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"@qwik.dev/partytown": "^0.11.0",
-		"open-props": "^1.7.10",
+		"open-props": "^1.7.12",
 		"sanitize.css": "^13.0.0"
 	},
 	"devDependencies": {
