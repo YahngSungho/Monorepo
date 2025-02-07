@@ -182,15 +182,15 @@ blockquote {
 		/* 3. 컨테이너 쿼리 대응 */
 		/* Fix  */
 		@container (max-width: 15ch) {
-			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 			::-webkit-scrollbar {
+				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 				width: min(0.5ch, var(--font-size-1));
 			}
 		}
 
 		@container (max-height: 15ex) {
-			/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 			::-webkit-scrollbar {
+				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 				height: min(0.5ex, var(--font-size-1));
 			}
 		}

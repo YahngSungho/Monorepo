@@ -206,8 +206,8 @@ export default [
 					switchCase: 1,
 				},
 			],
-
 			'svelte/infinite-reactive-loop': 'error',
+
 			'svelte/no-dupe-on-directives': 'warn',
 			'svelte/no-dupe-use-directives': 'warn',
 			'svelte/no-immutable-reactive-statements': 'warn',
@@ -231,6 +231,7 @@ export default [
 			'svelte/spaced-html-comment': 'warn',
 			'svelte/valid-each-key': 'warn',
 			'unicorn/filename-case': 'off',
+			'unicorn/no-abusive-eslint-disable': 'off',
 			'unicorn/no-array-callback-reference': 'off',
 			'unicorn/prefer-spread': 'off',
 			'unicorn/prevent-abbreviations': 'off',
