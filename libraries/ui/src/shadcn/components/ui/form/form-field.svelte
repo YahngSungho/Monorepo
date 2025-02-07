@@ -1,24 +1,24 @@
 <script lang="ts" module>
-	import type { FormPath as _FormPath } from 'sveltekit-superforms'
-	type T = Record<string, unknown>
-	type U = _FormPath<T>
+import type { FormPath as _FormPath } from 'sveltekit-superforms'
+type T = Record<string, unknown>
+type U = _FormPath<T>
 </script>
 
 <script lang="ts" generics="T extends Record<string, unknown>, U extends _FormPath<T>">
-	import * as FormPrimitive from 'formsnap'
-	import type { WithoutChildren, WithElementRef } from 'bits-ui'
-	import { cn } from '$shadcn/utils.js'
-	import type { HTMLAttributes } from 'svelte/elements'
+import * as FormPrimitive from 'formsnap'
+import type { WithoutChildren, WithElementRef } from 'bits-ui'
+import { cn } from '$shadcn/utils.js'
+import type { HTMLAttributes } from 'svelte/elements'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		form,
-		name,
-		children: childrenProp,
-		...restProps
-	}: FormPrimitive.FieldProps<T, U> &
-		WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	form,
+	name,
+	children: childrenProp,
+	...restProps
+}: FormPrimitive.FieldProps<T, U> &
+	WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props()
 </script>
 
 <FormPrimitive.Field {form} {name}>

@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { ScrollArea as ScrollAreaPrimitive, type WithoutChild } from 'bits-ui'
-	import { Scrollbar } from './index.js'
-	import { cn } from '$shadcn/utils.js'
+import { ScrollArea as ScrollAreaPrimitive, type WithoutChild } from 'bits-ui'
+import { Scrollbar } from './index.js'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		orientation = 'vertical',
-		scrollbarXClasses = '',
-		scrollbarYClasses = '',
-		children,
-		...restProps
-	}: WithoutChild<ScrollAreaPrimitive.RootProps> & {
-		orientation?: 'vertical' | 'horizontal' | 'both' | undefined
-		scrollbarXClasses?: string | undefined
-		scrollbarYClasses?: string | undefined
-	} = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	orientation = 'vertical',
+	scrollbarXClasses = '',
+	scrollbarYClasses = '',
+	children,
+	...restProps
+}: WithoutChild<ScrollAreaPrimitive.RootProps> & {
+	orientation?: 'vertical' | 'horizontal' | 'both' | undefined
+	scrollbarXClasses?: string | undefined
+	scrollbarYClasses?: string | undefined
+} = $props()
 </script>
 
 <ScrollAreaPrimitive.Root bind:ref {...restProps} class={cn('relative overflow-hidden', className)}>

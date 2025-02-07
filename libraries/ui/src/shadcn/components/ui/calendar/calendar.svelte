@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { Calendar as CalendarPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
-	import * as Calendar from './index.ts'
-	import { cn } from '$shadcn/utils.js'
+import { Calendar as CalendarPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
+import * as Calendar from './index.ts'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		value = $bindable(),
-		placeholder = $bindable(),
-		class: className,
-		weekdayFormat = 'short',
-		...restProps
-	}: WithoutChildrenOrChild<CalendarPrimitive.RootProps> = $props()
+let {
+	ref = $bindable(null),
+	value = $bindable(),
+	placeholder = $bindable(),
+	class: className,
+	weekdayFormat = 'short',
+	...restProps
+}: WithoutChildrenOrChild<CalendarPrimitive.RootProps> = $props()
 </script>
 
 <!--

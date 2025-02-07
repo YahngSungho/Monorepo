@@ -1,34 +1,34 @@
 <script module>
-	// 모든 가능한 args 조합에 대한 스토리를 작성합니다.
-	// 각기 다른 행복한 경로, 엣지 케이스 및 모든 가능한 경우에 대한 스토리를 작성합니다.
+// 모든 가능한 args 조합에 대한 스토리를 작성합니다.
+// 각기 다른 행복한 경로, 엣지 케이스 및 모든 가능한 경우에 대한 스토리를 작성합니다.
 
-	import { defineMeta } from '@storybook/addon-svelte-csf'
-	import Button from './button.svelte'
+import { defineMeta } from '@storybook/addon-svelte-csf'
+import Button from './button.svelte'
 
-	const { Story } = defineMeta({
-		component: Button,
-		tags: ['autodocs'],
-	})
+const { Story } = defineMeta({
+	component: Button,
+	tags: ['autodocs'],
+})
 
-	// 기본 및 변형 세트 정의
-	const argSet1 = {
-		variant: 'default',
-	}
-	const argSet2 = {
-		variant: 'secondary',
-	}
-	const argSet3 = {
-		variant: 'destructive',
-	}
-	const argSet4 = {
-		variant: 'ghost',
-	}
-	const argSet5 = {
-		variant: 'link',
-	}
-	const argSet6 = {
-		variant: 'outline',
-	}
+// 기본 및 변형 세트 정의
+const argSet1 = {
+	variant: 'default',
+}
+const argSet2 = {
+	variant: 'secondary',
+}
+const argSet3 = {
+	variant: 'destructive',
+}
+const argSet4 = {
+	variant: 'ghost',
+}
+const argSet5 = {
+	variant: 'link',
+}
+const argSet6 = {
+	variant: 'outline',
+}
 </script>
 
 <Story name="Default / Small">

@@ -1,19 +1,19 @@
 <script lang="ts">
-	import ArrowRight from 'lucide-svelte/icons/arrow-right'
-	import type { WithoutChildren } from 'bits-ui'
-	import { getEmblaContext } from './context.js'
-	import { cn } from '$shadcn/utils.js'
-	import { Button, type Props } from '$shadcn/components/ui/button/index.js'
+import ArrowRight from 'lucide-svelte/icons/arrow-right'
+import type { WithoutChildren } from 'bits-ui'
+import { getEmblaContext } from './context.js'
+import { cn } from '$shadcn/utils.js'
+import { Button, type Props } from '$shadcn/components/ui/button/index.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		variant = 'outline',
-		size = 'icon',
-		...restProps
-	}: WithoutChildren<Props> = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	variant = 'outline',
+	size = 'icon',
+	...restProps
+}: WithoutChildren<Props> = $props()
 
-	const emblaCtx = getEmblaContext('<Carousel.Next/>')
+const emblaCtx = getEmblaContext('<Carousel.Next/>')
 </script>
 
 <Button

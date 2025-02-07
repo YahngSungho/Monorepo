@@ -1,42 +1,42 @@
 <script>
-	import { Button } from '@repo/ui/button'
-	import { Badge } from '@repo/ui/badge'
-	import { Calendar } from '@repo/ui/calendar'
-	import Icon from '@repo/ui/icon'
+import { Button } from '@repo/ui/button'
+import { Badge } from '@repo/ui/badge'
+import { Calendar } from '@repo/ui/calendar'
+import Icon from '@repo/ui/icon'
 
-	const fo = 'bigCommandKEnabled'
+const fo = 'bigCommandKEnabled'
 
-	let foo = $state(fo + ' foifoifo')
+let foo = $state(fo + ' foifoifo')
 
-	foo += ' bar133322222223'
+foo += ' bar133322222223'
 
-	const myObject = {
-		bar: {
-			deeplyNested: {
-				inner: {
-					moreInner: {
-						evenMoreInner: {
-							almostThere: {
-								gettingDeeper: {
-									bottle: 'done',
-									deepestYet: {
-										finalLevel: '이제 정말로 충분히 깊습니다.',
-									},
+const myObject = {
+	bar: {
+		deeplyNested: {
+			inner: {
+				moreInner: {
+					evenMoreInner: {
+						almostThere: {
+							gettingDeeper: {
+								bottle: 'done',
+								deepestYet: {
+									finalLevel: '이제 정말로 충분히 깊습니다.',
 								},
 							},
 						},
 					},
 				},
 			},
-			eo: 'vgf2',
-			eov: 'fgv',
-			wo: 'sw',
 		},
-		foo: 'bar',
-		tor: 'boo',
-	}
+		eo: 'vgf2',
+		eov: 'fgv',
+		wo: 'sw',
+	},
+	foo: 'bar',
+	tor: 'boo',
+}
 
-	;('') // eslint-disable-line sonarjs/no-unused-expressions, semi
+;('') // eslint-disable-line sonarjs/no-unused-expressions, semi
 </script>
 
 <h1 class={'bg-primary'}>Welcome to SvelteKit</h1>
@@ -62,8 +62,8 @@
 </p>
 
 <style>
-	p {
-		max-inline-size: 1000px;
-		background-color: var(--red-10);
-	}
+p {
+	max-inline-size: 1000px;
+	background-color: var(--red-10);
+}
 </style>

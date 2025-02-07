@@ -1,19 +1,19 @@
 <script>
-	import { Button as Button1 } from '@repo/ui/button_shadcn'
-	import Button2 from '@repo/ui/button_daisy.svelte'
-	import { Badge } from '@repo/ui/badge'
-	import { Calendar } from '@repo/ui/calendar'
-	import Icon from '@repo/ui/icon'
-	// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
-	import * as m from '@repo/base/messages.js'
-	import { switchToLanguage } from '../../paraglide.ts'
+import { Button as Button1 } from '@repo/ui/button_shadcn'
+import Button2 from '@repo/ui/button_daisy.svelte'
+import { Badge } from '@repo/ui/badge'
+import { Calendar } from '@repo/ui/calendar'
+import Icon from '@repo/ui/icon'
+// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
+import * as m from '@repo/base/messages.js'
+import { switchToLanguage } from '../../paraglide.ts'
 
-	const fo = 'bigCommandKEnabled'
+const fo = 'bigCommandKEnabled'
 
-	let foo = $state(fo + 'foifoifo')
+let foo = $state(fo + 'foifoifo')
 
-	foo += ' bar133322222223'
-	;('') // eslint-disable-line semi, no-unused-expressions
+foo += ' bar133322222223'
+;('') // eslint-disable-line semi, no-unused-expressions
 </script>
 
 <h1>여기는 lorem</h1>
@@ -125,15 +125,15 @@
 </div>
 
 <style>
-	.p1 {
-		overflow: auto;
-		max-block-size: 30rem;
-		margin: auto;
-		border-width: var(--border-size-3);
-	}
+.p1 {
+	overflow: auto;
+	max-block-size: 30rem;
+	margin: auto;
+	border-width: var(--border-size-3);
+}
 
-	.colored {
-		max-inline-size: 1000px;
-		background-color: var(--red-10);
-	}
+.colored {
+	max-inline-size: 1000px;
+	background-color: var(--red-10);
+}
 </style>

@@ -1,25 +1,25 @@
 <script lang="ts">
-	import type {
-		Command as CommandPrimitive,
-		Dialog as DialogPrimitive,
-		WithoutChildrenOrChild,
-	} from 'bits-ui'
-	import type { Snippet } from 'svelte'
-	import Command from './command.svelte'
-	import * as Dialog from '$shadcn/components/ui/dialog/index.js'
+import type {
+	Command as CommandPrimitive,
+	Dialog as DialogPrimitive,
+	WithoutChildrenOrChild,
+} from 'bits-ui'
+import type { Snippet } from 'svelte'
+import Command from './command.svelte'
+import * as Dialog from '$shadcn/components/ui/dialog/index.js'
 
-	let {
-		open = $bindable(false),
-		ref = $bindable(null),
-		value = $bindable(''),
-		portalProps,
-		children,
-		...restProps
-	}: WithoutChildrenOrChild<DialogPrimitive.RootProps> &
-		WithoutChildrenOrChild<CommandPrimitive.RootProps> & {
-			portalProps?: DialogPrimitive.PortalProps
-			children: Snippet
-		} = $props()
+let {
+	open = $bindable(false),
+	ref = $bindable(null),
+	value = $bindable(''),
+	portalProps,
+	children,
+	...restProps
+}: WithoutChildrenOrChild<DialogPrimitive.RootProps> &
+	WithoutChildrenOrChild<CommandPrimitive.RootProps> & {
+		portalProps?: DialogPrimitive.PortalProps
+		children: Snippet
+	} = $props()
 </script>
 
 <Dialog.Root bind:open {...restProps}>

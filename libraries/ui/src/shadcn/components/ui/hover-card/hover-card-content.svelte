@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { LinkPreview as HoverCardPrimitive } from 'bits-ui'
-	import { cn } from '$shadcn/utils.js'
+import { LinkPreview as HoverCardPrimitive } from 'bits-ui'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		align = 'center',
-		sideOffset = 4,
-		portalProps,
-		...restProps
-	}: HoverCardPrimitive.ContentProps & {
-		portalProps?: HoverCardPrimitive.PortalProps
-	} = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	align = 'center',
+	sideOffset = 4,
+	portalProps,
+	...restProps
+}: HoverCardPrimitive.ContentProps & {
+	portalProps?: HoverCardPrimitive.PortalProps
+} = $props()
 </script>
 
 <HoverCardPrimitive.Portal {...portalProps}>

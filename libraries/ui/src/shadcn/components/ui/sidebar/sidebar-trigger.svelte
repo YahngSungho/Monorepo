@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { Button } from '$shadcn/components/ui/button/index.js'
-	import { cn } from '$shadcn/utils.js'
-	import PanelLeft from 'lucide-svelte/icons/panel-left'
-	import type { ComponentProps } from 'svelte'
-	import { useSidebar } from './context.svelte.js'
+import { Button } from '$shadcn/components/ui/button/index.js'
+import { cn } from '$shadcn/utils.js'
+import PanelLeft from 'lucide-svelte/icons/panel-left'
+import type { ComponentProps } from 'svelte'
+import { useSidebar } from './context.svelte.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		onclick,
-		...restProps
-	}: ComponentProps<typeof Button> & {
-		onclick?: (e: MouseEvent) => void
-	} = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	onclick,
+	...restProps
+}: ComponentProps<typeof Button> & {
+	onclick?: (e: MouseEvent) => void
+} = $props()
 
-	const sidebar = useSidebar()
+const sidebar = useSidebar()
 </script>
 
 <Button

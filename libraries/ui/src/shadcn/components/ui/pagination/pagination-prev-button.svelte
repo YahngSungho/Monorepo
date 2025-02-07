@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { Pagination as PaginationPrimitive } from 'bits-ui'
-	import ChevronLeft from 'lucide-svelte/icons/chevron-left'
-	import { buttonVariants } from '$shadcn/components/ui/button/index.js'
-	import { cn } from '$shadcn/utils.js'
+import { Pagination as PaginationPrimitive } from 'bits-ui'
+import ChevronLeft from 'lucide-svelte/icons/chevron-left'
+import { buttonVariants } from '$shadcn/components/ui/button/index.js'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		children,
-		...restProps
-	}: PaginationPrimitive.PrevButtonProps = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	children,
+	...restProps
+}: PaginationPrimitive.PrevButtonProps = $props()
 </script>
 
 {#snippet Fallback()}
