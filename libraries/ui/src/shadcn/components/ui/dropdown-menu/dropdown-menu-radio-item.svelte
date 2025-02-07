@@ -4,9 +4,9 @@ import Circle from 'lucide-svelte/icons/circle'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children: childrenProp,
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<DropdownMenuPrimitive.RadioItemProps> = $props()
 </script>

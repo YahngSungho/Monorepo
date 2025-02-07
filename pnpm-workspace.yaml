@@ -1,5 +1,5 @@
 packages:
-  - 'apps/*'
-  - 'libraries/*'
-  - 'playground/*'
-  - 'storybook'
+  - "apps/*"
+  - "libraries/*"
+  - "playground/*"
+  - storybook

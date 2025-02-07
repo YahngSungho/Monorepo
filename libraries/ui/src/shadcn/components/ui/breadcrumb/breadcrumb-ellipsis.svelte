@@ -5,8 +5,8 @@ import type { HTMLAttributes } from 'svelte/elements'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChildren<WithElementRef<HTMLAttributes<HTMLSpanElement>>> = $props()
 </script>

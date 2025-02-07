@@ -4,11 +4,11 @@ import * as RangeCalendar from './index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	class: className,
+	placeholder = $bindable(),
 	ref = $bindable(null),
 	value = $bindable(),
-	placeholder = $bindable(),
 	weekdayFormat = 'short',
-	class: className,
 	...restProps
 }: WithoutChildrenOrChild<RangeCalendarPrimitive.RootProps> = $props()
 </script>

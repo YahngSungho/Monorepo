@@ -7,7 +7,7 @@ const { Story } = defineMeta({
 	tags: ['autodocs'],
 })
 
-;('') // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions, semi
+;('') // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions
 </script>
 
 {#snippet multiple()}

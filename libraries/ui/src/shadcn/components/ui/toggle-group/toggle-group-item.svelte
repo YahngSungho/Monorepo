@@ -5,10 +5,10 @@ import { cn } from '$shadcn/utils.js'
 import { type ToggleVariants, toggleVariants } from '$shadcn/components/ui/toggle/index.js'
 
 let {
-	ref = $bindable(null),
-	value = $bindable(),
 	class: className,
+	ref = $bindable(null),
 	size,
+	value = $bindable(),
 	variant,
 	...restProps
 }: ToggleGroupPrimitive.ItemProps & ToggleVariants = $props()
@@ -20,8 +20,8 @@ const ctx = getToggleGroupCtx()
 	bind:ref
 	class={cn(
 		toggleVariants({
-			variant: ctx.variant || variant,
 			size: ctx.size || size,
+			variant: ctx.variant || variant,
 		}),
 		className,
 	)}

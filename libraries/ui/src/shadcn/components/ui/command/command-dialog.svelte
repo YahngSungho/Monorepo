@@ -9,16 +9,16 @@ import Command from './command.svelte'
 import * as Dialog from '$shadcn/components/ui/dialog/index.js'
 
 let {
+	children,
 	open = $bindable(false),
+	portalProps,
 	ref = $bindable(null),
 	value = $bindable(''),
-	portalProps,
-	children,
 	...restProps
-}: WithoutChildrenOrChild<DialogPrimitive.RootProps> &
-	WithoutChildrenOrChild<CommandPrimitive.RootProps> & {
-		portalProps?: DialogPrimitive.PortalProps
+}: WithoutChildrenOrChild<CommandPrimitive.RootProps> &
+	WithoutChildrenOrChild<DialogPrimitive.RootProps> & {
 		children: Snippet
+		portalProps?: DialogPrimitive.PortalProps
 	} = $props()
 </script>
 

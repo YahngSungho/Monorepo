@@ -6,10 +6,10 @@ import { cn } from '$shadcn/utils.js'
 import { Button, type Props } from '$shadcn/components/ui/button/index.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
-	variant = 'outline',
+	ref = $bindable(null),
 	size = 'icon',
+	variant = 'outline',
 	...restProps
 }: WithoutChildren<Props> = $props()
 

@@ -15,17 +15,17 @@ import { ToggleGroup as ToggleGroupPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	value = $bindable(),
 	class: className,
+	ref = $bindable(null),
 	size = 'default',
+	value = $bindable(),
 	variant = 'default',
 	...restProps
 }: ToggleGroupPrimitive.RootProps & ToggleVariants = $props()
 
 setToggleGroupCtx({
-	variant,
 	size,
+	variant,
 })
 </script>
 

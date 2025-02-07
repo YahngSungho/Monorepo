@@ -6,11 +6,11 @@ const portNumber = 5175
 const config = Object.assign(defaultConfigObject, {
 	webServer: {
 		command: `pnpm run preview --port ${portNumber}`,
-		port: portNumber,
-		timeout: 120_000,
 		env: {
 			NODE_ENV: 'production',
 		},
+		port: portNumber,
+		timeout: 120_000,
 	},
 })
 

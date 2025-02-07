@@ -1,9 +1,9 @@
 import {
+	createTable,
 	type RowData,
 	type TableOptions,
 	type TableOptionsResolved,
 	type TableState,
-	createTable,
 } from '@tanstack/table-core'
 
 /**
@@ -37,15 +37,15 @@ import {
 export function createSvelteTable<TData extends RowData>(options: TableOptions<TData>) {
 	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
 		{
-			state: {},
-			onStateChange() {},
-			renderFallbackValue: null,
 			mergeOptions: (
 				defaultOptions: TableOptions<TData>,
 				options: Partial<TableOptions<TData>>,
 			) => {
 				return mergeObjects(defaultOptions, options)
 			},
+			onStateChange() {},
+			renderFallbackValue: null,
+			state: {},
 		},
 		options,
 	)
@@ -56,15 +56,14 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 	function updateOptions() {
 		table.setOptions((prev) => {
 			return mergeObjects(prev, options, {
-				state: mergeObjects(state, options.state || {}),
-
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				onStateChange: (updater: any) => {
-					if (updater instanceof Function) state = updater(state)
-					else state = mergeObjects(state, updater)
+					state = updater instanceof Function ? updater(state) : mergeObjects(state, updater);
 
 					options.onStateChange?.(updater)
 				},
+
+				state: mergeObjects(state, options.state || {}),
 			})
 		})
 	}

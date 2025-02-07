@@ -6,16 +6,16 @@ import '../base.css'
 
 let props = $props()
 let { appName, children, i18n } = props
-;('') // eslint-disable-line semi, no-unused-expressions
+;('') // eslint-disable-line no-unused-expressions
 </script>
 
 <svelte:head>
 	<!-- eslint-disable-next-line  -->
 	<script>
-	// Forward the necessary functions to the web worker layer
-	partytown = {
+		// Forward the necessary functions to the web worker layer
+		partytown = {
 		forward: [],
-	}
+		}
 	</script>
 
 	<!-- eslint-disable-next-line  -->

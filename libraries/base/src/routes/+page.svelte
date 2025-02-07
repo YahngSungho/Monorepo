@@ -36,7 +36,7 @@ const myObject = {
 	tor: 'boo',
 }
 
-;('') // eslint-disable-line sonarjs/no-unused-expressions, semi
+;('') // eslint-disable-line sonarjs/no-unused-expressions
 </script>
 
 <h1 class={'bg-primary'}>Welcome to SvelteKit</h1>

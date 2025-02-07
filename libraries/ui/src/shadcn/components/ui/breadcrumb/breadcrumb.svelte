@@ -3,9 +3,9 @@ import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
 let {
-	ref = $bindable(),
-	class: className,
 	children,
+	class: className,
+	ref = $bindable(),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLElement>> = $props()
 </script>

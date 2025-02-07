@@ -3,8 +3,8 @@ import { Tooltip as TooltipPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	sideOffset = 4,
 	...restProps
 }: TooltipPrimitive.ContentProps = $props()

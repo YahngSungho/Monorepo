@@ -3,10 +3,10 @@ import { Command as CommandPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children,
+	class: className,
 	heading,
+	ref = $bindable(null),
 	...restProps
 }: CommandPrimitive.GroupProps & {
 	heading?: string

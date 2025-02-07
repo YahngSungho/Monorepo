@@ -10,10 +10,10 @@ import type { WithoutChild } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
 	form,
 	name,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<FormPrimitive.FieldsetProps<T, U>> = $props()
 </script>

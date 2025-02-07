@@ -3,9 +3,9 @@ import { Progress as ProgressPrimitive, type WithoutChildrenOrChild } from 'bits
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
 	max = 100,
+	ref = $bindable(null),
 	value,
 	...restProps
 }: WithoutChildrenOrChild<ProgressPrimitive.RootProps> = $props()

@@ -4,8 +4,8 @@ import { cn } from '$shadcn/utils.js'
 import type { ComponentProps } from 'svelte'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: ComponentProps<typeof Separator> = $props()
 </script>

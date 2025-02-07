@@ -774,7 +774,7 @@ describe('Teams', () => {
 	it('null 또는 undefined 멤버 배열 처리', () => {
 		const emptyTeams = Teams.empty()
 		expect(emptyTeams.removeDuplicateByThis(null)).toEqual([])
-		expect(emptyTeams.removeDuplicateByThis(undefined)).toEqual([])
+		expect(emptyTeams.removeDuplicateByThis()).toEqual([])
 	})
 
 	// Inspecting a Teams instance using inspect.custom

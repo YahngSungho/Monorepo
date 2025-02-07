@@ -4,9 +4,9 @@ import type { HTMLTextareaAttributes } from 'svelte/elements'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	class: className,
 	ref = $bindable(null),
 	value = $bindable(),
-	class: className,
 	...restProps
 }: WithoutChildren<WithElementRef<HTMLTextareaAttributes>> = $props()
 </script>

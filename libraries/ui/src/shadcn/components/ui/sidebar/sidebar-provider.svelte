@@ -12,16 +12,16 @@ import {
 import { setSidebar } from './context.svelte.js'
 
 let {
-	ref = $bindable(null),
-	open = $bindable(true),
-	onOpenChange = () => {},
-	class: className,
-	style,
 	children,
+	class: className,
+	onOpenChange = () => {},
+	open = $bindable(true),
+	ref = $bindable(null),
+	style,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
-	open?: boolean
 	onOpenChange?: (open: boolean) => void
+	open?: boolean
 } = $props()
 
 const sidebar = setSidebar({
@@ -40,7 +40,7 @@ const sidebar = setSidebar({
 
 <Tooltip.Provider delayDuration={0}>
 	<div
-		style="--sidebar-width: {SIDEBAR_WIDTH}; --sidebar-width-icon: {SIDEBAR_WIDTH_ICON}; {style}"
+		style:--sidebar-width="{SIDEBAR_WIDTH}" style:--sidebar-width-icon="{SIDEBAR_WIDTH_ICON}" style="{style}"
 		class={cn(
 			'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
 			className,

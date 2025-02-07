@@ -7,17 +7,17 @@ import { SIDEBAR_WIDTH_MOBILE } from './constants.js'
 import { useSidebar } from './context.svelte.js'
 
 let {
+	children,
+	class: className,
+	collapsible = 'offcanvas',
 	ref = $bindable(null),
 	side = 'left',
 	variant = 'sidebar',
-	collapsible = 'offcanvas',
-	class: className,
-	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
+	collapsible?: 'icon' | 'none' | 'offcanvas'
 	side?: 'left' | 'right'
-	variant?: 'sidebar' | 'floating' | 'inset'
-	collapsible?: 'offcanvas' | 'icon' | 'none'
+	variant?: 'floating' | 'inset' | 'sidebar'
 } = $props()
 
 const sidebar = useSidebar()
@@ -42,7 +42,7 @@ const sidebar = useSidebar()
 			class="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
 			style="
 
---sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
+				--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
 			{side}
 		>
 			<div class="flex h-full w-full flex-col">

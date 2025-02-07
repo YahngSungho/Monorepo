@@ -2,7 +2,7 @@
 import type { HTMLLiAttributes } from 'svelte/elements'
 import type { WithElementRef } from 'bits-ui'
 
-let { ref = $bindable(null), children, ...restProps }: WithElementRef<HTMLLiAttributes> = $props()
+let { children, ref = $bindable(null), ...restProps }: WithElementRef<HTMLLiAttributes> = $props()
 </script>
 
 <li bind:this={ref} {...restProps}>

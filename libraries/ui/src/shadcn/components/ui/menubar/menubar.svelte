@@ -2,7 +2,7 @@
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
-let { ref = $bindable(null), class: className, ...restProps }: MenubarPrimitive.RootProps = $props()
+let { class: className, ref = $bindable(null), ...restProps }: MenubarPrimitive.RootProps = $props()
 </script>
 
 <MenubarPrimitive.Root

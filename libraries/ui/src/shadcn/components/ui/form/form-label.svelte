@@ -5,9 +5,9 @@ import { Label } from '$shadcn/components/ui/label/index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	children,
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<FormPrimitive.LabelProps> = $props()
 </script>

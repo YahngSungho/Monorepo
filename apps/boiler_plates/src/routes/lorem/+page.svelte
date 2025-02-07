@@ -13,7 +13,7 @@ const fo = 'bigCommandKEnabled'
 let foo = $state(fo + 'foifoifo')
 
 foo += ' bar133322222223'
-;('') // eslint-disable-line semi, no-unused-expressions
+;('') // eslint-disable-line no-unused-expressions
 </script>
 
 <h1>여기는 lorem</h1>
@@ -40,7 +40,7 @@ foo += ' bar133322222223'
 	<h3>Eiusmod voluptate non nostrud labore</h3>
 	<p>
 		abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz Minim <i
-			>anim</i
+		>anim</i
 		>
 		esse nostrud<i>pariatur ex ullamco. Pariatur</i>u ut deserunt consequat officia non quis irure
 		<q>tempor adipisicing</q>

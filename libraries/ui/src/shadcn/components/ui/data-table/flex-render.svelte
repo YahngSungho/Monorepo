@@ -16,8 +16,8 @@ type Props = {
 	content?: TContext extends HeaderContext<TData, TValue>
 		? ColumnDefTemplate<HeaderContext<TData, TValue>>
 		: TContext extends CellContext<TData, TValue>
-			? ColumnDefTemplate<CellContext<TData, TValue>>
-			: never
+		? ColumnDefTemplate<CellContext<TData, TValue>>
+		: never
 	/** The result of the `getContext()` function of the header or cell */
 	context: TContext
 }
@@ -35,7 +35,7 @@ let { content, context }: Props = $props()
 		{@const { component: Component, props } = result}
 		<Component {...props} />
 	{:else if result instanceof RenderSnippetConfig}
-		{@const { snippet, params } = result}
+		{@const { params, snippet } = result}
 		{@render snippet(params)}
 	{:else}
 		{result}

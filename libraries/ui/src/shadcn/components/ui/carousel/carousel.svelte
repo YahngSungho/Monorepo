@@ -8,29 +8,29 @@ import {
 import { cn } from '$shadcn/utils.js'
 
 let {
+	children,
+	class: className,
 	opts = {},
+	orientation = 'horizontal',
 	plugins = [],
 	setApi = () => {},
-	orientation = 'horizontal',
-	class: className,
-	children,
 	...restProps
 }: CarouselProps = $props()
 
 let carouselState = $state<EmblaContext>({
 	api: undefined,
-	scrollPrev,
-	scrollNext,
-	orientation,
 	canScrollNext: false,
 	canScrollPrev: false,
 	handleKeyDown,
-	options: opts,
-	plugins,
 	onInit,
+	options: opts,
+	orientation,
+	plugins,
+	scrollNext,
+	scrollPrev,
 	scrollSnaps: [],
-	selectedIndex: 0,
 	scrollTo,
+	selectedIndex: 0,
 })
 
 setEmblaContext(carouselState)

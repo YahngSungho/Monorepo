@@ -5,9 +5,9 @@ import { buttonVariants } from '$shadcn/components/ui/button/index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children,
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: PaginationPrimitive.NextButtonProps = $props()
 </script>
@@ -21,8 +21,8 @@ let {
 	bind:ref
 	class={cn(
 		buttonVariants({
-			variant: 'ghost',
 			class: 'gap-1 pr-2.5',
+			variant: 'ghost',
 		}),
 		className,
 	)}

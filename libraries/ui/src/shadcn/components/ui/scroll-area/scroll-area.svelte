@@ -4,15 +4,15 @@ import { Scrollbar } from './index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children,
 	class: className,
 	orientation = 'vertical',
+	ref = $bindable(null),
 	scrollbarXClasses = '',
 	scrollbarYClasses = '',
-	children,
 	...restProps
 }: WithoutChild<ScrollAreaPrimitive.RootProps> & {
-	orientation?: 'vertical' | 'horizontal' | 'both' | undefined
+	orientation?: 'both' | 'horizontal' | 'vertical' | undefined
 	scrollbarXClasses?: string | undefined
 	scrollbarYClasses?: string | undefined
 } = $props()

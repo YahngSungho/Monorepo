@@ -4,8 +4,8 @@ import { Separator } from '$shadcn/components/ui/separator/index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: SeparatorPrimitive.RootProps = $props()
 </script>

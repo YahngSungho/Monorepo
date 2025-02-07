@@ -1,6 +1,6 @@
-import { join } from 'path'
-import { fileURLToPath } from 'url'
-import path from 'node:path'
+import path, { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { runTests } from '@repo/base/traverse.test.js'
 
 // Simulate __dirname in ESM

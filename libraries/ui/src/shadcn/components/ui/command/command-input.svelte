@@ -4,8 +4,8 @@ import Search from 'lucide-svelte/icons/search'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	value = $bindable(''),
 	...restProps
 }: CommandPrimitive.InputProps = $props()

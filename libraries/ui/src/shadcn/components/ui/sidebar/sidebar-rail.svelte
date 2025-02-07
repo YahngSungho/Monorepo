@@ -5,9 +5,9 @@ import type { HTMLAttributes } from 'svelte/elements'
 import { useSidebar } from './context.svelte.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children,
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> = $props()
 

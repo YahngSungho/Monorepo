@@ -4,9 +4,9 @@ import { Input } from '$shadcn/components/ui/input/index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	class: className,
 	ref = $bindable(null),
 	value = $bindable(''),
-	class: className,
 	...restProps
 }: ComponentProps<typeof Input> = $props()
 </script>

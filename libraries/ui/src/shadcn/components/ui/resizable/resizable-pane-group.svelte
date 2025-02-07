@@ -3,9 +3,9 @@ import * as ResizablePrimitive from 'paneforge'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	class: className,
 	ref = $bindable(null),
 	this: paneGroup = $bindable(),
-	class: className,
 	...restProps
 }: ResizablePrimitive.PaneGroupProps & {
 	this?: ResizablePrimitive.PaneGroup

@@ -3,9 +3,9 @@ import { Command as CommandPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	class: className,
 	ref = $bindable(null),
 	value = $bindable(''),
-	class: className,
 	...restProps
 }: CommandPrimitive.RootProps = $props()
 </script>

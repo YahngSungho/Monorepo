@@ -5,9 +5,9 @@ import { buttonVariants } from '$shadcn/components/ui/button/index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children,
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: RangeCalendarPrimitive.NextButtonProps = $props()
 </script>

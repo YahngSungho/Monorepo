@@ -3,11 +3,11 @@ import { cn } from '$shadcn/utils.js'
 import { Popover as PopoverPrimitive } from 'bits-ui'
 
 let {
-	ref = $bindable(null),
-	class: className,
-	sideOffset = 4,
 	align = 'center',
+	class: className,
 	portalProps,
+	ref = $bindable(null),
+	sideOffset = 4,
 	...restProps
 }: PopoverPrimitive.ContentProps & {
 	portalProps?: PopoverPrimitive.PortalProps

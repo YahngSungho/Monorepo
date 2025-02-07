@@ -3,12 +3,16 @@ import { untrack } from 'svelte'
 const MOBILE_BREAKPOINT = 768
 
 export class IsMobile {
+	get current() {
+		return this.#current
+	}
+
 	#current = $state<boolean>(false)
 
 	constructor() {
 		$effect(() => {
 			return untrack(() => {
-				const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
+				const mql = globalThis.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
 				const onChange = () => {
 					this.#current = window.innerWidth < MOBILE_BREAKPOINT
 				}
@@ -19,9 +23,5 @@ export class IsMobile {
 				}
 			})
 		})
-	}
-
-	get current() {
-		return this.#current
 	}
 }

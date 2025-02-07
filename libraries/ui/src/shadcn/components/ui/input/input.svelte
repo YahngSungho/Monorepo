@@ -4,9 +4,9 @@ import type { WithElementRef } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	class: className,
 	ref = $bindable(null),
 	value = $bindable(),
-	class: className,
 	...restProps
 }: WithElementRef<HTMLInputAttributes> = $props()
 </script>

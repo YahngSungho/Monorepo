@@ -3,9 +3,9 @@ import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	portalProps,
 	class: className,
+	portalProps,
+	ref = $bindable(null),
 	...restProps
 }: ContextMenuPrimitive.ContentProps & {
 	portalProps?: ContextMenuPrimitive.PortalProps
