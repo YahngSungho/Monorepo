@@ -14,9 +14,9 @@
 		"prettier-plugin-sort-json",
 		"prettier-plugin-package-perfection",
 		"prettier-plugin-classnames",
-		"prettier-plugin-svelte",
 		"prettier-plugin-sql",
 		"prettier-plugin-tailwindcss",
+		"prettier-plugin-svelte",
 		"prettier-plugin-merge"
 	],
 	"printWidth": 100,

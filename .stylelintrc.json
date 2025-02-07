@@ -1,11 +1,9 @@
 {
 	"extends": [
-		"@stylistic/stylelint-config",
 		"stylelint-config-standard",
 		"stylelint-config-html",
 		"@double-great/stylelint-a11y",
-		"stylelint-config-clean-order/error",
-		"stylelint-config-prettier"
+		"stylelint-config-clean-order/error"
 	],
 	"overrides": [
 		{
@@ -30,9 +28,6 @@
 		"stylelint-gamut"
 	],
 	"rules": {
-		"@stylistic/indentation": "tab",
-		"@stylistic/max-line-length": null,
-		"@stylistic/string-quotes": "single",
 		"at-rule-no-unknown": null,
 		"color-format/format": {
 			"format": "rgb",

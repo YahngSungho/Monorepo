@@ -53,7 +53,7 @@ button,
 	white-space: nowrap;
 	vertical-align: middle;
 
-	appearance: button;
+	appearance: auto;
 
 	&:active,
 	&:hover {

@@ -7,7 +7,7 @@ import storybook from 'eslint-plugin-storybook'
 import sonarjs from 'eslint-plugin-sonarjs'
 import xstate from 'eslint-plugin-xstate'
 import regexp from 'eslint-plugin-regexp'
-import babelParser from '@babel/eslint-parser'
+import parser_babel from '@babel/eslint-parser'
 import parser_svelte from 'svelte-eslint-parser'
 import parser_jsonc from 'jsonc-eslint-parser'
 import parser_yaml from 'yaml-eslint-parser'
@@ -24,7 +24,7 @@ import eslintPluginNoUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import pluginPromise from 'eslint-plugin-promise'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import nodePlugin from 'eslint-plugin-n'
-import tsPlugin from '@typescript-eslint/parser'
+import parser_TS from '@typescript-eslint/parser'
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
@@ -44,135 +44,21 @@ export default [
 				...globals.browser,
 				...globals.node,
 			},
-			parser: babelParser,
+			parser: parser_babel,
 			parserOptions: {
 				extraFileExtensions: ['.svelte'],
 				requireConfigFile: false,
 			},
 			sourceType: 'module',
 		},
-	},
-	js.configs.recommended,
-	eslintPluginUnicorn.configs['flat/recommended'],
-	importPlugin.flatConfigs.recommended,
-	...svelte.configs['flat/recommended'],
-	...turboConfig,
-	perfectionist.configs['recommended-natural'],
-	nodePlugin.configs['flat/recommended-module'],
-	eslintPluginNoUseExtendNative.configs.recommended,
-	pluginPromise.configs['flat/recommended'],
-	...compat.extends(
-		'plugin:depend/recommended',
-		'plugin:regexp/recommended',
-		'plugin:xstate/all',
-		'plugin:storybook/recommended',
-		'plugin:svelte/recommended',
-		'plugin:@intlify/svelte/recommended',
-		'plugin:json-schema-validator/recommended',
-		'plugin:yml/standard',
-		'plugin:toml/standard',
-	),
-	{
+
 		plugins: {
-			'@intlify/svelte': intlifyEslintPluginSvelte,
 			depend,
+			intlifyEslintPluginSvelte,
 			regexp,
 			sonarjs,
 			storybook,
-			svelte,
 			xstate,
-		},
-
-		rules: {
-			'@typescript-eslint/no-explicit-any': 'off',
-			'@typescript-eslint/no-unused-vars': 'off',
-			'arrow-parens': 'off',
-			'capitalized-comments': 'off',
-			'consistent-return': 'off',
-			'depend/ban-dependencies': [
-				'warn',
-				{
-					presets: ['native', 'preferred'],
-				},
-			],
-			'import-x/no-unresolved': 'off',
-			'import/no-mutable-exports': 'off',
-			'import/no-unassigned-import': 'off',
-			indent: ['warn', 'tab'],
-			'n/prefer-global/process': 'off',
-			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
-			'no-unused-expressions': 1,
-			'no-unused-vars': 1,
-			'no-warning-comments': 'off',
-			'object-curly-spacing': 'off',
-			'perfectionist/sort-imports': 'off',
-			'perfectionist/sort-modules': 'off',
-			'perfectionist/sort-objects': [
-				'warn',
-				{
-					order: 'asc',
-					type: 'natural',
-				},
-			],
-			'prefer-const': 'off',
-			semi: ['warn', 'never'],
-			'semi-style': 'off',
-			'sonarjs/no-unused-expressions': 'off',
-			'sonarjs/sonar-no-unused-vars': 'off',
-			'sonarjs/todo-tag': 'off',
-			'svelte/derived-has-same-inputs-outputs': 'warn',
-			'svelte/first-attribute-linebreak': 'off',
-			'svelte/html-closing-bracket-spacing': 'warn',
-			'svelte/html-quotes': [
-				'warn',
-				{
-					dynamic: {
-						avoidInvalidUnquotedInHTML: false,
-						quoted: false,
-					},
-
-					prefer: 'single',
-				},
-			],
-			'svelte/indent': [
-				'warn',
-				{
-					alignAttributesVertically: false,
-					ignoredNodes: [],
-					indent: 'tab',
-					indentScript: false,
-					switchCase: 1,
-				},
-			],
-
-			'svelte/infinite-reactive-loop': 'error',
-			'svelte/no-dupe-on-directives': 'warn',
-			'svelte/no-dupe-use-directives': 'warn',
-			'svelte/no-immutable-reactive-statements': 'warn',
-			'svelte/no-reactive-functions': 'warn',
-			'svelte/no-reactive-literals': 'warn',
-			'svelte/no-reactive-reassign': 'warn',
-			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
-			'svelte/no-store-async': 'warn',
-			'svelte/no-target-blank': 'warn',
-			'svelte/no-unused-class-name': [
-				'off',
-				{
-					allowedClassNames: [],
-				},
-			],
-			'svelte/prefer-destructured-store-props': 'warn',
-			'svelte/prefer-style-directive': 'warn',
-			'svelte/require-each-key': 'warn',
-			'svelte/require-optimized-style-attribute': 'warn',
-			'svelte/require-store-reactive-access': 'warn',
-			'svelte/spaced-html-comment': 'warn',
-			'svelte/valid-each-key': 'warn',
-			'unicorn/filename-case': 'off',
-			'unicorn/no-array-callback-reference': 'off',
-			'unicorn/prefer-spread': 'off',
-			'unicorn/prevent-abbreviations': 'off',
-			'unicorn/require-array-join-separator': 'off',
 		},
 
 		settings: {
@@ -185,13 +71,38 @@ export default [
 			},
 		},
 	},
+
+	js.configs.recommended,
+	eslintPluginUnicorn.configs['flat/recommended'],
+	importPlugin.flatConfigs.recommended,
+	// ...svelte.configs['flat/recommended'],
+	...svelte.configs['flat/prettier'],
+	...turboConfig,
+	perfectionist.configs['recommended-natural'],
+	nodePlugin.configs['flat/recommended-module'],
+	eslintPluginNoUseExtendNative.configs.recommended,
+	pluginPromise.configs['flat/recommended'],
+	...compat.extends(
+		'plugin:depend/recommended',
+		'plugin:regexp/recommended',
+		'plugin:xstate/all',
+		'plugin:storybook/recommended',
+		'plugin:@intlify/svelte/recommended',
+		'plugin:json-schema-validator/recommended',
+		'plugin:yml/standard',
+		'plugin:toml/standard',
+	),
 	{
 		files: ['**/*.svelte', '*.svelte'],
 
 		languageOptions: {
 			parser: parser_svelte,
 			parserOptions: {
-				parser: tsPlugin,
+				parser: {
+					js: parser_babel,
+					ts: parser_TS,
+					typescript: parser_TS,
+				},
 			},
 		},
 	},
@@ -233,7 +144,7 @@ export default [
 		files: ['**/*.ts', '**/*.tsx'],
 
 		languageOptions: {
-			parser: tsPlugin,
+			parser: parser_TS,
 			parserOptions: {
 				extraFileExtensions: ['.svelte'],
 			},
@@ -241,6 +152,89 @@ export default [
 
 		rules: {
 			'@typescript-eslint/*': 'off',
+		},
+	},
+
+	{
+		rules: {
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-unused-vars': 'off',
+			'arrow-parens': 'off',
+			'capitalized-comments': 'off',
+			'consistent-return': 'off',
+			'depend/ban-dependencies': [
+				'warn',
+				{
+					presets: ['native', 'preferred'],
+				},
+			],
+			'import-x/no-unresolved': 'off',
+			'import/no-mutable-exports': 'off',
+			'import/no-unassigned-import': 'off',
+			indent: ['warn', 'tab'],
+			'n/prefer-global/process': 'off',
+			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
+			'no-unused-expressions': 1,
+			'no-unused-vars': 1,
+			'no-warning-comments': 'off',
+			'object-curly-spacing': 'off',
+			'perfectionist/sort-imports': 'off',
+			'perfectionist/sort-modules': 'off',
+			'perfectionist/sort-objects': [
+				'warn',
+				{
+					order: 'asc',
+					type: 'natural',
+				},
+			],
+			'prefer-const': 'off',
+			semi: ['warn', 'never'],
+			'semi-style': 'off',
+			'sonarjs/no-unused-expressions': 'off',
+			'sonarjs/sonar-no-unused-vars': 'off',
+			'sonarjs/todo-tag': 'off',
+			'svelte/derived-has-same-inputs-outputs': 'warn',
+			'svelte/first-attribute-linebreak': 'off',
+			'svelte/html-closing-bracket-spacing': 'warn',
+			'svelte/indent': [
+				'warn',
+				{
+					alignAttributesVertically: false,
+					ignoredNodes: [],
+					indent: 'tab',
+					indentScript: false,
+					switchCase: 1,
+				},
+			],
+
+			'svelte/infinite-reactive-loop': 'error',
+			'svelte/no-dupe-on-directives': 'warn',
+			'svelte/no-dupe-use-directives': 'warn',
+			'svelte/no-immutable-reactive-statements': 'warn',
+			'svelte/no-reactive-functions': 'warn',
+			'svelte/no-reactive-literals': 'warn',
+			'svelte/no-reactive-reassign': 'warn',
+			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
+			'svelte/no-store-async': 'warn',
+			'svelte/no-target-blank': 'warn',
+			'svelte/no-unused-class-name': [
+				'off',
+				{
+					allowedClassNames: [],
+				},
+			],
+			'svelte/prefer-destructured-store-props': 'warn',
+			'svelte/prefer-style-directive': 'warn',
+			'svelte/require-each-key': 'warn',
+			'svelte/require-optimized-style-attribute': 'warn',
+			'svelte/require-store-reactive-access': 'warn',
+			'svelte/spaced-html-comment': 'warn',
+			'svelte/valid-each-key': 'warn',
+			'unicorn/filename-case': 'off',
+			'unicorn/no-array-callback-reference': 'off',
+			'unicorn/prefer-spread': 'off',
+			'unicorn/prevent-abbreviations': 'off',
+			'unicorn/require-array-join-separator': 'off',
 		},
 	},
 	eslintConfigPrettier,
