@@ -11,14 +11,14 @@ import type { WithElementRef, WithoutChildren } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children: childrenProp,
 	class: className,
 	form,
 	name,
-	children: childrenProp,
+	ref = $bindable(null),
 	...restProps
-}: WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> &
-	FormPrimitive.ElementFieldProps<T, U> = $props()
+}: FormPrimitive.ElementFieldProps<T, U> &
+	WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props()
 </script>
 
 <FormPrimitive.ElementField {form} {name}>

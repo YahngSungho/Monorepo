@@ -5,11 +5,11 @@ import type { WithElementRef } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
-	href = undefined,
 	child,
 	children,
+	class: className,
+	href,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAnchorAttributes> & {
 	child?: Snippet<[{ props: HTMLAnchorAttributes }]>

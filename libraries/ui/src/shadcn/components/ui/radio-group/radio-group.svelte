@@ -3,8 +3,8 @@ import { RadioGroup as RadioGroupPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	value = $bindable(''),
 	...restProps
 }: RadioGroupPrimitive.RootProps = $props()

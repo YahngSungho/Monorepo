@@ -4,10 +4,10 @@ import type { WithElementRef } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children,
 	class: className,
 	level = 5,
-	children,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
 	level?: 1 | 2 | 3 | 4 | 5 | 6

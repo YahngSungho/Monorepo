@@ -4,9 +4,9 @@ import type { ComponentProps } from 'svelte'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	cell,
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: ComponentProps<typeof InputOTPPrimitive.Cell> = $props()
 </script>

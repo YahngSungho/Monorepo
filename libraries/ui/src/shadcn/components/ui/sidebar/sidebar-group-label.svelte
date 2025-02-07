@@ -5,10 +5,10 @@ import type { Snippet } from 'svelte'
 import type { HTMLAttributes } from 'svelte/elements'
 
 let {
-	ref = $bindable(null),
-	children,
 	child,
+	children,
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLElement>> & {
 	child?: Snippet<[{ props: Record<string, unknown> }]>

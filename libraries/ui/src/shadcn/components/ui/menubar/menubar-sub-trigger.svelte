@@ -4,10 +4,10 @@ import ChevronRight from 'lucide-svelte/icons/chevron-right'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
-	inset = undefined,
 	children,
+	class: className,
+	inset,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<MenubarPrimitive.SubTriggerProps> & {
 	inset?: boolean

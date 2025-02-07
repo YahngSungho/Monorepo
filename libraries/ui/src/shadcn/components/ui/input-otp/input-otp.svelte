@@ -4,8 +4,8 @@ import type { ComponentProps } from 'svelte'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	value = $bindable(''),
 	...restProps
 }: ComponentProps<typeof InputOTPPrimitive.Root> = $props()

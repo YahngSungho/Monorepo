@@ -5,9 +5,9 @@ import { getEmblaContext } from './context.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children,
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 

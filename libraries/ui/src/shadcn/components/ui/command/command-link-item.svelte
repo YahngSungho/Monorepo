@@ -3,8 +3,8 @@ import { Command as CommandPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: CommandPrimitive.LinkItemProps = $props()
 </script>

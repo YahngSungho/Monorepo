@@ -3,10 +3,10 @@ import { ScrollArea as ScrollAreaPrimitive, type WithoutChild } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children,
 	class: className,
 	orientation = 'vertical',
-	children,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<ScrollAreaPrimitive.ScrollbarProps> = $props()
 </script>

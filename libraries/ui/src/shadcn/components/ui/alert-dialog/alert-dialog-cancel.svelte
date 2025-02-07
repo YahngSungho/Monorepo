@@ -4,8 +4,8 @@ import { buttonVariants } from '$shadcn/components/ui/button/index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: AlertDialogPrimitive.CancelProps = $props()
 </script>

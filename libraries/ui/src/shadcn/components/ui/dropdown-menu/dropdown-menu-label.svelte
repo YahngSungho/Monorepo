@@ -4,10 +4,10 @@ import { type WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
 let {
-	ref = $bindable(null),
+	children,
 	class: className,
 	inset,
-	children,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
 	inset?: boolean

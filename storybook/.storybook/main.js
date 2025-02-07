@@ -1,15 +1,6 @@
-import { dirname, join } from 'path'
+import { dirname, join } from 'node:path'
 /** @type {import('@storybook/svelte-vite').StorybookConfig} */
 const config = {
-	stories: [
-		'../../apps/**/*.stories.@(js|ts|svelte)',
-		'../../apps/**/*.mdx',
-		'../../libraries/**/*.stories.@(js|ts|svelte)',
-		'../../libraries/**/*.mdx',
-		'../src/**/*.mdx',
-		'../src/**/*.stories.@(js|ts|svelte)',
-	],
-
 	addons: [
 		'@storybook/addon-svelte-csf',
 		getAbsolutePath('@storybook/addon-links'),
@@ -19,12 +10,21 @@ const config = {
 		getAbsolutePath('@storybook/addon-mdx-gfm'),
 	],
 
+	docs: {},
+
 	framework: {
 		name: getAbsolutePath('@storybook/svelte-vite'),
 		options: {},
 	},
 
-	docs: {},
+	stories: [
+		'../../apps/**/*.stories.@(js|ts|svelte)',
+		'../../apps/**/*.mdx',
+		'../../libraries/**/*.stories.@(js|ts|svelte)',
+		'../../libraries/**/*.mdx',
+		'../src/**/*.mdx',
+		'../src/**/*.stories.@(js|ts|svelte)',
+	],
 }
 export default config
 

@@ -6,14 +6,14 @@ import * as Dialog from './index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children,
 	class: className,
 	portalProps,
-	children,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChildrenOrChild<DialogPrimitive.ContentProps> & {
-	portalProps?: DialogPrimitive.PortalProps
 	children: Snippet
+	portalProps?: DialogPrimitive.PortalProps
 } = $props()
 </script>
 

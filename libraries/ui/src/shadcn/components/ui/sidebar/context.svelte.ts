@@ -24,19 +24,19 @@ class SidebarState {
 	open = $derived.by(() => this.props.open())
 	openMobile = $state(false)
 	setOpen: SidebarStateProps['setOpen']
-	#isMobile: IsMobile
 	state = $derived.by(() => (this.open ? 'expanded' : 'collapsed'))
+	// Convenience getter for checking if the sidebar is mobile
+	// without this, we would need to use `sidebar.isMobile.current` everywhere
+	get isMobile() {
+		return this.#isMobile.current
+	}
+
+	#isMobile: IsMobile
 
 	constructor(props: SidebarStateProps) {
 		this.setOpen = props.setOpen
 		this.#isMobile = new IsMobile()
 		this.props = props
-	}
-
-	// Convenience getter for checking if the sidebar is mobile
-	// without this, we would need to use `sidebar.isMobile.current` everywhere
-	get isMobile() {
-		return this.#isMobile.current
 	}
 
 	// Event handler to apply to the `<svelte:window>`

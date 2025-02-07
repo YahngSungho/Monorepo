@@ -3,8 +3,8 @@ import { Drawer as DrawerPrimitive } from 'vaul-svelte'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: DrawerPrimitive.DescriptionProps = $props()
 </script>

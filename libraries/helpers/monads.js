@@ -199,6 +199,14 @@ class Map {
  * @template T - The type of the inner value that Maybe holds.
  */
 class Maybe {
+	get isJust() {
+		return !this.isNothing
+	}
+
+	get isNothing() {
+		return this.$value === null || this.$value === undefined
+	}
+
 	constructor(x) {
 		this.$value = x
 	}
@@ -253,14 +261,6 @@ class Maybe {
 
 	[util.inspect.custom]() {
 		return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`
-	}
-
-	get isJust() {
-		return !this.isNothing
-	}
-
-	get isNothing() {
-		return this.$value === null || this.$value === undefined
 	}
 }
 

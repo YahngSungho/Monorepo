@@ -3,8 +3,8 @@ import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	...restProps
 }: ContextMenuPrimitive.SeparatorProps = $props()
 </script>

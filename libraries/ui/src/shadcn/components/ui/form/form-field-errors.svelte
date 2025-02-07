@@ -4,13 +4,13 @@ import type { WithoutChild } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children: childrenProp,
 	class: className,
 	errorClasses,
-	children: childrenProp,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<FormPrimitive.FieldErrorsProps> & {
-	errorClasses?: string | undefined | null
+	errorClasses?: null | string | undefined
 } = $props()
 </script>
 
@@ -19,9 +19,9 @@ let {
 	class={cn('text-destructive text-sm font-medium', className)}
 	{...restProps}
 >
-	{#snippet children({ errors, errorProps })}
+	{#snippet children({ errorProps, errors })}
 		{#if childrenProp}
-			{@render childrenProp({ errors, errorProps })}
+			{@render childrenProp({ errorProps, errors })}
 		{:else}
 			{#each errors as error}
 				<div {...errorProps} class={cn(errorClasses)}>{error}</div>

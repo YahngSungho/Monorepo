@@ -1,7 +1,7 @@
 <script>
 let { children, icon, ...restProps } = $props()
 
-;('') // eslint-disable-line no-unused-expressions, semi
+;('') // eslint-disable-line no-unused-expressions
 </script>
 
 <span class="with-icon" {...restProps}>

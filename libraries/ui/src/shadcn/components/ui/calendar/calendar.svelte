@@ -4,10 +4,10 @@ import * as Calendar from './index.ts'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	class: className,
+	placeholder = $bindable(),
 	ref = $bindable(null),
 	value = $bindable(),
-	placeholder = $bindable(),
-	class: className,
 	weekdayFormat = 'short',
 	...restProps
 }: WithoutChildrenOrChild<CalendarPrimitive.RootProps> = $props()

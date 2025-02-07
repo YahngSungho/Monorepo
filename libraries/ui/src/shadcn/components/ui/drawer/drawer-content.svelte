@@ -4,10 +4,10 @@ import DrawerOverlay from './drawer-overlay.svelte'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children,
 	class: className,
 	portalProps,
-	children,
+	ref = $bindable(null),
 	...restProps
 }: DrawerPrimitive.ContentProps & {
 	portalProps?: DrawerPrimitive.PortalProps

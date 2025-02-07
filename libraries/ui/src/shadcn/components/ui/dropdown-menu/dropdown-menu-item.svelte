@@ -3,9 +3,9 @@ import { cn } from '$shadcn/utils.js'
 import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui'
 
 let {
-	ref = $bindable(null),
 	class: className,
 	inset,
+	ref = $bindable(null),
 	...restProps
 }: DropdownMenuPrimitive.ItemProps & {
 	inset?: boolean

@@ -25,15 +25,6 @@ const eewre = 'eeeq'
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<style>
-	.p1 {
-		overflow: auto;
-		max-block-size: 30rem;
-		margin: auto;
-		border-width: var(--border-size-3);
-	}
-</style>
-
 <Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
 <Button2 variant="suc">
 	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>

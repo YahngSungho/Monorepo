@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test'
-import { readdirSync } from 'fs'
-import path, { join } from 'path'
+import { expect, test } from '@playwright/test'
+import { readdirSync } from 'node:fs'
+import path, { join } from 'node:path'
 
 const VALID_ROUTE_FILE = '+page.svelte'
 const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/g
@@ -60,16 +60,16 @@ async function visitPage(baseUrl, testRoute, page) {
 }
 
 const PERFORMANCE_THRESHOLDS = {
-	maxLoadTime: 5000,
-	maxLCP: 1500,
 	maxCLS: 0.1,
+	maxLCP: 1500,
+	maxLoadTime: 5000,
 }
 
 async function speedCheck(page, testRoute) {
 	await page.waitForTimeout(1000)
 	// 네트워크 유휴 상태까지 대기
 	try {
-		await page.waitForLoadState('networkidle', { timeout: 10000 })
+		await page.waitForLoadState('networkidle', { timeout: 10_000 })
 	} catch (error) {
 		throw new Error(`Page load timeout: ${error.message}`)
 	}
@@ -89,11 +89,11 @@ async function speedCheck(page, testRoute) {
 				const observer = new PerformanceObserver((list) => {
 					const entries = list.getEntries()
 					observer.disconnect()
-					const lastEntry = entries[entries.length - 1]
+					const lastEntry = entries.at(-1)
 					resolve(lastEntry ? lastEntry.startTime : 0)
 				})
 
-				observer.observe({ type: 'largest-contentful-paint', buffered: true })
+				observer.observe({ buffered: true, type: 'largest-contentful-paint' })
 
 				setTimeout(() => {
 					observer.disconnect()
@@ -102,7 +102,7 @@ async function speedCheck(page, testRoute) {
 						.attach('performance-timeout', { body: 'largest-contentful-paint 지연시간 만료`' })
 					console.error('largest-contentful-paint 지연시간 만료')
 					resolve(0)
-				}, 10000)
+				}, 10_000)
 			}),
 	)
 	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
@@ -123,14 +123,14 @@ async function speedCheck(page, testRoute) {
 					resolve(clsValue)
 				})
 
-				observer.observe({ type: 'layout-shift', buffered: true })
+				observer.observe({ buffered: true, type: 'layout-shift' })
 
 				setTimeout(() => {
 					observer.disconnect()
 					test.info().attach('performance-timeout', { body: 'layout-shift 지연시간 만료`' })
 					console.error('layout-shift 지연시간 만료')
 					resolve(0)
-				}, 10000)
+				}, 10_000)
 			}),
 	)
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
@@ -146,13 +146,13 @@ async function speedCheck(page, testRoute) {
 
 	// Playwright 내장 메트릭과 결합
 	const performanceMetrics = {
-		timestamp: Date.now(),
-		route: routeName,
 		metrics: {
-			loadTime0,
-			lcp0,
 			cls0,
+			lcp0,
+			loadTime0,
 		},
+		route: routeName,
+		timestamp: Date.now(),
 	}
 	test.info().attach(`성능: ${routeName}`, { body: JSON.stringify(performanceMetrics) })
 }
@@ -176,7 +176,7 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 				if (dynamicRouteParams[routePath]) {
 					// 동적 라우트 테스트
 					for (const paramExample of dynamicRouteParams[routePath]) {
-						const dynamicTestRoute = testRoute.replace(DYNAMIC_ROUTE_PATTERN, paramExample)
+						const dynamicTestRoute = testRoute.replaceAll(DYNAMIC_ROUTE_PATTERN, paramExample)
 						// 파라미터 배열을 순차적으로 적용 (예: [id]/[slug] → 123/my-post)
 						test(`방문: ${dynamicTestRoute} (dynamic)`, async ({ page }) => {
 							const params = paramExample.split('/') // 예시: "123/my-post" → ["123", "my-post"]
@@ -241,7 +241,7 @@ function getRoutes(projectRouteRoot, dir = '', routes = []) {
 				.normalize(fullPath)
 				.replace(VALID_ROUTE_FILE, '')
 				.replace(/^src\/routes/, '')
-				.replace(/\(.*?\)\//g, '')
+				.replaceAll(/\(.*?\)\//g, '')
 				.replace(/\/index$/, '/')
 
 			if (!routePath.startsWith('/')) {
@@ -249,7 +249,7 @@ function getRoutes(projectRouteRoot, dir = '', routes = []) {
 			}
 
 			const isDynamic = DYNAMIC_ROUTE_PATTERN.test(routePath)
-			routes.push({ route: routePath, dynamic: isDynamic })
+			routes.push({ dynamic: isDynamic, route: routePath })
 		}
 	}
 	return routes

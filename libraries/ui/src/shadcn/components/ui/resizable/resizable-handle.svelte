@@ -5,8 +5,8 @@ import type { WithoutChildrenOrChild } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
+	ref = $bindable(null),
 	withHandle = false,
 	...restProps
 }: WithoutChildrenOrChild<ResizablePrimitive.PaneResizerProps> & {

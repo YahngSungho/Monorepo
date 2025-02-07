@@ -4,9 +4,9 @@ import ChevronDown from 'lucide-svelte/icons/chevron-down'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children,
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<SelectPrimitive.TriggerProps> = $props()
 </script>

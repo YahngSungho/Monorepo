@@ -4,9 +4,9 @@ import type { HTMLOlAttributes } from 'svelte/elements'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	children,
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLOlAttributes> = $props()
 </script>

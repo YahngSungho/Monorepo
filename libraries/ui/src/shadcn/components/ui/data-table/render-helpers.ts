@@ -45,8 +45,8 @@ export class RenderComponentConfig<TComponent extends Component> {
  * 	```
  */
 export class RenderSnippetConfig<TProps> {
-	snippet: Snippet<[TProps]>
 	params: TProps
+	snippet: Snippet<[TProps]>
 	constructor(snippet: Snippet<[TProps]>, params: TProps) {
 		this.snippet = snippet
 		this.params = params

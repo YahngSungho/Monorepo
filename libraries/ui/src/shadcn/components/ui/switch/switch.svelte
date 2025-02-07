@@ -3,9 +3,9 @@ import { Switch as SwitchPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	checked = $bindable(false),
+	class: className,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChildrenOrChild<SwitchPrimitive.RootProps> = $props()
 </script>

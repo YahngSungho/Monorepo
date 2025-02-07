@@ -1,34 +1,42 @@
 import { Select as SelectPrimitive } from 'bits-ui'
 
-import GroupHeading from './select-group-heading.svelte'
-import Item from './select-item.svelte'
-import Content from './select-content.svelte'
-import Trigger from './select-trigger.svelte'
-import Separator from './select-separator.svelte'
-import ScrollDownButton from './select-scroll-down-button.svelte'
-import ScrollUpButton from './select-scroll-up-button.svelte'
+
+
+
+
+
+
+
 
 const Root = SelectPrimitive.Root
 const Group = SelectPrimitive.Group
 
 export {
-	Root,
+	
 	Group,
-	GroupHeading,
-	Item,
-	Content,
-	Trigger,
-	Separator,
-	ScrollDownButton,
-	ScrollUpButton,
+	
+	
+	Root,
+	
+	
 	//
 	Root as Select,
+	
 	Group as SelectGroup,
-	GroupHeading as SelectGroupHeading,
-	Item as SelectItem,
-	Content as SelectContent,
-	Trigger as SelectTrigger,
-	Separator as SelectSeparator,
-	ScrollDownButton as SelectScrollDownButton,
-	ScrollUpButton as SelectScrollUpButton,
+	
+	
+	
+	
+	
+	
+	
+	
 }
+
+export {default as Content, default as SelectContent} from './select-content.svelte'
+export {default as GroupHeading, default as SelectGroupHeading} from './select-group-heading.svelte'
+export {default as Item, default as SelectItem} from './select-item.svelte'
+export {default as ScrollDownButton, default as SelectScrollDownButton} from './select-scroll-down-button.svelte'
+export {default as ScrollUpButton, default as SelectScrollUpButton} from './select-scroll-up-button.svelte'
+export {default as SelectSeparator, default as Separator} from './select-separator.svelte'
+export {default as SelectTrigger, default as Trigger} from './select-trigger.svelte'

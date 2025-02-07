@@ -4,10 +4,10 @@ import ChevronDown from 'lucide-svelte/icons/chevron-down'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
+	children,
 	class: className,
 	level = 3,
-	children,
+	ref = $bindable(null),
 	...restProps
 }: WithoutChild<AccordionPrimitive.TriggerProps> & {
 	level?: AccordionPrimitive.HeaderProps['level']

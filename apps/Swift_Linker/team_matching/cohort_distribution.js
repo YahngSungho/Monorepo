@@ -110,6 +110,11 @@ class Chunk {
  * @typedef {RoleSlot[]} RoleSlots
  */
 class SubRoleSpace {
+	/** @returns {number} */
+	get allSlots() {
+		return this.roleSlots.reduce((accumulator, current) => accumulator + current.slot, 0)
+	}
+
 	/**
 	 * @class
 	 * @param {RoleSlots} roleSlots
@@ -183,11 +188,6 @@ class SubRoleSpace {
 	 */
 	slice(start, end) {
 		return new SubRoleSpace(this.roleSlots.slice(start, end))
-	}
-
-	/** @returns {number} */
-	get allSlots() {
-		return this.roleSlots.reduce((accumulator, current) => accumulator + current.slot, 0)
 	}
 }
 

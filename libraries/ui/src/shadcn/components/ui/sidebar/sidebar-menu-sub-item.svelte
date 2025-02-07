@@ -3,8 +3,8 @@ import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
 let {
-	ref = $bindable(null),
 	children,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLLIElement>> = $props()
 </script>

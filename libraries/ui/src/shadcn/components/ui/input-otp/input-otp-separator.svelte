@@ -4,8 +4,8 @@ import type { WithElementRef } from 'bits-ui'
 import Dot from 'lucide-svelte/icons/dot'
 
 let {
-	ref = $bindable(null),
 	children,
+	ref = $bindable(null),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 </script>

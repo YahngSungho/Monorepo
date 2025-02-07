@@ -3,11 +3,11 @@ import { LinkPreview as HoverCardPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
-	class: className,
 	align = 'center',
-	sideOffset = 4,
+	class: className,
 	portalProps,
+	ref = $bindable(null),
+	sideOffset = 4,
 	...restProps
 }: HoverCardPrimitive.ContentProps & {
 	portalProps?: HoverCardPrimitive.PortalProps

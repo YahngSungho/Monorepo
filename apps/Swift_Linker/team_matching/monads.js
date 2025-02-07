@@ -127,6 +127,37 @@ class AllMembers {
  * @class Cohort
  */
 class Cohort {
+	get array() {
+		return this.memberOrCohortArray
+	}
+
+	/** @returns {Member[]} */
+	get joinedArray() {
+		if (!Array.isArray(this.memberOrCohortArray)) {
+			throw new TypeError('Cohort must be an array')
+		}
+
+		return R.uniq(
+			this.memberOrCohortArray.flatMap((memberOrCohort) => {
+				if (memberOrCohort instanceof Cohort) {
+					if (memberOrCohort === this) {
+						return []
+					}
+
+					return memberOrCohort.joinedArray
+				}
+
+				return memberOrCohort
+			}),
+		)
+	}
+
+	// fix 타입을 다 Member | Cohort로 바꿔
+
+	get numberOfMembers() {
+		return this.joinedArray.length
+	}
+
 	/** @param {(Member | Cohort)[]} memberOrCohortArray */
 	constructor(memberOrCohortArray) {
 		this.memberOrCohortArray = R.uniq(memberOrCohortArray)
@@ -136,8 +167,6 @@ class Cohort {
 	static empty() {
 		return new Cohort([])
 	}
-
-	// fix 타입을 다 Member | Cohort로 바꿔
 
 	/**
 	 * @param {(Member | Cohort)[]} memberOrCohortArray
@@ -179,39 +208,15 @@ class Cohort {
 	join() {
 		return new Cohort(this.joinedArray)
 	}
-
-	get array() {
-		return this.memberOrCohortArray
-	}
-
-	/** @returns {Member[]} */
-	get joinedArray() {
-		if (!Array.isArray(this.memberOrCohortArray)) {
-			throw new TypeError('Cohort must be an array')
-		}
-
-		return R.uniq(
-			this.memberOrCohortArray.flatMap((memberOrCohort) => {
-				if (memberOrCohort instanceof Cohort) {
-					if (memberOrCohort === this) {
-						return []
-					}
-
-					return memberOrCohort.joinedArray
-				}
-
-				return memberOrCohort
-			}),
-		)
-	}
-
-	get numberOfMembers() {
-		return this.joinedArray.length
-	}
 }
 
 // todo 중복 안되는 role 끼리 중복인지 검사
 class Role {
+	/** @returns {number} */
+	get remainingSlot() {
+		return this.slot - this.members.length
+	}
+
 	/**
 	 * @param {Member[]} members
 	 * @param {number} slot
@@ -330,14 +335,19 @@ class Role {
 	map(f) {
 		return new Role(this.members.map(f), this.slot, this.name, this.id)
 	}
-
-	/** @returns {number} */
-	get remainingSlot() {
-		return this.slot - this.members.length
-	}
 }
 
 class Team {
+	/** @returns {Member[]} */
+	get members() {
+		return this.roleArray.flatMap((role) => role.members)
+	}
+
+	/** @returns {number} */
+	get remainingSlot() {
+		return this.roleArray.map((role) => role.remainingSlot).reduce((a, b) => a + b, 0)
+	}
+
 	/**
 	 * @param {Role[]} roleArray
 	 * @param {string | null} id
@@ -411,19 +421,19 @@ class Team {
 	[inspect.custom]() {
 		return `Team(${inspect(this.roleArray)}, ${inspect(this.id)})`
 	}
+}
 
+class Teams {
 	/** @returns {Member[]} */
 	get members() {
-		return this.roleArray.flatMap((role) => role.members)
+		return this.teamArray.flatMap((team) => team.members)
 	}
 
 	/** @returns {number} */
 	get remainingSlot() {
-		return this.roleArray.map((role) => role.remainingSlot).reduce((a, b) => a + b, 0)
+		return this.teamArray.map((team) => team.remainingSlot).reduce((a, b) => a + b, 0)
 	}
-}
 
-class Teams {
 	/** @param {Team[]} teamArray */
 	constructor(teamArray, id = nanoid()) {
 		if (!Array.isArray(teamArray)) {
@@ -437,10 +447,6 @@ class Teams {
 		this.teamArray = teamArray
 		this.id = id
 		this.type = 'Teams'
-	}
-
-	includes(member) {
-		return this.teamArray.some((team) => team.hasMember(member))
 	}
 
 	/** @returns {Teams} */
@@ -473,6 +479,10 @@ class Teams {
 		return this.teamArray.some((team) => team.hasMember(member))
 	}
 
+	includes(member) {
+		return this.teamArray.some((team) => team.hasMember(member))
+	}
+
 	[inspect.custom]() {
 		return `Teams(${inspect(this.teamArray)}, ${inspect(this.id)})`
 	}
@@ -492,15 +502,5 @@ class Teams {
 		}
 
 		return R.difference(memberArray, this.members)
-	}
-
-	/** @returns {Member[]} */
-	get members() {
-		return this.teamArray.flatMap((team) => team.members)
-	}
-
-	/** @returns {number} */
-	get remainingSlot() {
-		return this.teamArray.map((team) => team.remainingSlot).reduce((a, b) => a + b, 0)
 	}
 }

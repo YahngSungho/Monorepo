@@ -3,9 +3,9 @@ import { AlertDialog as AlertDialogPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	ref = $bindable(null),
 	class: className,
 	level = 3,
+	ref = $bindable(null),
 	...restProps
 }: AlertDialogPrimitive.TitleProps = $props()
 </script>
