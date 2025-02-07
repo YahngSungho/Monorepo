@@ -63,7 +63,6 @@
 		"eslint-plugin-unicorn": "^56.0.1",
 		"eslint-plugin-xstate": "^3.2.1",
 		"eslint-plugin-yml": "^1.16.0",
-		"espress": "^0.0.0",
 		"globals": "^15.14.0",
 		"i": "^0.3.7",
 		"jsdom": "^26.0.0",

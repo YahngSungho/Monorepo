@@ -13,7 +13,10 @@ const fo = 'bigCommandKEnabled'
 let foo = $state(fo + 'foifoifo')
 
 foo += ' bar133322222223'
-;('')
+
+const eewre = 'eeeq'
+
+;('') // eslint-disable-line
 </script>
 
 <h2 class={'bg-primary'}>{m.welcome()}</h2>
