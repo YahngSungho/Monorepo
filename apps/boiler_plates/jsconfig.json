@@ -5,23 +5,23 @@
 	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
 	// from the referenced tsconfig.json - TypeScript does not merge them in
 	"compilerOptions": {
-		"target": "es2020",
-		"module": "es2020",
+		"allowImportingTsExtensions": true,
 		"allowJs": true,
-		"checkJs": true,
-		"moduleResolution": "bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true,
 		"allowSyntheticDefaultImports": true,
-		"strict": false,
-		"sourceMap": true,
-		"noImplicitAny": false,
-		"typeRoots": ["./node_modules/@types"],
-		"skipLibCheck": true,
+		"checkJs": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"allowImportingTsExtensions": true
+		"isolatedModules": true,
+		"module": "es2020",
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"noImplicitAny": false,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": false,
+		"target": "es2020",
+		"typeRoots": ["./node_modules/@types"]
 	},
 	"exclude": [
 		".turbo/**",

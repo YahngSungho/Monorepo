@@ -26,10 +26,10 @@ const eewre = 'eeeq'
 <h6>Welcome to SvelteKit 000</h6>
 
 <Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
-<Button2 variant="success">
+<Button2 variant="suc">
 	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>
 </Button2>
-<Button2 href={'/about'} variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
+<Button2 href="/about" variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
 <Button1 href="/lorem" variant={'default'}>{m.welcome()}</Button1>
 
 <div class={'p1 boxed long-text gutter'}>
