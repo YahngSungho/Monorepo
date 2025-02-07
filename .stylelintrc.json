@@ -34,6 +34,7 @@
 		"stylelint-gamut"
 	],
 	"rules": {
+		"custom-property-empty-line-before": null,
 		"at-rule-no-unknown": null,
 		"color-format/format": {
 			"format": "rgb",

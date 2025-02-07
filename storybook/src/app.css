@@ -52,14 +52,14 @@ button {
 	cursor: pointer;
 
 	padding: 0.6em 1.2em;
+	border: 1px solid transparent;
+	border-radius: 8px;
 
 	font-family: inherit;
 	font-size: 1em;
 	font-weight: 500;
 
 	background-color: rgb(26 26 26);
-	border: 1px solid transparent;
-	border-radius: 8px;
 
 	transition: border-color 0.25s;
 
