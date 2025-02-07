@@ -1,18 +1,18 @@
 <script lang="ts">
-	import emblaCarouselSvelte from 'embla-carousel-svelte'
-	import type { WithElementRef } from 'bits-ui'
-	import type { HTMLAttributes } from 'svelte/elements'
-	import { getEmblaContext } from './context.js'
-	import { cn } from '$shadcn/utils.js'
+import emblaCarouselSvelte from 'embla-carousel-svelte'
+import type { WithElementRef } from 'bits-ui'
+import type { HTMLAttributes } from 'svelte/elements'
+import { getEmblaContext } from './context.js'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		children,
-		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	children,
+	...restProps
+}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 
-	const emblaCtx = getEmblaContext('<Carousel.Content/>')
+const emblaCtx = getEmblaContext('<Carousel.Content/>')
 </script>
 
 <!-- svelte-ignore event_directive_deprecated -->

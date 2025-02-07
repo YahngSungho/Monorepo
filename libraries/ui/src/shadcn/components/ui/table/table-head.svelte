@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { HTMLThAttributes } from 'svelte/elements'
-	import type { WithElementRef } from 'bits-ui'
-	import { cn } from '$shadcn/utils.js'
+import type { HTMLThAttributes } from 'svelte/elements'
+import type { WithElementRef } from 'bits-ui'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		children,
-		...restProps
-	}: WithElementRef<HTMLThAttributes> = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	children,
+	...restProps
+}: WithElementRef<HTMLThAttributes> = $props()
 </script>
 
 <th

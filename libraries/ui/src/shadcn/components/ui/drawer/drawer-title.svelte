@@ -1,12 +1,8 @@
 <script lang="ts">
-	import { Drawer as DrawerPrimitive } from 'vaul-svelte'
-	import { cn } from '$shadcn/utils.js'
+import { Drawer as DrawerPrimitive } from 'vaul-svelte'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: DrawerPrimitive.TitleProps = $props()
+let { ref = $bindable(null), class: className, ...restProps }: DrawerPrimitive.TitleProps = $props()
 </script>
 
 <DrawerPrimitive.Title

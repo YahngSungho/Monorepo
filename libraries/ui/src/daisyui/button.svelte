@@ -1,14 +1,14 @@
 <script>
-	/**
-	 * @typedef {'primary'	| 'secondary'| 'accent' | 'info' | 'success' | 'warning' | 'error' | 'outline' | 'text' } variant
-	 */
-	let { children, variant, href, ...restProps } = $props()
+/**
+ * @typedef {'primary'	| 'secondary'| 'accent' | 'info' | 'success' | 'warning' | 'error' | 'outline' | 'text' } variant
+ */
+let { children, variant, href, ...restProps } = $props()
 
-'';
+;('')
 </script>
 
 {#if href}
-	<a {href} class={`button-type btn btn-${variant}`} type='button' role="button" {...restProps}>
+	<a {href} class={`button-type btn btn-${variant}`} type="button" role="button" {...restProps}>
 		{@render children?.()}
 	</a>
 {:else}
@@ -19,13 +19,13 @@
 
 <style>
 .button-type {
-font-size: var(--font-size-2);
-font-weight: var(--font-weight-5);
+	font-size: var(--font-size-2);
+	font-weight: var(--font-weight-5);
 }
 
-					.btn-outline {
-					border-width: var(--border-size-2);
-					background-color: transparent;
+.btn-outline {
+	border-width: var(--border-size-2);
+	background-color: transparent;
 }
 
 .btn-text {

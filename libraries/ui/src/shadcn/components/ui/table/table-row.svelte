@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements'
-	import type { WithElementRef } from 'bits-ui'
-	import { cn } from '$shadcn/utils.js'
+import type { HTMLAttributes } from 'svelte/elements'
+import type { WithElementRef } from 'bits-ui'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		children,
-		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLTableRowElement>> = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	children,
+	...restProps
+}: WithElementRef<HTMLAttributes<HTMLTableRowElement>> = $props()
 </script>
 
 <tr

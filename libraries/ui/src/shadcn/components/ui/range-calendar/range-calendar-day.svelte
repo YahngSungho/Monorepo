@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui'
-	import { buttonVariants } from '$shadcn/components/ui/button/index.js'
-	import { cn } from '$shadcn/utils.js'
+import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui'
+import { buttonVariants } from '$shadcn/components/ui/button/index.js'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: RangeCalendarPrimitive.DayProps = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	...restProps
+}: RangeCalendarPrimitive.DayProps = $props()
 
-	export { className as class }
+export { className as class }
 </script>
 
 <RangeCalendarPrimitive.Day

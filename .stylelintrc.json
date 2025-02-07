@@ -8,9 +8,7 @@
 	"overrides": [
 		{
 			"customSyntax": "postcss-syntax",
-			"files": [
-				"**/*.css"
-			]
+			"files": ["**/*.css"]
 		}
 	],
 	"plugins": [
@@ -41,17 +39,12 @@
 		"no-duplicate-selectors": null,
 		"number-max-precision": null,
 		"plugin/declaration-block-no-ignored-properties": true,
-		"plugin/no-browser-hacks": [
-			true
-		],
+		"plugin/no-browser-hacks": [true],
 		"plugin/no-unresolved-module": {
 			"alias": {
 				"assets": "pebbles"
 			},
-			"modules": [
-				"node_modules",
-				"local_modules"
-			]
+			"modules": ["node_modules", "local_modules"]
 		},
 		"plugin/stylelint-no-indistinguishable-colors": true,
 		"plugin/use-defensive-css": [

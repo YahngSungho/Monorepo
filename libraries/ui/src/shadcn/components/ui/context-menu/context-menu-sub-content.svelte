@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
-	import { cn } from '$shadcn/utils.js'
+import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: ContextMenuPrimitive.SubContentProps = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	...restProps
+}: ContextMenuPrimitive.SubContentProps = $props()
 </script>
 
 <ContextMenuPrimitive.SubContent

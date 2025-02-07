@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { Progress as ProgressPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
-	import { cn } from '$shadcn/utils.js'
+import { Progress as ProgressPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		max = 100,
-		value,
-		...restProps
-	}: WithoutChildrenOrChild<ProgressPrimitive.RootProps> = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	max = 100,
+	value,
+	...restProps
+}: WithoutChildrenOrChild<ProgressPrimitive.RootProps> = $props()
 </script>
 
 <ProgressPrimitive.Root

@@ -1,13 +1,13 @@
 <script module>
-	import { defineMeta } from '@storybook/addon-svelte-csf'
-	import Button from './button.svelte'
+import { defineMeta } from '@storybook/addon-svelte-csf'
+import Button from './button.svelte'
 
-	const { Story } = defineMeta({
-		component: Button,
-		tags: ['autodocs'],
-	})
+const { Story } = defineMeta({
+	component: Button,
+	tags: ['autodocs'],
+})
 
-	;('') // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions, semi
+;('') // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions, semi
 </script>
 
 {#snippet multiple()}
