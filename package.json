@@ -100,6 +100,7 @@
 		"stylelint-value-no-exposed-custom-properties": "^2.3.1",
 		"stylelint-value-no-unknown-custom-properties": "^6.0.1",
 		"svelte": "^5.19.7",
+		"svelte-check": "^4.1.4",
 		"svelte-eslint-parser": "^0.43.0",
 		"svelte-language-server": "^0.17.10",
 		"syncpack": "^13.0.1",
@@ -120,5 +121,10 @@
 	"packageManager": "pnpm@9.15.4",
 	"simple-git-hooks": {
 		"pre-commit": "pnpm dlx pretty-quick --staged"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
 	}
 }
