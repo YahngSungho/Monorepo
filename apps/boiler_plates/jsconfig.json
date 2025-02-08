@@ -9,19 +9,24 @@
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"checkJs": true,
+		"composite": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
+		"incremental": true,
 		"isolatedModules": true,
-		"module": "es2020",
+		"jsx": "preserve",
+		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"noEmit": true,
 		"noImplicitAny": false,
+		"preserveSymlinks": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"strict": false,
-		"target": "es2020",
-		"typeRoots": ["./node_modules/@types"]
+		"strict": true,
+		"target": "ESNext",
+		"typeRoots": ["./node_modules/@types"],
+		"useDefineForClassFields": true
 	},
 	"exclude": [
 		".turbo/**",
@@ -36,5 +41,5 @@
 		"**/.history/**"
 	],
 	"extends": "./.svelte-kit/tsconfig.json",
-	"include": ["./**/*"]
+	"include": ["./src/**/*.ts", "./src/**/*.js", "./src/**/*.svelte", "./src/**/*.d.ts"]
 }

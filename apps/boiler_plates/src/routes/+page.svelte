@@ -26,7 +26,7 @@ const eewre = 'eeeq'
 <h6>Welcome to SvelteKit 000</h6>
 
 <Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
-<Button2 variant="suc">
+<Button2 variant="wrong">
 	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>
 </Button2>
 <Button2 href="/about" variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
