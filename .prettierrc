@@ -23,6 +23,7 @@
 	"semi": false,
 	"singleQuote": true,
 	"svelteIndentScriptAndStyle": false,
+	"svelteSortOrder": "options-scripts-markup-styles",
 	"trailingComma": "all",
 	"useTabs": true
 }
