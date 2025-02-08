@@ -1,8 +1,13 @@
 <script>
 /**
- * @typedef {'primary'	| 'secondary'| 'accent' | 'info' | 'success' | 'warning' | 'error' | 'outline' | 'text' } variant
- */
-let { children, href, variant, ...restProps } = $props()
+	* @type {{
+	*   variant?: 'primary'|'secondary'|'accent'|'info'|'success'|'warning'|'error'|'outline'|'text',
+	*		children?: any,
+	*   href?: string,
+	*   ...restProps: any
+	}}
+	*/
+let { children, href, variant = 'primary', ...restProps } = $props()
 
 ;('')
 </script>

@@ -6,7 +6,7 @@ import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@repo/base/messages.js'
-import { switchToLanguage } from '../paraglide.ts'
+import { switchToLanguage } from '../paraglide'
 
 const fo = 'bigCommandKEnabled'
 
@@ -26,7 +26,7 @@ const eewre = 'eeeq'
 <h6>Welcome to SvelteKit 000</h6>
 
 <Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
-<Button2 variant="suc">
+<Button2 variant="wrong">
 	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>
 </Button2>
 <Button2 href="/about" variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
