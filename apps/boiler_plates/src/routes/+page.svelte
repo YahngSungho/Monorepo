@@ -6,7 +6,7 @@ import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@repo/base/messages.js'
-import { switchToLanguage } from '../paraglide.ts'
+import { switchToLanguage } from '../paraglide'
 
 const fo = 'bigCommandKEnabled'
 

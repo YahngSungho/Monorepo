@@ -6,7 +6,7 @@ import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@repo/base/messages.js'
-import { switchToLanguage } from '../../paraglide.ts'
+import { switchToLanguage } from '../../paraglide'
 
 const fo = 'bigCommandKEnabled'
 
@@ -23,8 +23,8 @@ foo += ' bar133322222223'
 <h6>Welcome to SvelteKit 000</h6>
 
 <Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
-<Button2 href="/" variant={'default'}>home</Button2>
-<Button2 href="/about" variant={'default'}>{m.deft_east_mouse_hope()}</Button2>
+<Button2 href="/" variant={'info'}>home</Button2>
+<Button2 href="/about" variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
 <Button1 href="/lorem" variant={'default'}>{m.welcome()}</Button1>
 
 <div class={'p1 boxed long-text gutter'}>
@@ -40,7 +40,7 @@ foo += ' bar133322222223'
 	<h3>Eiusmod voluptate non nostrud labore</h3>
 	<p>
 		abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz Minim <i
-		>anim</i
+			>anim</i
 		>
 		esse nostrud<i>pariatur ex ullamco. Pariatur</i>u ut deserunt consequat officia non quis irure
 		<q>tempor adipisicing</q>

@@ -1,4 +1,5 @@
 {
+	"typescript.tsdk": "node_modules/typescript/lib",
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -15,11 +16,12 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[svelte]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "svelte.svelte-vscode"
 	},
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
+	"bookmarks.useWorkaroundForFormatters": true,
 	"console-ninja.dateTimeDisplayMode": "Relative To Previous",
 	"cssVariables.lookupFiles": [
 		"libraries/base/node_modules/open-props/open-props.min.css",
@@ -66,15 +68,17 @@
 	],
 	"peacock.color": "#dd0531",
 	"prettier.configPath": "",
+	"prettier.experimentalTernaries": false,
 	"prettier.jsxSingleQuote": true,
 	"prettier.semi": false,
+	"prettier.singleAttributePerLine": false,
 	"prettier.singleQuote": true,
 	"prettier.useTabs": true,
 	"prettier.vueIndentScriptAndStyle": false,
 	"stylelint.validate": ["css", "scss", "svelte"],
 	"svelte.plugin.svelte.format.config.singleQuote": true,
 	"svelte.plugin.svelte.format.config.svelteAllowShorthand": true,
-	"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": false,
+	"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": true,
 	"workbench.colorCustomizations": {
 		"activityBar.activeBackground": "#fa1b49",
 		"activityBar.background": "#fa1b49",

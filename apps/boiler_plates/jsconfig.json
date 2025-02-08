@@ -4,30 +4,25 @@
 	//
 	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
 	// from the referenced tsconfig.json - TypeScript does not merge them in
-	"compilerOptions": {
-		"allowImportingTsExtensions": true,
-		"allowJs": true,
-		"allowSyntheticDefaultImports": true,
-		"checkJs": true,
-		"composite": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"incremental": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"noEmit": true,
-		"noImplicitAny": false,
-		"preserveSymlinks": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strict": true,
-		"target": "ESNext",
-		"typeRoots": ["./node_modules/@types"],
-		"useDefineForClassFields": true
-	},
+	  "compilerOptions": {
+    // 핵심 옵션
+    "allowJs": true,
+    "checkJs": true,
+    "moduleResolution": "bundler",
+    "preserveSymlinks": true,  // Turborepo 패키지 링크 유지
+
+    // 타입 검사 범위
+    "strict": false,            // 전체 strict 모드 해제
+    "strictNullChecks": true,   // Null/undefined 관련 에러만 활성화
+    "noImplicitAny": false,     // 암시적 any 허용
+
+    // 개발 환경 최적화
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+		"sourceMap": true
+  },
 	"exclude": [
 		".turbo/**",
 		"**/.svelte-kit/**",
@@ -38,8 +33,9 @@
 		"**/.vercel_build_output/**",
 		"**/.vercel/**",
 		"**/coverage/**",
-		"**/.history/**"
+		"**/.history/**",
+		"**/service-worker/**"
 	],
 	"extends": "./.svelte-kit/tsconfig.json",
-	"include": ["./src/**/*.ts", "./src/**/*.js", "./src/**/*.svelte", "./src/**/*.d.ts"]
+	"include": ["./src/**/*.ts", "./src/**/*.js", "./src/**/*.svelte", "./src/**/*.d.ts", "tests/**/*"]
 }

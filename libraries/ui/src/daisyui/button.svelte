@@ -1,10 +1,13 @@
 <script>
 /**
 	* @type {{
-	*   variant: 'primary'|'secondary'|'accent'|'info'|'success'|'warning'|'error'|'outline'|'text',
+	*   variant?: 'primary'|'secondary'|'accent'|'info'|'success'|'warning'|'error'|'outline'|'text',
+	*		children?: any,
+	*   href?: string,
+	*   ...restProps: any
 	}}
 	*/
-let { children, href, variant, ...restProps } = $props()
+let { children, href, variant = 'primary', ...restProps } = $props()
 
 ;('')
 </script>
