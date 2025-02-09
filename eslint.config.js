@@ -97,6 +97,7 @@ export default [
 	),
 	{
 		files: ['**/*.svelte', '*.svelte'],
+		ignores: ['.svelte-kit/*'],
 
 		languageOptions: {
 			parser: parser_svelte,
