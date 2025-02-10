@@ -4,7 +4,8 @@
 @plugin 'tailwindcss-animate';
 
 @source '../../../apps/*/src/**/*.{html,js,ts,svelte,mdx}';
-@source '../../ui/src/**/*.{html,js,ts,svelte,mdx}';
+@source '../../../libraries/*/src/**/*.{html,js,ts,svelte,mdx}';
+@source '../../../storybook/src/**/*.{html,js,ts,svelte,mdx}';
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
