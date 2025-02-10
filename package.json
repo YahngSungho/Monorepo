@@ -117,7 +117,7 @@
 		"yaml-eslint-parser": "^1.2.3"
 	},
 	"engines": {
-		"node": "23.5.0"
+		"node": "22.13.11"
 	},
 	"packageManager": "pnpm@10.2.1",
 	"pnpm": {
