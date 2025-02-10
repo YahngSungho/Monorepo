@@ -118,13 +118,13 @@
 	"engines": {
 		"node": "23.5.0"
 	},
-	"packageManager": "pnpm@9.15.4",
-	"simple-git-hooks": {
-		"pre-commit": "pnpm dlx pretty-quick --staged"
-	},
+	"packageManager": "pnpm@10.2.1",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"simple-git-hooks": {
+		"pre-commit": "pnpm dlx pretty-quick --staged"
 	}
 }
