@@ -19,8 +19,15 @@
 			"cache": false,
 			"persistent": true
 		},
+		"check": {},
 		"lint": {},
+		"lint-fix": {
+			"dependsOn": ["@repo/root#format-changed"]
+		},
+		"eslint": {},
+		"stylelint": {},
 		"test": {},
+		"test:unit": {},
 		"test:e2e": {
 			"dependsOn": ["build"],
 			"env": ["CI"],

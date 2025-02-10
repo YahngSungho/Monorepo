@@ -8,16 +8,13 @@
 		"!dist/**/*.test.*"
 	],
 	"scripts": {
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"dev": "vite dev",
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
+		"eslint": "eslint **/*.{js,ts,svelte}",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
-		"styleLint": "stylelint",
-		"test": "pnpm test:unit",
-		"test:unit": "vitest",
-		"update": "pnpm update",
-		"preview": "vite preview"
+		"stylelint": "stylelint **/*.{css,svelte}",
+		"test:unit": "vitest"
 	},
 	"sideEffects": [
 		"**/*.css"

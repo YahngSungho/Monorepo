@@ -6,12 +6,7 @@
 	"author": "",
 	"type": "module",
 	"main": "index.js",
-	"scripts": {
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
-		"styleLint": "stylelint",
-		"test": "vitest"
-	},
+	"scripts": {},
 	"dependencies": {
 		"@repo/base": "workspace:*",
 		"@repo/helpers": "workspace:*",

@@ -7,15 +7,12 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"dev": "vite dev",
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
-		"styleLint": "stylelint",
-		"test": "pnpm test:unit",
-		"test:unit": "vitest",
-		"update": "pnpm update",
-		"preview": "vite preview"
+		"eslint": "eslint **/*.{js,ts,svelte}",
+		"stylelint": "stylelint **/*.{css,svelte}",
+		"test:unit": "vitest"
 	},
 	"dependencies": {
 		"mutative": "^1.1.0",

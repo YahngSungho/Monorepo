@@ -7,16 +7,13 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"dev": "vite dev",
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
-		"styleLint": "stylelint",
-		"test": "pnpm test:unit",
+		"eslint": "eslint **/*.{js,ts,svelte}",
+		"stylelint": "stylelint **/*.{css,svelte}",
 		"test:unit": "vitest",
-		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
-		"update": "pnpm update",
-		"preview": "vite preview"
+		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
 	},
 	"dependencies": {
 		"@qwik.dev/partytown": "^0.11.0",
