@@ -1,4 +1,5 @@
 {
+	"experimentalTernaries": true,
 	"jsxSingleQuote": true,
 	"overrides": [
 		{
