@@ -28,7 +28,7 @@
 		 */
 		"checkJs": true
 	},
-	"extends": ["@repo/base/jsconfig.json"],
+	"extends": ["@repo/base/tsconfig.json"],
 	/**
 	 * Use global.d.ts instead of compilerOptions.types
 	 * to avoid limiting type declarations.
