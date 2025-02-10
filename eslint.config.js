@@ -174,6 +174,8 @@ export default [
 			'import/no-mutable-exports': 'off',
 			'import/no-unassigned-import': 'off',
 			indent: ['warn', 'tab'],
+			'n/no-extraneous-import': 'off',
+			'n/no-missing-import': 'off',
 			'n/prefer-global/process': 'off',
 			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
 			'no-unused-expressions': 1,
