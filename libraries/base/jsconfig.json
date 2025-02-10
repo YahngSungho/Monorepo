@@ -14,7 +14,6 @@
 		"moduleResolution": "bundler",
 		"noEmit": true,
 		"noImplicitAny": false, // 암시적 any 허용
-		"preserveSymlinks": true, // Turborepo 패키지 링크 유지
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
