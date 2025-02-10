@@ -3,6 +3,9 @@
 	"globalDependencies": ["**/.env.*", "CI"],
 	"globalEnv": ["NODE_ENV"],
 	"tasks": {
+		"transit": {
+			"dependsOn": ["^transit"]
+		},
 		"build": {
 			"dependsOn": ["^build"],
 			"inputs": [
@@ -19,10 +22,19 @@
 			"cache": false,
 			"persistent": true
 		},
-		"lint": {},
-		"test": {},
+		"check": {
+			"dependsOn": ["transit"]
+		},
+		"eslint": {},
+		"stylelint": {},
+		"test": {
+			"dependsOn": ["transit"]
+		},
+		"test:unit": {
+			"dependsOn": ["transit"]
+		},
 		"test:e2e": {
-			"dependsOn": ["build"],
+			"dependsOn": ["transit", "build"],
 			"env": ["CI"],
 			"outputs": ["test-results", "playwright-report"],
 			"passThroughEnv": ["PLAYWRIGHT_*", "CI"]

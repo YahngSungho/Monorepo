@@ -9,10 +9,8 @@
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
-		"fix": "xo --fix && stylelint --fix",
-		"lint": "xo && stylelint",
-		"styleLint": "stylelint",
-		"test": "xo && pnpm test:unit && pnpm run test:e2e",
+		"eslint": "eslint **/*.{js,ts,svelte}",
+		"stylelint": "stylelint **/*.{css,svelte}",
 		"test:e2e": "playwright test",
 		"test:unit": "vitest",
 		"preview": "vite preview"
