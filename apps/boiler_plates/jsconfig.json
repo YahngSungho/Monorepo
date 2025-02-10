@@ -1,3 +1,18 @@
 {
-	"extends": ["@repo/base/jsconfig.json", "./.svelte-kit/tsconfig.json"]
+	// exclude와 include는 extends 되지 않아서 따로 써줘야 함
+	"exclude": [
+		".turbo/**",
+		"**/.svelte-kit/**",
+		"**/node_modules/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/.svelte/**",
+		"**/.vercel_build_output/**",
+		"**/.vercel/**",
+		"**/coverage/**",
+		"**/.history/**",
+		"**/service-worker/**"
+	],
+	"extends": ["@repo/base/jsconfig.json", "./.svelte-kit/tsconfig.json"],
+	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*"]
 }

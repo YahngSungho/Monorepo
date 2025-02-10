@@ -13,7 +13,7 @@
 				".env.production",
 				".env"
 			],
-			"outputs": ["dist", ".svelte-kit/**", "storybook-static/**"]
+			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**"]
 		},
 		"dev": {
 			"cache": false,
