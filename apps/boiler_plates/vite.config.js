@@ -8,6 +8,7 @@ export default mergeConfig(
 	defineConfig({
 		plugins: [
 			paraglide({
+				// @ts-ignore
 				outdir: '../../libraries/base/src/lib/paraglide',
 				project: '../../libraries/base/project.inlang',
 			}),

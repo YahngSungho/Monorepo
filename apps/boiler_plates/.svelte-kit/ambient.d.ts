@@ -102,8 +102,6 @@ declare module '$env/static/private' {
 	export const npm_package_scripts_check_watch: string;
 	export const npm_package_scripts_depCheck: string;
 	export const npm_package_scripts_dev: string;
-	export const npm_package_scripts_dts: string;
-	export const npm_package_scripts_dts2: string;
 	export const npm_package_scripts_fix: string;
 	export const npm_package_scripts_lint: string;
 	export const npm_package_scripts_preview: string;
@@ -281,8 +279,6 @@ declare module '$env/dynamic/private' {
 		npm_package_scripts_check_watch: string;
 		npm_package_scripts_depCheck: string;
 		npm_package_scripts_dev: string;
-		npm_package_scripts_dts: string;
-		npm_package_scripts_dts2: string;
 		npm_package_scripts_fix: string;
 		npm_package_scripts_lint: string;
 		npm_package_scripts_preview: string;

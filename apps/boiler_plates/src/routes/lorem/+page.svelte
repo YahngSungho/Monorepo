@@ -6,7 +6,7 @@ import { Calendar } from '@repo/ui/calendar'
 import Icon from '@repo/ui/icon'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@repo/base/messages.js'
-import { switchToLanguage } from '../../paraglide.ts'
+import { switchToLanguage } from '../../paraglide'
 
 const fo = 'bigCommandKEnabled'
 
@@ -40,7 +40,7 @@ foo += ' bar133322222223'
 	<h3>Eiusmod voluptate non nostrud labore</h3>
 	<p>
 		abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz abcdefghijklmnopqrstu vwxyz Minim <i
-		>anim</i
+			>anim</i
 		>
 		esse nostrud<i>pariatur ex ullamco. Pariatur</i>u ut deserunt consequat officia non quis irure
 		<q>tempor adipisicing</q>

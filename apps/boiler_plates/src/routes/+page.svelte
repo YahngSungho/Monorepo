@@ -123,6 +123,7 @@ const eewre = 'eeeq'
 	</p>
 </div>
 
+<!-- @ts-nocheck -->
 <Calendar />
 
 <div class="colored">

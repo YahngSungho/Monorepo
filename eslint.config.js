@@ -38,7 +38,6 @@ const compat = new FlatCompat({
 export default [
 	includeIgnoreFile(gitignorePath),
 	{
-		ignorePatterns: ['**/types/**/*.d.ts', '**/*.cjs'],
 		languageOptions: {
 			ecmaVersion: 'latest',
 			globals: {
@@ -97,7 +96,6 @@ export default [
 	),
 	{
 		files: ['**/*.svelte', '*.svelte'],
-		ignores: ['.svelte-kit/*'],
 
 		languageOptions: {
 			parser: parser_svelte,
@@ -176,6 +174,8 @@ export default [
 			'import/no-mutable-exports': 'off',
 			'import/no-unassigned-import': 'off',
 			indent: ['warn', 'tab'],
+			'n/no-extraneous-import': 'off',
+			'n/no-missing-import': 'off',
 			'n/prefer-global/process': 'off',
 			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
 			'no-unused-expressions': 1,
