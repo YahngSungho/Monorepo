@@ -38,7 +38,6 @@ const compat = new FlatCompat({
 export default [
 	includeIgnoreFile(gitignorePath),
 	{
-		ignorePatterns: ['**/types/**/*.d.ts', '**/*.cjs'],
 		languageOptions: {
 			ecmaVersion: 'latest',
 			globals: {
@@ -78,7 +77,7 @@ export default [
 	js.configs.recommended,
 	eslintPluginUnicorn.configs['flat/recommended'],
 	importPlugin.flatConfigs.recommended,
-	...svelte.configs['flat/recommended'],
+	// ...svelte.configs['flat/recommended'],
 	...svelte.configs['flat/prettier'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
@@ -97,7 +96,6 @@ export default [
 	),
 	{
 		files: ['**/*.svelte', '*.svelte'],
-		ignores: ['.svelte-kit/*'],
 
 		languageOptions: {
 			parser: parser_svelte,
