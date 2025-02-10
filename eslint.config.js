@@ -77,7 +77,7 @@ export default [
 	js.configs.recommended,
 	eslintPluginUnicorn.configs['flat/recommended'],
 	importPlugin.flatConfigs.recommended,
-	// ...svelte.configs['flat/recommended'],
+	...svelte.configs['flat/recommended'],
 	...svelte.configs['flat/prettier'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
