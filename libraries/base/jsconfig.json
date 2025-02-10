@@ -35,5 +35,5 @@
 		"**/.history/**",
 		"**/service-worker/**"
 	],
-	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*"]
+	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*", "src/**/*"]
 }

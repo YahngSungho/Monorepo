@@ -20,5 +20,5 @@
 		"**/service-worker/**"
 	],
 	"extends": ["@repo/base/jsconfig.json"],
-	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*"]
+	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*", "src/**/*"]
 }
