@@ -38,6 +38,7 @@
 	},
 	"keywords": [],
 	"exports": {
+		"./jsconfig.json": "./jsconfig.json",
 		"./IBMPlexMath.woff2": "./static/fonts/math/IBMPlexMath-Regular.woff2",
 		"./IBMPlexMono-Bold.woff2": "./static/fonts/mono/IBMPlexMono-Bold.woff2",
 		"./IBMPlexMono-BoldItalic.woff2": "./static/fonts/mono/IBMPlexMono-BoldItalic.woff2",

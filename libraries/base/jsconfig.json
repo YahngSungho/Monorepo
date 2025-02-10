@@ -5,23 +5,23 @@
 	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
 	// from the referenced tsconfig.json - TypeScript does not merge them in
 	"compilerOptions": {
-		"target": "es2020",
-		"module": "es2020",
 		"allowJs": true,
 		"checkJs": true,
-		"moduleResolution": "bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true,
-		"allowSyntheticDefaultImports": true,
-		"strict": false,
-		"sourceMap": true,
-		"noImplicitAny": false,
-		"typeRoots": ["./node_modules/@types"],
-		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"allowImportingTsExtensions": true
+		"isolatedModules": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"noImplicitAny": false, // 암시적 any 허용
+		"preserveSymlinks": true, // Turborepo 패키지 링크 유지
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": false, // 전체 strict 모드 해제
+		"strictNullChecks": true, // Null/undefined 관련 에러만 활성화
+		"target": "esnext",
+		"verbatimModuleSyntax": true
 	},
 	"exclude": [
 		".turbo/**",
@@ -33,8 +33,8 @@
 		"**/.vercel_build_output/**",
 		"**/.vercel/**",
 		"**/coverage/**",
-		"**/.history/**"
+		"**/.history/**",
+		"**/service-worker/**"
 	],
-	"extends": "./.svelte-kit/tsconfig.json",
-	"include": ["./**/*"]
+	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*"]
 }
