@@ -1,4 +1,4 @@
-import * as depend from 'eslint-plugin-depend'
+import { configs } from 'eslint-plugin-depend'
 import turboConfig from 'eslint-config-turbo/flat'
 import svelte from 'eslint-plugin-svelte'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
@@ -6,7 +6,7 @@ import perfectionist from 'eslint-plugin-perfectionist'
 import storybook from 'eslint-plugin-storybook'
 import { configs as sonarjs } from 'eslint-plugin-sonarjs'
 import xstate from 'eslint-plugin-xstate'
-import * as regexp from 'eslint-plugin-regexp'
+import { configs as regexp_configs } from 'eslint-plugin-regexp'
 import parser_babel from '@babel/eslint-parser'
 import * as parser_svelte from 'svelte-eslint-parser'
 import parser_jsonc from 'jsonc-eslint-parser'
@@ -30,8 +30,8 @@ import jsonSchema from 'eslint-plugin-json-schema-validator'
 import yml from 'eslint-plugin-yml'
 import toml from 'eslint-plugin-toml'
 import compat from 'eslint-plugin-compat'
+import github from 'eslint-plugin-github'
 
-const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const flatCompat = new FlatCompat({
@@ -39,6 +39,7 @@ const flatCompat = new FlatCompat({
 	baseDirectory: __dirname,
 	recommendedConfig: js.configs.recommended,
 })
+const gitignorePath = path.join(__dirname, '.gitignore')
 
 export default [
 	includeIgnoreFile(gitignorePath),
@@ -87,7 +88,7 @@ export default [
 	},
 
 	js.configs.recommended,
-	depend.configs['flat/recommended'],
+	configs['flat/recommended'],
 	unicorn.configs['flat/recommended'],
 	sonarjs.recommended,
 	importX.flatConfigs.recommended,
@@ -98,7 +99,7 @@ export default [
 	perfectionist.configs['recommended-natural'],
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
-	regexp.configs['flat/recommended'],
+	regexp_configs['flat/recommended'],
 	...intlifySvelte.configs['flat/recommended'],
 	...storybook.configs['flat/recommended'],
 	...jsonc.configs['flat/base'],
@@ -110,6 +111,8 @@ export default [
 	...yml.configs['flat/standard'],
 	...yml.configs['flat/prettier'],
 	...toml.configs['flat/standard'],
+	github.getFlatConfigs().browser,
+	github.getFlatConfigs().recommended,
 	compat.configs['flat/recommended'],
 	...flatCompat.extends('plugin:xstate/all'),
 	{
@@ -179,6 +182,7 @@ export default [
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'arrow-parens': 'off',
+			camelcase: 'off',
 			'capitalized-comments': 'off',
 			'consistent-return': 'off',
 			'depend/ban-dependencies': [
@@ -187,6 +191,10 @@ export default [
 					presets: ['native', 'preferred'],
 				},
 			],
+			'import-x/no-unresolved': 'off',
+			'import/no-namespace': 'off',
+			'import/no-nodejs-modules': 'off',
+			'import/no-unresolved': 'off',
 			indent: ['warn', 'tab'],
 			'n/no-extraneous-import': 'off',
 			'n/no-missing-import': 'off',
