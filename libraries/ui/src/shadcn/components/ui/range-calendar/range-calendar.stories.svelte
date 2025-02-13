@@ -2,7 +2,7 @@
 // RangeCalendar 컴포넌트에 대한 Storybook 스토리 작성
 import { defineMeta } from '@storybook/addon-svelte-csf'
 import { getLocalTimeZone, today } from '@internationalized/date'
-import { RangeCalendar } from './index.ts'
+import { RangeCalendar } from './index'
 
 const start = today(getLocalTimeZone())
 const end = start.add({ days: 7 })

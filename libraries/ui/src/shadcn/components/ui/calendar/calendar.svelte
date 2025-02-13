@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Calendar as CalendarPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
-import * as Calendar from './index.ts'
+import * as Calendar from './index'
 import { cn } from '$shadcn/utils.js'
 
 let {
