@@ -31,6 +31,7 @@ import yml from 'eslint-plugin-yml'
 import toml from 'eslint-plugin-toml'
 import compat from 'eslint-plugin-compat'
 import github from 'eslint-plugin-github'
+import security from 'eslint-plugin-security'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -113,6 +114,7 @@ export default [
 	...toml.configs['flat/standard'],
 	github.getFlatConfigs().browser,
 	github.getFlatConfigs().recommended,
+	security.configs.recommended,
 	compat.configs['flat/recommended'],
 	...flatCompat.extends('plugin:xstate/all'),
 	{
