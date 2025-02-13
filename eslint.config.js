@@ -5,6 +5,7 @@ import parser_babel from '@babel/eslint-parser'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
+import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import * as parser_TS from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
@@ -123,6 +124,7 @@ export default [
 	nounsanitized.configs.recommended,
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
+	...markdown.configs.recommended,
 	...flatCompat.extends('plugin:xstate/all'),
 	{
 		files: ['**/*.svelte', '*.svelte'],
