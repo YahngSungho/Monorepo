@@ -137,7 +137,6 @@ export default [
 		files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
 
 		languageOptions: {
-			ecmaVersion: 5,
 			parser: parser_jsonc,
 			parserOptions: {
 				jsonSyntax: 'JSON5',
