@@ -1,10 +1,10 @@
-import depend from 'eslint-plugin-depend'
+import * as depend from 'eslint-plugin-depend'
 import turboConfig from 'eslint-config-turbo/flat'
 import svelte from 'eslint-plugin-svelte'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import perfectionist from 'eslint-plugin-perfectionist'
 import storybook from 'eslint-plugin-storybook'
-import sonarjs from 'eslint-plugin-sonarjs'
+import { configs as sonarjs } from 'eslint-plugin-sonarjs'
 import xstate from 'eslint-plugin-xstate'
 import * as regexp from 'eslint-plugin-regexp'
 import parser_babel from '@babel/eslint-parser'
@@ -27,6 +27,9 @@ import unicorn from 'eslint-plugin-unicorn'
 import node from 'eslint-plugin-n'
 import * as parser_TS from '@typescript-eslint/parser'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
+import jsonSchema from 'eslint-plugin-json-schema-validator'
+import yml from 'eslint-plugin-yml'
+import toml from 'eslint-plugin-toml'
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
@@ -40,6 +43,8 @@ const compat = new FlatCompat({
 export default [
 	includeIgnoreFile(gitignorePath),
 	{
+		ignores: ['!.storybook'],
+
 		languageOptions: {
 			ecmaVersion: 'latest',
 			globals: {
@@ -57,10 +62,6 @@ export default [
 		},
 
 		plugins: {
-			depend,
-			intlifyEslintPluginSvelte: intlifySvelte,
-			sonarjs,
-			storybook,
 			xstate,
 		},
 
@@ -86,7 +87,9 @@ export default [
 	},
 
 	js.configs.recommended,
+	depend.configs['flat/recommended'],
 	unicorn.configs['flat/recommended'],
+	sonarjs.recommended,
 	importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
 	...svelte.configs['flat/recommended'],
@@ -97,20 +100,18 @@ export default [
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
 	regexp.configs['flat/recommended'],
+	...intlifySvelte.configs['flat/recommended'],
+	...storybook.configs['flat/recommended'],
 	...jsonc.configs['flat/base'],
 	...jsonc.configs['flat/recommended-with-json'],
 	...jsonc.configs['flat/recommended-with-jsonc'],
 	...jsonc.configs['flat/recommended-with-json5'],
+	...jsonSchema.configs['flat/recommended'],
 	...jsonc.configs['flat/prettier'],
-	...compat.extends(
-		'plugin:depend/recommended',
-		'plugin:xstate/all',
-		'plugin:storybook/recommended',
-		'plugin:@intlify/svelte/recommended',
-		'plugin:json-schema-validator/recommended',
-		'plugin:yml/standard',
-		'plugin:toml/standard',
-	),
+	...yml.configs['flat/standard'],
+	...yml.configs['flat/prettier'],
+	...toml.configs['flat/standard'],
+	...compat.extends('plugin:xstate/all'),
 	{
 		files: ['**/*.svelte', '*.svelte'],
 
