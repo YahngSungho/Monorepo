@@ -7,8 +7,6 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"stylelint": "stylelint **/*.{css,svelte}",

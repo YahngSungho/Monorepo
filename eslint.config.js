@@ -25,6 +25,7 @@ import pluginPromise from 'eslint-plugin-promise'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import nodePlugin from 'eslint-plugin-n'
 import parser_TS from '@typescript-eslint/parser'
+import tsResolver from 'eslint-import-resolver-typescript'
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
@@ -64,6 +65,12 @@ export default [
 		},
 
 		settings: {
+			'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx', '.svelte'],
+			'import-x/resolver': {
+				name: 'tsResolver', // required, could be any string you like
+				// enable: false, // optional, defaults to true
+				resolver: tsResolver, // required, the resolver object
+			},
 			svelte: {
 				kit: {
 					files: {
@@ -77,6 +84,7 @@ export default [
 	js.configs.recommended,
 	eslintPluginUnicorn.configs['flat/recommended'],
 	importPlugin.flatConfigs.recommended,
+	importPlugin.flatConfigs.typescript,
 	...svelte.configs['flat/recommended'],
 	...svelte.configs['flat/prettier'],
 	...turboConfig,

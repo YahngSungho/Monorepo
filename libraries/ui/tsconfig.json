@@ -19,6 +19,6 @@
 		"**/.history/**",
 		"**/service-worker/**"
 	],
-	"extends": ["@repo/base/jsconfig.json"],
+	"extends": ["@repo/base/tsconfig.json"],
 	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*", "src/**/*"]
 }

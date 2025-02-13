@@ -7,7 +7,7 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
@@ -35,7 +35,7 @@
 	},
 	"keywords": [],
 	"exports": {
-		"./jsconfig.json": "./jsconfig.json",
+		"./tsconfig.json": "./tsconfig.json",
 		"./IBMPlexMath.woff2": "./static/fonts/math/IBMPlexMath-Regular.woff2",
 		"./IBMPlexMono-Bold.woff2": "./static/fonts/mono/IBMPlexMono-Bold.woff2",
 		"./IBMPlexMono-BoldItalic.woff2": "./static/fonts/mono/IBMPlexMono-BoldItalic.woff2",
