@@ -1,15 +1,16 @@
 import depend from 'eslint-plugin-depend'
 import turboConfig from 'eslint-config-turbo/flat'
 import svelte from 'eslint-plugin-svelte'
-import intlifyEslintPluginSvelte from '@intlify/eslint-plugin-svelte'
+import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import perfectionist from 'eslint-plugin-perfectionist'
 import storybook from 'eslint-plugin-storybook'
 import sonarjs from 'eslint-plugin-sonarjs'
 import xstate from 'eslint-plugin-xstate'
-import regexp from 'eslint-plugin-regexp'
+import * as regexp from 'eslint-plugin-regexp'
 import parser_babel from '@babel/eslint-parser'
-import parser_svelte from 'svelte-eslint-parser'
+import * as parser_svelte from 'svelte-eslint-parser'
 import parser_jsonc from 'jsonc-eslint-parser'
+import jsonc from 'eslint-plugin-jsonc'
 import parser_yaml from 'yaml-eslint-parser'
 import parser_toml from 'toml-eslint-parser'
 import path from 'node:path'
@@ -19,13 +20,13 @@ import { FlatCompat } from '@eslint/eslintrc'
 import { includeIgnoreFile } from '@eslint/compat'
 import globals from 'globals'
 import eslintConfigPrettier from 'eslint-config-prettier'
-import importPlugin from 'eslint-plugin-import-x'
-import eslintPluginNoUseExtendNative from 'eslint-plugin-no-use-extend-native'
-import pluginPromise from 'eslint-plugin-promise'
-import eslintPluginUnicorn from 'eslint-plugin-unicorn'
-import nodePlugin from 'eslint-plugin-n'
-import parser_TS from '@typescript-eslint/parser'
-import tsResolver from 'eslint-import-resolver-typescript'
+import importX from 'eslint-plugin-import-x'
+import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
+import promise from 'eslint-plugin-promise'
+import unicorn from 'eslint-plugin-unicorn'
+import node from 'eslint-plugin-n'
+import * as parser_TS from '@typescript-eslint/parser'
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
@@ -57,20 +58,23 @@ export default [
 
 		plugins: {
 			depend,
-			intlifyEslintPluginSvelte,
-			regexp,
+			intlifyEslintPluginSvelte: intlifySvelte,
 			sonarjs,
 			storybook,
 			xstate,
 		},
 
 		settings: {
-			'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx', '.svelte'],
-			'import-x/resolver': {
-				name: 'tsResolver', // required, could be any string you like
-				// enable: false, // optional, defaults to true
-				resolver: tsResolver, // required, the resolver object
+			'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx', '.svelte', '.json'],
+			'import-x/parsers': {
+				'@typescript-eslint/parser': ['.ts', '.tsx'],
 			},
+			'import-x/resolver-next': [
+				createTypeScriptImportResolver({
+					alwaysTryTypes: true,
+					project: ['apps/*/tsconfig.json', 'libraries/*/tsconfig.json', 'storybook/tsconfig.json'],
+				}),
+			],
 			svelte: {
 				kit: {
 					files: {
@@ -82,19 +86,24 @@ export default [
 	},
 
 	js.configs.recommended,
-	eslintPluginUnicorn.configs['flat/recommended'],
-	importPlugin.flatConfigs.recommended,
-	importPlugin.flatConfigs.typescript,
+	unicorn.configs['flat/recommended'],
+	importX.flatConfigs.recommended,
+	importX.flatConfigs.typescript,
 	...svelte.configs['flat/recommended'],
 	...svelte.configs['flat/prettier'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
-	nodePlugin.configs['flat/recommended-module'],
-	eslintPluginNoUseExtendNative.configs.recommended,
-	pluginPromise.configs['flat/recommended'],
+	node.configs['flat/recommended-module'],
+	noUseExtendNative.configs.recommended,
+	promise.configs['flat/recommended'],
+	regexp.configs['flat/recommended'],
+	...jsonc.configs['flat/base'],
+	...jsonc.configs['flat/recommended-with-json'],
+	...jsonc.configs['flat/recommended-with-jsonc'],
+	...jsonc.configs['flat/recommended-with-json5'],
+	...jsonc.configs['flat/prettier'],
 	...compat.extends(
 		'plugin:depend/recommended',
-		'plugin:regexp/recommended',
 		'plugin:xstate/all',
 		'plugin:storybook/recommended',
 		'plugin:@intlify/svelte/recommended',
