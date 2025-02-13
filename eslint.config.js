@@ -200,6 +200,8 @@ export default [
 					presets: ['native', 'preferred'],
 				},
 			],
+			'eslint-comments/no-unlimited-disable': 'off',
+			'eslint-comments/no-use': 'off',
 			'github/filenames-match-regex': 'off',
 			'import-x/no-unresolved': 'off',
 			'import/no-namespace': 'off',
