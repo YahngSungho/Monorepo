@@ -1,1 +1,6 @@
-> 0.2% and not dead
+[production]
+defaults
+
+[modern]
+last 1 chrome version
+last 1 firefox version

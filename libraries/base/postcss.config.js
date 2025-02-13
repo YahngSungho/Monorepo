@@ -7,7 +7,7 @@ const config = {
 			autoprefixer: { grid: false },
 			enableClientSidePolyfills: true,
 			minimumVendorImplementations: 2,
-			stage: 2,
+			stage: 3,
 		}),
 	],
 }

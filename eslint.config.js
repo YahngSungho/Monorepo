@@ -29,11 +29,12 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 import jsonSchema from 'eslint-plugin-json-schema-validator'
 import yml from 'eslint-plugin-yml'
 import toml from 'eslint-plugin-toml'
+import compat from 'eslint-plugin-compat'
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
+const flatCompat = new FlatCompat({
 	allConfig: js.configs.all,
 	baseDirectory: __dirname,
 	recommendedConfig: js.configs.recommended,
@@ -109,7 +110,8 @@ export default [
 	...yml.configs['flat/standard'],
 	...yml.configs['flat/prettier'],
 	...toml.configs['flat/standard'],
-	...compat.extends('plugin:xstate/all'),
+	compat.configs['flat/recommended'],
+	...flatCompat.extends('plugin:xstate/all'),
 	{
 		files: ['**/*.svelte', '*.svelte'],
 
