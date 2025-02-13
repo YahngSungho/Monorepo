@@ -10,6 +10,7 @@ import * as parser_TS from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import turboConfig from 'eslint-config-turbo/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
+import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
 import { configs as depend_configs } from 'eslint-plugin-depend'
 import github from 'eslint-plugin-github'
@@ -120,6 +121,7 @@ export default [
 	github.getFlatConfigs().recommended,
 	security.configs.recommended,
 	nounsanitized.configs.recommended,
+	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
 	...flatCompat.extends('plugin:xstate/all'),
 	{
