@@ -24,7 +24,6 @@ import importX from 'eslint-plugin-import-x'
 import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import promise from 'eslint-plugin-promise'
 import unicorn from 'eslint-plugin-unicorn'
-import node from 'eslint-plugin-n'
 import * as parser_TS from '@typescript-eslint/parser'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import jsonSchema from 'eslint-plugin-json-schema-validator'
@@ -96,7 +95,6 @@ export default [
 	...svelte.configs['flat/prettier'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
-	node.configs['flat/recommended-module'],
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
 	regexp.configs['flat/recommended'],
