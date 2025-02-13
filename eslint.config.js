@@ -1,37 +1,40 @@
-import { configs as depend_configs } from 'eslint-plugin-depend'
-import turboConfig from 'eslint-config-turbo/flat'
-import svelte from 'eslint-plugin-svelte'
-import intlifySvelte from '@intlify/eslint-plugin-svelte'
-import perfectionist from 'eslint-plugin-perfectionist'
-import storybook from 'eslint-plugin-storybook'
-import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
-import xstate from 'eslint-plugin-xstate'
-import { configs as regexp_configs } from 'eslint-plugin-regexp'
-import parser_babel from '@babel/eslint-parser'
-import * as parser_svelte from 'svelte-eslint-parser'
-import parser_jsonc from 'jsonc-eslint-parser'
-import jsonc from 'eslint-plugin-jsonc'
-import parser_yaml from 'yaml-eslint-parser'
-import parser_toml from 'toml-eslint-parser'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
+
+import parser_babel from '@babel/eslint-parser'
 import { includeIgnoreFile } from '@eslint/compat'
-import globals from 'globals'
-import eslintConfigPrettier from 'eslint-config-prettier'
-import importX from 'eslint-plugin-import-x'
-import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
-import promise from 'eslint-plugin-promise'
-import unicorn from 'eslint-plugin-unicorn'
+import { FlatCompat } from '@eslint/eslintrc'
+import js from '@eslint/js'
+import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import * as parser_TS from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import turboConfig from 'eslint-config-turbo/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
-import jsonSchema from 'eslint-plugin-json-schema-validator'
-import yml from 'eslint-plugin-yml'
-import toml from 'eslint-plugin-toml'
 import compat from 'eslint-plugin-compat'
+import { configs as depend_configs } from 'eslint-plugin-depend'
 import github from 'eslint-plugin-github'
+import importX from 'eslint-plugin-import-x'
+import jsonSchema from 'eslint-plugin-json-schema-validator'
+import jsonc from 'eslint-plugin-jsonc'
+import nounsanitized from 'eslint-plugin-no-unsanitized'
+import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
+import perfectionist from 'eslint-plugin-perfectionist'
+import promise from 'eslint-plugin-promise'
+import { configs as regexp_configs } from 'eslint-plugin-regexp'
 import security from 'eslint-plugin-security'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
+import storybook from 'eslint-plugin-storybook'
+import svelte from 'eslint-plugin-svelte'
+import toml from 'eslint-plugin-toml'
+import unicorn from 'eslint-plugin-unicorn'
+import xstate from 'eslint-plugin-xstate'
+import yml from 'eslint-plugin-yml'
+import globals from 'globals'
+import parser_jsonc from 'jsonc-eslint-parser'
+import * as parser_svelte from 'svelte-eslint-parser'
+import parser_toml from 'toml-eslint-parser'
+import parser_yaml from 'yaml-eslint-parser'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -64,6 +67,7 @@ export default [
 		},
 
 		plugins: {
+			'simple-import-sort': simpleImportSort,
 			xstate,
 		},
 
@@ -115,6 +119,7 @@ export default [
 	github.getFlatConfigs().browser,
 	github.getFlatConfigs().recommended,
 	security.configs.recommended,
+	nounsanitized.configs.recommended,
 	compat.configs['flat/recommended'],
 	...flatCompat.extends('plugin:xstate/all'),
 	{
@@ -193,6 +198,7 @@ export default [
 					presets: ['native', 'preferred'],
 				},
 			],
+			'github/filenames-match-regex': 'off',
 			'import-x/no-unresolved': 'off',
 			'import/no-namespace': 'off',
 			'import/no-nodejs-modules': 'off',
@@ -218,6 +224,8 @@ export default [
 			'prefer-const': 'off',
 			semi: ['warn', 'never'],
 			'semi-style': 'off',
+			'simple-import-sort/exports': 'warn',
+			'simple-import-sort/imports': 'warn',
 			'sonarjs/no-unused-expressions': 'off',
 			'sonarjs/sonar-no-unused-vars': 'off',
 			'sonarjs/todo-tag': 'off',
