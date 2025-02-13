@@ -1,5 +1,7 @@
 packages:
-  - "apps/*"
-  - "libraries/*"
-  - "playground/*"
+  - 'apps/*'
+  - 'libraries/*'
+  - 'playground/*'
+  - 'scripts/*'
+  - 'prompts/*'
   - storybook
