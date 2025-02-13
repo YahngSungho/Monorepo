@@ -18,6 +18,7 @@ import github from 'eslint-plugin-github'
 import importX from 'eslint-plugin-import-x'
 import jsonSchema from 'eslint-plugin-json-schema-validator'
 import jsonc from 'eslint-plugin-jsonc'
+import lodash from 'eslint-plugin-lodash'
 import nounsanitized from 'eslint-plugin-no-unsanitized'
 import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import perfectionist from 'eslint-plugin-perfectionist'
@@ -69,6 +70,7 @@ export default [
 		},
 
 		plugins: {
+			lodash,
 			'simple-import-sort': simpleImportSort,
 			xstate,
 		},
@@ -125,7 +127,7 @@ export default [
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
 	...markdown.configs.recommended,
-	...flatCompat.extends('plugin:xstate/all'),
+	...flatCompat.extends('plugin:xstate/all', 'plugin:lodash/recommended'),
 	{
 		files: ['**/*.svelte', '*.svelte'],
 
