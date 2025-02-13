@@ -1,10 +1,10 @@
-import { configs } from 'eslint-plugin-depend'
+import { configs as depend_configs } from 'eslint-plugin-depend'
 import turboConfig from 'eslint-config-turbo/flat'
 import svelte from 'eslint-plugin-svelte'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import perfectionist from 'eslint-plugin-perfectionist'
 import storybook from 'eslint-plugin-storybook'
-import { configs as sonarjs } from 'eslint-plugin-sonarjs'
+import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
 import xstate from 'eslint-plugin-xstate'
 import { configs as regexp_configs } from 'eslint-plugin-regexp'
 import parser_babel from '@babel/eslint-parser'
@@ -88,9 +88,9 @@ export default [
 	},
 
 	js.configs.recommended,
-	configs['flat/recommended'],
+	depend_configs['flat/recommended'],
 	unicorn.configs['flat/recommended'],
-	sonarjs.recommended,
+	sonarjs_configs.recommended,
 	importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
 	...svelte.configs['flat/recommended'],
