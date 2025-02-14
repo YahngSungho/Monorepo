@@ -10,6 +10,7 @@ import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import microsoftSdl from '@microsoft/eslint-plugin-sdl'
 import * as parser_TS from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import problems from 'eslint-config-problems'
 import turboConfig from 'eslint-config-turbo/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import arrayFunc from 'eslint-plugin-array-func'
@@ -114,6 +115,7 @@ export default [
 	functional.configs.recommended,
 	functional.configs.stylistic,
 	functional.configs.disableTypeChecked,
+	problems,
 	...microsoftSdl.configs.recommended,
 	regexp_configs['flat/recommended'],
 	...intlifySvelte.configs['flat/recommended'],
