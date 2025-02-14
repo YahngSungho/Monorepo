@@ -1,9 +1,4 @@
 {
-	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
-	// except $lib which is handled by https://kit.svelte.dev/docs/configuration#files
-	//
-	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
-	// from the referenced tsconfig.json - TypeScript does not merge them in
 	"compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,
@@ -13,12 +8,12 @@
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"noEmit": true,
-		"noImplicitAny": false, // 암시적 any 허용
+		"noImplicitAny": false,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"strict": false, // 전체 strict 모드 해제
-		"strictNullChecks": true, // Null/undefined 관련 에러만 활성화
+		"strict": false,
+		"strictNullChecks": true,
 		"target": "esnext",
 		"verbatimModuleSyntax": true
 	},

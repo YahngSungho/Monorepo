@@ -1,12 +1,8 @@
 {
-	"compilerOptions": {
-		// pahts 쓸 거면 대신 packajs.json의 import 부분에 작성하기
-		"paths": {
-			"$shadcn": ["./src/shadcn"],
-			"$shadcn/*": ["./src/shadcn/*"]
-		}
-	},
-	// exclude와 include는 extends 되지 않아서 따로 써줘야 함
+	"_comments": [
+		"exclude와 include는 extends 되지 않아서 따로 써줘야 함",
+		"compilerOptions.paths 쓸 거면 대신 packajs.json의 import 부분에 작성하기"
+	],
 	"exclude": [
 		".turbo/**",
 		"**/.svelte-kit/**",
