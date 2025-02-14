@@ -265,7 +265,7 @@ export default [
 			],
 			'prefer-const': 'off',
 			'prettier/prettier': [
-				'error',
+				'off',
 				{
 					endOfLine: 'auto',
 				},
