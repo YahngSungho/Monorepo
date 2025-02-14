@@ -241,6 +241,7 @@ export default [
 			'import/no-nodejs-modules': 'off',
 			'import/no-unresolved': 'off',
 			indent: ['warn', 'tab'],
+			'lodash/prefer-lodash-method': 'off',
 			'n/no-extraneous-import': 'off',
 			'n/no-missing-import': 'off',
 			'n/prefer-global/process': 'off',
