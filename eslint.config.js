@@ -1,6 +1,8 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+// import * as parser_mdx from 'eslint-mdx' <- parser 이거로 설정하면 오히려 eslint-plugin-mdx는 작동안함
+// import security from 'eslint-plugin-security' <- @microsoft/eslint-plugin-sdl에서 중복 사용
 import parser_babel from '@babel/eslint-parser'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
@@ -13,7 +15,6 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 import problems from 'eslint-config-problems'
 import turboConfig from 'eslint-config-turbo/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
-// import * as parser_mdx from 'eslint-mdx' <- parser 이거로 설정하면 오히려 eslint-plugin-mdx는 작동안함
 import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
 import { configs as depend_configs } from 'eslint-plugin-depend'
@@ -29,7 +30,6 @@ import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import perfectionist from 'eslint-plugin-perfectionist'
 import promise from 'eslint-plugin-promise'
 import { configs as regexp_configs } from 'eslint-plugin-regexp'
-// import security from 'eslint-plugin-security' -> @microsoft/eslint-plugin-sdl에서 중복 사용
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
 import storybook from 'eslint-plugin-storybook'
