@@ -7,15 +7,6 @@
 		"build": {
 			"dependsOn": ["^build"],
 			"env": [],
-			"inputs": [
-				"$TURBO_DEFAULT$",
-				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
-				"**/.env.*",
-				".env.production.local",
-				".env.local",
-				".env.production",
-				".env"
-			],
 			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**"]
 		},
 		"check": {
@@ -24,15 +15,6 @@
 		"dev": {
 			"cache": false,
 			"env": [],
-			"inputs": [
-				"$TURBO_DEFAULT$",
-				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
-				"**/.env.*",
-				".env.production.local",
-				".env.local",
-				".env.production",
-				".env"
-			],
 			"persistent": true
 		},
 		"eslint": {},
