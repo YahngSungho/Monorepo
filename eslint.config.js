@@ -22,6 +22,7 @@ import importX from 'eslint-plugin-import-x'
 import jsonSchema from 'eslint-plugin-json-schema-validator'
 import jsonc from 'eslint-plugin-jsonc'
 import lodash from 'eslint-plugin-lodash'
+import * as mdx from 'eslint-plugin-mdx'
 import nounsanitized from 'eslint-plugin-no-unsanitized'
 import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import perfectionist from 'eslint-plugin-perfectionist'
@@ -195,6 +196,25 @@ export default [
 
 		rules: {
 			'@typescript-eslint/*': 'off',
+		},
+	},
+	{
+		...mdx.flat,
+		// optional, if you want to lint code blocks at the same
+		processor: mdx.createRemarkProcessor({
+			// optional, if you want to disable language mapper, set it to `false`
+			// if you want to override the default language mapper inside, you can provide your own
+			languageMapper: {},
+			lintCodeBlocks: true,
+		}),
+	},
+	{
+		...mdx.flatCodeBlocks,
+		rules: {
+			...mdx.flatCodeBlocks.rules,
+			// if you want to override some rules for code blocks
+			'no-var': 'error',
+			'prefer-const': 'error',
 		},
 	},
 
