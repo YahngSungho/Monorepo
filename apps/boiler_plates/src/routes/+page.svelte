@@ -133,6 +133,7 @@ const eewre = 'eeeq'
 	<Button1 onclick={() => switchToLanguage('ko')}>ko</Button1>
 </div>
 
+<div id="Page_Check"></div>
 <style>
 .p1 {
 	overflow: auto;

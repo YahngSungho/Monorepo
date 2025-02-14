@@ -24,4 +24,5 @@ let { appName, children, i18n } = props
 
 <ParaglideJS {i18n}>
 	{@render children()}
+	<div id="Top_Layout_Check"></div>
 </ParaglideJS>
