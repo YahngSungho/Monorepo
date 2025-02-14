@@ -41,6 +41,7 @@ declare module '$env/static/private' {
 	export const npm_config_engine_strict: string;
 	export const npm_config_frozen_lockfile: string;
 	export const npm_config_msvs_version: string;
+	export const npm_config_node_gyp: string;
 	export const npm_config_registry: string;
 	export const npm_config_user_agent: string;
 	export const npm_execpath: string;
@@ -54,10 +55,10 @@ declare module '$env/static/private' {
 	export const npm_package_dependencies_xstate: string;
 	export const npm_package_dependencies_zod: string;
 	export const npm_package_dependencies__formkit_auto_animate: string;
-	export const npm_package_dependencies__repo_base: string;
-	export const npm_package_dependencies__repo_helpers: string;
-	export const npm_package_dependencies__repo_library_wrappers: string;
-	export const npm_package_dependencies__repo_ui: string;
+	export const npm_package_dependencies__library_base: string;
+	export const npm_package_dependencies__library_helpers: string;
+	export const npm_package_dependencies__library_library_wrappers: string;
+	export const npm_package_dependencies__library_ui: string;
 	export const npm_package_devDependencies_daisyui: string;
 	export const npm_package_devDependencies_tailwindcss: string;
 	export const npm_package_devDependencies_tailwindcss_animate: string;
@@ -140,6 +141,7 @@ declare module '$env/dynamic/private' {
 		npm_config_engine_strict: string;
 		npm_config_frozen_lockfile: string;
 		npm_config_msvs_version: string;
+		npm_config_node_gyp: string;
 		npm_config_registry: string;
 		npm_config_user_agent: string;
 		npm_execpath: string;
@@ -153,10 +155,10 @@ declare module '$env/dynamic/private' {
 		npm_package_dependencies_xstate: string;
 		npm_package_dependencies_zod: string;
 		npm_package_dependencies__formkit_auto_animate: string;
-		npm_package_dependencies__repo_base: string;
-		npm_package_dependencies__repo_helpers: string;
-		npm_package_dependencies__repo_library_wrappers: string;
-		npm_package_dependencies__repo_ui: string;
+		npm_package_dependencies__library_base: string;
+		npm_package_dependencies__library_helpers: string;
+		npm_package_dependencies__library_library_wrappers: string;
+		npm_package_dependencies__library_ui: string;
 		npm_package_devDependencies_daisyui: string;
 		npm_package_devDependencies_tailwindcss: string;
 		npm_package_devDependencies_tailwindcss_animate: string;

@@ -1,7 +1,7 @@
 <script>
-import '@repo/base/fontStyle.css'
+import '@library/base/fontStyle.css'
 
-import BaseLayout from '@repo/base/baseLayout'
+import BaseLayout from '@library/base/baseLayout'
 
 import { i18n } from '../i18n'
 

@@ -1,7 +1,9 @@
-import type { AvailableLanguageTag } from '@repo/base/runtime.js'
-import { i18n } from './i18n.js'
-import { page } from '$app/state'
+import type { AvailableLanguageTag } from '@library/base/runtime.js'
+
 import { goto } from '$app/navigation'
+import { page } from '$app/state'
+
+import { i18n } from './i18n.js'
 
 function switchToLanguage(newLanguage: AvailableLanguageTag) {
 	const canonicalPath = i18n.route(page.url.pathname)
@@ -17,4 +19,4 @@ export {
 	isAvailableLanguageTag,
 	onSetLanguageTag,
 	setLanguageTag,
-} from '@repo/base/runtime.js'
+} from '@library/base/runtime.js'

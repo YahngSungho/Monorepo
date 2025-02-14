@@ -1,1 +1,1 @@
-import '@repo/base/basic.test.js'
+import '@library/base/basic.test.js'

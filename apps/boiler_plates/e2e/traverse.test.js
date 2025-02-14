@@ -1,7 +1,7 @@
 import path, { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { runTests } from '@repo/base/traverse.test.js'
+import { runTests } from '@library/base/traverse.test.js'
 
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
