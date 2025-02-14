@@ -131,7 +131,6 @@ export default [
 	...toml.configs['flat/standard'],
 	github.getFlatConfigs().browser,
 	github.getFlatConfigs().recommended,
-	// security.configs.recommended,
 	nounsanitized.configs.recommended,
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
@@ -215,6 +214,7 @@ export default [
 			],
 			'eslint-comments/no-unlimited-disable': 'off',
 			'eslint-comments/no-use': 'off',
+			'functional/no-let': 'off',
 			'github/filenames-match-regex': 'off',
 			'import-x/no-unresolved': 'off',
 			'import/no-namespace': 'off',
@@ -239,6 +239,12 @@ export default [
 				},
 			],
 			'prefer-const': 'off',
+			'prettier/prettier': [
+				'error',
+				{
+					endOfLine: 'auto',
+				},
+			],
 			semi: ['warn', 'never'],
 			'semi-style': 'off',
 			'simple-import-sort/exports': 'warn',
@@ -249,18 +255,8 @@ export default [
 			'svelte/derived-has-same-inputs-outputs': 'warn',
 			'svelte/first-attribute-linebreak': 'off',
 			'svelte/html-closing-bracket-spacing': 'warn',
-			'svelte/indent': [
-				'warn',
-				{
-					alignAttributesVertically: false,
-					ignoredNodes: [],
-					indent: 'tab',
-					indentScript: false,
-					switchCase: 1,
-				},
-			],
+			'svelte/indent': 'off',
 			'svelte/infinite-reactive-loop': 'error',
-
 			'svelte/no-dupe-on-directives': 'warn',
 			'svelte/no-dupe-use-directives': 'warn',
 			'svelte/no-immutable-reactive-statements': 'warn',
