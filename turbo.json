@@ -2,15 +2,15 @@
 	"$schema": "https://turbo.build/schema.json",
 	"globalDependencies": ["**/.env.*", "CI"],
 	"globalEnv": ["NODE_ENV"],
+	"globalPassThroughEnv": [],
 	"tasks": {
-		"transit": {
-			"dependsOn": ["^transit"]
-		},
 		"build": {
 			"dependsOn": ["^build"],
+			"env": [],
 			"inputs": [
 				"$TURBO_DEFAULT$",
 				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
+				"**/.env.*",
 				".env.production.local",
 				".env.local",
 				".env.production",
@@ -18,19 +18,26 @@
 			],
 			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**"]
 		},
-		"dev": {
-			"cache": false,
-			"persistent": true
-		},
 		"check": {
 			"dependsOn": ["transit"]
+		},
+		"dev": {
+			"cache": false,
+			"env": [],
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
+				"**/.env.*",
+				".env.production.local",
+				".env.local",
+				".env.production",
+				".env"
+			],
+			"persistent": true
 		},
 		"eslint": {},
 		"stylelint": {},
 		"test": {
-			"dependsOn": ["transit"]
-		},
-		"test:unit": {
 			"dependsOn": ["transit"]
 		},
 		"test:e2e": {
@@ -38,6 +45,12 @@
 			"env": ["CI"],
 			"outputs": ["test-results", "playwright-report"],
 			"passThroughEnv": ["PLAYWRIGHT_*", "CI"]
+		},
+		"test:unit": {
+			"dependsOn": ["transit"]
+		},
+		"transit": {
+			"dependsOn": ["^transit"]
 		}
 	}
 }

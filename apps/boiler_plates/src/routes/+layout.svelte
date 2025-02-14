@@ -1,9 +1,11 @@
 <script>
-import BaseLayout from '@repo/base/baseLayout'
 import '@repo/base/fontStyle.css'
+
+import BaseLayout from '@repo/base/baseLayout'
+
 import { i18n } from '../i18n'
 
-const appName = 'boiler_plate'
+const appName = '@app/boiler_plates'
 
 let { children } = $props()
 

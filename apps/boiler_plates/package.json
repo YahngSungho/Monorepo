@@ -1,6 +1,6 @@
 {
 	"private": true,
-	"name": "boiler_plates",
+	"name": "@app/boiler_plates",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
