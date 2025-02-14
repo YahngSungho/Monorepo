@@ -18,6 +18,7 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
 import { configs as depend_configs } from 'eslint-plugin-depend'
+import { plugin as exceptionHandling } from 'eslint-plugin-exception-handling'
 import functional from 'eslint-plugin-functional'
 import github from 'eslint-plugin-github'
 import importX from 'eslint-plugin-import-x'
@@ -76,6 +77,7 @@ export default [
 		},
 
 		plugins: {
+			ex: exceptionHandling,
 			lodash,
 			'simple-import-sort': simpleImportSort,
 			sql,
@@ -234,6 +236,7 @@ export default [
 			],
 			'eslint-comments/no-unlimited-disable': 'off',
 			'eslint-comments/no-use': 'off',
+			'ex/no-unhandled': 'error',
 			'functional/no-let': 'off',
 			'github/filenames-match-regex': 'off',
 			'import-x/no-unresolved': 'off',
