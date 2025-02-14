@@ -8,8 +8,9 @@ import { init } from '../base'
 
 init()
 
-const props = $props()
-const { appName, children, i18n } = props
+// @ts-ignore
+const { appName, children, i18n } = $props()
+
 ;('') // eslint-disable-line no-unused-expressions
 </script>
 
