@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		// pahts 쓸 거면 대신 packajs.json의 import 부분에 작성하기
 		"paths": {
 			"$shadcn": ["./src/shadcn"],
 			"$shadcn/*": ["./src/shadcn/*"]
