@@ -7,6 +7,7 @@ import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
 import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
+import microsoftSdl from '@microsoft/eslint-plugin-sdl'
 import * as parser_TS from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import turboConfig from 'eslint-config-turbo/flat'
@@ -14,6 +15,7 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
 import { configs as depend_configs } from 'eslint-plugin-depend'
+import functional from 'eslint-plugin-functional'
 import github from 'eslint-plugin-github'
 import importX from 'eslint-plugin-import-x'
 import jsonSchema from 'eslint-plugin-json-schema-validator'
@@ -24,7 +26,7 @@ import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import perfectionist from 'eslint-plugin-perfectionist'
 import promise from 'eslint-plugin-promise'
 import { configs as regexp_configs } from 'eslint-plugin-regexp'
-import security from 'eslint-plugin-security'
+// import security from 'eslint-plugin-security' -> @microsoft/eslint-plugin-sdl에서 중복 사용
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
 import storybook from 'eslint-plugin-storybook'
@@ -108,6 +110,11 @@ export default [
 	perfectionist.configs['recommended-natural'],
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
+	functional.configs.externalVanillaRecommended,
+	functional.configs.recommended,
+	functional.configs.stylistic,
+	functional.configs.disableTypeChecked,
+	...microsoftSdl.configs.recommended,
 	regexp_configs['flat/recommended'],
 	...intlifySvelte.configs['flat/recommended'],
 	...storybook.configs['flat/recommended'],
@@ -122,7 +129,7 @@ export default [
 	...toml.configs['flat/standard'],
 	github.getFlatConfigs().browser,
 	github.getFlatConfigs().recommended,
-	security.configs.recommended,
+	// security.configs.recommended,
 	nounsanitized.configs.recommended,
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
