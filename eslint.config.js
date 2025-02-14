@@ -13,6 +13,7 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 import problems from 'eslint-config-problems'
 import turboConfig from 'eslint-config-turbo/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
+// import * as parser_mdx from 'eslint-mdx' <- parser 이거로 설정하면 오히려 eslint-plugin-mdx는 작동안함
 import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
 import { configs as depend_configs } from 'eslint-plugin-depend'
@@ -199,6 +200,7 @@ export default [
 		},
 	},
 	{
+		files: ['**/*.mdx'],
 		...mdx.flat,
 		// optional, if you want to lint code blocks at the same
 		processor: mdx.createRemarkProcessor({
@@ -209,12 +211,11 @@ export default [
 		}),
 	},
 	{
+		files: ['**/*.mdx'],
 		...mdx.flatCodeBlocks,
 		rules: {
 			...mdx.flatCodeBlocks.rules,
 			// if you want to override some rules for code blocks
-			'no-var': 'error',
-			'prefer-const': 'error',
 		},
 	},
 
@@ -244,6 +245,7 @@ export default [
 			'n/no-extraneous-import': 'off',
 			'n/no-missing-import': 'off',
 			'n/prefer-global/process': 'off',
+			'no-console': 'off',
 			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
 			'no-unused-expressions': 1,
 			'no-unused-vars': 1,
@@ -269,6 +271,7 @@ export default [
 			'semi-style': 'off',
 			'simple-import-sort/exports': 'warn',
 			'simple-import-sort/imports': 'warn',
+			'sonarjs/no-small-switch': 'off',
 			'sonarjs/no-unused-expressions': 'off',
 			'sonarjs/sonar-no-unused-vars': 'off',
 			'sonarjs/todo-tag': 'off',
