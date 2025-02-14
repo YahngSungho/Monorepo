@@ -32,6 +32,7 @@ import promise from 'eslint-plugin-promise'
 import { configs as regexp_configs } from 'eslint-plugin-regexp'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
+import sql from 'eslint-plugin-sql'
 import storybook from 'eslint-plugin-storybook'
 import svelte from 'eslint-plugin-svelte'
 import toml from 'eslint-plugin-toml'
@@ -77,6 +78,7 @@ export default [
 		plugins: {
 			lodash,
 			'simple-import-sort': simpleImportSort,
+			sql,
 			xstate,
 		},
 
@@ -275,6 +277,8 @@ export default [
 			'sonarjs/no-unused-expressions': 'off',
 			'sonarjs/sonar-no-unused-vars': 'off',
 			'sonarjs/todo-tag': 'off',
+			'sql/format': 'warn',
+			'sql/no-unsafe-query': 'warn',
 			'svelte/derived-has-same-inputs-outputs': 'warn',
 			'svelte/first-attribute-linebreak': 'off',
 			'svelte/html-closing-bracket-spacing': 'warn',
