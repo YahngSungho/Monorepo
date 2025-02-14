@@ -35,15 +35,19 @@ async function visitPage(baseUrl, testRoute, page) {
 	expect(response?.status()).toBeLessThan(400)
 	await expect(page.locator('html')).toBeVisible()
 	await expect(page.locator('body')).toBeVisible()
-	// 스모크 테스트 div 체크 추가: 페이지에 #topDivForSmokeTest div가 하나 존재해야 합니다
-	const topDivCount = await page.locator('#topDivForSmokeTest').count()
-	expect(topDivCount).toBe(1)
 
 	await speedCheck(page, testRoute)
 
 	// 비동기 오류 수집을 위한 대기
 	await page.waitForTimeout(500)
 	await page.waitForLoadState('networkidle')
+
+	const divCheck1 = await page.locator('#Top_Layout_Check').count()
+	expect(divCheck1).toBe(1)
+	const divCheck2 = await page.locator('#Top2_Layout_Check').count()
+	expect(divCheck2).toBe(1)
+	const divCheck3 = await page.locator('#Page_Check').count()
+	expect(divCheck3).toBe(1)
 
 	if (consoleErrors.length > 0 || failedRequests.length > 0) {
 		const errorMessage = [
