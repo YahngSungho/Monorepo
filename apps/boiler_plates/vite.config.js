@@ -1,5 +1,5 @@
 import { defineConfig, mergeConfig } from 'vitest/config'
-import defaultConfig from '@repo/base/vite.config.js'
+import defaultConfig from '@library/base/vite.config.js'
 import { paraglide } from '@inlang/paraglide-sveltekit/vite'
 import { sveltekit } from '@sveltejs/kit/vite'
 

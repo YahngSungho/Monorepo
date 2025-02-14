@@ -1,16 +1,17 @@
 <script>
-import { Button as Button1 } from '@repo/ui/button_shadcn'
-import Button2 from '@repo/ui/button_daisy.svelte'
-import { Badge } from '@repo/ui/badge'
-import { Calendar } from '@repo/ui/calendar'
-import Icon from '@repo/ui/icon'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
-import * as m from '@repo/base/messages.js'
+import * as m from '@library/base/messages.js'
+import { Badge } from '@library/ui/badge'
+import Button2 from '@library/ui/button_daisy.svelte'
+import { Button as Button1 } from '@library/ui/button_shadcn'
+import { Calendar } from '@library/ui/calendar'
+import Icon from '@library/ui/icon'
+
 import { switchToLanguage } from '../../paraglide'
 
 const fo = 'bigCommandKEnabled'
 
-let foo = $state(fo + 'foifoifo')
+let foo = $state(`${fo}foifoifo`)
 
 foo += ' bar133322222223'
 ;('') // eslint-disable-line no-unused-expressions

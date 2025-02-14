@@ -1,5 +1,5 @@
 import { defineConfig } from '@playwright/test'
-import defaultConfigObject from '@repo/base/playwright.config.js'
+import defaultConfigObject from '@library/base/playwright.config.js'
 
 const portNumber = 5175
 

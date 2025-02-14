@@ -1,6 +1,6 @@
 {
 	"private": true,
-	"name": "storybook",
+	"name": "@tool/storybook",
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
@@ -14,8 +14,8 @@
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^3.2.4",
-		"@repo/base": "workspace:*",
-		"@repo/ui": "workspace:*",
+		"@library/base": "workspace:*",
+		"@library/ui": "workspace:*",
 		"@storybook/addon-essentials": "^8.5.3",
 		"@storybook/addon-interactions": "^8.5.3",
 		"@storybook/addon-links": "^8.5.3",

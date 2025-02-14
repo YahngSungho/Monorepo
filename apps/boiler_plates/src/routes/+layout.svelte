@@ -1,16 +1,21 @@
 <script>
-import BaseLayout from '@repo/base/baseLayout'
-import '@repo/base/fontStyle.css'
-import { i18n } from '../i18n'
+import '@library/base/fontStyle.css'
 
-const appName = 'boiler_plate'
+import BaseLayout from '@library/base/baseLayout'
+
+import { i18n } from '../i18n'
+import { APP_NAME } from './base'
 
 let { children } = $props()
 
 ;('') // eslint-disable-line
 </script>
 
-<BaseLayout {appName} {i18n}>
+<svelte:head>
+	<title>{APP_NAME}</title>
+</svelte:head>
+
+<BaseLayout appName={APP_NAME} {i18n}>
 	{@render children()}
 	<div id="topDivForSmokeTest"></div>
 </BaseLayout>

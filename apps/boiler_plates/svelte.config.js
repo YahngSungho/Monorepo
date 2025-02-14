@@ -1,1 +1,1 @@
-export { default } from '@repo/base/svelte.config.js'
+export { default } from '@library/base/svelte.config.js'

@@ -4,7 +4,7 @@
 	font-style: normal;
 	font-display: swap;
 	/* url에 주어진 path가 상대 경로일 시 Fontaine 작동 안하는 문제 */
-	src: url('@repo/base/IBMPlexSansVar-Roman.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Roman.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -12,7 +12,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -21,7 +21,7 @@
 	font-style: normal;
 	font-display: swap;
 	/* hinted font: 저해상도에서의 가독성 우선 */
-	src: url('@repo/base/IBMPlexSansKR-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -29,7 +29,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansKR-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -37,7 +37,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansKR-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -45,7 +45,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansKR-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -53,7 +53,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansKR-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -61,7 +61,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansKR-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -69,7 +69,7 @@
 	font-weight: 400; /* Text (일반적으로 Regular와 동일한 굵기로 사용) */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansKR-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -77,7 +77,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansKR-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansKR-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -86,7 +86,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -94,7 +94,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -102,7 +102,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -110,7 +110,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -118,7 +118,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -126,7 +126,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -134,7 +134,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -142,7 +142,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -150,7 +150,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThaiLooped-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThaiLooped-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -158,7 +158,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -166,7 +166,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMath.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMath.woff2') format('woff2');
 }
 
 @font-face {
@@ -174,7 +174,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -182,7 +182,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -190,7 +190,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -198,7 +198,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -206,7 +206,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -214,7 +214,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -222,7 +222,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -230,7 +230,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansArabic-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansArabic-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -238,7 +238,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -246,7 +246,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -254,7 +254,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -262,7 +262,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -270,7 +270,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -278,7 +278,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -286,7 +286,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -294,7 +294,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -302,7 +302,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansDevanagari-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansDevanagari-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -310,7 +310,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -318,7 +318,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -326,7 +326,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -334,7 +334,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -342,7 +342,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -350,7 +350,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -358,7 +358,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -366,7 +366,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -374,7 +374,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansHebrew-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansHebrew-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -382,7 +382,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -390,7 +390,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -398,7 +398,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -406,7 +406,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -414,7 +414,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -422,7 +422,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -430,7 +430,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -438,7 +438,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -446,7 +446,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansJP-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansJP-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -454,7 +454,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -462,7 +462,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -470,7 +470,7 @@
 	font-weight: 700; /* Bold Italic */
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-BoldItalic.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-BoldItalic.woff2') format('woff2');
 }
 
 @font-face {
@@ -478,7 +478,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -486,7 +486,7 @@
 	font-weight: 200; /* ExtraLight Italic */
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-ExtraLightItalic.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-ExtraLightItalic.woff2') format('woff2');
 }
 
 @font-face {
@@ -494,7 +494,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -502,7 +502,7 @@
 	font-weight: 300; /* Light Italic */
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-LightItalic.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-LightItalic.woff2') format('woff2');
 }
 
 @font-face {
@@ -510,7 +510,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -518,7 +518,7 @@
 	font-weight: 500; /* Medium Italic */
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-MediumItalic.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-MediumItalic.woff2') format('woff2');
 }
 
 @font-face {
@@ -526,7 +526,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-Regular.woff2') format('woff2');
 }
 
 /* IBM Plex Mono의 Regular Italic 폰트가 없음 */
@@ -536,7 +536,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -544,7 +544,7 @@
 	font-weight: 600; /* SemiBold Italic */
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-SemiBoldItalic.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-SemiBoldItalic.woff2') format('woff2');
 }
 
 @font-face {
@@ -552,7 +552,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -560,7 +560,7 @@
 	font-weight: 400; /* Text Italic */
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-TextItalic.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-TextItalic.woff2') format('woff2');
 }
 
 @font-face {
@@ -568,7 +568,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -576,7 +576,7 @@
 	font-weight: 100; /* Thin Italic */
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexMono-ThinItalic.woff2') format('woff2');
+	src: url('@library/base/IBMPlexMono-ThinItalic.woff2') format('woff2');
 }
 
 @font-face {
@@ -584,7 +584,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -592,7 +592,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -600,7 +600,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -608,7 +608,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -616,7 +616,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -624,7 +624,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -632,7 +632,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -640,7 +640,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansSC-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansSC-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -648,7 +648,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -656,7 +656,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -664,7 +664,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -672,7 +672,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -680,7 +680,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -688,7 +688,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -696,7 +696,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -704,7 +704,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -712,7 +712,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansTC-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansTC-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -720,7 +720,7 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
 @font-face {
@@ -728,7 +728,7 @@
 	font-weight: 700; /* Bold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-Bold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -736,7 +736,7 @@
 	font-weight: 200; /* ExtraLight */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-ExtraLight.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-ExtraLight.woff2') format('woff2');
 }
 
 @font-face {
@@ -744,7 +744,7 @@
 	font-weight: 300; /* Light */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-Light.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -752,7 +752,7 @@
 	font-weight: 500; /* Medium */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-Medium.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -760,7 +760,7 @@
 	font-weight: 400; /* Regular */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-Regular.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -768,7 +768,7 @@
 	font-weight: 600; /* SemiBold */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-SemiBold.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -776,7 +776,7 @@
 	font-weight: 400; /* Text */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-Text.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-Text.woff2') format('woff2');
 }
 
 @font-face {
@@ -784,7 +784,7 @@
 	font-weight: 100; /* Thin */
 	font-style: normal;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansThai-Thin.woff2') format('woff2');
+	src: url('@library/base/IBMPlexSansThai-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -792,5 +792,5 @@
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
-	src: url('@repo/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }

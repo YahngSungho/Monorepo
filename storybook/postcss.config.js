@@ -1,1 +1,1 @@
-export { default } from '@repo/base/postcss.config.js'
+export { default } from '@library/base/postcss.config.js'

@@ -8,9 +8,9 @@
 	"main": "index.js",
 	"scripts": {},
 	"dependencies": {
-		"@repo/base": "workspace:*",
-		"@repo/helpers": "workspace:*",
-		"@repo/library_wrappers": "workspace:*",
+		"@library/base": "workspace:*",
+		"@library/helpers": "workspace:*",
+		"@library/library_wrappers": "workspace:*",
 		"mutative": "^1.1.0",
 		"nanoid": "^5.0.9",
 		"ramda": "^0.30.1",

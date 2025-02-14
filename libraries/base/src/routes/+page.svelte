@@ -1,12 +1,12 @@
 <script>
-import { Button } from '@repo/ui/button'
-import { Badge } from '@repo/ui/badge'
-import { Calendar } from '@repo/ui/calendar'
-import Icon from '@repo/ui/icon'
+import { Badge } from '@library/ui/badge'
+import { Button } from '@library/ui/button'
+import { Calendar } from '@library/ui/calendar'
+import Icon from '@library/ui/icon'
 
 const fo = 'bigCommandKEnabled'
 
-let foo = $state(fo + ' foifoifo')
+let foo = $state(`${fo} foifoifo`)
 
 foo += ' bar133322222223'
 

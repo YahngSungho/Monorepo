@@ -1,6 +1,6 @@
 {
 	"private": true,
-	"name": "boiler_plates",
+	"name": "@app/boiler_plates",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
@@ -13,14 +13,15 @@
 		"stylelint": "stylelint **/*.{css,svelte}",
 		"test:e2e": "playwright test",
 		"test:unit": "vitest",
+		"type-sync": "svelte-kit sync",
 		"preview": "vite preview"
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
-		"@repo/base": "workspace:*",
-		"@repo/helpers": "workspace:*",
-		"@repo/library_wrappers": "workspace:*",
-		"@repo/ui": "workspace:*",
+		"@library/base": "workspace:*",
+		"@library/helpers": "workspace:*",
+		"@library/library_wrappers": "workspace:*",
+		"@library/ui": "workspace:*",
 		"luxon": "^3.5.0",
 		"nanoid": "^5.0.9",
 		"ramda": "^0.30.1",
