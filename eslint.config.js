@@ -224,6 +224,7 @@ export default [
 		rules: {
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
+			'import/extensions': 'off',
 			'arrow-parens': 'off',
 			camelcase: 'off',
 			'capitalized-comments': 'off',
