@@ -13,7 +13,7 @@
 		"format-changed": "pretty-quick --write .",
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
 		"lint": "turbo run check eslint stylelint",
-		"lint-fix": "turbo run eslint -- --fix  && turbo run stylelint -- --fix",
+		"lint-fix": "turbo run eslint -- --fix  && turbo run stylelint -- --fix && pnpm run format-changed",
 		"test": "turbo run test:unit test:e2e",
 		"test:e2e": "turbo run test:e2e",
 		"test:unit": "turbo run test:unit",
