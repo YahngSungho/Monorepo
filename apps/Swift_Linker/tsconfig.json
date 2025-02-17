@@ -1,0 +1,21 @@
+{
+	"_comments": [
+		"exclude와 include는 extends 되지 않아서 따로 써줘야 함",
+		"compilerOptions.paths 쓸 거면 packajs.json의 import 부분에도 작성하기"
+	],
+	"exclude": [
+		".turbo/**",
+		"**/.svelte-kit/**",
+		"**/node_modules/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/.svelte/**",
+		"**/.vercel_build_output/**",
+		"**/.vercel/**",
+		"**/coverage/**",
+		"**/.history/**",
+		"**/service-worker/**"
+	],
+	"extends": ["@library/base/tsconfig.json"],
+	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*", "src/**/*"]
+}
