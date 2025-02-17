@@ -43,7 +43,7 @@ const baseConfig = defineConfig({
 		},
 	},
 	ssr: {
-		noExternal: ['@inlang/paraglide-sveltekit'],
+		noExternal: process.env.GITHUB_ACTIONS ? true : ['@inlang/paraglide-sveltekit'],
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
