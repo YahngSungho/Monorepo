@@ -1,67 +1,77 @@
-import * as depend from 'eslint-plugin-depend'
-import turboConfig from 'eslint-config-turbo/flat'
-import svelte from 'eslint-plugin-svelte'
-import intlifySvelte from '@intlify/eslint-plugin-svelte'
-import perfectionist from 'eslint-plugin-perfectionist'
-import storybook from 'eslint-plugin-storybook'
-import { configs as sonarjs } from 'eslint-plugin-sonarjs'
-import xstate from 'eslint-plugin-xstate'
-import * as regexp from 'eslint-plugin-regexp'
-import parser_babel from '@babel/eslint-parser'
-import * as parser_svelte from 'svelte-eslint-parser'
-import parser_jsonc from 'jsonc-eslint-parser'
-import jsonc from 'eslint-plugin-jsonc'
-import parser_yaml from 'yaml-eslint-parser'
-import parser_toml from 'toml-eslint-parser'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
-import { includeIgnoreFile } from '@eslint/compat'
-import globals from 'globals'
-import eslintConfigPrettier from 'eslint-config-prettier'
-import importX from 'eslint-plugin-import-x'
-import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
-import promise from 'eslint-plugin-promise'
-import unicorn from 'eslint-plugin-unicorn'
-import node from 'eslint-plugin-n'
-import * as parser_TS from '@typescript-eslint/parser'
-import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
-import jsonSchema from 'eslint-plugin-json-schema-validator'
-import yml from 'eslint-plugin-yml'
-import toml from 'eslint-plugin-toml'
 
-const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
+// import * as parser_mdx from 'eslint-mdx' <- parser 이거로 설정하면 오히려 eslint-plugin-mdx는 작동안함
+// import security from 'eslint-plugin-security' <- @microsoft/eslint-plugin-sdl에서 중복 사용
+import { includeIgnoreFile } from '@eslint/compat'
+import { FlatCompat } from '@eslint/eslintrc'
+import js from '@eslint/js'
+import markdown from '@eslint/markdown'
+import intlifySvelte from '@intlify/eslint-plugin-svelte'
+import microsoftSdl from '@microsoft/eslint-plugin-sdl'
+import * as parser_TS from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import problems from 'eslint-config-problems'
+import turboConfig from 'eslint-config-turbo/flat'
+import { defineFlatConfig } from 'eslint-define-config'
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
+import arrayFunc from 'eslint-plugin-array-func'
+import compat from 'eslint-plugin-compat'
+import { configs as depend_configs } from 'eslint-plugin-depend'
+import { plugin as exceptionHandling } from 'eslint-plugin-exception-handling'
+import functional from 'eslint-plugin-functional'
+import github from 'eslint-plugin-github'
+import importX from 'eslint-plugin-import-x'
+import jsonSchema from 'eslint-plugin-json-schema-validator'
+import jsonc from 'eslint-plugin-jsonc'
+import lodash from 'eslint-plugin-lodash'
+import * as mdx from 'eslint-plugin-mdx'
+import noSecrets from 'eslint-plugin-no-secrets'
+import nounsanitized from 'eslint-plugin-no-unsanitized'
+import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
+import optimizeRegex from 'eslint-plugin-optimize-regex'
+import perfectionist from 'eslint-plugin-perfectionist'
+import playwright from 'eslint-plugin-playwright'
+import promise from 'eslint-plugin-promise'
+import redos from 'eslint-plugin-redos'
+import { configs as regexp_configs } from 'eslint-plugin-regexp'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
+import sql from 'eslint-plugin-sql'
+import storybook from 'eslint-plugin-storybook'
+import svelte from 'eslint-plugin-svelte'
+import toml from 'eslint-plugin-toml'
+import unicorn from 'eslint-plugin-unicorn'
+import xstate from 'eslint-plugin-xstate'
+import yml from 'eslint-plugin-yml'
+import globals from 'globals'
+import parser_jsonc from 'jsonc-eslint-parser'
+import * as parser_svelte from 'svelte-eslint-parser'
+import parser_toml from 'toml-eslint-parser'
+import parser_yaml from 'yaml-eslint-parser'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
+const flatCompat = new FlatCompat({
 	allConfig: js.configs.all,
 	baseDirectory: __dirname,
 	recommendedConfig: js.configs.recommended,
 })
+const gitignorePath = path.join(__dirname, '.gitignore')
 
-export default [
+export default defineFlatConfig([
 	includeIgnoreFile(gitignorePath),
 	{
 		ignores: ['!.storybook'],
 
-		languageOptions: {
-			ecmaVersion: 'latest',
-			globals: {
-				...globals.browser,
-				...globals.node,
-			},
-			parser: parser_babel,
-			parserOptions: {
-				ecmaVersion: 'latest',
-				extraFileExtensions: ['.svelte'],
-				requireConfigFile: false,
-				sourceType: 'module',
-			},
-			sourceType: 'module',
-		},
-
 		plugins: {
+			ex: exceptionHandling,
+			lodash,
+			'no-secrets': noSecrets,
+			'optimize-regex': optimizeRegex,
+			redos,
+			'simple-import-sort': simpleImportSort,
+			sql,
 			xstate,
 		},
 
@@ -87,50 +97,101 @@ export default [
 	},
 
 	js.configs.recommended,
-	depend.configs['flat/recommended'],
+	depend_configs['flat/recommended'],
 	unicorn.configs['flat/recommended'],
-	sonarjs.recommended,
+	sonarjs_configs.recommended,
 	importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
 	...svelte.configs['flat/recommended'],
-	...svelte.configs['flat/prettier'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
-	node.configs['flat/recommended-module'],
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
-	regexp.configs['flat/recommended'],
+	functional.configs.externalVanillaRecommended,
+	functional.configs.recommended,
+	functional.configs.stylistic,
+	// functional.configs.disableTypeChecked,
+	problems,
+	...microsoftSdl.configs.recommended,
+	regexp_configs['flat/recommended'],
 	...intlifySvelte.configs['flat/recommended'],
 	...storybook.configs['flat/recommended'],
-	...jsonc.configs['flat/base'],
-	...jsonc.configs['flat/recommended-with-json'],
-	...jsonc.configs['flat/recommended-with-jsonc'],
-	...jsonc.configs['flat/recommended-with-json5'],
-	...jsonSchema.configs['flat/recommended'],
-	...jsonc.configs['flat/prettier'],
 	...yml.configs['flat/standard'],
-	...yml.configs['flat/prettier'],
 	...toml.configs['flat/standard'],
-	...compat.extends('plugin:xstate/all'),
+	github.getFlatConfigs().browser,
+	github.getFlatConfigs().recommended,
+	nounsanitized.configs.recommended,
+	arrayFunc.configs.recommended,
+	compat.configs['flat/recommended'],
+	...markdown.configs.recommended,
+	...flatCompat.extends('plugin:xstate/all', 'plugin:lodash/recommended'),
+
 	{
-		files: ['**/*.svelte', '*.svelte'],
+		files: ['**/*.js', '**/*.ts'],
+
+		languageOptions: {
+			ecmaVersion: 'latest',
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
+			parser: parser_TS,
+			parserOptions: {
+				ecmaVersion: 'latest',
+				extraFileExtensions: ['.svelte'],
+				projectService: {
+					allowDefaultProject: ['*.js'],
+				},
+				requireConfigFile: false,
+				sourceType: 'module',
+			},
+			sourceType: 'module',
+		},
+	},
+
+	{
+		files: [
+			'**/*.svelte',
+			'*.svelte',
+			'**/*.svelte.js',
+			'*.svelte.js',
+			'**/*.svelte.ts',
+			'*.svelte.ts',
+		],
 
 		languageOptions: {
 			parser: parser_svelte,
 			parserOptions: {
+				ecmaVersion: 'latest',
+				extraFileExtensions: ['.svelte'],
 				parser: {
-					js: parser_babel,
+					js: parser_TS,
 					ts: parser_TS,
 					typescript: parser_TS,
 				},
+				projectService: {
+					allowDefaultProject: ['*.js'],
+				},
+				requireConfigFile: false,
+				sourceType: 'module',
 			},
 		},
 	},
 	{
-		files: ['**/*.stories.svelte', '**/*.stories.svelte'],
+		files: ['**/*.stories.svelte', '**/*.stories.svelte', '**/*.test.js', '**/*.tests.js'],
 
 		rules: {
 			'@intlify/svelte/no-raw-text': 'off',
+			'redos/no-vulnerable': 'off',
+		},
+	},
+	{
+		...playwright.configs['flat/recommended'],
+		files: ['**/*.test.js'],
+		rules: {
+			...playwright.configs['flat/recommended'].rules,
+			// Customize Playwright rules
+			// ...
 		},
 	},
 	{
@@ -144,6 +205,12 @@ export default [
 
 			sourceType: 'script',
 		},
+
+		...jsonc.configs['flat/base'],
+		...jsonc.configs['flat/recommended-with-json'],
+		...jsonc.configs['flat/recommended-with-jsonc'],
+		...jsonc.configs['flat/recommended-with-json5'],
+		...jsonSchema.configs['flat/recommended'],
 	},
 	{
 		files: ['**/*.yaml', '**/*.yml'],
@@ -160,17 +227,22 @@ export default [
 		},
 	},
 	{
-		files: ['**/*.ts', '**/*.tsx'],
-
-		languageOptions: {
-			parser: parser_TS,
-			parserOptions: {
-				extraFileExtensions: ['.svelte'],
-			},
-		},
-
+		files: ['**/*.mdx'],
+		...mdx.flat,
+		// optional, if you want to lint code blocks at the same
+		processor: mdx.createRemarkProcessor({
+			// optional, if you want to disable language mapper, set it to `false`
+			// if you want to override the default language mapper inside, you can provide your own
+			languageMapper: {},
+			lintCodeBlocks: true,
+		}),
+	},
+	{
+		files: ['**/*.mdx'],
+		...mdx.flatCodeBlocks,
 		rules: {
-			'@typescript-eslint/*': 'off',
+			...mdx.flatCodeBlocks.rules,
+			// if you want to override some rules for code blocks
 		},
 	},
 
@@ -179,6 +251,7 @@ export default [
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'arrow-parens': 'off',
+			camelcase: 'off',
 			'capitalized-comments': 'off',
 			'consistent-return': 'off',
 			'depend/ban-dependencies': [
@@ -187,18 +260,37 @@ export default [
 					presets: ['native', 'preferred'],
 				},
 			],
+			'eslint-comments/no-unlimited-disable': 'off',
+			'eslint-comments/no-use': 'off',
+			'ex/no-unhandled': 'error',
+			'functional/functional-parameters': 'warn',
+			'functional/immutable-data': 'warn',
+			'functional/no-expression-statements': [
+				'error',
+				{ ignoreSelfReturning: true, ignoreVoid: true },
+			],
+			'functional/no-let': 'off',
+			'functional/no-return-void': 'off',
+			'functional/no-throw-statements': 'off',
+			'github/filenames-match-regex': 'off',
 			'import-x/no-unresolved': 'off',
-			'import/no-mutable-exports': 'off',
-			'import/no-unassigned-import': 'off',
+			'import/extensions': 'off',
+			'import/no-namespace': 'off',
+			'import/no-nodejs-modules': 'off',
+			'import/no-unresolved': 'off',
 			indent: ['warn', 'tab'],
+			'lodash/prefer-lodash-method': 'off',
 			'n/no-extraneous-import': 'off',
 			'n/no-missing-import': 'off',
 			'n/prefer-global/process': 'off',
+			'no-console': 'off',
 			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
+			'no-secrets/no-secrets': 'error',
 			'no-unused-expressions': 1,
 			'no-unused-vars': 1,
 			'no-warning-comments': 'off',
 			'object-curly-spacing': 'off',
+			'optimize-regex/optimize-regex': 'warn',
 			'perfectionist/sort-imports': 'off',
 			'perfectionist/sort-modules': 'off',
 			'perfectionist/sort-objects': [
@@ -209,26 +301,28 @@ export default [
 				},
 			],
 			'prefer-const': 'off',
+			'prettier/prettier': [
+				'off',
+				{
+					endOfLine: 'auto',
+				},
+			],
+			'redos/no-vulnerable': 'error',
 			semi: ['warn', 'never'],
 			'semi-style': 'off',
+			'simple-import-sort/exports': 'warn',
+			'simple-import-sort/imports': 'warn',
+			'sonarjs/no-small-switch': 'off',
 			'sonarjs/no-unused-expressions': 'off',
 			'sonarjs/sonar-no-unused-vars': 'off',
 			'sonarjs/todo-tag': 'off',
+			'sql/format': 'warn',
+			'sql/no-unsafe-query': 'warn',
 			'svelte/derived-has-same-inputs-outputs': 'warn',
 			'svelte/first-attribute-linebreak': 'off',
 			'svelte/html-closing-bracket-spacing': 'warn',
-			'svelte/indent': [
-				'warn',
-				{
-					alignAttributesVertically: false,
-					ignoredNodes: [],
-					indent: 'tab',
-					indentScript: false,
-					switchCase: 1,
-				},
-			],
+			'svelte/indent': 'off',
 			'svelte/infinite-reactive-loop': 'error',
-
 			'svelte/no-dupe-on-directives': 'warn',
 			'svelte/no-dupe-use-directives': 'warn',
 			'svelte/no-immutable-reactive-statements': 'warn',
@@ -259,5 +353,8 @@ export default [
 			'unicorn/require-array-join-separator': 'off',
 		},
 	},
+	...jsonc.configs['flat/prettier'],
+	...yml.configs['flat/prettier'],
+	...svelte.configs['flat/prettier'],
 	eslintConfigPrettier,
-]
+])

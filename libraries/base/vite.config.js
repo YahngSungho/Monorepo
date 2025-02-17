@@ -2,13 +2,12 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { FontaineTransform } from 'fontaine'
 import tailwindcss from '@tailwindcss/vite'
-import tailwindcss2 from '@tailwindcss/postcss'
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 
 // Simulate __dirname in ESM
-const __filename = fileURLToPath(import.meta.url)  
+const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const baseConfig = defineConfig({
@@ -17,9 +16,6 @@ const baseConfig = defineConfig({
 	},
 	css: {
 		devSourcemap: true,
-		postcss: {
-			plugins: [tailwindcss2()],
-		},
 	},
 	plugins: [
 		// @ts-ignore
