@@ -108,7 +108,7 @@ export default defineFlatConfig([
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
 	functional.configs.externalVanillaRecommended,
-	functional.configs.recommended,
+	functional.configs.lite,
 	functional.configs.stylistic,
 	// functional.configs.disableTypeChecked,
 	problems,
