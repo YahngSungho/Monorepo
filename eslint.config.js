@@ -109,7 +109,7 @@ export default [
 	functional.configs.externalVanillaRecommended,
 	functional.configs.recommended,
 	functional.configs.stylistic,
-	functional.configs.disableTypeChecked,
+	// functional.configs.disableTypeChecked,
 	problems,
 	...microsoftSdl.configs.recommended,
 	regexp_configs['flat/recommended'],
@@ -149,16 +149,30 @@ export default [
 	},
 
 	{
-		files: ['**/*.svelte', '*.svelte'],
+		files: [
+			'**/*.svelte',
+			'*.svelte',
+			'**/*.svelte.js',
+			'*.svelte.js',
+			'**/*.svelte.ts',
+			'*.svelte.ts',
+		],
 
 		languageOptions: {
 			parser: parser_svelte,
 			parserOptions: {
+				ecmaVersion: 'latest',
+				extraFileExtensions: ['.svelte'],
 				parser: {
 					js: parser_TS,
 					ts: parser_TS,
 					typescript: parser_TS,
 				},
+				projectService: {
+					allowDefaultProject: ['*.js'],
+				},
+				requireConfigFile: false,
+				sourceType: 'module',
 			},
 		},
 	},
@@ -250,7 +264,12 @@ export default [
 			'ex/no-unhandled': 'error',
 			'functional/functional-parameters': 'warn',
 			'functional/immutable-data': 'warn',
+			'functional/no-expression-statements': [
+				'error',
+				{ ignoreSelfReturning: true, ignoreVoid: true },
+			],
 			'functional/no-let': 'off',
+			'functional/no-return-void': 'off',
 			'functional/no-throw-statements': 'off',
 			'github/filenames-match-regex': 'off',
 			'import-x/no-unresolved': 'off',
