@@ -153,3 +153,4 @@ output
 **/.svelte-kit/non-ambient.d.ts
 **/ambient.d.ts
 **/non-ambient.d.ts
+cache

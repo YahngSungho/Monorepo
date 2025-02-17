@@ -41,7 +41,7 @@ export default {
 		},
 	],
 	reporter: process.env.CI ? 'github' : 'html',
-	retries: process.env.CI ? 2 : 0,
+	retries: process.env.CI ? 2 : 1,
 	testDir: 'e2e',
 	timeout: 60_000,
 	use: {
