@@ -7,6 +7,7 @@ import parser_babel from '@babel/eslint-parser'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
+import noSecrets from 'eslint-plugin-no-secrets'
 import redos from 'eslint-plugin-redos'
 import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
@@ -103,6 +104,7 @@ export default [
 			'optimize-regex': optimizeRegex,
 			ex: exceptionHandling,
 			lodash,
+			'no-secrets': noSecrets,
 			'simple-import-sort': simpleImportSort,
 			sql,
 			xstate,
@@ -229,6 +231,7 @@ export default [
 		rules: {
 			'redos/no-vulnerable': 'error',
 			'optimize-regex/optimize-regex': 'warn',
+			'no-secrets/no-secrets': 'error',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'functional/functional-parameters': 'warn',
