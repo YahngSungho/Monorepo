@@ -7,6 +7,7 @@ import parser_babel from '@babel/eslint-parser'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
+import redos from 'eslint-plugin-redos'
 import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import microsoftSdl from '@microsoft/eslint-plugin-sdl'
@@ -77,6 +78,7 @@ export default [
 		},
 
 		plugins: {
+			redos,
 			ex: exceptionHandling,
 			lodash,
 			'simple-import-sort': simpleImportSort,
@@ -154,10 +156,11 @@ export default [
 		},
 	},
 	{
-		files: ['**/*.stories.svelte', '**/*.stories.svelte'],
+		files: ['**/*.stories.svelte', '**/*.stories.svelte', '**/*.test.js', '**/*.tests.js'],
 
 		rules: {
 			'@intlify/svelte/no-raw-text': 'off',
+			'redos/no-vulnerable': 'off',
 		},
 	},
 	{
@@ -222,6 +225,7 @@ export default [
 
 	{
 		rules: {
+			'redos/no-vulnerable': 'error',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'functional/functional-parameters': 'warn',
