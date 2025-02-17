@@ -11,7 +11,7 @@
 		"dev": "vite dev",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"stylelint": "stylelint **/*.{css,svelte}",
-		"test:e2e": "playwright test",
+		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview"
