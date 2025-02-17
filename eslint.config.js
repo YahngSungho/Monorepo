@@ -18,6 +18,7 @@ import turboConfig from 'eslint-config-turbo/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
+import optimizeRegex from 'eslint-plugin-optimize-regex'
 import { configs as depend_configs } from 'eslint-plugin-depend'
 import { plugin as exceptionHandling } from 'eslint-plugin-exception-handling'
 import functional from 'eslint-plugin-functional'
@@ -77,15 +78,6 @@ export default [
 			sourceType: 'module',
 		},
 
-		plugins: {
-			redos,
-			ex: exceptionHandling,
-			lodash,
-			'simple-import-sort': simpleImportSort,
-			sql,
-			xstate,
-		},
-
 		settings: {
 			'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx', '.svelte', '.json'],
 			'import-x/parsers': {
@@ -104,6 +96,16 @@ export default [
 					},
 				},
 			},
+		},
+
+		plugins: {
+			redos,
+			'optimize-regex': optimizeRegex,
+			ex: exceptionHandling,
+			lodash,
+			'simple-import-sort': simpleImportSort,
+			sql,
+			xstate,
 		},
 	},
 
@@ -226,6 +228,7 @@ export default [
 	{
 		rules: {
 			'redos/no-vulnerable': 'error',
+			'optimize-regex/optimize-regex': 'warn',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'functional/functional-parameters': 'warn',
