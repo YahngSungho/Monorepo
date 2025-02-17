@@ -5,7 +5,7 @@ const portNumber = 5175
 
 const config = Object.assign(defaultConfigObject, {
 	webServer: {
-		command: `pnpm run preview --port ${portNumber}`,
+		command: `pnpm run dev --port ${portNumber}`,
 		env: {
 			NODE_ENV: 'production',
 		},
