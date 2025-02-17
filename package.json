@@ -26,7 +26,6 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.26.7",
-		"@babel/eslint-parser": "^7.26.5",
 		"@double-great/stylelint-a11y": "^3.0.3",
 		"@eslint/compat": "^1.2.6",
 		"@eslint/eslintrc": "^3.2.0",
@@ -65,6 +64,7 @@
 		"eslint-plugin-no-use-extend-native": "^0.7.2",
 		"eslint-plugin-optimize-regex": "^1.2.1",
 		"eslint-plugin-perfectionist": "^4.8.0",
+		"eslint-plugin-playwright": "^2.2.0",
 		"eslint-plugin-promise": "^7.2.1",
 		"eslint-plugin-ramda": "^2.5.1",
 		"eslint-plugin-redos": "^4.4.5",

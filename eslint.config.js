@@ -3,12 +3,9 @@ import { fileURLToPath } from 'node:url'
 
 // import * as parser_mdx from 'eslint-mdx' <- parser 이거로 설정하면 오히려 eslint-plugin-mdx는 작동안함
 // import security from 'eslint-plugin-security' <- @microsoft/eslint-plugin-sdl에서 중복 사용
-import parser_babel from '@babel/eslint-parser'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
-import noSecrets from 'eslint-plugin-no-secrets'
-import redos from 'eslint-plugin-redos'
 import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import microsoftSdl from '@microsoft/eslint-plugin-sdl'
@@ -19,7 +16,6 @@ import turboConfig from 'eslint-config-turbo/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
-import optimizeRegex from 'eslint-plugin-optimize-regex'
 import { configs as depend_configs } from 'eslint-plugin-depend'
 import { plugin as exceptionHandling } from 'eslint-plugin-exception-handling'
 import functional from 'eslint-plugin-functional'
@@ -29,10 +25,14 @@ import jsonSchema from 'eslint-plugin-json-schema-validator'
 import jsonc from 'eslint-plugin-jsonc'
 import lodash from 'eslint-plugin-lodash'
 import * as mdx from 'eslint-plugin-mdx'
+import noSecrets from 'eslint-plugin-no-secrets'
 import nounsanitized from 'eslint-plugin-no-unsanitized'
 import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
+import optimizeRegex from 'eslint-plugin-optimize-regex'
 import perfectionist from 'eslint-plugin-perfectionist'
+import playwright from 'eslint-plugin-playwright'
 import promise from 'eslint-plugin-promise'
+import redos from 'eslint-plugin-redos'
 import { configs as regexp_configs } from 'eslint-plugin-regexp'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
@@ -63,20 +63,15 @@ export default [
 	{
 		ignores: ['!.storybook'],
 
-		languageOptions: {
-			ecmaVersion: 'latest',
-			globals: {
-				...globals.browser,
-				...globals.node,
-			},
-			parser: parser_babel,
-			parserOptions: {
-				ecmaVersion: 'latest',
-				extraFileExtensions: ['.svelte'],
-				requireConfigFile: false,
-				sourceType: 'module',
-			},
-			sourceType: 'module',
+		plugins: {
+			ex: exceptionHandling,
+			lodash,
+			'no-secrets': noSecrets,
+			'optimize-regex': optimizeRegex,
+			redos,
+			'simple-import-sort': simpleImportSort,
+			sql,
+			xstate,
 		},
 
 		settings: {
@@ -97,17 +92,6 @@ export default [
 					},
 				},
 			},
-		},
-
-		plugins: {
-			redos,
-			'optimize-regex': optimizeRegex,
-			ex: exceptionHandling,
-			lodash,
-			'no-secrets': noSecrets,
-			'simple-import-sort': simpleImportSort,
-			sql,
-			xstate,
 		},
 	},
 
@@ -131,11 +115,6 @@ export default [
 	regexp_configs['flat/recommended'],
 	...intlifySvelte.configs['flat/recommended'],
 	...storybook.configs['flat/recommended'],
-	...jsonc.configs['flat/base'],
-	...jsonc.configs['flat/recommended-with-json'],
-	...jsonc.configs['flat/recommended-with-jsonc'],
-	...jsonc.configs['flat/recommended-with-json5'],
-	...jsonSchema.configs['flat/recommended'],
 	...yml.configs['flat/standard'],
 	...toml.configs['flat/standard'],
 	github.getFlatConfigs().browser,
@@ -145,6 +124,30 @@ export default [
 	compat.configs['flat/recommended'],
 	...markdown.configs.recommended,
 	...flatCompat.extends('plugin:xstate/all', 'plugin:lodash/recommended'),
+
+	{
+		files: ['**/*.js', '**/*.ts'],
+
+		languageOptions: {
+			ecmaVersion: 'latest',
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
+			parser: parser_TS,
+			parserOptions: {
+				ecmaVersion: 'latest',
+				extraFileExtensions: ['.svelte'],
+				projectService: {
+					allowDefaultProject: ['*.js'],
+				},
+				requireConfigFile: false,
+				sourceType: 'module',
+			},
+			sourceType: 'module',
+		},
+	},
+
 	{
 		files: ['**/*.svelte', '*.svelte'],
 
@@ -152,7 +155,7 @@ export default [
 			parser: parser_svelte,
 			parserOptions: {
 				parser: {
-					js: parser_babel,
+					js: parser_TS,
 					ts: parser_TS,
 					typescript: parser_TS,
 				},
@@ -168,6 +171,15 @@ export default [
 		},
 	},
 	{
+		...playwright.configs['flat/recommended'],
+		files: ['**/*.test.js'],
+		rules: {
+			...playwright.configs['flat/recommended'].rules,
+			// Customize Playwright rules
+			// ...
+		},
+	},
+	{
 		files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
 
 		languageOptions: {
@@ -178,6 +190,12 @@ export default [
 
 			sourceType: 'script',
 		},
+
+		...jsonc.configs['flat/base'],
+		...jsonc.configs['flat/recommended-with-json'],
+		...jsonc.configs['flat/recommended-with-jsonc'],
+		...jsonc.configs['flat/recommended-with-json5'],
+		...jsonSchema.configs['flat/recommended'],
 	},
 	{
 		files: ['**/*.yaml', '**/*.yml'],
@@ -191,20 +209,6 @@ export default [
 
 		languageOptions: {
 			parser: parser_toml,
-		},
-	},
-	{
-		files: ['**/*.ts', '**/*.tsx'],
-
-		languageOptions: {
-			parser: parser_TS,
-			parserOptions: {
-				extraFileExtensions: ['.svelte'],
-			},
-		},
-
-		rules: {
-			'@typescript-eslint/*': 'off',
 		},
 	},
 	{
@@ -229,15 +233,8 @@ export default [
 
 	{
 		rules: {
-			'redos/no-vulnerable': 'error',
-			'optimize-regex/optimize-regex': 'warn',
-			'no-secrets/no-secrets': 'error',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
-			'functional/functional-parameters': 'warn',
-			'functional/immutable-data': 'warn',
-			'functional/no-throw-statements': 'off',
-			'import/extensions': 'off',
 			'arrow-parens': 'off',
 			camelcase: 'off',
 			'capitalized-comments': 'off',
@@ -251,9 +248,13 @@ export default [
 			'eslint-comments/no-unlimited-disable': 'off',
 			'eslint-comments/no-use': 'off',
 			'ex/no-unhandled': 'error',
+			'functional/functional-parameters': 'warn',
+			'functional/immutable-data': 'warn',
 			'functional/no-let': 'off',
+			'functional/no-throw-statements': 'off',
 			'github/filenames-match-regex': 'off',
 			'import-x/no-unresolved': 'off',
+			'import/extensions': 'off',
 			'import/no-namespace': 'off',
 			'import/no-nodejs-modules': 'off',
 			'import/no-unresolved': 'off',
@@ -264,10 +265,12 @@ export default [
 			'n/prefer-global/process': 'off',
 			'no-console': 'off',
 			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
+			'no-secrets/no-secrets': 'error',
 			'no-unused-expressions': 1,
 			'no-unused-vars': 1,
 			'no-warning-comments': 'off',
 			'object-curly-spacing': 'off',
+			'optimize-regex/optimize-regex': 'warn',
 			'perfectionist/sort-imports': 'off',
 			'perfectionist/sort-modules': 'off',
 			'perfectionist/sort-objects': [
@@ -284,6 +287,7 @@ export default [
 					endOfLine: 'auto',
 				},
 			],
+			'redos/no-vulnerable': 'error',
 			semi: ['warn', 'never'],
 			'semi-style': 'off',
 			'simple-import-sort/exports': 'warn',
