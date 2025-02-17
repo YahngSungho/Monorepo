@@ -75,7 +75,7 @@
 		"toml"
 	],
 	"peacock.color": "#920320",
-	"prettier.configPath": "",
+	"prettier.endOfLine": "lf",
 	"prettier.experimentalTernaries": false,
 	"prettier.jsxSingleQuote": true,
 	"prettier.semi": false,
