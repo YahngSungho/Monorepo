@@ -14,7 +14,7 @@
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
 		"stylelint": "stylelint **/*.{css,svelte}",
-		"test:unit": "vitest"
+		"test:unit": "vitest run"
 	},
 	"sideEffects": [
 		"**/*.css"

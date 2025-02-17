@@ -10,15 +10,18 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"stylelint": "stylelint **/*.{css,svelte}",
-		"test:unit": "vitest"
+		"test:unit": "vitest run"
 	},
 	"dependencies": {
 		"mutative": "^1.1.0",
 		"random-js": "^2.1.0"
 	},
+	"devDependencies": {
+		"@library/base": "workspace:*"
+	},
 	"keywords": [],
 	"exports": {
-		"./mutative": "./mutative.js",
-		"./random_engine": "./random_engine.js"
+		"./mutative": "./src/mutative.js",
+		"./random_engine": "./src/random_engine.js"
 	}
 }

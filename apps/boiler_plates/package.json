@@ -12,7 +12,7 @@
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"stylelint": "stylelint **/*.{css,svelte}",
 		"test:e2e": "playwright test",
-		"test:unit": "vitest",
+		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview"
 	},
