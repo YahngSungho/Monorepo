@@ -140,7 +140,7 @@ export default defineFlatConfig([
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
 				projectService: {
-					allowDefaultProject: ['*.js'],
+					allowDefaultProject: ['*.js', '*.svelte'],
 				},
 				requireConfigFile: false,
 				sourceType: 'module',
@@ -170,7 +170,7 @@ export default defineFlatConfig([
 					typescript: parser_TS,
 				},
 				projectService: {
-					allowDefaultProject: ['*.js'],
+					allowDefaultProject: ['*.js', '*.svelte'],
 				},
 				requireConfigFile: false,
 				sourceType: 'module',
