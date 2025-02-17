@@ -12,7 +12,7 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"stylelint": "stylelint **/*.{css,svelte}",
-		"test:unit": "vitest",
+		"test:unit": "vitest run",
 		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
 	},
 	"dependencies": {
@@ -35,6 +35,7 @@
 	},
 	"keywords": [],
 	"exports": {
+		"./baseTest.js": "./src/baseTest.js",
 		"./tsconfig.json": "./tsconfig.json",
 		"./IBMPlexMath.woff2": "./static/fonts/math/IBMPlexMath-Regular.woff2",
 		"./IBMPlexMono-Bold.woff2": "./static/fonts/mono/IBMPlexMono-Bold.woff2",
