@@ -13,6 +13,7 @@ import * as parser_TS from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import problems from 'eslint-config-problems'
 import turboConfig from 'eslint-config-turbo/flat'
+import { defineFlatConfig } from 'eslint-define-config'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import arrayFunc from 'eslint-plugin-array-func'
 import compat from 'eslint-plugin-compat'
@@ -58,7 +59,7 @@ const flatCompat = new FlatCompat({
 })
 const gitignorePath = path.join(__dirname, '.gitignore')
 
-export default [
+export default defineFlatConfig([
 	includeIgnoreFile(gitignorePath),
 	{
 		ignores: ['!.storybook'],
@@ -356,4 +357,4 @@ export default [
 	...yml.configs['flat/prettier'],
 	...svelte.configs['flat/prettier'],
 	eslintConfigPrettier,
-]
+])

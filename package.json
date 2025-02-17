@@ -46,6 +46,7 @@
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-config-problems": "^9.0.0",
 		"eslint-config-turbo": "^2.4.0",
+		"eslint-define-config": "^2.1.0",
 		"eslint-formatter-pretty": "^5.0.0",
 		"eslint-import-resolver-typescript": "^3.7.0",
 		"eslint-plugin-array-func": "^5.0.2",
