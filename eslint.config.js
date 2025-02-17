@@ -123,6 +123,11 @@ export default defineFlatConfig([
 	nounsanitized.configs.recommended,
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
+	...jsonc.configs['flat/base'],
+	...jsonc.configs['flat/recommended-with-json'],
+	...jsonc.configs['flat/recommended-with-jsonc'],
+	...jsonc.configs['flat/recommended-with-json5'],
+	...jsonSchema.configs['flat/recommended'],
 	...markdown.configs.recommended,
 	...flatCompat.extends('plugin:xstate/all', 'plugin:lodash/recommended'),
 
@@ -205,12 +210,6 @@ export default defineFlatConfig([
 
 			sourceType: 'script',
 		},
-
-		...jsonc.configs['flat/base'],
-		...jsonc.configs['flat/recommended-with-json'],
-		...jsonc.configs['flat/recommended-with-jsonc'],
-		...jsonc.configs['flat/recommended-with-json5'],
-		...jsonSchema.configs['flat/recommended'],
 	},
 	{
 		files: ['**/*.yaml', '**/*.yml'],
