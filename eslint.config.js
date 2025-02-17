@@ -280,6 +280,7 @@ export default defineFlatConfig([
 			'import/no-unresolved': 'off',
 			indent: ['warn', 'tab'],
 			'lodash/prefer-lodash-method': 'off',
+			'lodash/prefer-lodash-typecheck': 'off',
 			'n/no-extraneous-import': 'off',
 			'n/no-missing-import': 'off',
 			'n/prefer-global/process': 'off',
