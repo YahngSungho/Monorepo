@@ -1,4 +1,5 @@
 {
+	"endOfLine": "lf",
 	"experimentalTernaries": true,
 	"jsxSingleQuote": true,
 	"overrides": [

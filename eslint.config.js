@@ -108,7 +108,7 @@ export default defineFlatConfig([
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
 	functional.configs.externalVanillaRecommended,
-	functional.configs.recommended,
+	functional.configs.lite,
 	functional.configs.stylistic,
 	// functional.configs.disableTypeChecked,
 	problems,
@@ -123,6 +123,11 @@ export default defineFlatConfig([
 	nounsanitized.configs.recommended,
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
+	...jsonc.configs['flat/base'],
+	...jsonc.configs['flat/recommended-with-json'],
+	...jsonc.configs['flat/recommended-with-jsonc'],
+	...jsonc.configs['flat/recommended-with-json5'],
+	...jsonSchema.configs['flat/recommended'],
 	...markdown.configs.recommended,
 	...flatCompat.extends('plugin:xstate/all', 'plugin:lodash/recommended'),
 
@@ -140,7 +145,7 @@ export default defineFlatConfig([
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
 				projectService: {
-					allowDefaultProject: ['*.js'],
+					allowDefaultProject: ['*.js', '*.svelte'],
 				},
 				requireConfigFile: false,
 				sourceType: 'module',
@@ -170,7 +175,7 @@ export default defineFlatConfig([
 					typescript: parser_TS,
 				},
 				projectService: {
-					allowDefaultProject: ['*.js'],
+					allowDefaultProject: ['*.js', '*.svelte'],
 				},
 				requireConfigFile: false,
 				sourceType: 'module',
@@ -186,8 +191,9 @@ export default defineFlatConfig([
 		},
 	},
 	{
+		files: ['**/e2e/*.test.js'],
+
 		...playwright.configs['flat/recommended'],
-		files: ['**/*.test.js'],
 		rules: {
 			...playwright.configs['flat/recommended'].rules,
 			// Customize Playwright rules
@@ -205,12 +211,6 @@ export default defineFlatConfig([
 
 			sourceType: 'script',
 		},
-
-		...jsonc.configs['flat/base'],
-		...jsonc.configs['flat/recommended-with-json'],
-		...jsonc.configs['flat/recommended-with-jsonc'],
-		...jsonc.configs['flat/recommended-with-json5'],
-		...jsonSchema.configs['flat/recommended'],
 	},
 	{
 		files: ['**/*.yaml', '**/*.yml'],
@@ -228,6 +228,7 @@ export default defineFlatConfig([
 	},
 	{
 		files: ['**/*.mdx'],
+
 		...mdx.flat,
 		// optional, if you want to lint code blocks at the same
 		processor: mdx.createRemarkProcessor({
@@ -239,6 +240,7 @@ export default defineFlatConfig([
 	},
 	{
 		files: ['**/*.mdx'],
+
 		...mdx.flatCodeBlocks,
 		rules: {
 			...mdx.flatCodeBlocks.rules,
@@ -280,6 +282,7 @@ export default defineFlatConfig([
 			'import/no-unresolved': 'off',
 			indent: ['warn', 'tab'],
 			'lodash/prefer-lodash-method': 'off',
+			'lodash/prefer-lodash-typecheck': 'off',
 			'n/no-extraneous-import': 'off',
 			'n/no-missing-import': 'off',
 			'n/prefer-global/process': 'off',

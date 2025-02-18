@@ -156,3 +156,5 @@ output
 ambient.d.ts
 non-ambient.d.ts
 cache
+
+release
