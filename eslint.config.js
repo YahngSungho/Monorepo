@@ -191,8 +191,9 @@ export default defineFlatConfig([
 		},
 	},
 	{
+		files: ['**/e2e/*.test.js'],
+
 		...playwright.configs['flat/recommended'],
-		files: ['**/*.test.js'],
 		rules: {
 			...playwright.configs['flat/recommended'].rules,
 			// Customize Playwright rules
@@ -227,6 +228,7 @@ export default defineFlatConfig([
 	},
 	{
 		files: ['**/*.mdx'],
+
 		...mdx.flat,
 		// optional, if you want to lint code blocks at the same
 		processor: mdx.createRemarkProcessor({
@@ -238,6 +240,7 @@ export default defineFlatConfig([
 	},
 	{
 		files: ['**/*.mdx'],
+
 		...mdx.flatCodeBlocks,
 		rules: {
 			...mdx.flatCodeBlocks.rules,
