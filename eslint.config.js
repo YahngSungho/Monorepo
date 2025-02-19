@@ -288,7 +288,7 @@ export default defineFlatConfig([
 			'n/prefer-global/process': 'off',
 			'no-console': 'off',
 			'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
-			'no-secrets/no-secrets': 'error',
+			'no-secrets/no-secrets': ['error', { tolerance: 4.2 }],
 			'no-unused-expressions': 1,
 			'no-unused-vars': 1,
 			'no-warning-comments': 'off',

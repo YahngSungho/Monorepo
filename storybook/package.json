@@ -6,6 +6,7 @@
 	"scripts": {
 		"build": "storybook build --output-dir storybook-static",
 		"dev": "storybook dev -p 6006",
+		"playwright-report": "pnpm exec playwright show-report",
 		"test:e2e": "pnpm exec playwright test",
 		"preview": "vite preview --outDir storybook-static"
 	},

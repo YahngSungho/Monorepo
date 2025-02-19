@@ -12,8 +12,10 @@
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
+		"eslint-fix": "eslint **/*.{js,ts,svelte} --fix",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
 		"stylelint": "stylelint **/*.{css,svelte}",
+		"stylelint-fix": "stylelint **/*.{css,svelte} --fix",
 		"test:unit": "vitest run"
 	},
 	"sideEffects": [

@@ -18,7 +18,10 @@
 			"persistent": true
 		},
 		"eslint": {},
+		"eslint-fix": {},
+		"playwright-report": {},
 		"stylelint": {},
+		"stylelint-fix": {},
 		"test": {
 			"dependsOn": ["transit"]
 		},
