@@ -72,6 +72,7 @@ declare module '$env/static/private' {
 	export const npm_package_scripts_dev: string;
 	export const npm_package_scripts_eslint: string;
 	export const npm_package_scripts_eslint_fix: string;
+	export const npm_package_scripts_playwright_install_env: string;
 	export const npm_package_scripts_playwright_report: string;
 	export const npm_package_scripts_preview: string;
 	export const npm_package_scripts_stylelint: string;
@@ -176,6 +177,7 @@ declare module '$env/dynamic/private' {
 		npm_package_scripts_dev: string;
 		npm_package_scripts_eslint: string;
 		npm_package_scripts_eslint_fix: string;
+		npm_package_scripts_playwright_install_env: string;
 		npm_package_scripts_playwright_report: string;
 		npm_package_scripts_preview: string;
 		npm_package_scripts_stylelint: string;

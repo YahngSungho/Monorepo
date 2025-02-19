@@ -12,7 +12,6 @@
 		"format": "prettier --write .",
 		"format-changed": "pretty-quick --write --ignore-unknown .",
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
-		"install-playwright-env": "pnpm exec playwright install --with-deps",
 		"lint": "turbo run check eslint stylelint",
 		"lint-fix": "turbo run eslint-fix  && turbo run stylelint-fix && pnpm run format-changed",
 		"playwright-report": "turbo run playwright-report",

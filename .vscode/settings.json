@@ -24,7 +24,6 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"bookmarks.useWorkaroundForFormatters": true,
-	"console-ninja.dateTimeDisplayMode": "Relative To Previous",
 	"cssVariables.lookupFiles": [
 		"libraries/base/node_modules/open-props/open-props.min.css",
 		"libraries/base/base.css",

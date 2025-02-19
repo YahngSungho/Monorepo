@@ -6,8 +6,9 @@
 	"scripts": {
 		"build": "storybook build --output-dir storybook-static",
 		"dev": "storybook dev -p 6006",
+		"playwright-install-env": "pnpm exec playwright install --with-deps",
 		"playwright-report": "pnpm exec playwright show-report",
-		"test:e2e": "pnpm exec playwright test",
+		"test:e2e": "pnpm run playwright-install-env && pnpm exec playwright test",
 		"preview": "vite preview --outDir storybook-static"
 	},
 	"dependencies": {
@@ -16,6 +17,7 @@
 	"devDependencies": {
 		"@chromatic-com/storybook": "^3.2.4",
 		"@library/base": "workspace:*",
+		"@library/library_wrappers": "workspace:*",
 		"@library/ui": "workspace:*",
 		"@storybook/addon-essentials": "^8.5.3",
 		"@storybook/addon-interactions": "^8.5.3",
