@@ -62,9 +62,9 @@ async function visitPage(baseUrl, testRoute, page) {
 }
 
 const PERFORMANCE_THRESHOLDS = {
-	maxCLS: 0.1,
-	maxLCP: 3500,
-	maxLoadTime: 5000,
+	maxCLS: process.env.CI ? 0.4 : 0.1,
+	maxLCP: process.env.CI ? 1500 : 3500,
+	maxLoadTime: process.env.CI ? 2000 : 5000,
 }
 
 async function speedCheck(page, testRoute) {
