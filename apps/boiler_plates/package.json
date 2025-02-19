@@ -15,7 +15,7 @@
 		"playwright-report": "pnpm exec playwright show-report",
 		"stylelint": "stylelint **/*.{css,svelte}",
 		"stylelint-fix": "stylelint **/*.{css,svelte} --fix",
-		"test:e2e": "pnpm run playwright-install-env && pnpm exec playwright test",
+		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview"

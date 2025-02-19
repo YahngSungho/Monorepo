@@ -41,7 +41,6 @@ declare module '$env/static/private' {
 	export const npm_config_engine_strict: string;
 	export const npm_config_frozen_lockfile: string;
 	export const npm_config_msvs_version: string;
-	export const npm_config_node_gyp: string;
 	export const npm_config_registry: string;
 	export const npm_config_user_agent: string;
 	export const npm_execpath: string;
@@ -146,7 +145,6 @@ declare module '$env/dynamic/private' {
 		npm_config_engine_strict: string;
 		npm_config_frozen_lockfile: string;
 		npm_config_msvs_version: string;
-		npm_config_node_gyp: string;
 		npm_config_registry: string;
 		npm_config_user_agent: string;
 		npm_execpath: string;
