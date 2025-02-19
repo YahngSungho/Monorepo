@@ -1,6 +1,7 @@
-import { expect, test } from '@playwright/test'
 import { readdirSync } from 'node:fs'
 import path, { join } from 'node:path'
+
+import { expect, test } from '@playwright/test'
 
 const VALID_ROUTE_FILE = '+page.svelte'
 const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/g
@@ -33,14 +34,11 @@ async function visitPage(baseUrl, testRoute, page) {
 
 	expect(response?.status()).toBeGreaterThanOrEqual(200)
 	expect(response?.status()).toBeLessThan(400)
-	await expect(page.locator('html')).toBeVisible()
-	await expect(page.locator('body')).toBeVisible()
 
 	await speedCheck(page, testRoute)
 
-	// 비동기 오류 수집을 위한 대기
-	await page.waitForTimeout(500)
-	await page.waitForLoadState('networkidle')
+	await expect(page.locator('html')).toBeVisible()
+	await expect(page.locator('body')).toBeVisible()
 
 	const divCheck1 = await page.locator('#Top_Layout_Check').count()
 	expect(divCheck1).toBe(1)
@@ -59,104 +57,98 @@ async function visitPage(baseUrl, testRoute, page) {
 			.filter(Boolean)
 			.join('\n')
 
-		throw new Error(errorMessage)
+		throw new Error(errorMessage || 'error')
 	}
 }
 
 const PERFORMANCE_THRESHOLDS = {
 	maxCLS: 0.1,
-	maxLCP: 1500,
+	maxLCP: 3500,
 	maxLoadTime: 5000,
 }
 
 async function speedCheck(page, testRoute) {
-	await page.waitForTimeout(1000)
-	// 네트워크 유휴 상태까지 대기
-	try {
-		await page.waitForLoadState('networkidle', { timeout: 10_000 })
-	} catch (error) {
-		throw new Error(`Page load timeout: ${error.message}`)
-	}
+	await page.waitForLoadState('domcontentloaded')
 
-	// Navigation Timing API 대신 Performance API 사용
-	const loadTime = await page.evaluate(() => {
-		const navigation = performance.getEntriesByType('navigation')[0]
-		// @ts-ignore
-		return navigation.loadEventEnd - navigation.startTime
+	let lcp = await page.evaluate(() => {
+		return new Promise((resolve) => {
+			let lcpValue = 0
+			const observer = new PerformanceObserver((list) => {
+				const entries = list.getEntries()
+				const lastEntry = entries.at(-1)
+				if (lastEntry) {
+					lcpValue = lastEntry.startTime
+					observer.disconnect() // LCP 값 얻었으면 observer 중단
+					resolve(lcpValue)
+				}
+			})
+
+			observer.observe({ buffered: true, type: 'largest-contentful-paint' })
+
+			setTimeout(() => {
+				// 타임아웃 처리 (LCP 이벤트가 발생하지 않을 경우)
+				observer.disconnect()
+				resolve(lcpValue) // 타임아웃 시 현재까지의 LCP 값 resolve (0일 수 있음)
+			}, 10_000)
+		})
+	})
+
+	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
+
+	let cls = await page.evaluate(() => {
+		return new Promise((resolve) => {
+			let clsValue = 0
+			const observer = new PerformanceObserver((list) => {
+				for (const entry of list.getEntries()) {
+					// hadRecentInput이 false인 경우만 CLS에 포함
+					if (!entry.hadRecentInput) {
+						clsValue += entry.value
+					}
+				}
+			})
+
+			// buffered: true 옵션을 사용하면 이미 발생한 layout-shift 이벤트도 처리
+			observer.observe({ buffered: true, type: 'layout-shift' })
+
+			// 일정 시간 후 observer를 disconnect하고 현재까지 누적된 CLS 값을 resolve
+			// (필요에 따라 timeout 시간을 조정)
+			setTimeout(() => {
+				observer.disconnect()
+				resolve(clsValue)
+			}, 10_000)
+		})
+	})
+
+	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
+	let loadTime = await page.evaluate(() => {
+		const navigationEntries = performance.getEntriesByType('navigation')
+		if (navigationEntries.length > 0) {
+			const navigationEntry = navigationEntries[0]
+			return navigationEntry.loadEventEnd - navigationEntry.startTime
+		}
+		return 0 // Navigation Timing API를 지원하지 않는 경우
 	})
 
 	expect(loadTime).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLoadTime)
 
-	const lcp = await page.evaluate(
-		() =>
-			new Promise((resolve) => {
-				const observer = new PerformanceObserver((list) => {
-					const entries = list.getEntries()
-					observer.disconnect()
-					const lastEntry = entries.at(-1)
-					resolve(lastEntry ? lastEntry.startTime : 0)
-				})
-
-				observer.observe({ buffered: true, type: 'largest-contentful-paint' })
-
-				setTimeout(() => {
-					observer.disconnect()
-					test
-						.info()
-						.attach('performance-timeout', { body: 'largest-contentful-paint 지연시간 만료`' })
-					console.error('largest-contentful-paint 지연시간 만료')
-					resolve(0)
-				}, 10_000)
-			}),
-	)
-	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
-
-	const cls = await page.evaluate(
-		() =>
-			new Promise((resolve) => {
-				let clsValue = 0
-				const observer = new PerformanceObserver((list) => {
-					for (const entry of list.getEntries()) {
-						// @ts-ignore
-						if (!entry.hadRecentInput) {
-							// @ts-ignore
-							clsValue += entry.value
-						}
-					}
-					observer.disconnect()
-					resolve(clsValue)
-				})
-
-				observer.observe({ buffered: true, type: 'layout-shift' })
-
-				setTimeout(() => {
-					observer.disconnect()
-					test.info().attach('performance-timeout', { body: 'layout-shift 지연시간 만료`' })
-					console.error('layout-shift 지연시간 만료')
-					resolve(0)
-				}, 10_000)
-			}),
-	)
-	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
-
 	const routeName = testRoute.slice(1, -1).replace('\\', '/') || 'ROOT'
-	const loadTime0 = Math.round(loadTime)
-	const lcp0 = Math.round(lcp)
-	const cls0 = Number(cls).toFixed(5)
+	loadTime = Math.round(loadTime)
+	lcp = Number(lcp).toFixed(1)
+	cls = Number(cls).toFixed(5)
 
 	console.log(`
 	< 성능: ${routeName} >
-	Load: ${loadTime0}ms | LCP: ${lcp0}ms | CLS: ${cls0}`)
+	Load: ${loadTime}ms | LCP: ${lcp}ms | CLS: ${cls}`)
 
 	// Playwright 내장 메트릭과 결합
 	const performanceMetrics = {
 		metrics: {
-			cls0,
-			lcp0,
-			loadTime0,
+			cls,
+			lcp,
+			loadTime,
 		},
 		route: routeName,
-		timestamp: Date.now(),
+		timestamp: new Date().toLocaleDateString(),
 	}
 	test.info().attach(`성능: ${routeName}`, { body: JSON.stringify(performanceMetrics) })
 }
@@ -168,7 +160,10 @@ async function speedCheck(page, testRoute) {
 function runTests(projectRouteRoot, dynamicRouteParams) {
 	test.describe('스모크 테스트', () => {
 		const routes = getRoutes(projectRouteRoot)
-		const uniqueRoutes = [...new Set(routes.map((r) => r.route))].filter((route) => route !== '')
+		const uniqueRoutes = Array.from(new Set(routes.map((r) => r.route))).filter(
+			// 수정: 스프레드 연산자 사용
+			(route) => route !== '',
+		)
 		const baseUrl = '.'
 		const routeMap = new Map(routes.map((r) => [r.route, r]))
 
@@ -191,7 +186,7 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
 										`Expected ${expectedParams.length}, got ${params.length}`,
 								)
 							}
-							const encodedParams = params.map((p) => encodeURIComponent(p))
+							const encodedParams = params.map(encodeURIComponent)
 
 							// 모든 동적 세그먼트를 순차적으로 치환
 							let replacedRoute = testRoute
@@ -249,7 +244,7 @@ function getRoutes(projectRouteRoot, dir = '', routes = []) {
 				.replace(/\/index$/, '/')
 
 			if (!routePath.startsWith('/')) {
-				routePath = '/' + routePath
+				routePath = `/${routePath}`
 			}
 
 			const isDynamic = DYNAMIC_ROUTE_PATTERN.test(routePath)

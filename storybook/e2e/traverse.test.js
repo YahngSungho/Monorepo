@@ -1,14 +1,17 @@
 import { expect, test } from '@playwright/test'
-import manifest from '../storybook-static/index.json' assert { type: 'json' }
 
-for (const key of Object.keys(manifest.entries)) {
-	const { id } = manifest.entries[key]
+import manifest from '../storybook-static/index.json' with { type: 'json' }
 
+for (const entry of Object.values(manifest.entries)) {
+	if (!entry?.id) {
+		continue
+	}
+	const { id } = entry
 	if (id.endsWith('docs')) {
 		continue
 	}
 
-	test(`방문: ${id.replace(/\-/g, ' > ')}`, async ({ page }) => {
+	test(`방문: ${id.replaceAll('-', ' > ')}`, async ({ page }) => {
 		// 콘솔 오류 감지 설정 (페이지 이동 전에 설정)
 		const consoleErrors = []
 		page.on('console', (msg) => {
@@ -28,11 +31,14 @@ for (const key of Object.keys(manifest.entries)) {
 		await page.goto(`./iframe.html?id=${id}&viewMode=story`)
 		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
 
+
+
 		// 약간의 대기 시간 추가 (비동기 오류 수집을 위해)
 		await page.waitForTimeout(500)
 
 		// 에러 체크
 		if (consoleErrors.length > 0 || failedRequests.length > 0) {
+			// eslint-disable-next-line unicorn/error-message
 			throw new Error([...consoleErrors, ...failedRequests].join('\n'))
 		}
 	})

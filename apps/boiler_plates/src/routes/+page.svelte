@@ -15,7 +15,9 @@ let foo = $state(`${fo}foifoifo`)
 
 foo += ' bar133322222223'
 
-const eewre = 'eeeq'
+const eewre = new Promise((resolve) => {
+	resolve('test')
+})
 
 ;('') // eslint-disable-line
 </script>
@@ -134,6 +136,7 @@ const eewre = 'eeeq'
 </div>
 
 <div id="Page_Check"></div>
+
 <style>
 .p1 {
 	overflow: auto;

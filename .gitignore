@@ -139,13 +139,13 @@ dist
 .turbo
 
 *storybook.log
-storybook-static
+**/storybook-static
 /others
 pnpm-lock.yaml
-test-results
-playwright-report
-generated
-output
+**/test-results
+**/playwright-report
+**/generated
+**/output
 **/.svelte-kit/cloudflare
 **/.svelte-kit/cloudflare-tmp
 **/.svelte-kit/types
@@ -155,6 +155,5 @@ output
 **/non-ambient.d.ts
 ambient.d.ts
 non-ambient.d.ts
-cache
-
-release
+**/cache
+**/release

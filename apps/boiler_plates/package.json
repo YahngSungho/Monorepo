@@ -10,8 +10,12 @@
 		"depCheck": "npx depcheck",
 		"dev": "vite dev",
 		"eslint": "eslint **/*.{js,ts,svelte}",
+		"eslint-fix": "eslint **/*.{js,ts,svelte} --fix",
+		"playwright-install-env": "pnpm exec playwright install --with-deps",
+		"playwright-report": "pnpm exec playwright show-report",
 		"stylelint": "stylelint **/*.{css,svelte}",
-		"test:e2e": "pnpm exec playwright test",
+		"stylelint-fix": "stylelint **/*.{css,svelte} --fix",
+		"test:e2e": "pnpm run playwright-install-env && pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview"
