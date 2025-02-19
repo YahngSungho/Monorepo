@@ -1,5 +1,6 @@
 import { devices } from '@playwright/test'
 
+/** @type {import('@playwright/test').PlaywrightTestConfig} */
 export default {
 	forbidOnly: !!process.env.CI,
 	fullyParallel: true,
@@ -7,7 +8,7 @@ export default {
 	projects: [
 		{
 			name: 'chromium',
-			use: { ...devices['Desktop Chrome'] },
+			use: { ...devices['Desktop Chrome'], screenshot: 'only-on-failure' },
 		},
 
 		{
@@ -31,19 +32,19 @@ export default {
 		},
 
 		/* against branded browsers. */
-		!process.env.CI ?
-			{}
-		:	{
+		process.env.CI ?
+			{
 				name: 'Microsoft Edge',
 				use: { ...devices['Desktop Edge'], channel: 'msedge' },
-			},
+			}
+		:	{},
 
-		!process.env.CI ?
-			{}
-		:	{
+		process.env.CI ?
+			{
 				name: 'Google Chrome',
 				use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-			},
+			}
+		:	{},
 	],
 	reporter: process.env.CI ? 'github' : 'html',
 	retries: process.env.CI ? 2 : 1,
