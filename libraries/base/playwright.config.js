@@ -31,14 +31,19 @@ export default {
 		},
 
 		/* against branded browsers. */
-		{
-			name: 'Microsoft Edge',
-			use: { ...devices['Desktop Edge'], channel: 'msedge' },
-		},
-		{
-			name: 'Google Chrome',
-			use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-		},
+		!process.env.CI ?
+			undefined
+		:	{
+				name: 'Microsoft Edge',
+				use: { ...devices['Desktop Edge'], channel: 'msedge' },
+			},
+
+		!process.env.CI ?
+			undefined
+		:	{
+				name: 'Google Chrome',
+				use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+			},
 	],
 	reporter: process.env.CI ? 'github' : 'html',
 	retries: 0,
@@ -47,7 +52,7 @@ export default {
 	use: {
 		screenshot: 'only-on-failure',
 		trace: 'on-first-retry',
-		// video: 'retain-on-failure'
+		// video: 'retain-on-failure',
 	},
 
 	workers: process.env.CI ? 2 : '50%',
