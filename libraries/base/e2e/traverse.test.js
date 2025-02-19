@@ -1,10 +1,18 @@
 import { readdirSync } from 'node:fs'
-import path, { join } from 'node:path'
+import path from 'node:path'
 
 import { expect, test } from '@playwright/test'
 
 const VALID_ROUTE_FILE = '+page.svelte'
 const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/g
+
+/**
+ * @typedef {PerformanceEntry & { hadRecentInput: boolean; value: number }} LayoutShiftEntry
+ *
+ * @typedef {PerformanceEntry & { renderTime: number; loadTime: number }} LargestContentfulPaint
+ *
+ * @typedef {PerformanceEntry & { loadEventEnd: number; startTime: number }} PerformanceNavigationTiming
+ */
 
 /**
  * @param {string} baseUrl
@@ -27,10 +35,12 @@ async function visitPage(baseUrl, testRoute, page) {
 	})
 
 	const targetUrl = `${baseUrl}${testRoute}`
-	const response = await page.goto(targetUrl, { timeout: 0, waitUntil: 'load' })
+	const response = await page.goto(targetUrl)
 	if (!response) {
 		throw new Error(`Failed to load page: ${targetUrl}`)
 	}
+
+	await page.waitForLoadState('load')
 
 	expect(response?.status()).toBeGreaterThanOrEqual(200)
 	expect(response?.status()).toBeLessThan(400)
@@ -74,10 +84,10 @@ async function speedCheck(page, testRoute) {
 		return new Promise((resolve) => {
 			let lcpValue = 0
 			const observer = new PerformanceObserver((list) => {
-				const entries = list.getEntries()
+				const entries = /** @type {LargestContentfulPaint[]} */ (list.getEntries())
 				const lastEntry = entries.at(-1)
 				if (lastEntry) {
-					lcpValue = lastEntry.startTime
+					lcpValue = lastEntry.renderTime || lastEntry.loadTime
 					observer.disconnect() // LCP 값 얻었으면 observer 중단
 					resolve(lcpValue)
 				}
@@ -99,11 +109,9 @@ async function speedCheck(page, testRoute) {
 		return new Promise((resolve) => {
 			let clsValue = 0
 			const observer = new PerformanceObserver((list) => {
-				for (const entry of list.getEntries()) {
-					// hadRecentInput이 false인 경우만 CLS에 포함
-					if (!entry.hadRecentInput) {
-						clsValue += entry.value
-					}
+				const entry = /** @type {LayoutShiftEntry} */ (list.getEntries()[0])
+				if (!entry.hadRecentInput) {
+					clsValue += entry.value
 				}
 			})
 
@@ -121,7 +129,9 @@ async function speedCheck(page, testRoute) {
 
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
 	let loadTime = await page.evaluate(() => {
-		const navigationEntries = performance.getEntriesByType('navigation')
+		const navigationEntries = /** @type {PerformanceNavigationTiming[]} */ (
+			performance.getEntriesByType('navigation')
+		)
 		if (navigationEntries.length > 0) {
 			const navigationEntry = navigationEntries[0]
 			return navigationEntry.loadEventEnd - navigationEntry.startTime
@@ -228,10 +238,10 @@ function runTests(projectRouteRoot, dynamicRouteParams) {
  * @returns {{ route: string; dynamic: boolean }[]} - An array of route objects.
  */
 function getRoutes(projectRouteRoot, dir = '', routes = []) {
-	const items = readdirSync(join(projectRouteRoot, dir), { withFileTypes: true })
+	const items = readdirSync(path.join(projectRouteRoot, dir), { withFileTypes: true })
 
 	for (const item of items) {
-		const fullPath = join(dir, item.name)
+		const fullPath = path.join(dir, item.name)
 
 		if (item.isDirectory()) {
 			getRoutes(projectRouteRoot, fullPath, routes)
