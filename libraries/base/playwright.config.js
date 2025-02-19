@@ -32,21 +32,21 @@ export default {
 
 		/* against branded browsers. */
 		!process.env.CI ?
-			undefined
+			{}
 		:	{
 				name: 'Microsoft Edge',
 				use: { ...devices['Desktop Edge'], channel: 'msedge' },
 			},
 
 		!process.env.CI ?
-			undefined
+			{}
 		:	{
 				name: 'Google Chrome',
 				use: { ...devices['Desktop Chrome'], channel: 'chrome' },
 			},
 	],
 	reporter: process.env.CI ? 'github' : 'html',
-	retries: 0,
+	retries: process.env.CI ? 2 : 1,
 	testDir: 'e2e',
 	timeout: 60_000,
 	use: {

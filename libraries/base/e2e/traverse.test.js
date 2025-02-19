@@ -27,10 +27,12 @@ async function visitPage(baseUrl, testRoute, page) {
 	})
 
 	const targetUrl = `${baseUrl}${testRoute}`
-	const response = await page.goto(targetUrl, { timeout: 0, waitUntil: 'load' })
+	const response = await page.goto(targetUrl)
 	if (!response) {
 		throw new Error(`Failed to load page: ${targetUrl}`)
 	}
+
+	await page.waitForLoadState('load')
 
 	expect(response?.status()).toBeGreaterThanOrEqual(200)
 	expect(response?.status()).toBeLessThan(400)
