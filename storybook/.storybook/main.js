@@ -1,4 +1,5 @@
-import { dirname, join } from 'node:path'
+import { createRequire } from 'node:module'
+import path from 'node:path'
 /** @type {import('@storybook/svelte-vite').StorybookConfig} */
 const config = {
 	addons: [
@@ -18,8 +19,8 @@ const config = {
 	},
 
 	stories: [
-		'../../**/src/**/*.stories.@(js|ts|svelte)',
-		'../../**/src/**/*.mdx',
+		'../../*/src/**/*.stories.@(js|ts|svelte)',
+		'../../*/src/**/*.mdx',
 		'../src/**/*.mdx',
 		'../src/**/*.stories.@(js|ts|svelte)',
 	],
@@ -27,5 +28,6 @@ const config = {
 export default config
 
 function getAbsolutePath(value) {
-	return dirname(require.resolve(join(value, 'package.json')))
+	const require = createRequire(import.meta.url)
+	return path.dirname(require.resolve(path.join(value, 'package.json')))
 }
