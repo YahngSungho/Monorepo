@@ -81,6 +81,7 @@ async function speedCheck(page, testRoute) {
 	await page.waitForLoadState('domcontentloaded')
 
 	let lcp = await page.evaluate(
+		// eslint-disable-next-line no-shadow
 		([PERFORMANCE_THRESHOLDS]) => {
 			return new Promise((resolve) => {
 				let lcpValue = 0
@@ -109,6 +110,7 @@ async function speedCheck(page, testRoute) {
 	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
 
 	let cls = await page.evaluate(
+		// eslint-disable-next-line no-shadow
 		([PERFORMANCE_THRESHOLDS]) => {
 			return new Promise((resolve) => {
 				let clsValue = 0
@@ -130,7 +132,7 @@ async function speedCheck(page, testRoute) {
 				}, PERFORMANCE_THRESHOLDS.maxCLS + 100)
 			})
 		},
-		[PERFORMANCE_THRESHOLDS],
+		[PERFORMANCE_THRESHOLDS, PERFORMANCE_THRESHOLDS],
 	)
 
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
