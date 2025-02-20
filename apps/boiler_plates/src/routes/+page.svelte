@@ -15,9 +15,7 @@ let foo = $state(`${fo}foifoifo`)
 
 foo += ' bar133322222223'
 
-const eewre = new Promise((resolve) => {
-	resolve('test')
-})
+const eewre = Promise.resolve('test')
 
 ;('') // eslint-disable-line
 </script>
