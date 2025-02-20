@@ -1,0 +1,5 @@
+---
+description: Use the latest XState
+globs: **/*.xstate.*
+---
+This is the latest version XState docs: [XState.mdx](mdc:.cursor/docs/XState.mdx)

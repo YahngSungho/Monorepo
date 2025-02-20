@@ -1,0 +1,5 @@
+---
+description: Use 'Open Props' CSS variables when it's about CSS
+globs: **/*.css, **/*.svelte
+---
+[openProps.mdx](mdc:.cursor/docs/openProps.mdx)

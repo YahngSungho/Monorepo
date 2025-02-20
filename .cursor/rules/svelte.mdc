@@ -1,0 +1,5 @@
+---
+description: Use the latest version of Svelte
+globs: **/*.svelte
+---
+This is the latest version Svelte docs: [svelte.mdx](mdc:.cursor/docs/svelte.mdx)

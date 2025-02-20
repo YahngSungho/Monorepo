@@ -15,9 +15,7 @@ let foo = $state(`${fo}foifoifo`)
 
 foo += ' bar133322222223'
 
-const eewre = new Promise((resolve) => {
-	resolve('test')
-})
+const eewre = Promise.resolve('test')
 
 ;('') // eslint-disable-line
 </script>
@@ -147,6 +145,7 @@ const eewre = new Promise((resolve) => {
 
 .colored {
 	max-inline-size: 1000px;
+	block-size: var(--font-l);
 	background-color: var(--red-10);
 }
 </style>
