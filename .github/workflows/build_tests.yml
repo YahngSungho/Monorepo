@@ -49,18 +49,17 @@ jobs:
       # 먼저 리포트들을 하나의 디렉토리로 복사
       - name: Collect playwright reports
         run: |
-          mkdir -p playwright-reports
-          cp -r apps/*/playwright-report/* playwright-reports/ || true
-          cp -r packages/*/playwright-report/* playwright-reports/ || true
-          cp -r */*/playwright-report/* playwright-reports/ || true
-          ls -la playwright-reports
+          mkdir -p playwright-report
+          cp -r apps/*/playwright-report/* playwright-report/ || true
+          cp -r */*/playwright-report/* playwright-report/ || true
+          ls -la playwright-report
 
       # 모든 리포트를 한 번에 업로드
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: playwright-all-reports
-          path: playwright-reports/
+          path: playwright-report/
           retention-days: 30
 
       # Storybook 리포트는 별도로 업로드
