@@ -30,7 +30,7 @@ jobs:
 
       - uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 9.15.4
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
@@ -47,11 +47,11 @@ jobs:
         run: pnpm test
 
       # 먼저 리포트들을 하나의 디렉토리로 복사
-      - name: Collect playwright reports
+      - name: Collect Playwright Reports
         run: |
           mkdir -p playwright-report
-          cp -r apps/*/playwright-report/ playwright-report/ || true
-          cp -r */*/playwright-report/ playwright-report/ || true
+          cp -r ./apps/*/playwright-report/ playwright-report/ || true
+          cp -r ./*/*/playwright-report/ playwright-report/ || true
           ls -la playwright-report
 
       # 모든 리포트를 한 번에 업로드
