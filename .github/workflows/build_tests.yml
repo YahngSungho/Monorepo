@@ -50,8 +50,8 @@ jobs:
       - name: Collect playwright reports
         run: |
           mkdir -p playwright-report
-          cp -r apps/*/playwright-report/* playwright-report/ || true
-          cp -r */*/playwright-report/* playwright-report/ || true
+          cp -r apps/*/playwright-report/ playwright-report/ || true
+          cp -r */*/playwright-report/ playwright-report/ || true
           ls -la playwright-report
 
       # 모든 리포트를 한 번에 업로드
