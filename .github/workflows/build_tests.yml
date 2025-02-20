@@ -46,12 +46,24 @@ jobs:
       - name: Test
         run: pnpm test
 
-      # 먼저 리포트들을 하나의 디렉토리로 복사
+      # 테스트 실행 후 디버깅
+      - name: Debug After Test
+        run: |
+          echo "=== After Test Directory Structure ==="
+          find . -name "playwright-report" -type d
+
+      # 리포트 수집
       - name: Collect Playwright Reports
         run: |
           mkdir -p playwright-report
           find "$GITHUB_WORKSPACE" -type d -name "playwright-report" -exec cp -r {} playwright-report/ \;
           ls -la playwright-report
+
+      # 디버깅을 위한 디렉토리 구조 확인
+      - name: Debug directory structure
+        run: |
+          echo "Current directory: $(pwd)"
+          tree . || find . -type d
 
       # 모든 리포트를 한 번에 업로드
       - uses: actions/upload-artifact@v4
@@ -68,8 +80,3 @@ jobs:
           name: playwright-storybook-reports
           path: storybook/playwright-report/
           retention-days: 30
-
-      - name: Debug directory structure
-        run: |
-          echo "Current directory: $(pwd)"
-          find . -name playwright-report -type d
