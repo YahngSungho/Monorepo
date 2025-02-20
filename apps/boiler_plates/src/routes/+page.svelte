@@ -145,7 +145,7 @@ const eewre = Promise.resolve('test')
 
 .colored {
 	max-inline-size: 1000px;
-	block-size: var(--font-lar);
+	block-size: var(--font-l);
 	background-color: var(--red-10);
 }
 </style>

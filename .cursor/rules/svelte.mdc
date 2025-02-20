@@ -1,9 +1,5 @@
 ---
-description:
-globs:
+description: Use the latest version of Svelte
+globs: **/*.svelte
 ---
-
-# Your rule content
-
-- You can @ files here
-- You can use markdown but dont have to
+This is the latest version Svelte docs: [svelte.mdx](mdc:.cursor/docs/svelte.mdx)
