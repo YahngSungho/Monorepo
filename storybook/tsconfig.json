@@ -23,6 +23,8 @@
 		"**/*.svelte",
 		"tests/**/*",
 		"src/**/*",
+		".storybook/*.js",
+		".storybook/*.ts",
 		".svelte-kit/ambient.d.ts",
 		".svelte-kit/types/**/$types.d.ts"
 	]
