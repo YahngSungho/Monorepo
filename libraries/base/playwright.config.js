@@ -47,12 +47,12 @@ export default {
 		:	{},
 	],
 	reporter: process.env.CI ? 'github' : 'html',
-	retries: process.env.CI ? 2 : 1,
+	retries: process.env.CI ? 1 : 0,
 	testDir: 'e2e',
 	timeout: 60_000,
 	use: {
 		screenshot: 'only-on-failure',
-		trace: 'on-first-retry',
+		trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
 		// video: 'retain-on-failure',
 	},
 

@@ -17,7 +17,7 @@
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
 		"playwright-report": "turbo run playwright-report",
 		"test": "turbo run test:unit test:e2e",
-		"test:e2e": "pnpm run playwright-install-env && turbo run test:e2e",
+		"test:e2e": "turbo run test:e2e",
 		"test:unit": "turbo run test:unit",
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
 	},
