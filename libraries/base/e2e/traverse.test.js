@@ -80,54 +80,61 @@ const PERFORMANCE_THRESHOLDS = {
 async function speedCheck(page, testRoute) {
 	await page.waitForLoadState('domcontentloaded')
 
-	let lcp = await page.evaluate(() => {
-		return new Promise((resolve) => {
-			let lcpValue = 0
-			const observer = new PerformanceObserver((list) => {
-				const entries = /** @type {LargestContentfulPaint[]} */ (list.getEntries())
-				const lastEntry = entries.at(-1)
-				if (lastEntry) {
-					lcpValue = lastEntry.renderTime || lastEntry.loadTime
-					observer.disconnect() // LCP 값 얻었으면 observer 중단
-					resolve(lcpValue)
-				}
+	let lcp = await page.evaluate(
+		([PERFORMANCE_THRESHOLDS]) => {
+			return new Promise((resolve) => {
+				let lcpValue = 0
+				const observer = new PerformanceObserver((list) => {
+					const entries = /** @type {LargestContentfulPaint[]} */ (list.getEntries())
+					const lastEntry = entries.at(-1)
+					if (lastEntry) {
+						lcpValue = lastEntry.renderTime || lastEntry.loadTime
+						observer.disconnect() // LCP 값 얻었으면 observer 중단
+						resolve(lcpValue)
+					}
+				})
+
+				observer.observe({ buffered: true, type: 'largest-contentful-paint' })
+
+				setTimeout(() => {
+					// 타임아웃 처리 (LCP 이벤트가 발생하지 않을 경우)
+					observer.disconnect()
+					resolve(lcpValue) // 타임아웃 시 현재까지의 LCP 값 resolve (0일 수 있음)
+				}, PERFORMANCE_THRESHOLDS.maxLCP + 100)
 			})
-
-			observer.observe({ buffered: true, type: 'largest-contentful-paint' })
-
-			setTimeout(() => {
-				// 타임아웃 처리 (LCP 이벤트가 발생하지 않을 경우)
-				observer.disconnect()
-				resolve(lcpValue) // 타임아웃 시 현재까지의 LCP 값 resolve (0일 수 있음)
-			}, 10_000)
-		})
-	})
+		},
+		[PERFORMANCE_THRESHOLDS],
+	)
 
 	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
 
-	let cls = await page.evaluate(() => {
-		return new Promise((resolve) => {
-			let clsValue = 0
-			const observer = new PerformanceObserver((list) => {
-				const entry = /** @type {LayoutShiftEntry} */ (list.getEntries()[0])
-				if (!entry.hadRecentInput) {
-					clsValue += entry.value
-				}
+	let cls = await page.evaluate(
+		([PERFORMANCE_THRESHOLDS]) => {
+			return new Promise((resolve) => {
+				let clsValue = 0
+				const observer = new PerformanceObserver((list) => {
+					const entry = /** @type {LayoutShiftEntry} */ (list.getEntries()[0])
+					if (!entry.hadRecentInput) {
+						clsValue += entry.value
+					}
+				})
+
+				// buffered: true 옵션을 사용하면 이미 발생한 layout-shift 이벤트도 처리
+				observer.observe({ buffered: true, type: 'layout-shift' })
+
+				// 일정 시간 후 observer를 disconnect하고 현재까지 누적된 CLS 값을 resolve
+				// (필요에 따라 timeout 시간을 조정)
+				setTimeout(() => {
+					observer.disconnect()
+					resolve(clsValue)
+				}, PERFORMANCE_THRESHOLDS.maxCLS + 100)
 			})
-
-			// buffered: true 옵션을 사용하면 이미 발생한 layout-shift 이벤트도 처리
-			observer.observe({ buffered: true, type: 'layout-shift' })
-
-			// 일정 시간 후 observer를 disconnect하고 현재까지 누적된 CLS 값을 resolve
-			// (필요에 따라 timeout 시간을 조정)
-			setTimeout(() => {
-				observer.disconnect()
-				resolve(clsValue)
-			}, 10_000)
-		})
-	})
+		},
+		[PERFORMANCE_THRESHOLDS],
+	)
 
 	expect(cls).toBeLessThan(PERFORMANCE_THRESHOLDS.maxCLS)
+
 	let loadTime = await page.evaluate(() => {
 		const navigationEntries = /** @type {PerformanceNavigationTiming[]} */ (
 			performance.getEntriesByType('navigation')
@@ -150,6 +157,7 @@ async function speedCheck(page, testRoute) {
 	< 성능: ${routeName} >
 	Load: ${loadTime}ms | LCP: ${lcp}ms | CLS: ${cls}`)
 
+	const dateNow = new Date()
 	// Playwright 내장 메트릭과 결합
 	const performanceMetrics = {
 		metrics: {
@@ -158,7 +166,7 @@ async function speedCheck(page, testRoute) {
 			loadTime,
 		},
 		route: routeName,
-		timestamp: new Date().toLocaleDateString(),
+		timestamp: `${dateNow.toLocaleDateString()} / ${dateNow.toLocaleTimeString()}`,
 	}
 	test.info().attach(`성능: ${routeName}`, { body: JSON.stringify(performanceMetrics) })
 }
