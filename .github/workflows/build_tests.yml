@@ -50,14 +50,12 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: playwright-reports
-          path: |
-            **/playwright-report/**
-            !storybook/playwright-report/**
+          path: '**/playwright-report/'
           retention-days: 30
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report/storybook
-          path: 'storybook/playwright-report/**'
+          name: playwright-reports-storybook
+          path: storybook/playwright-report/
           retention-days: 30
