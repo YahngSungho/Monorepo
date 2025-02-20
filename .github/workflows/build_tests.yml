@@ -46,16 +46,27 @@ jobs:
       - name: Test
         run: pnpm test
 
+      # 먼저 리포트들을 하나의 디렉토리로 복사
+      - name: Collect playwright reports
+        run: |
+          mkdir -p playwright-reports
+          cp -r apps/*/playwright-report/* playwright-reports/ || true
+          cp -r packages/*/playwright-report/* playwright-reports/ || true
+          cp -r */*/playwright-report/* playwright-reports/ || true
+          ls -la playwright-reports
+
+      # 모든 리포트를 한 번에 업로드
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-reports
-          path: '*/*/playwright-report/'
+          name: playwright-all-reports
+          path: playwright-reports/
           retention-days: 30
 
+      # Storybook 리포트는 별도로 업로드
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-reports-storybook
+          name: playwright-storybook-reports
           path: storybook/playwright-report/
           retention-days: 30
