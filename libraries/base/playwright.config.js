@@ -51,9 +51,13 @@ export default {
 	testDir: 'e2e',
 	timeout: 60_000,
 	use: {
+		// video: 'retain-on-failure',
+		// 브라우저 컨텍스트 타임아웃 증가 (HMR 대기용)
+		launchOptions: {
+			slowMo: process.env.CI ? 0 : 100, // 느린 환경에서 UI 갱신 대기
+		},
 		screenshot: 'only-on-failure',
 		trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
-		// video: 'retain-on-failure',
 	},
 
 	workers: process.env.CI ? 2 : '50%',
