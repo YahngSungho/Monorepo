@@ -1,12 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import manifest from '../storybook-static/index.json' with { type: 'json' }
-
-console.log('storybook/e2e/traverse.test.js')
-
 for (const entry of Object.values(manifest.entries)) {
-	console.log('💬 entry:', entry)
-	console.log('💬 entry?.id:', entry?.id)
 	if (!entry?.id) {
 		continue
 	}

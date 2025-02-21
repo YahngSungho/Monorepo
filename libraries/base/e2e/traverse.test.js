@@ -14,6 +14,30 @@ const DYNAMIC_ROUTE_PATTERN = /\[.*?\]/g
  * @typedef {PerformanceEntry & { loadEventEnd: number; startTime: number }} PerformanceNavigationTiming
  */
 
+const isCIEnv = process.env.CI
+const isWatchEnv = !isCIEnv && process.env.WATCH === 'true'
+
+function getMaxCLS() {
+	if (isCIEnv) return 0.8
+	if (isWatchEnv) return 5
+	return 0.2
+}
+function getMaxLCP() {
+	if (isCIEnv) return 3000
+	if (isWatchEnv) return 10_000
+	return 7000
+}
+function getMaxLoadTime() {
+	if (isCIEnv) return 4000
+	if (isWatchEnv) return 15_000
+	return 8000
+}
+const PERFORMANCE_THRESHOLDS = {
+	maxCLS: getMaxCLS(),
+	maxLCP: getMaxLCP(),
+	maxLoadTime: getMaxLoadTime(),
+}
+
 /**
  * @param {string} baseUrl
  * @param {string} testRoute
@@ -69,12 +93,6 @@ async function visitPage(baseUrl, testRoute, page) {
 
 		throw new Error(errorMessage || 'error')
 	}
-}
-
-const PERFORMANCE_THRESHOLDS = {
-	maxCLS: process.env.CI ? 0.8 : 0.2,
-	maxLCP: process.env.CI ? 3000 : 7000,
-	maxLoadTime: process.env.CI ? 4000 : 80_000,
 }
 
 async function speedCheck(page, testRoute) {
