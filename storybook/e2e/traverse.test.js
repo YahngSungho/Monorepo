@@ -11,7 +11,8 @@ for (const entry of Object.values(manifest.entries)) {
 		continue
 	}
 
-	test(`방문: ${id.replaceAll('-', ' > ')}`, async ({ page }) => {
+	const title = id.replaceAll('-', ' > ')
+	test(`방문: ${title}`, async ({ page }) => {
 		// 콘솔 오류 감지 설정 (페이지 이동 전에 설정)
 		const consoleErrors = []
 		page.on('console', (msg) => {
@@ -31,8 +32,6 @@ for (const entry of Object.values(manifest.entries)) {
 		await page.goto(`./iframe.html?id=${id}&viewMode=story`)
 		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
 
-
-
 		// 약간의 대기 시간 추가 (비동기 오류 수집을 위해)
 		await page.waitForTimeout(500)
 
@@ -41,5 +40,10 @@ for (const entry of Object.values(manifest.entries)) {
 			// eslint-disable-next-line unicorn/error-message
 			throw new Error([...consoleErrors, ...failedRequests].join('\n'))
 		}
+
+		const dateNow = new Date()
+		test.info().attach(`Time:${title}`, {
+			body: `${dateNow.toLocaleDateString()} / ${dateNow.toLocaleTimeString()}`,
+		})
 	})
 }
