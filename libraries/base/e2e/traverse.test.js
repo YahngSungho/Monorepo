@@ -168,7 +168,7 @@ async function speedCheck(page, testRoute) {
 			loadTime,
 		},
 		route: routeName,
-		timestamp: `${dateNow.toLocaleDateString()} / ${dateNow.toLocaleTimeString()}`,
+		timestamp: dateNow.toLocaleString('ko-KR'),
 	}
 	test.info().attach(`성능: ${routeName}`, { body: JSON.stringify(performanceMetrics) })
 }

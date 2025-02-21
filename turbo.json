@@ -1,8 +1,8 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"globalDependencies": ["**/.env.*", "CI"],
+	"globalDependencies": ["**/.env.*", "CI", "WATCH"],
 	"globalEnv": ["NODE_ENV"],
-	"globalPassThroughEnv": [],
+	"globalPassThroughEnv": ["WATCH"],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
