@@ -140,6 +140,7 @@ export default defineFlatConfig([
 
 	{
 		rules: {
+			'sonarjs/no-empty-test-file': 'off',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'arrow-parens': 'off',
