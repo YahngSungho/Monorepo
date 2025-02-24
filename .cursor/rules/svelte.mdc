@@ -1,5 +1,7 @@
 ---
 description: Use the latest version of Svelte
-globs: **/*.svelte
+globs: **/*.svelte, *.svelte
 ---
-This is the latest version Svelte docs: [svelte.mdx](mdc:.cursor/docs/svelte.mdx)
+This is the latest version Svelte docs:
+[svelte.mdx](mdc:.cursor/docs/svelte.mdx) 
+[baseVariables.css](mdc:libraries/base/src/baseVariables.css)
