@@ -2,31 +2,31 @@
 
 ## XState v4 to v5
 
-### Creating machines and actors
+### Creating [machines]() and actors
 
-- Use createMachine(), not Machine()
-- Use createActor(), not interpret()
-- Use machine.provide(), not machine.withConfig()
-- Set context with input, not machine.withContext()
+- Use `createMachine()`, not `Machine()`
+- Use `createActor()`, not `interpret()`
+- Use `machine.provide()`, not `machine.withConfig()`
+- Set context with input, not `machine.withContext()`
 - Actions ordered by default, predictableActionArguments no longer needed
-- The spawn() function has been removed
+- The `spawn()` function [has]() been removed
 - Use getNextSnapshot(…) instead of machine.transition(…)
 - Send events explictly instead of using autoForward
-- The state.toStrings() method has been removed
+- The `state.toStrings()` method has been removed
 
-### states
+##### states
 
-- Use state.getMeta() instead of state.meta
+- Use `state.getMeta()` instead of state.meta
 - Use state.\_nodes instead of state.configuration
 - Read events from inspection API instead of state.events
 
 ### Events and transitions
 
 - Implementation functions receive a single argument
-- send() is removed; use raise() or sendTo()
-- Use enqueueActions() instead of pure() and choose()
-- actor.send() no longer accepts string types
-- state.can() no longer accepts string types
+- `send()` is removed; use `raise()` or `sendTo()`
+- Use `enqueueActions()` instead of `pure()` and `choose()`
+- `actor.send()` no longer accepts string types
+- `state.can()` no longer accepts string types
 - Guarded transitions use guard, not cond
 - Use params to pass params to actions & guards
 - Use wildcard \*transitions, not strict mode
@@ -34,8 +34,8 @@
 - Use reenter: true, not internal: false
 - Transitions are internal by default, not external
 - Child state nodes are always re-entered
-- Use stateIn() to validate state transitions, not in
-- Use actor.subscribe() instead of state.history
+- Use `stateIn()` to validate state transitions, not in
+- Use `actor.subscribe()` instead of state.history
 - Actions can throw errors without escalate
 
 ### Actors
@@ -45,10 +45,10 @@
 - Use output in final states instead of data
 - Don't use property mappers in input or output
 - Use actors property on options object instead of services
-- Use subscribe() for changes, not onTransition()
-- createActor() (formerly interpret()) accepts a second argument to restore state
-- Use actor.getSnapshot() to get actor’s state
-- Loop over events instead of using actor.batch()
+- Use `subscribe()` for changes, not `onTransition()`
+- `createActor()` (formerly `interpret()`) accepts a second argument to restore state
+- Use `actor.getSnapshot()` to get actor’s state
+- Loop over events instead of using `actor.batch()`
 - Use snapshot.status === 'done' instead of snapshot.done
 - state.nextEvents has been removed
 

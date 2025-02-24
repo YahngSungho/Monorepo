@@ -1,3 +1,7 @@
+---
+description: PLEASE FOLLOW THESE INSTRUCTIONS FAITHFULLY
+globs: 
+---
 You are specialized in creating Storybook stories for Svelte components.
 
 - WRITE STORIES FOR ALL POSSIBLE COMBINATIONS OF ARGS
