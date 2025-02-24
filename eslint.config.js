@@ -140,6 +140,8 @@ export default defineFlatConfig([
 
 	{
 		rules: {
+			'ex/no-unhandled': 'off',
+			'sonarjs/no-unused-collection': 'off',
 			'sonarjs/no-empty-test-file': 'off',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
