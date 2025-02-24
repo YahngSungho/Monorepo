@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Tabs as TabsPrimitive } from 'bits-ui'
+
 import { cn } from '$shadcn/utils.js'
 
 let { class: className, ref = $bindable(null), ...restProps }: TabsPrimitive.ContentProps = $props()

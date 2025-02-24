@@ -1,7 +1,8 @@
 <script lang="ts">
-import type { HTMLAnchorAttributes } from 'svelte/elements'
-import type { Snippet } from 'svelte'
 import type { WithElementRef } from 'bits-ui'
+import type { Snippet } from 'svelte'
+import type { HTMLAnchorAttributes } from 'svelte/elements'
+
 import { cn } from '$shadcn/utils.js'
 
 let {

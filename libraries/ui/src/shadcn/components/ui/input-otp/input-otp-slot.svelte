@@ -1,6 +1,7 @@
 <script lang="ts">
 import { PinInput as InputOTPPrimitive } from 'bits-ui'
 import type { ComponentProps } from 'svelte'
+
 import { cn } from '$shadcn/utils.js'
 
 let {

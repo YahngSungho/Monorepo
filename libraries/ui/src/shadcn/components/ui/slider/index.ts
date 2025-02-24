@@ -1,5 +1,1 @@
-
-
-
-
-export {default as Root, default as Slider} from './slider.svelte'
+export { default as Root, default as Slider } from './slider.svelte'

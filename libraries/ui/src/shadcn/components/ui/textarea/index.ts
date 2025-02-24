@@ -1,5 +1,3 @@
-
-
 type FormTextareaEvent<T extends Event = Event> = T & {
 	currentTarget: EventTarget & HTMLTextAreaElement
 }
@@ -21,10 +19,8 @@ type TextareaEvents = {
 
 export {
 	type FormTextareaEvent,
-	
 	//
-	
 	type TextareaEvents,
 }
 
-export {default as Root, default as Textarea} from './textarea.svelte'
+export { default as Root, default as Textarea } from './textarea.svelte'

@@ -1,7 +1,8 @@
 <script module>
 // RangeCalendar 컴포넌트에 대한 Storybook 스토리 작성
-import { defineMeta } from '@storybook/addon-svelte-csf'
 import { getLocalTimeZone, today } from '@internationalized/date'
+import { defineMeta } from '@storybook/addon-svelte-csf'
+
 import { RangeCalendar } from './index'
 
 const start = today(getLocalTimeZone())

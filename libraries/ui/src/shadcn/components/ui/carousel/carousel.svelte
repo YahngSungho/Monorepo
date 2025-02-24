@@ -1,11 +1,12 @@
 <script lang="ts">
+import { cn } from '$shadcn/utils.js'
+
 import {
 	type CarouselAPI,
 	type CarouselProps,
 	type EmblaContext,
 	setEmblaContext,
 } from './context.js'
-import { cn } from '$shadcn/utils.js'
 
 let {
 	children,

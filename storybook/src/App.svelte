@@ -22,7 +22,7 @@ import Counter from './lib/Counter.svelte'
 
 	<p>
 		Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer"
-		>SvelteKit</a
+			>SvelteKit</a
 		>, the official Svelte app framework powered by Vite!
 	</p>
 
@@ -36,13 +36,13 @@ import Counter from './lib/Counter.svelte'
 	padding: 1.5em;
 	transition: filter 300ms;
 
-&:hover {
-	filter: drop-shadow(0 0 2em rgb(100 108 255 / 66.7%));
-}
+	&:hover {
+		filter: drop-shadow(0 0 2em rgb(100 108 255 / 66.7%));
+	}
 
-&.svelte:hover {
-	filter: drop-shadow(0 0 2em rgb(255 62 0 / 66.7%));
-}
+	&.svelte:hover {
+		filter: drop-shadow(0 0 2em rgb(255 62 0 / 66.7%));
+	}
 }
 
 .read-the-docs {

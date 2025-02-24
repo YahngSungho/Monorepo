@@ -2,8 +2,9 @@
 import { DropdownMenu as DropdownMenuPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
 import Check from 'lucide-svelte/icons/check'
 import Minus from 'lucide-svelte/icons/minus'
-import { cn } from '$shadcn/utils.js'
 import type { Snippet } from 'svelte'
+
+import { cn } from '$shadcn/utils.js'
 
 let {
 	checked = $bindable(false),

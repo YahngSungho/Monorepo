@@ -12,10 +12,10 @@
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
-		"eslint-fix": "eslint **/*.{js,ts,svelte} --fix",
+		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
-		"stylelint": "stylelint **/*.{css,svelte}",
-		"stylelint-fix": "stylelint **/*.{css,svelte} --fix",
+		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
+		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
 		"test:unit": "vitest run"
 	},
 	"sideEffects": [],

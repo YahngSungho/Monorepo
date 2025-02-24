@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { ComponentProps } from 'svelte'
+
 import { Input } from '$shadcn/components/ui/input/index.js'
 import { cn } from '$shadcn/utils.js'
 

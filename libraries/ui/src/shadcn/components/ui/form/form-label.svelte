@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { WithoutChild } from 'bits-ui'
 import * as FormPrimitive from 'formsnap'
+
 import { Label } from '$shadcn/components/ui/label/index.js'
 import { cn } from '$shadcn/utils.js'
 

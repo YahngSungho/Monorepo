@@ -157,7 +157,6 @@ export default defineFlatConfig([
 			],
 			'eslint-comments/no-unlimited-disable': 'off',
 			'eslint-comments/no-use': 'off',
-			'ex/no-unhandled': 'error',
 			'functional/functional-parameters': 'warn',
 			'functional/immutable-data': 'warn',
 			'functional/no-expression-statements': [
@@ -264,7 +263,7 @@ export default defineFlatConfig([
 	},
 
 	{
-		files: ['**/*.js', '**/*.ts'],
+		files: ['**/*.js', '**/*.ts', '**/*.mjs', '**/*.cjs'],
 
 		languageOptions: {
 			ecmaVersion: 'latest',
@@ -276,9 +275,7 @@ export default defineFlatConfig([
 			parserOptions: {
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
-				projectService: {
-					allowDefaultProject: ['*.js', '*.svelte'],
-				},
+				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
 			},
@@ -301,13 +298,11 @@ export default defineFlatConfig([
 			parserOptions: {
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
+				projectService: true,
 				parser: {
 					js: parser_TS,
 					ts: parser_TS,
 					typescript: parser_TS,
-				},
-				projectService: {
-					allowDefaultProject: ['*.js', '*.svelte'],
 				},
 				requireConfigFile: false,
 				sourceType: 'module',

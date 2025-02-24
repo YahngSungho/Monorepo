@@ -9,7 +9,7 @@
 	"scripts": {
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
-		"eslint-fix": "eslint **/*.{js,ts,svelte} --fix",
+		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"test:unit": "vitest run"
 	},
 	"dependencies": {

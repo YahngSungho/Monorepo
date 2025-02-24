@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Switch as SwitchPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
+
 import { cn } from '$shadcn/utils.js'
 
 let {

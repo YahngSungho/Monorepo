@@ -1,7 +1,9 @@
 <script lang="ts">
 import { RangeCalendar as RangeCalendarPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
-import * as RangeCalendar from './index.js'
+
 import { cn } from '$shadcn/utils.js'
+
+import * as RangeCalendar from './index.js'
 
 let {
 	class: className,

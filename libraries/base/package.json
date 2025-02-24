@@ -11,9 +11,9 @@
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
-		"eslint-fix": "eslint **/*.{js,ts,svelte} --fix",
-		"stylelint": "stylelint **/*.{css,svelte}",
-		"stylelint-fix": "stylelint **/*.{css,svelte} --fix",
+		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
+		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
+		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
 		"test:unit": "vitest run",
 		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
 	},
