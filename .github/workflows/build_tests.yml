@@ -28,6 +28,12 @@ jobs:
         with:
           version: 9.15.4
 
+      - name: Set pnpm path
+        run: echo "/home/runner/.local/share/pnpm/.tools/pnpm/9.15.4/bin" >> $GITHUB_PATH
+
+      - name: Verify pnpm installation
+        run: pnpm --version
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
