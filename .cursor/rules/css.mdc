@@ -2,4 +2,5 @@
 description: Use 'Open Props' CSS variables when it's about CSS
 globs: **/*.css, **/*.svelte
 ---
-[openProps.mdx](mdc:.cursor/docs/openProps.mdx)
+[openProps.md](mdc:.cursor/docs/openProps.md)
+[baseVariables.css](mdc:libraries/base/src/baseVariables.css)
