@@ -179,8 +179,6 @@ export default defineFlatConfig([
 			'lodash/prefer-is-nil': 'off',
 			'lodash/prefer-lodash-chain': 'off',
 			'lodash/prefer-lodash-method': 'off',
-			'lodash/prefer-lodash-method': 'off',
-			'lodash/prefer-lodash-typecheck': 'off',
 			'lodash/prefer-lodash-typecheck': 'off',
 			'lodash/prefer-matches': 'off',
 			'lodash/prefer-noop': 'off',
@@ -202,7 +200,7 @@ export default defineFlatConfig([
 			'perfectionist/sort-imports': 'off',
 			'perfectionist/sort-modules': 'off',
 			'perfectionist/sort-objects': [
-				'warn',
+				'off',
 				{
 					order: 'asc',
 					type: 'natural',

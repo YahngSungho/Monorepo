@@ -1,26 +1,28 @@
 ```css
 /* stylelint-disable */
 :where(html) {
-	--font-system-ui: system-ui, -apple-system, segoe ui, roboto, ubuntu, cantarell, noto sans,
-		sans-serif;
+	--font-system-ui:
+		system-ui, -apple-system, segoe ui, roboto, ubuntu, cantarell, noto sans, sans-serif;
 	--font-transitional: charter, bitstream charter, sitka text, cambria, serif;
 	--font-old-style: iowan old style, palatino linotype, urw palladio l, p052, serif;
-	--font-humanist: seravek, gill sans nova, ubuntu, calibri, dejavu sans, source-sans-pro,
-		sans-serif;
+	--font-humanist:
+		seravek, gill sans nova, ubuntu, calibri, dejavu sans, source-sans-pro, sans-serif;
 	--font-geometric-humanist: avenir, montserrat, corbel, urw gothic, source-sans-pro, sans-serif;
 	--font-classical-humanist: optima, candara, noto sans, source-sans-pro, sans-serif;
 	--font-neo-grotesque: inter, roboto, helvetica neue, arial nova, nimbus sans, arial, sans-serif;
 	--font-monospace-slab-serif: nimbus mono ps, courier new, monospace;
-	--font-monospace-code: dank mono, operator mono, inconsolata, fira mono, ui-monospace, sf mono,
-		monaco, droid sans mono, source code pro, cascadia code, menlo, consolas, dejavu sans mono,
-		monospace;
-	--font-industrial: bahnschrift, din alternate, franklin gothic medium, nimbus sans narrow,
-		sans-serif-condensed, sans-serif;
-	--font-rounded-sans: ui-rounded, hiragino maru gothic pron, quicksand, comfortaa, manjari,
-		arial rounded mt, arial rounded mt bold, calibri, source-sans-pro, sans-serif;
+	--font-monospace-code:
+		dank mono, operator mono, inconsolata, fira mono, ui-monospace, sf mono, monaco,
+		droid sans mono, source code pro, cascadia code, menlo, consolas, dejavu sans mono, monospace;
+	--font-industrial:
+		bahnschrift, din alternate, franklin gothic medium, nimbus sans narrow, sans-serif-condensed,
+		sans-serif;
+	--font-rounded-sans:
+		ui-rounded, hiragino maru gothic pron, quicksand, comfortaa, manjari, arial rounded mt,
+		arial rounded mt bold, calibri, source-sans-pro, sans-serif;
 	--font-slab-serif: rockwell, rockwell nova, roboto slab, dejavu serif, sitka small, serif;
-	--font-antique: superclarendon, bookman old style, urw bookman, urw bookman l, georgia pro,
-		georgia, serif;
+	--font-antique:
+		superclarendon, bookman old style, urw bookman, urw bookman l, georgia pro, georgia, serif;
 	--font-didone: didot, bodoni mt, noto serif display, urw palladio l, p052, sylfaen, serif;
 	--font-handwritten: segoe print, bradley hand, chilanka, tscu_comic, casual, cursive;
 	--font-sans: var(--font-system-ui);
@@ -508,28 +510,34 @@
 	--layer-important: 2147483647;
 	--shadow-color: 220 3% 15%;
 	--shadow-strength: 1%;
-	--inner-shadow-highlight: inset 0 -0.5px 0 0 rgb(255 255 255), inset 0 0.5px 0 0 rgb(0 0 0 / 6.7%);
+	--inner-shadow-highlight:
+		inset 0 -0.5px 0 0 rgb(255 255 255), inset 0 0.5px 0 0 rgb(0 0 0 / 6.7%);
 	--shadow-1: 0 1px 2px -1px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%));
-	--shadow-2: 0 3px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+	--shadow-2:
+		0 3px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 7px 14px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%));
-	--shadow-3: 0 -1px 3px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-3:
+		0 -1px 3px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 1px 2px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 2px 5px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
 		0 4px 12px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
 		0 12px 15px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
-	--shadow-4: 0 -2px 5px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-4:
+		0 -2px 5px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 1px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 2px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
 		0 9px 9px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
 		0 16px 16px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 6%));
-	--shadow-5: 0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-5:
+		0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 2px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 10px 10px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
 		0 20px 20px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
 		0 40px 40px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
-	--shadow-6: 0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-6:
+		0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 3px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 7px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 12px 10px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
@@ -537,13 +545,17 @@
 		0 41px 33px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 6%)),
 		0 100px 80px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
 	--inner-shadow-0: inset 0 0 0 1px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%));
-	--inner-shadow-1: inset 0 1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
+	--inner-shadow-1:
+		inset 0 1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
 		var(--inner-shadow-highlight);
-	--inner-shadow-2: inset 0 1px 4px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
+	--inner-shadow-2:
+		inset 0 1px 4px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
 		var(--inner-shadow-highlight);
-	--inner-shadow-3: inset 0 2px 8px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
+	--inner-shadow-3:
+		inset 0 2px 8px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
 		var(--inner-shadow-highlight);
-	--inner-shadow-4: inset 0 2px 14px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
+	--inner-shadow-4:
+		inset 0 2px 14px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
 		var(--inner-shadow-highlight);
 	--ratio-square: 1;
 	--ratio-landscape: 4/3;
@@ -810,7 +822,8 @@
 		rgb(255 181 107)
 	);
 	--gradient-2: linear-gradient(to bottom right, rgb(72 0 92), rgb(131 0 226), rgb(162 105 255));
-	--gradient-3: radial-gradient(circle at top right, rgb(0 255 255), rgb(0 255 255 / 0%)),
+	--gradient-3:
+		radial-gradient(circle at top right, rgb(0 255 255), rgb(0 255 255 / 0%)),
 		radial-gradient(circle at bottom left, rgb(255 20 146), rgb(255 20 146 / 0%));
 	--gradient-4: linear-gradient(to bottom right, rgb(0 245 160), rgb(0 217 245));
 	--gradient-5: conic-gradient(from -270deg at 75% 110%, rgb(255 0 255), rgb(255 250 240));
@@ -871,7 +884,8 @@
 	);
 	--gradient-16: radial-gradient(circle at 50% -250%, rgb(55 65 81), rgb(17 24 39), rgb(0 0 0));
 	--gradient-17: conic-gradient(from -90deg at 50% -25%, blue, rgb(138 43 226));
-	--gradient-18: linear-gradient(0deg, rgb(255 0 0 / 80%), rgb(255 0 0 / 0%) 75%),
+	--gradient-18:
+		linear-gradient(0deg, rgb(255 0 0 / 80%), rgb(255 0 0 / 0%) 75%),
 		linear-gradient(60deg, rgb(255 255 0 / 80%), rgb(255 255 0 / 0%) 75%),
 		linear-gradient(120deg, rgb(0 255 0 / 80%), rgb(0 255 0 / 0%) 75%),
 		linear-gradient(180deg, rgb(0 255 255 / 80%), rgb(0 255 255 / 0%) 75%),
@@ -920,9 +934,11 @@
 	--gradient-26: linear-gradient(to bottom right, rgb(151 150 240), rgb(251 199 212));
 	--gradient-27: conic-gradient(from 0.5turn at bottom left, rgb(255 20 147), rgb(102 51 153));
 	--gradient-28: conic-gradient(from -90deg at 50% 105%, rgb(255 255 255), orchid);
-	--gradient-29: radial-gradient(circle at top right, rgb(191 179 255), rgb(191 179 255 / 0%)),
+	--gradient-29:
+		radial-gradient(circle at top right, rgb(191 179 255), rgb(191 179 255 / 0%)),
 		radial-gradient(circle at bottom left, rgb(134 172 249), rgb(134 172 249 / 0%));
-	--gradient-30: radial-gradient(circle at top right, rgb(0 255 128), rgb(0 255 128 / 0%)),
+	--gradient-30:
+		radial-gradient(circle at top right, rgb(0 255 128), rgb(0 255 128 / 0%)),
 		radial-gradient(circle at bottom left, rgb(173 255 214), rgb(173 255 214 / 0%));
 	--noise-1: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.005' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
 	--noise-2: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.05' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
@@ -990,8 +1006,8 @@
 	@media (prefers-color-scheme: dark) {
 		--shadow-color: 220 40% 2%;
 		--shadow-strength: 25%;
-		--inner-shadow-highlight: inset 0 -0.5px 0 0 hsl(0deg 0% 100% / 6.7%),
-			inset 0 0.5px 0 0 rgb(0 0 0 / 46.7%);
+		--inner-shadow-highlight:
+			inset 0 -0.5px 0 0 hsl(0deg 0% 100% / 6.7%), inset 0 0.5px 0 0 rgb(0 0 0 / 46.7%);
 	}
 }
 
