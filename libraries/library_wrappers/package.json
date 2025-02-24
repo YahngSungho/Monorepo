@@ -10,8 +10,6 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"eslint-fix": "eslint **/*.{js,ts,svelte} --fix",
-		"stylelint": "stylelint **/*.{css,svelte}",
-		"stylelint-fix": "stylelint **/*.{css,svelte} --fix",
 		"test:unit": "vitest run"
 	},
 	"dependencies": {

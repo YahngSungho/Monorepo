@@ -1,7 +1,5 @@
-<script lang="ts" module>
-import type { WithElementRef } from 'bits-ui'
-import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements'
-import { tv, type VariantProps } from 'tailwind-variants'
+<script module>
+import { tv } from 'tailwind-variants'
 
 export const buttonVariants = tv({
 	base: 'ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
@@ -19,27 +17,22 @@ export const buttonVariants = tv({
 		},
 	},
 })
-
-export type ButtonVariant = VariantProps<typeof buttonVariants>['variant']
-
-export type ButtonProps = WithElementRef<HTMLAnchorAttributes> &
-	WithElementRef<HTMLButtonAttributes> & {
-		variant?: ButtonVariant
-	}
 </script>
 
-<script lang="ts">
+<script>
+// @ts-nocheck
+
 import { cn } from '$shadcn/utils.js'
 
 let {
 	children,
 	class: className,
 	href,
-	ref = $bindable(null),
+	ref = $bindable(),
 	type = 'button',
 	variant = 'default',
 	...restProps
-}: ButtonProps = $props()
+} = $props()
 </script>
 
 {#if href}

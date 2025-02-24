@@ -124,9 +124,6 @@ const eewre = Promise.resolve('test')
 	</p>
 </div>
 
-<!-- @ts-nocheck -->
-<Calendar />
-
 <div class="colored">
 	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>
 	<Button1 onclick={() => switchToLanguage('en')}>en</Button1>

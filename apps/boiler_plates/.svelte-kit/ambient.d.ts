@@ -41,7 +41,6 @@ declare module '$env/static/private' {
 	export const npm_config_engine_strict: string;
 	export const npm_config_frozen_lockfile: string;
 	export const npm_config_msvs_version: string;
-	export const npm_config_node_gyp: string;
 	export const npm_config_registry: string;
 	export const npm_config_user_agent: string;
 	export const npm_execpath: string;
@@ -63,6 +62,8 @@ declare module '$env/static/private' {
 	export const npm_package_devDependencies_tailwindcss: string;
 	export const npm_package_devDependencies_tailwindcss_animate: string;
 	export const npm_package_devDependencies__sveltejs_kit: string;
+	export const npm_package_import__shadcn: string;
+	export const npm_package_import__shadcn__: string;
 	export const npm_package_name: string;
 	export const npm_package_private: string;
 	export const npm_package_scripts_build: string;
@@ -146,7 +147,6 @@ declare module '$env/dynamic/private' {
 		npm_config_engine_strict: string;
 		npm_config_frozen_lockfile: string;
 		npm_config_msvs_version: string;
-		npm_config_node_gyp: string;
 		npm_config_registry: string;
 		npm_config_user_agent: string;
 		npm_execpath: string;
@@ -168,6 +168,8 @@ declare module '$env/dynamic/private' {
 		npm_package_devDependencies_tailwindcss: string;
 		npm_package_devDependencies_tailwindcss_animate: string;
 		npm_package_devDependencies__sveltejs_kit: string;
+		npm_package_import__shadcn: string;
+		npm_package_import__shadcn__: string;
 		npm_package_name: string;
 		npm_package_private: string;
 		npm_package_scripts_build: string;

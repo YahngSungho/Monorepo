@@ -13,11 +13,10 @@ type TContext = unknown
 import { RenderComponentConfig, RenderSnippetConfig } from './render-helpers.js'
 type Props = {
 	/** The cell or header field of the current cell's column definition. */
-	content?: TContext extends HeaderContext<TData, TValue>
-		? ColumnDefTemplate<HeaderContext<TData, TValue>>
-		: TContext extends CellContext<TData, TValue>
-		? ColumnDefTemplate<CellContext<TData, TValue>>
-		: never
+	content?: TContext extends HeaderContext<TData, TValue> ?
+		ColumnDefTemplate<HeaderContext<TData, TValue>>
+	: TContext extends CellContext<TData, TValue> ? ColumnDefTemplate<CellContext<TData, TValue>>
+	: never
 	/** The result of the `getContext()` function of the header or cell */
 	context: TContext
 }
@@ -27,7 +26,7 @@ let { content, context }: Props = $props()
 
 {#if typeof content === 'string'}
 	{content}
-{:else if content instanceof Function}
+{:else if typeof content === 'function'}
 	<!-- It's unlikely that a CellContext will be passed to a Header -->
 	<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
 	{@const result = content(context as any)}

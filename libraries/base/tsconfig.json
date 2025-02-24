@@ -9,6 +9,10 @@
 		"moduleResolution": "bundler",
 		"noEmit": true,
 		"noImplicitAny": false,
+		"paths": {
+			"$shadcn": ["../../libraries/ui/src/shadcn"],
+			"$shadcn/*": ["../../libraries/ui/src/shadcn/*"]
+		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,

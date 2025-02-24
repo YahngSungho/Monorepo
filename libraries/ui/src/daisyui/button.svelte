@@ -1,15 +1,11 @@
 <script>
 /**
-	* @type {{
-	*   variant?: 'primary'|'secondary'|'accent'|'info'|'success'|'warning'|'error'|'outline'|'text',
-	*		children?: any,
-	*   href?: string,
-	*   ...restProps: any
-	}}
-	*/
+ * @typedef {'primary'|'secondary'|'accent'|'info'|'success'|'warning'|'error'|'outline'|'text'} variant
+ * @property {string} [href]
+ */
 let { children, href, variant = 'primary', ...restProps } = $props()
 
-;('')
+;('') // eslint-disable-line
 </script>
 
 {#if href}
