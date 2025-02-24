@@ -1,5 +1,6 @@
 <script lang="ts">
 import * as ResizablePrimitive from 'paneforge'
+
 import { cn } from '$shadcn/utils.js'
 
 let {

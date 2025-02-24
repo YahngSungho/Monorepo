@@ -1,10 +1,6 @@
 name: Build and Tests
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    types: [opened, synchronize]
+on: push
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -28,23 +24,25 @@ jobs:
         with:
           fetch-depth: 2
 
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9.15.4
-
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
 
+      - name: Install pnpm
+        run: npm install -g pnpm@9.15.4
+
+      - name: Verify pnpm installation
+        run: pnpm --version
+
       - name: Install dependencies
-        run: npm install -g pnpm && pnpm install
+        run: pnpm install
 
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps
+        run: pnpm run playwright-install-env
 
       - name: Test
-        run: pnpm test
+        run: pnpm run test
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

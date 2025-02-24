@@ -1,8 +1,10 @@
 <script lang="ts">
-import { Button } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
 import PanelLeft from 'lucide-svelte/icons/panel-left'
 import type { ComponentProps } from 'svelte'
+
+import { Button } from '$shadcn/components/ui/button/index.js'
+import { cn } from '$shadcn/utils.js'
+
 import { useSidebar } from './context.svelte.js'
 
 let {

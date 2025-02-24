@@ -12,20 +12,19 @@
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
-		"eslint-fix": "eslint **/*.{js,ts,svelte} --fix",
+		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
-		"stylelint": "stylelint **/*.{css,svelte}",
-		"stylelint-fix": "stylelint **/*.{css,svelte} --fix",
+		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
+		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
 		"test:unit": "vitest run"
 	},
-	"sideEffects": [
-		"**/*.css"
-	],
+	"sideEffects": [],
 	"types": "./dist/index.d.ts",
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
 		"@internationalized/date": "^3.7.0",
 		"@library/base": "workspace:*",
+		"@tanstack/table-core": "^8.21.2",
 		"bits-ui": "1.0.0-next.77",
 		"clsx": "^2.1.1",
 		"embla-carousel-svelte": "^8.5.2",

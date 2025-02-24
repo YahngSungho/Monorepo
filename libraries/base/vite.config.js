@@ -1,10 +1,11 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { FontaineTransform } from 'fontaine'
-import tailwindcss from '@tailwindcss/vite'
-import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
+
 import { partytownVite } from '@qwik.dev/partytown/utils'
+import tailwindcss from '@tailwindcss/vite'
+import { FontaineTransform } from 'fontaine'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
 
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)

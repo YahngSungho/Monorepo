@@ -1,6 +1,7 @@
 <script lang="ts">
-import { cn } from '$shadcn/utils.js'
 import { Popover as PopoverPrimitive } from 'bits-ui'
+
+import { cn } from '$shadcn/utils.js'
 
 let {
 	align = 'center',

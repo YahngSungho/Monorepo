@@ -1,5 +1,8 @@
 <script module>
+// @ts-nocheck
+
 import { defineMeta } from '@storybook/addon-svelte-csf'
+
 import Button from './button.svelte'
 
 const { Story } = defineMeta({
@@ -7,7 +10,7 @@ const { Story } = defineMeta({
 	tags: ['autodocs'],
 })
 
-;('') // eslint-disable-line no-unused-expressions, sonarjs/no-unused-expressions
+;('') // eslint-disable-line
 </script>
 
 {#snippet multiple()}

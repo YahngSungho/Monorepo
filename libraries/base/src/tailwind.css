@@ -146,10 +146,11 @@
 	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
 
 	@keyframes accordion-down {
-		from: {
+		from {
 			block-size: 0;
 		}
-		to: {
+
+		to {
 			block-size: var(--bits-accordion-content-height);
 		}
 	}
@@ -185,10 +186,12 @@
 
 @layer base {
 	* {
+		/* stylelint-disable-next-line at-rule-no-deprecated */
 		@apply border-border;
 	}
 
 	body {
+		/* stylelint-disable-next-line at-rule-no-deprecated */
 		@apply bg-background text-foreground;
 	}
 }

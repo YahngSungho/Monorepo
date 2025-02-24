@@ -1,9 +1,11 @@
 <script lang="ts">
-import emblaCarouselSvelte from 'embla-carousel-svelte'
 import type { WithElementRef } from 'bits-ui'
+import emblaCarouselSvelte from 'embla-carousel-svelte'
 import type { HTMLAttributes } from 'svelte/elements'
-import { getEmblaContext } from './context.js'
+
 import { cn } from '$shadcn/utils.js'
+
+import { getEmblaContext } from './context.js'
 
 let {
 	children,

@@ -63,6 +63,8 @@ declare module '$env/static/private' {
 	export const npm_package_devDependencies_tailwindcss: string;
 	export const npm_package_devDependencies_tailwindcss_animate: string;
 	export const npm_package_devDependencies__sveltejs_kit: string;
+	export const npm_package_import__shadcn: string;
+	export const npm_package_import__shadcn__: string;
 	export const npm_package_name: string;
 	export const npm_package_private: string;
 	export const npm_package_scripts_build: string;
@@ -168,6 +170,8 @@ declare module '$env/dynamic/private' {
 		npm_package_devDependencies_tailwindcss: string;
 		npm_package_devDependencies_tailwindcss_animate: string;
 		npm_package_devDependencies__sveltejs_kit: string;
+		npm_package_import__shadcn: string;
+		npm_package_import__shadcn__: string;
 		npm_package_name: string;
 		npm_package_private: string;
 		npm_package_scripts_build: string;

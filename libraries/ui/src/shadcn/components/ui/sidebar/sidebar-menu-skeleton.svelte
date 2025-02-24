@@ -1,8 +1,9 @@
 <script lang="ts">
-import { Skeleton } from '$shadcn/components/ui/skeleton/index.js'
-import { cn } from '$shadcn/utils.js'
 import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
+
+import { Skeleton } from '$shadcn/components/ui/skeleton/index.js'
+import { cn } from '$shadcn/utils.js'
 
 let {
 	children,

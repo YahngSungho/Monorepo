@@ -23,6 +23,7 @@ export type BadgeVariant = VariantProps<typeof badgeVariants>['variant']
 <script lang="ts">
 import type { WithElementRef } from 'bits-ui'
 import type { HTMLAnchorAttributes } from 'svelte/elements'
+
 import { cn } from '$shadcn/utils.js'
 
 let {

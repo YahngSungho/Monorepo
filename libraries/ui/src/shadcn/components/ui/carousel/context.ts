@@ -6,10 +6,10 @@ import type { HTMLAttributes } from 'svelte/elements'
 
 export type CarouselAPI =
 	NonNullable<NonNullable<EmblaCarouselSvelteType['$$_attributes']>['on:emblaInit']> extends (
-		evt: CustomEvent<infer CarouselAPI>,
-	) => void
-		? CarouselAPI
-		: never
+		(evt: CustomEvent<infer CarouselAPI>) => void
+	) ?
+		CarouselAPI
+	:	never
 
 type EmblaCarouselConfig = NonNullable<Parameters<typeof emblaCarouselSvelte>[1]>
 

@@ -1,5 +1,5 @@
-import presetEnv from 'postcss-preset-env'
 import tailwindcss from '@tailwindcss/postcss'
+import presetEnv from 'postcss-preset-env'
 const config = {
 	plugins: [
 		tailwindcss(),

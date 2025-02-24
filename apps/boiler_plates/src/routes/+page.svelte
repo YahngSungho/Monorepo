@@ -4,7 +4,6 @@ import * as m from '@library/base/messages.js'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
-import { Calendar } from '@library/ui/calendar'
 import Icon from '@library/ui/icon'
 
 import { switchToLanguage } from '../paraglide'
@@ -123,9 +122,6 @@ const eewre = Promise.resolve('test')
 		Lorem ut fugiat mollit consectetur irure.
 	</p>
 </div>
-
-<!-- @ts-nocheck -->
-<Calendar />
 
 <div class="colored">
 	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>

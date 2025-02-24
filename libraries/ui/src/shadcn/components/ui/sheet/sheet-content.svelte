@@ -24,8 +24,10 @@ export type Side = VariantProps<typeof sheetVariants>['side']
 import { Dialog as SheetPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
 import X from 'lucide-svelte/icons/x'
 import type { Snippet } from 'svelte'
-import SheetOverlay from './sheet-overlay.svelte'
+
 import { cn } from '$shadcn/utils.js'
+
+import SheetOverlay from './sheet-overlay.svelte'
 
 let {
 	children,

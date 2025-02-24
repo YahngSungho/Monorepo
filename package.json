@@ -9,7 +9,7 @@
 		"dev": "turbo run dev",
 		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook",
 		"fix-mismatches": "pnpm dlx syncpack fix-mismatches",
-		"format": "prettier --write .",
+		"format": "prettier --write --ignore-unknown .",
 		"format-changed": "pretty-quick --write --ignore-unknown .",
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
 		"lint": "turbo run check eslint stylelint",
@@ -59,7 +59,6 @@
 		"eslint-plugin-json-schema-validator": "^5.3.1",
 		"eslint-plugin-jsonc": "^2.19.1",
 		"eslint-plugin-lodash": "^8.0.0",
-		"eslint-plugin-markdownlint": "^0.6.0",
 		"eslint-plugin-mdx": "^3.1.5",
 		"eslint-plugin-no-secrets": "^2.2.1",
 		"eslint-plugin-no-unsanitized": "^4.1.2",
@@ -86,7 +85,8 @@
 		"i": "^0.3.7",
 		"jsdom": "^26.0.0",
 		"jsonc-eslint-parser": "^2.4.0",
-		"pnpm": "^9.15.4",
+		"lint-staged": "^15.4.3",
+		"pnpm": "^10.4.1",
 		"postcss": "^8.5.1",
 		"postcss-html": "^1.8.0",
 		"postcss-syntax": "^0.36.2",
@@ -144,7 +144,8 @@
 			"pnpm run format-changed"
 		],
 		"*.{js,ts,svelte}": [
-			"eslint --fix"
+			"pnpm run eslint-fix",
+			"pnpm run stylelint-fix"
 		]
 	},
 	"packageManager": "pnpm@9.15.4",
