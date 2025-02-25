@@ -29,8 +29,14 @@ jobs:
         with:
           node-version: 23.5.0
 
-      - name: Install pnpm
-        run: npm install -g pnpm@9.15.4
+      # Corepack 활성화 (packageManager 버전 자동 감지)
+      - name: Enable Corepack
+        run: corepack enable
+      # pnpm 설치 (packageManager 버전과 일치)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
 
       - name: Install dependencies
         run: pnpm install
