@@ -42,5 +42,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - uses: pnpm/action-setup@v3 2
+        with:
+          version: 9.15.4
+
       - name: Lint Check
         run: pnpm lint
