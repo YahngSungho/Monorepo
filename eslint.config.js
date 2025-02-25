@@ -279,9 +279,7 @@ export default defineFlatConfig([
 			parserOptions: {
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
-				projectService: {
-					allowDefaultProject: ['*.js', '*.ts', '*.mjs', '*.cjs', '*.svelte'],
-				},
+				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
 			},
@@ -304,9 +302,7 @@ export default defineFlatConfig([
 			parserOptions: {
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
-				projectService: {
-					allowDefaultProject: ['*.svelte'],
-				},
+				projectService: true,
 				parser: {
 					js: parser_TS,
 					ts: parser_TS,
