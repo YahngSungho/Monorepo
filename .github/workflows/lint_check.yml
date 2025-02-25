@@ -29,11 +29,9 @@ jobs:
         with:
           node-version: 23.5.0
 
-      - name: Install pnpm
-        run: npm install -g pnpm@9.15.4
-
-      - name: Setup pnpm
-        run: pnpm setup
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.15.4
 
       - name: Install Turbo
         run: pnpm add -g turbo@2.4.2
