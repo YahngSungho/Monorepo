@@ -31,9 +31,6 @@ for (const entry of Object.values(manifest.entries)) {
 		await page.goto(`./iframe.html?id=${id}&viewMode=story`)
 		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
 
-		// 약간의 대기 시간 추가 (비동기 오류 수집을 위해)
-		await page.waitForTimeout(500)
-
 		// 에러 체크
 		if (consoleErrors.length > 0 || failedRequests.length > 0) {
 			// eslint-disable-next-line unicorn/error-message
