@@ -40,5 +40,5 @@
 		"vite.config.ts",
 		"static/**"
 	],
-	"include": ["src/**/*"]
+	"include": ["src/**/*", "e2e/**/*"]
 }
