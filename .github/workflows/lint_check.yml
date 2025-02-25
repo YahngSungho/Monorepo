@@ -33,11 +33,5 @@ jobs:
         with:
           node-version: 23.5.0
 
-      - name: Install pnpm
-        run: npm install -g pnpm@9.15.4
-
-      - name: Install dependencies
-        run: pnpm install
-
       - name: Lint Check
         run: pnpm lint
