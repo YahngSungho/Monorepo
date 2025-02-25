@@ -38,6 +38,10 @@ jobs:
       # 의존성 설치
       - name: Install dependencies
         run: pnpm install
+
+      - name: build
+        run: pnpm run build
+
       # 린트 실행
       - name: Run Lint
         run: pnpm run lint
