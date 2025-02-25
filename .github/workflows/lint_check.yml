@@ -43,7 +43,7 @@ jobs:
 
       # 의존성 설치
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm Install
 
       # 린트 실행
       - name: Run Lint
