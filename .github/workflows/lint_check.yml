@@ -21,25 +21,23 @@ jobs:
     steps:
       # 저장소 코드 체크아웃
       - name: Checkout repository
-        uses:
-          actions/checkout@v4
-
-          # Corepack 활성화 추가 (packageManager 버전 자동 감지)
-      - name: Enable Corepack
-        run:
-          corepack enable
-
-          # pnpm 설치 (packageManager 버전과 일치)
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.4
+        uses: actions/checkout@v4
 
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
+
+      # Corepack 활성화 (packageManager 버전 자동 감지)
+      - name: Enable Corepack
+        run: corepack enable
+
+      # pnpm 설치 (packageManager 버전과 일치)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
 
       # 의존성 설치
       - name: Install dependencies
