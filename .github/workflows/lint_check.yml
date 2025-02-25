@@ -24,35 +24,12 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: pnpm setup 1
-        uses: pnpm/action-setup@v3
+      - name: Setup Node.js and pnpm
+        uses: dafnik/setup-node-pnpm@v3
         with:
-          version: 9.15.4
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23.5.0
-
-      - name: Install pnpm 1
-        run: npm install -g pnpm@9.15.4
-
-      - name: Install pnpm 2
-        run: pnpm add -g pnpm@9.15.4
-
-      - name: Install Turbo
-        run: pnpm add -g turbo@2.4.2
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: pnpm setup 2
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9.15.4
-
-      - name: Install pnpm 3
-        run: pnpm add -g pnpm@9.15.4
+          node: 23.5.0
+          pnpm: 9.15.4
+          install: true
 
       - name: Lint Check
         run: pnpm lint
