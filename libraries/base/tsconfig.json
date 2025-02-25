@@ -35,10 +35,20 @@
 		"**/service-worker/**",
 		"node_modules/**",
 		"src/service-worker/**",
-		"svelte.config.js",
-		"vite.config.js",
-		"vite.config.ts",
 		"static/**"
 	],
-	"include": ["src/**/*", "e2e/**/*"]
+	"include": [
+		"src/**/*",
+		"e2e/**/*",
+		"*.js",
+		"*.ts",
+		"*.svelte",
+		"*.cjs",
+		"*.mjs",
+		"**/*.js",
+		"**/*.ts",
+		"**/*.svelte",
+		"**/*.cjs",
+		"**/*.mjs"
+	]
 }

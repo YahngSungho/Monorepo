@@ -18,9 +18,6 @@
 		"test-results/**",
 		"node_modules/**",
 		"src/service-worker/**",
-		"svelte.config.js",
-		"vite.config.js",
-		"vite.config.ts",
 		"static/**"
 	],
 	"extends": ["@library/base/tsconfig.json", "./.svelte-kit/tsconfig.json"],
@@ -30,6 +27,16 @@
 		"e2e/**/*",
 		".svelte-kit/ambient.d.ts",
 		".svelte-kit/non-ambient.d.ts",
-		".svelte-kit/types/**/$types.d.ts"
+		".svelte-kit/types/**/$types.d.ts",
+		"*.js",
+		"*.ts",
+		"*.svelte",
+		"*.cjs",
+		"*.mjs",
+		"**/*.js",
+		"**/*.ts",
+		"**/*.svelte",
+		"**/*.cjs",
+		"**/*.mjs"
 	]
 }
