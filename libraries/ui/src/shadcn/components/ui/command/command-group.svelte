@@ -7,7 +7,7 @@ let {
 	children,
 	class: className,
 	heading,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: CommandPrimitive.GroupProps & {
 	heading?: string

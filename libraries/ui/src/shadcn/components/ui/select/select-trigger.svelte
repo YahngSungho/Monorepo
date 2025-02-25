@@ -7,7 +7,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	children,
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChild<SelectPrimitive.TriggerProps> = $props()
 </script>

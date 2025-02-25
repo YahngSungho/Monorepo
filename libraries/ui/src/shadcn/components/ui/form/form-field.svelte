@@ -16,7 +16,7 @@ let {
 	class: className,
 	form,
 	name,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: FormPrimitive.FieldProps<T, U> &
 	WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props()

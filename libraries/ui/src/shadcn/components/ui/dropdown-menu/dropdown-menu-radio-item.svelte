@@ -7,7 +7,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	children: childrenProp,
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChild<DropdownMenuPrimitive.RadioItemProps> = $props()
 </script>

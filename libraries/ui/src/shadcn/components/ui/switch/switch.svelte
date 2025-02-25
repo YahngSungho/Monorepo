@@ -6,7 +6,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	checked = $bindable(false),
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChildrenOrChild<SwitchPrimitive.RootProps> = $props()
 </script>

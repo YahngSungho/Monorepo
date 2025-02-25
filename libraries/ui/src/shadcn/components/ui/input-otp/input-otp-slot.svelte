@@ -7,7 +7,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	cell,
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: ComponentProps<typeof InputOTPPrimitive.Cell> = $props()
 </script>

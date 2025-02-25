@@ -6,7 +6,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	class: className,
 	inset,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: MenubarPrimitive.GroupHeadingProps & {
 	inset?: boolean

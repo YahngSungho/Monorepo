@@ -40,7 +40,7 @@ let {
 	children,
 	class: className,
 	isActive = false,
-	ref = $bindable(null),
+	ref = $bindable(),
 	size = 'default',
 	tooltipContent,
 	tooltipContentProps,

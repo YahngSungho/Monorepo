@@ -10,7 +10,7 @@ let {
 	children,
 	class: className,
 	href,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithElementRef<HTMLAnchorAttributes> & {
 	child?: Snippet<[{ props: HTMLAnchorAttributes }]>

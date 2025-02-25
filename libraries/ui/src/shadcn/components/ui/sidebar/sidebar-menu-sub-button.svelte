@@ -10,7 +10,7 @@ let {
 	children,
 	class: className,
 	isActive,
-	ref = $bindable(null),
+	ref = $bindable(),
 	size = 'md',
 	...restProps
 }: WithElementRef<HTMLAnchorAttributes> & {

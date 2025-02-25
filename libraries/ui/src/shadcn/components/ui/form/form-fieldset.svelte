@@ -14,7 +14,7 @@ let {
 	class: className,
 	form,
 	name,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChild<FormPrimitive.FieldsetProps<T, U>> = $props()
 </script>

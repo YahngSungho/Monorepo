@@ -8,7 +8,7 @@ let {
 	children,
 	class: className,
 	level = 3,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
 	level?: 1 | 2 | 3 | 4 | 5 | 6

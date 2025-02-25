@@ -9,7 +9,7 @@ let {
 	children,
 	class: className,
 	orientation = 'vertical',
-	ref = $bindable(null),
+	ref = $bindable(),
 	scrollbarXClasses = '',
 	scrollbarYClasses = '',
 	...restProps

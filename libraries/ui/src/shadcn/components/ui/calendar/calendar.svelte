@@ -8,7 +8,7 @@ import * as Calendar from './index'
 let {
 	class: className,
 	placeholder = $bindable(),
-	ref = $bindable(null),
+	ref = $bindable(),
 	value = $bindable(),
 	weekdayFormat = 'short',
 	...restProps

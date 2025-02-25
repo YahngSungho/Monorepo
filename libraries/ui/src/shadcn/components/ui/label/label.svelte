@@ -3,7 +3,7 @@ import { Label as LabelPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils.js'
 
-let { class: className, ref = $bindable(null), ...restProps }: LabelPrimitive.RootProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: LabelPrimitive.RootProps = $props()
 </script>
 
 <LabelPrimitive.Root

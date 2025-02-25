@@ -8,7 +8,7 @@ import * as RangeCalendar from './index.js'
 let {
 	class: className,
 	placeholder = $bindable(),
-	ref = $bindable(null),
+	ref = $bindable(),
 	value = $bindable(),
 	weekdayFormat = 'short',
 	...restProps

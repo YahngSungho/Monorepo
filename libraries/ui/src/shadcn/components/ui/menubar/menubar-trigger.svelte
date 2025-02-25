@@ -3,11 +3,7 @@ import { Menubar as MenubarPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils.js'
 
-let {
-	class: className,
-	ref = $bindable(null),
-	...restProps
-}: MenubarPrimitive.TriggerProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: MenubarPrimitive.TriggerProps = $props()
 </script>
 
 <MenubarPrimitive.Trigger

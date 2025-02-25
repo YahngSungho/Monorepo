@@ -27,7 +27,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	children,
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	variant = 'default',
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {

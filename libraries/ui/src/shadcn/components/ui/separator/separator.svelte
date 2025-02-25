@@ -6,7 +6,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	class: className,
 	orientation = 'horizontal',
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: SeparatorPrimitive.RootProps = $props()
 </script>

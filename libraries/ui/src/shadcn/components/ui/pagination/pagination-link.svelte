@@ -9,7 +9,7 @@ let {
 	class: className,
 	isActive = false,
 	page,
-	ref = $bindable(null),
+	ref = $bindable(),
 	size = 'icon',
 	...restProps
 }: PaginationPrimitive.PageProps &

@@ -1,6 +1,6 @@
-import util, { inspect } from 'node:util'
+import { inspect } from 'node:util'
 
-import * as R from 'ramda'
+import { R } from '@library/library_wrappers/R'
 
 /**
  * @typedef {Object} Condition
@@ -43,7 +43,7 @@ export default class Validator {
 	 * @returns {Validator}
 	 */
 	static fail(errors) {
-		return new Validator(null, errors)
+		return new Validator(undefined, errors)
 	}
 
 	// ----- Pointed Validator
@@ -108,6 +108,11 @@ export default class Validator {
 		return { config: this.config, errors: this.errors }
 	}
 
+	/** @returns {string} - 커스텀 인스펙트 결과 */
+	[inspect.custom]() {
+		return this.isNothing() ? `Invalid(${inspect(this.errors)})` : `Valid(${inspect(this.config)})`
+	}
+
 	/** @returns {boolean} - 설정 객체가 null 또는 undefined인지 여부 */
 	isNothing() {
 		return this.config === null || this.config === undefined
@@ -169,15 +174,14 @@ export default class Validator {
 	mergeErrors(validators) {
 		// X mutable
 
-		if (Array.isArray(validators)) {
-			this.errors = R.pipe(
-				R.map((validator) => validator.errors),
-				R.flatten,
-				R.concat(this.errors),
-			)(validators) /* ? */
-		} else {
-			this.errors = R.concat(this.errors, validators.errors)
-		}
+		this.errors =
+			Array.isArray(validators) ?
+				R.pipe(
+					R.map((validator) => validator.errors),
+					R.flatten,
+					R.concat(this.errors),
+				)(validators)
+			:	R.concat(this.errors, validators.errors)
 
 		return this
 	}
@@ -203,17 +207,12 @@ export default class Validator {
 
 		return function_(this.config).map(Validator.of)
 	}
-
-	/** @returns {string} - 커스텀 인스펙트 결과 */
-	[util.inspect.custom]() {
-		return this.isNothing() ? `Invalid(${inspect(this.errors)})` : `Valid(${inspect(this.config)})`
-	}
 }
 
 // Tests
-const config1 = Validator.fail([1])
-const config2 = Validator.fail([2])
-const config3 = Validator.fail([3])
+const config1 = Validator.fail(['1'])
+const config2 = Validator.fail(['2'])
+const config3 = Validator.fail(['3'])
 
 config1.mergeErrors([config2, config3])
 

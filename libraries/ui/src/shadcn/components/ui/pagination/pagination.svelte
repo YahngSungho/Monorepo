@@ -8,7 +8,7 @@ let {
 	count = 0,
 	page = $bindable(1),
 	perPage = 10,
-	ref = $bindable(null),
+	ref = $bindable(),
 	siblingCount = 1,
 	...restProps
 }: PaginationPrimitive.RootProps = $props()

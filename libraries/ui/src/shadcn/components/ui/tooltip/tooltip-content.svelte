@@ -5,7 +5,7 @@ import { cn } from '$shadcn/utils.js'
 
 let {
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	sideOffset = 4,
 	...restProps
 }: TooltipPrimitive.ContentProps = $props()

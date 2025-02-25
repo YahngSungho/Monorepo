@@ -3,11 +3,7 @@ import { Dialog as SheetPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils.js'
 
-let {
-	class: className,
-	ref = $bindable(null),
-	...restProps
-}: SheetPrimitive.OverlayProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: SheetPrimitive.OverlayProps = $props()
 
 export { className as class }
 </script>

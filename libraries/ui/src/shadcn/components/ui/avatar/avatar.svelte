@@ -3,7 +3,7 @@ import { Avatar as AvatarPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils.js'
 
-let { class: className, ref = $bindable(null), ...restProps }: AvatarPrimitive.RootProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: AvatarPrimitive.RootProps = $props()
 </script>
 
 <AvatarPrimitive.Root

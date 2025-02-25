@@ -6,7 +6,7 @@ import { cn } from '$shadcn/utils.js'
 
 let {
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChild<FormPrimitive.DescriptionProps> = $props()
 </script>

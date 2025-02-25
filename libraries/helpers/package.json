@@ -13,7 +13,8 @@
 		"test:unit": "vitest run"
 	},
 	"devDependencies": {
-		"@library/base": "workspace:*"
+		"@library/base": "workspace:*",
+		"@library/library_wrappers": "workspace:*"
 	},
 	"keywords": [],
 	"exports": {

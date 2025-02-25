@@ -30,7 +30,7 @@ let {
 	children,
 	class: className,
 	href,
-	ref = $bindable(null),
+	ref = $bindable(),
 	variant = 'default',
 	...restProps
 }: WithElementRef<HTMLAnchorAttributes> & {

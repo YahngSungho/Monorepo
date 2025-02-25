@@ -3,7 +3,7 @@ import { Tabs as TabsPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils.js'
 
-let { class: className, ref = $bindable(null), ...restProps }: TabsPrimitive.ContentProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: TabsPrimitive.ContentProps = $props()
 </script>
 
 <TabsPrimitive.Content

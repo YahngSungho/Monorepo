@@ -12,7 +12,7 @@ let {
 	children,
 	class: className,
 	collapsible = 'offcanvas',
-	ref = $bindable(null),
+	ref = $bindable(),
 	side = 'left',
 	variant = 'sidebar',
 	...restProps

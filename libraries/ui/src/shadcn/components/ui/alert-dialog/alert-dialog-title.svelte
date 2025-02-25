@@ -6,7 +6,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	class: className,
 	level = 3,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: AlertDialogPrimitive.TitleProps = $props()
 </script>
