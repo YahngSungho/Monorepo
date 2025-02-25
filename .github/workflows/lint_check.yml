@@ -29,17 +29,12 @@ jobs:
         uses: pnpm/action-setup@v3
         with:
           version: 9.15.4
-          run_install: false
 
       # Node.js 설정
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
-
-      # 의존성 설치
-      - name: Install dependencies
-        run: pnpm install
 
       # 린트 실행
       - name: Lint Check
