@@ -8,7 +8,7 @@ import { getToggleGroupCtx } from './toggle-group.svelte'
 
 let {
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	size,
 	value = $bindable(),
 	variant,

@@ -3,12 +3,6 @@
 		"exclude와 include는 extends 되지 않아서 따로 써줘야 함",
 		"compilerOptions.paths 쓸 거면 packajs.json의 import 부분에도 작성하기"
 	],
-	"compilerOptions": {
-		"paths": {
-			"$shadcn": ["../../libraries/ui/src/shadcn"],
-			"$shadcn/*": ["../../libraries/ui/src/shadcn/*"]
-		}
-	},
 	"exclude": [
 		".turbo/**",
 		"**/node_modules/**",
@@ -25,11 +19,9 @@
 	],
 	"extends": ["@library/base/tsconfig.json", "./.svelte-kit/tsconfig.json"],
 	"include": [
-		"**/*.ts",
-		"**/*.js",
-		"**/*.svelte",
 		"tests/**/*",
 		"src/**/*",
+		"e2e/**/*",
 		".svelte-kit/ambient.d.ts",
 		".svelte-kit/types/**/$types.d.ts"
 	]

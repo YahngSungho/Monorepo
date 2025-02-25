@@ -44,7 +44,7 @@ let {
 	children,
 	class: className,
 	href,
-	ref = $bindable(null),
+	ref = $bindable(),
 	size = 'default',
 	type = 'button',
 	variant = 'default',

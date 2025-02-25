@@ -1,11 +1,7 @@
 // @ts-nocheck
-import util, { inspect } from 'node:util'
+import { inspect } from 'node:util'
 
-import { compose, curry, identity } from 'ramda'
-
-export { createCompose, Identity, IO, List, Map, Maybe, Task }
-
-export { default as Validator } from './validator.js'
+import { compose, curry, identity } from '@library/library_wrappers/R'
 
 const createCompose = curry(
 	(F, G) =>
@@ -24,13 +20,13 @@ const createCompose = curry(
 				return f.map(this.$value)
 			}
 
+			[inspect.custom]() {
+				return `Compose(${inspect(this.$value)})`
+			}
+
 			// ----- Functor (Compose F G)
 			map(function_) {
 				return new Compose(this.$value.map((x) => x.map(function_)))
-			}
-
-			[util.inspect.custom]() {
-				return `Compose(${inspect(this.$value)})`
 			}
 		},
 )
@@ -55,6 +51,10 @@ class Identity {
 		return this.map(function_).join(',')
 	}
 
+	[inspect.custom]() {
+		return `Identity(${inspect(this.$value)})`
+	}
+
 	join() {
 		return this.$value
 	}
@@ -71,10 +71,6 @@ class Identity {
 
 	traverse(of, function_) {
 		return function_(this.$value).map(Identity.of)
-	}
-
-	[util.inspect.custom]() {
-		return `Identity(${inspect(this.$value)})`
 	}
 }
 
@@ -98,6 +94,10 @@ class IO {
 		return this.map(function_).join(',')
 	}
 
+	[inspect.custom]() {
+		return 'IO(?)'
+	}
+
 	join() {
 		return new IO(() => this.unsafePerformIO().unsafePerformIO())
 	}
@@ -105,10 +105,6 @@ class IO {
 	// ----- Functor IO
 	map(function_) {
 		return new IO(compose(function_, this.unsafePerformIO))
-	}
-
-	[util.inspect.custom]() {
-		return 'IO(?)'
 	}
 }
 
@@ -124,6 +120,10 @@ class List {
 
 	concat(x) {
 		return new List(this.$value.concat(x))
+	}
+
+	[inspect.custom]() {
+		return `List(${inspect(this.$value)})`
 	}
 
 	// ----- Functor List
@@ -144,53 +144,6 @@ class List {
 					.ap(f),
 			of(new List([])),
 		)
-	}
-
-	[util.inspect.custom]() {
-		return `List(${inspect(this.$value)})`
-	}
-}
-
-class Map {
-	constructor(x) {
-		this.$value = x
-	}
-
-	insert(k, v) {
-		const singleton = {}
-		singleton[k] = v
-		return Map.of({ ...this.$value, ...singleton })
-	}
-
-	// ----- Functor (Map a)
-	map(function_) {
-		return this.reduceWithKeys((m, v, k) => m.insert(k, function_(v)), new Map({}))
-	}
-
-	reduceWithKeys(function_, zero) {
-		return Object.keys(this.$value).reduce(
-			(accumulator, k) => function_(accumulator, this.$value[k], k),
-			zero,
-		)
-	}
-
-	// ----- Traversable (Map a)
-	sequence(of) {
-		return this.traverse(of, identity)
-	}
-
-	traverse(of, function_) {
-		return this.reduceWithKeys(
-			(f, a, k) =>
-				function_(a)
-					.map((b) => (m) => m.insert(k, b))
-					.ap(f),
-			of(new Map({})),
-		)
-	}
-
-	[util.inspect.custom]() {
-		return `Map(${inspect(this.$value)})`
 	}
 }
 
@@ -235,6 +188,10 @@ class Maybe {
 		return this.$value
 	}
 
+	[inspect.custom]() {
+		return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`
+	}
+
 	join() {
 		return this.isNothing ? this : this.$value
 	}
@@ -258,10 +215,6 @@ class Maybe {
 
 	traverse(of, function_) {
 		return this.isNothing ? of(this) : function_(this.$value).map(Maybe.of)
-	}
-
-	[util.inspect.custom]() {
-		return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`
 	}
 }
 
@@ -291,6 +244,10 @@ class Task {
 		)
 	}
 
+	[inspect.custom]() {
+		return 'Task(?)'
+	}
+
 	join() {
 		return this.chain(identity)
 	}
@@ -299,8 +256,8 @@ class Task {
 	map(function_) {
 		return new Task((reject, resolve) => this.fork(reject, compose(resolve, function_)))
 	}
-
-	[util.inspect.custom]() {
-		return 'Task(?)'
-	}
 }
+
+export { createCompose, Identity, IO, List, Map, Maybe, Task }
+
+export { default as Validator } from './validator.js'

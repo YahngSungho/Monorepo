@@ -8,7 +8,7 @@ let {
 	children,
 	class: className,
 	inset,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: DropdownMenuPrimitive.SubTriggerProps & {
 	inset?: boolean

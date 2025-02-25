@@ -11,7 +11,7 @@ let {
 	children,
 	class: className,
 	portalProps,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChildrenOrChild<DialogPrimitive.ContentProps> & {
 	children: Snippet

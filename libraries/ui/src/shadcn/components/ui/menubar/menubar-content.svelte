@@ -8,7 +8,7 @@ let {
 	alignOffset = -4,
 	class: className,
 	portalProps,
-	ref = $bindable(null),
+	ref = $bindable(),
 	side = 'bottom',
 	sideOffset = 8,
 	...restProps

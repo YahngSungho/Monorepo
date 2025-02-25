@@ -9,7 +9,7 @@ let {
 	children,
 	class: className,
 	portalProps,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: DrawerPrimitive.ContentProps & {
 	portalProps?: DrawerPrimitive.PortalProps

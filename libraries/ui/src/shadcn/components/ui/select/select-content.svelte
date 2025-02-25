@@ -10,7 +10,7 @@ let {
 	children,
 	class: className,
 	portalProps,
-	ref = $bindable(null),
+	ref = $bindable(),
 	sideOffset = 4,
 	...restProps
 }: WithoutChild<SelectPrimitive.ContentProps> & {

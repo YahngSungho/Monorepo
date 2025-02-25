@@ -33,7 +33,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	class: className,
 	pressed = $bindable(false),
-	ref = $bindable(null),
+	ref = $bindable(),
 	size = 'default',
 	variant = 'default',
 	...restProps

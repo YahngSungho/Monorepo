@@ -3,7 +3,7 @@ import { Dialog as SheetPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils.js'
 
-let { class: className, ref = $bindable(null), ...restProps }: SheetPrimitive.TitleProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: SheetPrimitive.TitleProps = $props()
 </script>
 
 <SheetPrimitive.Title

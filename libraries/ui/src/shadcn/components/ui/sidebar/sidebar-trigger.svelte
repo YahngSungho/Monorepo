@@ -10,7 +10,7 @@ import { useSidebar } from './context.svelte.js'
 let {
 	class: className,
 	onclick,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: ComponentProps<typeof Button> & {
 	onclick?: (e: MouseEvent) => void

@@ -9,7 +9,7 @@ import { useSidebar } from './context.svelte.js'
 let {
 	children,
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> = $props()
 

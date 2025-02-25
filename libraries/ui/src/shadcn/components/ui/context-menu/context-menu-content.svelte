@@ -6,7 +6,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	class: className,
 	portalProps,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: ContextMenuPrimitive.ContentProps & {
 	portalProps?: ContextMenuPrimitive.PortalProps

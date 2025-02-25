@@ -11,7 +11,7 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"eslint": "eslint **/*.{js,ts,svelte}",
+		"eslint": "eslint **/*.{js,ts,svelte} --ignore-pattern ./src/shadcn/components/**",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",

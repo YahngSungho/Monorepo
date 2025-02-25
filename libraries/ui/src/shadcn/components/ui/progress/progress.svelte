@@ -6,7 +6,7 @@ import { cn } from '$shadcn/utils.js'
 let {
 	class: className,
 	max = 100,
-	ref = $bindable(null),
+	ref = $bindable(),
 	value,
 	...restProps
 }: WithoutChildrenOrChild<ProgressPrimitive.RootProps> = $props()

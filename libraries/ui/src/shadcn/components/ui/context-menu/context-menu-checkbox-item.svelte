@@ -11,7 +11,7 @@ let {
 	children: childrenProp,
 	class: className,
 	indeterminate = $bindable(false),
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChildrenOrChild<ContextMenuPrimitive.CheckboxItemProps> & {
 	children?: Snippet

@@ -9,7 +9,7 @@ import { getEmblaContext } from './context.js'
 
 let {
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	size = 'icon',
 	variant = 'outline',
 	...restProps

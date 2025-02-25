@@ -17,6 +17,7 @@ export {
 	Sub,
 }
 
+export { default as Menubar, default as Root } from './menubar.svelte'
 export {
 	default as CheckboxItem,
 	default as MenubarCheckboxItem,
@@ -33,4 +34,3 @@ export { default as MenubarShortcut, default as Shortcut } from './menubar-short
 export { default as MenubarSubContent, default as SubContent } from './menubar-sub-content.svelte'
 export { default as MenubarSubTrigger, default as SubTrigger } from './menubar-sub-trigger.svelte'
 export { default as MenubarTrigger, default as Trigger } from './menubar-trigger.svelte'
-export { default as Menubar, default as Root } from './menubar.svelte'

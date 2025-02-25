@@ -8,6 +8,7 @@ export {
 	Loading,
 }
 
+export { default as Command, default as Root } from './command.svelte'
 export { default as CommandDialog, default as Dialog } from './command-dialog.svelte'
 export { default as CommandEmpty, default as Empty } from './command-empty.svelte'
 export { default as CommandGroup, default as Group } from './command-group.svelte'
@@ -17,4 +18,3 @@ export { default as CommandLinkItem, default as LinkItem } from './command-link-
 export { default as CommandList, default as List } from './command-list.svelte'
 export { default as CommandSeparator, default as Separator } from './command-separator.svelte'
 export { default as CommandShortcut, default as Shortcut } from './command-shortcut.svelte'
-export { default as Command, default as Root } from './command.svelte'

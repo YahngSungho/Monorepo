@@ -1,4 +1,4 @@
-import path, { join } from 'node:path'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { runTests } from '@library/base/traverse.test.js'
@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // SvelteKit route directory root
-const projectRouteRoot = join(__dirname, '../src/routes')
+const projectRouteRoot = path.join(__dirname, '../src/routes')
 
 // Define parameter examples for dynamic routes
 // You can extend this object with more routes and parameters

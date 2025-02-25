@@ -18,7 +18,7 @@ import { cn } from '$shadcn/utils.js'
 
 let {
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	size = 'default',
 	value = $bindable(),
 	variant = 'default',

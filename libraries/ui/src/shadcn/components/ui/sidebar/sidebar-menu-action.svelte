@@ -9,7 +9,7 @@ let {
 	child,
 	children,
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	showOnHover = false,
 	...restProps
 }: WithElementRef<HTMLButtonAttributes> & {

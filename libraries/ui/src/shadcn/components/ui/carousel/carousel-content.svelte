@@ -10,7 +10,7 @@ import { getEmblaContext } from './context.js'
 let {
 	children,
 	class: className,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 

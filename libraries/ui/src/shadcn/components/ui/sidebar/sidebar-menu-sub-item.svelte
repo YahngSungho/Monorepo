@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'svelte/elements'
 
 let {
 	children,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLLIElement>> = $props()
 </script>

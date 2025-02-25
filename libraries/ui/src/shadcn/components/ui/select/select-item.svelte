@@ -8,7 +8,7 @@ let {
 	children: childrenProp,
 	class: className,
 	label,
-	ref = $bindable(null),
+	ref = $bindable(),
 	value,
 	...restProps
 }: WithoutChild<SelectPrimitive.ItemProps> = $props()

@@ -14,7 +14,7 @@ let {
 	children,
 	open = $bindable(false),
 	portalProps,
-	ref = $bindable(null),
+	ref = $bindable(),
 	value = $bindable(''),
 	...restProps
 }: WithoutChildrenOrChild<CommandPrimitive.RootProps> &

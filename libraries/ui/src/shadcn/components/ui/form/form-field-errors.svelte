@@ -8,10 +8,10 @@ let {
 	children: childrenProp,
 	class: className,
 	errorClasses,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChild<FormPrimitive.FieldErrorsProps> & {
-	errorClasses?: null | string | undefined
+	errorClasses?: string | undefined | undefined
 } = $props()
 </script>
 

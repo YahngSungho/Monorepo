@@ -33,7 +33,7 @@ let {
 	children,
 	class: className,
 	portalProps,
-	ref = $bindable(null),
+	ref = $bindable(),
 	side = 'right',
 	...restProps
 }: WithoutChildrenOrChild<SheetPrimitive.ContentProps> & {

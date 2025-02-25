@@ -3,11 +3,7 @@ import { Calendar as CalendarPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils.js'
 
-let {
-	class: className,
-	ref = $bindable(null),
-	...restProps
-}: CalendarPrimitive.GridProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: CalendarPrimitive.GridProps = $props()
 </script>
 
 <CalendarPrimitive.Grid

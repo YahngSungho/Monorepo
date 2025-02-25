@@ -140,6 +140,10 @@ export default defineFlatConfig([
 
 	{
 		rules: {
+			'perfectionist/sort-exports': 'off',
+			'no-shadow': 'warn',
+			'unicorn/no-empty-file': 'off',
+			'unicorn/no-array-reduce': 'off',
 			'ex/no-unhandled': 'off',
 			'sonarjs/no-unused-collection': 'off',
 			'sonarjs/no-empty-test-file': 'off',
@@ -275,7 +279,9 @@ export default defineFlatConfig([
 			parserOptions: {
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
-				projectService: true,
+				projectService: {
+					allowDefaultProject: ['*.js', '*.ts', '*.mjs', '*.cjs', '*.svelte'],
+				},
 				requireConfigFile: false,
 				sourceType: 'module',
 			},
@@ -298,7 +304,9 @@ export default defineFlatConfig([
 			parserOptions: {
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
-				projectService: true,
+				projectService: {
+					allowDefaultProject: ['*.svelte'],
+				},
 				parser: {
 					js: parser_TS,
 					ts: parser_TS,

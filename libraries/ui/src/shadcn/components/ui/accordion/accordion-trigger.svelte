@@ -8,7 +8,7 @@ let {
 	children,
 	class: className,
 	level = 3,
-	ref = $bindable(null),
+	ref = $bindable(),
 	...restProps
 }: WithoutChild<AccordionPrimitive.TriggerProps> & {
 	level?: AccordionPrimitive.HeaderProps['level']

@@ -3,11 +3,7 @@ import { Drawer as DrawerPrimitive } from 'vaul-svelte'
 
 import { cn } from '$shadcn/utils.js'
 
-let {
-	class: className,
-	ref = $bindable(null),
-	...restProps
-}: DrawerPrimitive.OverlayProps = $props()
+let { class: className, ref = $bindable(), ...restProps }: DrawerPrimitive.OverlayProps = $props()
 </script>
 
 <DrawerPrimitive.Overlay

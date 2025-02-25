@@ -4,7 +4,6 @@ import * as m from '@library/base/messages.js'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
-import { Calendar } from '@library/ui/calendar'
 import Icon from '@library/ui/icon'
 
 import { switchToLanguage } from '../../paraglide'
@@ -18,7 +17,7 @@ foo += ' bar133322222223'
 </script>
 
 <h1>여기는 About</h1>
-<h3>Welcome to SvelteKit</h3>
+<h3>{foo}</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
