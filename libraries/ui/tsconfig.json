@@ -20,8 +20,14 @@
 		"**/.vercel/**",
 		"**/coverage/**",
 		"**/.history/**",
-		"**/service-worker/**"
+		"**/service-worker/**",
+		"node_modules/**",
+		"src/service-worker/**",
+		"svelte.config.js",
+		"vite.config.js",
+		"vite.config.ts",
+		"static/**"
 	],
 	"extends": ["@library/base/tsconfig.json"],
-	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*", "src/**/*"]
+	"include": ["src/**/*"]
 }

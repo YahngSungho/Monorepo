@@ -32,7 +32,13 @@
 		"**/.vercel/**",
 		"**/coverage/**",
 		"**/.history/**",
-		"**/service-worker/**"
+		"**/service-worker/**",
+		"node_modules/**",
+		"src/service-worker/**",
+		"svelte.config.js",
+		"vite.config.js",
+		"vite.config.ts",
+		"static/**"
 	],
-	"include": ["**/*.ts", "**/*.js", "**/*.svelte", "tests/**/*", "src/**/*"]
+	"include": ["src/**/*", "e2e/**/*"]
 }
