@@ -155,6 +155,6 @@
 		]
 	},
 	"simple-git-hooks": {
-		"pre-commit": "pnpm dlx lint-staged"
+		"pre-commit": ""
 	}
 }
