@@ -15,8 +15,6 @@ let foo = $state(`${fo}foifoifo`)
 foo += ' bar133322222223'
 
 const eewre = Promise.resolve('test')
-
-;('') // eslint-disable-line
 </script>
 
 <h2 class={'bg-primary'}>{m.welcome()}</h2>
