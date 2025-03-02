@@ -1,0 +1,50 @@
+name: Lint & Check
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
+
+permissions:
+  pull-requests: write
+  issues: read
+  contents: write
+
+jobs:
+  lint-check: # job 이름 변경 (두 작업 통합)
+    name: Lint & Check # job 이름 변경 (두 작업 통합)
+    runs-on: ubuntu-latest
+    steps:
+      # --- 공통 설정 단계 (한 번만 실행) ---
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.5.0
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+      - name: Install dependencies
+        run: pnpm install
+
+      # --- Lint fix & Format 단계 ---
+      - name: Run Lint & Format
+        run: pnpm run lint-fix
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Lint & Format
+
+      # --- Check & Lint 단계 ---
+      - name: build
+        run: pnpm run build
+
+      - name: Run Lint
+        run: pnpm run lint
