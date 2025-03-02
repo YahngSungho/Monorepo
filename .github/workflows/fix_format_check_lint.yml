@@ -21,9 +21,9 @@ jobs:
       # --- 공통 설정 단계 (한 번만 실행) ---
       - name: Checkout repository
         uses: actions/checkout@v4
-        with: # 올바른 들여쓰기
-          repository: ${{ github.event.pull_request.head.repo.full_name }} # 올바른 들여쓰기
-          ref: ${{ github.head_ref }} # 올바른 들여쓰기
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.head_ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -42,10 +42,11 @@ jobs:
       - name: Run Lint & Format
         run: pnpm run lint-fix
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Commit changes # git-auto-commit-action 대신 EndBug/add-and-commit 사용
+        uses: EndBug/add-and-commit@v9
         with:
-          commit_message: Lint fix & Format
-          skip_dirty_check: true
+          add: . # 변경된 모든 파일 추가
+          message: 'Lint fix & Format'
 
       # --- Check & Lint 단계 ---
       - name: build
