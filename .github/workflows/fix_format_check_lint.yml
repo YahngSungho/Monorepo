@@ -1,4 +1,4 @@
-name: Lint & Check
+name: Lint fix & Format & Check & Lint
 
 on:
   pull_request_target:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   lint-check: # job 이름 변경 (두 작업 통합)
-    name: Lint & Check # job 이름 변경 (두 작업 통합)
+    name: Lint fix &  Check # job 이름 변경 (두 작업 통합)
     runs-on: ubuntu-latest
     steps:
       # --- 공통 설정 단계 (한 번만 실행) ---
