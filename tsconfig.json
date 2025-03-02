@@ -26,18 +26,21 @@
 		"./libraries/base/tsconfig.json"
 	],
 	"include": [
-
-
-
 		"*.js",
 		"*.ts",
 		"*.svelte",
-
-
-
 		"*.cjs",
-		"*.mjs",
 
+
+
+
+
+
+
+
+
+
+		"*.mjs",
 		"**/*.js",
 		"**/*.ts",
 		"**/*.svelte",
