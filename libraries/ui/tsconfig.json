@@ -5,8 +5,12 @@
 	],
 	"compilerOptions": {
 		"paths": {
-			"$shadcn": ["./src/shadcn"],
-			"$shadcn/*": ["./src/shadcn/*"]
+			"$shadcn": [
+				"./src/shadcn"
+			],
+			"$shadcn/*": [
+				"./src/shadcn/*"
+			]
 		}
 	},
 	"exclude": [
@@ -25,17 +29,29 @@
 		"src/service-worker/**",
 		"static/**"
 	],
-	"extends": ["@library/base/tsconfig.json"],
+	"extends": [
+		"@library/base/tsconfig.json"
+	],
 	"include": [
 		"src/**/*",
 		"*.js",
 		"*.ts",
+
+
 		"*.svelte",
+
+
+
 		"*.cjs",
 		"*.mjs",
+
+
+
+
 		"**/*.js",
 		"**/*.ts",
 		"**/*.svelte",
+
 		"**/*.cjs",
 		"**/*.mjs"
 	]
