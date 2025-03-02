@@ -22,41 +22,24 @@
 		"vite.config.ts",
 		"static/**"
 	],
-	"extends": [
-		"./libraries/base/tsconfig.json"
-	],
+	"extends": ["./libraries/base/tsconfig.json"],
 	"include": [
 		"*.js",
 
-
-
 		"*.ts",
-
 
 		"*.svelte",
 
-
-
-
 		"*.cjs",
-
-
-
-
-
 
 		"*.mjs",
 		"**/*.js",
+
 		"**/*.ts",
-
-
 
 		"**/*.svelte",
 
 		"**/*.cjs",
-
-
-
 
 		"**/*.mjs"
 	]
