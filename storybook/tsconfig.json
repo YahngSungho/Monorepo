@@ -41,21 +41,6 @@
 		"src/**/*",
 		".storybook/*.js",
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		".storybook/*.ts",
 		".svelte-kit/ambient.d.ts",
 
