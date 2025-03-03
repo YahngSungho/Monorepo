@@ -50,6 +50,36 @@ jobs:
       - name: Run Lint & Format
         run: pnpm run lint-fix
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      # 코드 변경사항 커밋
+      - name: Commit changes
+        id: auto-commit
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
+
+      # PR 컨텍스트 확인
+      - name: Check if in PR context
+        id: check_pr
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.event_name }}" == "pull_request_target" ]]; then
+            echo "is_pr=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_pr=false" >> $GITHUB_OUTPUT
+          fi
+
+      # PR 업데이트 (PR 컨텍스트에 있고 커밋 변경이 있는 경우에만)
+      - name: Update PR
+        if: steps.auto-commit.outputs.changes_detected == 'true' && steps.check_pr.outputs.is_pr == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.TOKEN1 }}
+          commit-message: '[automated-mutation]'
+          branch: ${{ github.head_ref }}
+          delete-branch: false
+          title: '[Automated] 코드 자동 수정'
+          body: |
+            이 PR은 자동으로 업데이트되었습니다.
+            코드 포맷팅 및 린트 수정 사항을 포함합니다.
+          labels: |
+            automated
+            ready-to-merge
