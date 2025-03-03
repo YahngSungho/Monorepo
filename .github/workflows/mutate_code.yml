@@ -4,13 +4,6 @@ on:
   push:
     paths-ignore:
       - '.github/workflows/**'
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-    paths-ignore:
-      - '.github/workflows/**'
 
 permissions:
   pull-requests: write # Necessary to comment on PRs
