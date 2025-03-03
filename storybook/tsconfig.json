@@ -37,6 +37,26 @@
 	"extends": ["@library/base/tsconfig.json"],
 	"include": [
 		"**/*.d.ts",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		"tests/**/*",
 		"src/**/*",
 		".storybook/*.js",
