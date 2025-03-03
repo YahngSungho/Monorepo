@@ -1,6 +1,6 @@
 name: Ninja i18n action
 
-on: pull_request_target
+on: push
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -12,7 +12,7 @@ jobs:
   ninja-i18n:
     name: Ninja i18n - GitHub Lint Action
     runs-on: ubuntu-latest
-
+    if: "contains(github.event.head_commit.message, '[automated-mutation]')"
     steps:
       - name: Run Ninja i18n
         # @main ensures that the latest version of the action is used

@@ -1,53 +1,55 @@
-name: Check & Lint
+name: Mutate Code
 
 on:
-  repository_dispatch:
-    types: [lint-fix-completed] # Lint fix & Format에서 발생시킨 이벤트 타입
+  push:
+    paths-ignore:
+      - '.github/workflows/**'
 
-# explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue comments
-  contents: read # Necessary to access the repo content
+  contents: write
 
 jobs:
-  build:
-    name: Check & Lint
-    timeout-minutes: 15
+  mutate-code:
     runs-on: ubuntu-latest
     # To use Remote Caching, uncomment the next lines and follow the steps below.
     # env:
     #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+    if: "!contains(github.event.head_commit.message, '[automated-mutation]')"
 
     steps:
-      # 저장소 코드 체크아웃
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.client_payload.ref }} # PR의 head 브랜치 체크아웃
-          sha: ${{ github.event.client_payload.sha }}
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.TOKEN1 }}
 
-      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
+          # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
+
       # Corepack 활성화 (packageManager 버전 자동 감지)
       - name: Enable Corepack
         run: corepack enable
+
       # pnpm 설치 (packageManager 버전과 일치)
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.4.1
+
       # 의존성 설치
       - name: Install dependencies
         run: pnpm install
 
-      - name: build
-        run: pnpm run build
-
       # 린트 실행
-      - name: Run Lint
-        run: pnpm run lint
+      - name: Run Lint & Format
+        run: pnpm run lint-fix
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '[automated-mutation]'

@@ -18,6 +18,8 @@ jobs:
     #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
+    if: "contains(github.event.head_commit.message, '[automated-mutation]')"
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
