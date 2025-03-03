@@ -23,9 +23,6 @@ jobs:
       # 저장소 코드 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.client_payload.ref }} # PR의 head 브랜치 체크아웃
-          sha: ${{ github.event.client_payload.sha }}
 
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
       - name: Setup Node.js
