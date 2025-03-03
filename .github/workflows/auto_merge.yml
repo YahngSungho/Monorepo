@@ -14,8 +14,8 @@ on:
       - submitted
 
   # Try enabling auto-merge for a pull request when a draft is marked as
-  # “ready for review”, when a required label is applied or when a
-  # “do not merge” label is removed, or when a pull request is updated in
+  # "ready for review", when a required label is applied or when a
+  # "do not merge" label is removed, or when a pull request is updated in
   # any way (opened, synchronized, reopened, edited).
   pull_request_target:
     types:
@@ -31,17 +31,23 @@ on:
 permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue comments
-  contents: read # Necessary to access the repo content
+  contents: write # Necessary to merge PRs
 
 jobs:
   automerge:
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, '[automated-mutation]')"
+    if: |
+      (contains(github.event.head_commit.message, '[automated-mutation]') ||
+      contains(github.event.pull_request.labels.*.name, 'ready-to-merge') ||
+      contains(github.event.pull_request.labels.*.name, 'automated'))
     steps:
       - uses: reitermarkus/automerge@v2.8.0
         with:
           token: ${{ secrets.TOKEN1 }}
           merge-method: merge
           do-not-merge-labels: never-merge
+          required-labels: |
+            automated
+            ready-to-merge
           pull-request: ${{ github.event.inputs.pull-request }}
           review: ${{ github.event.inputs.review }}
