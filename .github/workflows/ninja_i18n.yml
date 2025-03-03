@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, '[automated-mutation]')"
     steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
       - name: Run Ninja i18n
         # @main ensures that the latest version of the action is used
         uses: opral/ninja-i18n-action@main
