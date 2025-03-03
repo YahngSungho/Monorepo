@@ -1,4 +1,4 @@
-name: Lint fix & Format
+name: Check & Lint
 
 on: push
 
@@ -6,22 +6,26 @@ on: push
 permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue comments
-  contents: write
-  repository-projects: write # repository_dispatch를 위해 필요
+  contents: read # Necessary to access the repo content
 
 jobs:
   build:
-    name: Lint fix & Format
+    name: Check & Lint
     timeout-minutes: 15
     runs-on: ubuntu-latest
     # To use Remote Caching, uncomment the next lines and follow the steps below.
     # env:
     #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+    if: "contains(github.event.head_commit.message, '[automated-mutation]')"
 
     steps:
       # 저장소 코드 체크아웃
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.ref }} # PR의 head 브랜치 체크아웃
+          sha: ${{ github.event.client_payload.sha }}
 
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
       - name: Setup Node.js
@@ -40,17 +44,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: build
+        run: pnpm run build
+
       # 린트 실행
-      - name: Run Lint & Format
-        run: pnpm run lint-fix
-
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Lint & Format
-
-      - name: Trigger Check & Lint workflow
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # 또는 personal access token
-          event-type: lint-fix-completed
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}' # 변경된 부분
+      - name: Run Lint
+        run: pnpm run lint
