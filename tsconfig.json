@@ -25,6 +25,7 @@
 	"extends": ["./libraries/base/tsconfig.json"],
 	"include": [
 		"*.js",
+
 		"*.ts",
 		"*.svelte",
 
@@ -32,29 +33,9 @@
 
 		"*.mjs",
 
-
-
-
-
-
-
-
-
-
-
-
 		"**/*.js",
 
 		"**/*.ts",
-
-
-
-
-
-
-
-
-
 
 		"**/*.svelte",
 
