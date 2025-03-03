@@ -4,6 +4,18 @@ on:
   push:
     paths-ignore:
       - '.github/workflows/**'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths-ignore:
+      - '.github/workflows/**'
+
+# 중복 실행 방지를 위한 concurrency 설정
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   pull-requests: write # Necessary to comment on PRs
