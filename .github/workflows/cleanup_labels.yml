@@ -1,0 +1,83 @@
+name: Cleanup Labels
+
+on:
+  workflow_run:
+    workflows: ['Build & Tests'] # 모든 관련 워크플로우 이름 추가
+    types:
+      - completed
+  schedule:
+    - cron: '*/1 * * * *' # 1분마다 실행 (필요에 따라 조정)
+
+permissions:
+  pull-requests: write
+  issues: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Get Open PRs with Mutation Completed Label
+        id: get_prs
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open'
+            });
+
+            // 대상 PR 배열
+            const targetPRs = [];
+
+            for (const pr of prs.data) {
+              // PR 상태 확인
+              const status = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: pr.head.sha
+              });
+
+              // 라벨 확인
+              const hasLabel = pr.labels.some(label => label.name === 'mutation-completed');
+
+              // 모든 체크가 완료되었는지 확인
+              const allChecksComplete = status.data.check_runs.every(check =>
+                check.status === 'completed' &&
+                check.name !== 'Cleanup Labels'
+              );
+
+              if (hasLabel && allChecksComplete) {
+                console.log(`PR #${pr.number} has completed all checks and has mutation-completed label`);
+                targetPRs.push(pr.number);
+              }
+            }
+
+            return targetPRs;
+          result-encoding: json
+
+      - name: Remove Labels
+        if: steps.get_prs.outputs.result != '[]'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            const prs = JSON.parse('${{ steps.get_prs.outputs.result }}');
+
+            for (const prNumber of prs) {
+              try {
+                await github.rest.issues.removeLabel({
+                  issue_number: prNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: 'mutation-completed'
+                });
+                console.log(`Successfully removed label from PR #${prNumber}`);
+              } catch (error) {
+                console.log(`Failed to remove label from PR #${prNumber}: ${error.message}`);
+              }
+            }
