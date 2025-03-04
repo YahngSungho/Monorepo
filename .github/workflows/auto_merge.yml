@@ -1,7 +1,7 @@
 name: Auto-Merge Pull Request
 # https://github.com/marketplace/actions/auto-merge-pull-request
 
-on: pull_request
+on: push
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
