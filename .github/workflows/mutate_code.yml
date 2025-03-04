@@ -1,6 +1,8 @@
 name: Mutate Code
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 # 중복 실행 방지를 위한 concurrency 설정
 concurrency:
@@ -20,9 +22,9 @@ jobs:
     # env:
     #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    # 1. 자동화 커밋 제외
-    # 2. PR 이벤트이거나 (PR 브랜치가 아닌) 일반 push 이벤트일 때만 실행
-    if: "!contains(github.event.head_commit.message, '[automated-mutation]')"
+
+    # PR 이벤트에서는 head_commit이 아닌 다른 방식으로 확인해야 함
+    if: "!contains(github.event.pull_request.title, '[skip-mutation]') && !contains(github.event.pull_request.body, '[skip-mutation]')"
 
     steps:
       - name: Checkout repository
@@ -55,18 +57,44 @@ jobs:
       - name: Run Lint & Format
         run: pnpm run lint-fix
 
-      # 코드 변경사항 커밋
+      # 이전 커밋 메시지 확인
+      - name: Check last commit message
+        id: check_commit
+        run: |
+          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ "$LAST_COMMIT_MSG" == *"[automated-mutation]"* ]]; then
+            echo "is_automated=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_automated=false" >> $GITHUB_OUTPUT
+          fi
+
+      # 자동화된 커밋이 아닐 경우에만 변경사항 커밋 시도
       - name: Commit changes
-        id: auto-commit # mandatory for the output to show up in ${{ steps }}
+        id: auto-commit
+        if: steps.check_commit.outputs.is_automated != 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
 
-      # 변경사항이 없을 경우 빈 커밋 생성
+      # 변경사항이 없고 자동화된 커밋이 아닐 경우에만 빈 커밋 생성
       - name: Create empty commit if needed
-        if: steps.auto-commit.outputs.changes_detected == 'false'
+        if: steps.auto-commit.outputs.changes_detected == 'false' && steps.check_commit.outputs.is_automated != 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit --allow-empty -m "[automated-mutation]"
           git push origin ${{ github.head_ref }}
+
+      # 워크플로우 실행 후 PR에 라벨 추가하여 다음 실행 방지
+      - name: Add skip label to PR
+        if: steps.check_commit.outputs.is_automated != 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['mutation-completed']
+            })
