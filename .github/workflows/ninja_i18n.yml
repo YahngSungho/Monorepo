@@ -13,13 +13,7 @@ jobs:
     name: Ninja i18n - GitHub Lint Action
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.labels.*.name, 'mutation-completed')
-
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # 전체 히스토리를 가져오도록 설정
-
       - name: Run Ninja i18n
         # @main ensures that the latest version of the action is used
         uses: opral/ninja-i18n-action@main
