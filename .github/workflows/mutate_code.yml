@@ -1,8 +1,6 @@
 name: Mutate Code
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+on: pull_request
 
 # 중복 실행 방지를 위한 concurrency 설정
 concurrency:
@@ -24,7 +22,7 @@ jobs:
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
     # PR 이벤트에서는 head_commit이 아닌 다른 방식으로 확인해야 함
-    if: "!contains(github.event.pull_request.title, '[skip-mutation]') && !contains(github.event.pull_request.body, '[skip-mutation]')"
+    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
       - name: Checkout repository
