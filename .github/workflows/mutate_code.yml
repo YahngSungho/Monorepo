@@ -1,7 +1,6 @@
 name: Mutate Code
 
-on:
-  pull_request:
+on: pull_request
 
 # 중복 실행 방지를 위한 concurrency 설정
 concurrency:
@@ -62,4 +61,12 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
-          skip_dirty_check: true
+
+      # 변경사항이 없을 경우 빈 커밋 생성
+      - name: Create empty commit if needed
+        if: steps.auto-commit-action.outputs.changes_detected == 'false'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit --allow-empty -m "[automated-mutation]"
+          git push origin ${{ github.head_ref }}
