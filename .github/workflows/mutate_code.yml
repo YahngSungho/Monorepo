@@ -14,7 +14,6 @@ jobs:
     # env:
     #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
       - name: Checkout Repository
