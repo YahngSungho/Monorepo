@@ -1,18 +1,7 @@
 name: Mutate Code
 
 on:
-  # 모든 브랜치에 대한 push 허용
-  push:
-    paths-ignore:
-      - '.github/workflows/**'
-  # pull_request 이벤트는 모든 PR에 적용
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-    paths-ignore:
-      - '.github/workflows/**'
 
 # 중복 실행 방지를 위한 concurrency 설정
 concurrency:
@@ -34,12 +23,7 @@ jobs:
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
     # 1. 자동화 커밋 제외
     # 2. PR 이벤트이거나 (PR 브랜치가 아닌) 일반 push 이벤트일 때만 실행
-    if: |
-      !contains(github.event.head_commit.message, '[automated-mutation]') &&
-      (
-        github.event_name == 'pull_request' ||
-        (github.event_name == 'push' && !startsWith(github.ref, 'refs/pull/'))
-      )
+    if: "!contains(github.event.head_commit.message, '[automated-mutation]')"
 
     steps:
       - name: Checkout repository
@@ -79,19 +63,7 @@ jobs:
         with:
           commit_message: '[automated-mutation]'
 
-      # PR 컨텍스트 확인
-      - name: Check if in PR context
-        id: check_pr
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.event_name }}" == "pull_request_target" ]]; then
-            echo "is_pr=true" >> $GITHUB_OUTPUT
-          else
-            echo "is_pr=false" >> $GITHUB_OUTPUT
-          fi
-
-      # PR 업데이트 (PR 컨텍스트에 있고 커밋 변경이 있는 경우에만)
       - name: Update PR
-        if: steps.auto-commit.outputs.changes_detected == 'true' && steps.check_pr.outputs.is_pr == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.TOKEN1 }}
@@ -101,7 +73,6 @@ jobs:
           title: '[Automated] 코드 자동 수정'
           body: |
             이 PR은 자동으로 업데이트되었습니다.
-            코드 포맷팅 및 린트 수정 사항을 포함합니다.
           labels: |
             automated
             ready-to-merge
