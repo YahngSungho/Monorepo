@@ -15,10 +15,13 @@ jobs:
     if: "contains(github.event.head_commit.message, '[automated-mutation]')"
 
     steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 전체 히스토리를 가져오도록 설정
+
       - name: Run Ninja i18n
         # @main ensures that the latest version of the action is used
         uses: opral/ninja-i18n-action@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          base-branch: ${{ github.ref_name }} # 기본 브랜치 명시적 설정
