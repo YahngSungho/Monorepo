@@ -2,12 +2,9 @@ name: Ninja i18n action
 
 on:
   pull_request:
+    types: [labeled]
     branches:
       - '**'
-  workflow_run:
-    workflows: [Mutate Code]
-    types:
-      - completed
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -19,7 +16,7 @@ jobs:
   ninja-i18n:
     name: Ninja i18n - GitHub Lint Action
     runs-on: ubuntu-latest
-    if: "github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'"
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
     steps:
       - name: Run Ninja i18n
         # @main ensures that the latest version of the action is used
