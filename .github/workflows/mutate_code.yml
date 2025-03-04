@@ -2,12 +2,6 @@ name: Mutate Code
 
 on: pull_request
 
-# 중복 실행 방지를 위한 concurrency 설정
-concurrency:
-  # PR 번호가 있으면 PR 번호 기준, 없으면 브랜치 이름 기준으로 그룹화
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue comments
@@ -20,12 +14,10 @@ jobs:
     # env:
     #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-
-    # PR 이벤트에서는 head_commit이 아닌 다른 방식으로 확인해야 함
     if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
@@ -51,12 +43,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # 린트 실행
-      - name: Run Lint & Format
-        run: pnpm run lint-fix
-
       # 이전 커밋 메시지 확인
-      - name: Check last commit message
+      - name: Check Last Commit Message
         id: check_commit
         run: |
           LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
@@ -66,8 +54,13 @@ jobs:
             echo "is_automated=false" >> $GITHUB_OUTPUT
           fi
 
-      # 자동화된 커밋이 아닐 경우에만 변경사항 커밋 시도
-      - name: Commit changes
+      # 린트 실행
+      - name: Run Lint & Format
+        if: steps.check_commit.outputs.is_automated != 'true'
+        run: pnpm run lint-fix
+
+      # 커밋 시도
+      - name: Commit Changes
         id: auto-commit
         if: steps.check_commit.outputs.is_automated != 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -75,7 +68,7 @@ jobs:
           commit_message: '[automated-mutation]'
 
       # 변경사항이 없고 자동화된 커밋이 아닐 경우에만 빈 커밋 생성
-      - name: Create empty commit if needed
+      - name: Create Empty Commit If Needed
         if: steps.auto-commit.outputs.changes_detected == 'false' && steps.check_commit.outputs.is_automated != 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -84,7 +77,7 @@ jobs:
           git push origin ${{ github.head_ref }}
 
       # 워크플로우 실행 후 PR에 라벨 추가하여 다음 실행 방지
-      - name: Add skip label to PR
+      - name: Add a Label to PR
         if: steps.check_commit.outputs.is_automated != 'true'
         uses: actions/github-script@v6
         with:
