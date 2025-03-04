@@ -67,9 +67,8 @@ jobs:
         with:
           commit_message: '[automated-mutation]'
 
-      # 커밋 된 경우 PR에 라벨 추가
-      - name: Add a Label to PR
-        if: steps.auto-commit.outputs.changes_detected == 'true'
+      - name: Add a Label to PR 1
+        if: steps.auto-commit.outputs.changes_detected == 'true' && steps.check_commit.outputs.is_automated != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
@@ -79,4 +78,55 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ['mutated']
+            })
+
+      # 먼저 라벨 추가
+      - name: Add a Label to PR 2
+        if: steps.check_commit.outputs.is_automated != 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['mutation-completed']
+            })
+
+      # 그 다음 빈 커밋 생성 및 삭제
+      - name: Create and Remove Empty Commit
+        if: steps.auto-commit.outputs.changes_detected == 'false' && steps.check_commit.outputs.is_automated != 'true'
+        run: |
+          # 사용자 설정
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # 현재 브랜치와 커밋 해시 저장
+          BRANCH_NAME=$(git symbolic-ref --short HEAD)
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+
+          # 빈 커밋 생성
+          git commit --allow-empty -m "[automated-mutation]"
+          git push origin $BRANCH_NAME
+
+          # 잠시 대기 (다른 워크플로우 트리거 위해)
+          sleep 15
+
+          # 이전 커밋으로 되돌리기
+          git reset --hard $CURRENT_COMMIT
+          git push --force origin $BRANCH_NAME
+
+      # 라벨 삭제
+      - name: Remove Label
+        if: steps.check_commit.outputs.is_automated != 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            github.rest.issues.removeLabel({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'mutation-completed'
             })
