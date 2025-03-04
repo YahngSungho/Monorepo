@@ -116,17 +116,3 @@ jobs:
           # 이전 커밋으로 되돌리기
           git reset --hard $CURRENT_COMMIT
           git push --force origin $BRANCH_NAME
-
-      # 라벨 삭제
-      - name: Remove Label
-        if: steps.check_commit.outputs.is_automated != 'true'
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.TOKEN1 }}
-          script: |
-            github.rest.issues.removeLabel({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'mutation-completed'
-            })

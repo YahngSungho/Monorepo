@@ -25,3 +25,50 @@ jobs:
             ready-to-merge
           pull-request: ${{ github.event.inputs.pull-request }}
           review: ${{ github.event.inputs.review }}
+
+      # PR 번호 찾기
+      - name: Find PR Number
+        id: find_pr
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            // 현재 커밋을 가진 PR을 찾기
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              sort: 'updated',
+              direction: 'desc'
+            });
+
+            // 현재 커밋이 포함된 PR 찾기
+            const commit_sha = context.sha;
+            for (const pr of prs.data) {
+              if (pr.head.sha === commit_sha) {
+                console.log(`Found PR #${pr.number} containing commit ${commit_sha}`);
+                return pr.number;
+              }
+            }
+            return 0; // PR을 찾지 못하면 0 반환
+          result-encoding: string
+
+      # 라벨 삭제
+      - name: Remove Label
+        if: steps.find_pr.outputs.result != '0'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            try {
+              await github.rest.issues.removeLabel({
+                issue_number: ${{ steps.find_pr.outputs.result }},
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'mutation-completed'
+              });
+              console.log('Label removed successfully');
+            } catch (error) {
+              // 라벨이 없는 경우 등의 오류는 무시
+              console.log('Could not remove label: ' + error.message);
+            }
