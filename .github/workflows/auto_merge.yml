@@ -1,14 +1,8 @@
 name: Auto-Merge Pull Request
 # https://github.com/marketplace/actions/auto-merge-pull-request
 
-on:
-  push:
-    branches:
-      - '**'
-  workflow_run:
-    workflows: [Mutate Code]
-    types:
-      - completed
+on: push
+
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
   pull-requests: write # Necessary to comment on PRs
@@ -18,7 +12,8 @@ permissions:
 jobs:
   automerge:
     runs-on: ubuntu-latest
-    if: "github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'"
+    if: "contains(github.event.head_commit.message, '[automated-mutation]')"
+
     steps:
       - uses: reitermarkus/automerge@v2.8.0
         with:
