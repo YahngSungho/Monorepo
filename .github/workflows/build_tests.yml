@@ -1,6 +1,13 @@
 name: Build & Tests
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - '**'
+  workflow_run:
+    workflows: [Mutate Code]
+    types:
+      - completed
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -17,7 +24,7 @@ jobs:
     # env:
     #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    if: "github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'"
 
     steps:
       - name: Check out code
