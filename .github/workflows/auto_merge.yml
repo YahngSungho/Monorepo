@@ -1,31 +1,7 @@
 name: Auto-Merge Pull Request
 # https://github.com/marketplace/actions/auto-merge-pull-request
 
-on:
-  # Try enabling auto-merge for all open pull requests.
-  schedule:
-    - cron: 0 * * * *
-
-  # Try enabling auto-merge when a pull request is approved. Note that this
-  # event skips the check for the pull request author association and instead
-  # checks the review author association.
-  pull_request_review:
-    types:
-      - submitted
-
-  # Try enabling auto-merge for a pull request when a draft is marked as
-  # "ready for review", when a required label is applied or when a
-  # "do not merge" label is removed, or when a pull request is updated in
-  # any way (opened, synchronized, reopened, edited).
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - edited
-      - labeled
-      - unlabeled
-      - ready_for_review
+on: push
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -36,10 +12,7 @@ permissions:
 jobs:
   automerge:
     runs-on: ubuntu-latest
-    if: |
-      (contains(github.event.head_commit.message, '[automated-mutation]') ||
-      contains(github.event.pull_request.labels.*.name, 'ready-to-merge') ||
-      contains(github.event.pull_request.labels.*.name, 'automated'))
+    if: "contains(github.event.head_commit.message, '[automated-mutation]')"
     steps:
       - uses: reitermarkus/automerge@v2.8.0
         with:
