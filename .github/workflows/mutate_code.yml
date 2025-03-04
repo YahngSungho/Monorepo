@@ -67,9 +67,9 @@ jobs:
         with:
           commit_message: '[automated-mutation]'
 
-      # 워크플로우 실행 후 PR에 라벨 추가하여 다음 실행 방지
+      # 커밋 된 경우 PR에 라벨 추가
       - name: Add a Label to PR
-        if: steps.check_commit.outputs.is_automated != 'true'
+        if: steps.auto-commit.outputs.changes_detected == 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
@@ -78,5 +78,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['mutation-completed']
+              labels: ['mutated']
             })
