@@ -93,32 +93,3 @@ jobs:
               repo: context.repo.repo,
               labels: ['mutation-completed']
             })
-
-      # 빈 커밋 생성하되 별도 브랜치에 생성
-      - name: Create Empty Commit on Temp Branch
-        if: steps.auto-commit.outputs.changes_detected == 'false' && steps.check_commit.outputs.is_automated != 'true'
-        run: |
-          # 사용자 설정
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          # 현재 브랜치 저장
-          BRANCH_NAME=$(git symbolic-ref --short HEAD)
-
-          # 임시 브랜치 생성 및 빈 커밋
-          git checkout -b temp-auto-merge-${{ github.run_id }}
-          git commit --allow-empty -m "[automated-mutation]"
-          git push origin temp-auto-merge-${{ github.run_id }}
-
-          # PR ID 저장 (나중에 정리에 사용)
-          echo "${{ github.event.pull_request.number }}" > .github/temp-pr-id
-          git add .github/temp-pr-id
-          git commit -m "Store PR ID for cleanup"
-          git push origin temp-auto-merge-${{ github.run_id }}
-
-          # 원래 브랜치로 돌아가기
-          git checkout $BRANCH_NAME
-
-          # 임시 브랜치를 원본 브랜치로 머지 (auto-merge 트리거용)
-          git merge --no-ff temp-auto-merge-${{ github.run_id }}
-          git push origin $BRANCH_NAME
