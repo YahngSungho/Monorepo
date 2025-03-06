@@ -1,0 +1,32 @@
+name: Cleanup Temp Branches
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.TOKEN1 }}
+
+      - name: Delete All Temp Branches
+        run: |
+          # 사용자 설정
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # temp-auto-merge로 시작하는 모든 브랜치 삭제
+          git fetch origin
+          for branch in $(git branch -r | grep 'origin/temp-auto-merge' | sed 's/origin\///'); do
+            git push origin --delete $branch
+          done
