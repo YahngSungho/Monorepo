@@ -141,7 +141,6 @@ dist
 *storybook.log
 **/storybook-static
 /others
-pnpm-lock.yaml
 **/test-results
 **/playwright-report
 **/generated
