@@ -1,7 +1,7 @@
 name: Auto Merge
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - labeled
 
@@ -11,14 +11,29 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+
     steps:
       - uses: reitermarkus/automerge@v2
         with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
-          merge-method: rebase
+          token: ${{ secrets.TOKEN1 }}
+          required-labels: mutation-completed
           do-not-merge-labels: never-merge
-          required-labels: automerge
-          pull-request: ${{ github.event.inputs.pull-request }}
-          review: ${{ github.event.inputs.review }}
-          dry-run: true
+
+      # workflow 완료 후 mutation-completed 라벨 제거
+      - name: Remove mutation-completed Label
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            try {
+              github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'mutation-completed'
+              });
+              console.log('Label mutation-completed removed successfully');
+            } catch (error) {
+              console.log('Error removing label or label not found:', error);
+            }
