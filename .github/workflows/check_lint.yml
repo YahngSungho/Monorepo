@@ -24,6 +24,9 @@ jobs:
       # 저장소 코드 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.TOKEN1 }}
 
       - name: Cache turbo build setup
         uses: actions/cache@v4
