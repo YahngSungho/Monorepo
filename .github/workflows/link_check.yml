@@ -13,11 +13,13 @@ permissions:
 
 jobs:
   build:
-    name: Link Check
-    timeout-minutes: 15
+    name: Linkspector
     runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
-
     steps:
-      - name: Check links with linkcheck
-        uses: filiph/linkcheck@3.0.0
+      - uses: actions/checkout@v4
+      - name: Run linkspector
+        uses: umbrelladocs/action-linkspector@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          fail_level: any
