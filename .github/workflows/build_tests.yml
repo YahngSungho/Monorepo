@@ -27,12 +27,23 @@ jobs:
         with:
           fetch-depth: 2
 
+      # 월간 캐시 순환 키 생성
+      - name: Generate cache rotation keys
+        id: cache-rotation
+        shell: bash
+        run: |
+          echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+
+      # turbo 캐시 최적화 - package.json 해시 기반으로 변경
       - name: Cache turbo build setup
         uses: actions/cache@v4
         with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          path: |
+            .turbo
+            node_modules/.cache/turbo
+          key: ${{ runner.os }}-turbo-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
+            ${{ runner.os }}-turbo-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
             ${{ runner.os }}-turbo-
 
       # pnpm 설치 (packageManager 버전과 일치)
@@ -40,31 +51,50 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.4.1
+          run_install: false
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
 
-      # pnpm 스토어 캐싱 (pnpm-lock.yaml이 없을 때 대안)
+      # pnpm 스토어 경로 가져오기 (개행 문제 해결)
       - name: Get pnpm store directory
         id: pnpm-store
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+          echo "STORE_PATH=$(pnpm store path | tr -d '\n')" >> $GITHUB_OUTPUT
 
       - name: Setup pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/package.json') }}
+          path: |
+            ${{ steps.pnpm-store.outputs.STORE_PATH }}
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-pnpm-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-pnpm-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+            ${{ runner.os }}-pnpm-
 
+      # Playwright 브라우저 캐시
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ hashFiles('**/playwright.config.{js,ts}') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
+            ${{ runner.os }}-playwright-
+
+      # 최적화된 설치 명령
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --prefer-offline
 
+      # 브라우저 캐시 미스 시에만 실행
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm run playwright-install-env
 
       - name: Test
