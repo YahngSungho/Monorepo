@@ -25,23 +25,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 월간 캐시 순환 키 생성
-      - name: Generate cache rotation keys
-        id: cache-rotation
-        shell: bash
-        run: |
-          echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
-
-      # turbo 캐시 최적화
       - name: Cache turbo build setup
         uses: actions/cache@v4
         with:
-          path: |
-            .turbo
-            node_modules/.cache/turbo
-          key: ${{ runner.os }}-turbo-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ hashFiles('**/package.json') }}
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
             ${{ runner.os }}-turbo-
 
       # pnpm 설치 (packageManager 버전과 일치)
