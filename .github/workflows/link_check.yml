@@ -1,0 +1,23 @@
+name: Link Check
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+# explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
+permissions:
+  pull-requests: write # Necessary to comment on PRs
+  issues: read # Necessary to read issue commentsds
+  contents: read # Necessary to access the repo content
+
+jobs:
+  build:
+    name: Link Check
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+
+    steps:
+      - name: Check links with linkcheck
+        uses: filiph/linkcheck@3.0.0
