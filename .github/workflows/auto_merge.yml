@@ -19,7 +19,6 @@ jobs:
           required-labels: mutation-completed
           do-not-merge-labels: never-merge
 
-      # workflow 완료 후 mutation-completed 라벨 제거
       - name: Remove mutation-completed Label
         if: always()
         uses: actions/github-script@v6
