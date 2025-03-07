@@ -19,6 +19,7 @@
 		},
 		"eslint": {},
 		"eslint-fix": {},
+		"format": {},
 		"playwright-report": {},
 		"stylelint": {},
 		"stylelint-fix": {},

@@ -13,6 +13,7 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte} --ignore-pattern ./src/shadcn/components/**",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
+		"format": "prettier --write --ignore-unknown .",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
 		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",

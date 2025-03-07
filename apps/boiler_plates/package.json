@@ -11,6 +11,7 @@
 		"dev": "vite dev",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
+		"format": "prettier --write --ignore-unknown .",
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
 		"playwright-report": "pnpm exec playwright show-report",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
