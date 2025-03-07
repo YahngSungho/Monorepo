@@ -12,6 +12,7 @@ jobs:
       contents: write
       pull-requests: write
 
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
     steps:
       - uses: reitermarkus/automerge@v2
         with:

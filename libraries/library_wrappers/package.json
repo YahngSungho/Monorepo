@@ -10,6 +10,7 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
+		"format": "prettier --write --ignore-unknown .",
 		"test:unit": "vitest run"
 	},
 	"dependencies": {

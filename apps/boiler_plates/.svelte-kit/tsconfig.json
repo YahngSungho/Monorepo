@@ -1,35 +1,29 @@
 {
 	"compilerOptions": {
 		"paths": {
-			"$shadcn": [
-				"../../../libraries/ui/src/shadcn"
-			],
-			"$shadcn/*": [
-				"../../../libraries/ui/src/shadcn/*"
-			],
-			"$lib": [
-				"../src/lib"
-			],
-			"$lib/*": [
-				"../src/lib/*"
-			]
+			"$shadcn": ["../../../libraries/ui/src/shadcn"],
+			"$shadcn/*": ["../../../libraries/ui/src/shadcn/*"],
+			"$lib": ["../src/lib"],
+			"$lib/*": ["../src/lib/*"]
 		},
-		"rootDirs": [
-			"..",
-			"./types"
-		],
+		"rootDirs": ["..", "./types"],
 		"verbatimModuleSyntax": true,
 		"isolatedModules": true,
-		"lib": [
-			"esnext",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["esnext", "DOM", "DOM.Iterable"],
 		"moduleResolution": "bundler",
 		"module": "esnext",
 		"noEmit": true,
 		"target": "esnext"
 	},
+	"exclude": [
+		"../node_modules/**",
+		"../src/service-worker.js",
+		"../src/service-worker/**/*.js",
+		"../src/service-worker.ts",
+		"../src/service-worker/**/*.ts",
+		"../src/service-worker.d.ts",
+		"../src/service-worker/**/*.d.ts"
+	],
 	"include": [
 		"ambient.d.ts",
 		"non-ambient.d.ts",
@@ -42,14 +36,5 @@
 		"../tests/**/*.js",
 		"../tests/**/*.ts",
 		"../tests/**/*.svelte"
-	],
-	"exclude": [
-		"../node_modules/**",
-		"../src/service-worker.js",
-		"../src/service-worker/**/*.js",
-		"../src/service-worker.ts",
-		"../src/service-worker/**/*.ts",
-		"../src/service-worker.d.ts",
-		"../src/service-worker/**/*.d.ts"
 	]
 }
