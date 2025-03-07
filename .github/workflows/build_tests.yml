@@ -57,44 +57,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
-
-      # pnpm 스토어 경로 가져오기 (개행 문제 해결)
-      - name: Get pnpm store directory
-        id: pnpm-store
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path | tr -d '\n')" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ steps.pnpm-store.outputs.STORE_PATH }}
-            node_modules
-            **/node_modules
-          key: ${{ runner.os }}-pnpm-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
-            ${{ runner.os }}-pnpm-
-
-      # Playwright 브라우저 캐시
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ hashFiles('**/playwright.config.{js,ts}') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
-            ${{ runner.os }}-playwright-
+          cache: pnpm
 
       # 최적화된 설치 명령
       - name: Install dependencies
         run: pnpm install --prefer-offline
 
-      # 브라우저 캐시 미스 시에만 실행
       - name: Install Playwright Browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm run playwright-install-env
 
       - name: Test
