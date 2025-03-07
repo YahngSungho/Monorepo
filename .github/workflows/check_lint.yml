@@ -34,19 +34,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23.5.0
-      # Corepack 활성화 (packageManager 버전 자동 감지)
-      - name: Enable Corepack
-        run: corepack enable
       # pnpm 설치 (packageManager 버전과 일치)
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.4.1
+
+      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.5.0
+          cache: pnpm
+
+      # Corepack 활성화 (packageManager 버전 자동 감지)
+      - name: Enable Corepack
+        run: corepack enable
+
       # 의존성 설치
       - name: Install dependencies
         run: pnpm install
