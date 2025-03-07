@@ -56,10 +56,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      # Corepack 활성화 (packageManager 버전 자동 감지)
-      - name: Enable Corepack
-        run: corepack enable
-
       # 의존성 설치
       - name: Install dependencies
         run: pnpm install
