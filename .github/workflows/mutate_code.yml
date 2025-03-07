@@ -40,7 +40,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
-          cache: pnpm
+
+      # pnpm 스토어 캐싱 (pnpm-lock.yaml이 없을 때 대안)
+      - name: Get pnpm store directory
+        id: pnpm-store
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       # Corepack 활성화 (packageManager 버전 자동 감지)
       - name: Enable Corepack
