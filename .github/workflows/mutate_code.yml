@@ -32,7 +32,7 @@ jobs:
               - '**.png'
               - '**.webp'
 
-      - name: backend tests
+      - name: Compress Images
         uses: calibreapp/image-actions@main
         if: steps.filter.outputs.images == 'true'
         with:
