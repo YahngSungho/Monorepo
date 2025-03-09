@@ -16,20 +16,28 @@ jobs:
     if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
-      - name: Wait for tests to succeed
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.ref }}
-          check-name: calibreapp/image-actions
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 100
-          allowed-conclusions: success,skipped,cancelled
-
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            images:
+              - '**.jpg'
+              - '**.jpeg'
+              - '**.png'
+              - '**.webp'
+
+      - name: backend tests
+        uses: calibreapp/image-actions@main
+        if: steps.filter.outputs.images == 'true'
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          compressOnly: true
 
       - name: Cache turbo build setup
         uses: actions/cache@v4
