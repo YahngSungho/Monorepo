@@ -34,6 +34,17 @@ jobs:
     steps:
       - name: Compress Images
         uses: calibreapp/image-actions@main
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          compressOnly: true
+
+          # 변경된 파일을 저장
+      - name: Save changes as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compressed-images
+          path: .
+          retention-days: 1
 
   lint-format:
     runs-on: ubuntu-latest
@@ -50,6 +61,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
+          fetch-depth: 0
 
       - name: Cache turbo build setup
         uses: actions/cache@v4
@@ -92,12 +104,45 @@ jobs:
         if: steps.check_commit.outputs.is_automated != 'true'
         run: pnpm run lint-fix
 
+      # 변경된 파일을 저장
+      - name: Save changes as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linted-files
+          path: .
+          retention-days: 1
+
   push-and-labeled:
     needs: [compress-images, lint-format]
     runs-on: ubuntu-latest
     if: "always() && !contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
+      # 저장소 체크아웃 단계
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.TOKEN1 }}
+          fetch-depth: 0
+
+      # 이전 작업에서 변경된 파일을 다운로드
+      - name: Download modified files
+        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: linted-files
+          path:
+            .
+
+            # 이전 작업에서 변경된 파일을 다운로드
+      - name: Download modified files
+        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: compressed-images
+          path: .
+
       # 커밋 시도
       - name: Commit Changes
         id: auto-commit
@@ -106,8 +151,9 @@ jobs:
         with:
           commit_message: '[automated-mutation]'
 
+      # Add a Label to PR 1
       - name: Add a Label to PR 1
-        if: steps.auto-commit.outputs.changes_detected == 'true' && steps.check_commit.outputs.is_automated != 'true'
+        if: steps.auto-commit.outputs.changes_detected == 'true' && needs.lint-format.outputs.is_automated != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
@@ -119,9 +165,8 @@ jobs:
               labels: ['mutated']
             })
 
-      # 먼저 라벨 추가
+      # 라벨 추가
       - name: Add a Label to PR 2
-        if: steps.check_commit.outputs.is_automated != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
