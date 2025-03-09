@@ -92,10 +92,10 @@ jobs:
         if: steps.check_commit.outputs.is_automated != 'true'
         run: pnpm run lint-fix
 
-  add-completion-label:
+  push-and-labeled:
     needs: [compress-images, lint-format]
     runs-on: ubuntu-latest
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    if: "always() && !contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
       # 커밋 시도
