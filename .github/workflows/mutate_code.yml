@@ -39,6 +39,8 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
     if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    outputs:
+      is_automated: ${{ steps.check_commit.outputs.is_automated }}
 
     steps:
       - name: Checkout Repository
@@ -91,12 +93,12 @@ jobs:
   add-completion-label:
     needs: [compress-images, lint-format]
     runs-on: ubuntu-latest
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && (needs.lint-format.result == 'success' || needs.lint-format.result == 'skipped')"
+    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && (needs.compress-images.result == 'success' || needs.compress-images.result == 'skipped') && (needs.lint-format.result == 'success' || needs.lint-format.result == 'skipped')"
     steps:
       # 커밋 시도
       - name: Commit Changes
         id: auto-commit
-        if: steps.check_commit.outputs.is_automated != 'true'
+        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
