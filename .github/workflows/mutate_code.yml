@@ -32,11 +32,29 @@ jobs:
     needs: path-filter
     if: needs.path-filter.outputs.images == 'true'
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.TOKEN1 }}
+          fetch-depth: 0
+
       - name: Compress Images
         uses: calibreapp/image-actions@main
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
+
+      # 추가: 이미지 압축 후 수정사항을 patch 파일로 생성
+      - name: Create patch file
+        run: git diff > images-changes.patch
+
+      # 추가: patch 파일을 artifact로 업로드
+      - name: Upload patch artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: images-changes-patch
+          path: images-changes.patch
 
   lint-format:
     runs-on: ubuntu-latest
@@ -96,6 +114,19 @@ jobs:
         if: steps.check_commit.outputs.is_automated != 'true'
         run: pnpm run lint-fix
 
+      # 추가: lint-fix 후 수정사항을 patch 파일로 생성
+      - name: Create patch file
+        if: steps.check_commit.outputs.is_automated != 'true'
+        run: git diff > changes.patch
+
+      # 추가: patch 파일을 artifact로 업로드
+      - name: Upload patch artifact
+        if: steps.check_commit.outputs.is_automated != 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: changes-patch
+          path: changes.patch
+
   push-and-labeled:
     needs: [compress-images, lint-format]
     runs-on: ubuntu-latest
@@ -110,6 +141,77 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
+      # 추가: 이전 job에서 생성한 patch artifact를 다운로드
+      - name: Check if changes patch exists
+        id: check_changes_patch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: Download patch artifact
+        if: steps.check_changes_patch.outputs.result == 'true'
+        uses: actions/download-artifact@v3
+        with:
+          name: changes-patch
+          path: .
+
+      # 추가: 이미지 압축 결과 patch artifact를 다운로드
+      - name: Check if images patch exists
+        id: check_images_patch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "images-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: Download images patch artifact
+        if: steps.check_images_patch.outputs.result == 'true'
+        uses: actions/download-artifact@v3
+        with:
+          name: images-changes-patch
+          path: .
+
+      # 추가: 다운로드한 patch 적용
+      - name: Apply patches
+        run: |
+          if [ -f changes.patch ]; then
+            echo "Applying code formatting changes patch..."
+            if ! git apply changes.patch; then
+              echo "::warning::Failed to apply code formatting patch. The patch may be empty or there might be conflicts."
+            else
+              echo "Code formatting patch applied successfully."
+            fi
+          else
+            echo "No code formatting changes patch found."
+          fi
+
+          if [ -f images-changes.patch ]; then
+            echo "Applying image compression changes patch..."
+            if ! git apply images-changes.patch; then
+              echo "::warning::Failed to apply image compression patch. The patch may be empty or there might be conflicts."
+            else
+              echo "Image compression patch applied successfully."
+            fi
+          else
+            echo "No image compression changes patch found."
+          fi
+
       # 커밋 시도
       - name: Commit Changes
         id: auto-commit
@@ -117,6 +219,16 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
+
+      # 커밋 결과 출력
+      - name: Print Commit Result
+        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
+        run: |
+          if [ "${{ steps.auto-commit.outputs.changes_detected }}" == "true" ]; then
+            echo "변경사항이 감지되어 자동으로 커밋되었습니다."
+          else
+            echo "커밋할 변경사항이 없습니다. 모든 코드가 이미 정상적으로 포맷팅되어 있거나 이미지가 이미 최적화되어 있습니다."
+          fi
 
       # Add a Label to PR 1
       - name: Add a Label to PR 1
