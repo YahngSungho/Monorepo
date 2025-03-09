@@ -54,10 +54,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --prefer-offline
 
-      # 빌드 캐시 활용
-      - name: build
-        run: pnpm run build
-
       # 린트 실행
       - name: Run Lint
         run: pnpm run lint
