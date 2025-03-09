@@ -46,11 +46,21 @@ jobs:
           compressOnly: true
 
       # 추가: 이미지 압축 후 수정사항을 patch 파일로 생성
-      - name: Create patch file
-        run: git diff > images-changes.patch
+      - name: Check for image changes
+        id: check_image_changes
+        run: |
+          if git diff --quiet; then
+            echo "이미지 압축 후 변경사항이 없습니다."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "이미지 압축 후 변경사항이 감지되었습니다."
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff > images-changes.patch
+          fi
 
       # 추가: patch 파일을 artifact로 업로드
       - name: Upload patch artifact
+        if: steps.check_image_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: images-changes-patch
@@ -115,13 +125,22 @@ jobs:
         run: pnpm run lint-fix
 
       # 추가: lint-fix 후 수정사항을 patch 파일로 생성
-      - name: Create patch file
+      - name: Check for lint changes
+        id: check_lint_changes
         if: steps.check_commit.outputs.is_automated != 'true'
-        run: git diff > changes.patch
+        run: |
+          if git diff --quiet; then
+            echo "린트 및 포맷팅 후 변경사항이 없습니다."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "린트 및 포맷팅 후 변경사항이 감지되었습니다."
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff > changes.patch
+          fi
 
       # 추가: patch 파일을 artifact로 업로드
       - name: Upload patch artifact
-        if: steps.check_commit.outputs.is_automated != 'true'
+        if: steps.check_commit.outputs.is_automated != 'true' && steps.check_lint_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: changes-patch
@@ -190,26 +209,28 @@ jobs:
       # 추가: 다운로드한 patch 적용
       - name: Apply patches
         run: |
+          # 코드 포맷팅 패치 적용
           if [ -f changes.patch ]; then
             echo "Applying code formatting changes patch..."
             if ! git apply changes.patch; then
-              echo "::warning::Failed to apply code formatting patch. The patch may be empty or there might be conflicts."
+              echo "::warning::Failed to apply code formatting patch. The patch may have conflicts."
             else
               echo "Code formatting patch applied successfully."
             fi
           else
-            echo "No code formatting changes patch found."
+            echo "No code formatting changes to apply."
           fi
 
+          # 이미지 압축 패치 적용
           if [ -f images-changes.patch ]; then
             echo "Applying image compression changes patch..."
             if ! git apply images-changes.patch; then
-              echo "::warning::Failed to apply image compression patch. The patch may be empty or there might be conflicts."
+              echo "::warning::Failed to apply image compression patch. The patch may have conflicts."
             else
               echo "Image compression patch applied successfully."
             fi
           else
-            echo "No image compression changes patch found."
+            echo "No image compression changes to apply."
           fi
 
       # 커밋 시도
