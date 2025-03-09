@@ -51,7 +51,7 @@ jobs:
 
       # 추가: patch 파일을 artifact로 업로드
       - name: Upload patch artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: images-changes-patch
           path: images-changes.patch
@@ -122,7 +122,7 @@ jobs:
       # 추가: patch 파일을 artifact로 업로드
       - name: Upload patch artifact
         if: steps.check_commit.outputs.is_automated != 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: changes-patch
           path: changes.patch
