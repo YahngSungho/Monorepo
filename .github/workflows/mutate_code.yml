@@ -1,6 +1,8 @@
 name: Mutate Code
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize]
 
 permissions:
   pull-requests: write # Necessary to comment on PRs
@@ -8,20 +10,13 @@ permissions:
   contents: write
 
 jobs:
-  mutate-code:
+  # 공통 경로 필터링 job
+  path-filter:
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+    outputs:
+      images: ${{ steps.filter.outputs.images }}
     if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.TOKEN1 }}
-
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -32,12 +27,33 @@ jobs:
               - '**.png'
               - '**.webp'
 
+  compress-images:
+    runs-on: ubuntu-latest
+    needs: path-filter
+    if: needs.path-filter.outputs.images == 'true'
+    steps:
       - name: Compress Images
         uses: calibreapp/image-actions@main
-        if: steps.filter.outputs.images == 'true'
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
+
+  lint-format:
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    outputs:
+      is_automated: ${{ steps.check_commit.outputs.is_automated }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.TOKEN1 }}
+          fetch-depth: 0
 
       - name: Cache turbo build setup
         uses: actions/cache@v4
@@ -80,16 +96,31 @@ jobs:
         if: steps.check_commit.outputs.is_automated != 'true'
         run: pnpm run lint-fix
 
+  push-and-labeled:
+    needs: [compress-images, lint-format]
+    runs-on: ubuntu-latest
+    if: "always() && !contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+
+    steps:
+      # 저장소 체크아웃 단계
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.TOKEN1 }}
+          fetch-depth: 0
+
       # 커밋 시도
       - name: Commit Changes
         id: auto-commit
-        if: steps.check_commit.outputs.is_automated != 'true'
+        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
 
+      # Add a Label to PR 1
       - name: Add a Label to PR 1
-        if: steps.auto-commit.outputs.changes_detected == 'true' && steps.check_commit.outputs.is_automated != 'true'
+        if: steps.auto-commit.outputs.changes_detected == 'true' && needs.lint-format.outputs.is_automated != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
@@ -101,9 +132,8 @@ jobs:
               labels: ['mutated']
             })
 
-      # 먼저 라벨 추가
+      # 라벨 추가
       - name: Add a Label to PR 2
-        if: steps.check_commit.outputs.is_automated != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
