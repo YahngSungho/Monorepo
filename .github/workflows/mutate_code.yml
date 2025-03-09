@@ -1,6 +1,8 @@
 name: Mutate Code
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize]
 
 permissions:
   pull-requests: write # Necessary to comment on PRs
@@ -93,7 +95,8 @@ jobs:
   add-completion-label:
     needs: [compress-images, lint-format]
     runs-on: ubuntu-latest
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && (needs.compress-images.result == 'success' || needs.compress-images.result == 'skipped') && (needs.lint-format.result == 'success' || needs.lint-format.result == 'skipped')"
+    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+
     steps:
       # 커밋 시도
       - name: Commit Changes
