@@ -38,14 +38,6 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
 
-          # 변경된 파일을 저장
-      - name: Save changes as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: compressed-images
-          path: .
-          retention-days: 1
-
   lint-format:
     runs-on: ubuntu-latest
     env:
@@ -104,14 +96,6 @@ jobs:
         if: steps.check_commit.outputs.is_automated != 'true'
         run: pnpm run lint-fix
 
-      # 변경된 파일을 저장
-      - name: Save changes as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: linted-files
-          path: .
-          retention-days: 1
-
   push-and-labeled:
     needs: [compress-images, lint-format]
     runs-on: ubuntu-latest
@@ -125,23 +109,6 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
-
-      # 이전 작업에서 변경된 파일을 다운로드
-      - name: Download modified files
-        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
-        uses: actions/download-artifact@v4
-        with:
-          name: linted-files
-          path:
-            .
-
-            # 이전 작업에서 변경된 파일을 다운로드
-      - name: Download modified files
-        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
-        uses: actions/download-artifact@v4
-        with:
-          name: compressed-images
-          path: .
 
       # 커밋 시도
       - name: Commit Changes
