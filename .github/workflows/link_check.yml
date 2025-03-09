@@ -3,7 +3,8 @@ name: Link Check
 on:
   pull_request:
     types:
-      - labeled
+      - opened
+      - synchronize
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
