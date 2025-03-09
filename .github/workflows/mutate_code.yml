@@ -159,7 +159,7 @@ jobs:
 
       - name: Download patch artifact
         if: steps.check_changes_patch.outputs.result == 'true'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: changes-patch
           path: .
@@ -182,7 +182,7 @@ jobs:
 
       - name: Download images patch artifact
         if: steps.check_images_patch.outputs.result == 'true'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: images-changes-patch
           path: .
