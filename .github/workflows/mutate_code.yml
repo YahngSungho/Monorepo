@@ -1,6 +1,9 @@
 name: Mutate Code
 
-on: pull_request
+on:
+  pull_request:
+    types:
+      - opened
 
 permissions:
   pull-requests: write # Necessary to comment on PRs
@@ -97,3 +100,21 @@ jobs:
               repo: context.repo.repo,
               labels: ['mutation-completed']
             })
+
+      - name: Remove mutation-completed Label
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            try {
+              github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'mutation-completed'
+              });
+              console.log('Label mutation-completed removed successfully');
+            } catch (error) {
+              console.log('Error removing label or label not found:', error);
+            }
