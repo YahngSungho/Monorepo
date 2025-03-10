@@ -101,7 +101,7 @@
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"pretty-quick": "^4.0.0",
 		"simple-git-hooks": "^2.11.1",
-		"stylelint": "^16.14.1",
+		"stylelint": "^16.15.0",
 		"stylelint-color-format": "^1.1.0",
 		"stylelint-config-clean-order": "^7.0.0",
 		"stylelint-config-html": "^1.1.0",
