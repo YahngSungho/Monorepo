@@ -41,7 +41,7 @@
 		"@types/eslint": "^9.6.1",
 		"@typescript-eslint/parser": "^8.23.0",
 		"eslint": "^9.19.0",
-		"eslint-config-prettier": "^10.0.1",
+		"eslint-config-prettier": "^10.1.1",
 		"eslint-config-problems": "^9.0.0",
 		"eslint-config-turbo": "^2.4.0",
 		"eslint-define-config": "^2.1.0",
