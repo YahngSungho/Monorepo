@@ -76,17 +76,6 @@ jobs:
       is_automated: ${{ steps.check_commit.outputs.is_automated }}
 
     steps:
-      # 이전 커밋 메시지 확인
-      - name: Check Last Commit Message
-        id: check_commit
-        run: |
-          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
-          if [[ "$LAST_COMMIT_MSG" == *"[automated-mutation]"* ]]; then
-            echo "is_automated=true" >> $GITHUB_OUTPUT
-          else
-            echo "is_automated=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
