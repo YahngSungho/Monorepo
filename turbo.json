@@ -1,7 +1,7 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"globalDependencies": ["**/.env.*", "CI", "WATCH"],
-	"globalEnv": ["NODE_ENV"],
+	"globalDependencies": ["**/.env.*", "CI", "WATCH", "GITHUB_ACTIONS"],
+	"globalEnv": ["NODE_ENV", "GITHUB_ACTIONS"],
 	"globalPassThroughEnv": ["WATCH"],
 	"tasks": {
 		"build": {
