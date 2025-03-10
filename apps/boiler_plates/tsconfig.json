@@ -18,9 +18,13 @@
 		"test-results/**",
 		"node_modules/**",
 		"src/service-worker/**",
-		"static/**"
+		"static/**",
+		"**/paraglide-output/**"
 	],
-	"extends": ["@library/base/tsconfig.json", "./.svelte-kit/tsconfig.json"],
+	"extends": [
+		"@library/base/tsconfig.json",
+		"./.svelte-kit/tsconfig.json"
+	],
 	"include": [
 		"tests/**/*",
 		"src/**/*",
