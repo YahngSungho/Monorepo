@@ -14,7 +14,7 @@ const { Story } = defineMeta({
 </script>
 
 {#snippet multiple()}
-	<div class={'boxed'} style:width="calc(100% / 2)">
+	<div class="boxed" style:width="calc(100% / 2)">
 		<Button variant="primary">Primary Button</Button>
 		<Button variant="secondary">Secondary Button</Button>
 		<Button variant="outline">Outline Button</Button>
