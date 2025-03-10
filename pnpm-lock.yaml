@@ -21,8 +21,8 @@ importers:
         specifier: ^3.2.0
         version: 3.3.0
       '@eslint/js':
-        specifier: ^9.19.0
-        version: 9.21.0
+        specifier: ^9.22.0
+        version: 9.22.0
       '@eslint/markdown':
         specifier: ^6.2.2
         version: 6.2.2
@@ -1564,6 +1564,10 @@ packages:
 
   '@eslint/js@9.21.0':
     resolution: {integrity: sha512-BqStZ3HX8Yz6LvsF5ByXYrtigrV5AXADWLAGc7PH/1SxOb7/FIYYMszZZWiUou/GB9P2lXWk2SV4d+Z8h0nknw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@9.22.0':
+    resolution: {integrity: sha512-vLFajx9o8d1/oL2ZkpMYbkLv8nDB6yaIwFNt7nI4+I80U/z03SxmfOMsLbvWr3p7C+Wnoh//aOu2pQW8cS0HCQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/markdown@6.2.2':
@@ -8871,6 +8875,8 @@ snapshots:
 
   '@eslint/js@9.21.0': {}
 
+  '@eslint/js@9.22.0': {}
+
   '@eslint/markdown@6.2.2':
     dependencies:
       '@eslint/core': 0.10.0
@@ -11149,7 +11155,7 @@ snapshots:
 
   eslint-config-problems@9.0.0(eslint@9.21.0(jiti@2.4.2)):
     dependencies:
-      '@eslint/js': 9.21.0
+      '@eslint/js': 9.22.0
       eslint: 9.21.0(jiti@2.4.2)
 
   eslint-config-turbo@2.4.2(eslint@9.21.0(jiti@2.4.2))(turbo@2.4.2):
@@ -11306,7 +11312,7 @@ snapshots:
     dependencies:
       '@eslint/compat': 1.2.7(eslint@9.21.0(jiti@2.4.2))
       '@eslint/eslintrc': 3.3.0
-      '@eslint/js': 9.21.0
+      '@eslint/js': 9.22.0
       '@github/browserslist-config': 1.0.0
       '@typescript-eslint/eslint-plugin': 8.24.1(@typescript-eslint/parser@8.24.1(eslint@9.21.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.21.0(jiti@2.4.2))(typescript@5.7.3)
       '@typescript-eslint/parser': 8.24.1(eslint@9.21.0(jiti@2.4.2))(typescript@5.7.3)

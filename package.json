@@ -27,7 +27,7 @@
 		"@double-great/stylelint-a11y": "^3.0.3",
 		"@eslint/compat": "^1.2.6",
 		"@eslint/eslintrc": "^3.2.0",
-		"@eslint/js": "^9.19.0",
+		"@eslint/js": "^9.22.0",
 		"@eslint/markdown": "^6.2.2",
 		"@fast-check/vitest": "^0.1.5",
 		"@inlang/cli": "^2.18.1",
