@@ -83,6 +83,7 @@
 		"eslint-plugin-yml": "^1.16.0",
 		"globals": "^15.14.0",
 		"i": "^0.3.7",
+		"jest-junit": "^16.0.0",
 		"jsdom": "^26.0.0",
 		"jsonc-eslint-parser": "^2.4.0",
 		"lint-staged": "^15.4.3",

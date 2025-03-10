@@ -156,3 +156,5 @@ ambient.d.ts
 non-ambient.d.ts
 **/cache
 **/release
+**/vitest-results
+**/playwright-results

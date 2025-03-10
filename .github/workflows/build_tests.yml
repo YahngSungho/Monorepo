@@ -10,6 +10,8 @@ permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue commentsds
   contents: read # Necessary to access the repo content
+  actions: read
+  checks: write
 
 jobs:
   build:
@@ -58,6 +60,24 @@ jobs:
 
       - name: Test
         run: pnpm run test
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure() # run this step even if previous step failed
+        continue-on-error: true
+        with:
+          name: Vitest Tests # Name of the check run which will be created
+          path: '**/vitest-results/junit.xml' # Path to test results
+          reporter: jest-junit # Format of test results
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure() # run this step even if previous step failed
+        continue-on-error: true
+        with:
+          name: Playwright Tests # Name of the check run which will be created
+          path: '**/playwright-results/junit.xml' # Path to test results
+          reporter: jest-junit # Format of test results
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

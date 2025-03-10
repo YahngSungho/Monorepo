@@ -44,6 +44,8 @@ const baseConfig = defineConfig({
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
+		reporters: process.env.GITHUB_ACTIONS ? ['junit', 'github-actions'] : 'default',
+		outputFile: './vitest-results/junit.xml',
 	},
 })
 
