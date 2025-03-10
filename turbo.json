@@ -20,6 +20,9 @@
 		"eslint": {},
 		"eslint-fix": {},
 		"format": {},
+		"paraglide-compile": {
+			"outputs": ["paraglide-output/**"]
+		},
 		"playwright-report": {},
 		"stylelint": {},
 		"stylelint-fix": {},

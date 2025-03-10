@@ -1,7 +1,6 @@
 <script>
 import '../base.css'
 
-import { ParaglideJS } from '@inlang/paraglide-sveltekit'
 import { partytownSnippet } from '@qwik.dev/partytown/integration'
 
 import { init } from '../base'
@@ -9,7 +8,7 @@ import { init } from '../base'
 init()
 
 // @ts-ignore
-const { appName, children, i18n } = $props()
+const { appName, children } = $props()
 
 ;('') // eslint-disable-line no-unused-expressions
 </script>
@@ -27,7 +26,7 @@ const { appName, children, i18n } = $props()
 	{@html '<script>' + partytownSnippet() + '</script>'}
 </svelte:head>
 
-<ParaglideJS {i18n}>
+<div>
 	{@render children()}
 	<div id="Top_Layout_Check"></div>
-</ParaglideJS>
+</div>

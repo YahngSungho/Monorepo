@@ -158,3 +158,4 @@ non-ambient.d.ts
 **/release
 **/vitest-results
 **/playwright-results
+paraglide-output

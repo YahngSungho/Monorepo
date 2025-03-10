@@ -14,15 +14,13 @@
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
 		"lint": "turbo run check eslint stylelint --affected",
 		"lint-fix": "turbo run eslint-fix  --affected && turbo run stylelint-fix --affected && turbo run format --affected",
+		"paraglide-compile": "turbo run paraglide-compile --affected",
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
 		"playwright-report": "turbo run playwright-report --affected",
 		"test": "turbo run test:unit test:e2e --affected",
 		"test:e2e": "turbo run test:e2e --affected",
 		"test:unit": "turbo run test:unit --affected",
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
-	},
-	"dependencies": {
-		"@inlang/paraglide-sveltekit": "0.15.5"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.26.7",
@@ -33,7 +31,7 @@
 		"@eslint/markdown": "^6.2.2",
 		"@fast-check/vitest": "^0.1.5",
 		"@inlang/cli": "^2.18.1",
-		"@inlang/paraglide-js": "1.11.8",
+		"@inlang/paraglide-js": "^2.0.0-beta.28",
 		"@intlify/eslint-plugin-svelte": "^0.5.0",
 		"@microsoft/eslint-plugin-sdl": "github:microsoft/eslint-plugin-sdl",
 		"@playwright/test": "^1.50.1",
