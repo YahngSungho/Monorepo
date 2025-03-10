@@ -158,3 +158,5 @@ output
 releases/**
 
 paraglide-output/**
+*.patch
+**/*.patch
