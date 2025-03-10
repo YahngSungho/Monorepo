@@ -13,6 +13,7 @@
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"format": "prettier --write --ignore-unknown .",
+		"paraglide-compile": "npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
 		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
 		"test:unit": "vitest run",
