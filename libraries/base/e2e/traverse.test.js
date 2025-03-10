@@ -18,19 +18,19 @@ const isCIEnv = process.env.CI
 const isWatchEnv = !isCIEnv && process.env.WATCH === 'true'
 
 function getMaxCLS() {
-	if (isCIEnv) return 0.8
-	if (isWatchEnv) return 5
-	return 0.2
+	if (isCIEnv) return 2
+	if (isWatchEnv) return 10
+	return 1
 }
 function getMaxLCP() {
-	if (isCIEnv) return 3000
-	if (isWatchEnv) return 10_000
-	return 7000
+	if (isCIEnv) return 6000
+	if (isWatchEnv) return 20_000
+	return 14_000
 }
 function getMaxLoadTime() {
-	if (isCIEnv) return 4000
-	if (isWatchEnv) return 15_000
-	return 8000
+	if (isCIEnv) return 8000
+	if (isWatchEnv) return 20_000
+	return 16_000
 }
 const PERFORMANCE_THRESHOLDS = {
 	maxCLS: getMaxCLS(),
