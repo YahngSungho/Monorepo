@@ -1,4 +1,4 @@
-name: Link Check
+name: Metrics
 
 on:
   pull_request:
@@ -12,8 +12,8 @@ permissions:
   contents: read # Necessary to access the repo content
 
 jobs:
-  build:
-    name: Linkspector
+  metrics:
+    name: Metrics
     runs-on: ubuntu-latest
     if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
@@ -22,7 +22,7 @@ jobs:
         uses: lowlighter/metrics@latest
         with:
           filename: metrics.plugin.isocalendar.halfyear.svg
-          token: ${{ secrets.TOKEN1 }}
+          token: ${{ secrets.CLASSIC_TOKEN }}
           base: ''
           plugin_isocalendar: yes
 
@@ -30,7 +30,7 @@ jobs:
         uses: lowlighter/metrics@latest
         with:
           filename: metrics.plugin.habits.charts.svg
-          token: ${{ secrets.TOKEN1 }}
+          token: ${{ secrets.CLASSIC_TOKEN }}
           base: ''
           plugin_habits: yes
           plugin_habits_facts: yes
