@@ -332,6 +332,7 @@ export default defineFlatConfig([
 			'@intlify/svelte/no-raw-text': 'off',
 			'redos/no-vulnerable': 'off',
 			'sonarjs/slow-regex': 'off',
+			'svelte/no-useless-children-snippet': 'off',
 		},
 	},
 	{

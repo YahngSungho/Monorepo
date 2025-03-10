@@ -11,7 +11,7 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"eslint": "eslint **/*.{js,ts,svelte} --ignore-pattern ./src/shadcn/components/**",
+		"eslint": "eslint **/*.{js,ts,svelte} --ignore-pattern ./src/shadcn/**",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
