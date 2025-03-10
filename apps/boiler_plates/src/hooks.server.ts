@@ -1,8 +1,18 @@
+import { paraglideMiddleware } from '@library/paraglide/server.js'
 import type { Handle } from '@sveltejs/kit'
 
-import { i18n } from './i18n.js'
+// creating a handle to use the paraglide middleware
+const paraglideHandle: Handle = ({ event, resolve }) =>
+	paraglideMiddleware(
+		event.request,
+		({ locale }) => {
+			return resolve(event, {
+				transformPageChunk: ({ html }) => html.replace('%lang%', locale),
+			})
+		},
+		{
+			disableAsyncLocalStorage: true,
+		},
+	)
 
-const handleParaglide: Handle = i18n.handle({
-	disableAsyncLocalStorage: true, // Serverless 사용한다고 가정
-})
-export const handle: Handle = handleParaglide
+export const handle: Handle = paraglideHandle

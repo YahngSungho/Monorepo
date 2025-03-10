@@ -1,12 +1,13 @@
 <script>
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
-import * as m from '@library/base/messages.js'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import Icon from '@library/ui/icon'
 
-import { switchToLanguage } from '../paraglide'
+import * as m from '../../../../libraries/paraglide/paraglide-output/messages.js'
+import { localizeHref } from '../../../../libraries/paraglide/paraglide-output/runtime.js'
+import { setLocale } from '../paraglide'
 
 const fo = 'bigCommandKEnabled'
 
@@ -27,8 +28,8 @@ const eewre = Promise.resolve('test')
 <Button2 variant="wrong">
 	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>
 </Button2>
-<Button2 href="/about" variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
-<Button1 href="/lorem" variant={'default'}>{m.welcome()}</Button1>
+<Button2 href={localizeHref('/about')} variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
+<Button1 href={localizeHref('/lorem')} variant={'default'}>{m.welcome()}</Button1>
 
 <div class={'p1 boxed long-text gutter'}>
 	<h1>Aute aliquip laborum tempor</h1>
@@ -123,8 +124,8 @@ const eewre = Promise.resolve('test')
 
 <div class="colored">
 	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>
-	<Button1 onclick={() => switchToLanguage('en')}>en</Button1>
-	<Button1 onclick={() => switchToLanguage('ko')}>ko</Button1>
+	<Button1 onclick={() => setLocale('en')}>en</Button1>
+	<Button1 onclick={() => setLocale('ko')}>ko</Button1>
 </div>
 
 <div id="Page_Check"></div>

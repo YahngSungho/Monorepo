@@ -152,5 +152,9 @@ playwright-report
 generated
 output
 **/.svelte-kit/**
+**/vitest-results/**
+**/playwright-results/**
 
-releases
+releases/**
+
+paraglide-output/**

@@ -11,10 +11,12 @@ export default {
 			use: { ...devices['Desktop Chrome'], screenshot: 'only-on-failure' },
 		},
 
-		{
-			name: 'firefox',
-			use: { ...devices['Desktop Firefox'] },
-		},
+		process.env.CI ?
+			{
+				name: 'firefox',
+				use: { ...devices['Desktop Firefox'] },
+			}
+		:	{},
 
 		{
 			name: 'webkit',
