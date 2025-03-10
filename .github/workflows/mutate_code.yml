@@ -217,6 +217,8 @@ jobs:
             else
               echo "Code formatting patch applied successfully."
             fi
+            # 패치 파일 삭제
+            rm changes.patch
           else
             echo "No code formatting changes to apply."
           fi
@@ -229,6 +231,8 @@ jobs:
             else
               echo "Image compression patch applied successfully."
             fi
+            # 패치 파일 삭제
+            rm images-changes.patch
           else
             echo "No image compression changes to apply."
           fi
