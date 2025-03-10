@@ -10,6 +10,8 @@ permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue commentsds
   contents: read # Necessary to access the repo content
+  actions: read
+  checks: write
 
 jobs:
   build:
