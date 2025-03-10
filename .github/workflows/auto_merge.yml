@@ -40,7 +40,7 @@ jobs:
       contents: write
       pull-requests: write
 
-    if: always()
+    if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-completed')
     steps:
       - name: Remove mutation-completed Label
         if: always()
