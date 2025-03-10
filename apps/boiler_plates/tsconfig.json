@@ -22,10 +22,7 @@
 		"../../libraries/**",
 		"paraglide-output/**"
 	],
-	"extends": [
-		"@library/base/tsconfig.json",
-		"./.svelte-kit/tsconfig.json"
-	],
+	"extends": ["@library/base/tsconfig.json", "./.svelte-kit/tsconfig.json"],
 	"include": [
 		"tests/**/*",
 		"src/**/*",
