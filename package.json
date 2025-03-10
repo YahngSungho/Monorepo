@@ -99,7 +99,7 @@
 		"prettier-plugin-sql": "^0.18.1",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
-		"pretty-quick": "^4.0.0",
+		"pretty-quick": "^4.1.1",
 		"simple-git-hooks": "^2.11.1",
 		"stylelint": "^16.15.0",
 		"stylelint-color-format": "^1.1.0",
