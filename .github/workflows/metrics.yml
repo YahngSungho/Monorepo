@@ -22,7 +22,7 @@ jobs:
         uses: lowlighter/metrics@latest
         with:
           filename: metrics.plugin.isocalendar.halfyear.svg
-          token: ${{ secrets.TOKEN1 }}
+          token: ${{ secrets.CLASSIC_TOKEN }}
           base: ''
           plugin_isocalendar: yes
 
@@ -30,7 +30,7 @@ jobs:
         uses: lowlighter/metrics@latest
         with:
           filename: metrics.plugin.habits.charts.svg
-          token: ${{ secrets.TOKEN1 }}
+          token: ${{ secrets.CLASSIC_TOKEN }}
           base: ''
           plugin_habits: yes
           plugin_habits_facts: yes
