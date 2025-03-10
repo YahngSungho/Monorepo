@@ -57,7 +57,7 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 		table.setOptions((prev) => {
 			return mergeObjects(prev, options, {
 				onStateChange: (updater: any) => {
-					state = updater instanceof Function ? updater(state) : mergeObjects(state, updater)
+					state = typeof updater === 'function' ? updater(state) : mergeObjects(state, updater)
 
 					options.onStateChange?.(updater)
 				},
