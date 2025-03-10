@@ -71,11 +71,22 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.head_commit.message, '[automated-mutation]')"
     outputs:
       is_automated: ${{ steps.check_commit.outputs.is_automated }}
 
     steps:
+      # 이전 커밋 메시지 확인
+      - name: Check Last Commit Message
+        id: check_commit
+        run: |
+          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ "$LAST_COMMIT_MSG" == *"[automated-mutation]"* ]]; then
+            echo "is_automated=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_automated=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
@@ -108,26 +119,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --prefer-offline
 
-      # 이전 커밋 메시지 확인
-      - name: Check Last Commit Message
-        id: check_commit
-        run: |
-          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
-          if [[ "$LAST_COMMIT_MSG" == *"[automated-mutation]"* ]]; then
-            echo "is_automated=true" >> $GITHUB_OUTPUT
-          else
-            echo "is_automated=false" >> $GITHUB_OUTPUT
-          fi
-
       # 린트 실행
       - name: Run Lint & Format
-        if: steps.check_commit.outputs.is_automated != 'true'
         run: pnpm run lint-fix
 
       # 추가: lint-fix 후 수정사항을 patch 파일로 생성
       - name: Check for lint changes
         id: check_lint_changes
-        if: steps.check_commit.outputs.is_automated != 'true'
         run: |
           if git diff --quiet; then
             echo "린트 및 포맷팅 후 변경사항이 없습니다."
@@ -140,7 +138,7 @@ jobs:
 
       # 추가: patch 파일을 artifact로 업로드
       - name: Upload patch artifact
-        if: steps.check_commit.outputs.is_automated != 'true' && steps.check_lint_changes.outputs.has_changes == 'true'
+        if: steps.check_lint_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: changes-patch
