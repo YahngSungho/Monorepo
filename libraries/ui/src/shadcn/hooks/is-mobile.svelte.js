@@ -3,11 +3,11 @@ import { untrack } from 'svelte'
 const MOBILE_BREAKPOINT = 768
 
 export class IsMobile {
+	_current = $state(false)
+
 	get current() {
 		return this._current
 	}
-
-	_current = $state(false)
 
 	constructor() {
 		$effect.root(() => {
