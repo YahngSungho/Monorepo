@@ -19,7 +19,8 @@
 		"node_modules/**",
 		"src/service-worker/**",
 		"static/**",
-		"**/paraglide-output/**"
+		"../../libraries/**",
+		"paraglide-output/**"
 	],
 	"extends": [
 		"@library/base/tsconfig.json",
