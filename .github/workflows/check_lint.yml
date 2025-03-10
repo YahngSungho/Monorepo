@@ -55,7 +55,7 @@ jobs:
         run: pnpm install --prefer-offline
 
       - name: paraglide-compile
-        run: turbo run paraglide-compile
+        run: pnpm run paraglide-compile
 
       # 린트 실행
       - name: Run Lint

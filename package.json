@@ -14,6 +14,7 @@
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
 		"lint": "turbo run check eslint stylelint --affected",
 		"lint-fix": "turbo run eslint-fix  --affected && turbo run stylelint-fix --affected && turbo run format --affected",
+		"paraglide-compile": "turbo run paraglide-compile --affected",
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
 		"playwright-report": "turbo run playwright-report --affected",
 		"test": "turbo run test:unit test:e2e --affected",
