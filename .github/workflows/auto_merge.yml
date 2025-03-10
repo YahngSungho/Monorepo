@@ -12,7 +12,7 @@ jobs:
       contents: write
       pull-requests: write
 
-    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.pull_request.labels.*.name, 'dependabot')"
     steps:
       - uses: reitermarkus/automerge@v2
         with:
@@ -20,6 +20,28 @@ jobs:
           required-labels: mutation-completed
           do-not-merge-labels: never-merge
 
+  automerge-dependabot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed') && contains(github.event.pull_request.labels.*.name, 'dependabot')"
+    steps:
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          target: minor
+          github-token: ${{ secrets.TOKEN1 }}
+
+  remove-mutation-completed-label:
+    needs: [automerge, automerge-dependabot]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    if: always()
+    steps:
       - name: Remove mutation-completed Label
         if: always()
         uses: actions/github-script@v6
