@@ -1,12 +1,12 @@
 <script>
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
-import * as m from '@library/base/messages.js'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import Icon from '@library/ui/icon'
 
-import { switchToLanguage } from '../../paraglide'
+import * as m from '../../../../../libraries/paraglide/paraglide-output/messages.js'
+import { setLocale } from '../../paraglide'
 
 const fo = 'bigCommandKEnabled'
 
@@ -120,8 +120,8 @@ foo += ' bar133322222223'
 
 <div class="colored">
 	<Badge>{m.hello_world({ name: 'SvelteKit User' })}</Badge>
-	<Button1 onclick={() => switchToLanguage('en')}>en</Button1>
-	<Button1 onclick={() => switchToLanguage('ko')}>ko</Button1>
+	<Button1 onclick={() => setLocale('en')}>en</Button1>
+	<Button1 onclick={() => setLocale('ko')}>ko</Button1>
 </div>
 
 <div id="Page_Check"></div>

@@ -13,11 +13,9 @@
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"format": "prettier --write --ignore-unknown .",
-		"paraglide-compile": "npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
 		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
-		"test:unit": "vitest run",
-		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
+		"test:unit": "vitest run"
 	},
 	"dependencies": {
 		"@qwik.dev/partytown": "^0.11.0",
@@ -138,14 +136,8 @@
 		"./basic.test.js": "./e2e/basic.test.js",
 		"./fontStyle.css": "./src/fontStyle.css",
 		"./forTailwind.css": "./src/forTailwind.css",
-		"./i18n.ts": "./src/lib/i18n.ts",
-		"./messages.js": "./src/lib/paraglide/messages.js",
-		"./paraglide": "./src/paraglide.ts",
-		"./paraglide_outdir": "./src/lib/paraglide",
-		"./paraglide_project": "./project.inlang",
 		"./playwright.config.js": "./playwright.config.js",
 		"./postcss.config.js": "./postcss.config.js",
-		"./runtime.js": "./src/lib/paraglide/runtime.js",
 		"./svelte.config.js": "./svelte.config.js",
 		"./tailwind.config": "./tailwind.config.ts",
 		"./traverse.test.js": "./e2e/traverse.test.js",

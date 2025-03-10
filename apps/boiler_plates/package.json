@@ -26,6 +26,7 @@
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library_wrappers": "workspace:*",
+		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
 		"luxon": "^3.5.0",
 		"nanoid": "^5.0.9",
