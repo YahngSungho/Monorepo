@@ -18,7 +18,6 @@ let {
 <AlertDialogPrimitive.Portal {...portalProps}>
 	<AlertDialogOverlay />
 	<AlertDialogPrimitive.Content
-		bind:ref
 		class={cn(
 			`bg-background data-[state=open]:animate-in data-[state=closed]:animate-out
 			data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95
@@ -28,6 +27,7 @@ let {
 			translate-x-[-50%] translate-y-[-50%] gap-4 border p-6 shadow-lg duration-200 sm:rounded-lg`,
 			className,
 		)}
+		bind:ref
 		{...restProps}
 	/>
 </AlertDialogPrimitive.Portal>

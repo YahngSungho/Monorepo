@@ -41,8 +41,8 @@ let {
 <svelte:element
 	this={href ? 'a' : 'span'}
 	bind:this={ref}
-	{href}
 	class={cn(badgeVariants({ variant }), className)}
+	{href}
 	{...restProps}
 >
 	{@render children?.()}

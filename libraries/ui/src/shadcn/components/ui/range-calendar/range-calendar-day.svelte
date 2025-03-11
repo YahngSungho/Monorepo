@@ -14,7 +14,6 @@ export { className as class }
 </script>
 
 <RangeCalendarPrimitive.Day
-	bind:ref
 	class={cn(
 		buttonVariants({ variant: 'ghost' }),
 		'data-selected:opacity-100 size-9 p-0 font-normal',
@@ -38,5 +37,6 @@ export { className as class }
 		'data-unavailable:text-destructive-foreground data-unavailable:line-through',
 		className,
 	)}
+	bind:ref
 	{...restProps}
 />

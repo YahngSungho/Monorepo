@@ -50,6 +50,8 @@ import * as parser_svelte from 'svelte-eslint-parser'
 import parser_toml from 'toml-eslint-parser'
 import parser_yaml from 'yaml-eslint-parser'
 
+import svelteConfig from './libraries/base/svelte.config.js'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const flatCompat = new FlatCompat({
@@ -80,9 +82,6 @@ export default defineFlatConfig([
 				env: 'defaults',
 			},
 			'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx', '.svelte', '.json'],
-			'import-x/parsers': {
-				'@typescript-eslint/parser': ['.ts', '.tsx'],
-			},
 			'import-x/resolver-next': [
 				createTypeScriptImportResolver({
 					alwaysTryTypes: true,
@@ -105,7 +104,7 @@ export default defineFlatConfig([
 	sonarjs_configs.recommended,
 	importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
-	...svelte.configs['flat/recommended'],
+	...svelte.configs.recommended,
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
 	noUseExtendNative.configs.recommended,
@@ -230,12 +229,34 @@ export default defineFlatConfig([
 			'sonarjs/todo-tag': 'off',
 			'sql/format': 'warn',
 			'sql/no-unsafe-query': 'warn',
+			'svelte/valid-compile': [
+				'error',
+				{
+					ignoreWarnings: true,
+				},
+			],
+			'svelte/valid-style-parse': 'error',
 			'svelte/derived-has-same-inputs-outputs': 'warn',
 			'svelte/first-attribute-linebreak': 'off',
+			'svelte/html-self-closing': [
+				'warn',
+				'default', // or "all" or "html" or "none"
+			],
 			'svelte/html-closing-bracket-spacing': 'warn',
+			'svelte/html-quotes': [
+				'warn',
+				{
+					prefer: 'single',
+					dynamic: {
+						quoted: false,
+						avoidInvalidUnquotedInHTML: false,
+					},
+				},
+			],
 			'svelte/indent': 'off',
 			'svelte/infinite-reactive-loop': 'error',
 			'svelte/no-dupe-on-directives': 'warn',
+			'svelte/prefer-destructured-store-props': 'warn',
 			'svelte/no-dupe-use-directives': 'warn',
 			'svelte/no-immutable-reactive-statements': 'warn',
 			'svelte/no-reactive-functions': 'warn',
@@ -243,15 +264,22 @@ export default defineFlatConfig([
 			'svelte/no-reactive-reassign': 'warn',
 			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 			'svelte/no-store-async': 'warn',
-			'svelte/no-target-blank': 'warn',
+			'svelte/no-target-blank': 'error',
+			'svelte/sort-attributes': 'warn',
+			'svelte/no-trailing-spaces': 'warn',
+			'svelte/no-inner-declarations': 'warn',
+			'svelte/shorthand-attribute': 'warn',
+			'svelte/no-navigation-without-base': 'warn',
+			'svelte/shorthand-directive': 'warn',
 			'svelte/no-unused-class-name': [
 				'off',
 				{
 					allowedClassNames: [],
 				},
 			],
-			'svelte/prefer-destructured-store-props': 'warn',
 			'svelte/prefer-style-directive': 'warn',
+			'svelte/html-closing-bracket-new-line': 'warn',
+			'svelte/prefer-class-directive': 'warn',
 			'svelte/require-each-key': 'warn',
 			'svelte/require-optimized-style-attribute': 'warn',
 			'svelte/require-store-reactive-access': 'warn',
@@ -301,15 +329,15 @@ export default defineFlatConfig([
 			parser: parser_svelte,
 			parserOptions: {
 				ecmaVersion: 'latest',
-				extraFileExtensions: ['.svelte'],
+				extraFileExtensions: ['.svelte', '.svelte.js', '.svelte.ts'],
 				projectService: true,
-				parser: {
-					js: parser_TS,
-					ts: parser_TS,
-					typescript: parser_TS,
-				},
+				parser: parser_TS,
 				requireConfigFile: false,
 				sourceType: 'module',
+				svelteFeatures: {
+					experimentalRunes: true,
+				},
+				svelteConfig,
 			},
 		},
 
@@ -318,6 +346,7 @@ export default defineFlatConfig([
 			'sonarjs/no-use-of-empty-return-value': 'off',
 		},
 	},
+
 	{
 		files: [
 			'**/*.stories.svelte',
@@ -332,6 +361,7 @@ export default defineFlatConfig([
 			'@intlify/svelte/no-raw-text': 'off',
 			'redos/no-vulnerable': 'off',
 			'sonarjs/slow-regex': 'off',
+			'svelte/no-useless-children-snippet': 'off',
 		},
 	},
 	{
@@ -394,6 +424,58 @@ export default defineFlatConfig([
 
 	...jsonc.configs['flat/prettier'],
 	...yml.configs['flat/prettier'],
-	...svelte.configs['flat/prettier'],
+	...svelte.configs.prettier,
 	eslintConfigPrettier,
+
+	{
+		// 그냥 off 할 설정들
+		rules: {
+			'import/no-webpack-loader-syntax': 'off',
+			'import/default': 'off',
+			'import/enforce-node-protocol-usage': 'off',
+			'import/named': 'off',
+			'import/namespace': 'off',
+			'import/no-absolute-path': 'off',
+			'import/no-cycle': 'off',
+			'import/no-dynamic-require': 'off',
+			'import/no-internal-modules': 'off',
+			'import/no-relative-packages': 'off',
+			'import/no-relative-parent-imports': 'off',
+			'import/no-restricted-paths': 'off',
+			'import/no-self-import': 'off',
+			'import/no-unresolved': 'off',
+			'import/no-useless-path-segments': 'off',
+			'import/no-amd': 'off',
+			'import/no-commonjs': 'off',
+			'import/no-import-module-exports': 'off',
+			'import/no-nodejs-modules': 'off',
+			'import/unambiguous': 'off',
+			'import/export': 'off',
+			'import/no-deprecated': 'off',
+			'import/no-empty-named-blocks': 'off',
+			'import/no-extraneous-dependencies': 'off',
+			'import/no-mutable-exports': 'off',
+			'import/no-named-as-default': 'off',
+			'import/no-named-as-default-member': 'off',
+			'import/no-unused-modules': 'off',
+			'import/consistent-type-specifier-style': 'off',
+			'import/dynamic-import-chunkname': 'off',
+			'import/exports-last': 'off',
+			'import/extensions': 'off',
+			'import/first': 'off',
+			'import/group-exports': 'off',
+			'import/imports-first': 'off',
+			'import/max-dependencies': 'off',
+			'import/newline-after-import': 'off',
+			'import/no-anonymous-default-export': 'off',
+			'import/no-default-export': 'off',
+			'import/no-duplicates': 'off',
+			'import/no-named-default': 'off',
+			'import/no-named-export': 'off',
+			'import/no-namespace': 'off',
+			'import/no-unassigned-import': 'off',
+			'import/order': 'off',
+			'import/prefer-default-export': 'off',
+		},
+	},
 ])

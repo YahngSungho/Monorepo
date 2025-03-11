@@ -16,7 +16,6 @@ let {
 </script>
 
 <DropdownMenuPrimitive.SubTrigger
-	bind:ref
 	class={cn(
 		`data-highlighted:bg-accent data-[state=open]:bg-accent outline-hidden flex cursor-default
 		select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm [&_svg]:pointer-events-none
@@ -24,6 +23,7 @@ let {
 		inset && 'pl-8',
 		className,
 	)}
+	bind:ref
 	{...restProps}
 >
 	{@render children?.()}

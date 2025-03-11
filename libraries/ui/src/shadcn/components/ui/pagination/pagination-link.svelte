@@ -23,8 +23,6 @@ let {
 {/snippet}
 
 <PaginationPrimitive.Page
-	bind:ref
-	{page}
 	class={cn(
 		buttonVariants({
 			size,
@@ -33,5 +31,7 @@ let {
 		className,
 	)}
 	children={children || Fallback}
+	{page}
+	bind:ref
 	{...restProps}
 />

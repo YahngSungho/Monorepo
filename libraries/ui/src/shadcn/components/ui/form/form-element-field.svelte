@@ -4,7 +4,7 @@ type T = Record<string, unknown>
 type U = _FormPathLeaves<T>
 </script>
 
-<script lang="ts" generics="T extends Record<string, unknown>, U extends _FormPathLeaves<T>">
+<script generics="T extends Record<string, unknown>, U extends _FormPathLeaves<T>" lang="ts">
 import type { WithElementRef, WithoutChildren } from 'bits-ui'
 import * as FormPrimitive from 'formsnap'
 import type { HTMLAttributes } from 'svelte/elements'
@@ -22,7 +22,7 @@ let {
 	WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props()
 </script>
 
-<FormPrimitive.ElementField {form} {name}>
+<FormPrimitive.ElementField {name} {form}>
 	{#snippet children({ constraints, errors, tainted, value })}
 		<div bind:this={ref} class={cn('space-y-2', className)} {...restProps}>
 			{@render childrenProp?.({ constraints, errors, tainted, value: value as T[U] })}

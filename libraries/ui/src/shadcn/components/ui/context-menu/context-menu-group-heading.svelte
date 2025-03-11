@@ -14,7 +14,7 @@ let {
 </script>
 
 <ContextMenuPrimitive.GroupHeading
-	bind:ref
 	class={cn('text-foreground px-2 py-1.5 text-sm font-semibold', inset && 'pl-8', className)}
+	bind:ref
 	{...restProps}
 />

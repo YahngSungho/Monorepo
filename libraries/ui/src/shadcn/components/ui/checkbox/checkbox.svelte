@@ -15,7 +15,6 @@ let {
 </script>
 
 <CheckboxPrimitive.Root
-	bind:ref
 	class={cn(
 		`border-primary ring-offset-background focus-visible:ring-ring data-[state=checked]:bg-primary
 		data-[state=checked]:text-primary-foreground focus-visible:outline-hidden peer box-content size-4
@@ -24,6 +23,7 @@ let {
 		data-[disabled=true]:opacity-50`,
 		className,
 	)}
+	bind:ref
 	bind:checked
 	bind:indeterminate
 	{...restProps}

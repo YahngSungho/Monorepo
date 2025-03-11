@@ -27,11 +27,11 @@ const sidebar = useSidebar()
 
 {#if collapsible === 'none'}
 	<div
+		bind:this={ref}
 		class={cn(
 			'bg-sidebar text-sidebar-foreground w-(--sidebar-width) flex h-full flex-col',
 			className,
 		)}
-		bind:this={ref}
 		{...restProps}
 	>
 		{@render children?.()}
@@ -39,12 +39,12 @@ const sidebar = useSidebar()
 {:else if sidebar.isMobile}
 	<Sheet.Root bind:open={() => sidebar.openMobile, (v) => sidebar.setOpenMobile(v)} {...restProps}>
 		<Sheet.Content
-			data-sidebar="sidebar"
-			data-mobile="true"
-			class="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
 			style="
 
 				--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
+			class="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+			data-mobile="true"
+			data-sidebar="sidebar"
 			{side}
 		>
 			<div class="flex h-full w-full flex-col">
@@ -56,10 +56,10 @@ const sidebar = useSidebar()
 	<div
 		bind:this={ref}
 		class="text-sidebar-foreground group peer hidden md:block"
-		data-state={sidebar.state}
 		data-collapsible={sidebar.state === 'collapsed' ? collapsible : ''}
-		data-variant={variant}
 		data-side={side}
+		data-state={sidebar.state}
+		data-variant={variant}
 	>
 		<!-- This is what handles the sidebar gap on desktop -->
 		<div
@@ -89,10 +89,10 @@ const sidebar = useSidebar()
 			{...restProps}
 		>
 			<div
-				data-sidebar="sidebar"
 				class="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col
 					group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border
 					group-data-[variant=floating]:shadow-sm"
+				data-sidebar="sidebar"
 			>
 				{@render children?.()}
 			</div>

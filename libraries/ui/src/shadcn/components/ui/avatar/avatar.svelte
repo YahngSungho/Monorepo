@@ -7,7 +7,7 @@ let { class: className, ref = $bindable(), ...restProps }: AvatarPrimitive.RootP
 </script>
 
 <AvatarPrimitive.Root
-	bind:ref
 	class={cn('relative flex size-10 shrink-0 overflow-hidden rounded-full', className)}
+	bind:ref
 	{...restProps}
 />

@@ -38,9 +38,9 @@ let {
 {#if href}
 	<a
 		bind:this={ref}
-		role="button"
 		class={cn(buttonVariants({ variant }), className)}
 		{href}
+		role="button"
 		{...restProps}
 	>
 		{@render children?.()}

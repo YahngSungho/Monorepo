@@ -10,4 +10,4 @@ let {
 }: RangeCalendarPrimitive.GridRowProps = $props()
 </script>
 
-<RangeCalendarPrimitive.GridRow bind:ref class={cn('flex', className)} {...restProps} />
+<RangeCalendarPrimitive.GridRow class={cn('flex', className)} bind:ref {...restProps} />

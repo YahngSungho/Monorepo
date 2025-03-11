@@ -17,9 +17,6 @@ let {
 
 <PopoverPrimitive.Portal {...portalProps}>
 	<PopoverPrimitive.Content
-		bind:ref
-		{sideOffset}
-		{align}
 		class={cn(
 			`bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out
 			data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95
@@ -28,6 +25,9 @@ let {
 			data-[side=top]:slide-in-from-bottom-2 outline-hidden z-50 w-72 rounded-md border p-4 shadow-md`,
 			className,
 		)}
+		{align}
+		{sideOffset}
+		bind:ref
 		{...restProps}
 	/>
 </PopoverPrimitive.Portal>

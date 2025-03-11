@@ -7,8 +7,8 @@ type TContext = unknown
 </script>
 
 <script
+	generics="TData, TValue, TContext extends CellContext<TData, TValue> | HeaderContext<TData, TValue>"
 	lang="ts"
-	generics="TData, TValue, TContext extends HeaderContext<TData, TValue> | CellContext<TData, TValue>"
 >
 import { RenderComponentConfig, RenderSnippetConfig } from './render-helpers.js'
 type Props = {

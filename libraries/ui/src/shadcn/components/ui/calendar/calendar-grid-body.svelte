@@ -10,4 +10,4 @@ let {
 }: CalendarPrimitive.GridBodyProps = $props()
 </script>
 
-<CalendarPrimitive.GridBody bind:ref class={cn(className)} {...restProps} />
+<CalendarPrimitive.GridBody class={cn(className)} bind:ref {...restProps} />

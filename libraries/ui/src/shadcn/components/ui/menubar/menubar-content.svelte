@@ -19,16 +19,16 @@ let {
 
 <MenubarPrimitive.Portal {...portalProps}>
 	<MenubarPrimitive.Content
-		bind:ref
-		{sideOffset}
-		{align}
-		{alignOffset}
-		{side}
 		class={cn(
 			`bg-popover text-popover-foreground focus:outline-hidden z-50 min-w-[12rem] rounded-md border p-1
 			shadow-md`,
 			className,
 		)}
+		{align}
+		{alignOffset}
+		{side}
+		{sideOffset}
+		bind:ref
 		{...restProps}
 	/>
 </MenubarPrimitive.Portal>

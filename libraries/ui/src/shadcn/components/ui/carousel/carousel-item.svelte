@@ -18,14 +18,14 @@ const emblaCtx = getEmblaContext('<Carousel.Item/>')
 
 <div
 	bind:this={ref}
-	role="group"
-	aria-roledescription="slide"
 	class={cn(
 		'min-w-0 shrink-0 grow-0 basis-full',
 		emblaCtx.orientation === 'horizontal' ? 'pl-4' : 'pt-4',
 		className,
 	)}
+	aria-roledescription="slide"
 	data-embla-slide=""
+	role="group"
 	{...restProps}
 >
 	{@render children?.()}

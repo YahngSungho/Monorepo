@@ -14,7 +14,7 @@ const { Story } = defineMeta({
 </script>
 
 {#snippet multiple()}
-	<div class={'boxed'} style:width="calc(100% / 2)">
+	<div style:width="calc(100% / 2)" class="boxed">
 		<Button variant="primary">Primary Button</Button>
 		<Button variant="secondary">Secondary Button</Button>
 		<Button variant="outline">Outline Button</Button>
@@ -24,8 +24,8 @@ const { Story } = defineMeta({
 		<Button variant="success">Success Button</Button>
 		<Button variant="warning">Warning Button</Button>
 		<Button variant="error">Error Button</Button>
-		<Button variant="primary" disabled>Disabled Primary Button</Button>
-		<Button variant="secondary" disabled>Disabled Secondary Button</Button>
+		<Button disabled variant="primary">Disabled Primary Button</Button>
+		<Button disabled variant="secondary">Disabled Secondary Button</Button>
 	</div>
 {/snippet}
 

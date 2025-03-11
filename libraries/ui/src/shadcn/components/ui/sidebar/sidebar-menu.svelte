@@ -14,8 +14,8 @@ let {
 
 <ul
 	bind:this={ref}
-	data-sidebar="menu"
 	class={cn('flex w-full min-w-0 flex-col gap-1', className)}
+	data-sidebar="menu"
 	{...restProps}
 >
 	{@render children?.()}

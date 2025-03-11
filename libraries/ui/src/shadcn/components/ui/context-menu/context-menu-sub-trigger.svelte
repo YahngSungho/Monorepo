@@ -16,7 +16,6 @@ let {
 </script>
 
 <ContextMenuPrimitive.SubTrigger
-	bind:ref
 	class={cn(
 		`data-highlighted:bg-accent data-[state=open]:bg-accent data-highlighted:text-accent-foreground
 		data-[state=open]:text-accent-foreground outline-hidden flex cursor-default select-none items-center
@@ -24,6 +23,7 @@ let {
 		inset && 'pl-8',
 		className,
 	)}
+	bind:ref
 	{...restProps}
 >
 	{@render children?.()}

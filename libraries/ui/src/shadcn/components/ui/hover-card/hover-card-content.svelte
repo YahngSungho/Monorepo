@@ -17,13 +17,13 @@ let {
 
 <HoverCardPrimitive.Portal {...portalProps}>
 	<HoverCardPrimitive.Content
-		bind:ref
-		{align}
-		{sideOffset}
 		class={cn(
 			'bg-popover text-popover-foreground outline-hidden z-50 mt-3 w-64 rounded-md border p-4 shadow-md',
 			className,
 		)}
+		{align}
+		{sideOffset}
+		bind:ref
 		{...restProps}
 	/>
 </HoverCardPrimitive.Portal>

@@ -19,8 +19,6 @@ const emblaCtx = getEmblaContext('<Carousel.Previous/>')
 </script>
 
 <Button
-	{variant}
-	{size}
 	class={cn(
 		'absolute size-8 touch-manipulation rounded-full',
 		emblaCtx.orientation === 'horizontal' ?
@@ -31,6 +29,8 @@ const emblaCtx = getEmblaContext('<Carousel.Previous/>')
 	disabled={!emblaCtx.canScrollPrev}
 	onclick={emblaCtx.scrollPrev}
 	onkeydown={emblaCtx.handleKeyDown}
+	{size}
+	{variant}
 	{...restProps}
 	bind:ref
 >

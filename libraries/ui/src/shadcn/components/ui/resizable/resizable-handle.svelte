@@ -16,7 +16,6 @@ let {
 </script>
 
 <ResizablePrimitive.PaneResizer
-	bind:ref
 	class={cn(
 		`bg-border focus-visible:ring-ring focus-visible:outline-hidden relative flex w-px items-center
 		justify-center after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2
@@ -27,6 +26,7 @@ let {
 		[&[data-direction=vertical]>div]:rotate-90`,
 		className,
 	)}
+	bind:ref
 	{...restProps}
 >
 	{#if withHandle}

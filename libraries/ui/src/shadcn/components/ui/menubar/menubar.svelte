@@ -7,7 +7,7 @@ let { class: className, ref = $bindable(), ...restProps }: MenubarPrimitive.Root
 </script>
 
 <MenubarPrimitive.Root
-	bind:ref
 	class={cn('bg-background flex h-10 items-center space-x-1 rounded-md border p-1', className)}
+	bind:ref
 	{...restProps}
 />
