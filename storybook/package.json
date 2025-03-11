@@ -15,7 +15,7 @@
 		"nanoid": "^5.0.9"
 	},
 	"devDependencies": {
-		"@chromatic-com/storybook": "^3.2.4",
+		"@chromatic-com/storybook": "^3.2.5",
 		"@library/base": "workspace:*",
 		"@library/library_wrappers": "workspace:*",
 		"@library/ui": "workspace:*",
