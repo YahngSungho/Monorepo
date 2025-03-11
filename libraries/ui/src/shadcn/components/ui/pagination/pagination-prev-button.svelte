@@ -19,7 +19,6 @@ let {
 {/snippet}
 
 <PaginationPrimitive.PrevButton
-	bind:ref
 	class={cn(
 		buttonVariants({
 			class: 'gap-1 pl-2.5',
@@ -28,5 +27,6 @@ let {
 		className,
 	)}
 	children={children || Fallback}
+	bind:ref
 	{...restProps}
 />

@@ -32,9 +32,9 @@ let {
 				[&_[data-command-input-wrapper]_svg]:h-5 [&_[data-command-input-wrapper]_svg]:w-5
 				[&_[data-command-item]_svg]:h-5 [&_[data-command-item]_svg]:w-5"
 			{...restProps}
+			{children}
 			bind:value
 			bind:ref
-			{children}
 		/>
 	</Dialog.Content>
 </Dialog.Root>

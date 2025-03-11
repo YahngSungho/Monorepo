@@ -45,7 +45,7 @@ let {
 
 <SheetPrimitive.Portal {...portalProps}>
 	<SheetOverlay />
-	<SheetPrimitive.Content bind:ref class={cn(sheetVariants({ side }), className)} {...restProps}>
+	<SheetPrimitive.Content class={cn(sheetVariants({ side }), className)} bind:ref {...restProps}>
 		{@render children?.()}
 		<SheetPrimitive.Close
 			class="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary focus:outline-hidden absolute

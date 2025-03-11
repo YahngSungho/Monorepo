@@ -18,11 +18,6 @@ const sidebar = useSidebar()
 
 <button
 	bind:this={ref}
-	data-sidebar="rail"
-	aria-label="Toggle Sidebar"
-	tabIndex={-1}
-	onclick={() => sidebar.toggle()}
-	title="Toggle Sidebar"
 	class={cn(
 		`hover:after:bg-sidebar-border absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all
 		ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px]
@@ -36,6 +31,11 @@ const sidebar = useSidebar()
 		'[[data-side=right][data-collapsible=offcanvas]_&]:-left-2',
 		className,
 	)}
+	aria-label="Toggle Sidebar"
+	data-sidebar="rail"
+	onclick={() => sidebar.toggle()}
+	tabIndex={-1}
+	title="Toggle Sidebar"
 	{...restProps}
 >
 	{@render children?.()}

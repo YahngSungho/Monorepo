@@ -7,7 +7,7 @@ let { class: className, ref = $bindable(), ...restProps }: DrawerPrimitive.Title
 </script>
 
 <DrawerPrimitive.Title
-	bind:ref
 	class={cn('text-lg font-semibold leading-none tracking-tight', className)}
+	bind:ref
 	{...restProps}
 />

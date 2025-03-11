@@ -7,7 +7,6 @@ let { class: className, ref = $bindable(), ...restProps }: TabsPrimitive.Trigger
 </script>
 
 <TabsPrimitive.Trigger
-	bind:ref
 	class={cn(
 		`ring-offset-background focus-visible:ring-ring data-[state=active]:bg-background
 		data-[state=active]:text-foreground focus-visible:outline-hidden data-[state=active]:shadow-xs
@@ -16,5 +15,6 @@ let { class: className, ref = $bindable(), ...restProps }: TabsPrimitive.Trigger
 		disabled:opacity-50`,
 		className,
 	)}
+	bind:ref
 	{...restProps}
 />

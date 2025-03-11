@@ -14,10 +14,10 @@ let {
 
 <span
 	bind:this={ref}
-	role="link"
-	aria-disabled="true"
-	aria-current="page"
 	class={cn('text-foreground font-normal', className)}
+	aria-current="page"
+	aria-disabled="true"
+	role="link"
 	{...restProps}
 >
 	{@render children?.()}

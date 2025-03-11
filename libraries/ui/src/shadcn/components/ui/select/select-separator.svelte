@@ -7,4 +7,4 @@ import { cn } from '$shadcn/utils.js'
 let { class: className, ref = $bindable(), ...restProps }: SeparatorPrimitive.RootProps = $props()
 </script>
 
-<Separator bind:ref class={cn('bg-muted -mx-1 my-1 h-px', className)} {...restProps} />
+<Separator class={cn('bg-muted -mx-1 my-1 h-px', className)} bind:ref {...restProps} />

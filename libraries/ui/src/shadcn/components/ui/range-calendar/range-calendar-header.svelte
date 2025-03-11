@@ -11,7 +11,7 @@ let {
 </script>
 
 <RangeCalendarPrimitive.Header
-	bind:ref
 	class={cn('relative flex w-full items-center justify-between pt-1', className)}
+	bind:ref
 	{...restProps}
 />

@@ -88,6 +88,6 @@ $effect(() => {
 })
 </script>
 
-<div class={cn('relative', className)} role="region" aria-roledescription="carousel" {...restProps}>
+<div class={cn('relative', className)} aria-roledescription="carousel" role="region" {...restProps}>
 	{@render children?.()}
 </div>

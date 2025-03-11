@@ -18,12 +18,12 @@ let {
 {/snippet}
 
 <CalendarPrimitive.NextButton
-	bind:ref
 	class={cn(
 		buttonVariants({ variant: 'outline' }),
 		'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
 		className,
 	)}
 	children={children || Fallback}
+	bind:ref
 	{...restProps}
 />

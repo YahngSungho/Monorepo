@@ -8,7 +8,6 @@ let { class: className, ref = $bindable(), ...restProps }: CalendarPrimitive.Day
 </script>
 
 <CalendarPrimitive.Day
-	bind:ref
 	class={cn(
 		buttonVariants({ variant: 'ghost' }),
 		'size-9 p-0 font-normal',
@@ -28,5 +27,6 @@ let { class: className, ref = $bindable(), ...restProps }: CalendarPrimitive.Day
 		data-outside-month:opacity-50 [&[data-outside-month][data-selected]]:opacity-30`,
 		className,
 	)}
+	bind:ref
 	{...restProps}
 />

@@ -13,7 +13,6 @@ let {
 </script>
 
 <SelectPrimitive.Trigger
-	bind:ref
 	class={cn(
 		`border-input bg-background ring-offset-background data-placeholder:text-muted-foreground
 		focus:ring-ring focus:outline-hidden flex h-10 w-full items-center justify-between rounded-md border
@@ -21,6 +20,7 @@ let {
 		[&>span]:line-clamp-1`,
 		className,
 	)}
+	bind:ref
 	{...restProps}
 >
 	{@render children?.()}

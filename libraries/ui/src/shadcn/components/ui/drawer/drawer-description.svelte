@@ -11,7 +11,7 @@ let {
 </script>
 
 <DrawerPrimitive.Description
-	bind:ref
 	class={cn('text-muted-foreground text-sm', className)}
+	bind:ref
 	{...restProps}
 />

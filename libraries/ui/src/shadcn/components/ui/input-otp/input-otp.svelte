@@ -13,11 +13,11 @@ let {
 </script>
 
 <InputOTPPrimitive.Root
-	bind:ref
-	bind:value
 	class={cn(
 		'has-disabled:opacity-50 flex items-center gap-2 disabled:[&_input]:cursor-not-allowed',
 		className,
 	)}
+	bind:ref
+	bind:value
 	{...restProps}
 />

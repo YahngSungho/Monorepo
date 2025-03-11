@@ -19,8 +19,6 @@ const emblaCtx = getEmblaContext('<Carousel.Next/>')
 </script>
 
 <Button
-	{variant}
-	{size}
 	class={cn(
 		'absolute size-8 touch-manipulation rounded-full',
 		emblaCtx.orientation === 'horizontal' ?
@@ -31,6 +29,8 @@ const emblaCtx = getEmblaContext('<Carousel.Next/>')
 	disabled={!emblaCtx.canScrollNext}
 	onclick={emblaCtx.scrollNext}
 	onkeydown={emblaCtx.handleKeyDown}
+	{size}
+	{variant}
 	bind:ref
 	{...restProps}
 >

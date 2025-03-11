@@ -7,11 +7,11 @@ let { class: className, ref = $bindable(), ...restProps }: TabsPrimitive.Content
 </script>
 
 <TabsPrimitive.Content
-	bind:ref
 	class={cn(
 		`ring-offset-background focus-visible:ring-ring focus-visible:outline-hidden mt-2
 		focus-visible:ring-2 focus-visible:ring-offset-2`,
 		className,
 	)}
+	bind:ref
 	{...restProps}
 />

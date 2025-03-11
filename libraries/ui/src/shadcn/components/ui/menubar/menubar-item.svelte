@@ -14,7 +14,6 @@ let {
 </script>
 
 <MenubarPrimitive.Item
-	bind:ref
 	class={cn(
 		`data-highlighted:bg-accent data-highlighted:text-accent-foreground outline-hidden
 		data-disabled:pointer-events-none data-disabled:opacity-50 relative flex cursor-default select-none
@@ -22,5 +21,6 @@ let {
 		inset && 'pl-8',
 		className,
 	)}
+	bind:ref
 	{...restProps}
 />

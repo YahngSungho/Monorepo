@@ -12,8 +12,6 @@ let {
 </script>
 
 <SwitchPrimitive.Root
-	bind:ref
-	bind:checked
 	class={cn(
 		`focus-visible:ring-ring focus-visible:ring-offset-background data-[state=checked]:bg-primary
 		data-[state=unchecked]:bg-input focus-visible:outline-hidden peer inline-flex h-6 w-11 shrink-0
@@ -21,6 +19,8 @@ let {
 		focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`,
 		className,
 	)}
+	bind:ref
+	bind:checked
 	{...restProps}
 >
 	<SwitchPrimitive.Thumb

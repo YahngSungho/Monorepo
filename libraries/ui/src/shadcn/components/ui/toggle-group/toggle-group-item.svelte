@@ -19,7 +19,6 @@ const ctx = getToggleGroupCtx()
 </script>
 
 <ToggleGroupPrimitive.Item
-	bind:ref
 	class={cn(
 		toggleVariants({
 			size: ctx.size || size,
@@ -28,5 +27,6 @@ const ctx = getToggleGroupCtx()
 		className,
 	)}
 	{value}
+	bind:ref
 	{...restProps}
 />

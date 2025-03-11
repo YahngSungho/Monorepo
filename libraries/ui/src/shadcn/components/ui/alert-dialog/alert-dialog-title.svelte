@@ -12,8 +12,8 @@ let {
 </script>
 
 <AlertDialogPrimitive.Title
-	bind:ref
 	class={cn('text-lg font-semibold', className)}
 	{level}
+	bind:ref
 	{...restProps}
 />

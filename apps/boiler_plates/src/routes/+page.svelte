@@ -18,20 +18,20 @@ foo += ' bar133322222223'
 const eewre = Promise.resolve('test')
 </script>
 
-<h2 class={'bg-primary'}>{m.welcome()}</h2>
+<h2 class="bg-primary">{m.welcome()}</h2>
 <h3>{foo}</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
+<Icon style="font-size: 2em;" icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
 <Button2 variant="wrong">
-	<Icon icon={'mdi:home'}>{m.antsy_aloof_barbel_read()}</Icon>
+	<Icon icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
 </Button2>
-<Button2 href={localizeHref('/about')} variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
-<Button1 href={localizeHref('/lorem')} variant={'default'}>{m.welcome()}</Button1>
+<Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
+<Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>
 
-<div class={'p1 boxed long-text gutter'}>
+<div class="p1 boxed long-text gutter">
 	<h1>Aute aliquip laborum tempor</h1>
 	<blockquote>
 		incididunt officia sit tempor excepteur occaecat. Ipsum cupidatat sunt quis excepteur duis enim

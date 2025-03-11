@@ -87,10 +87,10 @@ const buttonProps = $derived({
 			{/snippet}
 		</Tooltip.Trigger>
 		<Tooltip.Content
-			side="right"
 			align="center"
-			hidden={sidebar.state !== 'collapsed' || sidebar.isMobile}
 			children={tooltipContent}
+			hidden={sidebar.state !== 'collapsed' || sidebar.isMobile}
+			side="right"
 			{...tooltipContentProps}
 		/>
 	</Tooltip.Root>

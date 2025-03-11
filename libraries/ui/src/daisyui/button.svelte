@@ -17,7 +17,7 @@ let { children, href, variant = 'primary', ...restProps } = $props()
 </script>
 
 {#if href}
-	<a {href} class={`button-type btn btn-${variant}`} type="button" role="button" {...restProps}>
+	<a class={`button-type btn btn-${variant}`} {href} role="button" type="button" {...restProps}>
 		{@render children?.()}
 	</a>
 {:else}

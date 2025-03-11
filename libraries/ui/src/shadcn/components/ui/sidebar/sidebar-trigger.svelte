@@ -20,15 +20,15 @@ const sidebar = useSidebar()
 </script>
 
 <Button
-	type="button"
+	class={cn('h-7 w-7', className)}
+	data-sidebar="trigger"
 	onclick={(e) => {
 		onclick?.(e)
 		sidebar.toggle()
 	}}
-	data-sidebar="trigger"
-	variant="ghost"
 	size="icon"
-	class={cn('h-7 w-7', className)}
+	type="button"
+	variant="ghost"
 	{...restProps}
 >
 	<PanelLeft />

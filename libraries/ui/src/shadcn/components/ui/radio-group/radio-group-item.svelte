@@ -12,13 +12,13 @@ let {
 </script>
 
 <RadioGroupPrimitive.Item
-	bind:ref
 	class={cn(
 		`border-primary text-primary ring-offset-background focus-visible:ring-ring focus:outline-hidden
 		aspect-square size-4 rounded-full border focus-visible:ring-2 focus-visible:ring-offset-2
 		disabled:cursor-not-allowed disabled:opacity-50`,
 		className,
 	)}
+	bind:ref
 	{...restProps}
 >
 	{#snippet children({ checked })}

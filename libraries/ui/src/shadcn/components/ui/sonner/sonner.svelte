@@ -6,8 +6,8 @@ let restProps: SonnerProps = $props()
 </script>
 
 <Sonner
-	theme={$mode}
 	class="toaster group"
+	theme={$mode}
 	toastOptions={{
 		classes: {
 			actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',

@@ -7,7 +7,7 @@ let { class: className, ref = $bindable(), ...restProps }: CalendarPrimitive.Gri
 </script>
 
 <CalendarPrimitive.Grid
-	bind:ref
 	class={cn('w-full border-collapse space-y-1', className)}
+	bind:ref
 	{...restProps}
 />

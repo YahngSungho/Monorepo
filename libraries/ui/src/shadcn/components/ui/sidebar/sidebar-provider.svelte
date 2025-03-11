@@ -42,6 +42,7 @@ const sidebar = setSidebar({
 
 <Tooltip.Provider delayDuration={0}>
 	<div
+		bind:this={ref}
 		style:--sidebar-width={SIDEBAR_WIDTH}
 		style:--sidebar-width-icon={SIDEBAR_WIDTH_ICON}
 		{style}
@@ -49,7 +50,6 @@ const sidebar = setSidebar({
 			'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
 			className,
 		)}
-		bind:this={ref}
 		{...restProps}
 	>
 		{@render children?.()}

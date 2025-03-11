@@ -6,4 +6,4 @@ import { cn } from '$shadcn/utils.js'
 let { class: className, ref = $bindable(), ...restProps }: CalendarPrimitive.HeadingProps = $props()
 </script>
 
-<CalendarPrimitive.Heading bind:ref class={cn('text-sm font-medium', className)} {...restProps} />
+<CalendarPrimitive.Heading class={cn('text-sm font-medium', className)} bind:ref {...restProps} />

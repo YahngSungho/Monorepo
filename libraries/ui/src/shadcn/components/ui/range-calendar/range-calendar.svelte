@@ -16,11 +16,11 @@ let {
 </script>
 
 <RangeCalendarPrimitive.Root
+	class={cn('p-3', className)}
+	{weekdayFormat}
 	bind:ref
 	bind:value
 	bind:placeholder
-	{weekdayFormat}
-	class={cn('p-3', className)}
 	{...restProps}
 >
 	{#snippet children({ months, weekdays })}

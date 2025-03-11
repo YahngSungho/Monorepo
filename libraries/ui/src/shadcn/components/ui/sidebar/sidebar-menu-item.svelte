@@ -14,8 +14,8 @@ let {
 
 <li
 	bind:this={ref}
-	data-sidebar="menu-item"
 	class={cn('group/menu-item relative', className)}
+	data-sidebar="menu-item"
 	{...restProps}
 >
 	{@render children?.()}

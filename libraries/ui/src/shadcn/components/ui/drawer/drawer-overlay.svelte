@@ -7,7 +7,7 @@ let { class: className, ref = $bindable(), ...restProps }: DrawerPrimitive.Overl
 </script>
 
 <DrawerPrimitive.Overlay
-	bind:ref
 	class={cn('fixed inset-0 z-50 bg-black/80', className)}
+	bind:ref
 	{...restProps}
 />

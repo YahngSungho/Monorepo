@@ -11,7 +11,7 @@ let {
 </script>
 
 <RangeCalendarPrimitive.Heading
-	bind:ref
 	class={cn('text-sm font-medium', className)}
+	bind:ref
 	{...restProps}
 />
