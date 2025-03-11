@@ -9,6 +9,7 @@ import js from '@eslint/js'
 import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import microsoftSdl from '@microsoft/eslint-plugin-sdl'
+import * as parser_TS from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import problems from 'eslint-config-problems'
 import turboConfig from 'eslint-config-turbo/flat'
@@ -47,7 +48,6 @@ import globals from 'globals'
 import parser_jsonc from 'jsonc-eslint-parser'
 import * as parser_svelte from 'svelte-eslint-parser'
 import parser_toml from 'toml-eslint-parser'
-import { parser as parser_TS } from 'typescript-eslint'
 import parser_yaml from 'yaml-eslint-parser'
 
 import svelteConfig from './libraries/base/svelte.config.js'
@@ -104,7 +104,7 @@ export default defineFlatConfig([
 	sonarjs_configs.recommended,
 	importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
-	...svelte.configs['flat/recommended'],
+	...svelte.configs.recommended,
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
 	noUseExtendNative.configs.recommended,
@@ -229,12 +229,34 @@ export default defineFlatConfig([
 			'sonarjs/todo-tag': 'off',
 			'sql/format': 'warn',
 			'sql/no-unsafe-query': 'warn',
+			'svelte/valid-compile': [
+				'error',
+				{
+					ignoreWarnings: true,
+				},
+			],
+			'svelte/valid-style-parse': 'error',
 			'svelte/derived-has-same-inputs-outputs': 'warn',
 			'svelte/first-attribute-linebreak': 'off',
+			'svelte/html-self-closing': [
+				'warn',
+				'default', // or "all" or "html" or "none"
+			],
 			'svelte/html-closing-bracket-spacing': 'warn',
+			'svelte/html-quotes': [
+				'warn',
+				{
+					prefer: 'single',
+					dynamic: {
+						quoted: false,
+						avoidInvalidUnquotedInHTML: false,
+					},
+				},
+			],
 			'svelte/indent': 'off',
 			'svelte/infinite-reactive-loop': 'error',
 			'svelte/no-dupe-on-directives': 'warn',
+			'svelte/prefer-destructured-store-props': 'warn',
 			'svelte/no-dupe-use-directives': 'warn',
 			'svelte/no-immutable-reactive-statements': 'warn',
 			'svelte/no-reactive-functions': 'warn',
@@ -242,15 +264,22 @@ export default defineFlatConfig([
 			'svelte/no-reactive-reassign': 'warn',
 			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 			'svelte/no-store-async': 'warn',
-			'svelte/no-target-blank': 'warn',
+			'svelte/no-target-blank': 'error',
+			'svelte/sort-attributes': 'warn',
+			'svelte/no-trailing-spaces': 'warn',
+			'svelte/no-inner-declarations': 'warn',
+			'svelte/shorthand-attribute': 'warn',
+			'svelte/no-navigation-without-base': 'warn',
+			'svelte/shorthand-directive': 'warn',
 			'svelte/no-unused-class-name': [
 				'off',
 				{
 					allowedClassNames: [],
 				},
 			],
-			'svelte/prefer-destructured-store-props': 'warn',
 			'svelte/prefer-style-directive': 'warn',
+			'svelte/html-closing-bracket-new-line': 'warn',
+			'svelte/prefer-class-directive': 'warn',
 			'svelte/require-each-key': 'warn',
 			'svelte/require-optimized-style-attribute': 'warn',
 			'svelte/require-store-reactive-access': 'warn',
@@ -332,6 +361,7 @@ export default defineFlatConfig([
 			'@intlify/svelte/no-raw-text': 'off',
 			'redos/no-vulnerable': 'off',
 			'sonarjs/slow-regex': 'off',
+			'svelte/no-useless-children-snippet': 'off',
 		},
 	},
 	{
@@ -394,7 +424,7 @@ export default defineFlatConfig([
 
 	...jsonc.configs['flat/prettier'],
 	...yml.configs['flat/prettier'],
-	...svelte.configs['flat/prettier'],
+	...svelte.configs.prettier,
 	eslintConfigPrettier,
 
 	{
