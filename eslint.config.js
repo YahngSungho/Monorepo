@@ -50,6 +50,8 @@ import * as parser_svelte from 'svelte-eslint-parser'
 import parser_toml from 'toml-eslint-parser'
 import parser_yaml from 'yaml-eslint-parser'
 
+import svelteConfig from './libraries/base/svelte.config.js'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const flatCompat = new FlatCompat({
@@ -81,7 +83,7 @@ export default defineFlatConfig([
 			},
 			'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx', '.svelte', '.json'],
 			'import-x/parsers': {
-				'@typescript-eslint/parser': ['.ts', '.tsx'],
+				'@typescript-eslint/parser': ['.ts', '.js', '.tsx', '.jsx', '.cjs', '.mjs', '.cts', '.mts'],
 			},
 			'import-x/resolver-next': [
 				createTypeScriptImportResolver({
@@ -103,8 +105,6 @@ export default defineFlatConfig([
 	depend_configs['flat/recommended'],
 	unicorn.configs['flat/recommended'],
 	sonarjs_configs.recommended,
-	importX.flatConfigs.recommended,
-	importX.flatConfigs.typescript,
 	...svelte.configs['flat/recommended'],
 	...turboConfig,
 	perfectionist.configs['recommended-natural'],
@@ -269,6 +269,9 @@ export default defineFlatConfig([
 	{
 		files: ['**/*.js', '**/*.ts', '**/*.mjs', '**/*.cjs'],
 
+		...importX.flatConfigs.recommended,
+		...importX.flatConfigs.typescript,
+
 		languageOptions: {
 			ecmaVersion: 'latest',
 			globals: {
@@ -301,7 +304,7 @@ export default defineFlatConfig([
 			parser: parser_svelte,
 			parserOptions: {
 				ecmaVersion: 'latest',
-				extraFileExtensions: ['.svelte'],
+				extraFileExtensions: ['.svelte', '.svelte.js', '.svelte.ts'],
 				projectService: true,
 				parser: {
 					js: parser_TS,
@@ -310,6 +313,10 @@ export default defineFlatConfig([
 				},
 				requireConfigFile: false,
 				sourceType: 'module',
+				svelteFeatures: {
+					experimentalRunes: true,
+				},
+				svelteConfig,
 			},
 		},
 
@@ -317,6 +324,14 @@ export default defineFlatConfig([
 			'sonarjs/no-unused-vars': 'off',
 			'sonarjs/no-use-of-empty-return-value': 'off',
 		},
+	},
+
+	{
+		// eslint plugin.svelte3.0 이상으로 업데이트 하면은 import x plugin 이 오류를 일으켜서 svelte.js 랑 svelte.ts 파일에서는 적용 안되게 설정 분리
+		files: ['*.svelte', '**/*.svelte'],
+
+		...importX.flatConfigs.recommended,
+		...importX.flatConfigs.typescript,
 	},
 	{
 		files: [
