@@ -22,12 +22,12 @@ foo += ' bar133322222223'
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<Icon icon={'mdi:home'} style={'font-size: 2em;'}>{m.antsy_aloof_barbel_read()}</Icon>
-<Button2 href="/" variant={'info'}>home</Button2>
-<Button2 href="/about" variant={'warning'}>{m.deft_east_mouse_hope()}</Button2>
-<Button1 href="/lorem" variant={'default'}>{m.welcome()}</Button1>
+<Icon icon="mdi:home" style="font-size: 2em;">{m.antsy_aloof_barbel_read()}</Icon>
+<Button2 href="/" variant="info">home</Button2>
+<Button2 href="/about" variant="warning">{m.deft_east_mouse_hope()}</Button2>
+<Button1 href="/lorem" variant="default">{m.welcome()}</Button1>
 
-<div class={'p1 boxed long-text gutter'}>
+<div class="p1 boxed long-text gutter">
 	<h1>Aute aliquip laborum tempor</h1>
 	<blockquote>
 		incididunt officia sit tempor excepteur occaecat. Ipsum cupidatat sunt quis excepteur duis enim
