@@ -142,6 +142,6 @@
 		]
 	},
 	"simple-git-hooks": {
-		"pre-commit": ""
+		"pre-commit": "pnpm install"
 	}
 }
