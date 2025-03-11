@@ -12,6 +12,7 @@
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint **/*.{js,ts,svelte} --ignore-pattern ./src/shadcn/components/**",
+		"eslint-all": "eslint **/*.{js,ts,svelte}",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",
