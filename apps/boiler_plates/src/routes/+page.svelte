@@ -1,10 +1,10 @@
 <script>
-// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import Icon from '@library/ui/icon'
 
+// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '../../../../libraries/paraglide/paraglide-output/messages.js'
 import { localizeHref } from '../../../../libraries/paraglide/paraglide-output/runtime.js'
 import { setLocale } from '../paraglide'
