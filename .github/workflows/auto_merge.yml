@@ -30,6 +30,11 @@ jobs:
     steps:
       - uses: ahmadnassri/action-dependabot-auto-merge@v2
         with:
+          target: patch
+          github-token: ${{ secrets.TOKEN1 }}
+
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
           target: minor
           github-token: ${{ secrets.TOKEN1 }}
 
