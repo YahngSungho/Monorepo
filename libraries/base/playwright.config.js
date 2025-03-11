@@ -48,9 +48,11 @@ export default {
 			}
 		:	{},
 	],
-	outputDir: './playwright-results',
+	outputDir: './playwright-report',
 	reporter:
-		process.env.GITHUB_ACTIONS ? [['junit', { outputFile: 'junit.xml' }], ['github']] : 'html',
+		process.env.GITHUB_ACTIONS ?
+			[['junit', { outputFile: 'junit.xml' }], ['github'], ['html']]
+		:	'html',
 	retries: process.env.CI ? 1 : 0,
 	testDir: 'e2e',
 	timeout: 60_000,

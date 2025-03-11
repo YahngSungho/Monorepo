@@ -26,18 +26,15 @@
 		"playwright-report": {},
 		"stylelint": {},
 		"stylelint-fix": {},
-		"test": {
-			"dependsOn": ["transit"]
-		},
 		"test:e2e": {
 			"dependsOn": ["transit", "build"],
 			"env": ["PLAYWRIGHT_BROWSERS_PATH"],
-			"outputs": ["playwright-results", "playwright-report"],
+			"outputs": ["playwright-report"],
 			"passThroughEnv": ["PLAYWRIGHT_*", "CI"]
 		},
 		"test:unit": {
-			"outputs": ["vitest-results"],
-			"dependsOn": ["transit"]
+			"dependsOn": ["transit"],
+			"outputs": ["vitest-report"]
 		},
 		"transit": {
 			"dependsOn": ["^transit"]
