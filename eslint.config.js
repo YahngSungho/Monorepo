@@ -229,6 +229,7 @@ export default defineFlatConfig([
 			'sonarjs/todo-tag': 'off',
 			'sql/format': 'warn',
 			'sql/no-unsafe-query': 'warn',
+			'svelte/no-useless-mustaches': 'off',
 			'svelte/valid-compile': [
 				'error',
 				{
