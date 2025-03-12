@@ -117,7 +117,7 @@
 		"stylelint-value-no-exposed-custom-properties": "^2.3.1",
 		"stylelint-value-no-unknown-custom-properties": "^6.0.1",
 		"svelte": "^5.19.7",
-		"svelte-check": "^4.1.4",
+		"svelte-check": "^4.1.5",
 		"svelte-eslint-parser": "^1.0.1",
 		"svelte-language-server": "^0.17.10",
 		"syncpack": "^13.0.1",
