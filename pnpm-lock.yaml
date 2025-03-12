@@ -516,8 +516,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0(svelte@5.20.2)(sveltekit-superforms@2.24.0(@sveltejs/kit@2.17.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.2)(vite@6.1.1(@types/node@22.13.5)(jiti@2.4.2)(lightningcss@1.29.1)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0)))(svelte@5.20.2)(vite@6.1.1(@types/node@22.13.5)(jiti@2.4.2)(lightningcss@1.29.1)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0)))(@types/json-schema@7.0.15)(svelte@5.20.2)(typescript@5.8.2))
       lucide-svelte:
-        specifier: ^0.469.0
-        version: 0.469.0(svelte@5.20.2)
+        specifier: ^0.479.0
+        version: 0.479.0(svelte@5.20.2)
       mode-watcher:
         specifier: ^0.5.1
         version: 0.5.1(svelte@5.20.2)
@@ -5310,8 +5310,8 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lucide-svelte@0.469.0:
-    resolution: {integrity: sha512-PMIJ8jrFqVUsXJz4d1yfAQplaGhNOahwwkzbunha8DhpiD73xqX24n8dE1dPpUk3vcrdWVsHc1y/liHHotOnGQ==}
+  lucide-svelte@0.479.0:
+    resolution: {integrity: sha512-epCj6WL86ykxg7oCQTmPEth5e11pwJUzIfG9ROUsWsTP+WPtb3qat+VmAjfx/r4TRW7memTFcbTPvMrZvKthqw==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
 
@@ -13202,7 +13202,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-svelte@0.469.0(svelte@5.20.2):
+  lucide-svelte@0.479.0(svelte@5.20.2):
     dependencies:
       svelte: 5.20.2
 
