@@ -300,8 +300,8 @@ importers:
         specifier: ^0.17.10
         version: 0.17.10(picomatch@4.0.2)
       syncpack:
-        specifier: ^13.0.1
-        version: 13.0.2(typescript@5.7.3)
+        specifier: ^13.0.3
+        version: 13.0.3(typescript@5.7.3)
       toml-eslint-parser:
         specifier: ^0.10.0
         version: 0.10.0
@@ -3697,9 +3697,6 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  effect@3.12.7:
-    resolution: {integrity: sha512-BsDTgSjLbL12g0+vGn5xkOgOVhRSaR3VeHmjcUb0gLvpXACJ9OgmlfeH+/FaAZwM5+omIF3I/j1gC5KJrbK1Aw==}
-
   effect@3.13.10:
     resolution: {integrity: sha512-f2n51BJJ25G9rb/C1ClkgsVFXH6YTkCHmd6ebpu6cAkwQxfhnfbkVWKgkn3nyW9YnC9z4K8bGohRYaZ+HyWtLg==}
 
@@ -4580,8 +4577,8 @@ packages:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
     engines: {node: '>=10'}
 
-  globby@14.0.2:
-    resolution: {integrity: sha512-s3Fq41ZVh7vbbe2PN3nrW7yC7U7MFVc5c98/iTl9c2GawNMKx/J648KQRW6WKkuU8GIbbh2IXfIRQjOZnXcTnw==}
+  globby@14.1.0:
+    resolution: {integrity: sha512-0Ia46fDOaT7k4og1PDW4YbodWWr3scS2vAr2lTbsplOt2WkKp0vQbkI9wKis/T5LV/dqPjO3bpS/z6GTJB82LA==}
     engines: {node: '>=18'}
 
   globjoin@0.1.4:
@@ -5762,8 +5759,8 @@ packages:
     resolution: {integrity: sha512-sHGJy8sOC1YraBywpzQlIKBE4pBbGbiF95U6Auspzyem956E0+FtDtsx1ZxlOJkQCZ1AFXAY/yuvtFYrOxF+Bw==}
     engines: {node: ^16.14.0 || >=18.0.0}
 
-  npm-package-arg@12.0.1:
-    resolution: {integrity: sha512-aDxjFfPV3Liw0WOBWlyZLMBqtbgbg03rmGvHDJa2Ttv7tIz+1oB5qWec4psCDFZcZi9b5XdGkPdQiJxOPzvQRQ==}
+  npm-package-arg@12.0.2:
+    resolution: {integrity: sha512-f1NpFjNI9O4VbKMOlA5QoBq/vSQPORHcTZ2feJpFkTHJ9eQkdlmZEKSjcAhxTGInC7RlEyScT9ui67NaOsjFWA==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
   npm-pick-manifest@9.1.0:
@@ -5938,9 +5935,9 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
-  path-type@5.0.0:
-    resolution: {integrity: sha512-5HviZNaZcfqP95rwpv+1HDgUamezbqdSYTyzjTvwtJSnIH+3vnbmWsItli8OFEndS984VT55M3jduxZbX351gg==}
-    engines: {node: '>=12'}
+  path-type@6.0.0:
+    resolution: {integrity: sha512-Vj7sf++t5pBD637NSfkxpHSMfWaeig5+DKWLhcqIYx6mWQz5hdJTGDVMQiJcw1ZYkhs7AazKDGpRVji1LJCZUQ==}
+    engines: {node: '>=18'}
 
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
@@ -6837,11 +6834,6 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
-  semver@7.7.0:
-    resolution: {integrity: sha512-DrfFnPzblFmNrIZzg5RzHegbiRWg7KMR7btwi2yjHwx06zsUbO5g613sVwEV7FTwmzJu+Io0lJe2GJ3LxqpvBQ==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   semver@7.7.1:
     resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
     engines: {node: '>=10'}
@@ -7445,8 +7437,8 @@ packages:
     resolution: {integrity: sha512-vrozgXDQwYO72vHjUb/HnFbQx1exDjoKzqx23aXEg2a9VIg2TSFZ8FmeZpTjUCFMYw7mpX4BE2SFu8wI7asYsw==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  syncpack@13.0.2:
-    resolution: {integrity: sha512-ubpkqeIep5hvGM3yDb795xF9O4plCZ3+TrMZJ7AkuGd/WDam/BX7WRkOKl07tHkMVUfIo+2u4SIv5t+PKUrJdg==}
+  syncpack@13.0.3:
+    resolution: {integrity: sha512-ZKrdDVmOUBWeaTVaxRnfwtqBJ5rMzMo7Lfdp04wtORwHEcvrq6M+NzCwS4PPIhTucD005wD8wumy90Ucz3lwXg==}
     engines: {node: '>=18.18.0'}
     hasBin: true
 
@@ -7774,6 +7766,10 @@ packages:
 
   unicorn-magic@0.1.0:
     resolution: {integrity: sha512-lRfVq8fE8gz6QMBuDM6a+LO3IAzTi05H6gCVaUpir2E1Rwpo4ZUog45KpNXKC/Mn3Yb9UDuHumeFTo9iV/D9FQ==}
+    engines: {node: '>=18'}
+
+  unicorn-magic@0.3.0:
+    resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
     engines: {node: '>=18'}
 
   unified-engine@11.2.2:
@@ -8699,9 +8695,9 @@ snapshots:
 
   '@dual-bundle/import-meta-resolve@4.1.0': {}
 
-  '@effect/schema@0.75.5(effect@3.12.7)':
+  '@effect/schema@0.75.5(effect@3.13.10)':
     dependencies:
-      effect: 3.12.7
+      effect: 3.13.10
       fast-check: 3.23.2
 
   '@emmetio/abbreviation@2.3.3':
@@ -9513,8 +9509,7 @@ snapshots:
 
   '@sqlite.org/sqlite-wasm@3.48.0-build4': {}
 
-  '@standard-schema/spec@1.0.0':
-    optional: true
+  '@standard-schema/spec@1.0.0': {}
 
   '@storybook/addon-actions@8.6.4(storybook@8.6.4(prettier@3.5.3))':
     dependencies:
@@ -11250,15 +11245,10 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  effect@3.12.7:
-    dependencies:
-      fast-check: 3.23.2
-
   effect@3.13.10:
     dependencies:
       '@standard-schema/spec': 1.0.0
       fast-check: 3.23.2
-    optional: true
 
   electron-to-chromium@1.5.103: {}
 
@@ -12564,14 +12554,14 @@ snapshots:
       merge2: 1.4.1
       slash: 3.0.0
 
-  globby@14.0.2:
+  globby@14.1.0:
     dependencies:
       '@sindresorhus/merge-streams': 2.3.0
       fast-glob: 3.3.3
-      ignore: 5.3.2
-      path-type: 5.0.0
+      ignore: 7.0.3
+      path-type: 6.0.0
       slash: 5.1.0
-      unicorn-magic: 0.1.0
+      unicorn-magic: 0.3.0
 
   globjoin@0.1.4: {}
 
@@ -13949,7 +13939,7 @@ snapshots:
       semver: 7.7.1
       validate-npm-package-name: 5.0.1
 
-  npm-package-arg@12.0.1:
+  npm-package-arg@12.0.2:
     dependencies:
       hosted-git-info: 8.0.2
       proc-log: 5.0.0
@@ -14162,7 +14152,7 @@ snapshots:
 
   path-type@4.0.0: {}
 
-  path-type@5.0.0: {}
+  path-type@6.0.0: {}
 
   pathe@1.1.2: {}
 
@@ -15123,8 +15113,6 @@ snapshots:
 
   semver@6.3.1: {}
 
-  semver@7.7.0: {}
-
   semver@7.7.1: {}
 
   set-cookie-parser@2.7.1: {}
@@ -15916,24 +15904,24 @@ snapshots:
       '@pkgr/core': 0.1.1
       tslib: 2.8.1
 
-  syncpack@13.0.2(typescript@5.7.3):
+  syncpack@13.0.3(typescript@5.7.3):
     dependencies:
-      '@effect/schema': 0.75.5(effect@3.12.7)
+      '@effect/schema': 0.75.5(effect@3.13.10)
       chalk: 5.4.1
       chalk-template: 1.1.0
       commander: 13.1.0
       cosmiconfig: 9.0.0(typescript@5.7.3)
-      effect: 3.12.7
+      effect: 3.13.10
       enquirer: 2.4.1
       fast-check: 3.23.2
-      globby: 14.0.2
+      globby: 14.1.0
       jsonc-parser: 3.3.1
       minimatch: 9.0.5
-      npm-package-arg: 12.0.1
+      npm-package-arg: 12.0.2
       ora: 8.2.0
       prompts: 2.4.2
       read-yaml-file: 2.1.0
-      semver: 7.7.0
+      semver: 7.7.1
       tightrope: 0.2.0
       ts-toolbelt: 9.6.0
     transitivePeerDependencies:
@@ -16258,6 +16246,8 @@ snapshots:
       tiny-inflate: 1.0.3
 
   unicorn-magic@0.1.0: {}
+
+  unicorn-magic@0.3.0: {}
 
   unified-engine@11.2.2:
     dependencies:
