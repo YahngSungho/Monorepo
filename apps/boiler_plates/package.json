@@ -29,7 +29,7 @@
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
 		"luxon": "^3.5.0",
-		"nanoid": "^5.0.9",
+		"nanoid": "^5.1.3",
 		"ramda": "^0.30.1",
 		"ufo": "^1.5.4",
 		"xstate": "^5.19.2",
