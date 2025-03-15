@@ -1,1 +1,1 @@
-pnpm install
+turbo run check --affected
