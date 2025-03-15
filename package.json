@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"all-packages-update": "pnpm up --recursive",
-		"build": "turbo run build --affected",
+		"build": " turbo run build --affected",
 		"clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f package-lock.json + && pnpm store prune && pnpm install",
 		"dev": "turbo run dev --affected",
 		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook --affected",
@@ -22,6 +22,9 @@
 		"test:unit": "turbo run test:unit --affected",
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
 	},
+	"dependencies": {
+		"@sentry/sveltekit": "^9.5.0"
+	},
 	"devDependencies": {
 		"@babel/core": "^7.26.7",
 		"@double-great/stylelint-a11y": "^3.0.3",
@@ -31,15 +34,17 @@
 		"@eslint/markdown": "^6.2.2",
 		"@fast-check/vitest": "^0.1.5",
 		"@inlang/cli": "^2.18.1",
-		"@inlang/paraglide-js": "^2.0.0-beta.28",
+		"@inlang/paraglide-js": "2.0.0-beta.30",
 		"@intlify/eslint-plugin-svelte": "^0.5.0",
 		"@microsoft/eslint-plugin-sdl": "github:microsoft/eslint-plugin-sdl",
 		"@playwright/test": "^1.51.0",
 		"@storybook/addon-svelte-csf": "5.0.0-next.23",
 		"@sveltejs/adapter-cloudflare": "^5.0.2",
+		"@sveltejs/kit": "^2.19.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@types/eslint": "^9.6.1",
 		"@typescript-eslint/parser": "^8.26.1",
+		"dotenv": "^16.4.7",
 		"eslint": "^9.22.0",
 		"eslint-config-prettier": "^10.1.1",
 		"eslint-config-problems": "^9.0.0",
@@ -142,6 +147,7 @@
 		]
 	},
 	"simple-git-hooks": {
-		"pre-commit": "pnpm install"
+		"pre-commit": "pnpm install",
+		"pre-push": "turbo run check --affected"
 	}
 }

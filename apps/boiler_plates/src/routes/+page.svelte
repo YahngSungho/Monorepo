@@ -13,9 +13,9 @@ const fo = 'bigCommandKEnabled'
 
 let foo = $state(`${fo}foifoifo`)
 
-foo += ' bar133322222223'
+foo += ' bar13332222222 3$3$32$3 4$$$'
 
-const eewre = Promise.resolve('test')
+const eewre = Promise.resolve('test 122')
 </script>
 
 <h2 class="bg-primary">{m.welcome()}</h2>
@@ -30,6 +30,12 @@ const eewre = Promise.resolve('test')
 </Button2>
 <Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
 <Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>
+<Button1
+	onclick={() => {
+		throw new Error('test')
+	}}
+	variant="default">{'occurs error'}</Button1
+>
 
 <div class="p1 boxed long-text gutter">
 	<h1>Aute aliquip laborum tempor</h1>

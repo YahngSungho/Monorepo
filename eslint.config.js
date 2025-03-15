@@ -64,7 +64,7 @@ const gitignorePath = path.join(__dirname, '.gitignore')
 export default defineFlatConfig([
 	includeIgnoreFile(gitignorePath),
 	{
-		ignores: ['!.storybook'],
+		ignores: ['!.storybook', 'pnpm-lock.yaml'],
 
 		plugins: {
 			ex: exceptionHandling,
@@ -139,6 +139,9 @@ export default defineFlatConfig([
 
 	{
 		rules: {
+			'promise/always-return': 'off',
+			'unicorn/prefer-top-level-await': 'off',
+			'unicorn/no-zero-fractions': 'off',
 			'perfectionist/sort-exports': 'off',
 			'no-shadow': 'warn',
 			'unicorn/no-empty-file': 'off',

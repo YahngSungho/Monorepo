@@ -5,10 +5,11 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
+		"buildWithDotenv": "dotenv -e ../../.env vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"dev": "vite dev",
+		"dev": "dotenv -e ../../.env vite dev",
 		"eslint": "eslint **/*.{js,ts,svelte}",
 		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
 		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
@@ -19,7 +20,8 @@
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"previewWithDotenv": "dotenv -e ../../.env vite preview"
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
@@ -36,7 +38,6 @@
 		"zod": "^3.24.1"
 	},
 	"devDependencies": {
-		"@sveltejs/kit": "^2.19.0",
 		"daisyui": "5.0.0-beta.1",
 		"tailwindcss": "4.0.0-beta.8",
 		"tailwindcss-animate": "^1.0.7"

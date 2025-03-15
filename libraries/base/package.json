@@ -18,6 +18,7 @@
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
+		"@library/paraglide": "workspace:*",
 		"@qwik.dev/partytown": "^0.11.0",
 		"open-props": "^1.7.12",
 		"sanitize.css": "^13.0.0"
@@ -37,6 +38,9 @@
 	},
 	"keywords": [],
 	"exports": {
+		"./hooks.ts": "./src/hooks.ts",
+		"./hooks.server.ts": "./src/hooks.server.ts",
+		"./hooks.client.ts": "./src/hooks.client.ts",
 		"./baseTest.js": "./src/baseTest.js",
 		"./tsconfig.json": "./tsconfig.json",
 		"./IBMPlexMath.woff2": "./static/fonts/math/IBMPlexMath-Regular.woff2",
@@ -132,7 +136,7 @@
 		"./base.css": "./src/base.css",
 		"./base.js": "./src/base.js",
 		"./baseCSS.css": "./src/baseCSS.css",
-		"./baseLayout": "./src/routes/+layout.svelte",
+		"./baseLayout": "./src/routes/layout.svelte",
 		"./basic.test.js": "./e2e/basic.test.js",
 		"./fontStyle.css": "./src/fontStyle.css",
 		"./forTailwind.css": "./src/forTailwind.css",
