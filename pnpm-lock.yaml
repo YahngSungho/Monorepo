@@ -186,6 +186,9 @@ importers:
       globals:
         specifier: ^16.0.0
         version: 16.0.0
+      husky:
+        specifier: ^9.1.7
+        version: 9.1.7
       i:
         specifier: ^0.3.7
         version: 0.3.7
@@ -5054,6 +5057,11 @@ packages:
 
   human-id@4.1.1:
     resolution: {integrity: sha512-3gKm/gCSUipeLsRYZbbdA1BD83lBoWUkZ7G9VFrhWPAU76KwYo5KR8V28bpoPm/ygy0x5/GCbpRQdY7VLYCoIg==}
+    hasBin: true
+
+  husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
     hasBin: true
 
   i@0.3.7:
@@ -13613,6 +13621,8 @@ snapshots:
       - supports-color
 
   human-id@4.1.1: {}
+
+  husky@9.1.7: {}
 
   i@0.3.7: {}
 
