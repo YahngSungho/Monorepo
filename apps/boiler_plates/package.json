@@ -4,7 +4,8 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"build": "dotenv -e ../../.env vite build",
+		"build": "vite build",
+		"buildWithDotenv": "dotenv -e ../../.env vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
@@ -19,7 +20,8 @@
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
-		"preview": "dotenv -e ../../.env vite preview"
+		"preview": "vite preview",
+		"previewWithDotenv": "dotenv -e ../../.env vite preview"
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",

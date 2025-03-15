@@ -146,6 +146,7 @@
 		]
 	},
 	"simple-git-hooks": {
-		"pre-commit": "pnpm install"
+		"pre-commit": "pnpm install",
+		"pre-push": "turbo run check --affected"
 	}
 }
