@@ -1,6 +1,5 @@
 ---
-description: 
+description: Use the latest XState
 globs: **/*.xstate.*
-alwaysApply: false
 ---
 This is the latest version XState docs: [XState.md](mdc:.cursor/docs/XState.md)
