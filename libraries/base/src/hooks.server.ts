@@ -22,10 +22,13 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 		},
 	)
 
+const isDeployEnv =
+	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'
+
 export const handle = sequence(
 	initCloudflareSentryHandle({
 		dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',
-		tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1,
+		tracesSampleRate: isDeployEnv ? 0.1 : 1,
 	}),
 	sentryHandle(),
 	paraglideHandle,

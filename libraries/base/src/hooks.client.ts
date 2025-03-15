@@ -1,10 +1,13 @@
 import * as Sentry from '@sentry/sveltekit'
 
+const isDeployEnv =
+	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'
+
 Sentry.init({
 	dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',
-	tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1,
+	tracesSampleRate: isDeployEnv ? 0.1 : 1,
 	integrations: [],
-	replaysSessionSampleRate: process.env.NODE_ENV === 'production' ? 0 : 0.1,
+	replaysSessionSampleRate: isDeployEnv ? 0.1 : 0,
 	replaysOnErrorSampleRate: 1.0,
 })
 
