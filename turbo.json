@@ -1,14 +1,5 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-<<<<<<< ours
-	"globalDependencies": ["**/.env.*", "CI", "WATCH", "GITHUB_ACTIONS"],
-	"globalEnv": ["NODE_ENV", "GITHUB_ACTIONS"],
-	"globalPassThroughEnv": ["WATCH"],
-||||||| ancestor
-	"globalDependencies": ["**/.env.*", "CI", "WATCH", "GITHUB_ACTIONS", "SENTRY_AUTH_TOKEN"],
-	"globalEnv": ["NODE_ENV", "GITHUB_ACTIONS", "SENTRY_AUTH_TOKEN"],
-	"globalPassThroughEnv": ["WATCH"],
-=======
 	"globalDependencies": [],
 	"globalEnv": ["NODE_ENV", "CF_PAGES_BRANCH"],
 	"globalPassThroughEnv": [
@@ -20,7 +11,6 @@
 		"**/.env",
 		"**/.env.*"
 	],
->>>>>>> theirs
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],

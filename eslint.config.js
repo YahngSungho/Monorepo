@@ -139,6 +139,8 @@ export default defineFlatConfig([
 
 	{
 		rules: {
+			'promise/always-return': 'off',
+			'unicorn/prefer-top-level-await': 'off',
 			'unicorn/no-zero-fractions': 'off',
 			'perfectionist/sort-exports': 'off',
 			'no-shadow': 'warn',
