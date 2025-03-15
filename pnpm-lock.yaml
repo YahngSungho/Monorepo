@@ -421,6 +421,9 @@ importers:
 
   libraries/base:
     dependencies:
+      '@library/paraglide':
+        specifier: workspace:*
+        version: link:../paraglide
       '@qwik.dev/partytown':
         specifier: ^0.11.0
         version: 0.11.0
