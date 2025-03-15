@@ -11,9 +11,18 @@ import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+let currentEnv
+if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production') {
+	currentEnv = 'DEPLOYED'
+} else if (process.env.GITHUB_ACTIONS) {
+	currentEnv = 'CI'
+} else {
+	currentEnv = process.env.NODE_ENV
+}
+
 const baseConfig = defineConfig({
 	build: {
-		sourcemap: 'hidden', // Sentry 설정에서 sourcemap 파일 지움
+		sourcemap: currentEnv === 'development' ? true : 'hidden', // Sentry 설정에서 sourcemap 파일 지움
 		cssMinify: 'lightningcss',
 	},
 	css: {
@@ -43,9 +52,11 @@ const baseConfig = defineConfig({
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 		reporters: process.env.GITHUB_ACTIONS ? ['junit', 'github-actions'] : 'default',
-		outputFile: './vitest-report',
+		outputFile: './vitest-report/result.xml',
 	},
 })
 
+const defaultConfig = mergeConfig(configDefaults, baseConfig)
+
 // @ts-ignore
-export default mergeConfig(configDefaults, baseConfig)
+export { currentEnv, defaultConfig }

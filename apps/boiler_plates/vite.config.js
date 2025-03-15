@@ -1,5 +1,5 @@
 import { paraglideVitePlugin } from '@inlang/paraglide-js'
-import defaultConfig from '@library/base/vite.config.js'
+import { currentEnv, defaultConfig } from '@library/base/vite.config.js'
 import { sentrySvelteKit } from '@sentry/sveltekit'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig, mergeConfig } from 'vitest/config'
@@ -11,15 +11,6 @@ const projectName = packageJson.name
 	.replace(/^./, (match) => match.toUpperCase())
 	.replaceAll(/_(.)/g, (_, char) => char.toUpperCase())
 	.replaceAll('_', '')
-
-let currentEnv
-if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production') {
-	currentEnv = 'DEPLOYED'
-} else if (process.env.GITHUB_ACTIONS) {
-	currentEnv = 'CI'
-} else {
-	currentEnv = process.env.NODE_ENV
-}
 
 export default mergeConfig(
 	defaultConfig,
