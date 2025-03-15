@@ -1,5 +1,5 @@
 ---
-description: Use the latest version of Svelte
+description: 
 globs: **/*.svelte, *.svelte, **/*.svelte.*
 alwaysApply: false
 ---
