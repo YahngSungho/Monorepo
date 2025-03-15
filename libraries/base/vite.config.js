@@ -60,3 +60,4 @@ const defaultConfig = mergeConfig(configDefaults, baseConfig)
 
 // @ts-ignore
 export { currentEnv, defaultConfig }
+export default defaultConfig
