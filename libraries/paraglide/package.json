@@ -10,10 +10,6 @@
 		"paraglide-compile": "npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./paraglide-output",
 		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
 	},
-	"dependencies": {},
-	"devDependencies": {
-		"@library/base": "workspace:*"
-	},
 	"keywords": [],
 	"exports": {
 		"./messages.js": "./paraglide-output/messages.js",

@@ -493,11 +493,7 @@ importers:
         specifier: workspace:*
         version: link:../base
 
-  libraries/paraglide:
-    devDependencies:
-      '@library/base':
-        specifier: workspace:*
-        version: link:../base
+  libraries/paraglide: {}
 
   libraries/ui:
     dependencies:
