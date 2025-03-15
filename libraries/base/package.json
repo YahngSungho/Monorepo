@@ -37,6 +37,9 @@
 	},
 	"keywords": [],
 	"exports": {
+		"./hooks.ts": "./src/hooks.ts",
+		"./hooks.server.ts": "./src/hooks.server.ts",
+		"./hooks.client.ts": "./src/hooks.client.ts",
 		"./baseTest.js": "./src/baseTest.js",
 		"./tsconfig.json": "./tsconfig.json",
 		"./IBMPlexMath.woff2": "./static/fonts/math/IBMPlexMath-Regular.woff2",
