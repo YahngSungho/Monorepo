@@ -7,11 +7,16 @@ import { defineConfig, mergeConfig } from 'vitest/config'
 import packageJson from './package.json'
 
 const projectName = packageJson.name
+	.slice(5)
+	.replace(/^./, (match) => match.toUpperCase())
+	.replaceAll(/_(.)/g, (_, char) => char.toUpperCase())
+	.replaceAll('_', '')
 
 const currentEnv =
 	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production' ?
-		'REAL_PRODUCTION'
-	:	process.env.NODE_ENV
+		'DEPLOYED'
+	: process.env.GITHUB_ACTIONS ? 'CI'
+	: process.env.NODE_ENV
 
 export default mergeConfig(
 	defaultConfig,
@@ -27,7 +32,7 @@ export default mergeConfig(
 						filesToDeleteAfterUpload: ['./.svelte-kit/**/*.map'],
 					},
 					release: {
-						name: `${projectName}/${currentEnv}/${String(new Date().toISOString())}`,
+						name: `${projectName}@${currentEnv}@${String(new Date().toISOString())}`,
 					},
 				},
 			}),

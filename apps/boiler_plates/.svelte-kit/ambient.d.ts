@@ -469,7 +469,6 @@ declare module '$env/static/private' {
 	export const PUBLIC: string;
 	export const PWD: string;
 	export const SENTRY_AUTH_TOKEN: string;
-	export const SENTRY_LOG_LEVEL: string;
 	export const SENTRY_ORG: string;
 	export const SENTRY_PIPELINE: string;
 	export const SENTRY_PROJECT: string;
@@ -981,7 +980,6 @@ declare module '$env/dynamic/private' {
 		PUBLIC: string;
 		PWD: string;
 		SENTRY_AUTH_TOKEN: string;
-		SENTRY_LOG_LEVEL: string;
 		SENTRY_ORG: string;
 		SENTRY_PIPELINE: string;
 		SENTRY_PROJECT: string;
