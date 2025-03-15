@@ -10,17 +10,11 @@ const myErrorHandler = ({ error, event }) => {
 export const handleError = handleErrorWithSentry(myErrorHandler)
 
 const paraglideHandle: Handle = ({ event, resolve }) =>
-	paraglideMiddleware(
-		event.request,
-		({ locale }) => {
-			return resolve(event, {
-				transformPageChunk: ({ html }) => html.replace('%lang%', locale),
-			})
-		},
-		{
-			disableAsyncLocalStorage: true,
-		},
-	)
+	paraglideMiddleware(event.request, ({ locale }) => {
+		return resolve(event, {
+			transformPageChunk: ({ html }) => html.replace('%lang%', locale),
+		})
+	})
 
 const isDeployEnv =
 	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'

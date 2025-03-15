@@ -12,11 +12,14 @@ const projectName = packageJson.name
 	.replaceAll(/_(.)/g, (_, char) => char.toUpperCase())
 	.replaceAll('_', '')
 
-const currentEnv =
-	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production' ?
-		'DEPLOYED'
-	: process.env.GITHUB_ACTIONS ? 'CI'
-	: process.env.NODE_ENV
+let currentEnv
+if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production') {
+	currentEnv = 'DEPLOYED'
+} else if (process.env.GITHUB_ACTIONS) {
+	currentEnv = 'CI'
+} else {
+	currentEnv = process.env.NODE_ENV
+}
 
 export default mergeConfig(
 	defaultConfig,
@@ -42,6 +45,7 @@ export default mergeConfig(
 				outdir: '../../libraries/paraglide/paraglide-output',
 				project: '../../libraries/paraglide/project.inlang',
 				strategy: ['url', 'cookie', 'baseLocale'],
+				disableAsyncLocalStorage: true,
 			}),
 		],
 	}),

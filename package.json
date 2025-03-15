@@ -34,7 +34,7 @@
 		"@eslint/markdown": "^6.2.2",
 		"@fast-check/vitest": "^0.1.5",
 		"@inlang/cli": "^2.18.1",
-		"@inlang/paraglide-js": "^2.0.0-beta.28",
+		"@inlang/paraglide-js": "2.0.0-beta.30",
 		"@intlify/eslint-plugin-svelte": "^0.5.0",
 		"@microsoft/eslint-plugin-sdl": "github:microsoft/eslint-plugin-sdl",
 		"@playwright/test": "^1.51.0",
