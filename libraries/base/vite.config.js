@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename)
 
 const baseConfig = defineConfig({
 	build: {
+		sourcemap: 'hidden', // Sentry 설정에서 sourcemap 파일 지움
 		cssMinify: 'lightningcss',
 	},
 	css: {

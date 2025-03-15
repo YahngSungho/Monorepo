@@ -139,6 +139,7 @@ export default defineFlatConfig([
 
 	{
 		rules: {
+			'unicorn/no-zero-fractions': 'off',
 			'perfectionist/sort-exports': 'off',
 			'no-shadow': 'warn',
 			'unicorn/no-empty-file': 'off',

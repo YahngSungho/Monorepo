@@ -2,15 +2,14 @@
 import '../base.css'
 
 import { partytownSnippet } from '@qwik.dev/partytown/integration'
+import * as Sentry from '@sentry/sveltekit'
 
 import { init } from '../base'
 
 init()
 
-// @ts-ignore
 const { appName, children } = $props()
-
-;('') // eslint-disable-line no-unused-expressions
+Sentry.setTag('App Name', appName)
 </script>
 
 <svelte:head>

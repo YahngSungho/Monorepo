@@ -159,3 +159,5 @@ non-ambient.d.ts
 **/vitest-results
 **/playwright-results
 paraglide-output
+.qodo
+.sentryclirc
