@@ -1,7 +1,7 @@
 ---
 description: 
-globs: **/*.css, **/*.svelte
+globs: **/*.css,**/*.svelte
 alwaysApply: false
 ---
-[openProps.md](mdc:.cursor/docs/openProps.md)
+Use predefined CSS variables when possible:  [openProps.md](mdc:.cursor/docs/openProps.md)
 [baseVariables.css](mdc:libraries/base/src/baseVariables.css)
