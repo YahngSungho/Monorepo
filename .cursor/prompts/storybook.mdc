@@ -1,6 +1,7 @@
 ---
-description: PLEASE FOLLOW THESE INSTRUCTIONS FAITHFULLY
+description: 
 globs: 
+alwaysApply: false
 ---
 You are specialized in creating Storybook stories for Svelte components.
 
