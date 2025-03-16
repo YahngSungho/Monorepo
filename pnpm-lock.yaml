@@ -11,6 +11,9 @@ importers:
       '@sentry/sveltekit':
         specifier: ^9.5.0
         version: 9.5.0(@cloudflare/workers-types@4.20250214.0)(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.30.0)(@sveltejs/kit@2.19.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.23.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0)))(svelte@5.23.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0)))(svelte@5.23.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0))
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.2
     devDependencies:
       '@babel/core':
         specifier: ^7.26.7
@@ -30,9 +33,15 @@ importers:
       '@eslint/markdown':
         specifier: ^6.3.0
         version: 6.3.0
+      '@fast-check/poisoning':
+        specifier: ^0.2.3
+        version: 0.2.3
       '@fast-check/vitest':
         specifier: ^0.1.5
         version: 0.1.5(vitest@3.0.9(@types/debug@4.1.12)(@types/node@22.13.10)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0))
+      '@fast-check/worker':
+        specifier: ^0.4.2
+        version: 0.4.2
       '@inlang/cli':
         specifier: ^2.18.1
         version: 2.18.1
@@ -183,6 +192,9 @@ importers:
       eslint-plugin-yml:
         specifier: ^1.16.0
         version: 1.17.0(eslint@9.22.0(jiti@2.4.2))
+      fast-check:
+        specifier: ^4.0.0
+        version: 4.0.0
       globals:
         specifier: ^16.0.0
         version: 16.0.0
@@ -345,6 +357,9 @@ importers:
       yaml-eslint-parser:
         specifier: ^1.3.0
         version: 1.3.0
+      zod-fast-check:
+        specifier: ^0.10.1
+        version: 0.10.1(fast-check@4.0.0)(zod@3.24.2)
 
   apps/Swift_Linker:
     dependencies:
@@ -1745,10 +1760,16 @@ packages:
   '@exodus/schemasafe@1.3.0':
     resolution: {integrity: sha512-5Aap/GaRupgNx/feGBwLLTVv8OQFfv3pq2lPRzPg9R+IOBnDgghTGW7l7EuVXOvg5cc/xSAlRW8rBrjIC3Nvqw==}
 
+  '@fast-check/poisoning@0.2.3':
+    resolution: {integrity: sha512-U5YauJJDbvIb84kgN0vuAhGrFtDpu7BGXbfEsfe5UQj2RkvautqnWTjAGu+uHkGatgYBgA1ey691bwDfwjEusA==}
+
   '@fast-check/vitest@0.1.5':
     resolution: {integrity: sha512-TxtdmzHFzHu1zLDc08SjJHH3jxxtf8oO/fZagsH3MXwkLu2bl0CSo6DWq03kNOxzd5uGT+jSUvZqFajy08+9sg==}
     peerDependencies:
       vitest: '>=0.28.1 <1.0.0 || ^1 || ^2 || ^3'
+
+  '@fast-check/worker@0.4.2':
+    resolution: {integrity: sha512-ja1tn/J2kJWGMDU/Mh5qasbKd6ECijdFppRhoEohAzZGkokDjXP4dJNdy5ab65PzlNCgJTycwF75OkWZplMBkg==}
 
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
@@ -4775,6 +4796,10 @@ packages:
     resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
     engines: {node: '>=8.0.0'}
 
+  fast-check@4.0.0:
+    resolution: {integrity: sha512-aXLyLemZ7qhLNn2oq+YpjT2Xed21+i29WGAYuyrGbU4r8oinB3i4XR4e62O3NY6qmm5qHEDoc/7d+gMsri3AfA==}
+    engines: {node: '>=12.17.0'}
+
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -7063,6 +7088,9 @@ packages:
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
+  pure-rand@7.0.1:
+    resolution: {integrity: sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==}
+
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
@@ -8857,6 +8885,12 @@ packages:
   zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
 
+  zod-fast-check@0.10.1:
+    resolution: {integrity: sha512-P+rqsg//CQZSFaG61QNRdnrDn8ARTxoMi4P0/GqRvyBjIiVXQCHB6R8yqkAwQNNSFxMD9cdDoPtOZRBe0rfwNg==}
+    peerDependencies:
+      fast-check: '>2.23.0 <4.0.0'
+      zod: ^3.18.0
+
   zod-to-json-schema@3.24.3:
     resolution: {integrity: sha512-HIAfWdYIt1sssHfYZFCXp4rU1w2r8hVVXYIlmoa0r0gABLs5di3RCqPU5DDROogVz1pAdYBaz7HK5n9pSUNs3A==}
     peerDependencies:
@@ -9720,10 +9754,17 @@ snapshots:
   '@exodus/schemasafe@1.3.0':
     optional: true
 
+  '@fast-check/poisoning@0.2.3': {}
+
   '@fast-check/vitest@0.1.5(vitest@3.0.9(@types/debug@4.1.12)(@types/node@22.13.10)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0))':
     dependencies:
       fast-check: 3.23.2
       vitest: 3.0.9(@types/debug@4.1.12)(@types/node@22.13.10)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0)
+
+  '@fast-check/worker@0.4.2':
+    dependencies:
+      fast-check: 4.0.0
+      pure-rand: 7.0.1
 
   '@fastify/busboy@2.1.1': {}
 
@@ -13424,6 +13465,10 @@ snapshots:
     dependencies:
       pure-rand: 6.1.0
 
+  fast-check@4.0.0:
+    dependencies:
+      pure-rand: 7.0.1
+
   fast-deep-equal@3.1.3: {}
 
   fast-diff@1.3.0: {}
@@ -15943,6 +15988,8 @@ snapshots:
 
   pure-rand@6.1.0: {}
 
+  pure-rand@7.0.1: {}
+
   queue-microtask@1.2.3: {}
 
   quick-lru@4.0.1: {}
@@ -18082,6 +18129,11 @@ snapshots:
       type-fest: 2.19.0
 
   zimmerframe@1.1.2: {}
+
+  zod-fast-check@0.10.1(fast-check@4.0.0)(zod@3.24.2):
+    dependencies:
+      fast-check: 4.0.0
+      zod: 3.24.2
 
   zod-to-json-schema@3.24.3(zod@3.24.2):
     dependencies:
