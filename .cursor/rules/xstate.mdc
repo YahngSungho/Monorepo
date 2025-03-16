@@ -3,4 +3,4 @@ description:
 globs: **/*.xstate.*
 alwaysApply: false
 ---
-This is the latest version XState docs: [XState.md](mdc:.cursor/docs/XState.md)
+Always use the latest version: [XState.md](mdc:.cursor/docs/XState.md)

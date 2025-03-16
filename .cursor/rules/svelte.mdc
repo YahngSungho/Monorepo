@@ -1,7 +1,6 @@
 ---
 description: 
-globs: **/*.svelte, *.svelte, **/*.svelte.*
+globs: **/*.svelte,*.svelte,**/*.svelte.*
 alwaysApply: false
 ---
-This is the latest version Svelte docs:
-[svelte.md](mdc:.cursor/docs/svelte.md)
+[svelte.md](mdc:.cursor/docs/svelte.md) [sveltekit.md](mdc:.cursor/docs/sveltekit.md) [shadcn-svelte.md](mdc:.cursor/docs/shadcn-svelte.md)
