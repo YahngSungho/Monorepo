@@ -10,7 +10,7 @@
 		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook --affected",
 		"fix-mismatches": "pnpm dlx syncpack fix-mismatches",
 		"format": "turbo run format --affected",
-		"format-changed": "pretty-quick --write --ignore-unknown .",
+		"format-all": "prettier . --write --ignore-unknown --ignore-path .prettierignore",
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
 		"lint": "turbo run check eslint stylelint --affected",
 		"lint-fix": "turbo run eslint-fix  --affected && turbo run stylelint-fix --affected && turbo run format --affected",
