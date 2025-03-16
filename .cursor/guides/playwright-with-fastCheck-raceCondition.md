@@ -1,627 +1,910 @@
+# Comprehensive Guide to Property-Based E2E Testing with Playwright and fast-check
 
-# Testing Race Conditions with Playwright and fast-check
+## Introduction to Testing Web Applications with External Dependencies
 
-## Understanding Race Conditions in Web Applications
+Property-based testing combined with end-to-end testing provides a powerful approach to verify web applications, especially those connected to databases, APIs, and other external services. This guide focuses on using Playwright with fast-check to thoroughly test web applications while paying special attention to race conditions that frequently occur in real-world applications.
 
-```javascript
-// example-race-condition.js
-// A typical race condition in a web app
-async function updateUserProfile() {
-  const userData = await fetchUserData(); // Request 1
-  const preferences = await fetchUserPreferences(); // Request 2
-
-  // Race condition: If Request 2 fails but Request 1 succeeds,
-  // we might have an inconsistent state
-  saveUserData({ ...userData, preferences });
-}
-```
-
-## Core Testing Approach
+## Setting Up the Environment
 
 ```javascript
-// race-condition-test.spec.js
-const { test, expect } = require('@playwright/test');
-const fc = require('fast-check');
-
-test('concurrent user actions should maintain data consistency', async ({ page, context }) => {
-  await page.goto('https://your-app.com/dashboard');
-  await page.fill('#username', 'testuser');
-  await page.fill('#password', 'password');
-  await page.click('#login-button');
-
-  // Generate concurrent action sequences
-  await fc.assert(
-    fc.asyncProperty(
-      fc.array(
-        fc.oneof(
-          fc.constant({ type: 'update-profile', data: { name: 'New Name' } }),
-          fc.constant({ type: 'change-password', data: { password: 'newpass123' } }),
-          fc.constant({ type: 'toggle-setting', setting: 'notifications' })
-        ),
-        { minLength: 2, maxLength: 5 }
-      ),
-      async (actions) => {
-        // Execute actions concurrently to trigger potential race conditions
-        await Promise.all(actions.map(async (action) => {
-          const newPage = await context.newPage();
-          await newPage.goto('https://your-app.com/dashboard');
-          // Reuse same session
-
-          switch(action.type) {
-            case 'update-profile':
-              await newPage.fill('#profile-name', action.data.name);
-              await newPage.click('#save-profile');
-              break;
-            case 'change-password':
-              await newPage.fill('#new-password', action.data.password);
-              await newPage.click('#save-password');
-              break;
-            case 'toggle-setting':
-              await newPage.click(`#setting-${action.setting}`);
-              break;
-          }
-
-          await newPage.close();
-        }));
-
-        // Verify system is in a consistent state
-        await page.reload();
-        const hasError = await page.isVisible('.error-banner');
-        const dataConsistency = await page.evaluate(() => {
-          // Custom logic to check data consistency
-          return window.appState.isConsistent();
-        });
-
-        return !hasError && dataConsistency;
-      }
-    ),
-    { numRuns: 15 }
-  );
-});
-```
-
-## Advanced Race Condition Testing Strategies
-
-### 1. Controlled Request Timing
-
-```javascript
-// controlled-timing.spec.js
-const { test, expect } = require('@playwright/test');
-const fc = require('fast-check');
-
-test('should handle delayed API responses correctly', async ({ page }) => {
-  // Mock API to control timing
-  await page.route('**/api/user', async (route) => {
-    // Delay response randomly
-    await new Promise(r => setTimeout(r, Math.random() * 1000));
-    return route.continue();
-  });
-
-  await page.route('**/api/settings', async (route) => {
-    // Different delay pattern
-    await new Promise(r => setTimeout(r, Math.random() * 2000));
-    return route.continue();
-  });
-
-  await fc.assert(
-    fc.asyncProperty(
-      fc.array(
-        fc.record({
-          action: fc.oneof(
-            fc.constant('updateProfile'),
-            fc.constant('updateSettings')
-          ),
-          timing: fc.integer(0, 500) // Additional timing variations
-        }),
-        { minLength: 2, maxLength: 4 }
-      ),
-      async (operations) => {
-        await page.goto('https://your-app.com');
-
-        // Execute operations with controlled timing
-        await Promise.all(operations.map(async op => {
-          await new Promise(r => setTimeout(r, op.timing));
-
-          if (op.action === 'updateProfile') {
-            await page.click('#profile-tab');
-            await page.fill('#name', 'Test User');
-            await page.click('#save-profile');
-          } else {
-            await page.click('#settings-tab');
-            await page.click('#toggle-notifications');
-            await page.click('#save-settings');
-          }
-        }));
-
-        // Verify application state is consistent
-        await page.reload();
-        const errorPresent = await page.isVisible('.error-message');
-        return !errorPresent;
-      }
-    ),
-    { numRuns: 10 }
-  );
-});
-```
-
-### 2. Network Condition Simulation
-
-```javascript
-// network-conditions.spec.js
-const { test, expect } = require('@playwright/test');
-const fc = require('fast-check');
-
-test('application handles poor network conditions without race conditions', async ({ context }) => {
-  await fc.assert(
-    fc.asyncProperty(
-      fc.record({
-        // Parameters that affect network conditions
-        latency: fc.integer(100, 1000),
-        timeout: fc.boolean(), // Whether some requests should timeout
-        requestOrder: fc.array(fc.integer(1, 5), { minLength: 3, maxLength: 5 })
-          .map(arr => [...new Set(arr)]) // Unique request ordering
-      }),
-      async (networkParams) => {
-        const page = await context.newPage();
-
-        // Setup network interception with provided parameters
-        await page.route('**/*', async (route) => {
-          const url = route.request().url();
-
-          // Apply simulated network conditions
-          if (url.includes('/api/')) {
-            // Apply latency based on request order
-            const requestType = getRequestType(url);
-            const requestIndex = networkParams.requestOrder.indexOf(requestType);
-            const delay = networkParams.latency * (requestIndex + 1);
-
-            if (networkParams.timeout && Math.random() < 0.3) {
-              // Simulate timeout for some requests
-              await new Promise(r => setTimeout(r, 5000));
-              return route.abort('timedout');
-            }
-
-            await new Promise(r => setTimeout(r, delay));
-          }
-
-          return route.continue();
-        });
-
-        await page.goto('https://your-app.com/dashboard');
-
-        // Perform multiple concurrent actions
-        const promises = [
-          page.click('#refresh-data'),
-          page.click('#load-settings'),
-          page.click('#update-profile')
-        ];
-
-        await Promise.all(promises);
-
-        // Check for error states or inconsistencies
-        const hasError = await page.isVisible('.error-state');
-        const dataIsConsistent = await checkDataConsistency(page);
-
-        await page.close();
-        return !hasError && dataIsConsistent;
-      }
-    ),
-    {
-      numRuns: 15,
-      timeout: 60000 // Extended timeout for network simulations
-    }
-  );
-});
+// test-setup.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
 
 /**
- * Helper to categorize request types
- * @param {string} url - Request URL
- * @returns {number} Request type identifier
+ * Helper function to create property-based tests with Playwright
+ *
+ * @param {string} title - Test title
+ * @param {fc.Arbitrary<any>} arbitrary - The arbitrary for generating test inputs
+ * @param {function} testFn - The test function that takes the generated input and page object
  */
-function getRequestType(url) {
-  if (url.includes('/api/user')) return 1;
-  if (url.includes('/api/settings')) return 2;
-  if (url.includes('/api/notifications')) return 3;
-  if (url.includes('/api/data')) return 4;
-  return 5; // other
+function propertyTest(title, arbitrary, testFn) {
+	test(title, async ({ page }) => {
+		await fc.assert(
+			fc.asyncProperty(arbitrary, async (input) => {
+				return await testFn(page, input)
+			}),
+			{ numRuns: 10 }, // Adjust based on test complexity
+		)
+	})
 }
 
-/**
- * Check if application data is in a consistent state
- * @param {import('@playwright/test').Page} page
- * @returns {Promise<boolean>}
- */
-async function checkDataConsistency(page) {
-  return page.evaluate(() => {
-    // Application-specific logic to verify data consistency
-    const userData = window.appState?.userData;
-    const settings = window.appState?.settings;
+module.exports = { propertyTest }
+```
 
-    if (!userData || !settings) return false;
+## Race Condition Testing for Database Operations
 
-    // Check for specific inconsistencies that would indicate race conditions
-    return userData.settingsVersion === settings.version;
-  });
+When testing web applications connected to databases, race conditions can occur when multiple operations are performed concurrently. Here's how to test these scenarios:
+
+```javascript
+// database-race-test.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
+
+test('should handle concurrent database operations correctly', async ({ page }) => {
+	// Go to the application page
+	await page.goto('https://your-app.com/data-management')
+
+	await fc.assert(
+		fc.asyncProperty(
+			fc.scheduler(),
+			fc.array(
+				fc.record({
+					action: fc.constantFrom('create', 'read', 'update', 'delete'),
+					id: fc.integer(1, 100),
+					data: fc.string(5, 20),
+				}),
+				{ minLength: 2, maxLength: 10 },
+			),
+			async (s, operations) => {
+				// Setup tracking for operations
+				const completedOperations = []
+
+				// Track concurrent operations to database
+				let activeOperations = 0
+				let maxConcurrentOperations = 0
+
+				// Schedule all database operations
+				const operationPromises = operations.map((op) => {
+					return s.schedule(
+						// The promise that will be scheduled
+						(async () => {
+							activeOperations++
+							maxConcurrentOperations = Math.max(maxConcurrentOperations, activeOperations)
+
+							try {
+								// Perform the database operation via UI
+								switch (op.action) {
+									case 'create':
+										await page.click('#create-button')
+										await page.fill('#data-input', op.data)
+										await page.click('#submit')
+										break
+									case 'read':
+										await page.click(`#read-item-${op.id}`)
+										break
+									case 'update':
+										await page.click(`#edit-item-${op.id}`)
+										await page.fill('#data-input', op.data)
+										await page.click('#update')
+										break
+									case 'delete':
+										await page.click(`#delete-item-${op.id}`)
+										await page.click('#confirm-delete')
+										break
+								}
+
+								// Check for error states
+								const errorVisible = await page.isVisible('.error-message')
+								if (errorVisible) {
+									const errorText = await page.textContent('.error-message')
+									completedOperations.push({ ...op, status: 'error', message: errorText })
+								} else {
+									completedOperations.push({ ...op, status: 'success' })
+								}
+
+								return { op, success: !errorVisible }
+							} finally {
+								activeOperations--
+							}
+						})(),
+						`${op.action}-${op.id}`, // Label for better debugging
+					)
+				})
+
+				// Wait for all scheduled operations to complete
+				await s.waitAll()
+
+				// Verify application state
+				const dataItems = await page.$$eval('.data-item', (items) =>
+					items.map((i) => ({
+						id: i.getAttribute('data-id'),
+						content: i.textContent,
+					})),
+				)
+
+				// Verify business rules hold true
+				// For example: no duplicate IDs for created items
+				const createdIds = completedOperations
+					.filter((op) => op.action === 'create' && op.status === 'success')
+					.map((op) => op.id)
+
+				const uniqueIds = new Set(createdIds)
+
+				// Return true if the property holds
+				return (
+					uniqueIds.size === createdIds.length &&
+					// Check if any consistency violations occurred
+					!completedOperations.some(
+						(op) => op.status === 'error' && op.message.includes('consistency violation'),
+					)
+				)
+			},
+		),
+		{ numRuns: 5 }, // Lower number due to complexity
+	)
+})
+```
+
+## Handling Network Race Conditions
+
+Network requests often introduce race conditions. Here's how to test them:
+
+```javascript
+// network-race-test.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
+
+test('should handle concurrent API requests correctly', async ({ page, context }) => {
+	// Mock API responses to control timing
+	await context.route('**/api/**', (route) => {
+		// We'll let fast-check scheduler determine when these resolve
+		return new Promise((resolve) => {
+			globalThis.pendingRoutes = globalThis.pendingRoutes || []
+			globalThis.pendingRoutes.push({ route, resolve })
+		})
+	})
+
+	await page.goto('https://your-app.com/dashboard')
+
+	await fc.assert(
+		fc.asyncProperty(
+			fc.scheduler(),
+			fc.array(
+				fc.record({
+					endpoint: fc.constantFrom('/api/users', '/api/products', '/api/orders'),
+					action: fc.constantFrom('GET', 'POST', 'PUT', 'DELETE'),
+					payload: fc.record({
+						id: fc.nat(1000),
+						data: fc.string(1, 50),
+					}),
+				}),
+				{ minLength: 3, maxLength: 15 },
+			),
+			async (s, apiCalls) => {
+				// Reset tracking
+				globalThis.pendingRoutes = []
+				const completedRequests = []
+
+				// Function to trigger API calls from the UI
+				const triggerApiCall = async (call) => {
+					switch (call.action) {
+						case 'GET':
+							await page.click(`#fetch-${call.endpoint.split('/').pop()}`)
+							break
+						case 'POST':
+							await page.click(`#create-${call.endpoint.split('/').pop()}`)
+							await page.fill('#id-field', String(call.payload.id))
+							await page.fill('#data-field', call.payload.data)
+							await page.click('#submit')
+							break
+						// Handle other methods similarly
+					}
+					return { call, timestamp: Date.now() }
+				}
+
+				// Schedule API triggers
+				const scheduledCalls = apiCalls.map((call) => {
+					return s.schedule(
+						(async () => {
+							const result = await triggerApiCall(call)
+							completedRequests.push(result)
+							return result
+						})(),
+						`${call.action}-${call.endpoint}-${call.payload.id}`,
+					)
+				})
+
+				// Create a scheduled function for resolving routes
+				const resolveRoute = s.scheduleFunction((index) => {
+					if (globalThis.pendingRoutes[index]) {
+						const { route, resolve } = globalThis.pendingRoutes[index]
+						route.fulfill({
+							status: 200,
+							body: JSON.stringify({ success: true, timestamp: Date.now() }),
+						})
+						resolve()
+					}
+					return Promise.resolve(true)
+				})
+
+				// Schedule resolutions in a potentially different order
+				const pendingRoutesAtStart = [...globalThis.pendingRoutes]
+				for (let i = 0; i < pendingRoutesAtStart.length; i++) {
+					s.schedule(resolveRoute(i), `resolve-route-${i}`)
+				}
+
+				// Wait for all operations to complete
+				await s.waitAll()
+
+				// Check UI for consistency
+				const notifications = await page.$$eval('.notification', (nodes) =>
+					nodes.map((n) => ({
+						type: n.getAttribute('data-type'),
+						message: n.textContent,
+					})),
+				)
+
+				const errors = notifications.filter((n) => n.type === 'error')
+
+				// Check if the application state is consistent
+				const dataConsistency = await page.evaluate(() => {
+					// Custom logic to check if the application state is consistent
+					// This will depend on your application
+					return window.appState && window.appState.isConsistent()
+				})
+
+				return errors.length === 0 && dataConsistency
+			},
+		),
+		{ numRuns: 3 }, // Complex test, so fewer runs
+	)
+})
+```
+
+## Testing Login Race Conditions
+
+Authentication flows are particularly vulnerable to race conditions:
+
+```javascript
+// auth-race-test.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
+
+test('should handle concurrent login/logout operations correctly', async ({ browser }) => {
+	await fc.assert(
+		fc.asyncProperty(
+			fc.scheduler(),
+			fc.array(
+				fc.record({
+					action: fc.constantFrom('login', 'logout', 'check-profile'),
+					username: fc.emailAddress(),
+					password: fc.string(8, 20),
+				}),
+				{ minLength: 5, maxLength: 15 },
+			),
+			async (s, authOperations) => {
+				// Create a context for the test
+				const context = await browser.newContext()
+				let page = await context.newPage()
+				await page.goto('https://your-app.com/')
+
+				// To track the expected state
+				let isLoggedIn = false
+				let currentUser = null
+				const authHistory = []
+
+				// Schedule all authentication operations
+				const operations = authOperations.map((op) => {
+					return s.schedule(
+						(async () => {
+							try {
+								switch (op.action) {
+									case 'login':
+										await page.goto('https://your-app.com/login')
+										await page.fill('#username', op.username)
+										await page.fill('#password', op.password)
+										await page.click('#login-button')
+										// Record expected state change
+										isLoggedIn = true
+										currentUser = op.username
+										break
+
+									case 'logout':
+										await page.goto('https://your-app.com/dashboard')
+										await page.click('#logout-button')
+										// Record expected state change
+										isLoggedIn = false
+										currentUser = null
+										break
+
+									case 'check-profile':
+										await page.goto('https://your-app.com/profile')
+										break
+								}
+
+								// Record what happened
+								const actualLoggedIn = await page.isVisible('#user-profile')
+								const actualUsername =
+									actualLoggedIn ? await page.textContent('#username-display') : null
+
+								authHistory.push({
+									operation: op,
+									expectedLoggedIn: isLoggedIn,
+									expectedUser: currentUser,
+									actualLoggedIn,
+									actualUsername,
+									timestamp: Date.now(),
+								})
+
+								return true
+							} catch (error) {
+								authHistory.push({
+									operation: op,
+									error: error.message,
+									timestamp: Date.now(),
+								})
+								return false
+							}
+						})(),
+						`${op.action}-${op.username}`,
+					)
+				})
+
+				// Wait for all operations to complete
+				await s.waitAll()
+
+				// Close the context
+				await context.close()
+
+				// Check for inconsistencies
+				const inconsistencies = authHistory.filter(
+					(entry) =>
+						!entry.error &&
+						(entry.expectedLoggedIn !== entry.actualLoggedIn ||
+							(entry.expectedLoggedIn && entry.expectedUser !== entry.actualUsername)),
+				)
+
+				// The property holds if there are no inconsistencies
+				return inconsistencies.length === 0
+			},
+		),
+		{ numRuns: 5 },
+	)
+})
+```
+
+## Testing Form Submission with Database Validation
+
+Forms with backend validation are common race condition sources:
+
+```javascript
+// form-validation-test.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
+
+test('form submissions maintain data integrity even with race conditions', async ({ page }) => {
+	await page.goto('https://your-app.com/registration')
+
+	await fc.assert(
+		fc.asyncProperty(
+			fc.scheduler(),
+			fc.array(
+				fc.record({
+					email: fc.emailAddress(),
+					username: fc.string(5, 15).filter((s) => /^[a-zA-Z0-9_]+$/.test(s)),
+					password: fc.string(8, 20),
+				}),
+				{ minLength: 2, maxLength: 5 },
+			),
+			async (s, registrations) => {
+				// Track registered users for validation
+				const registeredUsers = new Set()
+				const registrationResults = []
+
+				// Schedule multiple registration submissions
+				const submissions = registrations.map((userData) => {
+					return s.schedule(
+						(async () => {
+							await page.goto('https://your-app.com/registration')
+
+							// Fill out form
+							await page.fill('#email', userData.email)
+							await page.fill('#username', userData.username)
+							await page.fill('#password', userData.password)
+							await page.fill('#confirm-password', userData.password)
+
+							// Submit form
+							await page.click('#register-button')
+
+							// Wait for response
+							await page.waitForResponse((resp) => resp.url().includes('/api/register'))
+
+							// Check for success or error messages
+							const success = await page.isVisible('.success-message')
+							const error = await page.isVisible('.error-message')
+							const errorMessage = error ? await page.textContent('.error-message') : null
+
+							const result = {
+								userData,
+								success,
+								error,
+								errorMessage,
+								timestamp: Date.now(),
+							}
+
+							registrationResults.push(result)
+
+							if (success) {
+								registeredUsers.add(userData.username)
+								registeredUsers.add(userData.email)
+							}
+
+							return result
+						})(),
+						`register-${userData.username}`,
+					)
+				})
+
+				// Wait for all registrations to complete
+				await s.waitAll()
+
+				// Verify database consistency by checking the users list
+				await page.goto('https://your-app.com/admin/users')
+
+				// Mock login as admin if needed
+				await page.fill('#admin-username', 'admin')
+				await page.fill('#admin-password', 'admin123')
+				await page.click('#admin-login')
+
+				// Get all registered users from the UI
+				const listedUsers = await page.$$eval('.user-item', (items) =>
+					items.map((item) => ({
+						username: item.querySelector('.username').textContent,
+						email: item.querySelector('.email').textContent,
+					})),
+				)
+
+				// Check for duplicated emails or usernames
+				const emails = listedUsers.map((u) => u.email)
+				const usernames = listedUsers.map((u) => u.username)
+
+				const uniqueEmails = new Set(emails)
+				const uniqueUsernames = new Set(usernames)
+
+				// Check successes match our expectations
+				const successfulRegistrations = registrationResults.filter((r) => r.success)
+
+				// The property holds if:
+				// 1. No duplicate emails or usernames in the database
+				// 2. All successful registrations are in the database
+				// 3. Failed registrations with "already exists" messages are consistent
+				return (
+					uniqueEmails.size === emails.length &&
+					uniqueUsernames.size === usernames.length &&
+					successfulRegistrations.every((r) =>
+						listedUsers.some(
+							(u) => u.email === r.userData.email && u.username === r.userData.username,
+						),
+					) &&
+					registrationResults
+						.filter((r) => r.error && r.errorMessage.includes('already exists'))
+						.every(
+							(r) =>
+								registeredUsers.has(r.userData.email) || registeredUsers.has(r.userData.username),
+						)
+				)
+			},
+		),
+		{ numRuns: 3 }, // Reduce runs due to complexity
+	)
+})
+```
+
+## Advanced Techniques for Race Condition Testing
+
+### Using the scheduler report for debugging
+
+```javascript
+// scheduler-report-test.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
+
+test('should analyze scheduler execution order for debugging', async ({ page }) => {
+	await page.goto('https://your-app.com/cart')
+
+	try {
+		await fc.assert(
+			fc.asyncProperty(
+				fc.scheduler(),
+				fc.array(
+					fc.record({
+						action: fc.constantFrom('add', 'remove', 'update', 'checkout'),
+						productId: fc.integer(1, 100),
+						quantity: fc.integer(1, 10),
+					}),
+					{ minLength: 5, maxLength: 10 },
+				),
+				async (s, cartOperations) => {
+					// Schedule cart operations
+					const operations = cartOperations.map((op) => {
+						return s.schedule(
+							(async () => {
+								// Perform cart operation
+								switch (op.action) {
+									case 'add':
+										await page.click(`#add-to-cart-${op.productId}`)
+										await page.fill('#quantity', String(op.quantity))
+										await page.click('#confirm-add')
+										break
+									// Handle other cases
+								}
+								return true
+							})(),
+							`${op.action}-product-${op.productId}-qty-${op.quantity}`,
+						)
+					})
+
+					// Wait for all operations
+					await s.waitAll()
+
+					// Verify cart state
+					const cartItems = await page.$$eval('.cart-item', (items) =>
+						items.map((i) => ({
+							id: i.getAttribute('data-product-id'),
+							quantity: Number(i.querySelector('.quantity').textContent),
+						})),
+					)
+
+					// For this example, we'll just force a failure to see the report
+					return cartItems.length === 0 // This will fail if any items were added
+				},
+			),
+			{ numRuns: 1 },
+		)
+	} catch (error) {
+		if (error.counterexample && error.counterexample[0]) {
+			// Get the scheduler from the counterexample
+			const scheduler = error.counterexample[0]
+
+			// Get the report of how tasks were executed
+			const report = scheduler.report()
+
+			console.log('Scheduler execution report:')
+			report.forEach((item, index) => {
+				console.log(`${index + 1}. Label: ${item.label}`)
+				console.log(`   Status: ${item.status}`)
+				console.log(`   Task started at: ${new Date(item.startTime).toISOString()}`)
+				if (item.endTime) {
+					console.log(`   Task ended at: ${new Date(item.endTime).toISOString()}`)
+					console.log(`   Duration: ${item.endTime - item.startTime}ms`)
+				}
+				if (item.output) {
+					console.log(`   Output: ${item.output}`)
+				}
+				if (item.error) {
+					console.log(`   Error: ${item.error}`)
+				}
+			})
+
+			// Take a screenshot for visual debugging
+			await page.screenshot({ path: 'race-condition-failure.png' })
+		}
+
+		throw error
+	}
+})
+```
+
+### Combining with Model-Based Testing
+
+```javascript
+// model-based-race-test.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
+
+// Define a model for the shopping cart
+class CartModel {
+	constructor() {
+		this.items = new Map()
+		this.isCheckoutComplete = false
+	}
+
+	addItem(productId, quantity) {
+		const currentQty = this.items.get(productId) || 0
+		this.items.set(productId, currentQty + quantity)
+		return this
+	}
+
+	removeItem(productId) {
+		this.items.delete(productId)
+		return this
+	}
+
+	updateQuantity(productId, quantity) {
+		if (quantity <= 0) {
+			this.items.delete(productId)
+		} else {
+			this.items.set(productId, quantity)
+		}
+		return this
+	}
+
+	checkout() {
+		this.isCheckoutComplete = true
+		this.items.clear()
+		return this
+	}
+
+	getTotal() {
+		let total = 0
+		for (const [id, qty] of this.items.entries()) {
+			// In a real model, you'd have price information
+			total += qty
+		}
+		return total
+	}
+}
+
+test('cart model matches real cart even with race conditions', async ({ page }) => {
+	await page.goto('https://your-app.com/shop')
+
+	await fc.assert(
+		fc.asyncProperty(
+			fc.scheduler(),
+			fc.array(
+				fc.record({
+					action: fc.constantFrom('add', 'remove', 'update', 'checkout'),
+					productId: fc.integer(1, 20),
+					quantity: fc.integer(1, 5),
+				}),
+				{ minLength: 5, maxLength: 15 },
+			),
+			async (s, operations) => {
+				// Create a model of the expected state
+				const model = new CartModel()
+
+				// Create scheduled function for cart operations
+				const performCartOperation = s.scheduleFunction(async (op) => {
+					// Update the model first
+					switch (op.action) {
+						case 'add':
+							model.addItem(op.productId, op.quantity)
+							break
+						case 'remove':
+							model.removeItem(op.productId)
+							break
+						case 'update':
+							model.updateQuantity(op.productId, op.quantity)
+							break
+						case 'checkout':
+							model.checkout()
+							break
+					}
+
+					// Then perform the UI operation
+					switch (op.action) {
+						case 'add':
+							await page.goto(`https://your-app.com/product/${op.productId}`)
+							await page.fill('#quantity', String(op.quantity))
+							await page.click('#add-to-cart')
+							break
+						case 'remove':
+							await page.goto('https://your-app.com/cart')
+							await page.click(`#remove-item-${op.productId}`)
+							break
+						case 'update':
+							await page.goto('https://your-app.com/cart')
+							await page.fill(`#quantity-${op.productId}`, String(op.quantity))
+							await page.click(`#update-${op.productId}`)
+							break
+						case 'checkout':
+							await page.goto('https://your-app.com/cart')
+							await page.click('#checkout')
+							await page.fill('#card-number', '4111111111111111')
+							await page.fill('#expiry', '12/25')
+							await page.fill('#cvv', '123')
+							await page.click('#complete-purchase')
+							break
+					}
+
+					return { op, timestamp: Date.now() }
+				})
+
+				// Schedule all operations
+				for (const op of operations) {
+					await performCartOperation(op)
+				}
+
+				// Wait for all operations to finish
+				await s.waitAll()
+
+				// Navigate to cart to verify final state
+				await page.goto('https://your-app.com/cart')
+
+				// Extract the actual cart state from the UI
+				const cartItems = await page.$$eval('.cart-item', (items) =>
+					items.map((i) => ({
+						id: Number(i.getAttribute('data-product-id')),
+						quantity: Number(i.querySelector('.quantity').textContent),
+					})),
+				)
+
+				const isCheckoutComplete = await page.isVisible('.order-confirmation')
+
+				// Compare model with actual state
+				if (model.isCheckoutComplete) {
+					// If checkout completed in model, cart should be empty and confirmation visible
+					return cartItems.length === 0 && isCheckoutComplete
+				} else {
+					// Otherwise, cart items should match model
+					if (cartItems.length !== model.items.size) return false
+
+					for (const item of cartItems) {
+						if (model.items.get(item.id) !== item.quantity) return false
+					}
+
+					return true
+				}
+			},
+		),
+		{ numRuns: 3 },
+	)
+})
+```
+
+## Best Practices for E2E Property-Based Testing with External Dependencies
+
+1. **Mock External Services**: Use `context.route()` to mock responses from external APIs and databases for more controlled testing.
+
+2. **Control Time**: Combine fast-check with time manipulation to test time-dependent operations:
+
+```javascript
+test('time-dependent operations remain consistent', async ({ page, context }) => {
+	// Override Date.now and setTimeout in the browser
+	await page.addInitScript(() => {
+		let currentTime = Date.now()
+
+		// Override time functions
+		window.__originalDateNow = Date.now
+		window.__originalSetTimeout = window.setTimeout
+
+		Date.now = () => currentTime
+
+		window.advanceTimeBy = (ms) => {
+			currentTime += ms
+		}
+
+		// Track setTimeout calls
+		window.__timeouts = []
+		window.setTimeout = (fn, delay, ...args) => {
+			const id = window.__originalSetTimeout(() => {}, 999999999)
+			window.__timeouts.push({ id, fn, scheduledTime: currentTime + delay, args })
+			return id
+		}
+
+		// Function to trigger pending timeouts
+		window.runPendingTimeouts = () => {
+			const now = currentTime
+			const due = window.__timeouts.filter((t) => t.scheduledTime <= now)
+			window.__timeouts = window.__timeouts.filter((t) => t.scheduledTime > now)
+
+			due.forEach(({ fn, args }) => {
+				fn(...args)
+			})
+
+			return due.length
+		}
+	})
+
+	// Rest of your test using scheduler and window.advanceTimeBy
+})
+```
+
+3. **Use Realistic Data Types**: Generate realistic test data for your domain:
+
+```javascript
+// Create arbitraries for your domain
+const userArbitrary = fc.record({
+	id: fc.uuid(),
+	name: fc.string(1, 50),
+	email: fc.emailAddress(),
+	role: fc.constantFrom('admin', 'user', 'guest'),
+	lastLogin: fc.date({ min: new Date('2020-01-01'), max: new Date() }),
+})
+
+const productArbitrary = fc.record({
+	id: fc.uuid(),
+	name: fc.string(1, 100),
+	price: fc.float(0.1, 9999.99),
+	inStock: fc.boolean(),
+	categories: fc.array(fc.string(1, 20), { minLength: 1, maxLength: 5 }),
+})
+```
+
+4. **Isolate Test Cases**: Use separate browser contexts for each property test:
+
+```javascript
+test('isolated property tests', async ({ browser }) => {
+	await fc.assert(
+		fc.asyncProperty(
+			fc.scheduler(),
+			fc.array(userArbitrary, { minLength: 2, maxLength: 5 }),
+			async (s, users) => {
+				// Create a fresh context for this test iteration
+				const context = await browser.newContext()
+				const page = await context.newPage()
+
+				try {
+					// Your test logic here
+
+					return true // Property holds
+				} finally {
+					// Clean up
+					await context.close()
+				}
+			},
+		),
+		{ numRuns: 5 },
+	)
+})
+```
+
+5. **Handle Database State**: For tests that require database interaction, build reset capabilities:
+
+```javascript
+// Reset the database between test runs
+beforeEach(async ({ request }) => {
+	await request.post('https://your-app.com/api/test/reset-db', {
+		headers: {
+			Authorization: `Bearer ${testApiKey}`,
+		},
+	})
+})
+```
+
+6. **Focus on Critical Paths**: Target the most important user journeys for property testing:
+
+```javascript
+// Define a model of your critical paths
+const criticalUserJourneys = fc.oneof(
+	fc.constant('signup-to-purchase'),
+	fc.constant('browse-add-to-cart-checkout'),
+	fc.constant('search-compare-purchase'),
+	fc.constant('return-refund-flow'),
+)
+
+test('critical user journeys maintain integrity under load', async ({ page }) => {
+	await fc.assert(
+		fc.asyncProperty(
+			fc.scheduler(),
+			criticalUserJourneys,
+			fc.array(userArbitrary, { minLength: 1, maxLength: 3 }),
+			async (s, journey, users) => {
+				// Test the specified journey with the given users
+				// ...
+			},
+		),
+	)
+})
+```
+
+7. **Shrink Test Cases**: When a failure is found, fast-check will automatically shrink to find a minimal failing case. Record this minimal case for regression testing:
+
+```javascript
+try {
+	await fc.assert(/* your property */)
+} catch (error) {
+	if (error.counterexample) {
+		// Save counterexample to a file for future testing
+		fs.writeFileSync('regression-case.json', JSON.stringify(error.counterexample))
+	}
+	throw error
 }
 ```
-
-### 3. Database State Verification
-
-```javascript
-// database-state.spec.js
-const { test, expect } = require('@playwright/test');
-const fc = require('fast-check');
-const { connectToTestDB } = require('./test-helpers');
-
-test('concurrent operations maintain database consistency', async ({ browser }) => {
-  const db = await connectToTestDB();
-
-  await fc.assert(
-    fc.asyncProperty(
-      fc.array(
-        fc.record({
-          operation: fc.oneof(
-            fc.constant('create'),
-            fc.constant('update'),
-            fc.constant('delete')
-          ),
-          entity: fc.oneof(
-            fc.constant('user'),
-            fc.constant('profile'),
-            fc.constant('settings')
-          ),
-          timing: fc.integer(0, 300)
-        }),
-        { minLength: 2, maxLength: 6 }
-      ),
-      async (operations) => {
-        // Reset test data
-        await db.resetTestData();
-        const testUser = await db.createTestUser();
-
-        // Create multiple browser contexts with shared session
-        const contexts = await Promise.all(
-          Array.from({ length: operations.length }, () =>
-            browser.newContext({ storageState: testUser.storageState })
-          )
-        );
-
-        try {
-          // Execute operations concurrently from different contexts
-          await Promise.all(operations.map(async (op, index) => {
-            const page = await contexts[index].newPage();
-            await page.goto('https://your-app.com/dashboard');
-
-            // Add timing offset to increase race condition probability
-            await page.waitForTimeout(op.timing);
-
-            switch (`${op.operation}-${op.entity}`) {
-              case 'create-user':
-                await page.click('#add-user');
-                await page.fill('#user-name', `User${Date.now()}`);
-                await page.click('#save-user');
-                break;
-              case 'update-profile':
-                await page.click('#edit-profile');
-                await page.fill('#bio', `Updated ${Date.now()}`);
-                await page.click('#save-profile');
-                break;
-              case 'delete-settings':
-                await page.click('#settings');
-                await page.click('#delete-setting');
-                await page.click('#confirm-delete');
-                break;
-              // Add other operation combinations
-            }
-
-            await page.waitForTimeout(100); // Brief wait
-            await page.close();
-          }));
-
-          // Verify database consistency
-          const dbState = await db.checkConsistency(testUser.id);
-          return dbState.consistent;
-        } finally {
-          // Cleanup
-          await Promise.all(contexts.map(context => context.close()));
-        }
-      }
-    ),
-    {
-      numRuns: 10,
-      timeout: 60000
-    }
-  );
-});
-```
-
-### 4. Generating Event Sequences with Timing Controls
-
-```javascript
-// event-sequence.spec.js
-const { test, expect } = require('@playwright/test');
-const fc = require('fast-check');
-
-test('UI remains consistent during rapid user interactions', async ({ page }) => {
-  await page.goto('https://your-app.com/app');
-  await page.waitForLoadState('networkidle');
-
-  // Define possible UI actions
-  const actions = {
-    clickButton: async (selector) => page.click(selector),
-    typeText: async (selector, text) => page.fill(selector, text),
-    selectOption: async (selector, value) => page.selectOption(selector, value),
-    hover: async (selector) => page.hover(selector)
-  };
-
-  // Action generators
-  const actionGen = fc.oneof(
-    fc.record({
-      type: fc.constant('clickButton'),
-      selector: fc.oneof(
-        fc.constant('#save-button'),
-        fc.constant('#cancel-button'),
-        fc.constant('#add-item')
-      ),
-      delay: fc.integer(0, 200)
-    }),
-    fc.record({
-      type: fc.constant('typeText'),
-      selector: fc.constant('#search-input'),
-      text: fc.string(1, 10),
-      delay: fc.integer(0, 100)
-    }),
-    fc.record({
-      type: fc.constant('selectOption'),
-      selector: fc.constant('#filter-dropdown'),
-      value: fc.oneof(
-        fc.constant('option1'),
-        fc.constant('option2')
-      ),
-      delay: fc.integer(0, 150)
-    })
-  );
-
-  // Generate action sequences with timing information
-  const actionSequenceGen = fc.array(actionGen, { minLength: 3, maxLength: 10 });
-
-  await fc.assert(
-    fc.asyncProperty(
-      actionSequenceGen,
-      fc.boolean(), // Whether to execute in parallel or sequence
-      async (actionSequence, executeInParallel) => {
-        // Reset application state
-        await page.reload();
-        await page.waitForLoadState('networkidle');
-
-        if (executeInParallel) {
-          // Execute actions with specified delays to create race conditions
-          await Promise.all(actionSequence.map(async (action) => {
-            // Add delay to create different timing patterns
-            await page.waitForTimeout(action.delay);
-
-            // Execute the action
-            switch (action.type) {
-              case 'clickButton':
-                await actions.clickButton(action.selector);
-                break;
-              case 'typeText':
-                await actions.typeText(action.selector, action.text);
-                break;
-              case 'selectOption':
-                await actions.selectOption(action.selector, action.value);
-                break;
-            }
-          }));
-        } else {
-          // Sequential execution for comparison
-          for (const action of actionSequence) {
-            await page.waitForTimeout(action.delay);
-
-            switch (action.type) {
-              case 'clickButton':
-                await actions.clickButton(action.selector);
-                break;
-              case 'typeText':
-                await actions.typeText(action.selector, action.text);
-                break;
-              case 'selectOption':
-                await actions.selectOption(action.selector, action.value);
-                break;
-            }
-          }
-        }
-
-        // Verify UI consistency
-        const hasErrorState = await page.isVisible('.error-indicator');
-        const hasInconsistentUI = await page.isVisible('.loading-indicator.stuck');
-        const applicationResponsive = await page.isEnabled('#main-action-button');
-
-        return !hasErrorState && !hasInconsistentUI && applicationResponsive;
-      }
-    ),
-    {
-      numRuns: 20,
-      timeout: 120000
-    }
-  );
-});
-```
-
-### 5. Model-Based Testing for Race Condition Detection
-
-```javascript
-// model-based-race.spec.js
-const { test, expect } = require('@playwright/test');
-const fc = require('fast-check');
-
-test('application state matches model under concurrent operations', async ({ context }) => {
-  // Create a model of expected application behavior
-  class AppStateModel {
-    constructor() {
-      this.items = [];
-      this.userSettings = { theme: 'light', notifications: true };
-      this.isLoading = false;
-    }
-
-    addItem(item) {
-      this.items.push(item);
-      return this;
-    }
-
-    removeItem(id) {
-      this.items = this.items.filter(item => item.id !== id);
-      return this;
-    }
-
-    updateSetting(key, value) {
-      this.userSettings[key] = value;
-      return this;
-    }
-
-    // Used to compare with actual application state
-    toJSON() {
-      return {
-        itemCount: this.items.length,
-        settings: this.userSettings
-      };
-    }
-  }
-
-  // Setup test with model
-  const model = new AppStateModel();
-
-  // Generate concurrent operations
-  const operationGen = fc.oneof(
-    fc.record({
-      type: fc.constant('addItem'),
-      item: fc.record({
-        id: fc.string(),
-        name: fc.string(1, 10)
-      })
-    }),
-    fc.record({
-      type: fc.constant('removeItem'),
-      id: fc.string()
-    }),
-    fc.record({
-      type: fc.constant('updateSetting'),
-      key: fc.oneof(fc.constant('theme'), fc.constant('notifications')),
-      value: fc.oneof(fc.constant('dark'), fc.constant('light'), fc.boolean())
-    })
-  );
-
-  await fc.assert(
-    fc.asyncProperty(
-      fc.array(operationGen, { minLength: 2, maxLength: 6 }),
-      fc.array(fc.integer(10, 500), { minLength: 2, maxLength: 6 }), // Timing variations
-      async (operations, timings) => {
-        const page = await context.newPage();
-        await page.goto('https://your-app.com/app');
-
-        // Apply operations to model
-        operations.forEach(op => {
-          switch (op.type) {
-            case 'addItem':
-              model.addItem(op.item);
-              break;
-            case 'removeItem':
-              model.removeItem(op.id);
-              break;
-            case 'updateSetting':
-              model.updateSetting(op.key, op.value);
-              break;
-          }
-        });
-
-        // Execute operations with varied timing to trigger race conditions
-        await Promise.all(operations.map(async (op, index) => {
-          const timing = timings[index % timings.length];
-          await new Promise(r => setTimeout(r, timing));
-
-          switch (op.type) {
-            case 'addItem':
-              await page.fill('#new-item-name', op.item.name);
-              await page.fill('#new-item-id', op.item.id);
-              await page.click('#add-item-button');
-              break;
-            case 'removeItem':
-              await page.fill('#item-search', op.id);
-              await page.click('#search-button');
-              await page.click('#delete-item');
-              break;
-            case 'updateSetting':
-              await page.click('#settings-tab');
-              if (typeof op.value === 'boolean') {
-                const currentState = await page.isChecked(`#setting-${op.key}`);
-                if (currentState !== op.value) {
-                  await page.click(`#setting-${op.key}`);
-                }
-              } else {
-                await page.selectOption(`#setting-${op.key}`, op.value);
-              }
-              await page.click('#save-settings');
-              break;
-          }
-        }));
-
-        // Wait for operations to complete
-        await page.waitForTimeout(1000);
-
-        // Compare application state with model
-        const appState = await page.evaluate(() => ({
-          itemCount: document.querySelectorAll('.item-entry').length,
-          settings: window.appSettings
-        }));
-
-        const modelState = model.toJSON();
-
-        // Check if model and application state match
-        const statesMatch =
-          appState.itemCount === modelState.itemCount &&
-          JSON.stringify(appState.settings) === JSON.stringify(modelState.settings);
-
-        if (!statesMatch) {
-          console.log('Model state:', modelState);
-          console.log('App state:', appState);
-        }
-
-        await page.close();
-        return statesMatch;
-      }
-    ),
-    {
-      numRuns: 15,
-      timeout: 120000
-    }
-  );
-});
-```
-
-## Best Practices for Race Condition Testing
-
-1. **Start with Known Race Conditions**: Target specific areas where race conditions have been observed or are expected
-
-2. **Vary Execution Timing**: Use different delays and execution orders to increase the chance of finding race conditions
-
-3. **Run Tests Multiple Times**: Race conditions may only appear under specific timing circumstances
-
-4. **Use Multiple Browser Contexts**: To simulate multiple users accessing the same resources
-
-5. **Network Throttling**: Simulate variable network conditions to exaggerate timing issues
-
-6. **Focus on Shared Resources**: Database records, localStorage, sessionStorage, and global state
-
-7. **Monitor State Consistency**: Track the application state throughout tests to detect inconsistencies
-
-8. **Combine with Load Testing**: High load scenarios can reveal race conditions that don't appear under normal conditions
-
-9. **Isolate Test Environments**: Ensure tests don't interfere with each other when running in parallel
-
-10. **Log Detailed Timing Information**: When a race condition is detected, log precise timing to aid debugging
 
 ## Conclusion
 
-Testing for race conditions requires a combination of controlled chaos and systematic verification. By using fast-check to generate diverse test scenarios and Playwright to execute concurrent operations with precise timing control, you can dramatically increase the likelihood of uncovering race conditions before they affect production users.
+Property-based testing with Playwright and fast-check provides a powerful approach to finding edge cases and race conditions in web applications connected to external services. By focusing on properties that should hold true regardless of timing or input order, you can build more robust applications that handle real-world conditions effectively.
 
-Remember that race condition tests may be flaky by nature - successful tests don't guarantee the absence of race conditions, but they can significantly reduce their likelihood in production environments.
+Remember that while property-based tests are valuable, they should complement rather than replace traditional example-based tests. Use property testing to probe the boundaries of your system and discover edge cases, then add specific example tests to verify fixes for any issues discovered.
