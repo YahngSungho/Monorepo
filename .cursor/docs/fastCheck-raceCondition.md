@@ -312,9 +312,17 @@ scheduleTimersIfNeeded();
 }
 ```
 
-# Your first race condition test
+## Model based testing and race conditions
 
-## Code under test​
+Model-based testing features can be combined with race condition detection through the use of `scheduledModelRun`. By utilizing this function, the execution of the model will also be processed through the scheduler.
+
+Do not depend on other scheduled tasks in the model
+
+Neither `check` nor `run` should rely on the completion of other scheduled tasks to fulfill themselves. But they can still trigger new scheduled tasks as long as they don't wait for them to resolve.
+
+## Your first race condition test
+
+### Code under test​
 
 For the next few pages, we will focus on a function called `queue`. Its purpose is to wrap an asynchronous function and queue subsequent calls to it in two ways:
 
@@ -323,7 +331,7 @@ For the next few pages, we will focus on a function called `queue`. Its purpose
 
 In the context of this tutorial you'll never have to edit `queue`. The function will be provided to you.
 
-## Understand current test​
+### Understand current test​
 
 Fortunately, we don't have to start from scratch. The function already has a test in place that ensures queries will consistently resolve in the correct order. The test appears rather simple and currently passes.
 
@@ -350,13 +358,13 @@ const call = jest.fn().mockImplementation((v)=>Promise.resolve(v));
 
 We can also see that we assess the order of results by confirming that the values pushed into `seenAnswers` are properly ordered. It's worth noting that `seenAnswers` does not represent the same thing as `await Promise.all([queued(1), queued(2)])`. This alternative notation does not evaluate the order in which the resolutions are received, but rather only confirms that each query resolves to its expected value.
 
-## Towards next test​
+### Towards next test​
 
 The test above has some limitations. Namely, the promises and their `.then()` callbacks happen to resolve in the correct order only because they were instantiated in the correct order and they did not `await` to yield control back to the JavaScript event loop (because we use `Promise.resolve()`). In other words, we are just testing that the JavaScript event loop is queueing and processing promises in the correct order, which is hopefully already true!
 
 In order to address this limitation, our updated test should ensure that promises resolve later rather than instantly.
 
-## First glance at schedulers​
+### First glance at schedulers​
 
 When adding fast-check into a race condition test, the recommended initial step is to update the test code as follows:
 
@@ -379,13 +387,13 @@ Which wait is the best?
 
 For this first iteration, both of them will be ok, but we will see later that `waitFor` is probably a better fit in that specific example.
 
-# Multiple batches of calls
+## Multiple batches of calls
 
-## Zoom on previous test​
+### Zoom on previous test​
 
 ---
 
-### The choice of integer​
+#### The choice of integer​
 
 In the previous part, we suggested to run the test against an arbitrary number of calls to `call`. The option we recommend and implemented is based on `integer` arbitrary. We use it to give us the number of calls we should do.
 
@@ -401,7 +409,7 @@ await s.waitFor(Promise.all(pendingQueries));
 
 We based our choice on the fact that the `queue` helper is designed to accept any input, regardless of its value. Thus, there was no particular reason to generate values for the inputs themselves, as they are never consumed by the logic of `queue`. Using integers from 0 onwards allows for simpler debugging, as opposed to arbitrary inputs like 123 or 45.
 
-### The array version​
+#### The array version​
 
 Here is how we could have written the array alternative:
 
@@ -416,7 +424,7 @@ await s.waitFor(Promise.all(pendingQueries));
 
 ```
 
-## Towards next test​
+### Towards next test​
 
 ---
 
@@ -450,9 +458,57 @@ Non-batched alternative?
 
 We will discuss about a non-batched alternative in the next page. The batch option we suggest here has the benefit to make you use the `scheduleSequence` helper coming with fast-check.
 
-# Wrapping up
+## The missing part
 
-## Zoom on previous test​
+### Zoom on previous test
+
+As mentioned earlier, the decision to use sequences was largely driven by the desire to cover most of the scheduler's APIs in this tutorial. However, there are alternative ways of achieving our goals.
+
+One of the issues we wanted to address was the need to trigger queries asynchronously. Although this functionality is not yet built into fast-check, we could use the technique outlined in scheduling a function call. If we were to take this approach, we would update:
+
+```
+for(let id =0; id !== numCalls;++id){
+  expectedAnswers.push(id);
+  pendingQueries.push(queued(id).then((v)=> seenAnswers.push(v)));
+}
+
+```
+
+into:
+
+```
+for(let id =0; id !== numCalls;++id){
+  pendingQueries.push(
+    s
+.schedule(Promise.resolve(`Fire the call for ${id}`))
+.then(()=>{
+        expectedAnswers.push(id);
+returnqueued(id);
+})
+.then((v)=> seenAnswers.push(v)),
+);
+}
+
+```
+
+Comparison
+
+Contrary to the batch approach, the ordering of ids will not be ensured. For that reason, we decided to include it in the reports by scheduling a resolved promise with a value featuring this id.
+
+### Towards next test
+
+Our tests may be incomplete because we are not taking into account all aspects of the specification:
+
+> Its purpose is to wrap an asynchronous function and queue subsequent calls to it in two ways:
+>
+> - Promises returned by the function will resolve in order, with the first call resolving before the second one, the second one resolving before the third one, and so on.
+> - Concurrent calls are not allowed, meaning that a call will always wait for the previously started one to finish before being fired.
+
+Although we thoroughly tested the first point, we may have overlooked the second point in the specification. Therefore, in the final section of this tutorial, we will focus on validating the second requirement.
+
+## Wrapping up
+
+### Zoom on previous test​
 
 ---
 
@@ -493,13 +549,13 @@ expect(concurrentQueriesDetected).toBe(false);
 
 The above change ensures that we can detect whenever `scheduledCall` is called before the previous calls to it have resolved.
 
-## Towards next test​
+### Towards next test​
 
 ---
 
 Although we have covered the majority of the `queue` algorithm, there are always subtle aspects that we may want to address. In this section, we will provide you with some ideas to ensure that your implementation of `queue` is perfect. All the suggested changes have been implemented in the CodeSandbox playground below, allowing you to see how they can be achieved. The tests associated with this section have been named `*.pnext.v*` and are stacked on top of each other, with the final test incorporating all the suggestions described in this section.
 
-### Synchronous calls​
+#### Synchronous calls​
 
 While we previously rejected the approach in the first part of the tutorial, we could have considered that calls are expected to be fired synchronously. To achieve this, we can rely on `waitAll` and eliminate any code responsible to wait for the batch to be executed or for promises to resolve.
 
@@ -584,7 +640,7 @@ if(callId === currentCallId){
 
 This last iteration, implemented in `src/queue.v4.js`, represents the most advanced solution we will show in that section. However, if you examine the CodeSandbox playground\](#have-fun), you'll notice that even this implementation misses some cases and can be fixed.
 
-### Support exceptions​
+#### Support exceptions​
 
 When working with asynchronous code, it is common to encounter situations where code can potentially throw errors. As this scenario may occur in production code, it is essential to test our helper against such cases as well.
 

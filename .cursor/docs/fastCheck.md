@@ -203,8 +203,6 @@ fc.maxSafeInteger();
 
 ```
 
-Available since 1.11.0.
-
 ## maxSafeNat​
 
 ---
@@ -224,8 +222,6 @@ fc.maxSafeNat();
 // Examples of generated values: 8974418498592146, 7152466311278303, 7682568104547082, 5480146126393191, 6062166945524051...
 
 ```
-
-Available since 1.11.0.
 
 ## float​
 
@@ -281,8 +277,6 @@ fc.noBias(fc.integer({min:0,max:(1<<24)-1}).map((v)=> v /(1<<24)));
 // Examples of generated values: 0.06896239519119263, 0.5898661017417908, 0.7715556621551514, 0.4010099768638611, 0.8638045787811279...
 
 ```
-
-Available since 0.0.6.
 
 ## double​
 
@@ -614,8 +608,6 @@ fc.uniqueArray(fc.constantFrom(-1,-0,0,1,Number.NaN),{comparator:(a, b)=>Math.ab
 
 ```
 
-Available since 2.23.0.
-
 ## sparseArray​
 
 ---
@@ -746,8 +738,6 @@ fc.compareBooleanFunc();
 
 ```
 
-Available since 1.6.0.
-
 ## compareFunc​
 
 ---
@@ -803,8 +793,6 @@ fc.compareFunc();
 // - ...
 
 ```
-
-Available since 1.6.0.
 
 ## func​
 
@@ -945,8 +933,6 @@ fc.dictionary(fc.string(), fc.string(),{noNullPrototype:true});
 
 ```
 
-Available since 1.0.0.
-
 ## record​
 
 ---
@@ -1045,8 +1031,6 @@ age: fc.nat(99),
 // - ...
 
 ```
-
-Available since 0.0.12.
 
 ## object​
 
@@ -1154,8 +1138,6 @@ maxDepth:1000,
 // - ...
 
 ```
-
-Available since 0.0.7.
 
 ## anything​
 
@@ -1303,8 +1285,6 @@ fc.int8Array({min:0,minLength:1});
 
 ```
 
-Available since 2.9.0.
-
 ## uint8Array​
 
 ---
@@ -1345,8 +1325,6 @@ fc.uint8Array({max:42,minLength:1});
 // - ...
 
 ```
-
-Available since 2.9.0.
 
 ## uint8ClampedArray​
 
@@ -1389,8 +1367,6 @@ fc.uint8ClampedArray({max:42,minLength:1});
 
 ```
 
-Available since 2.9.0.
-
 ## int16Array​
 
 ---
@@ -1431,8 +1407,6 @@ fc.int16Array({min:0,minLength:1});
 // - ...
 
 ```
-
-Available since 2.9.0.
 
 ## uint16Array​
 
@@ -1475,8 +1449,6 @@ fc.uint16Array({max:42,minLength:1});
 
 ```
 
-Available since 2.9.0.
-
 ## int32Array​
 
 ---
@@ -1518,8 +1490,6 @@ fc.int32Array({min:0,minLength:1});
 
 ```
 
-Available since 2.9.0.
-
 ## uint32Array​
 
 ---
@@ -1560,8 +1530,6 @@ fc.uint32Array({max:42,minLength:1});
 // - ...
 
 ```
-
-Available since 2.9.0.
 
 ## float32Array​
 
@@ -1607,8 +1575,6 @@ fc.float32Array({minLength:1});
 
 ```
 
-Available since 2.9.0.
-
 ## float64Array​
 
 ---
@@ -1653,8 +1619,6 @@ fc.float64Array({minLength:1});
 
 ```
 
-Available since 2.9.0.
-
 ## bigInt64Array​
 
 ---
@@ -1694,8 +1658,6 @@ fc.bigInt64Array({min:0n,minLength:1});
 // - ...
 
 ```
-
-Available since 3.0.0.
 
 ## bigUint64Array​
 
@@ -1777,8 +1739,6 @@ fc.option(fc.string(),{nil:undefined});
 // Examples of such recursive structures are available with fc.letrec.
 
 ```
-
-Available since 0.0.6.
 
 ## oneof​
 
@@ -1863,8 +1823,6 @@ fc.clone(fc.nat(),3);
 
 ```
 
-Available since 2.5.0.
-
 ## noBias​
 
 ---
@@ -1888,8 +1846,6 @@ fc.noBias(fc.nat());
 // Examples of generated values: 394798768, 980149687, 1298483622, 1164017931, 646759550...
 
 ```
-
-Available since 3.20.0.
 
 ## noShrink​
 
@@ -1919,8 +1875,6 @@ fc.noShrink(fc.nat());
 
 ```
 
-Available since 3.20.0.
-
 ## limitShrink​
 
 ---
@@ -1949,8 +1903,6 @@ fc.limitShrink(fc.nat(),3);
 // Examples of generated values: 487640477, 1460784921, 1601237202, 1623804274, 5...
 
 ```
-
-Available since 3.20.0.
 
 ## .filter​
 
@@ -2093,8 +2045,6 @@ fc.constantFrom(1,'string',{});
 
 ```
 
-Available since 0.0.12.
-
 ## mapToConstant​
 
 ---
@@ -2121,8 +2071,6 @@ fc.mapToConstant(
 // Examples of generated values: "6", "8", "d", "9", "r"...
 
 ```
-
-Available since 1.14.0.
 
 ## subarray​
 
@@ -2156,8 +2104,6 @@ fc.subarray([1,42,48,69,75,92],{minLength:2,maxLength:3});
 // Examples of generated values: [48,75], [48,69,92], [42,75], [69,92], [1,42]...
 
 ```
-
-Available since 1.5.0.
 
 ## shuffledSubarray​
 
@@ -2383,8 +2329,6 @@ return`${lower} to ${next(lower)-1} items`;
 
 ```
 
-Available since 1.16.0.
-
 ## memo​
 
 ---
@@ -2470,8 +2414,6 @@ fc.stringMatching(
 // Examples of generated values: "226.4.220.240", "206.2.148.227", "247.32.128.41", "165.252.212.135", "18.225.51.96"...
 
 ```
-
-Available since 3.10.0.
 
 ## mixedCase​
 
@@ -2614,8 +2556,6 @@ fc.json({depthSize:'medium'});
 
 ```
 
-Available since 0.0.7.
-
 ## jsonValue​
 
 ---
@@ -2727,8 +2667,6 @@ return`${lower} to ${next(lower)-1} items`;
 
 ```
 
-Available since 2.20.0.
-
 ## lorem​
 
 ---
@@ -2795,8 +2733,6 @@ fc.ulid();
 
 ```
 
-Available since 3.11.0.
-
 ## uuid​
 
 UUID values including versions 1 to 5 and going up to 15 when asked to.
@@ -2859,8 +2795,6 @@ fc.ipV4();
 
 ```
 
-Available since 1.14.0.
-
 ## ipV4Extended​
 
 IP v4 addresses including all the formats supported by WhatWG standard (for instance: 0x6f.9).
@@ -2876,8 +2810,6 @@ fc.ipV4Extended();
 // Examples of generated values: "0x7.249.0xfe.0x79", "07.0x7b.1.0x6", "0xa5.0265.22.27", "0xd4.0xfd.15664", "0x1ed7207"...
 
 ```
-
-Available since 1.17.0.
 
 ## ipV6​
 
@@ -2900,8 +2832,6 @@ fc.ipV6();
 // - ...
 
 ```
-
-Available since 1.14.0.
 
 ## domain​
 
@@ -2937,8 +2867,6 @@ fc.domain({size:'+1'});
 // - ...
 
 ```
-
-Available since 1.14.0.
 
 ## webAuthority​
 
@@ -2983,8 +2911,6 @@ withPort:true,
 
 ```
 
-Available since 1.14.0.
-
 ## webFragments​
 
 Fragments to build an URI.
@@ -3007,8 +2933,6 @@ fc.webFragments();
 // Examples of generated values: "", "kg%00au@b%08cg", "a", "?x%F1%80%9F%8Cti.k", "%F0%A1%85%AFR%F1%8F%B1%86rQ"...
 
 ```
-
-Available since 1.14.0.
 
 ## webPath​
 
@@ -3041,8 +2965,6 @@ fc.webPath({size:'+1'});
 
 ```
 
-Available since 3.3.0.
-
 ## webQueryParameters​
 
 Query parameters to build an URI.
@@ -3066,8 +2988,6 @@ fc.webQueryParameters();
 
 ```
 
-Available since 1.14.0.
-
 ## webSegment​
 
 Web URL path segment.
@@ -3088,8 +3008,6 @@ fc.webSegment();
 // Examples of generated values: "*lej@(", "", "+Y", "1FBtTF1GX", "V:%F2%96%A2%A1$PV4Yq"...
 
 ```
-
-Available since 1.14.0.
 
 ## webUrl​
 
@@ -3141,8 +3059,6 @@ fc.webUrl({size:'-1'});
 // Examples of generated values: "https://pi.ca", "https://j.3ch.hy/", "https://5c.f.lbi/", "https://px.hw", "https://dcf.qr"...
 
 ```
-
-Available since 1.14.0.
 
 ## emailAddress​
 
@@ -3203,8 +3119,6 @@ fc.falsy({withBigInt:true});
 
 ```
 
-Available since 1.26.0.
-
 ## context​
 
 ---
@@ -3225,8 +3139,6 @@ fc.context();
 // It can be called as follow: ctx.log('My log')
 
 ```
-
-Available since 1.8.0.
 
 ## commands​
 
@@ -3280,8 +3192,6 @@ real:/* new system instance */
 
 ```
 
-Available since .
-
 ## gen​
 
 ---
@@ -3319,8 +3229,6 @@ fc.gen();
 // If you do need to create a dedicated builder, define it outside of `fc.assert` and use it in your predicate as `g(myBuilder, ...parametersForMyBuilder)`.
 
 ```
-
-Available since 3.8.0.
 
 ## scheduler​
 
@@ -3544,8 +3452,6 @@ Its signature is:
 functionsample<Ts>(generator: IRawProperty<Ts,boolean>| Arbitrary<Ts>, params?:number| Parameters<Ts>): Ts[];
 
 ```
-
-Available since 0.0.6.
 
 ## statistics​
 
