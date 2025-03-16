@@ -16,6 +16,7 @@ for (const entry of Object.values(manifest.entries)) {
 		const consoleErrors = []
 		page.on('console', (msg) => {
 			if (msg.type() === 'error') {
+				// eslint-disable-next-line functional/immutable-data
 				consoleErrors.push(msg.text())
 			}
 		})
@@ -24,6 +25,7 @@ for (const entry of Object.values(manifest.entries)) {
 		const failedRequests = []
 		page.on('response', (response) => {
 			if (response.status() >= 400) {
+				// eslint-disable-next-line functional/immutable-data
 				failedRequests.push(`${response.url()} (${response.status()})`)
 			}
 		})
@@ -32,10 +34,8 @@ for (const entry of Object.values(manifest.entries)) {
 		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
 
 		// 에러 체크
-		if (consoleErrors.length > 0 || failedRequests.length > 0) {
-			// eslint-disable-next-line unicorn/error-message
-			throw new Error([...consoleErrors, ...failedRequests].join('\n'))
-		}
+		expect(consoleErrors, '콘솔 에러가 없어야 합니다').toHaveLength(0)
+		expect(failedRequests, '네트워크 오류가 없어야 합니다').toHaveLength(0)
 
 		const dateNow = new Date()
 		test.info().attach(`Time:${title}`, {
