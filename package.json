@@ -130,7 +130,7 @@
 		"syncpack": "^13.0.3",
 		"toml-eslint-parser": "^0.10.0",
 		"ts-node": "^10.9.2",
-		"turbo": "^2.4.2",
+		"turbo": "^2.4.4",
 		"typescript": "^5.7.3",
 		"vite": "^6.2.2",
 		"vite-node": "^3.0.9",
