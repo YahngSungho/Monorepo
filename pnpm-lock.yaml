@@ -37,8 +37,8 @@ importers:
         specifier: ^2.18.1
         version: 2.18.1
       '@inlang/paraglide-js':
-        specifier: 2.0.0-beta.30
-        version: 2.0.0-beta.30
+        specifier: 2.0.2
+        version: 2.0.2
       '@intlify/eslint-plugin-svelte':
         specifier: ^0.5.0
         version: 0.5.0(eslint@9.22.0(jiti@2.4.2))(svelte@5.23.2)
@@ -1918,16 +1918,15 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@inlang/paraglide-js@2.0.0-beta.30':
-    resolution: {integrity: sha512-Pr0JZBxexZXJbQc0xi06Dgyk9t14GQCZLQ9HoWaOv25d0sXtPv/BohVohZ4uIth12p/Dtt3Gd65y0M7iXcWTjw==}
-    deprecated: v2 has been released. please upgrade.
+  '@inlang/paraglide-js@2.0.2':
+    resolution: {integrity: sha512-zlkK+2aDhTR5v/hAZZLAc9jl7wkbGe/yeJ7pfKucYqbfFflOplLPLm6+Z7QORExYTB062GD230CAsxLURps0SA==}
     hasBin: true
 
   '@inlang/recommend-sherlock@0.2.1':
     resolution: {integrity: sha512-ckv8HvHy/iTqaVAEKrr+gnl+p3XFNwe5D2+6w6wJk2ORV2XkcRkKOJ/XsTUJbPSiyi4PI+p+T3bqbmNx/rDUlg==}
 
-  '@inlang/sdk@2.4.1':
-    resolution: {integrity: sha512-JKsbFs/z2rv/2vPR6ZWDC3PWLX9COQPRYADNlbFl2omqkM2Dl5g7X/jIPDkTV85NccOimSf6Y/d1zqK5p5K4zA==}
+  '@inlang/sdk@2.4.3':
+    resolution: {integrity: sha512-ClA8zk/4dQEI7HDVhrEFUsG3sZ+KixI+voncAVQ/xoE5aJnSYer6jWIDkMFx2HRoJV4shmIMOL5gZNgv6uDKIA==}
     engines: {node: '>=18.0.0'}
 
   '@internationalized/date@3.7.0':
@@ -1974,8 +1973,8 @@ packages:
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
 
-  '@lix-js/sdk@0.4.1':
-    resolution: {integrity: sha512-8v9gkLuEa/VXLkDwuXLr+wjZY1D7dPXVhez97jJULYoKurLVuhh2SH/Sv4jF43biV0wee44PGADrFPuU00lnsQ==}
+  '@lix-js/sdk@0.4.3':
+    resolution: {integrity: sha512-7SfVz55vLDc7u2ZqPFko2xPwTtxJcxu+mdQs4XBDeFmnllqh3wTFSgr3Wpt09PR0jj4gz4+uGOWV+Yt5EfNw/w==}
     engines: {node: '>=21'}
 
   '@lix-js/server-api-schema@0.1.1':
@@ -8445,8 +8444,8 @@ packages:
     resolution: {integrity: sha512-4/u/j4FrCKdi17jaxuJA0jClGxB1AvU2hw/IuayPc4ay1XGaJs/rbb4v5WKwAjNifjmXK9PIFyuPiaK8azyR9w==}
     engines: {node: '>=14.0.0'}
 
-  unplugin@2.2.0:
-    resolution: {integrity: sha512-m1ekpSwuOT5hxkJeZGRxO7gXbXT3gF26NjQ7GdVHoLoF8/nopLcd/QfPigpCy7i51oFHiRJg/CyHhj4vs2+KGw==}
+  unplugin@2.2.2:
+    resolution: {integrity: sha512-Qp+iiD+qCRnUek+nDoYvtWX7tfnYyXsrOnJ452FRTgOyKmTM7TUJ3l+PLPJOOWPTUyKISKp4isC5JJPSXUjGgw==}
     engines: {node: '>=18.12.0'}
 
   update-browserslist-db@1.1.2:
@@ -9879,14 +9878,14 @@ snapshots:
     dependencies:
       esbuild-wasm: 0.19.12
 
-  '@inlang/paraglide-js@2.0.0-beta.30':
+  '@inlang/paraglide-js@2.0.2':
     dependencies:
       '@inlang/recommend-sherlock': 0.2.1
-      '@inlang/sdk': 2.4.1
+      '@inlang/sdk': 2.4.3
       commander: 11.1.0
       consola: 3.4.0
       json5: 2.2.3
-      unplugin: 2.2.0
+      unplugin: 2.2.2
       urlpattern-polyfill: 10.0.0
     transitivePeerDependencies:
       - babel-plugin-macros
@@ -9895,9 +9894,9 @@ snapshots:
     dependencies:
       comment-json: 4.2.5
 
-  '@inlang/sdk@2.4.1':
+  '@inlang/sdk@2.4.3':
     dependencies:
-      '@lix-js/sdk': 0.4.1
+      '@lix-js/sdk': 0.4.3
       '@sinclair/typebox': 0.31.28
       kysely: 0.27.6
       sqlite-wasm-kysely: 0.3.0(kysely@0.27.6)
@@ -9960,7 +9959,7 @@ snapshots:
     dependencies:
       buffer: 6.0.3
 
-  '@lix-js/sdk@0.4.1':
+  '@lix-js/sdk@0.4.3':
     dependencies:
       '@lix-js/server-api-schema': 0.1.1
       dedent: 1.5.1
@@ -17674,7 +17673,7 @@ snapshots:
       acorn: 8.14.1
       webpack-virtual-modules: 0.6.2
 
-  unplugin@2.2.0:
+  unplugin@2.2.2:
     dependencies:
       acorn: 8.14.1
       webpack-virtual-modules: 0.6.2
