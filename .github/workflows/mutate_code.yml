@@ -51,7 +51,7 @@ jobs:
           globs: '**/*.md'
           config: .markdownlint.json
           fix: true
-          continue-on-error: true
+        continue-on-error: true
 
       - name: Format Markdown
         run: pnpm run format-all-path '**/*.md'
