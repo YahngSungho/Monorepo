@@ -1,0 +1,52 @@
+{
+	"private": true,
+	"name": "@tool/storybook",
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "storybook build --output-dir storybook-static",
+		"dev": "storybook dev -p 6006",
+		"playwright-install-env": "pnpm exec playwright install --with-deps",
+		"playwright-report": "pnpm exec playwright show-report",
+		"test:e2e": "pnpm exec playwright test",
+		"preview": "vite preview --outDir storybook-static"
+	},
+	"dependencies": {
+		"nanoid": "^5.1.5"
+	},
+	"devDependencies": {
+		"@chromatic-com/storybook": "^3.2.5",
+		"@library/base": "workspace:*",
+		"@library/library_wrappers": "workspace:*",
+		"@library/ui": "workspace:*",
+		"@storybook/addon-essentials": "^8.6.7",
+		"@storybook/addon-interactions": "^8.6.4",
+		"@storybook/addon-links": "^8.6.7",
+		"@storybook/addon-mdx-gfm": "^8.5.3",
+		"@storybook/addon-svelte-csf": "5.0.0-next.28",
+		"@storybook/blocks": "^8.5.3",
+		"@storybook/core": "^8.5.3",
+		"@storybook/svelte": "^8.5.3",
+		"@storybook/svelte-vite": "^8.6.7",
+		"@storybook/sveltekit": "^8.6.7",
+		"@storybook/test": "^8.6.4",
+		"@sveltejs/adapter-auto": "^4.0.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"@tailwindcss/postcss": "4.0.15",
+		"@tailwindcss/vite": "4.0.14",
+		"autoprefixer": "^10.4.20",
+		"daisyui": "5.0.6",
+		"open-props": "^1.7.12",
+		"postcss": "^8.5.1",
+		"postcss-import": "^16.1.0",
+		"storybook": "^8.6.4",
+		"svelte": "^5.23.2",
+		"svelte-preprocess": "^6.0.3",
+		"tailwind-merge": "^3.0.2",
+		"tailwind-variants": "^1.0.0",
+		"tailwindcss": "4.0.0-beta.8",
+		"tailwindcss-animate": "^1.0.7",
+		"vite": "^6.2.2",
+		"vite-tsconfig-paths": "^5.1.4"
+	}
+}

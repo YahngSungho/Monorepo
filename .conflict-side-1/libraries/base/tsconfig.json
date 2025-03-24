@@ -1,0 +1,54 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"noImplicitAny": false,
+		"paths": {
+			"$shadcn": ["../../libraries/ui/src/shadcn"],
+			"$shadcn/*": ["../../libraries/ui/src/shadcn/*"]
+		},
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": false,
+		"strictNullChecks": true,
+		"target": "esnext",
+		"verbatimModuleSyntax": true
+	},
+	"exclude": [
+		".turbo/**",
+		"**/.svelte-kit/**",
+		"**/node_modules/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/.svelte/**",
+		"**/.vercel_build_output/**",
+		"**/.vercel/**",
+		"**/coverage/**",
+		"**/.history/**",
+		"**/service-worker/**",
+		"node_modules/**",
+		"src/service-worker/**",
+		"static/**"
+	],
+	"include": [
+		"src/**/*",
+		"e2e/**/*",
+		"*.js",
+		"*.ts",
+		"*.svelte",
+		"*.cjs",
+		"*.mjs",
+		"**/*.js",
+		"**/*.ts",
+		"**/*.svelte",
+		"**/*.cjs",
+		"**/*.mjs"
+	]
+}

@@ -1,0 +1,24 @@
+{
+	"name": "@library/helpers",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"depCheck": "npx depcheck",
+		"eslint": "eslint .",
+		"eslint-fix": "eslint --fix . || true",
+		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
+		"test:unit": "vitest run"
+	},
+	"devDependencies": {
+		"@library/base": "workspace:*",
+		"@library/library_wrappers": "workspace:*"
+	},
+	"keywords": [],
+	"exports": {
+		"./monads": "./src/monads.js"
+	}
+}

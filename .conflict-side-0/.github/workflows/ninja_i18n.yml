@@ -1,0 +1,24 @@
+name: Ninja i18n action
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+# explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
+permissions:
+  pull-requests: write # Necessary to comment on PRs
+  issues: read # Necessary to read issue comments
+  contents: write # 읽기 권한에서 쓰기 권한으로 변경
+
+jobs:
+  ninja-i18n:
+    name: Ninja i18n - GitHub Lint Action
+    runs-on: ubuntu-latest
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    steps:
+      - name: Run Ninja i18n
+        # @main ensures that the latest version of the action is used
+        uses: opral/ninja-i18n-action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

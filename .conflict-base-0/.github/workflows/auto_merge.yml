@@ -1,0 +1,68 @@
+name: Auto Merge
+
+on:
+  pull_request_target:
+    types:
+      - labeled
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.pull_request.labels.*.name, 'dependabot')"
+
+    steps:
+      - uses: reitermarkus/automerge@v2
+        with:
+          token: ${{ secrets.TOKEN1 }}
+          required-labels: mutation-completed
+          do-not-merge-labels: never-merge
+
+  automerge-dependabot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed') && contains(github.event.pull_request.labels.*.name, 'dependabot')"
+
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@d7267f607e9d3fb96fc2fbe83e0af444713e90b7
+        with:
+          github-token: '${{ secrets.TOKEN1 }}'
+      - name: Enable auto-merge for Dependabot PRs
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.TOKEN1}}
+
+  remove-mutation-completed-label:
+    needs: [automerge, automerge-dependabot]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-completed')
+
+    steps:
+      - name: Remove mutation-completed Label
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            try {
+              github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'mutation-completed'
+              });
+              console.log('Label mutation-completed removed successfully');
+            } catch (error) {
+              console.log('Error removing label or label not found:', error);
+            }

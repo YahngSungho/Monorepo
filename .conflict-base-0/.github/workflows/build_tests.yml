@@ -1,0 +1,87 @@
+name: Build & Tests
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+# explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
+permissions:
+  pull-requests: write # Necessary to comment on PRs
+  issues: read # Necessary to read issue commentsds
+  contents: read # Necessary to access the repo content
+  actions: read
+  checks: write
+
+jobs:
+  build:
+    name: Build & Tests
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.TOKEN1 }}
+
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      # pnpm 설치 (packageManager 버전과 일치)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+          run_install: false
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.5.0
+          cache: pnpm
+
+      # 최적화된 설치 명령
+      - name: Install dependencies
+        run: pnpm install --prefer-offline
+
+      - name: Install Playwright Browsers
+        run: pnpm run playwright-install-env
+
+      - name: Test
+        run: pnpm run test
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure() # run this step even if previous step failed
+        continue-on-error: true
+        with:
+          name: Vitest Tests # Name of the check run which will be created
+          path: '**/vitest-report/*.xml' # Path to test results
+          reporter: jest-junit # Format of test results
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure() # run this step even if previous step failed
+        continue-on-error: true
+        with:
+          name: Playwright Tests # Name of the check run which will be created
+          path: '**/playwright-report/*.xml' # Path to test results
+          reporter: jest-junit # Format of test results
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-reports
+          path: '**/playwright-report/'
+          retention-days: 30

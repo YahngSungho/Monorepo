@@ -1,0 +1,7 @@
+packages:
+  - 'apps/*'
+  - 'libraries/*'
+  - 'playground/*'
+  - 'scripts/*'
+  - 'prompts/*'
+  - storybook

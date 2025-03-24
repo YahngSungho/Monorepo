@@ -1,0 +1,33 @@
+name: Sentry
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+# explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
+permissions:
+  pull-requests: write # Necessary to comment on PRs
+  issues: read # Necessary to read issue commentsds
+  contents: read # Necessary to access the repo content
+
+jobs:
+  build:
+    name: Sentry
+    runs-on: ubuntu-latest
+    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+          # SENTRY_URL: https://sentry.io/
+        with:
+          environment: production

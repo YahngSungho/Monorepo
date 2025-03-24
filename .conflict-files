@@ -1,0 +1,3 @@
+ancestorEntries = ["eslint.config.js"]
+ourEntries = ["eslint.config.js"]
+theirEntries = ["eslint.config.js"]

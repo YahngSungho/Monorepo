@@ -1,0 +1,198 @@
+:root {
+	font-size: var(--font-size-0);
+	text-size-adjust: 100%;
+	color-scheme: light dark;
+}
+
+body {
+	position: relative;
+	inset: 0;
+
+	container: body / inline-size;
+	overflow: auto;
+
+	inline-size: 100svi;
+	block-size: 100svb;
+}
+
+*,
+*::before,
+*::after {
+	overscroll-behavior: contain;
+
+	box-sizing: border-box;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-wrap: stable;
+	text-rendering: optimizelegibility;
+	word-break: keep-all;
+	line-break: strict;
+	overflow-wrap: break-word;
+}
+
+button,
+.button-type {
+	cursor: pointer;
+	user-select: none;
+
+	position: relative;
+
+	overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	inline-size: fit-content;
+	max-inline-size: min(100%, 100cqi);
+	padding: max(0.5em, 0.5rem) max(1.5em, 1.5rem);
+
+	text-align: center;
+	text-decoration: none;
+	text-transform: capitalize;
+	white-space: nowrap;
+	vertical-align: middle;
+
+	appearance: auto;
+
+	&:active,
+	&:hover {
+		opacity: 0.7;
+	}
+
+	&:focus {
+		z-index: 1;
+		outline: 2px dashed color-mix(in srgb, var(--gray-12) 40%, transparent 60%);
+		outline-offset: 2px;
+	}
+}
+
+div {
+	color: inherit;
+	outline: var(--size-1) solid transparent;
+	outline-offset: calc(-1 * var(--size-1));
+}
+
+ol,
+ul,
+dl {
+	/* open-props/normalize 스타일 덮어쓰기 */
+	font-size: 1em;
+}
+
+p {
+	font-size: 1em;
+	line-height: var(--font-lineheight-4);
+
+	& ~ p {
+		margin-block-start: 0.5em;
+	}
+}
+
+img {
+	max-inline-size: 100%;
+	object-fit: cover;
+}
+
+a {
+	hyphens: none;
+	overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	max-inline-size: initial;
+	margin-block-end: 0.25em;
+
+	font-size: 1em;
+	line-height: var(--font-lineheight-1);
+	hyphens: none;
+	text-wrap: balance;
+}
+
+h1 {
+	margin-block-end: 0.5em;
+	font-weight: 700;
+}
+
+h2 {
+	font-weight: 600;
+}
+
+h3 {
+	font-weight: 500;
+}
+
+h4,
+h5,
+h6 {
+	font-weight: 400;
+}
+
+[id] {
+	scroll-margin-block-start: var(--font-size-5);
+}
+
+blockquote {
+	max-inline-size: 80%;
+	margin-block: 2em;
+	margin-inline-start: 2em;
+
+	font-size: 0.75em;
+	line-height: var(--font-lineheight-2);
+}
+
+/* Scrollbar */
+
+@media (forced-colors: none) {
+	/* 1. 모든 브라우저에 적용되는 기본 스타일 */
+	* {
+		scrollbar-color: color-mix(in oklch, currentcolor 35%, transparent) transparent;
+	}
+
+	/* 4. Firefox용 컨테이너 쿼리 */
+	@container (max-width: 15ch) {
+		* {
+			scrollbar-width: thin;
+		}
+	}
+	/* 2. WebKit 계열 브라우저 전용 스타일 */
+	@supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
+		* {
+			scrollbar-color: initial; /* 웹킷 스크롤바 활성화 */
+		}
+
+		::-webkit-scrollbar {
+			inline-size: min(1ch, var(--font-size-2));
+			block-size: min(1ex, var(--font-size-2));
+		}
+
+		::-webkit-scrollbar-thumb {
+			background-color: color-mix(in oklch, currentcolor 35%, transparent);
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: transparent;
+		}
+
+		/* 3. 컨테이너 쿼리 대응 */
+		/* Fix  */
+		@container (max-width: 15ch) {
+			::-webkit-scrollbar {
+				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+				width: min(0.5ch, var(--font-size-1));
+			}
+		}
+
+		@container (max-height: 15ex) {
+			::-webkit-scrollbar {
+				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+				height: min(0.5ex, var(--font-size-1));
+			}
+		}
+	}
+}

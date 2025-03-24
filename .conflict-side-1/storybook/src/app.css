@@ -1,0 +1,89 @@
+:root {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	line-height: 1.5;
+	color: rgb(255 255 255 / 87%);
+	text-rendering: optimizelegibility;
+
+	color-scheme: light dark;
+	background-color: rgb(36 36 36);
+
+	font-synthesis: none;
+}
+
+a {
+	font-weight: 500;
+	color: rgb(100 108 255);
+	text-decoration: inherit;
+
+	&:hover {
+		color: rgb(83 91 242);
+	}
+}
+
+body {
+	display: flex;
+	place-items: center;
+
+	min-inline-size: 320px;
+	min-block-size: 100vb;
+	margin: 0;
+}
+
+h1 {
+	font-size: 3.2em;
+	line-height: 1.1;
+}
+
+.card {
+	padding: 2em;
+}
+
+#app {
+	max-inline-size: 1280px;
+	margin: 0 auto;
+	padding: 2rem;
+	text-align: center;
+}
+
+button {
+	cursor: pointer;
+
+	padding: 0.6em 1.2em;
+	border: 1px solid transparent;
+	border-radius: 8px;
+
+	font-family: inherit;
+	font-size: 1em;
+	font-weight: 500;
+
+	background-color: rgb(26 26 26);
+
+	transition: border-color 0.25s;
+
+	&:hover {
+		border-color: rgb(100 108 255);
+	}
+
+	&:focus,
+	&:focus-visible {
+		outline: 4px auto -webkit-focus-ring-color;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		color: rgb(33 53 71);
+		background-color: rgb(255 255 255);
+	}
+
+	a:hover {
+		color: rgb(116 123 255);
+	}
+
+	button {
+		background-color: rgb(249 249 249);
+	}
+}

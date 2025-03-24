@@ -1,0 +1,51 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"globalDependencies": [],
+	"globalEnv": ["NODE_ENV", "CF_PAGES_BRANCH"],
+	"globalPassThroughEnv": [
+		"CI",
+		"WATCH",
+		"SENTRY_AUTH_TOKEN",
+		"GITHUB_ACTIONS",
+		".env",
+		"**/.env",
+		"**/.env.*"
+	],
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"env": [],
+			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**"]
+		},
+		"check": {
+			"dependsOn": ["transit"]
+		},
+		"dev": {
+			"cache": false,
+			"env": [],
+			"persistent": true
+		},
+		"eslint": {},
+		"eslint-fix": {},
+		"format": {},
+		"paraglide-compile": {
+			"outputs": ["paraglide-output/**"]
+		},
+		"playwright-report": {},
+		"stylelint": {},
+		"stylelint-fix": {},
+		"test:e2e": {
+			"dependsOn": ["transit", "build"],
+			"env": ["PLAYWRIGHT_BROWSERS_PATH"],
+			"outputs": ["playwright-report/**", "test-results/**"],
+			"passThroughEnv": ["PLAYWRIGHT_*", "CI"]
+		},
+		"test:unit": {
+			"dependsOn": ["transit"],
+			"outputs": ["vitest-report/**"]
+		},
+		"transit": {
+			"dependsOn": ["^transit"]
+		}
+	}
+}

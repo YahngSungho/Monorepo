@@ -1,0 +1,50 @@
+{
+	"compilerOptions": {
+		"checkJs": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"paths": {
+			"$shadcn/*": ["../libraries/ui/src/shadcn/*"],
+			"$shadcn": ["../libraries/ui/src/shadcn"]
+		},
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"target": "ESNext",
+		"verbatimModuleSyntax": true
+	},
+	"exclude": [
+		".turbo/**",
+		"**/.svelte-kit/**",
+		"**/node_modules/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/.svelte/**",
+		"**/.vercel_build_output/**",
+		"**/.vercel/**",
+		"**/coverage/**",
+		"**/.history/**",
+		"**/service-worker/**",
+		"node_modules/**",
+		"src/service-worker/**",
+		"svelte.config.js",
+		"vite.config.js",
+		"vite.config.ts",
+		"static/**"
+	],
+	"extends": ["@library/base/tsconfig.json"],
+	"include": [
+		"**/*.d.ts",
+
+		"tests/**/*",
+		"src/**/*",
+		".storybook/*.js",
+
+		".storybook/*.ts",
+		".svelte-kit/ambient.d.ts",
+
+		".svelte-kit/types/**/$types.d.ts"
+	]
+}

@@ -1,0 +1,21 @@
+/* Tailwind CSS의 default layer는
+@layer theme, base, components, utilities;
+*/
+@layer base, base0, base1, theme, components, utilities;
+
+@import url('sanitize.css') layer(base0);
+@import url('sanitize.css/forms.css') layer(base0);
+@import url('sanitize.css/typography.css') layer(base0);
+@import url('sanitize.css/assets.css') layer(base0);
+@import url('sanitize.css/reduce-motion.css') layer(base0);
+
+@import url('open-props/style') layer(base1);
+@import url('open-props/normalize') layer(base1);
+@import url('open-props/media') layer(base1);
+/* @import url('open-props/postcss/buttons') layer(base0); */
+
+@import url('./tailwind.css');
+
+@import url('./baseClasses.css');
+@import url('./baseVariables.css');
+@import url('./baseCSS.css');

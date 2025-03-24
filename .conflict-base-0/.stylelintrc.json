@@ -1,0 +1,77 @@
+{
+	"extends": [
+		"stylelint-config-standard",
+		"stylelint-config-html",
+		"@double-great/stylelint-a11y",
+		"stylelint-config-clean-order/error"
+	],
+	"overrides": [
+		{
+			"customSyntax": "postcss-syntax",
+			"files": ["**/*.css"]
+		},
+		{
+			"files": ["**/*.svelte"],
+			"customSyntax": "postcss-html"
+		}
+	],
+	"plugins": [
+		"stylelint-plugin-logical-css",
+		"stylelint-value-no-exposed-custom-properties",
+		"stylelint-plugin-defensive-css",
+		"stylelint-no-indistinguishable-colors",
+		"stylelint-use-nesting",
+		"stylelint-no-unresolved-module",
+		"stylelint-high-performance-animation",
+		"stylelint-no-browser-hacks/lib",
+		"stylelint-color-format",
+		"stylelint-value-no-unknown-custom-properties",
+		"stylelint-declaration-block-no-ignored-properties",
+		"stylelint-gamut"
+	],
+	"rules": {
+		"custom-property-empty-line-before": null,
+		"at-rule-no-unknown": null,
+		"color-format/format": {
+			"format": "rgb",
+			"severity": "warning"
+		},
+		"comment-empty-line-before": null,
+		"csstools/use-nesting": "always",
+		"declaration-property-value-no-unknown": true,
+		"font-family-no-missing-generic-family-keyword": null,
+		"gamut/color-no-out-gamut-range": true,
+		"no-duplicate-selectors": null,
+		"number-max-precision": null,
+		"plugin/declaration-block-no-ignored-properties": true,
+		"plugin/no-browser-hacks": [true],
+		"plugin/no-unresolved-module": {
+			"alias": {
+				"assets": "pebbles"
+			},
+			"modules": ["node_modules", "local_modules"]
+		},
+		"plugin/stylelint-no-indistinguishable-colors": true,
+		"plugin/use-defensive-css": [
+			true,
+			{
+				"severity": "warning"
+			}
+		],
+		"plugin/use-logical-properties-and-values": [
+			true,
+			{
+				"severity": "warning"
+			}
+		],
+		"plugin/use-logical-units": [
+			true,
+			{
+				"severity": "warning"
+			}
+		],
+		"plugin/value-no-exposed-custom-properties": {
+			"severity": "warning"
+		}
+	}
+}

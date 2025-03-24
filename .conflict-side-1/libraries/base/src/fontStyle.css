@@ -1,0 +1,859 @@
+/* font-family가 있는 파일에 @font-face가 있어야 fontaine이 제대로 작동하는듯해서 여기 둠 */
+@font-face {
+	font-family: 'IBM Plex Sans';
+	font-weight: 100 700;
+	font-style: normal;
+	font-display: swap;
+	/* url에 주어진 path가 상대 경로일 시 Fontaine 작동 안하는 문제 */
+	src: url('@library/base/IBMPlexSansVar-Roman.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	/* hinted font: 저해상도에서의 가독성 우선 */
+	src: url('@library/base/IBMPlexSansKR-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansKR-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansKR-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansKR-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansKR-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansKR-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 400; /* Text (일반적으로 Regular와 동일한 굵기로 사용) */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansKR-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansKR-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	/* 다국어 폰트에는 italic이 없어서, 만약 라틴 알파벳의 italic이 적용되면 뒤의 fallback font에서 italic이 적용되도록 뒤에 추가함. 안그러면 italic을 synthetic하게 만들거고 그걸 방지하기 위해서임. */
+	font-family: 'IBM Plex Sans KR';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThaiLooped-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai Looped';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Math';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMath.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansArabic-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Arabic';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansDevanagari-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Devanagari';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansHebrew-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Hebrew';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansJP-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans JP';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 700; /* Bold Italic */
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-BoldItalic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 200; /* ExtraLight Italic */
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-ExtraLightItalic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 300; /* Light Italic */
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-LightItalic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 500; /* Medium Italic */
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-MediumItalic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-Regular.woff2') format('woff2');
+}
+
+/* IBM Plex Mono의 Regular Italic 폰트가 없음 */
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 600; /* SemiBold Italic */
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-SemiBoldItalic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 400; /* Text Italic */
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-TextItalic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Mono';
+	font-weight: 100; /* Thin Italic */
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexMono-ThinItalic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansSC-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans SC';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansTC-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans TC';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 700; /* Bold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-Bold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 200; /* ExtraLight */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 300; /* Light */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-Light.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 500; /* Medium */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-Medium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 400; /* Regular */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 600; /* SemiBold */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 400; /* Text */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-Text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 100; /* Thin */
+	font-style: normal;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansThai-Thin.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'IBM Plex Sans Thai';
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
+	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
+}
+
+html,
+.english {
+	font-family: 'IBM Plex Sans';
+	font-feature-settings: 'ss02';
+	font-variant-numeric: slashed-zero;
+}
+
+/* Arabic */
+html[lang^='ar'] {
+	font-family: 'IBM Plex Sans Arabic';
+}
+
+/* Chinese Simplified */
+html[lang^='zh'] {
+	font-family: 'IBM Plex Sans SC';
+}
+/* Chinese Traditional */
+html[lang='zh-tw'],
+html[lang='zh-hk'],
+html[lang='zh-Hant'],
+html[lang='zh-TW'],
+html[lang='zh-HK'],
+html[lang='zh-tTW'] {
+	font-family: 'IBM Plex Sans TC';
+}
+
+/* Hebrew */
+html[lang='he'] {
+	font-family: 'IBM Plex Sans Hebrew';
+}
+
+/* Hindi and other Devanagari-based languages */
+html[lang='hi'],
+html[lang='sa'],
+html[lang='ne'] {
+	font-family: 'IBM Plex Sans Devanagari';
+}
+
+/* Japanese */
+html[lang='ja'] {
+	font-family: 'IBM Plex Sans JP';
+}
+
+/* Korean */
+html[lang='ko'],
+html[lang='ko-kr'],
+html[lang='ko-kp'] {
+	font-family: 'IBM Plex Sans KR';
+}
+
+/* Thai */
+html[lang='th'] {
+	font-family: 'IBM Plex Sans Thai';
+}
+
+code,
+kbd,
+samp,
+pre {
+	font-family: 'IBM Plex Mono';
+}

@@ -1,0 +1,8 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"antsy_aloof_barbel_read": "아이콘",
+	"deft_east_mouse_hope": "안녕하세요",
+	"hello_world": "Hello, {name} from ko!",
+	"tangy_late_wallaby_grip": "Welcome to SvelteKit",
+	"welcome": "SvelteKit에 오신 것을 환영합니다"
+}

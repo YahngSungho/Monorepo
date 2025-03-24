@@ -1,0 +1,25 @@
+{
+  "versionGroups": [
+    {
+      "dependencyTypes": [
+        "dev",
+        "prod"
+      ],
+      "label": "Ensure all packages use the same versions",
+      "packages": [
+        "**"
+      ]
+    },
+    {
+      "dependencies": [
+        "$LOCAL"
+      ],
+      "dependencyTypes": [
+        "dev",
+        "prod"
+      ],
+      "label": "Use workspace protocol when developing local packages",
+      "pinVersion": "workspace:*"
+    }
+  ]
+}
