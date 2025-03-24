@@ -261,6 +261,7 @@ export default defineFlatConfig([
 	{
 		// 그냥 off 할 설정들
 		rules: {
+			'jsonc/no-comments': 'off',
 			'import/no-webpack-loader-syntax': 'off',
 			'import/default': 'off',
 			'import/enforce-node-protocol-usage': 'off',
@@ -453,7 +454,7 @@ export default defineFlatConfig([
 			'svelte/html-quotes': [
 				'warn',
 				{
-					prefer: 'single',
+					prefer: 'double',
 					dynamic: {
 						quoted: false,
 						avoidInvalidUnquotedInHTML: false,

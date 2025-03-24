@@ -18,12 +18,7 @@ const { Story } = defineMeta({
 		<Button variant="primary">Primary Button</Button>
 		<Button variant="secondary">Secondary Button</Button>
 		<Button variant="outline">Outline Button</Button>
-		<Button
-			variant="text"
-			on:click={() => {
-				throw new Error('Test: Text Button')
-			}}>Text Button</Button
-		>
+		<Button variant="text">Text Button</Button>
 		<Button variant="accent">Accent Button</Button>
 		<Button variant="info">Info Button</Button>
 		<Button variant="success">Success Button</Button>
@@ -53,12 +48,7 @@ const { Story } = defineMeta({
 
 <Story name="Outline" args={{ variant: 'outline' }}>
 	{#snippet children(args)}
-		<Button
-			{...args}
-			onclick={() => {
-				throw new Error('Test: Outline Button')
-			}}>Outline Button</Button
-		>
+		<Button {...args}>Outline Button</Button>
 	{/snippet}
 </Story>
 
