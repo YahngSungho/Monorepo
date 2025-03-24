@@ -138,7 +138,7 @@
 		"ts-node": "^10.9.2",
 		"turbo": "^2.4.4",
 		"typescript": "^5.7.3",
-		"vite": "^6.2.2",
+		"vite": "^6.2.3",
 		"vite-node": "^3.0.9",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.0.9",
