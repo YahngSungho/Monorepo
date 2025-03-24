@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
-import markdown from '@eslint/markdown'
 import json from '@eslint/json'
+import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import microsoftSdl from '@microsoft/eslint-plugin-sdl'
 import * as parser_TS from '@typescript-eslint/parser'
@@ -99,7 +99,7 @@ export default defineFlatConfig([
 		files: ['**/*.js', '**/*.ts', '**/*.mjs', '**/*.cjs'],
 
 		...js.configs.recommended,
-		...unicorn.configs['recommended'],
+		...unicorn.configs.recommended,
 		...sonarjs_configs.recommended,
 
 		languageOptions: {
@@ -384,7 +384,6 @@ export default defineFlatConfig([
 			'import/no-namespace': 'off',
 			'import/no-nodejs-modules': 'off',
 			'import/no-unresolved': 'off',
-			indent: ['warn', 'tab'],
 			'lodash/prefer-constant': 'off',
 			'lodash/prefer-get': 'off',
 			'lodash/prefer-includes': 'off',
@@ -499,6 +498,7 @@ export default defineFlatConfig([
 			'unicorn/prefer-spread': 'off',
 			'unicorn/prevent-abbreviations': 'off',
 			'unicorn/require-array-join-separator': 'off',
+			indent: 'off',
 		},
 	},
 ])

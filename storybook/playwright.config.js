@@ -23,7 +23,7 @@ const config = {
 			NODE_ENV: 'production',
 		},
 		port: portNumber,
-		timeout: 60_000,
+		timeout: 180_000,
 	},
 }
 
