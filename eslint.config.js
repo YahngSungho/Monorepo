@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
+import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import intlifySvelte from '@intlify/eslint-plugin-svelte'
 import microsoftSdl from '@microsoft/eslint-plugin-sdl'
@@ -64,19 +65,253 @@ const gitignorePath = path.join(__dirname, '.gitignore')
 export default defineFlatConfig([
 	includeIgnoreFile(gitignorePath),
 	{
-		ignores: ['!.storybook', 'pnpm-lock.yaml'],
+		ignores: ['!.storybook', '**/.svelte-kit/**', 'pnpm-lock.yaml', 'package-lock.json'],
+	},
 
-		plugins: {
-			ex: exceptionHandling,
-			lodash,
-			'no-secrets': noSecrets,
-			'optimize-regex': optimizeRegex,
-			redos,
-			'simple-import-sort': simpleImportSort,
-			sql,
-			xstate,
+	depend_configs['flat/recommended'],
+	importX.flatConfigs.recommended,
+	importX.flatConfigs.typescript,
+	...turboConfig,
+	perfectionist.configs['recommended-natural'],
+	noUseExtendNative.configs.recommended,
+	promise.configs['flat/recommended'],
+	functional.configs.externalVanillaRecommended,
+	functional.configs.lite,
+	functional.configs.stylistic,
+	problems,
+	...microsoftSdl.configs.recommended,
+	regexp_configs['flat/recommended'],
+
+	...storybook.configs['flat/recommended'],
+	github.getFlatConfigs().browser,
+	github.getFlatConfigs().recommended,
+	nounsanitized.configs.recommended,
+	arrayFunc.configs.recommended,
+	compat.configs['flat/recommended'],
+
+	...flatCompat.extends(
+		'plugin:xstate/all',
+		'plugin:lodash/recommended',
+		'plugin:redos/recommended',
+	),
+
+	{
+		files: ['**/*.js', '**/*.ts', '**/*.mjs', '**/*.cjs'],
+
+		...js.configs.recommended,
+		...unicorn.configs.recommended,
+		...sonarjs_configs.recommended,
+
+		languageOptions: {
+			ecmaVersion: 'latest',
+			globals: {
+				...globals.node,
+				...globals.builtin,
+				...globals.browser,
+			},
+			parser: parser_TS,
+			parserOptions: {
+				ecmaVersion: 'latest',
+				extraFileExtensions: ['.svelte'],
+				projectService: true,
+				requireConfigFile: false,
+				sourceType: 'module',
+			},
+			sourceType: 'module',
+		},
+	},
+
+	...svelte.configs.recommended,
+	...intlifySvelte.configs['flat/recommended'],
+	{
+		files: [
+			'**/*.svelte',
+			'*.svelte',
+			'**/*.svelte.js',
+			'*.svelte.js',
+			'**/*.svelte.ts',
+			'*.svelte.ts',
+		],
+
+		languageOptions: {
+			parser: parser_svelte,
+			parserOptions: {
+				ecmaVersion: 'latest',
+				extraFileExtensions: ['.svelte', '.svelte.js', '.svelte.ts'],
+				projectService: true,
+				parser: parser_TS,
+				requireConfigFile: false,
+				sourceType: 'module',
+				svelteFeatures: {
+					experimentalRunes: true,
+				},
+				svelteConfig,
+			},
 		},
 
+		rules: {
+			'sonarjs/no-unused-vars': 'off',
+			'sonarjs/no-use-of-empty-return-value': 'off',
+		},
+	},
+
+	{
+		files: [
+			'**/*.stories.svelte',
+			'*.stories.svelte',
+			'**/*.test.js',
+			'**/e2e/*.test.js',
+			'*.test.js',
+			'**/*.tests.js',
+		],
+
+		rules: {
+			'@intlify/svelte/no-raw-text': 'off',
+			'redos/no-vulnerable': 'off',
+			'sonarjs/slow-regex': 'off',
+			'svelte/no-useless-children-snippet': 'off',
+		},
+	},
+
+	{
+		files: ['**/e2e/*.test.js'],
+
+		...playwright.configs['flat/recommended'],
+		rules: {
+			...playwright.configs['flat/recommended'].rules,
+			// Customize Playwright rules
+			// ...
+		},
+	},
+
+	...jsonc.configs['flat/base'],
+	...jsonc.configs['flat/recommended-with-json'],
+	...jsonc.configs['flat/recommended-with-jsonc'],
+	...jsonc.configs['flat/recommended-with-json5'],
+	...jsonSchema.configs['flat/recommended'],
+	{
+		files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
+
+		languageOptions: {
+			parser: parser_jsonc,
+			parserOptions: {
+				jsonSyntax: 'JSON5',
+			},
+
+			sourceType: 'script',
+		},
+
+		...json.configs.recommended,
+	},
+
+	...yml.configs['flat/standard'],
+	{
+		files: ['**/*.yaml', '**/*.yml'],
+
+		languageOptions: {
+			parser: parser_yaml,
+		},
+	},
+
+	...toml.configs['flat/standard'],
+	{
+		files: ['**/*.toml'],
+
+		languageOptions: {
+			parser: parser_toml,
+		},
+	},
+
+	...markdown.configs.recommended,
+	{
+		files: ['**/*.mdx'],
+
+		...mdx.flat,
+		// optional, if you want to lint code blocks at the same
+		processor: mdx.createRemarkProcessor({
+			// optional, if you want to disable language mapper, set it to `false`
+			// if you want to override the default language mapper inside, you can provide your own
+			languageMapper: {},
+			lintCodeBlocks: true,
+		}),
+	},
+	{
+		files: ['**/*.mdx'],
+
+		...mdx.flatCodeBlocks,
+		rules: {
+			...mdx.flatCodeBlocks.rules,
+			// if you want to override some rules for code blocks
+		},
+	},
+
+	{
+		files: ['**/*.md'],
+		plugins: {
+			markdown,
+		},
+		processor: 'markdown/markdown',
+	},
+
+	...jsonc.configs['flat/prettier'],
+	...yml.configs['flat/prettier'],
+	...svelte.configs.prettier,
+	eslintConfigPrettier,
+
+	{
+		// 그냥 off 할 설정들
+		rules: {
+			'jsonc/no-comments': 'off',
+			'import/no-webpack-loader-syntax': 'off',
+			'import/default': 'off',
+			'import/enforce-node-protocol-usage': 'off',
+			'import/named': 'off',
+			'import/namespace': 'off',
+			'import/no-absolute-path': 'off',
+			'import/no-cycle': 'off',
+			'import/no-dynamic-require': 'off',
+			'import/no-internal-modules': 'off',
+			'import/no-relative-packages': 'off',
+			'import/no-relative-parent-imports': 'off',
+			'import/no-restricted-paths': 'off',
+			'import/no-self-import': 'off',
+			'import/no-unresolved': 'off',
+			'import/no-useless-path-segments': 'off',
+			'import/no-amd': 'off',
+			'import/no-commonjs': 'off',
+			'import/no-import-module-exports': 'off',
+			'import/no-nodejs-modules': 'off',
+			'import/unambiguous': 'off',
+			'import/export': 'off',
+			'import/no-deprecated': 'off',
+			'import/no-empty-named-blocks': 'off',
+			'import/no-extraneous-dependencies': 'off',
+			'import/no-mutable-exports': 'off',
+			'import/no-named-as-default': 'off',
+			'import/no-named-as-default-member': 'off',
+			'import/no-unused-modules': 'off',
+			'import/consistent-type-specifier-style': 'off',
+			'import/dynamic-import-chunkname': 'off',
+			'import/exports-last': 'off',
+			'import/extensions': 'off',
+			'import/first': 'off',
+			'import/group-exports': 'off',
+			'import/imports-first': 'off',
+			'import/max-dependencies': 'off',
+			'import/newline-after-import': 'off',
+			'import/no-anonymous-default-export': 'off',
+			'import/no-default-export': 'off',
+			'import/no-duplicates': 'off',
+			'import/no-named-default': 'off',
+			'import/no-named-export': 'off',
+			'import/no-namespace': 'off',
+			'import/no-unassigned-import': 'off',
+			'import/order': 'off',
+			'import/prefer-default-export': 'off',
+		},
+	},
+
+	{
 		settings: {
 			browserslistOpts: {
 				env: 'defaults',
@@ -96,48 +331,18 @@ export default defineFlatConfig([
 				},
 			},
 		},
-	},
 
-	js.configs.recommended,
-	depend_configs['flat/recommended'],
-	unicorn.configs['flat/recommended'],
-	sonarjs_configs.recommended,
-	importX.flatConfigs.recommended,
-	importX.flatConfigs.typescript,
-	...svelte.configs.recommended,
-	...turboConfig,
-	perfectionist.configs['recommended-natural'],
-	noUseExtendNative.configs.recommended,
-	promise.configs['flat/recommended'],
-	functional.configs.externalVanillaRecommended,
-	functional.configs.lite,
-	functional.configs.stylistic,
-	// functional.configs.disableTypeChecked,
-	problems,
-	...microsoftSdl.configs.recommended,
-	regexp_configs['flat/recommended'],
-	...intlifySvelte.configs['flat/recommended'],
-	...storybook.configs['flat/recommended'],
-	...yml.configs['flat/standard'],
-	...toml.configs['flat/standard'],
-	github.getFlatConfigs().browser,
-	github.getFlatConfigs().recommended,
-	nounsanitized.configs.recommended,
-	arrayFunc.configs.recommended,
-	compat.configs['flat/recommended'],
-	...jsonc.configs['flat/base'],
-	...jsonc.configs['flat/recommended-with-json'],
-	...jsonc.configs['flat/recommended-with-jsonc'],
-	...jsonc.configs['flat/recommended-with-json5'],
-	...jsonSchema.configs['flat/recommended'],
-	...markdown.configs.recommended,
-	...flatCompat.extends(
-		'plugin:xstate/all',
-		'plugin:lodash/recommended',
-		'plugin:redos/recommended',
-	),
+		plugins: {
+			ex: exceptionHandling,
+			lodash,
+			'no-secrets': noSecrets,
+			'optimize-regex': optimizeRegex,
+			redos,
+			'simple-import-sort': simpleImportSort,
+			sql,
+			xstate,
+		},
 
-	{
 		rules: {
 			'promise/always-return': 'off',
 			'unicorn/prefer-top-level-await': 'off',
@@ -180,7 +385,6 @@ export default defineFlatConfig([
 			'import/no-namespace': 'off',
 			'import/no-nodejs-modules': 'off',
 			'import/no-unresolved': 'off',
-			indent: ['warn', 'tab'],
 			'lodash/prefer-constant': 'off',
 			'lodash/prefer-get': 'off',
 			'lodash/prefer-includes': 'off',
@@ -250,7 +454,7 @@ export default defineFlatConfig([
 			'svelte/html-quotes': [
 				'warn',
 				{
-					prefer: 'single',
+					prefer: 'double',
 					dynamic: {
 						quoted: false,
 						avoidInvalidUnquotedInHTML: false,
@@ -295,191 +499,7 @@ export default defineFlatConfig([
 			'unicorn/prefer-spread': 'off',
 			'unicorn/prevent-abbreviations': 'off',
 			'unicorn/require-array-join-separator': 'off',
-		},
-	},
-
-	{
-		files: ['**/*.js', '**/*.ts', '**/*.mjs', '**/*.cjs'],
-
-		languageOptions: {
-			ecmaVersion: 'latest',
-			globals: {
-				...globals.browser,
-				...globals.node,
-			},
-			parser: parser_TS,
-			parserOptions: {
-				ecmaVersion: 'latest',
-				extraFileExtensions: ['.svelte'],
-				projectService: true,
-				requireConfigFile: false,
-				sourceType: 'module',
-			},
-			sourceType: 'module',
-		},
-	},
-
-	{
-		files: [
-			'**/*.svelte',
-			'*.svelte',
-			'**/*.svelte.js',
-			'*.svelte.js',
-			'**/*.svelte.ts',
-			'*.svelte.ts',
-		],
-
-		languageOptions: {
-			parser: parser_svelte,
-			parserOptions: {
-				ecmaVersion: 'latest',
-				extraFileExtensions: ['.svelte', '.svelte.js', '.svelte.ts'],
-				projectService: true,
-				parser: parser_TS,
-				requireConfigFile: false,
-				sourceType: 'module',
-				svelteFeatures: {
-					experimentalRunes: true,
-				},
-				svelteConfig,
-			},
-		},
-
-		rules: {
-			'sonarjs/no-unused-vars': 'off',
-			'sonarjs/no-use-of-empty-return-value': 'off',
-		},
-	},
-
-	{
-		files: [
-			'**/*.stories.svelte',
-			'*.stories.svelte',
-			'**/*.test.js',
-			'**/e2e/*.test.js',
-			'*.test.js',
-			'**/*.tests.js',
-		],
-
-		rules: {
-			'@intlify/svelte/no-raw-text': 'off',
-			'redos/no-vulnerable': 'off',
-			'sonarjs/slow-regex': 'off',
-			'svelte/no-useless-children-snippet': 'off',
-		},
-	},
-	{
-		files: ['**/e2e/*.test.js'],
-
-		...playwright.configs['flat/recommended'],
-		rules: {
-			...playwright.configs['flat/recommended'].rules,
-			// Customize Playwright rules
-			// ...
-		},
-	},
-	{
-		files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
-
-		languageOptions: {
-			parser: parser_jsonc,
-			parserOptions: {
-				jsonSyntax: 'JSON5',
-			},
-
-			sourceType: 'script',
-		},
-	},
-	{
-		files: ['**/*.yaml', '**/*.yml'],
-
-		languageOptions: {
-			parser: parser_yaml,
-		},
-	},
-	{
-		files: ['**/*.toml'],
-
-		languageOptions: {
-			parser: parser_toml,
-		},
-	},
-	{
-		files: ['**/*.mdx'],
-
-		...mdx.flat,
-		// optional, if you want to lint code blocks at the same
-		processor: mdx.createRemarkProcessor({
-			// optional, if you want to disable language mapper, set it to `false`
-			// if you want to override the default language mapper inside, you can provide your own
-			languageMapper: {},
-			lintCodeBlocks: true,
-		}),
-	},
-	{
-		files: ['**/*.mdx'],
-
-		...mdx.flatCodeBlocks,
-		rules: {
-			...mdx.flatCodeBlocks.rules,
-			// if you want to override some rules for code blocks
-		},
-	},
-
-	...jsonc.configs['flat/prettier'],
-	...yml.configs['flat/prettier'],
-	...svelte.configs.prettier,
-	eslintConfigPrettier,
-
-	{
-		// 그냥 off 할 설정들
-		rules: {
-			'import/no-webpack-loader-syntax': 'off',
-			'import/default': 'off',
-			'import/enforce-node-protocol-usage': 'off',
-			'import/named': 'off',
-			'import/namespace': 'off',
-			'import/no-absolute-path': 'off',
-			'import/no-cycle': 'off',
-			'import/no-dynamic-require': 'off',
-			'import/no-internal-modules': 'off',
-			'import/no-relative-packages': 'off',
-			'import/no-relative-parent-imports': 'off',
-			'import/no-restricted-paths': 'off',
-			'import/no-self-import': 'off',
-			'import/no-unresolved': 'off',
-			'import/no-useless-path-segments': 'off',
-			'import/no-amd': 'off',
-			'import/no-commonjs': 'off',
-			'import/no-import-module-exports': 'off',
-			'import/no-nodejs-modules': 'off',
-			'import/unambiguous': 'off',
-			'import/export': 'off',
-			'import/no-deprecated': 'off',
-			'import/no-empty-named-blocks': 'off',
-			'import/no-extraneous-dependencies': 'off',
-			'import/no-mutable-exports': 'off',
-			'import/no-named-as-default': 'off',
-			'import/no-named-as-default-member': 'off',
-			'import/no-unused-modules': 'off',
-			'import/consistent-type-specifier-style': 'off',
-			'import/dynamic-import-chunkname': 'off',
-			'import/exports-last': 'off',
-			'import/extensions': 'off',
-			'import/first': 'off',
-			'import/group-exports': 'off',
-			'import/imports-first': 'off',
-			'import/max-dependencies': 'off',
-			'import/newline-after-import': 'off',
-			'import/no-anonymous-default-export': 'off',
-			'import/no-default-export': 'off',
-			'import/no-duplicates': 'off',
-			'import/no-named-default': 'off',
-			'import/no-named-export': 'off',
-			'import/no-namespace': 'off',
-			'import/no-unassigned-import': 'off',
-			'import/order': 'off',
-			'import/prefer-default-export': 'off',
+			indent: 'off',
 		},
 	},
 ])

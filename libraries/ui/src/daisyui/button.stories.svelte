@@ -34,61 +34,61 @@ const { Story } = defineMeta({
 	{@render multiple()}
 </Story>
 
-<Story name="Primary / Default">
+<Story name="Primary">
 	{#snippet children()}
 		<Button variant="primary">Primary Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Secondary / Default" args={{ variant: 'secondary' }}>
+<Story name="Secondary" args={{ variant: 'secondary' }}>
 	{#snippet children(args)}
 		<Button {...args}>Secondary Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Outline / Default" args={{ variant: 'outline' }}>
+<Story name="Outline" args={{ variant: 'outline' }}>
 	{#snippet children(args)}
 		<Button {...args}>Outline Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Text / Default" args={{ variant: 'text' }}>
+<Story name="Text" args={{ variant: 'text' }}>
 	{#snippet children(args)}
 		<Button {...args}>Text Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Accent / Default" args={{ variant: 'accent' }}>
+<Story name="Accent" args={{ variant: 'accent' }}>
 	{#snippet children(args)}
 		<Button {...args}>Accent Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Info / Default" args={{ variant: 'info' }}>
+<Story name="Info" args={{ variant: 'info' }}>
 	{#snippet children(args)}
 		<Button {...args}>Info Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Success / Default" args={{ variant: 'success' }}>
+<Story name="Success" args={{ variant: 'success' }}>
 	{#snippet children(args)}
 		<Button {...args}>Success Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Warning / Default" args={{ variant: 'warning' }}>
+<Story name="Warning" args={{ variant: 'warning' }}>
 	{#snippet children(args)}
 		<Button {...args}>Warning Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Error / Default" args={{ variant: 'error' }}>
+<Story name="Error" args={{ variant: 'error' }}>
 	{#snippet children(args)}
 		<Button {...args}>Error Button</Button>
 	{/snippet}
 </Story>
 
-<Story name="Disabled / Default" args={{ disabled: true, variant: 'primary' }}>
+<Story name="Disabled" args={{ disabled: true, variant: 'primary' }}>
 	{#snippet children(args)}
 		<Button {...args}>Disabled Primary Button</Button>
 	{/snippet}

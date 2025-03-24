@@ -1,4 +1,6 @@
 ---
 description: 
-globs: **/e2e/*.test.js
+globs: **/e2e/*.js
+alwaysApply: false
 ---
+[playwright.md](mdc:.cursor/docs/playwright.md)

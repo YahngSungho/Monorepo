@@ -66,8 +66,8 @@ jobs:
         if: success() || failure() # run this step even if previous step failed
         continue-on-error: true
         with:
-          name: Vitest Tests # Name of the check run which will be created
-          path: '**/vitest-report/*.xml' # Path to test results
+          name: Vitest Report # Name of the check run which will be created
+          path: '**/vitest-report/**' # Path to test results
           reporter: jest-junit # Format of test results
 
       - name: Test Report
@@ -75,8 +75,17 @@ jobs:
         if: success() || failure() # run this step even if previous step failed
         continue-on-error: true
         with:
-          name: Playwright Tests # Name of the check run which will be created
-          path: '**/playwright-report/*.xml' # Path to test results
+          name: Playwright Report # Name of the check run which will be created
+          path: '**/playwright-report/**' # Path to test results
+          reporter: jest-junit # Format of test results
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure() # run this step even if previous step failed
+        continue-on-error: true
+        with:
+          name: Playwright Results # Name of the check run which will be created
+          path: '**/test-results/**' # Path to test results
           reporter: jest-junit # Format of test results
 
       - uses: actions/upload-artifact@v4

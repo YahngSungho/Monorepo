@@ -8,8 +8,8 @@
 	"main": "index.js",
 	"scripts": {
 		"depCheck": "npx depcheck",
-		"eslint": "eslint **/*.{js,ts,svelte}",
-		"eslint-fix": "eslint --fix **/*.{js,ts,svelte} || true",
+		"eslint": "eslint .",
+		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"test:unit": "vitest run"
 	},

@@ -10,7 +10,8 @@
 		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook --affected",
 		"fix-mismatches": "pnpm dlx syncpack fix-mismatches",
 		"format": "turbo run format --affected",
-		"format-all": "prettier . --write --ignore-unknown --ignore-path .prettierignore",
+		"format-all": "pnpm run format-all-path .",
+		"format-all-path": "prettier --write --ignore-unknown --ignore-path .prettierignore",
 		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
 		"lint": "turbo run check eslint stylelint --affected",
 		"lint-fix": "turbo run eslint-fix  --affected && turbo run stylelint-fix --affected && turbo run format --affected",
@@ -24,16 +25,20 @@
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
 	},
 	"dependencies": {
-		"@sentry/sveltekit": "^9.5.0"
+		"@sentry/sveltekit": "^9.5.0",
+		"zod": "^3.24.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.26.7",
 		"@double-great/stylelint-a11y": "^3.0.3",
 		"@eslint/compat": "^1.2.6",
-		"@eslint/eslintrc": "^3.2.0",
-		"@eslint/js": "^9.22.0",
+		"@eslint/eslintrc": "^3.3.1",
+		"@eslint/js": "^9.23.0",
+		"@eslint/json": "^0.11.0",
 		"@eslint/markdown": "^6.3.0",
+		"@fast-check/poisoning": "^0.2.3",
 		"@fast-check/vitest": "^0.1.5",
+		"@fast-check/worker": "^0.4.2",
 		"@inlang/cli": "^2.18.1",
 		"@inlang/paraglide-js": "2.0.2",
 		"@intlify/eslint-plugin-svelte": "^0.5.0",
@@ -46,7 +51,7 @@
 		"@types/eslint": "^9.6.1",
 		"@typescript-eslint/parser": "^8.26.1",
 		"dotenv": "^16.4.7",
-		"eslint": "^9.22.0",
+		"eslint": "^9.23.0",
 		"eslint-config-prettier": "^10.1.1",
 		"eslint-config-problems": "^9.0.0",
 		"eslint-config-turbo": "^2.4.4",
@@ -84,6 +89,7 @@
 		"eslint-plugin-unicorn": "^57.0.0",
 		"eslint-plugin-xstate": "^3.2.1",
 		"eslint-plugin-yml": "^1.16.0",
+		"fast-check": "^4.0.0",
 		"globals": "^16.0.0",
 		"husky": "^9.1.7",
 		"i": "^0.3.7",
@@ -137,7 +143,8 @@
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.0.9",
 		"wrangler": "^3.112.0",
-		"yaml-eslint-parser": "^1.3.0"
+		"yaml-eslint-parser": "^1.3.0",
+		"zod-fast-check": "^0.10.1"
 	},
 	"engines": {
 		"node": "23.5.0"

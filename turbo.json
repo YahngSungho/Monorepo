@@ -37,12 +37,12 @@
 		"test:e2e": {
 			"dependsOn": ["transit", "build"],
 			"env": ["PLAYWRIGHT_BROWSERS_PATH"],
-			"outputs": ["playwright-report"],
+			"outputs": ["playwright-report/**", "test-results/**"],
 			"passThroughEnv": ["PLAYWRIGHT_*", "CI"]
 		},
 		"test:unit": {
 			"dependsOn": ["transit"],
-			"outputs": ["vitest-report"]
+			"outputs": ["vitest-report/**"]
 		},
 		"transit": {
 			"dependsOn": ["^transit"]
