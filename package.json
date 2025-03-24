@@ -25,7 +25,7 @@
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
 	},
 	"dependencies": {
-		"@sentry/sveltekit": "^9.5.0",
+		"@sentry/sveltekit": "^9.9.0",
 		"zod": "^3.24.1"
 	},
 	"devDependencies": {
