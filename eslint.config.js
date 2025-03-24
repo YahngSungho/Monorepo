@@ -125,12 +125,7 @@ export default defineFlatConfig([
 	nounsanitized.configs.recommended,
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
-	...jsonc.configs['flat/base'],
-	...jsonc.configs['flat/recommended-with-json'],
-	...jsonc.configs['flat/recommended-with-jsonc'],
-	...jsonc.configs['flat/recommended-with-json5'],
-	...jsonSchema.configs['flat/recommended'],
-	...markdown.configs.recommended,
+
 	...flatCompat.extends(
 		'plugin:xstate/all',
 		'plugin:lodash/recommended',
@@ -378,6 +373,12 @@ export default defineFlatConfig([
 			// ...
 		},
 	},
+
+	...jsonc.configs['flat/base'],
+	...jsonc.configs['flat/recommended-with-json'],
+	...jsonc.configs['flat/recommended-with-jsonc'],
+	...jsonc.configs['flat/recommended-with-json5'],
+	...jsonSchema.configs['flat/recommended'],
 	{
 		files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
 
@@ -404,6 +405,8 @@ export default defineFlatConfig([
 			parser: parser_toml,
 		},
 	},
+
+	...markdown.configs.recommended,
 	{
 		files: ['**/*.mdx'],
 
@@ -424,6 +427,14 @@ export default defineFlatConfig([
 			...mdx.flatCodeBlocks.rules,
 			// if you want to override some rules for code blocks
 		},
+	},
+
+	{
+		files: ['**/*.md'],
+		plugins: {
+			markdown,
+		},
+		processor: 'markdown/markdown',
 	},
 
 	...jsonc.configs['flat/prettier'],
