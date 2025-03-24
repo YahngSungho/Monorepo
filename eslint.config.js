@@ -253,6 +253,14 @@ export default defineFlatConfig([
 		processor: 'markdown/markdown',
 	},
 
+	{
+		files: ['**/*.md'],
+		plugins: {
+			markdown,
+		},
+		processor: 'markdown/markdown',
+	},
+
 	...jsonc.configs['flat/prettier'],
 	...yml.configs['flat/prettier'],
 	...svelte.configs.prettier,
