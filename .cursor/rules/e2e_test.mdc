@@ -3,4 +3,4 @@ description:
 globs: **/e2e/*.js
 alwaysApply: false
 ---
-[playwright.md](mdc:.cursor/docs/playwright.md)
+[playwright.md](mdc:.cursor/docs/playwright.md) [playwright-with-fastCheck.md](mdc:.cursor/guides/playwright-with-fastCheck.md)

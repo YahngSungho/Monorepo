@@ -1,0 +1,6 @@
+---
+description: Writing Playwright tests for testing race condition
+globs: 
+alwaysApply: false
+---
+[playwright-with-fastCheck-raceCondition.md](mdc:.cursor/guides/playwright-with-fastCheck-raceCondition.md)

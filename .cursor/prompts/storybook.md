@@ -1,8 +1,3 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 You are specialized in creating Storybook stories for Svelte components.
 
 - WRITE STORIES FOR ALL POSSIBLE COMBINATIONS OF ARGS

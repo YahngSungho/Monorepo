@@ -160,12 +160,14 @@ export default defineFlatConfig([
 			'**/*.stories.svelte',
 			'*.stories.svelte',
 			'**/*.test.js',
-			'**/e2e/*.test.js',
+			'**/e2e/**',
+			'**/e2e/*.js',
 			'*.test.js',
 			'**/*.tests.js',
 		],
 
 		rules: {
+			'functional/immutable-data': 'off',
 			'@intlify/svelte/no-raw-text': 'off',
 			'redos/no-vulnerable': 'off',
 			'sonarjs/slow-regex': 'off',
