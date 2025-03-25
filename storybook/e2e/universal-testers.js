@@ -34,9 +34,8 @@ import fc from 'fast-check'
  *   `'#storybook-root'`
  * @property {number} [waitAfterInteraction=100] - 각 인터랙션 후 대기 시간(ms). Default is `100`
  * @property {boolean} [resetComponent=false] - 반복마다 컴포넌트 상태 초기화를 할 것인지 여부. Default is `false`
- * @property {string} [debugLogDir='./test-results/debug-logs'] - 스크린샷 저장 디렉토리. Default is
+ * @property {string} [debugLogDir='./test-results/debug-logs'] - 디버그 로그 저장 디렉토리. Default is
  *   `'./test-results/debug-logs'`
- * @property {boolean} [captureScreenshots=true] - 실패 시 스크린샷 캡처 여부. Default is `true`
  * @property {boolean} [verbose=false] - 상세 로그 출력 여부. Default is `false`
  */
 
@@ -55,7 +54,6 @@ import fc from 'fast-check'
  * @property {{ message: string; stack: string }[]} errors - 발생한 에러 목록
  * @property {string} [stateSummary] - 상태 요약
  * @property {boolean} [noInteractions] - 인터랙션 없음 여부
- * @property {string} [screenshotPath] - 스크린샷 저장 경로
  * @property {string} startTime - 시작 시간
  * @property {string} [endTime] - 종료 시간
  * @property {{ isVisible: boolean; summary: string }} [finalState] - 최종 상태
@@ -75,7 +73,6 @@ import fc from 'fast-check'
  * @typedef {Object} DebugInfo
  * @property {string} componentName - 컴포넌트 이름
  * @property {{ message: string; stack: string }[]} errors - 발생한 에러 목록
- * @property {string} [screenshotPath] - 스크린샷 저장 경로
  * @property {object} [counterExample] - Fast-check의 반례 데이터
  * @property {string} [state] - DOM 상태 요약
  * @property {string} [timestamp] - 발생 시간
@@ -702,29 +699,6 @@ async function saveDebugInfo(dir, filename, data) {
 }
 
 /**
- * 안전한 스크린샷 캡처 함수
- *
- * @param {import('@playwright/test').Page} page - Playwright 페이지 객체
- * @param {string} screenshotPath - 저장 경로
- * @param {object} options - 스크린샷 옵션
- * @returns {Promise<{ success: boolean; path?: string; error?: Error }>} 캡처 결과
- */
-async function captureScreenshot(page, screenshotPath, options = {}) {
-	try {
-		// 디렉토리 생성
-		const dir = path.dirname(screenshotPath)
-		await fs.mkdir(dir, { recursive: true })
-
-		// 스크린샷 캡처
-		await page.screenshot({ path: screenshotPath, ...options })
-		return { success: true, path: screenshotPath }
-	} catch (error) {
-		console.error(`스크린샷 캡처 실패: ${error.message}`)
-		return { success: false, error }
-	}
-}
-
-/**
  * 현재 시간을 파일명으로 사용하기 좋은 형식으로 반환 파일 이름에 사용할 수 없는 문자를 제거한 타임스탬프를 생성합니다.
  *
  * @returns {string} 포맷된 시간 문자열 (예: '2023-04-25T14-30-22')
@@ -761,8 +735,8 @@ function extractComponentName(url) {
  * @param {Interaction[]} shrunkSequence - 축소된 인터랙션 시퀀스
  */
 function analyzeShrunkSequence(shrunkSequence) {
-	console.log('----------- 축소된 실패 케이스 분석 -----------')
-	console.log(`총 ${shrunkSequence.length}개의 인터랙션이 필요합니다`)
+	console.error('----------- 축소된 실패 케이스 분석 -----------')
+	console.error(`총 ${shrunkSequence.length}개의 인터랙션이 필요합니다`)
 
 	// 인터랙션 타입별 분류
 	const typeCount = {}
@@ -770,30 +744,30 @@ function analyzeShrunkSequence(shrunkSequence) {
 		typeCount[interaction.type] = (typeCount[interaction.type] || 0) + 1
 	}
 
-	console.log('인터랙션 타입 분포:')
+	console.error('인터랙션 타입 분포:')
 	for (const [type, count] of Object.entries(typeCount)) {
-		console.log(`- ${type}: ${count}개`)
+		console.error(`- ${type}: ${count}개`)
 	}
 
 	// 핵심 인터랙션 식별
 	if (shrunkSequence.length === 1) {
-		console.log('단일 인터랙션으로 실패를 재현할 수 있습니다:')
-		console.log(`- ${shrunkSequence[0].type} on ${shrunkSequence[0].selector}`)
+		console.error('단일 인터랙션으로 실패를 재현할 수 있습니다:')
+		console.error(`- ${shrunkSequence[0].type} on ${shrunkSequence[0].selector}`)
 		if (shrunkSequence[0].value !== undefined) {
-			console.log(`  값: ${shrunkSequence[0].value}`)
+			console.error(`  값: ${shrunkSequence[0].value}`)
 		}
 	} else {
-		console.log('주요 인터랙션 시퀀스:')
+		console.error('주요 인터랙션 시퀀스:')
 		for (let i = 0; i < shrunkSequence.length; i++) {
 			const interaction = shrunkSequence[i]
-			console.log(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
+			console.error(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
 			if (interaction.value !== undefined) {
-				console.log(`   값: ${interaction.value}`)
+				console.error(`   값: ${interaction.value}`)
 			}
 		}
 	}
 
-	console.log('---------------------------------------------')
+	console.error('---------------------------------------------')
 }
 
 /**
@@ -805,7 +779,7 @@ function analyzeShrunkSequence(shrunkSequence) {
  * @param {number} waitTime - 대기 시간
  */
 async function debugWithShrunkExample(page, shrunkSequence, componentSelector, waitTime) {
-	console.log('축소된 반례를 사용한 디버깅 시작...')
+	console.error('----------- 축소된 실패 케이스 디버깅 시작 -----------')
 
 	// 컴포넌트 상태 초기화
 	await resetComponentState(page)
@@ -842,7 +816,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 	try {
 		// 각 인터랙션 단계별 실행 및 상태 확인
 		for (let i = 0; i < shrunkSequence.length; i++) {
-			console.log(
+			console.error(
 				`단계 ${i + 1}/${shrunkSequence.length}: ${shrunkSequence[i].type} on ${shrunkSequence[i].selector}`,
 			)
 
@@ -853,7 +827,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			try {
 				// 인터랙션 실행
 				const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
-				console.log(`단계 ${i + 1} 인터랙션 실행: ${result.message || 'OK'}`)
+				console.error(`단계 ${i + 1} 인터랙션 실행: ${result.message || 'OK'}`)
 
 				// 비동기 작업이나 이벤트 핸들러에서 발생하는 에러를 감지하기 위해 추가 대기 시간 설정
 				// 이 대기 시간 동안 이벤트 핸들러가 실행되고 에러가 발생할 수 있음
@@ -861,7 +835,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 
 				// 컴포넌트 상태 확인
 				const state = await verifyComponentState(page, componentSelector)
-				console.log(`상태: ${state.isVisible ? '정상' : '문제있음'} - ${state.summary}`)
+				console.error(`상태: ${state.isVisible ? '정상' : '문제있음'} - ${state.summary}`)
 
 				// 에러 발생 여부 확인
 				const hasErrors = pageErrors.length > 0 || consoleErrors.length > 0
@@ -882,16 +856,6 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			} catch (error) {
 				console.error(`단계 ${i + 1} 실패: ${error.message}`)
 				console.error(`실패 지점 발견: 단계 ${i + 1}`)
-
-				// 실패 시 스크린샷 캡처
-				const timestamp = getTimestamp()
-				const debugLogDir = './test-results/debug-logs'
-				const screenshotPath = path.join(debugLogDir, `failure-step${i + 1}-${timestamp}.png`)
-				const screenshotResult = await captureScreenshot(page, screenshotPath)
-				if (screenshotResult.success) {
-					console.error(`실패 스크린샷: ${screenshotResult.path}`)
-				}
-
 				break
 			}
 		}
@@ -901,7 +865,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		page.removeListener('console', consoleErrorHandler)
 	}
 
-	console.log('축소된 반례 디버깅 완료')
+	console.error('----------- 축소된 반례 디버깅 완료 -----------')
 }
 
 /**
@@ -920,7 +884,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 		waitAfterInteraction = 100,
 		resetComponent = false,
 		debugLogDir = './test-results/debug-logs',
-		captureScreenshots = true,
 		verbose = false,
 	} = config
 
@@ -975,7 +938,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 				 * 	startTime: string
 				 * 	finalState?: string
 				 * 	endTime?: string
-				 * 	screenshotPath?: string
 				 * }}
 				 */
 				const sequenceInfo = {
@@ -1077,22 +1039,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 			} else {
 				console.error('반례를 찾을 수 없습니다')
 			}
-			// 실패 시 스크린샷 캡처
-			if (captureScreenshots) {
-				const timestamp = getTimestamp()
-				const componentName = extractComponentName(page.url())
-				const screenshotFilename = `failure-summary-${componentName}-i${iteration + 1}-${timestamp}.png`
-				const screenshotPath = path.join(debugLogDir, screenshotFilename)
-
-				// 비동기 작업 전에 경로 설정
-				iterationInfo.screenshotPath = screenshotPath
-
-				// 안전한 스크린샷 캡처 함수 사용
-				const screenshotResult = await captureScreenshot(page, screenshotPath, { fullPage: true })
-				if (screenshotResult.success && config.verbose) {
-					console.log(`실패 케이스 스크린샷: ${screenshotResult.path}`)
-				}
-			}
 		}
 	} catch (fcError) {
 		// fast-check 자체 에러 발생 시
@@ -1135,8 +1081,7 @@ async function testUIComponent(page, config = {}) {
 	// 기본 설정값과 사용자 정의 설정 병합
 	const {
 		iterationCount = 3, // 테스트 반복 횟수
-		debugLogDir = './test-results/debug-logs', // 스크린샷 저장 경로
-		captureScreenshots = true, // 실패 시 스크린샷 캡처 여부
+		debugLogDir = './test-results/debug-logs', // 디버그 로그 저장 경로
 	} = config
 
 	const componentName = extractComponentName(page.url())
@@ -1246,42 +1191,24 @@ async function testUIComponent(page, config = {}) {
 
 	const latestTestFailureInfo = debugInfo.iterations.at(-1)?.failureInfo
 
-	// 실패 시 최종 스크린샷 캡처 및 상세 정보 출력
-	if (!isSuccessful && captureScreenshots) {
-		// 스크린샷 경로는 PNG 확장자를 사용
-		const screenshotPath =
-			debugInfo.debugFilePath ?
-				`${debugInfo.debugFilePath.replace(/\.json$/, '.png')}`
-			:	path.join(debugLogDir, `test-${debugInfo.componentName}-${debugInfo.timestamp}.png`)
+	// 축소된 반례 정보 출력
+	if (!isSuccessful && latestTestFailureInfo && latestTestFailureInfo.counterExample) {
+		console.log('\n--------- 테스트 실패 정보 (축소된 반례) ---------')
+		console.log(`컴포넌트: ${debugInfo.componentName}`)
+		console.log('최소 실패 케이스:')
 
-		// 안전한 스크린샷 캡처 함수 사용
-		const screenshotResult = await captureScreenshot(page, screenshotPath, { fullPage: true })
-		if (screenshotResult.success) {
-			debugInfo.screenshotPath = screenshotResult.path // 디버그 정보에 스크린샷 경로 저장
-			if (config.verbose) {
-				console.log(`최종 상태 스크린샷 저장: ${screenshotResult.path}`)
+		// 축소된 반례 출력
+		const shrunkSequence = latestTestFailureInfo.counterExample
+		for (let i = 0; i < shrunkSequence.length; i++) {
+			const interaction = shrunkSequence[i]
+			console.log(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
+			if (interaction.value !== undefined) {
+				console.log(`   값: ${interaction.value}`)
 			}
 		}
 
-		// 축소된 반례 정보 출력
-		if (latestTestFailureInfo && latestTestFailureInfo.counterExample) {
-			console.log('\n--------- 테스트 실패 정보 (축소된 반례) ---------')
-			console.log(`컴포넌트: ${debugInfo.componentName}`)
-			console.log('최소 실패 케이스:')
-
-			// 축소된 반례 출력
-			const shrunkSequence = latestTestFailureInfo.counterExample
-			for (let i = 0; i < shrunkSequence.length; i++) {
-				const interaction = shrunkSequence[i]
-				console.log(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
-				if (interaction.value !== undefined) {
-					console.log(`   값: ${interaction.value}`)
-				}
-			}
-
-			console.log(`에러: ${errors.map((e) => e.message).join('\n')}`)
-			console.log('--------------------------------------------------\n')
-		}
+		console.log(`에러: ${errors.map((e) => e.message).join('\n')}`)
+		console.log('--------------------------------------------------\n')
 	}
 
 	// 테스트 결과 반환
