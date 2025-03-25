@@ -1,3 +1,4 @@
+/* eslint-disable functional/immutable-data */
 /**
  * @file Storybook UI 컴포넌트에 대한 범용 테스트 유틸리티 - 고급 디버깅 개선 버전 모든 Presentational 컴포넌트에 적용 가능한 범용성을 목표로
  *   작성됨.
@@ -291,9 +292,33 @@ async function resetComponentState(page) {
  * @property {any} [value] - 인터랙션 결과 값 (필요한 경우)
  * @property {string} [message] - 추가 정보
  * @property {string} [errorStack] - 에러 스택 추적
+ * @property {Error} [error] - 원본 에러 객체
  */
 
 let currentInteraction // 현재 실행 중인 인터랙션을 추적하기 위한 변수
+
+/**
+ * 안전한 난수 생성을 위한 유틸리티 함수
+ *
+ * @param {number} min - 최소값 (포함)
+ * @param {number} max - 최대값 (포함)
+ * @returns {number} Min과 max 사이의 난수
+ */
+function getSecureRandom(min, max) {
+	// crypto 모듈이 있는 환경에서는 이를 사용하는 것이 더 안전하나,
+	// 간단한 테스트 용도로는 Math.random을 사용해도 괜찮음
+	return Math.floor(min + Math.random() * (max - min + 1))
+}
+
+/**
+ * 안전한 임의 문자열 생성 함수
+ *
+ * @param {number} length - 생성할 문자열 길이
+ * @returns {string} 생성된 임의 문자열
+ */
+function getSecureRandomString(length = 8) {
+	return Array.from({ length }, () => ((Math.random() * 36) | 0).toString(36)).join('')
+}
 
 /**
  * 인터랙션 실행 - 주어진 상호작용을 페이지에서 실제로 수행합니다. 각 인터랙션 타입(클릭, 입력, 드래그 등)에 맞는 Playwright 액션을 실행합니다.
@@ -305,149 +330,214 @@ let currentInteraction // 현재 실행 중인 인터랙션을 추적하기 위�
  * @returns {Promise<InteractionResult>} 인터랙션 실행 결과
  */
 async function executeInteraction(page, interaction, waitTime, verbose = false) {
-	// 인터랙션 결과 객체 초기화
+	// 결과 객체 초기화
 	const result = {
 		success: false,
 		type: interaction.type,
 		selector: interaction.selector,
 		timestamp: new Date().toISOString(),
+		// 상세 정보를 위한 필드 추가
+		details: {},
+	}
+
+	// 현재 실행 중인 인터랙션 정보 설정
+	currentInteraction = {
+		...interaction,
+		timestamp: result.timestamp,
+		id: `${interaction.type}-${interaction.selector}-${result.timestamp}`,
+	}
+
+	// 상세 로그 출력
+	if (verbose) {
+		console.log(`실행 인터랙션: ${interaction.type} on ${interaction.selector}`)
 	}
 
 	try {
-		// 현재 실행 중인 인터랙션 정보 설정
-		currentInteraction = {
-			...interaction,
-			timestamp: result.timestamp,
-			id: `${interaction.type}-${interaction.selector}-${result.timestamp}`,
-		}
-
-		// 상세 로그 모드에서는 실행 중인 인터랙션 정보 출력
-		if (verbose) {
-			console.log(`실행 인터랙션: ${interaction.type} on ${interaction.selector}`)
-		}
-
 		// 대상 요소가 존재하는지 확인
 		const elementExists = (await page.$(interaction.selector)) !== null
 		if (!elementExists) {
-			result.errorMessage = '요소가 페이지에 존재하지 않음'
+			const error = new Error(`요소가 페이지에 존재하지 않음: ${interaction.selector}`)
+			result.errorMessage = error.message
+			result.errorStack = error.stack
+			return result // 요소가 없을 경우 결과 객체 반환, 예외를 던지지 않음
+		}
+
+		// 요소의 상호작용 가능 상태 확인 (visible, enabled 등)
+		const isVisible = await page.isVisible(interaction.selector)
+		if (!isVisible) {
+			const error = new Error(`요소가 화면에 표시되지 않음: ${interaction.selector}`)
+			result.errorMessage = error.message
+			result.errorStack = error.stack
+			return result
+		}
+
+		// 요소가 disabled 상태인지 확인 (버튼, 입력 필드 등에 적용)
+		const isDisabled = await page.evaluate((selector) => {
+			const element = document.querySelector(selector)
+			if (!element) return false
+			// disabled 속성이 있는지 확인 (HTMLInputElement, HTMLButtonElement 등에만 존재)
+			return element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true'
+		}, interaction.selector)
+
+		if (isDisabled) {
+			const error = new Error(`요소가 비활성화됨: ${interaction.selector}`)
+			result.errorMessage = error.message
+			result.errorStack = error.stack
 			return result
 		}
 
 		// 인터랙션 타입에 따른 처리
+		await executeInteractionByType(page, interaction, result)
+
+		// 인터랙션 후 지정된 시간만큼 대기
+		await page.waitForTimeout(waitTime)
+		result.success = true
+	} catch (error) {
+		// 에러 정보 기록
+		result.errorMessage = error.message
+		result.errorStack = error.stack
+		result.error = error // 원본 에러 객체도 보존
+
+		if (verbose) {
+			console.error(
+				`인터랙션 실행 중 오류 발생 (${interaction.type} on ${interaction.selector}): ${error.message}`,
+			)
+		}
+	}
+
+	return result // 항상 결과 객체 반환, 호출자가 성공/실패 처리
+}
+
+/**
+ * 인터랙션 타입에 따라 적절한 실행 함수 호출 executeInteraction의 복잡도를 줄이기 위해 분리
+ *
+ * @param {import('@playwright/test').Page} page - Playwright 페이지 객체
+ * @param {Interaction} interaction - 실행할 인터랙션
+ * @param {InteractionResult} result - 결과를 저장할 객체
+ */
+async function executeInteractionByType(page, interaction, result) {
+	try {
 		switch (interaction.type) {
 			case 'click': {
-				// 요소 클릭 수행
-				await page.click(interaction.selector)
+				await page.click(interaction.selector, { timeout: 5000 }) // 타임아웃 추가
 				result.message = '클릭 성공'
 				break
 			}
 			case 'drag': {
-				// 요소 드래그 앤 드롭 수행
 				await page.hover(interaction.selector)
 				await page.dragAndDrop(interaction.selector, interaction.selector, {
 					targetPosition: { x: 10, y: 10 },
+					timeout: 5000, // 타임아웃 추가
 				})
 				result.message = '드래그 성공'
 				break
 			}
 			case 'fill': {
-				// 입력 필드에 값 채우기 수행
-				let value
-				// 필드 타입에 따라 적절한 테스트 값 생성
-				switch (interaction.valueType) {
-					case 'email': {
-						value = `test${Math.random().toString(36).slice(2)}@example.com`
-						break
-					}
-					case 'number': {
-						value = Math.floor(Math.random() * 100).toString()
-						break
-					}
-					case 'textarea': {
-						value = `테스트 텍스트 ${Math.random().toString(36).slice(2)}`
-						break
-					}
-					default: {
-						value = `테스트 입력 ${Math.random().toString(36).slice(2)}`
-					}
-				}
-				await page.fill(interaction.selector, value)
-				result.value = value
-				result.message = `값 입력 성공: ${value}`
+				await executeFillInteraction(page, interaction, result)
 				break
 			}
 			case 'hover': {
-				// 요소에 마우스 호버 수행
-				await page.hover(interaction.selector)
+				await page.hover(interaction.selector, { timeout: 5000 }) // 타임아웃 추가
 				result.message = '호버 성공'
 				break
 			}
 			case 'select': {
-				// 선택 상자에서 옵션 선택
-				if (interaction.options && interaction.options.length > 0) {
-					// 랜덤하게 옵션 선택
-					const randomIndex = Math.floor(Math.random() * interaction.options.length)
-					const selectedValue = interaction.options[randomIndex]
-					await page.selectOption(interaction.selector, selectedValue)
-					result.value = selectedValue
-					result.message = `옵션 선택 성공: ${selectedValue}`
-				} else {
-					result.errorMessage = '선택 가능한 옵션이 없음'
-					return result
-				}
+				await executeSelectInteraction(page, interaction, result)
 				break
 			}
 			case 'setRange': {
-				// 범위 슬라이더 값 설정
-				const min = interaction.min || 0
-				const max = interaction.max || 100
-				const newValue = Math.floor(min + Math.random() * (max - min))
-
-				// JavaScript 평가를 통해 범위 값 설정 및 이벤트 발생
-				await page.$eval(
-					interaction.selector,
-					(el, val) => {
-						// input 태그이고 범위 또는 숫자 타입인 경우 값 설정
-						if (
-							el.tagName === 'INPUT' &&
-							el.hasAttribute('type') &&
-							(el.getAttribute('type') === 'range' || el.getAttribute('type') === 'number')
-						) {
-							// setAttribute를 사용하여 value 설정
-							el.setAttribute('value', String(val))
-						}
-						// 값 변경 후 이벤트 발생시켜 변경을 감지하도록 함
-						el.dispatchEvent(new Event('input', { bubbles: true }))
-						el.dispatchEvent(new Event('change', { bubbles: true }))
-					},
-					newValue,
-				)
-				result.value = newValue
-				result.message = `범위 값 설정 성공: ${newValue}`
+				await executeRangeInteraction(page, interaction, result)
 				break
 			}
 			default: {
-				// 지원하지 않는 인터랙션 타입 처리
-				result.errorMessage = `지원하지 않는 인터랙션 타입: ${interaction.type}`
-				return result
+				throw new Error(`지원하지 않는 인터랙션 타입: ${interaction.type}`)
 			}
 		}
-
-		// 인터랙션 후 지정된 시간만큼 대기 (DOM 업데이트 및 애니메이션 완료를 위해)
-		await page.waitForTimeout(waitTime)
 		result.success = true
 	} catch (error) {
-		// 인터랙션 실행 중 발생한 오류 처리
 		result.errorMessage = error.message
 		result.errorStack = error.stack
-		console.error(
-			`인터랙션 실행 중 오류 발생 (${interaction.type} on ${interaction.selector}): ${error.message}`,
-		)
-	} finally {
-		// 인터랙션 실행 완료 후 currentInteraction 유지
-		// (에러 핸들러에서 참조할 수 있도록)
+		result.error = error
+		result.success = false
+		throw error // 상위 함수에서 처리할 수 있도록 에러 전파
 	}
-	return result
+}
+
+/** Fill 인터랙션 실행 */
+async function executeFillInteraction(page, interaction, result) {
+	// 생성된 값을 사용하거나 없으면 새로 생성
+	let { value } = interaction
+	if (value === undefined) {
+		// 필드 타입에 따라 적절한 테스트 값 생성
+		switch (interaction.valueType) {
+			case 'email': {
+				value = `test${getSecureRandomString()}@example.com`
+				break
+			}
+			case 'number': {
+				value = getSecureRandom(0, 100).toString()
+				break
+			}
+			case 'textarea': {
+				value = `테스트 텍스트 ${getSecureRandomString()}`
+				break
+			}
+			default: {
+				value = `테스트 입력 ${getSecureRandomString()}`
+			}
+		}
+	}
+	await page.fill(interaction.selector, value)
+	result.value = value
+	result.message = `값 입력 성공: ${value}`
+}
+
+/** Select 인터랙션 실행 */
+async function executeSelectInteraction(page, interaction, result) {
+	if (interaction.value !== undefined) {
+		// 생성된 값 사용
+		await page.selectOption(interaction.selector, interaction.value)
+		result.value = interaction.value
+		result.message = `옵션 선택 성공: ${interaction.value}`
+	} else if (interaction.options && interaction.options.length > 0) {
+		// 랜덤하게 옵션 선택
+		const randomIndex = getSecureRandom(0, interaction.options.length - 1)
+		const selectedValue = interaction.options[randomIndex]
+		await page.selectOption(interaction.selector, selectedValue)
+		result.value = selectedValue
+		result.message = `옵션 선택 성공: ${selectedValue}`
+	} else {
+		throw new Error('선택 가능한 옵션이 없음')
+	}
+}
+
+/** Range 인터랙션 실행 */
+async function executeRangeInteraction(page, interaction, result) {
+	const min = interaction.min || 0
+	const max = interaction.max || 100
+	const newValue = interaction.value !== undefined ? interaction.value : getSecureRandom(min, max)
+
+	// JavaScript 평가를 통해 범위 값 설정 및 이벤트 발생
+	await page.$eval(
+		interaction.selector,
+		(el, val) => {
+			// input 태그이고 범위 또는 숫자 타입인 경우 값 설정
+			if (
+				el.tagName === 'INPUT' &&
+				el.hasAttribute('type') &&
+				(el.getAttribute('type') === 'range' || el.getAttribute('type') === 'number')
+			) {
+				// setAttribute를 사용하여 value 설정
+				el.setAttribute('value', String(val))
+			}
+			// 값 변경 후 이벤트 발생시켜 변경을 감지하도록 함
+			el.dispatchEvent(new Event('input', { bubbles: true }))
+			el.dispatchEvent(new Event('change', { bubbles: true }))
+		},
+		newValue,
+	)
+	result.value = newValue
+	result.message = `범위 값 설정 성공: ${newValue}`
 }
 
 /**
@@ -458,16 +548,98 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
  * @returns {fc.Arbitrary<Interaction[]>} 인터랙션 시퀀스 arbitrary
  */
 function createInteractionSequenceArbitrary(interactions, length) {
-	// 가용 인터랙션이 없는 경우 빈 배열 반환
 	if (interactions.length === 0) {
 		return fc.constant([])
 	}
 
-	// 모든 가능한 인터랙션 중에서 무작위로 선택하는 arbitrary 생성
-	const interactionArbitrary = fc.constantFrom(...interactions)
-	// 인터랙션 배열(시퀀스)을 생성하는 arbitrary 생성
-	// 길이는 1~length 사이가 됨
-	return fc.array(interactionArbitrary, { minLength: 1, maxLength: length + interactions.length })
+	// 1단계: 인터랙션 타입별 Arbitrary 생성
+	const fillInteractions = interactions.filter((i) => i.type === 'fill')
+	const clickInteractions = interactions.filter((i) => i.type === 'click')
+	const hoverInteractions = interactions.filter((i) => i.type === 'hover')
+	const selectInteractions = interactions.filter((i) => i.type === 'select')
+	const rangeInteractions = interactions.filter((i) => i.type === 'setRange')
+	const dragInteractions = interactions.filter((i) => i.type === 'drag')
+
+	// 타입별 특화된 arbitrary 생성
+	const arbitraries = []
+
+	// fill 타입 처리 - 값 생성 포함
+	if (fillInteractions.length > 0) {
+		const fillArb = fc.constantFrom(...fillInteractions).chain((interaction) => {
+			// 입력 타입에 따른 적절한 값 생성
+			let valueArb
+			switch (interaction.valueType) {
+				case 'email':
+					valueArb = fc.emailAddress() // 자동으로 단순한 이메일로 축소됨
+					break
+				case 'number':
+					valueArb = fc.nat(100) // 0~100 사이의 자연수
+					break
+				case 'textarea':
+					valueArb = fc.string() // 문자열
+					break
+				default:
+					valueArb = fc.string() // 문자열
+			}
+
+			// 값이 포함된 새 인터랙션 객체 생성
+			return valueArb.map((value) => ({
+				...interaction,
+				value,
+			}))
+		})
+		arbitraries.push(fillArb)
+	}
+
+	// select 타입 처리 - 옵션 선택 포함
+	if (selectInteractions.length > 0) {
+		const selectArb = fc.constantFrom(...selectInteractions).chain((interaction) => {
+			if (!interaction.options || interaction.options.length === 0) {
+				return fc.constant({ ...interaction })
+			}
+
+			// 옵션 중 하나 선택
+			return fc.constantFrom(...interaction.options).map((selectedOption) => ({
+				...interaction,
+				value: selectedOption,
+			}))
+		})
+		arbitraries.push(selectArb)
+	}
+
+	// setRange 타입 처리 - 값 범위 처리
+	if (rangeInteractions.length > 0) {
+		const rangeArb = fc.constantFrom(...rangeInteractions).chain((interaction) => {
+			const min = interaction.min || 0
+			const max = interaction.max || 100
+
+			// min~max 사이의 정수 생성
+			return fc.nat(max - min).map((value) => ({
+				...interaction,
+				value: value + min,
+			}))
+		})
+		arbitraries.push(rangeArb)
+	}
+
+	// 값이 필요없는 간단한 인터랙션 처리
+	if (clickInteractions.length > 0) {
+		arbitraries.push(fc.constantFrom(...clickInteractions))
+	}
+
+	if (hoverInteractions.length > 0) {
+		arbitraries.push(fc.constantFrom(...hoverInteractions))
+	}
+
+	if (dragInteractions.length > 0) {
+		arbitraries.push(fc.constantFrom(...dragInteractions))
+	}
+
+	// 2단계: 최종 시퀀스 Arbitrary 생성
+	const interactionArb = fc.oneof(...arbitraries)
+
+	// 배열 길이와 요소가 자동으로 축소되도록 함
+	return fc.array(interactionArb, { minLength: 1, maxLength: length })
 }
 
 /**
@@ -496,20 +668,49 @@ async function verifyComponentState(page, componentSelector) {
 }
 
 /**
- * 디버그 정보를 파일로 저장 테스트 실행 결과와 디버그 정보를 JSON 파일로 저장합니다.
+ * 디버그 정보를 파일로 저장 - 강화된 예외 처리
  *
  * @param {string} dir - 저장할 디렉토리
  * @param {string} filename - 파일 이름
  * @param {object} data - 저장할 데이터
+ * @returns {Promise<{ success: boolean; path?: string; error?: Error }>} 저장 결과
  */
 async function saveDebugInfo(dir, filename, data) {
 	try {
 		// 디렉토리가 없으면 생성
 		await fs.mkdir(dir, { recursive: true })
+		const filePath = path.join(dir, filename)
+
 		// JSON 형식으로 데이터 저장
-		await fs.writeFile(path.join(dir, filename), JSON.stringify(data, undefined, 2), 'utf8')
+		await fs.writeFile(filePath, JSON.stringify(data, undefined, 2), 'utf8')
+		return { success: true, path: filePath }
 	} catch (error) {
 		console.error(`디버그 정보 저장 실패: ${error.message}`)
+		// 실패해도 테스트 진행에 영향을 주지 않도록 에러 객체와 함께 실패 정보만 반환
+		return { success: false, error }
+	}
+}
+
+/**
+ * 안전한 스크린샷 캡처 함수
+ *
+ * @param {import('@playwright/test').Page} page - Playwright 페이지 객체
+ * @param {string} screenshotPath - 저장 경로
+ * @param {object} options - 스크린샷 옵션
+ * @returns {Promise<{ success: boolean; path?: string; error?: Error }>} 캡처 결과
+ */
+async function captureScreenshot(page, screenshotPath, options = {}) {
+	try {
+		// 디렉토리 생성
+		const dir = path.dirname(screenshotPath)
+		await fs.mkdir(dir, { recursive: true })
+
+		// 스크린샷 캡처
+		await page.screenshot({ path: screenshotPath, ...options })
+		return { success: true, path: screenshotPath }
+	} catch (error) {
+		console.error(`스크린샷 캡처 실패: ${error.message}`)
+		return { success: false, error }
 	}
 }
 
@@ -542,6 +743,104 @@ function extractComponentName(url) {
 	} catch {
 		return 'unknown-component'
 	}
+}
+
+/**
+ * 축소된 반례를 분석하여 테스트 실패 원인 파악
+ *
+ * @param {Interaction[]} shrunkSequence - 축소된 인터랙션 시퀀스
+ */
+function analyzeShrunkSequence(shrunkSequence) {
+	console.log('----------- 축소된 실패 케이스 분석 -----------')
+	console.log(`총 ${shrunkSequence.length}개의 인터랙션이 필요합니다`)
+
+	// 인터랙션 타입별 분류
+	const typeCount = {}
+	for (const interaction of shrunkSequence) {
+		typeCount[interaction.type] = (typeCount[interaction.type] || 0) + 1
+	}
+
+	console.log('인터랙션 타입 분포:')
+	for (const [type, count] of Object.entries(typeCount)) {
+		console.log(`- ${type}: ${count}개`)
+	}
+
+	// 핵심 인터랙션 식별
+	if (shrunkSequence.length === 1) {
+		console.log('단일 인터랙션으로 실패를 재현할 수 있습니다:')
+		console.log(`- ${shrunkSequence[0].type} on ${shrunkSequence[0].selector}`)
+		if (shrunkSequence[0].value !== undefined) {
+			console.log(`  값: ${shrunkSequence[0].value}`)
+		}
+	} else {
+		console.log('주요 인터랙션 시퀀스:')
+		for (let i = 0; i < shrunkSequence.length; i++) {
+			const interaction = shrunkSequence[i]
+			console.log(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
+			if (interaction.value !== undefined) {
+				console.log(`   값: ${interaction.value}`)
+			}
+		}
+	}
+
+	console.log('---------------------------------------------')
+}
+
+/**
+ * 축소된 반례를 사용하여 단계별 디버깅 수행
+ *
+ * @param {import('@playwright/test').Page} page - Playwright 페이지 객체
+ * @param {Interaction[]} shrunkSequence - 축소된 인터랙션 시퀀스
+ * @param {string} componentSelector - 컴포넌트 셀렉터
+ * @param {number} waitTime - 대기 시간
+ */
+async function debugWithShrunkExample(page, shrunkSequence, componentSelector, waitTime) {
+	console.log('축소된 반례를 사용한 디버깅 시작...')
+
+	// 컴포넌트 상태 초기화
+	await resetComponentState(page)
+
+	// 각 인터랙션 단계별 실행 및 상태 확인
+	for (let i = 0; i < shrunkSequence.length; i++) {
+		console.log(
+			`단계 ${i + 1}/${shrunkSequence.length}: ${shrunkSequence[i].type} on ${shrunkSequence[i].selector}`,
+		)
+
+		try {
+			// 인터랙션 실행 - 에러 캐치는 여기서만 함
+			const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
+			console.log(`단계 ${i + 1} 성공: ${result.message || 'OK'}`)
+
+			// 컴포넌트 상태 확인
+			const state = await verifyComponentState(page, componentSelector)
+			console.log(`상태: ${state.isVisible ? '정상' : '문제있음'} - ${state.summary}`)
+
+			// 스크린샷 캡처
+			const timestamp = getTimestamp()
+			const debugLogDir = './test-results/debug-logs' // 기본 디렉토리 설정
+			const screenshotPath = path.join(debugLogDir, `debug-step${i + 1}-${timestamp}.png`)
+			const screenshotResult = await captureScreenshot(page, screenshotPath)
+			if (screenshotResult.success) {
+				console.log(`스크린샷: ${screenshotResult.path}`)
+			}
+		} catch (error) {
+			console.error(`단계 ${i + 1} 실패: ${error.message}`)
+			console.error(`실패 지점 발견: 단계 ${i + 1}`)
+
+			// 실패 시 스크린샷 캡처
+			const timestamp = getTimestamp()
+			const debugLogDir = './test-results/debug-logs' // 기본 디렉토리 설정
+			const screenshotPath = path.join(debugLogDir, `failure-step${i + 1}-${timestamp}.png`)
+			const screenshotResult = await captureScreenshot(page, screenshotPath)
+			if (screenshotResult.success) {
+				console.error(`실패 스크린샷: ${screenshotResult.path}`)
+			}
+
+			break
+		}
+	}
+
+	console.log('축소된 반례 디버깅 완료')
 }
 
 /**
@@ -603,11 +902,9 @@ async function runSingleIteration(page, iteration, errors, config) {
 	// 인터랙션 시퀀스 생성을 위한 arbitrary 생성
 	const sequenceArbitrary = createInteractionSequenceArbitrary(interactions, sequenceLength)
 	let failureInfo
-	let isSuccessful = true
 
 	try {
-		// fast-check를 사용하여 property-based 테스트 실행
-		await fc.assert(
+		const checkResult = await fc.check(
 			fc.asyncProperty(sequenceArbitrary, async (sequence) => {
 				// 시퀀스 정보 초기화
 				/**
@@ -623,7 +920,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 				const sequenceInfo = {
 					/** @type {InteractionResult[]} */
 					results: [],
-					errors,
+					errors: [],
 					startTime: new Date().toISOString(),
 				}
 				if (config.verbose) {
@@ -631,114 +928,114 @@ async function runSingleIteration(page, iteration, errors, config) {
 				}
 
 				// 시퀀스의 각 인터랙션 차례로 실행
-				for (const interaction of sequence) {
-					const result = await executeInteraction(page, interaction, waitAfterInteraction, verbose)
-					sequenceInfo.results.push(result)
-
-					if (!result.success) {
-						test.step(`인터랙션 실패: ${interaction.type} on ${interaction.selector}`, () => {
-							expect(result.success, result.errorMessage).toBe(true)
-						})
-
-						if (captureScreenshots) {
-							const timestamp = getTimestamp()
-							const componentName = extractComponentName(page.url())
-							const screenshotFilename = `failure-${componentName}-i${iteration + 1}-${timestamp}.png`
-							const screenshotPath = path.join(debugLogDir, screenshotFilename)
-							await fs.mkdir(debugLogDir, { recursive: true })
-							await page.screenshot({ path: screenshotPath, fullPage: true })
-							sequenceInfo.screenshotPath = screenshotPath
-							console.error(`인터랙션 실패 스크린샷 저장: ${screenshotPath}`)
-						}
-					}
-
-					// 각 인터랙션 이후에 페이지/콘솔 에러 검사
-					if (errors.length > 0) {
-						// 가장 최근 에러가 현재 인터랙션과 관련된 것인지 확인
-						const recentErrors = errors.filter(
-							// eslint-disable-next-line no-loop-func
-							(error) =>
-								error.associatedInteraction &&
-								error.associatedInteraction.id === currentInteraction.id,
+				try {
+					for (const interaction of sequence) {
+						const result = await executeInteraction(
+							page,
+							interaction,
+							waitAfterInteraction,
+							verbose,
 						)
+						sequenceInfo.results.push(result)
 
-						if (recentErrors.length > 0) {
-							console.error(
-								`인터랙션 "${interaction.type} on ${interaction.selector}" 이후 에러 발생:`,
-							)
-							for (const error of recentErrors) {
-								console.error(`- ${error.message}`)
+						// 인터랙션이 실패했을 경우 처리
+						if (!result.success) {
+							if (result.errorMessage) {
+								errors.push({
+									message: result.errorMessage,
+									stack: result.errorStack,
+								})
+								sequenceInfo.errors.push({
+									message: result.errorMessage,
+									stack: result.errorStack,
+								})
 							}
-
-							// 에러 발생 시 스크린샷 캡처
-							if (captureScreenshots) {
-								const timestamp = getTimestamp()
-								const componentName = extractComponentName(page.url())
-								const screenshotFilename = `error-after-interaction-${componentName}-i${iteration + 1}-${timestamp}.png`
-								const screenshotPath = path.join(debugLogDir, screenshotFilename)
-								await fs.mkdir(debugLogDir, { recursive: true })
-								await page.screenshot({ path: screenshotPath, fullPage: true })
-								if (config.verbose) {
-									console.log(`스크린샷: ${screenshotPath}`)
-								}
-							}
+							// 성공 여부를 체크하여 중단
+							return false
 						}
 					}
+
+					// 시퀀스 실행 후 컴포넌트 상태 검증
+					const stateCheck = await verifyComponentState(page, componentSelector)
+					sequenceInfo.finalState = stateCheck.summary
+					sequenceInfo.endTime = new Date().toISOString()
+					iterationInfo.sequences.push(sequenceInfo)
+
+					// 시퀀스 성공 여부 확인
+					return stateCheck.isVisible
+				} catch (error) {
+					// 예상치 못한 에러 발생 시 처리
+					errors.push({
+						message: error.message,
+						stack: error.stack,
+					})
+
+					sequenceInfo.endTime = new Date().toISOString()
+					iterationInfo.sequences.push(sequenceInfo)
+
+					return false
 				}
-
-				// 시퀀스 실행 후 컴포넌트 상태 검증
-				const stateCheck = await verifyComponentState(page, componentSelector)
-				sequenceInfo.finalState = stateCheck.summary
-				sequenceInfo.endTime = new Date().toISOString()
-				iterationInfo.sequences.push(sequenceInfo)
-
-				errors.push(
-					...sequenceInfo.results
-						.filter((result) => !result.success)
-						.map((result) => ({
-							message: result.errorMessage,
-							stack: result.errorStack,
-						})),
-				)
-
-				// 시퀀스 성공 여부 확인 (오류가 없어야 성공)
-				const sequenceSuccess = errors.length === 0
-				if (!sequenceSuccess) {
-					iterationInfo.errors = errors
-
-					// 실패 시 스크린샷 캡처
-					if (captureScreenshots) {
-						const timestamp = getTimestamp()
-						const componentName = extractComponentName(page.url())
-						const screenshotFilename = `failure-summary-${componentName}-i${iteration + 1}-${timestamp}.png`
-						const screenshotPath = path.join(debugLogDir, screenshotFilename)
-
-						// 비동기 작업 전에 경로 설정
-						iterationInfo.screenshotPath = screenshotPath
-
-						await fs.mkdir(debugLogDir, { recursive: true })
-						await page.screenshot({ path: screenshotPath, fullPage: true })
-					}
-
-					console.error(
-						'테스트 실패:',
-						errors.length > 0 ?
-							`에러 발생: ${errors.map((error) => error.message).join(', ')}`
-						:	'컴포넌트 상태가 올바르지 않음',
-					)
-					isSuccessful = false
-				}
-
-				return sequenceSuccess
 			}),
 			{
 				numRuns,
 				verbose: true,
-				endOnFailure: true,
 			},
 		)
+
+		if (!checkResult.failed) {
+			// 테스트 성공
+			iterationInfo.success = true
+		} else {
+			// 테스트 실패 - 축소된 반례 활용
+			iterationInfo.success = false
+
+			// fast-check의 반례가 있는지 확인
+			if (checkResult.counterexample && checkResult.counterexample.length > 0) {
+				// shrinking 후 발견된 최소 반례
+				const shrunkValue = checkResult.counterexample[0]
+
+				// 반례 분석 (타입 확인하여 호출)
+				if (Array.isArray(shrunkValue)) {
+					analyzeShrunkSequence(shrunkValue)
+
+					// failureInfo 타입을 맞춰서 설정
+					failureInfo = {
+						counterExample: shrunkValue,
+						error: {
+							message: 'Property failed',
+							stack: checkResult.failed ? 'Fast-check 속성 검증 실패' : '',
+						},
+						property: 'Component interaction sequence',
+					}
+
+					// 축소된 반례로 디버깅
+					await debugWithShrunkExample(page, shrunkValue, componentSelector, waitAfterInteraction)
+				} else {
+					console.error('반례가 예상된 형식이 아닙니다:', shrunkValue)
+				}
+			} else {
+				console.error('반례를 찾을 수 없습니다')
+			}
+
+			// 실패 시 스크린샷 캡처
+			if (captureScreenshots) {
+				const timestamp = getTimestamp()
+				const componentName = extractComponentName(page.url())
+				const screenshotFilename = `failure-summary-${componentName}-i${iteration + 1}-${timestamp}.png`
+				const screenshotPath = path.join(debugLogDir, screenshotFilename)
+
+				// 비동기 작업 전에 경로 설정
+				iterationInfo.screenshotPath = screenshotPath
+
+				// 안전한 스크린샷 캡처 함수 사용
+				const screenshotResult = await captureScreenshot(page, screenshotPath, { fullPage: true })
+				if (screenshotResult.success && config.verbose) {
+					console.log(`실패 케이스 스크린샷: ${screenshotResult.path}`)
+				}
+			}
+		}
 	} catch (fcError) {
-		// fast-check 반례 발견 시 실패 정보 기록
+		// fast-check 자체 에러 발생 시
 		failureInfo = {
 			counterExample: fcError.counterexample,
 			error: { message: fcError.message, stack: fcError.stack },
@@ -754,10 +1051,9 @@ async function runSingleIteration(page, iteration, errors, config) {
 			console.error('- Error:', error)
 		}
 		console.error('--------------------------------')
-		isSuccessful = false
+		iterationInfo.success = false
 	}
 
-	iterationInfo.success = isSuccessful
 	iterationInfo.failureInfo = failureInfo
 	// 최종 컴포넌트 상태 검증
 	const finalStateCheck = await verifyComponentState(page, componentSelector)
@@ -872,37 +1168,55 @@ async function testUIComponent(page, config = {}) {
 	// 디버그 정보 최종 업데이트 및 저장
 	debugInfo.success = isSuccessful
 	debugInfo.errors = debugInfo.errors.concat(errors)
+
+	// 디버그 정보 파일 저장
 	const debugFilename = `test-${debugInfo.componentName}-${debugInfo.timestamp}.json`
-	await saveDebugInfo(debugLogDir, debugFilename, debugInfo)
-	if (config.verbose) {
-		console.log(`테스트 디버그 정보 저장: ${debugFilename}`)
+	const saveResult = await saveDebugInfo(debugLogDir, debugFilename, debugInfo)
+
+	if (saveResult.success) {
+		debugInfo.debugFilePath = saveResult.path
+		if (config.verbose) {
+			console.log(`테스트 디버그 정보 저장: ${debugFilename}`)
+		}
 	}
 
 	const latestTestFailureInfo = debugInfo.iterations.at(-1)?.failureInfo
-	const debugFilePath = path.join(
-		debugLogDir,
-		`test-${debugInfo.componentName}-${debugInfo.timestamp}.json`,
-	)
-	debugInfo.debugFilePath = debugFilePath
 
 	// 실패 시 최종 스크린샷 캡처 및 상세 정보 출력
 	if (!isSuccessful && captureScreenshots) {
 		// 스크린샷 경로는 PNG 확장자를 사용
-		const screenshotPath = `${debugFilePath.replace(/\.json$/, '.png')}`
-		debugInfo.screenshotPath = screenshotPath // 디버그 정보에 스크린샷 경로 저장
-		await page.screenshot({ path: screenshotPath, fullPage: true })
-		if (config.verbose) {
-			console.log(`최종 상태 스크린샷 저장: ${screenshotPath}`)
+		const screenshotPath =
+			debugInfo.debugFilePath ?
+				`${debugInfo.debugFilePath.replace(/\.json$/, '.png')}`
+			:	path.join(debugLogDir, `test-${debugInfo.componentName}-${debugInfo.timestamp}.png`)
+
+		// 안전한 스크린샷 캡처 함수 사용
+		const screenshotResult = await captureScreenshot(page, screenshotPath, { fullPage: true })
+		if (screenshotResult.success) {
+			debugInfo.screenshotPath = screenshotResult.path // 디버그 정보에 스크린샷 경로 저장
+			if (config.verbose) {
+				console.log(`최종 상태 스크린샷 저장: ${screenshotResult.path}`)
+			}
 		}
 
-		if (latestTestFailureInfo) {
-			console.log('\n--------- 테스트 실패 정보 ---------')
+		// 축소된 반례 정보 출력
+		if (latestTestFailureInfo && latestTestFailureInfo.counterExample) {
+			console.log('\n--------- 테스트 실패 정보 (축소된 반례) ---------')
 			console.log(`컴포넌트: ${debugInfo.componentName}`)
-			console.log(
-				`실패 인터랙션 시퀀스: ${JSON.stringify(latestTestFailureInfo.counterExample, undefined, 2)}`,
-			)
-			console.log(`에러: ${errors.join('\n')}`)
-			console.log('-------------------------------------\n')
+			console.log('최소 실패 케이스:')
+
+			// 축소된 반례 출력
+			const shrunkSequence = latestTestFailureInfo.counterExample
+			for (let i = 0; i < shrunkSequence.length; i++) {
+				const interaction = shrunkSequence[i]
+				console.log(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
+				if (interaction.value !== undefined) {
+					console.log(`   값: ${interaction.value}`)
+				}
+			}
+
+			console.log(`에러: ${errors.map((e) => e.message).join('\n')}`)
+			console.log('--------------------------------------------------\n')
 		}
 	}
 
