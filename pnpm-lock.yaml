@@ -217,8 +217,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       pnpm:
-        specifier: 10.4.1
-        version: 10.4.1
+        specifier: 10.6.5
+        version: 10.6.5
       postcss:
         specifier: ^8.5.1
         version: 8.5.3
@@ -6372,8 +6372,8 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
 
-  pnpm@10.4.1:
-    resolution: {integrity: sha512-x1O2w616+hOvOI+m2AgDWgCOMOqZk/WMZmPivF/yFnmqg02wlJhxKapNSIuG31f3tjSYGy+CfNysxpjMDPuIrw==}
+  pnpm@10.6.5:
+    resolution: {integrity: sha512-zfko/KIIMs1Z7FOCZJK33CXcUk1DcLa0rb9lgD0y76psHIgUfArk6NV5psnuxxV1e1DU+jXuoXnYaOraTtBDrw==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -15031,7 +15031,7 @@ snapshots:
 
   pluralize@8.0.0: {}
 
-  pnpm@10.4.1: {}
+  pnpm@10.6.5: {}
 
   polished@4.3.1:
     dependencies:
