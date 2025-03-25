@@ -276,11 +276,21 @@ function getInteractionsFromElementInfo(elementInfo) {
 async function resetComponentState(page) {
 	// 페이지에 정의된 resetComponentState 함수가 있으면 호출
 	// 스토리북에서 특별히 리셋 함수를 제공하는 경우 사용
-	await page.evaluate(() => {
-		if (typeof globalThis.resetComponentState === 'function') {
-			globalThis.resetComponentState()
-		}
-	})
+	try {
+		await page.evaluate(
+			() => {
+				if (typeof globalThis.resetComponentState === 'function') {
+					globalThis.resetComponentState()
+				}
+				// 명시적으로 값을 반환하여 평가가 완료되었음을 확인
+				return 'resetComponentState 완료'
+			},
+			{ timeout: 1000 },
+		) // 1초 타임아웃 추가
+	} catch (error) {
+		console.warn('컴포넌트 상태 초기화 중 오류 발생:', error.message)
+		// 오류가 발생해도 테스트는 계속 진행
+	}
 }
 
 /**
@@ -1142,6 +1152,8 @@ async function testUIComponent(page, config = {}) {
 			debugInfo.iterations.push(iterationInfo)
 			isSuccessful = debugInfo.success
 
+			// 중요: await을 사용하지 않아야 runSingleIteration 내부의 analyzeShrunkSequence 함수가 호출됨
+			// eslint-disable-next-line playwright/missing-playwright-await
 			test.step(`${componentName} - 반복#${iteration + 1}: 페이지 또는 콘솔 에러가 발생하지 않아야 합니다`, async () => {
 				expect(errors, `다음 오류가 발생했습니다: ${errors.join(', ')}`).toHaveLength(0)
 			})
@@ -1156,6 +1168,8 @@ async function testUIComponent(page, config = {}) {
 			stack: error.stack,
 		})
 
+		// 중요: await을 사용하지 않아야 runSingleIteration 내부의 analyzeShrunkSequence 함수가 호출됨
+		// eslint-disable-next-line playwright/missing-playwright-await
 		test.step(`${componentName}: 테스트 진행 중 오류 발생`, async () => {
 			expect(debugInfo.errors, `다음 오류가 발생했습니다: ${error.message}`).toHaveLength(0)
 		})

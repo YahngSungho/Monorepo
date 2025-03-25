@@ -164,10 +164,13 @@ export default defineFlatConfig([
 			'**/e2e/*.js',
 			'*.test.js',
 			'**/*.tests.js',
+			'storybook/e2e/*.js',
+			'storybook/e2e/**',
 		],
 
 		rules: {
 			'functional/immutable-data': 'off',
+			'sonarjs/pseudo-random': 'off',
 			'@intlify/svelte/no-raw-text': 'off',
 			'redos/no-vulnerable': 'off',
 			'sonarjs/slow-regex': 'off',
@@ -176,13 +179,12 @@ export default defineFlatConfig([
 	},
 
 	{
-		files: ['**/e2e/*.test.js'],
+		files: ['**/e2e/*.js', 'storybook/e2e/*.js', 'storybook/e2e/**'],
 
 		...playwright.configs['flat/recommended'],
 		rules: {
 			...playwright.configs['flat/recommended'].rules,
-			// Customize Playwright rules
-			// ...
+			'no-shadow': 'off',
 		},
 	},
 
