@@ -43,8 +43,8 @@ importers:
         specifier: ^0.1.5
         version: 0.1.6(vitest@3.0.9(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0))
       '@fast-check/worker':
-        specifier: ^0.4.2
-        version: 0.4.2
+        specifier: ^0.5.0
+        version: 0.5.0
       '@inlang/cli':
         specifier: ^2.18.1
         version: 2.18.1
@@ -1635,8 +1635,8 @@ packages:
     peerDependencies:
       vitest: '>=0.28.1 <1.0.0 || ^1 || ^2 || ^3'
 
-  '@fast-check/worker@0.4.2':
-    resolution: {integrity: sha512-ja1tn/J2kJWGMDU/Mh5qasbKd6ECijdFppRhoEohAzZGkokDjXP4dJNdy5ab65PzlNCgJTycwF75OkWZplMBkg==}
+  '@fast-check/worker@0.5.0':
+    resolution: {integrity: sha512-KQEIjqTliebUoZFqpHUjqRLuVZwtVRe3KLUcRBEd/NHYFcEW2hRu3ZV2Jq1g10T4bsqZ+q/AcKbP8QL4xABjMw==}
 
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
@@ -9485,7 +9485,7 @@ snapshots:
       fast-check: 4.0.0
       vitest: 3.0.9(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0)
 
-  '@fast-check/worker@0.4.2':
+  '@fast-check/worker@0.5.0':
     dependencies:
       fast-check: 4.0.0
       pure-rand: 7.0.1
