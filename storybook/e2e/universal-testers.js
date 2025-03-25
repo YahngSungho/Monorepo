@@ -810,44 +810,95 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 	// 컴포넌트 상태 초기화
 	await resetComponentState(page)
 
-	// 각 인터랙션 단계별 실행 및 상태 확인
-	for (let i = 0; i < shrunkSequence.length; i++) {
-		console.log(
-			`단계 ${i + 1}/${shrunkSequence.length}: ${shrunkSequence[i].type} on ${shrunkSequence[i].selector}`,
-		)
+	// 페이지 에러와 콘솔 에러를 감지하기 위한 변수들
+	let pageErrors = []
+	let consoleErrors = []
 
-		try {
-			// 인터랙션 실행 - 에러 캐치는 여기서만 함
-			const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
-			console.log(`단계 ${i + 1} 성공: ${result.message || 'OK'}`)
+	// 페이지 에러 이벤트 리스너 등록
+	const pageErrorHandler = (error) => {
+		pageErrors.push({
+			message: error.message,
+			stack: error.stack,
+			timestamp: new Date().toISOString(),
+		})
+		console.error(`페이지 에러 감지: ${error.message}`)
+	}
 
-			// 컴포넌트 상태 확인
-			const state = await verifyComponentState(page, componentSelector)
-			console.log(`상태: ${state.isVisible ? '정상' : '문제있음'} - ${state.summary}`)
-
-			// 스크린샷 캡처
-			const timestamp = getTimestamp()
-			const debugLogDir = './test-results/debug-logs' // 기본 디렉토리 설정
-			const screenshotPath = path.join(debugLogDir, `debug-step${i + 1}-${timestamp}.png`)
-			const screenshotResult = await captureScreenshot(page, screenshotPath)
-			if (screenshotResult.success) {
-				console.log(`스크린샷: ${screenshotResult.path}`)
-			}
-		} catch (error) {
-			console.error(`단계 ${i + 1} 실패: ${error.message}`)
-			console.error(`실패 지점 발견: 단계 ${i + 1}`)
-
-			// 실패 시 스크린샷 캡처
-			const timestamp = getTimestamp()
-			const debugLogDir = './test-results/debug-logs' // 기본 디렉토리 설정
-			const screenshotPath = path.join(debugLogDir, `failure-step${i + 1}-${timestamp}.png`)
-			const screenshotResult = await captureScreenshot(page, screenshotPath)
-			if (screenshotResult.success) {
-				console.error(`실패 스크린샷: ${screenshotResult.path}`)
-			}
-
-			break
+	// 콘솔 에러 이벤트 리스너 등록
+	const consoleErrorHandler = (msg) => {
+		if (msg.type() === 'error') {
+			consoleErrors.push({
+				message: msg.text(),
+				timestamp: new Date().toISOString(),
+			})
+			console.error(`콘솔 에러 감지: ${msg.text()}`)
 		}
+	}
+
+	// 이벤트 리스너 등록
+	page.on('pageerror', pageErrorHandler)
+	page.on('console', consoleErrorHandler)
+
+	try {
+		// 각 인터랙션 단계별 실행 및 상태 확인
+		for (let i = 0; i < shrunkSequence.length; i++) {
+			console.log(
+				`단계 ${i + 1}/${shrunkSequence.length}: ${shrunkSequence[i].type} on ${shrunkSequence[i].selector}`,
+			)
+
+			// 이전 에러들 초기화
+			pageErrors = []
+			consoleErrors = []
+
+			try {
+				// 인터랙션 실행
+				const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
+				console.log(`단계 ${i + 1} 인터랙션 실행: ${result.message || 'OK'}`)
+
+				// 비동기 작업이나 이벤트 핸들러에서 발생하는 에러를 감지하기 위해 추가 대기 시간 설정
+				// 이 대기 시간 동안 이벤트 핸들러가 실행되고 에러가 발생할 수 있음
+				await page.waitForTimeout(300) // 300ms 정도 대기하여 이벤트 핸들러 실행 시간 제공
+
+				// 컴포넌트 상태 확인
+				const state = await verifyComponentState(page, componentSelector)
+				console.log(`상태: ${state.isVisible ? '정상' : '문제있음'} - ${state.summary}`)
+
+				// 에러 발생 여부 확인
+				const hasErrors = pageErrors.length > 0 || consoleErrors.length > 0
+
+				if (hasErrors) {
+					console.error(`단계 ${i + 1} 실행 후 에러 발생 감지됨:`)
+					if (pageErrors.length > 0) {
+						console.error(`- 페이지 에러: ${pageErrors.map((e) => e.message).join(', ')}`)
+					}
+					if (consoleErrors.length > 0) {
+						console.error(`- 콘솔 에러: ${consoleErrors.map((e) => e.message).join(', ')}`)
+					}
+
+					throw new Error(
+						`단계 ${i + 1} 실행 후 에러 발생: ${[...pageErrors, ...consoleErrors].map((e) => e.message).join(', ')}`,
+					)
+				}
+			} catch (error) {
+				console.error(`단계 ${i + 1} 실패: ${error.message}`)
+				console.error(`실패 지점 발견: 단계 ${i + 1}`)
+
+				// 실패 시 스크린샷 캡처
+				const timestamp = getTimestamp()
+				const debugLogDir = './test-results/debug-logs'
+				const screenshotPath = path.join(debugLogDir, `failure-step${i + 1}-${timestamp}.png`)
+				const screenshotResult = await captureScreenshot(page, screenshotPath)
+				if (screenshotResult.success) {
+					console.error(`실패 스크린샷: ${screenshotResult.path}`)
+				}
+
+				break
+			}
+		}
+	} finally {
+		// 항상 이벤트 리스너 제거
+		page.removeListener('pageerror', pageErrorHandler)
+		page.removeListener('console', consoleErrorHandler)
 	}
 
 	console.log('축소된 반례 디버깅 완료')
