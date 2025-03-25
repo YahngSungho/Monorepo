@@ -38,7 +38,7 @@
 		"@eslint/markdown": "^6.3.0",
 		"@fast-check/poisoning": "^0.2.3",
 		"@fast-check/vitest": "^0.1.5",
-		"@fast-check/worker": "^0.4.2",
+		"@fast-check/worker": "^0.5.0",
 		"@inlang/cli": "^2.18.1",
 		"@inlang/paraglide-js": "2.0.4",
 		"@intlify/eslint-plugin-svelte": "^0.5.0",
