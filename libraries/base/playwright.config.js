@@ -62,6 +62,9 @@ export default {
 		launchOptions: {
 			slowMo: process.env.CI ? 0 : 100, // 느린 환경에서 UI 갱신 대기
 		},
+		contextOptions: {
+			reducedMotion: 'reduce',
+		},
 		screenshot: 'only-on-failure',
 		trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
 	},

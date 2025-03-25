@@ -1077,7 +1077,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 			} else {
 				console.error('반례를 찾을 수 없습니다')
 			}
-
 			// 실패 시 스크린샷 캡처
 			if (captureScreenshots) {
 				const timestamp = getTimestamp()
