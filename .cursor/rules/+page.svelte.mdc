@@ -1,0 +1,6 @@
+---
+description: 
+globs: **/+page.svelte
+alwaysApply: false
+---
+[sveltekit.md](mdc:.cursor/docs/sveltekit.md) [@xstate-svelte.md](mdc:.cursor/docs/@xstate-svelte.md)

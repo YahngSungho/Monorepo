@@ -32,6 +32,7 @@ jobs:
               - '**.webp'
             markdown:
               - '**/*.md'
+              - '**/*.mdx'
 
   fix-markdown:
     runs-on: ubuntu-latest

@@ -1,125 +1,126 @@
-# 코드 문서화 요청
+# Code Documentation Request
 
-주어진 코드를 분석하여 체계적인 한국어 마크다운 문서로 작성해주세요. **문서의 핵심 목적은 코드를 읽는 사람이 코드의 의도와 구현을 명확히 이해할 수 있도록 돕는 것**입니다. 텍스트 설명과 함께 다이어그램, 표 등의 **시각적 도구**들을 적극 활용하여 코드의 구조와 흐름을 직관적으로 이해할 수 있게 해주세요.
+The attachment of this file means that your job is to document the code provided.
+Please analyze the given code and create a systematic markdown document in Korean. **The core purpose of the document is to help readers clearly understand the intention and implementation of the code**. Please actively use **visual tools** such as diagrams and tables along with text explanations to help intuitively understand the structure and flow of the code.
 
-## 1단계: 코드 분석
+## Step 1: Code Analysis
 
-먼저 코드를 철저히 분석하여 다음 사항을 파악하세요:
+First, thoroughly analyze the code to identify the following:
 
-- 코드의 주요 목적과 기능
-- 프로그래밍 언어 및 사용된 프레임워크/라이브러리
-- 코드의 복잡성 수준
-- 주요 컴포넌트/함수/클래스/변수와 그것들 사이의 관계
-- 데이터 흐름 구조
-- **개발자가 혼동하거나 오해하기 쉬운 코드 부분과 패턴**
-- **시각화하면 이해가 쉬워질 수 있는 코드 부분 식별**
+- Main purpose and functionality of the code
+- Programming language and frameworks/libraries used
+- Level of code complexity
+- Key components/functions/classes/variables and their relationships
+- Data flow structure
+- **Code parts and patterns that developers might easily confuse or misunderstand**
+- **Identify code sections that would be easier to understand when visualized**
 
-## 2단계: 문서화 계획 수립
+## Step 2: Documentation Planning
 
-분석 결과를 바탕으로 문서화 계획을 세우세요:
+Based on the analysis results, establish a documentation plan:
 
-- 문서의 주요 섹션 구성
-- 포함할 코드 예시 범위
-- **시각화할 코드 요소 및 다이어그램 유형 결정**
-- **혼동하기 쉬운 부분에 대한 상세 설명 방식**
-- 필요한 다이어그램이나 시각적 요소
-- 초보자와 전문가 모두를 위한 설명 균형
+- Main section composition of the document
+- Range of code examples to include
+- **Determine code elements to visualize and diagram types**
+- **Detailed explanation methods for easily confused parts**
+- Necessary diagrams or visual elements
+- Balance of explanations for both beginners and experts
 
-### 여기에 적혀진 내용 외에도, 제공된 Code를 봤을 때 문서를 읽는 사람에게 어떤 것이 도움이 될 지 창의성과 자발성을 발휘해 스스로 생각해서 그 내용을 추가 할 것. 보통 문서에 평범하게 적히는 내용들 외에도, 제공된 Code를 봤을 때 문서를 읽는 사람에게 어떤 내용이 더 추가되면 도움이 될까? 즉, 제공된 Code를 더 쉽고 명확하고 빠르게 이해할 수 있을까?
+### In addition to what's written here, use your creativity and initiative to think about what would help readers when looking at the provided code. Beyond the typical content found in documentation, what additional information would help people understand the provided code more easily, clearly, and quickly?
 
-## 3단계: 문서 작성
+## Step 3: Document Creation
 
-다음 요소들을 포함하여 체계적인 문서를 작성하세요:
+Create a systematic document including the following elements:
 
-### 필수 포함 요소
+### Essential Elements
 
-- **개요**: 코드의 목적, 기능, 활용 사례 설명
-- **아키텍처/구조**: 전체적인 코드 구조와 주요 컴포넌트 간의 관계
-- **핵심 기능 설명**: 각 주요 함수/클래스/모듈의 역할과 동작 원리
-- **API 문서**(해당되는 경우): 매개변수, 반환값, 예외 처리 등
-- **사용 예시**: 코드의 이해를 돕기 위한 목적의, 코드를 실제로 활용하는 간단하고 명확한 예시
-- **혼동하기 쉬운 부분**: 명시적으로 혼동하기 쉬운 부분에 대한 설명 포함
-- 여기에 적혀진 내용 외에도, 제공된 Code를 봤을 때 문서를 읽는 사람에게 어떤 것이 도움이 될 지 창의성과 자발성을 발휘해 스스로 생각해서 그 내용을 추가 할 것. 보통 문서에 평범하게 적히는 내용들 외에도, 제공된 Code를 봤을 때 문서를 읽는 사람에게 어떤 내용이 더 추가되면 도움이 될까? 즉, 제공된 Code를 더 쉽고 명확하고 빠르게 이해할 수 있을까?
+- **Overview**: Explanation of the code's purpose, functionality, and use cases
+- **Architecture/Structure**: Overall code structure and relationships between major components
+- **Core Functionality Explanation**: Role and operating principles of each major function/class/module
+- **API Documentation** (if applicable): Parameters, return values, exception handling, etc.
+- **Usage Examples**: Simple and clear examples that demonstrate how to actually use the code
+- **Easily Confused Parts**: Explicitly include explanations for parts that could be confusing
+- In addition to what's written here, use your creativity and initiative to think about what would help readers when looking at the provided code. Beyond the typical content found in documentation, what additional information would help people understand the provided code more easily, clearly, and quickly?
 
-### 시각적 다이어그램
+### Visual Diagrams
 
-- **Mermaid 다이어그램 적극 활용**: 마크다운에 직접 포함 가능한 다이어그램 코드 제공
-- **플로우차트(Flowchart)**: 코드의 실행 흐름과 주요 분기점 시각화
-- **시퀀스 다이어그램(Sequence Diagram)**: 객체 간 상호작용 및 메서드 호출 순서 표현
-- **클래스 다이어그램(Class Diagram)**: 클래스 구조, 상속 관계, 의존성 표현
-- **상태 다이어그램(State Diagram)**: 상태 변화가 중요한 코드의 상태 전이 표현
-- **ER 다이어그램**: 데이터 모델이 포함된 경우 엔티티 관계 표현
-- **구성 요소 다이어그램(Component Diagram)**: 시스템 구성 요소와 의존성 표현
+- **Actively use Mermaid diagrams**: Provide diagram code that can be directly included in markdown
+- **Flowcharts**: Visualize code execution flow and major branching points
+- **Sequence Diagrams**: Represent object interactions and method call order
+- **Class Diagrams**: Express class structure, inheritance relationships, dependencies
+- **State Diagrams**: Represent state transitions for code where state changes are important
+- **ER Diagrams**: Express entity relationships if data models are included
+- **Component Diagrams**: Express system components and dependencies
 
-#### Mermaid 작성시 주의사항
+#### Precautions when creating Mermaid diagrams
 
-##### Mermaid 다이어그램에서 텍스트 관련 파싱 오류 피하기
+##### Avoiding text parsing errors in Mermaid diagrams
 
-###### 문제 상황
+###### Problem Situation
 
-Mermaid 다이어그램을 작성할 때 노드 내부에 특정 문자들을 사용하면 파싱 오류가 발생할 수 있습니다. 특히 **괄호()**, **점(.)**, **물음표(?)** 같은 특수 문자들이 문제를 일으킵니다.
+When creating Mermaid diagrams, using certain characters inside nodes can cause parsing errors. Especially special characters like **parentheses()**, **periods(.)**, and **question marks(?)** can cause problems.
 
-###### 오류 발생 예시
+###### Error Example
 
-다음과 같은 코드는 파싱 오류를 발생시킵니다:
+The following code causes parsing errors:
 
 ```mermaid
 flowchart TD
-    A[시작] --> B{함수명() 호출 확인?}
-    B --> C[다음 단계(process)]
+    A[Start] --> B{Check function() call?}
+    B --> C[Next step(process)]
 ```
 
-이 코드에서 `B{함수명() 호출 확인?}`와 `C[다음 단계(process)]` 부분이 파싱 오류를 일으킵니다.
+In this code, the parts `B{Check function() call?}` and `C[Next step(process)]` cause parsing errors.
 
-###### 오류 원인
+###### Error Cause
 
-Mermaid 문법에서:
+In Mermaid syntax:
 
-- **대괄호 []**와 **중괄호 {}**는 노드 모양을 정의합니다
-- 괄호()는 플로우차트 구문에서 특별한 의미를 가집니다
-- 특수 문자들이 텍스트 내용 안에 있으면 파서가 혼동합니다
+- **Square brackets []** and **curly braces {}** define node shapes
+- Parentheses() have special meaning in flowchart syntax
+- Special characters within text content can confuse the parser
 
-###### 해결 방법
+###### Solutions
 
-1. **괄호 제거하기**:
-2. **대체 표현 사용하기**:
-3. **따옴표로 텍스트 감싸기** (일부 상황에서 작동):
+1. **Remove parentheses**:
+2. **Use alternative expressions**:
+3. **Wrap text in quotes** (works in some situations):
 
-###### 권장 사항
+###### Recommendations
 
-- 노드 텍스트에는 **단순한 표현**을 사용하세요
-- 괄호()와 특수 문자는 가능한 **피하세요**
-- 복잡한 표현이 필요한 경우 **대체 표현**을 찾으세요
-- 기술적 용어나 코드는 **간략히 표현**하세요 (예: `page.evaluate()` → `evaluate 함수`)
+- Use **simple expressions** for node text
+- **Avoid** parentheses() and special characters if possible
+- Find **alternative expressions** when complex expressions are needed
+- **Simplify** technical terms or code (e.g., `page.evaluate()` → `evaluate function`)
 
-### 혼동 요소 및 주의사항 (매우 중요)
+### Confusing Elements and Precautions (Very Important)
 
-- **혼동하기 쉬운 코드 섹션 상세 설명**: 코드에서 이해하기 어렵거나 직관적이지 않은 부분 명시
-- **잠재적 오해 요소**: 코드의 명명이나 구조에서 오해를 일으킬 수 있는 부분
-- **비표준 패턴**: 일반적인 패턴과 다르게 구현된 부분과 그 이유
-- **성능 관련 고려사항**: 성능에 영향을 미칠 수 있는 코드 패턴이나 구현 방식
-- **부작용(side effects)**: 예상치 못한 결과를 초래할 수 있는 함수나 메서드
-- **오류 발생 가능성**: 잘못 사용했을 때 발생할 수 있는 오류와 그 해결 방법
-- **흔한 실수 사례**: 이 코드를 사용할 때 개발자들이 흔히 범하는 실수
+- **Detailed explanation of easily confused code sections**: Explicitly identify parts of the code that are difficult to understand or not intuitive
+- **Potential misunderstanding elements**: Parts in the code's naming or structure that could cause misunderstandings
+- **Non-standard patterns**: Parts implemented differently from common patterns and the reasons why
+- **Performance-related considerations**: Code patterns or implementation methods that could affect performance
+- **Side effects**: Functions or methods that could cause unexpected results
+- **Error possibilities**: Errors that could occur when used incorrectly and their solutions
+- **Common mistake cases**: Mistakes commonly made by developers when using this code
 
-### 시각적 코드 설명
+### Visual Code Explanations
 
-- **코드 블록 옆 주석 다이어그램**: 복잡한 코드 블록 옆에 동작 방식 설명 추가
-- **다이어그램 외에도 여러 시각화 도구 사용**: 표, 혹은 그 외 이해에 도움 된다면 뭐든
-- **Type을 표현하기 위해 Markdown table 사용**
-- **핵심 알고리즘 시각화**: 중요 알고리즘의 단계별 작동 과정 시각화
-- **데이터 변환 과정 시각화**: 데이터가 변형되는 과정을 단계별로 표현
-- **메모리/자원 사용 다이어그램**: 리소스 집약적인 코드의 메모리 사용 패턴 시각화
+- **Comment diagrams next to code blocks**: Add explanations of how complex code blocks work
+- **Use various visualization tools beyond diagrams**: Tables, or anything else that helps understanding
+- **Use Markdown tables to represent Types**
+- **Core algorithm visualization**: Visualize step-by-step operation of important algorithms
+- **Data transformation process visualization**: Express the data transformation process step by step
+- **Memory/resource usage diagrams**: Visualize memory usage patterns of resource-intensive code
 
-### 문서 품질 향상을 위한 요소
+### Elements to Improve Document Quality
 
-- 적절한 마크다운 헤딩 구조와 포맷팅
-- 코드 블록에 구문 강조 적용
-- 복잡한 개념은 단계별 설명과 다이어그램 활용
-- 초보자를 위한 기본 개념 설명과 전문가를 위한 심화 정보의 균형
-- 실제 사용 시나리오와 문제 해결 방법 제시
-- 제공된 Code를 가공 없이 그대로 적어두는 것은 최대한 피할 것. Code 그대로는 이미 이 요청으로 작성될 문서가 아니어도 볼 수 있음.
-- 여기에 적혀진 내용 외에도, 제공된 Code를 봤을 때 문서를 읽는 사람에게 어떤 것이 도움이 될 지 창의성과 자발성을 발휘해 스스로 생각해서 그 내용을 추가 할 것. 보통 문서에 평범하게 적히는 내용들 외에도, 제공된 Code를 봤을 때 문서를 읽는 사람에게 어떤 내용이 더 추가되면 도움이 될까?
+- Appropriate markdown heading structure and formatting
+- Apply syntax highlighting to code blocks
+- Use step-by-step explanations and diagrams for complex concepts
+- Balance basic concept explanations for beginners and advanced information for experts
+- Present actual usage scenarios and problem-solving methods
+- Avoid simply copying the provided code verbatim. The code itself can already be seen outside this document.
+- In addition to what's written here, use your creativity and initiative to think about what would help readers when looking at the provided code. Beyond the typical content found in documentation, what additional information would help people understand the provided code more easily?
 
 ### Tone & Style
 
@@ -129,19 +130,20 @@ Mermaid 문법에서:
 - 또는 반말보다 명사형이 더 적절할 경우에는, 반말이 아닌 명사형으로 문장을 끝내.
 - 모든 것은 이해를 더 쉽고 빠르게 만들기 위해서
 
-## 4단계: 문서 검토 및 개선
+## Step 4: Document Review and Improvement
 
-작성된 문서를 검토하고 다음 질문에 답하세요:
+Review the created document and answer the following questions:
 
-- 코드의 모든 중요 측면이 설명되었는가?
-- 문서가 논리적으로 구성되어 있는가?
-- **다이어그램과 시각 자료가 코드 이해에 실질적으로 도움이 되는가?**
-- **복잡한 로직이나 구조가 시각적으로 명확하게 표현되었는가?**
-- **다이어그램은 코드의 가장 중요한 측면을 효과적으로 강조하고 있는가?**
-- **혼동하기 쉬운 부분이 충분히 자세하게 설명되었는가?**
-- **독자가 이 문서를 읽은 후 코드를 제대로 이해하고 활용할 수 있을 것인가?**
-- **어려운 개념이나 비직관적인 코드 부분에 대한 명확한 설명이 있는가?**
-- 초보자와 전문가 모두에게 유용한 정보를 제공하는가?
-- 예시가 실제 사용 사례를 잘 보여주고 이해를 돕는가?
+- Have all important aspects of the code been explained?
+- Is the document logically structured?
+- **Do the diagrams and visual materials actually help understand the code?**
+- **Are complex logic or structures visually clearly expressed?**
+- **Do the diagrams effectively emphasize the most important aspects of the code?**
+- **Are easily confused parts explained in sufficient detail?**
+- **Will readers be able to properly understand and utilize the code after reading this document?**
+- **Are there clear explanations for difficult concepts or non-intuitive code parts?**
+- Does it provide useful information for both beginners and experts?
+- Do the examples well demonstrate actual use cases and help understanding?
 
-이 질문들에 기반해, 제공된 Code의 이해를 돕기 위한 문서를 작성해주세요.
+Based on these questions, please create a document in **Korean** to help understand the provided code.
+Write the results in a single markdown text file, in full.

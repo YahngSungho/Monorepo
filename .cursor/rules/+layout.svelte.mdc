@@ -1,0 +1,6 @@
+---
+description: 
+globs: **/+layout.svelte
+alwaysApply: false
+---
+[sveltekit.md](mdc:.cursor/docs/sveltekit.md)

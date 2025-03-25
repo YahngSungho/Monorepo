@@ -1,0 +1,6 @@
+---
+description: Writing tests for testing race condition
+globs: 
+alwaysApply: false
+---
+[fastCheck-raceCondition.md](mdc:.cursor/docs/fastCheck-raceCondition.md)
