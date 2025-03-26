@@ -40,7 +40,7 @@
 		"@fast-check/vitest": "^0.1.5",
 		"@fast-check/worker": "^0.5.0",
 		"@inlang/cli": "^2.18.1",
-		"@inlang/paraglide-js": "2.0.4",
+		"@inlang/paraglide-js": "2.0.5",
 		"@intlify/eslint-plugin-svelte": "^0.5.0",
 		"@microsoft/eslint-plugin-sdl": "github:microsoft/eslint-plugin-sdl",
 		"@playwright/test": "^1.51.0",
