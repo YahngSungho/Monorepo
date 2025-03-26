@@ -35,24 +35,34 @@ for (const entry of Object.values(manifest.entries)) {
 
 		await page.goto(`./iframe.html?id=${id}&viewMode=story`)
 		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
-		const debugInfo = await testUIComponent(page, {
+		const results = await testUIComponent(page, {
+			numRuns: 5,
+			sequenceLength: 3,
+			waitAfterInteraction: 300,
 			verbose: false,
-			numRuns: 3,
-			waitAfterInteraction: 50,
 		})
 
-		// 에러 체크
-		expect(consoleErrors, '콘솔 에러 체크').toHaveLength(0)
-		expect(failedRequests, '네트워크 에러 체크').toHaveLength(0)
-		expect(debugInfo.success, '인터랙션 테스트 성공 체크').toBe(true)
-
+		// 테스트 정보 기록
 		test.info().attach(`Debug Info:${title}`, {
-			body: JSON.stringify(debugInfo, undefined, 2),
+			body: JSON.stringify(results, undefined, 2),
 		})
 
 		const dateNow = new Date()
 		test.info().attach(`Time:${title}`, {
 			body: dateNow.toLocaleString('ko-KR'),
 		})
+
+		expect(consoleErrors, '콘솔 에러 체크').toHaveLength(0)
+		expect(failedRequests, '네트워크 에러 체크').toHaveLength(0)
+
+		if (results.errors && results.errors.length > 0) {
+			console.log(`컴포넌트에서 ${results.errors.length}개의 에러가 발생했습니다:`)
+			results.errors.forEach((error) => {
+				console.log(`- ${error.message}`)
+			})
+		}
+
+		expect(results.errors.length).toBe(0)
+		expect(results.success).toBe(true)
 	})
 }

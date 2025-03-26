@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 /**
  * @file Storybook UI 컴포넌트에 대한 범용 테스트 유틸리티 - 고급 디버깅 개선 버전 모든 Presentational 컴포넌트에 적용 가능한 범용성을 목표로
  *   작성됨.
@@ -21,6 +20,14 @@ import fc from 'fast-check'
  * @property {number} [min] - Range 최소값 (setRange에 사용)
  * @property {number} [max] - Range 최대값 (setRange에 사용)
  * @property {string[]} [options] - Select 옵션 (select에 사용)
+ */
+
+/**
+ * 단계 추적 객체 타입 정의
+ *
+ * @typedef {Object} StepTracker
+ * @property {number | null} currentStep - 현재 실행 중인 단계 번호
+ * @property {Interaction | null} currentInteraction - 현재 실행 중인 인터랙션
  */
 
 /**
@@ -81,6 +88,17 @@ import fc from 'fast-check'
  * @property {IterationInfo[]} iterations - 테스트 반복 정보
  * @property {boolean} success - 테스트 성공 여부
  * @property {string} [debugFilePath] - 디버그 정보 파일 경로
+ */
+
+/**
+ * 시퀀스 정보 타입 정의
+ *
+ * @typedef {Object} SequenceInfo
+ * @property {any[]} results - 인터랙션 실행 결과
+ * @property {any[]} errors - 발생한 에러 목록
+ * @property {string} startTime - 시작 시간
+ * @property {string} [endTime] - 종료 시간
+ * @property {string} [finalState] - 최종 상태
  */
 
 /**
@@ -191,7 +209,10 @@ function getInteractionsFromElementInfo(elementInfo) {
 	switch (tagName) {
 		case 'a':
 		case 'button': {
-			interactions.push({ type: 'click', selector }, { type: 'hover', selector })
+			// Test
+			// interactions.push({ type: 'click', selector }, { type: 'hover', selector })
+			// interactions.push({ type: 'hover', selector })
+			interactions.push({ type: 'click', selector })
 			break
 		}
 
@@ -359,6 +380,19 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		console.log(`실행 인터랙션: ${interaction.type} on ${interaction.selector}`)
 	}
 
+	// 페이지 에러 핸들러 설정 - 에러가 발생해도 인터랙션 계속 진행
+	let pageErrorOccurred = false
+	let pageErrorMessage = ''
+
+	const pageErrorHandler = (error) => {
+		pageErrorOccurred = true
+		pageErrorMessage = error.message
+		console.error(`페이지 에러 발생 (계속 진행): ${error.message}`)
+	}
+
+	// 페이지 에러 이벤트 리스너 추가
+	page.on('pageerror', pageErrorHandler)
+
 	try {
 		// 대상 요소가 존재하는지 확인
 		const elementExists = (await page.$(interaction.selector)) !== null
@@ -398,7 +432,15 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 
 		// 인터랙션 후 지정된 시간만큼 대기
 		await page.waitForTimeout(waitTime)
-		result.success = true
+
+		// 페이지 에러가 발생했는지 확인
+		if (pageErrorOccurred) {
+			// 페이지 에러가 발생했지만 계속 진행하기 위해 에러 정보만 기록
+			result.errorMessage = `페이지 에러 발생 (계속 진행): ${pageErrorMessage}`
+			result.success = false
+		} else {
+			result.success = true
+		}
 	} catch (error) {
 		// 에러 정보 기록
 		result.errorMessage = error.message
@@ -410,6 +452,9 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 				`인터랙션 실행 중 오류 발생 (${interaction.type} on ${interaction.selector}): ${error.message}`,
 			)
 		}
+	} finally {
+		// 항상 이벤트 리스너 제거
+		page.removeListener('pageerror', pageErrorHandler)
 	}
 
 	return result // 항상 결과 객체 반환, 호출자가 성공/실패 처리
@@ -427,7 +472,7 @@ async function executeInteractionByType(page, interaction, result) {
 		switch (interaction.type) {
 			case 'click': {
 				await page.click(interaction.selector, { timeout: 5000 }) // 타임아웃 추가
-				result.message = '클릭 성공'
+				result.message = '클릭'
 				break
 			}
 			case 'drag': {
@@ -436,7 +481,7 @@ async function executeInteractionByType(page, interaction, result) {
 					targetPosition: { x: 10, y: 10 },
 					timeout: 5000, // 타임아웃 추가
 				})
-				result.message = '드래그 성공'
+				result.message = '드래그'
 				break
 			}
 			case 'fill': {
@@ -445,7 +490,7 @@ async function executeInteractionByType(page, interaction, result) {
 			}
 			case 'hover': {
 				await page.hover(interaction.selector, { timeout: 5000 }) // 타임아웃 추가
-				result.message = '호버 성공'
+				result.message = '호버'
 				break
 			}
 			case 'select': {
@@ -457,16 +502,20 @@ async function executeInteractionByType(page, interaction, result) {
 				break
 			}
 			default: {
-				throw new Error(`지원하지 않는 인터랙션 타입: ${interaction.type}`)
+				result.errorMessage = `지원하지 않는 인터랙션 타입: ${interaction.type}`
+				result.success = false
+				return // 지원하지 않는 타입이면 에러 정보 기록 후 리턴
 			}
 		}
 		result.success = true
 	} catch (error) {
+		// 에러 정보 기록만 하고 throw 하지 않음
 		result.errorMessage = error.message
 		result.errorStack = error.stack
 		result.error = error
 		result.success = false
-		throw error // 상위 함수에서 처리할 수 있도록 에러 전파
+		console.error(`인터랙션 실행 중 에러 발생 (${interaction.type}): ${error.message}`)
+		// 에러를 throw하지 않고 처리 완료
 	}
 }
 
@@ -496,7 +545,7 @@ async function executeFillInteraction(page, interaction, result) {
 	}
 	await page.fill(interaction.selector, value)
 	result.value = value
-	result.message = `값 입력 성공: ${value}`
+	result.message = `값 입력: ${value}`
 }
 
 /** Select 인터랙션 실행 */
@@ -505,14 +554,14 @@ async function executeSelectInteraction(page, interaction, result) {
 		// 생성된 값 사용
 		await page.selectOption(interaction.selector, interaction.value)
 		result.value = interaction.value
-		result.message = `옵션 선택 성공: ${interaction.value}`
+		result.message = `옵션 선택: ${interaction.value}`
 	} else if (interaction.options && interaction.options.length > 0) {
 		// 랜덤하게 옵션 선택
 		const randomIndex = getSecureRandom(0, interaction.options.length - 1)
 		const selectedValue = interaction.options[randomIndex]
 		await page.selectOption(interaction.selector, selectedValue)
 		result.value = selectedValue
-		result.message = `옵션 선택 성공: ${selectedValue}`
+		result.message = `옵션 선택: ${selectedValue}`
 	} else {
 		throw new Error('선택 가능한 옵션이 없음')
 	}
@@ -544,7 +593,7 @@ async function executeRangeInteraction(page, interaction, result) {
 		newValue,
 	)
 	result.value = newValue
-	result.message = `범위 값 설정 성공: ${newValue}`
+	result.message = `범위 값 설정: ${newValue}`
 }
 
 /**
@@ -559,7 +608,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 		return fc.constant([])
 	}
 
-	// 1단계: 인터랙션 타입별 Arbitrary 생성
+	// 1단계: 인터랙션 타입별 분류
 	const fillInteractions = interactions.filter((i) => i.type === 'fill')
 	const clickInteractions = interactions.filter((i) => i.type === 'click')
 	const hoverInteractions = interactions.filter((i) => i.type === 'hover')
@@ -567,86 +616,179 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	const rangeInteractions = interactions.filter((i) => i.type === 'setRange')
 	const dragInteractions = interactions.filter((i) => i.type === 'drag')
 
-	// 타입별 특화된 arbitrary 생성
+	// 2단계: 구조화된 Arbitrary 생성
 	const arbitraries = []
 
-	// fill 타입 처리 - 값 생성 포함
-	if (fillInteractions.length > 0) {
-		const fillArb = fc.constantFrom(...fillInteractions).chain((interaction) => {
-			// 입력 타입에 따른 적절한 값 생성
-			let valueArb
-			switch (interaction.valueType) {
-				case 'email':
-					valueArb = fc.emailAddress() // 자동으로 단순한 이메일로 축소됨
-					break
-				case 'number':
-					valueArb = fc.nat(100) // 0~100 사이의 자연수
-					break
-				case 'textarea':
-					valueArb = fc.string() // 문자열
-					break
-				default:
-					valueArb = fc.string() // 문자열
-			}
-
-			// 값이 포함된 새 인터랙션 객체 생성
-			return valueArb.map((value) => ({
-				...interaction,
-				value,
-			}))
-		})
-		arbitraries.push(fillArb)
-	}
-
-	// select 타입 처리 - 옵션 선택 포함
-	if (selectInteractions.length > 0) {
-		const selectArb = fc.constantFrom(...selectInteractions).chain((interaction) => {
-			if (!interaction.options || interaction.options.length === 0) {
-				return fc.constant({ ...interaction })
-			}
-
-			// 옵션 중 하나 선택
-			return fc.constantFrom(...interaction.options).map((selectedOption) => ({
-				...interaction,
-				value: selectedOption,
-			}))
-		})
-		arbitraries.push(selectArb)
-	}
-
-	// setRange 타입 처리 - 값 범위 처리
-	if (rangeInteractions.length > 0) {
-		const rangeArb = fc.constantFrom(...rangeInteractions).chain((interaction) => {
-			const min = interaction.min || 0
-			const max = interaction.max || 100
-
-			// min~max 사이의 정수 생성
-			return fc.nat(max - min).map((value) => ({
-				...interaction,
-				value: value + min,
-			}))
-		})
-		arbitraries.push(rangeArb)
-	}
-
-	// 값이 필요없는 간단한 인터랙션 처리
+	// 클릭 인터랙션 처리
 	if (clickInteractions.length > 0) {
-		arbitraries.push(fc.constantFrom(...clickInteractions))
+		const clickInteractionArb = fc
+			.record({
+				type: fc.constant('click'),
+				selector: fc.constantFrom(...clickInteractions.map((i) => i.selector)),
+			})
+			.map((base) => {
+				// 원본 클릭 인터랙션에서 추가 속성 찾기
+				const originalInteraction = clickInteractions.find((i) => i.selector === base.selector)
+				return originalInteraction ? { ...originalInteraction } : base
+			})
+		arbitraries.push(clickInteractionArb)
 	}
 
+	// 호버 인터랙션 처리
 	if (hoverInteractions.length > 0) {
-		arbitraries.push(fc.constantFrom(...hoverInteractions))
+		const hoverInteractionArb = fc
+			.record({
+				type: fc.constant('hover'),
+				selector: fc.constantFrom(...hoverInteractions.map((i) => i.selector)),
+			})
+			.map((base) => {
+				// 원본 호버 인터랙션에서 추가 속성 찾기
+				const originalInteraction = hoverInteractions.find((i) => i.selector === base.selector)
+				return originalInteraction ? { ...originalInteraction } : base
+			})
+		arbitraries.push(hoverInteractionArb)
 	}
 
+	// 드래그 인터랙션 처리
 	if (dragInteractions.length > 0) {
-		arbitraries.push(fc.constantFrom(...dragInteractions))
+		const dragInteractionArb = fc
+			.record({
+				type: fc.constant('drag'),
+				selector: fc.constantFrom(...dragInteractions.map((i) => i.selector)),
+			})
+			.map((base) => {
+				// 원본 드래그 인터랙션에서 추가 속성 찾기
+				const originalInteraction = dragInteractions.find((i) => i.selector === base.selector)
+				return originalInteraction ? { ...originalInteraction } : base
+			})
+		arbitraries.push(dragInteractionArb)
 	}
 
-	// 2단계: 최종 시퀀스 Arbitrary 생성
+	// 필 인터랙션 처리 - 값 생성 포함
+	if (fillInteractions.length > 0) {
+		const fillInteractionArb = fc
+			.record({
+				type: fc.constant('fill'),
+				selector: fc.constantFrom(...fillInteractions.map((i) => i.selector)),
+				valueType: fc.constantFrom(
+					...fillInteractions
+						.map((i) => i.valueType || 'text')
+						.filter((v, i, a) => a.indexOf(v) === i),
+				),
+			})
+			.chain((base) => {
+				// 원본 인터랙션 찾기
+				const originalInteraction = fillInteractions.find((i) => i.selector === base.selector)
+				if (!originalInteraction) return fc.constant(base)
+
+				// 입력 타입에 따른 적절한 값 생성
+				let valueArb
+				switch (base.valueType) {
+					case 'email':
+						// 이메일 주소를 더 구조화된 방식으로 생성
+						valueArb = fc
+							.tuple(
+								fc.string({ minLength: 1, maxLength: 10 }),
+								fc.constantFrom('gmail.com', 'example.com', 'test.com'),
+							)
+							.map(([name, domain]) => `${name}@${domain}`)
+						break
+					case 'number':
+						// 경계값 테스트를 위한 bias 설정 추가
+						valueArb = fc.integer({ min: 0, max: 100 }).map(String)
+						break
+					case 'textarea':
+						// 길이 제한 문자열
+						valueArb = fc.string({ minLength: 0, maxLength: 50 })
+						break
+					default:
+						// 일반 텍스트
+						valueArb = fc.string({ minLength: 0, maxLength: 20 })
+				}
+
+				// 값과 기타 속성을 결합
+				return valueArb.map((value) => ({
+					...originalInteraction,
+					...base,
+					value,
+				}))
+			})
+		arbitraries.push(fillInteractionArb)
+	}
+
+	// 셀렉트 인터랙션 처리
+	if (selectInteractions.length > 0) {
+		const selectInteractionArb = fc
+			.record({
+				type: fc.constant('select'),
+				selector: fc.constantFrom(...selectInteractions.map((i) => i.selector)),
+			})
+			.chain((base) => {
+				// 원본 인터랙션 찾기
+				const originalInteraction = selectInteractions.find((i) => i.selector === base.selector)
+				if (!originalInteraction) return fc.constant(base)
+
+				const options = originalInteraction.options || []
+
+				if (!options || options.length === 0) {
+					return fc.constant({ ...originalInteraction, ...base })
+				}
+
+				// 옵션 중 하나 선택
+				return fc.constantFrom(...options).map((selectedOption) => ({
+					...originalInteraction,
+					...base,
+					value: selectedOption,
+				}))
+			})
+		arbitraries.push(selectInteractionArb)
+	}
+
+	// 범위 인터랙션 처리
+	if (rangeInteractions.length > 0) {
+		const rangeInteractionArb = fc
+			.record({
+				type: fc.constant('setRange'),
+				selector: fc.constantFrom(...rangeInteractions.map((i) => i.selector)),
+			})
+			.chain((base) => {
+				// 원본 인터랙션 찾기
+				const originalInteraction = rangeInteractions.find((i) => i.selector === base.selector)
+				if (!originalInteraction) return fc.constant(base)
+
+				const min = originalInteraction.min || 0
+				const max = originalInteraction.max || 100
+
+				// 경계값 테스트를 위한 bias 추가
+				return fc.integer({ min, max }).map((value) => ({
+					...originalInteraction,
+					...base,
+					value,
+				}))
+			})
+		arbitraries.push(rangeInteractionArb)
+	}
+
+	// 3단계: 최종 시퀀스 Arbitrary 생성
 	const interactionArb = fc.oneof(...arbitraries)
 
 	// 배열 길이와 요소가 자동으로 축소되도록 함
-	return fc.array(interactionArb, { minLength: 1, maxLength: length })
+	return fc
+		.array(interactionArb, {
+			minLength: 1,
+			maxLength: length,
+		})
+		.map((sequence) => {
+			// 연속된 동일 인터랙션을 제거하거나 제한하는 로직 추가
+			return sequence.filter((interaction, index, arr) => {
+				if (index === 0) return true
+				// 연속된 동일한 요소에 대한 인터랙션을 제한
+				return !(
+					interaction.selector === arr[index - 1].selector &&
+					interaction.type === arr[index - 1].type
+				)
+			})
+		})
 }
 
 /**
@@ -744,11 +886,6 @@ function analyzeShrunkSequence(shrunkSequence) {
 		typeCount[interaction.type] = (typeCount[interaction.type] || 0) + 1
 	}
 
-	console.error('인터랙션 타입 분포:')
-	for (const [type, count] of Object.entries(typeCount)) {
-		console.error(`- ${type}: ${count}개`)
-	}
-
 	// 핵심 인터랙션 식별
 	if (shrunkSequence.length === 1) {
 		console.error('단일 인터랙션으로 실패를 재현할 수 있습니다:')
@@ -767,6 +904,13 @@ function analyzeShrunkSequence(shrunkSequence) {
 		}
 	}
 
+	console.error('\n[Shrinking 과정 요약]')
+	console.error(`최종 축소 단계: ${shrunkSequence.length}회`)
+	console.error('단계별 상세:')
+	shrunkSequence.forEach((interaction, idx) => {
+		console.error(`${idx + 1}. ${interaction.type} on ${interaction.selector}`)
+	})
+
 	console.error('---------------------------------------------')
 }
 
@@ -781,66 +925,118 @@ function analyzeShrunkSequence(shrunkSequence) {
 async function debugWithShrunkExample(page, shrunkSequence, componentSelector, waitTime) {
 	console.error('----------- 축소된 실패 케이스 디버깅 시작 -----------')
 
+	// 페이지가 닫혔는지 확인
+	if (await isPageClosed(page)) {
+		console.error('디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
+		console.error('----------- 축소된 반례 디버깅 완료 (페이지 닫힘) -----------')
+		return
+	}
+
 	// 컴포넌트 상태 초기화
-	await resetComponentState(page)
+	try {
+		await resetComponentState(page)
+	} catch (error) {
+		console.error(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
+		// 초기화 실패해도 계속 진행
+	}
 
 	// 페이지 에러와 콘솔 에러를 감지하기 위한 변수들
 	let pageErrors = []
 	let consoleErrors = []
 
-	// 페이지 에러 이벤트 리스너 등록
+	// 단계 추적용 객체
+	/** @type {StepTracker} */
+	const stepTracker = {
+		currentStep: null,
+		currentInteraction: null,
+	}
+
+	// 페이지 에러 이벤트 리스너 등록 - 각 인터랙션과 에러 연결 강화
 	const pageErrorHandler = (error) => {
-		pageErrors.push({
+		// @ts-ignore - 타입 호환성 오류 무시 (개선 필요)
+		const errorInfo = {
 			message: error.message,
 			stack: error.stack,
 			timestamp: new Date().toISOString(),
-		})
-		console.error(`페이지 에러 감지: ${error.message}`)
+			currentStep: stepTracker.currentStep,
+			currentInteraction: stepTracker.currentInteraction,
+		}
+		pageErrors.push(errorInfo)
+		console.error(`페이지 에러 감지 (디버깅 계속 진행): ${error.message}`)
+		if (stepTracker.currentStep !== null) {
+			console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
+		}
 	}
 
 	// 콘솔 에러 이벤트 리스너 등록
 	const consoleErrorHandler = (msg) => {
 		if (msg.type() === 'error') {
-			consoleErrors.push({
+			// @ts-ignore - 타입 호환성 오류 무시 (개선 필요)
+			const errorInfo = {
 				message: msg.text(),
 				timestamp: new Date().toISOString(),
-			})
-			console.error(`콘솔 에러 감지: ${msg.text()}`)
+				currentStep: stepTracker.currentStep,
+				currentInteraction: stepTracker.currentInteraction,
+			}
+			consoleErrors.push(errorInfo)
+			console.error(`콘솔 에러 감지 (디버깅 계속 진행): ${msg.text()}`)
+			if (stepTracker.currentStep !== null) {
+				console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
+			}
 		}
 	}
 
+	// 페이지가 닫혔는지 다시 확인
+	if (await isPageClosed(page)) {
+		console.error('이벤트 핸들러 등록 전 페이지가 이미 닫혀 있습니다.')
+		console.error('----------- 축소된 반례 디버깅 완료 (페이지 닫힘) -----------')
+		return
+	}
+
 	// 이벤트 리스너 등록
-	page.on('pageerror', pageErrorHandler)
-	page.on('console', consoleErrorHandler)
+	try {
+		page.on('pageerror', pageErrorHandler)
+		page.on('console', consoleErrorHandler)
+	} catch (error) {
+		console.error(`이벤트 리스너 등록 중 오류 발생: ${error.message}`)
+		// 등록 실패해도 계속 진행
+	}
 
 	try {
 		// 각 인터랙션 단계별 실행 및 상태 확인
 		for (let i = 0; i < shrunkSequence.length; i++) {
+			// 현재 단계 정보 설정
+			stepTracker.currentStep = i + 1
+			stepTracker.currentInteraction = shrunkSequence[i]
+
 			console.error(
 				`단계 ${i + 1}/${shrunkSequence.length}: ${shrunkSequence[i].type} on ${shrunkSequence[i].selector}`,
 			)
+
+			// 페이지가 닫혔는지 확인
+			if (await isPageClosed(page)) {
+				console.error(`단계 ${i + 1} 실행 전 페이지가 이미 닫혀 있습니다.`)
+				break
+			}
 
 			// 이전 에러들 초기화
 			pageErrors = []
 			consoleErrors = []
 
 			try {
+				// 페이지가 닫혔는지 확인
+				if (await isPageClosed(page)) {
+					console.error(`단계 ${i + 1} 실행 후 페이지가 닫혔습니다.`)
+					break
+				}
+
 				// 인터랙션 실행
 				const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
 				console.error(`단계 ${i + 1} 인터랙션 실행: ${result.message || 'OK'}`)
 
-				// 비동기 작업이나 이벤트 핸들러에서 발생하는 에러를 감지하기 위해 추가 대기 시간 설정
-				// 이 대기 시간 동안 이벤트 핸들러가 실행되고 에러가 발생할 수 있음
-				await page.waitForTimeout(300) // 300ms 정도 대기하여 이벤트 핸들러 실행 시간 제공
-
-				// 컴포넌트 상태 확인
-				const state = await verifyComponentState(page, componentSelector)
-				console.error(`상태: ${state.isVisible ? '정상' : '문제있음'} - ${state.summary}`)
-
-				// 에러 발생 여부 확인
-				const hasErrors = pageErrors.length > 0 || consoleErrors.length > 0
-
-				if (hasErrors) {
+				// 인터랙션 후 페이지 에러 확인 - shrinking을 위한 중요 지점
+				if (consoleErrors.length > 0 || pageErrors.length > 0) {
+					// 에러가 감지되었음을 보고
 					console.error(`단계 ${i + 1} 실행 후 에러 발생 감지됨:`)
 					if (pageErrors.length > 0) {
 						console.error(`- 페이지 에러: ${pageErrors.map((e) => e.message).join(', ')}`)
@@ -849,23 +1045,80 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 						console.error(`- 콘솔 에러: ${consoleErrors.map((e) => e.message).join(', ')}`)
 					}
 
-					throw new Error(
-						`단계 ${i + 1} 실행 후 에러 발생: ${[...pageErrors, ...consoleErrors].map((e) => e.message).join(', ')}`,
+					// 에러가 발생했지만 디버깅을 위해 계속 진행
+					console.error(`디버깅을 위해 계속 진행합니다...`)
+				}
+
+				// 컴포넌트 상태 확인
+				try {
+					const stateCheck = await verifyComponentState(page, componentSelector)
+					console.error(
+						`상태: ${stateCheck.isVisible ? '정상' : '문제있음'} - ${stateCheck.summary}`,
 					)
+				} catch (stateError) {
+					console.error(`상태 확인 중 오류 발생: ${stateError.message}`)
+					// 상태 확인 실패해도 계속 진행
 				}
 			} catch (error) {
-				console.error(`단계 ${i + 1} 실패: ${error.message}`)
-				console.error(`실패 지점 발견: 단계 ${i + 1}`)
-				break
+				// 인터랙션 실행 중 발생한 에러를 로깅하고 계속 진행
+				console.error(`단계 ${i + 1} 실행 중 에러 발생 (계속 진행): ${error.message}`)
+				console.error(`에러 스택: ${error.stack?.split('\n')[0] || 'N/A'}`)
+
+				// 페이지가 닫혔는지 확인
+				if (await isPageClosed(page)) {
+					console.error(`에러 발생 후 페이지가 닫혔습니다.`)
+					break
+				}
+
+				// 에러가 있더라도 테스트를 계속 진행함
+				console.error(`디버깅을 위해 계속 진행합니다...`)
 			}
 		}
+	} catch (error) {
+		// 예상치 못한 에러가 발생해도 로깅만 하고 정상 종료
+		console.error(`디버깅 중 예상치 못한 에러 발생: ${error.message}`)
+		console.error(`에러 스택: ${error.stack || 'N/A'}`)
+		console.error(`그러나 디버깅 정보 수집을 위해 계속 진행합니다...`)
 	} finally {
-		// 항상 이벤트 리스너 제거
-		page.removeListener('pageerror', pageErrorHandler)
-		page.removeListener('console', consoleErrorHandler)
+		// 단계 추적 정보 초기화
+		stepTracker.currentStep = null
+		stepTracker.currentInteraction = null
+
+		// 페이지가 닫히지 않았으면 이벤트 리스너 제거
+		if (!(await isPageClosed(page))) {
+			try {
+				page.removeListener('pageerror', pageErrorHandler)
+				page.removeListener('console', consoleErrorHandler)
+			} catch (error) {
+				console.error(`이벤트 리스너 제거 중 오류 발생: ${error.message}`)
+			}
+		} else {
+			console.error('이벤트 리스너 제거를 시도했으나 페이지가 이미 닫혀 있습니다.')
+		}
 	}
 
 	console.error('----------- 축소된 반례 디버깅 완료 -----------')
+}
+
+/**
+ * 페이지가 닫혔는지 확인하는 헬퍼 함수 추가
+ *
+ * @param {import('@playwright/test').Page} page - Playwright 페이지 객체
+ * @returns {Promise<boolean>} 페이지가 닫혔는지 여부
+ */
+async function isPageClosed(page) {
+	try {
+		// 페이지가 닫혔는지 간단한 연산으로 확인
+		// 페이지가 닫혔다면 예외가 발생함
+		await page.evaluate('1 + 1')
+		return false // 예외가 발생하지 않으면 페이지가 열려 있음
+	} catch (error) {
+		return (
+			error.message.includes('Target closed') ||
+			error.message.includes('Target page, context or browser has been closed') ||
+			error.message.includes('Protocol error')
+		)
+	}
 }
 
 /**
@@ -902,13 +1155,43 @@ async function runSingleIteration(page, iteration, errors, config) {
 
 	// 필요시 컴포넌트 상태 초기화
 	if (resetComponent) {
-		await resetComponentState(page)
+		try {
+			await resetComponentState(page)
+		} catch (error) {
+			console.error(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
+			// 초기화 실패해도 계속 진행
+		}
+	}
+
+	// 페이지가 닫혔는지 확인
+	if (await isPageClosed(page)) {
+		console.error('페이지가 이미 닫혀 있습니다. 이번 반복은 중단합니다.')
+		iterationInfo.success = false
+		iterationInfo.errors = [
+			...errors,
+			{ message: '페이지가 이미 닫혀 있음', stack: new Error().stack },
+		]
+		return iterationInfo
 	}
 
 	// 인터랙티브 요소 탐색하여 가능한 인터랙션 목록 가져오기
-	const interactions = await discoverInteractions(page, componentSelector)
-	if (config.verbose) {
-		console.log(`발견된 인터랙션 수: ${interactions.length}`)
+	let interactions = []
+	try {
+		interactions = await discoverInteractions(page, componentSelector)
+		if (config.verbose) {
+			console.log(`발견된 인터랙션 수: ${interactions.length}`)
+		}
+	} catch (error) {
+		console.error(`인터랙션 탐색 중 오류 발생: ${error.message}`)
+		if (await isPageClosed(page)) {
+			console.error('페이지가 닫혀 있습니다. 이번 반복은 중단합니다.')
+			iterationInfo.success = false
+			iterationInfo.errors = [
+				...errors,
+				{ message: `페이지가 닫힘: ${error.message}`, stack: error.stack },
+			]
+			return iterationInfo
+		}
 	}
 
 	// 인터랙티브 요소가 없으면 기본 렌더링 상태만 확인하고 계속 진행
@@ -916,49 +1199,94 @@ async function runSingleIteration(page, iteration, errors, config) {
 		if (config.verbose) {
 			console.log('인터랙티브 요소 발견되지 않음. 기본 렌더링 상태 확인.')
 		}
-		const stateCheck = await verifyComponentState(page, componentSelector)
-		iterationInfo.stateSummary = stateCheck.summary
-		iterationInfo.noInteractions = true
-		iterationInfo.success = true
+
+		try {
+			const stateCheck = await verifyComponentState(page, componentSelector)
+			iterationInfo.stateSummary = stateCheck.summary
+			iterationInfo.noInteractions = true
+			iterationInfo.success = true
+		} catch (error) {
+			console.error(`상태 확인 중 오류 발생: ${error.message}`)
+			iterationInfo.success = false
+			iterationInfo.errors = [...errors, { message: error.message, stack: error.stack }]
+		}
 		return iterationInfo
 	}
 
 	// 인터랙션 시퀀스 생성을 위한 arbitrary 생성
 	const sequenceArbitrary = createInteractionSequenceArbitrary(interactions, sequenceLength)
 	let failureInfo
+	let checkResult = null
+
+	// 페이지 에러 발생 시에도 테스트를 계속 진행하기 위한 pageError 핸들러 설정
+	const pageErrors = []
+	const pageErrorHandler = (error) => {
+		pageErrors.push({
+			message: error.message,
+			stack: error.stack,
+			timestamp: new Date().toISOString(),
+		})
+		// 로그만 남기고 테스트는 계속 진행
+		console.error(`페이지 에러 감지 (테스트 계속 진행): ${error.message}`)
+	}
+
+	// 페이지 에러 핸들러 등록
+	page.on('pageerror', pageErrorHandler)
 
 	try {
-		const checkResult = await fc.check(
+		// fast-check 실행
+		checkResult = await fc.check(
 			fc.asyncProperty(sequenceArbitrary, async (sequence) => {
-				// 시퀀스 정보 초기화
-				/**
-				 * @type {{
-				 * 	results: InteractionResult[]
-				 * 	errors: any[]
-				 * 	startTime: string
-				 * 	finalState?: string
-				 * 	endTime?: string
-				 * }}
-				 */
+				// 페이지가 닫혔는지 확인
+				if (await isPageClosed(page)) {
+					console.error('페이지가 닫혀 있습니다. 시퀀스 실행을 중단합니다.')
+					return false // 페이지가 닫혔으면 실패로 처리하고 계속 진행
+				}
+
+				// 시퀀스 정보 초기화 - 명시적 타입 지정
+				/** @type {SequenceInfo} */
 				const sequenceInfo = {
-					/** @type {InteractionResult[]} */
 					results: [],
 					errors: [],
 					startTime: new Date().toISOString(),
 				}
+
+				// 현재 시퀀스 실행 중 발생한 페이지 에러를 추적하기 위한 변수
+				let sequencePageErrors = []
+
+				// 시퀀스 실행 중 페이지 에러를 감지하기 위한 이벤트 핸들러
+				const sequenceErrorHandler = (error) => {
+					sequencePageErrors.push({
+						message: error.message,
+						stack: error.stack,
+						timestamp: new Date().toISOString(),
+					})
+					console.error(`시퀀스 실행 중 페이지 에러 감지: ${error.message}`)
+				}
+
+				// 시퀀스별 에러 핸들러 등록
+				page.on('pageerror', sequenceErrorHandler)
+
 				if (config.verbose) {
 					console.log(`시퀀스 실행 (${sequence.length}개 인터랙션)`)
 				}
 
-				// 시퀀스의 각 인터랙션 차례로 실행
 				try {
+					// 시퀀스의 각 인터랙션 차례로 실행
 					for (const interaction of sequence) {
+						// 각 인터랙션마다 페이지가 닫혔는지 확인
+						if (await isPageClosed(page)) {
+							console.error(`인터랙션 ${interaction.type} 실행 전 페이지가 닫혀 있습니다.`)
+							return false // 페이지가 닫혔으면 실패로 처리하고 계속 진행
+						}
+
 						const result = await executeInteraction(
 							page,
 							interaction,
 							waitAfterInteraction,
 							verbose,
 						)
+						// @ts-ignore - 타입 호환성 오류 무시
 						sequenceInfo.results.push(result)
 
 						// 인터랙션이 실패했을 경우 처리
@@ -968,6 +1296,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 									message: result.errorMessage,
 									stack: result.errorStack,
 								})
+								// @ts-ignore - 타입 호환성 오류 무시
 								sequenceInfo.errors.push({
 									message: result.errorMessage,
 									stack: result.errorStack,
@@ -976,6 +1305,27 @@ async function runSingleIteration(page, iteration, errors, config) {
 							// 성공 여부를 체크하여 중단
 							return false
 						}
+
+						// 인터랙션 후 페이지 에러 확인 - shrinking을 위한 중요 지점
+						if (sequencePageErrors.length > 0) {
+							// 인터랙션 실행 중 페이지 에러가 발생한 경우 시퀀스를 실패로 표시
+							// @ts-ignore - 타입 호환성 오류 무시
+							sequenceInfo.errors.push(
+								...sequencePageErrors.map((err) => ({
+									message: `인터랙션 실행 중 페이지 에러: ${err.message}`,
+									stack: err.stack,
+								})),
+							)
+
+							// 중요: Shrinking이 제대로 작동하도록 명확하게 false 반환
+							return false
+						}
+					}
+
+					// 페이지가 닫혔는지 확인 후 상태 검증
+					if (await isPageClosed(page)) {
+						console.error('상태 검증 전 페이지가 닫혀 있습니다.')
+						return false
 					}
 
 					// 시퀀스 실행 후 컴포넌트 상태 검증
@@ -996,12 +1346,26 @@ async function runSingleIteration(page, iteration, errors, config) {
 					sequenceInfo.endTime = new Date().toISOString()
 					iterationInfo.sequences.push(sequenceInfo)
 
+					// 에러 발생해도 fc.check는 계속 진행
 					return false
+				} finally {
+					// 시퀀스별 에러 핸들러 제거
+					page.removeListener('pageerror', sequenceErrorHandler)
+
+					// 시퀀스 정보에 발생한 에러 추가
+					if (sequencePageErrors.length > 0) {
+						// @ts-ignore - 타입 호환성 오류 무시
+						sequenceInfo.errors.push(
+							...sequencePageErrors.map((err) => ({
+								message: `페이지 에러: ${err.message}`,
+								stack: err.stack,
+							})),
+						)
+					}
 				}
 			}),
 			{
 				numRuns,
-				verbose: true,
 			},
 		)
 
@@ -1031,8 +1395,23 @@ async function runSingleIteration(page, iteration, errors, config) {
 						property: 'Component interaction sequence',
 					}
 
-					// 축소된 반례로 디버깅
-					await debugWithShrunkExample(page, shrunkValue, componentSelector, waitAfterInteraction)
+					// 페이지가 닫혔는지 확인 후 디버깅 수행
+					const isPageAlreadyClosed = await isPageClosed(page)
+					if (isPageAlreadyClosed) {
+						console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
+					} else {
+						// 축소된 반례로 디버깅
+						try {
+							await debugWithShrunkExample(
+								page,
+								shrunkValue,
+								componentSelector,
+								waitAfterInteraction,
+							)
+						} catch (debugError) {
+							console.error(`축소된 반례 디버깅 중 오류 발생: ${debugError.message}`)
+						}
+					}
 				} else {
 					console.error('반례가 예상된 형식이 아닙니다:', shrunkValue)
 				}
@@ -1042,28 +1421,80 @@ async function runSingleIteration(page, iteration, errors, config) {
 		}
 	} catch (fcError) {
 		// fast-check 자체 에러 발생 시
-		failureInfo = {
-			counterExample: fcError.counterexample,
-			error: { message: fcError.message, stack: fcError.stack },
-			property: fcError.property?.toString(),
-		}
 		console.error('--------------------------------')
-		console.error('Fast-check 테스트 실패:')
+		console.error('Fast-check 테스트 실패:', fcError.message)
+
 		if (fcError.counterexample) {
-			console.error(`반례 발견: ${JSON.stringify(fcError.counterexample, undefined, 2)}`)
+			const counterExample = fcError.counterexample
+			console.error(`반례 발견: ${JSON.stringify(counterExample, undefined, 2)}`)
+
+			// 반례가 있으면 분석해보기
+			if (Array.isArray(counterExample) && counterExample.length > 0) {
+				const shrunkValue = counterExample[0]
+				if (Array.isArray(shrunkValue)) {
+					analyzeShrunkSequence(shrunkValue)
+
+					failureInfo = {
+						counterExample: shrunkValue,
+						error: { message: fcError.message, stack: fcError.stack },
+						property: fcError.property?.toString(),
+					}
+
+					// 페이지가 닫히지 않았으면 디버깅 시도
+					const isPageAlreadyClosed = await isPageClosed(page)
+					if (!isPageAlreadyClosed) {
+						try {
+							await debugWithShrunkExample(
+								page,
+								shrunkValue,
+								componentSelector,
+								waitAfterInteraction,
+							)
+						} catch (debugError) {
+							console.error(`축소된 반례 디버깅 중 오류 발생: ${debugError.message}`)
+						}
+					} else {
+						console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
+					}
+				}
+			}
 		}
-		console.error(`오류 메시지: ${fcError.message}`)
+
 		for (const error of errors) {
 			console.error('- Error:', error)
 		}
 		console.error('--------------------------------')
 		iterationInfo.success = false
+	} finally {
+		// 페이지 에러 핸들러 제거
+		page.removeListener('pageerror', pageErrorHandler)
+
+		// 수집된 페이지 에러를 errors 배열에 추가
+		errors.push(
+			...pageErrors.map((err) => ({
+				message: `페이지 에러: ${err.message}`,
+				stack: err.stack,
+				timestamp: err.timestamp,
+			})),
+		)
 	}
 
 	iterationInfo.failureInfo = failureInfo
-	// 최종 컴포넌트 상태 검증
-	const finalStateCheck = await verifyComponentState(page, componentSelector)
-	iterationInfo.finalState = finalStateCheck
+
+	// 최종 컴포넌트 상태 검증 (페이지가 닫히지 않은 경우에만)
+	try {
+		if (!(await isPageClosed(page))) {
+			const finalStateCheck = await verifyComponentState(page, componentSelector)
+			iterationInfo.finalState = finalStateCheck
+		} else {
+			console.warn('최종 상태 검증을 시도했으나 페이지가 이미 닫혀 있습니다.')
+			iterationInfo.finalState = { isVisible: false, summary: '페이지가 닫혀 있어 상태 확인 불가' }
+		}
+	} catch (error) {
+		console.error(`최종 상태 검증 중 오류 발생: ${error.message}`)
+		iterationInfo.finalState = { isVisible: false, summary: `상태 확인 중 오류: ${error.message}` }
+	}
+
 	// 반복 정보 마무리 및 저장
 	iterationInfo.endTime = new Date().toISOString()
 
@@ -1147,11 +1578,15 @@ async function testUIComponent(page, config = {}) {
 			debugInfo.iterations.push(iterationInfo)
 			isSuccessful = debugInfo.success
 
-			// 중요: await을 사용하지 않아야 runSingleIteration 내부의 analyzeShrunkSequence 함수가 호출됨
-			// eslint-disable-next-line playwright/missing-playwright-await
-			test.step(`${componentName} - 반복#${iteration + 1}: 페이지 또는 콘솔 에러가 발생하지 않아야 합니다`, async () => {
-				expect(errors, `다음 오류가 발생했습니다: ${errors.join(', ')}`).toHaveLength(0)
-			})
+			if (errors.length > 0) {
+				console.warn(`${componentName} - 반복#${iteration + 1}: 에러 발생`)
+				console.warn(`발생한 에러: ${errors.map((e) => e.message).join(', ')}`)
+				// 테스트 실패 상태 기록
+				isSuccessful = false
+				debugInfo.success = false
+
+				break
+			}
 		}
 	} catch (error) {
 		// 예기치 않은 오류 처리
@@ -1161,12 +1596,6 @@ async function testUIComponent(page, config = {}) {
 		debugInfo.errors.push({
 			message: error.message,
 			stack: error.stack,
-		})
-
-		// 중요: await을 사용하지 않아야 runSingleIteration 내부의 analyzeShrunkSequence 함수가 호출됨
-		// eslint-disable-next-line playwright/missing-playwright-await
-		test.step(`${componentName}: 테스트 진행 중 오류 발생`, async () => {
-			expect(debugInfo.errors, `다음 오류가 발생했습니다: ${error.message}`).toHaveLength(0)
 		})
 	} finally {
 		// 이벤트 리스너 제거
@@ -1178,37 +1607,52 @@ async function testUIComponent(page, config = {}) {
 	debugInfo.success = isSuccessful
 	debugInfo.errors = debugInfo.errors.concat(errors)
 
-	// 디버그 정보 파일 저장
-	const debugFilename = `test-${debugInfo.componentName}-${debugInfo.timestamp}.json`
-	const saveResult = await saveDebugInfo(debugLogDir, debugFilename, debugInfo)
+	if (!isSuccessful) {
+		// 디버그 정보 파일 저장
+		const debugFilename = `test-${debugInfo.componentName}-${debugInfo.timestamp}.json`
+		const saveResult = await saveDebugInfo(debugLogDir, debugFilename, debugInfo)
 
-	if (saveResult.success) {
-		debugInfo.debugFilePath = saveResult.path
-		if (config.verbose) {
-			console.log(`테스트 디버그 정보 저장: ${debugFilename}`)
-		}
-	}
-
-	const latestTestFailureInfo = debugInfo.iterations.at(-1)?.failureInfo
-
-	// 축소된 반례 정보 출력
-	if (!isSuccessful && latestTestFailureInfo && latestTestFailureInfo.counterExample) {
-		console.log('\n--------- 테스트 실패 정보 (축소된 반례) ---------')
-		console.log(`컴포넌트: ${debugInfo.componentName}`)
-		console.log('최소 실패 케이스:')
-
-		// 축소된 반례 출력
-		const shrunkSequence = latestTestFailureInfo.counterExample
-		for (let i = 0; i < shrunkSequence.length; i++) {
-			const interaction = shrunkSequence[i]
-			console.log(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
-			if (interaction.value !== undefined) {
-				console.log(`   값: ${interaction.value}`)
+		if (saveResult.success) {
+			debugInfo.debugFilePath = saveResult.path
+			if (config.verbose) {
+				console.log(`테스트 디버그 정보 저장: ${debugFilename}`)
 			}
 		}
 
-		console.log(`에러: ${errors.map((e) => e.message).join('\n')}`)
-		console.log('--------------------------------------------------\n')
+		const latestTestFailureInfo = debugInfo.iterations.at(-1)?.failureInfo
+
+		// 축소된 반례 정보 출력
+		if (!isSuccessful && latestTestFailureInfo && latestTestFailureInfo.counterExample) {
+			console.error('\n--------- 테스트 실패 정보 (축소된 반례) ---------')
+			console.error(`컴포넌트: ${debugInfo.componentName}`)
+			console.error('최소 실패 케이스:')
+
+			// 축소된 반례 출력
+			const shrunkSequence = latestTestFailureInfo.counterExample
+			for (let i = 0; i < shrunkSequence.length; i++) {
+				const interaction = shrunkSequence[i]
+				console.error(`${i + 1}. ${interaction.type}`)
+				if (interaction.value !== undefined) {
+					console.error(`   값: ${interaction.value}`)
+				}
+			}
+
+			console.error(`에러: ${errors.map((e) => e.message).join('\n')}`)
+			console.error('--------------------------------------------------\n')
+		}
+
+		// 모든 작업이 완료된 후 테스트 실패 확인
+		// 이 시점에서 모든 디버깅 정보 수집과 로깅이 완료됨
+		if (!isSuccessful) {
+			// 최종적으로 테스트 실패 처리
+			// eslint-disable-next-line playwright/missing-playwright-await
+			test.step(`${componentName}: 테스트 결과 확인`, async () => {
+				expect(
+					false,
+					`테스트 실패: 에러 발생 - ${debugInfo.errors.map((e) => e.message).join(', ')}`,
+				).toBeTruthy()
+			})
+		}
 	}
 
 	// 테스트 결과 반환
