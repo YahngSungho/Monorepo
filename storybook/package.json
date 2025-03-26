@@ -20,7 +20,7 @@
 		"@library/library_wrappers": "workspace:*",
 		"@library/ui": "workspace:*",
 		"@storybook/addon-essentials": "^8.6.7",
-		"@storybook/addon-interactions": "^8.6.4",
+		"@storybook/addon-interactions": "^8.6.9",
 		"@storybook/addon-links": "^8.6.7",
 		"@storybook/addon-mdx-gfm": "^8.5.3",
 		"@storybook/addon-svelte-csf": "5.0.0-next.28",
