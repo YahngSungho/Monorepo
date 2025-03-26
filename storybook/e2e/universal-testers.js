@@ -6,8 +6,8 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
-import { expect, test } from '@playwright/test'
-import fc from 'fast-check'
+import { errors, expect, test } from '@playwright/test'
+import fc, { json } from 'fast-check'
 
 /**
  * 인터랙션 타입 정의
@@ -209,10 +209,9 @@ function getInteractionsFromElementInfo(elementInfo) {
 	switch (tagName) {
 		case 'a':
 		case 'button': {
-			// Test
-			// interactions.push({ type: 'click', selector }, { type: 'hover', selector })
+			interactions.push({ type: 'click', selector }, { type: 'hover', selector })
 			// interactions.push({ type: 'hover', selector })
-			interactions.push({ type: 'click', selector })
+			// interactions.push({ type: 'click', selector })
 			break
 		}
 
@@ -267,20 +266,18 @@ function getInteractionsFromElementInfo(elementInfo) {
 			}
 			break
 		}
+	}
 
-		default: {
-			if (role === 'button' || hasOnClick) {
-				interactions.push({ type: 'click', selector }, { type: 'hover', selector })
-			}
+	if (role === 'button' || hasOnClick) {
+		interactions.push({ type: 'click', selector }, { type: 'hover', selector })
+	}
 
-			if (['listbox', 'menu', 'tablist'].includes(role)) {
-				interactions.push({ type: 'click', selector })
-			}
+	if (['listbox', 'menu', 'tablist'].includes(role)) {
+		interactions.push({ type: 'click', selector })
+	}
 
-			if (draggable) {
-				interactions.push({ type: 'drag', selector })
-			}
-		}
+	if (draggable) {
+		interactions.push({ type: 'drag', selector })
 	}
 
 	return interactions
@@ -333,19 +330,16 @@ let currentInteraction // 현재 실행 중인 인터랙션을 추적하기 위�
  * @returns {number} Min과 max 사이의 난수
  */
 function getSecureRandom(min, max) {
-	// crypto 모듈이 있는 환경에서는 이를 사용하는 것이 더 안전하나,
-	// 간단한 테스트 용도로는 Math.random을 사용해도 괜찮음
-	return Math.floor(min + Math.random() * (max - min + 1))
+	return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 /**
- * 안전한 임의 문자열 생성 함수
+ * 테스트용 랜덤 문자열을 생성합니다.
  *
- * @param {number} length - 생성할 문자열 길이
- * @returns {string} 생성된 임의 문자열
+ * @returns {string} 랜덤 문자열
  */
-function getSecureRandomString(length = 8) {
-	return Array.from({ length }, () => ((Math.random() * 36) | 0).toString(36)).join('')
+function getSecureRandomString() {
+	return Math.random().toString(36).substring(2, 8)
 }
 
 /**
@@ -372,12 +366,12 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 	currentInteraction = {
 		...interaction,
 		timestamp: result.timestamp,
-		id: `${interaction.type}-${interaction.selector}-${result.timestamp}`,
+		id: `${interaction.type}-(${interaction.selector})-${result.timestamp}`,
 	}
 
 	// 상세 로그 출력
 	if (verbose) {
-		console.log(`실행 인터랙션: ${interaction.type} on ${interaction.selector}`)
+		console.log(`실행 인터랙션: ${interaction.type} on (${interaction.selector})`)
 	}
 
 	// 페이지 에러 핸들러 설정 - 에러가 발생해도 인터랙션 계속 진행
@@ -397,7 +391,7 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		// 대상 요소가 존재하는지 확인
 		const elementExists = (await page.$(interaction.selector)) !== null
 		if (!elementExists) {
-			const error = new Error(`요소가 페이지에 존재하지 않음: ${interaction.selector}`)
+			const error = new Error(`요소가 페이지에 존재하지 않음: (${interaction.selector})`)
 			result.errorMessage = error.message
 			result.errorStack = error.stack
 			return result // 요소가 없을 경우 결과 객체 반환, 예외를 던지지 않음
@@ -406,7 +400,7 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		// 요소의 상호작용 가능 상태 확인 (visible, enabled 등)
 		const isVisible = await page.isVisible(interaction.selector)
 		if (!isVisible) {
-			const error = new Error(`요소가 화면에 표시되지 않음: ${interaction.selector}`)
+			const error = new Error(`요소가 화면에 표시되지 않음: (${interaction.selector})`)
 			result.errorMessage = error.message
 			result.errorStack = error.stack
 			return result
@@ -421,7 +415,7 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		}, interaction.selector)
 
 		if (isDisabled) {
-			const error = new Error(`요소가 비활성화됨: ${interaction.selector}`)
+			const error = new Error(`요소가 비활성화됨: (${interaction.selector})`)
 			result.errorMessage = error.message
 			result.errorStack = error.stack
 			return result
@@ -449,7 +443,7 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 
 		if (verbose) {
 			console.error(
-				`인터랙션 실행 중 오류 발생 (${interaction.type} on ${interaction.selector}): ${error.message}`,
+				`인터랙션 실행 중 오류 발생 (${interaction.type} on (${interaction.selector})): ${error.message}`,
 			)
 		}
 	} finally {
@@ -619,153 +613,231 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	// 2단계: 구조화된 Arbitrary 생성
 	const arbitraries = []
 
-	// 클릭 인터랙션 처리
+	// 클릭 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
 	if (clickInteractions.length > 0) {
 		const clickInteractionArb = fc
 			.record({
 				type: fc.constant('click'),
-				selector: fc.constantFrom(...clickInteractions.map((i) => i.selector)),
+				// 인덱스를 사용하여 축소 가능하도록 변경
+				selectorIndex: fc.nat({ max: clickInteractions.length - 1 }),
 			})
-			.map((base) => {
-				// 원본 클릭 인터랙션에서 추가 속성 찾기
-				const originalInteraction = clickInteractions.find((i) => i.selector === base.selector)
-				return originalInteraction ? { ...originalInteraction } : base
-			})
+			.map(
+				// 원본 데이터로 변환
+				({ type, selectorIndex }) => ({
+					...clickInteractions[selectorIndex],
+					type,
+				}),
+				// unmapper 함수: 인터랙션 객체를 record 형태로 복원
+				(interaction) => {
+					// 타입 단언을 통해 타입 오류 해결
+					const typedInteraction = /** @type {Interaction} */ (interaction)
+					// selector를 기준으로 원래 인덱스 찾기
+					const index = clickInteractions.findIndex((i) => i.selector === typedInteraction.selector)
+					// 타입을 상수 문자열로 반환하여 타입 오류 해결
+					return {
+						type: 'click', // 상수 'click'으로 반환
+						selectorIndex: index >= 0 ? index : 0,
+					}
+				},
+			)
 		arbitraries.push(clickInteractionArb)
 	}
 
-	// 호버 인터랙션 처리
+	// 호버 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
 	if (hoverInteractions.length > 0) {
 		const hoverInteractionArb = fc
 			.record({
 				type: fc.constant('hover'),
-				selector: fc.constantFrom(...hoverInteractions.map((i) => i.selector)),
+				// 인덱스를 사용하여 축소 가능하도록 변경
+				selectorIndex: fc.nat({ max: hoverInteractions.length - 1 }),
 			})
-			.map((base) => {
-				// 원본 호버 인터랙션에서 추가 속성 찾기
-				const originalInteraction = hoverInteractions.find((i) => i.selector === base.selector)
-				return originalInteraction ? { ...originalInteraction } : base
-			})
+			.map(
+				// 원본 데이터로 변환
+				({ type, selectorIndex }) => ({
+					...hoverInteractions[selectorIndex],
+					type,
+				}),
+				// unmapper 함수: 인터랙션 객체를 record 형태로 복원
+				(interaction) => {
+					// 타입 단언을 통해 타입 오류 해결
+					const typedInteraction = /** @type {Interaction} */ (interaction)
+					// selector를 기준으로 원래 인덱스 찾기
+					const index = hoverInteractions.findIndex((i) => i.selector === typedInteraction.selector)
+					// 타입을 상수 문자열로 반환하여 타입 오류 해결
+					return {
+						type: 'hover', // 상수 'hover'로 반환
+						selectorIndex: index >= 0 ? index : 0,
+					}
+				},
+			)
 		arbitraries.push(hoverInteractionArb)
 	}
 
-	// 드래그 인터랙션 처리
+	// 드래그 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
 	if (dragInteractions.length > 0) {
 		const dragInteractionArb = fc
 			.record({
 				type: fc.constant('drag'),
-				selector: fc.constantFrom(...dragInteractions.map((i) => i.selector)),
+				// 인덱스를 사용하여 축소 가능하도록 변경
+				selectorIndex: fc.nat({ max: dragInteractions.length - 1 }),
 			})
-			.map((base) => {
-				// 원본 드래그 인터랙션에서 추가 속성 찾기
-				const originalInteraction = dragInteractions.find((i) => i.selector === base.selector)
-				return originalInteraction ? { ...originalInteraction } : base
-			})
+			.map(
+				// 원본 데이터로 변환
+				({ type, selectorIndex }) => ({
+					...dragInteractions[selectorIndex],
+					type,
+				}),
+				// unmapper 함수: 인터랙션 객체를 record 형태로 복원
+				(interaction) => {
+					// 타입 단언을 통해 타입 오류 해결
+					const typedInteraction = /** @type {Interaction} */ (interaction)
+					// selector를 기준으로 원래 인덱스 찾기
+					const index = dragInteractions.findIndex((i) => i.selector === typedInteraction.selector)
+					// 타입을 상수 문자열로 반환하여 타입 오류 해결
+					return {
+						type: 'drag', // 상수 'drag'로 반환
+						selectorIndex: index >= 0 ? index : 0,
+					}
+				},
+			)
 		arbitraries.push(dragInteractionArb)
 	}
 
-	// 필 인터랙션 처리 - 값 생성 포함
+	// 필 인터랙션 처리 - 값 생성 포함, chain 사용 제거
 	if (fillInteractions.length > 0) {
+		// 모든 가능한 valueType을 모읅니다.
+		const valueTypes = [...new Set(fillInteractions.map((i) => i.valueType || 'text'))]
+
+		// 모든 쌍의 (selectorIndex, valueType)을 생성하는 arbitrary
+		const fillBaseArb = fc.record({
+			selectorIndex: fc.nat({ max: fillInteractions.length - 1 }),
+			valueType: fc.constantFrom(...valueTypes),
+		})
+
+		// fc.tuple을 사용하여 독립적인 arbitrary 생성
 		const fillInteractionArb = fc
-			.record({
-				type: fc.constant('fill'),
-				selector: fc.constantFrom(...fillInteractions.map((i) => i.selector)),
-				valueType: fc.constantFrom(
-					...fillInteractions
-						.map((i) => i.valueType || 'text')
-						.filter((v, i, a) => a.indexOf(v) === i),
-				),
-			})
-			.chain((base) => {
-				// 원본 인터랙션 찾기
-				const originalInteraction = fillInteractions.find((i) => i.selector === base.selector)
-				if (!originalInteraction) return fc.constant(base)
+			.tuple(
+				fillBaseArb,
+				// 두 번째 값은 사용하지 않음
+				fc.constant(null),
+			)
+			.map(
+				([base]) => {
+					// 여기서 실제 필요한 값 생성
+					const originalInteraction = fillInteractions[base.selectorIndex]
+					const valueType = base.valueType
+					// 실제 값은 test 실행 시점에 생성
+					const value = getRandomValueForType(valueType)
 
-				// 입력 타입에 따른 적절한 값 생성
-				let valueArb
-				switch (base.valueType) {
-					case 'email':
-						// 이메일 주소를 더 구조화된 방식으로 생성
-						valueArb = fc
-							.tuple(
-								fc.string({ minLength: 1, maxLength: 10 }),
-								fc.constantFrom('gmail.com', 'example.com', 'test.com'),
-							)
-							.map(([name, domain]) => `${name}@${domain}`)
-						break
-					case 'number':
-						// 경계값 테스트를 위한 bias 설정 추가
-						valueArb = fc.integer({ min: 0, max: 100 }).map(String)
-						break
-					case 'textarea':
-						// 길이 제한 문자열
-						valueArb = fc.string({ minLength: 0, maxLength: 50 })
-						break
-					default:
-						// 일반 텍스트
-						valueArb = fc.string({ minLength: 0, maxLength: 20 })
-				}
+					return {
+						...originalInteraction,
+						type: 'fill',
+						valueType,
+						value,
+					}
+				},
+				// unmapper 함수
+				(interaction) => {
+					const typedInteraction = /** @type {Interaction} */ (interaction)
+					const index = fillInteractions.findIndex((i) => i.selector === typedInteraction.selector)
+					return [
+						{
+							selectorIndex: index >= 0 ? index : 0,
+							valueType: typedInteraction.valueType || 'text',
+						},
+						null,
+					]
+				},
+			)
 
-				// 값과 기타 속성을 결합
-				return valueArb.map((value) => ({
-					...originalInteraction,
-					...base,
-					value,
-				}))
-			})
 		arbitraries.push(fillInteractionArb)
 	}
 
-	// 셀렉트 인터랙션 처리
+	// 셀렉트 인터랙션 처리 - chain 사용 제거
 	if (selectInteractions.length > 0) {
+		// 각 select 인터랙션에 대해 선택 가능한 옵션 정보를 수집
+		const selectOptionsMap = selectInteractions.reduce((map, interaction, index) => {
+			map[index] = interaction.options || []
+			return map
+		}, {})
+
+		// fc.tuple을 사용하여 독립적인 arbitrary 생성
 		const selectInteractionArb = fc
-			.record({
-				type: fc.constant('select'),
-				selector: fc.constantFrom(...selectInteractions.map((i) => i.selector)),
-			})
-			.chain((base) => {
-				// 원본 인터랙션 찾기
-				const originalInteraction = selectInteractions.find((i) => i.selector === base.selector)
-				if (!originalInteraction) return fc.constant(base)
+			.tuple(
+				// 첫번째 요소: 선택할 인터랙션 인덱스
+				fc.nat({ max: selectInteractions.length - 1 }),
+				// 두번째 요소: 옵션 인덱스(실제 값은 런타임에 결정)
+				fc.constant(null),
+			)
+			.map(
+				([selectorIndex]) => {
+					const originalInteraction = selectInteractions[selectorIndex]
+					const options = originalInteraction.options || []
 
-				const options = originalInteraction.options || []
+					// 옵션이 없으면 기본 상태 반환
+					if (options.length === 0) {
+						return {
+							...originalInteraction,
+							type: 'select',
+						}
+					}
 
-				if (!options || options.length === 0) {
-					return fc.constant({ ...originalInteraction, ...base })
-				}
+					// 옵션 중 하나를 랜덤하게 선택
+					const selectedIndex = getSecureRandom(0, options.length - 1)
+					const value = options[selectedIndex]
 
-				// 옵션 중 하나 선택
-				return fc.constantFrom(...options).map((selectedOption) => ({
-					...originalInteraction,
-					...base,
-					value: selectedOption,
-				}))
-			})
+					return {
+						...originalInteraction,
+						type: 'select',
+						value,
+					}
+				},
+				// unmapper 함수
+				(interaction) => {
+					const typedInteraction = /** @type {Interaction} */ (interaction)
+					const index = selectInteractions.findIndex(
+						(i) => i.selector === typedInteraction.selector,
+					)
+					return [index >= 0 ? index : 0, null]
+				},
+			)
+
 		arbitraries.push(selectInteractionArb)
 	}
 
-	// 범위 인터랙션 처리
+	// 범위 인터랙션 처리 - chain 사용 제거
 	if (rangeInteractions.length > 0) {
+		// fc.tuple을 사용하여 독립적인 arbitrary 생성
 		const rangeInteractionArb = fc
-			.record({
-				type: fc.constant('setRange'),
-				selector: fc.constantFrom(...rangeInteractions.map((i) => i.selector)),
-			})
-			.chain((base) => {
-				// 원본 인터랙션 찾기
-				const originalInteraction = rangeInteractions.find((i) => i.selector === base.selector)
-				if (!originalInteraction) return fc.constant(base)
+			.tuple(
+				// 첫번째 요소: 선택할 인터랙션 인덱스
+				fc.nat({ max: rangeInteractions.length - 1 }),
+				// 두번째 요소: 값은 런타임에 결정
+				fc.constant(null),
+			)
+			.map(
+				([selectorIndex]) => {
+					const originalInteraction = rangeInteractions[selectorIndex]
+					const min = originalInteraction.min || 0
+					const max = originalInteraction.max || 100
 
-				const min = originalInteraction.min || 0
-				const max = originalInteraction.max || 100
+					// min과 max 사이의 값 선택
+					const value = getSecureRandom(min, max)
 
-				// 경계값 테스트를 위한 bias 추가
-				return fc.integer({ min, max }).map((value) => ({
-					...originalInteraction,
-					...base,
-					value,
-				}))
-			})
+					return {
+						...originalInteraction,
+						type: 'setRange',
+						value,
+					}
+				},
+				// unmapper 함수
+				(interaction) => {
+					const typedInteraction = /** @type {Interaction} */ (interaction)
+					const index = rangeInteractions.findIndex((i) => i.selector === typedInteraction.selector)
+					return [index >= 0 ? index : 0, null]
+				},
+			)
+
 		arbitraries.push(rangeInteractionArb)
 	}
 
@@ -773,22 +845,23 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	const interactionArb = fc.oneof(...arbitraries)
 
 	// 배열 길이와 요소가 자동으로 축소되도록 함
-	return fc
-		.array(interactionArb, {
-			minLength: 1,
-			maxLength: length,
-		})
-		.map((sequence) => {
-			// 연속된 동일 인터랙션을 제거하거나 제한하는 로직 추가
-			return sequence.filter((interaction, index, arr) => {
-				if (index === 0) return true
-				// 연속된 동일한 요소에 대한 인터랙션을 제한
-				return !(
-					interaction.selector === arr[index - 1].selector &&
-					interaction.type === arr[index - 1].type
-				)
-			})
-		})
+	// 최소 길이를 1로 설정하여 개별 상호작용까지 축소 가능하도록 함
+	return fc.array(interactionArb, {
+		minLength: 1, // 여기를 0에서 1로 변경 - 최소 길이는 1이어야 함
+		maxLength: interactions.length + length,
+	})
+}
+
+/**
+ * 생성된 인터랙션 시퀀스를 반환합니다. 객체 래핑없이 배열을 직접 반환하여 fast-check가 효과적으로 shrinking을 수행할 수 있도록 합니다.
+ *
+ * @param {Interaction[]} interactions - 가능한 인터랙션 목록
+ * @param {number} length - 시퀀스 길이
+ * @returns {fc.Arbitrary<Interaction[]>} 인터랙션 시퀀스 arbitrary
+ */
+function createShrinkableSequence(interactions, length) {
+	// 객체 래핑을 제거하고 배열을 직접 반환
+	return createInteractionSequenceArbitrary(interactions, length)
 }
 
 /**
@@ -871,25 +944,23 @@ function extractComponentName(url) {
 	}
 }
 
-/**
- * 축소된 반례를 분석하여 테스트 실패 원인 파악
- *
- * @param {Interaction[]} shrunkSequence - 축소된 인터랙션 시퀀스
- */
-function analyzeShrunkSequence(shrunkSequence) {
-	console.error('----------- 축소된 실패 케이스 분석 -----------')
-	console.error(`총 ${shrunkSequence.length}개의 인터랙션이 필요합니다`)
+/** 축소된 반례를 분석하여 테스트 실패 원인 파악 */
+function analyzeShrunkSequence(checkResult) {
+	const counterExample = checkResult.counterexample
 
-	// 인터랙션 타입별 분류
-	const typeCount = {}
-	for (const interaction of shrunkSequence) {
-		typeCount[interaction.type] = (typeCount[interaction.type] || 0) + 1
-	}
+	// 이제 직접 배열로 받아옴 (객체의 sequence 속성이 아님)
+	const shrunkSequence = counterExample[0]
+
+	console.error('----------- 축소된 실패 케이스 분석 -----------')
+
+	console.log('checkResult:', checkResult)
+
+	console.error(`총 ${shrunkSequence.length}개의 인터랙션이 필요합니다`)
 
 	// 핵심 인터랙션 식별
 	if (shrunkSequence.length === 1) {
 		console.error('단일 인터랙션으로 실패를 재현할 수 있습니다:')
-		console.error(`- ${shrunkSequence[0].type} on ${shrunkSequence[0].selector}`)
+		console.error(`- ${shrunkSequence[0].type} on (${shrunkSequence[0].selector})`)
 		if (shrunkSequence[0].value !== undefined) {
 			console.error(`  값: ${shrunkSequence[0].value}`)
 		}
@@ -897,7 +968,7 @@ function analyzeShrunkSequence(shrunkSequence) {
 		console.error('주요 인터랙션 시퀀스:')
 		for (let i = 0; i < shrunkSequence.length; i++) {
 			const interaction = shrunkSequence[i]
-			console.error(`${i + 1}. ${interaction.type} on ${interaction.selector}`)
+			console.error(`${i + 1}. ${interaction.type} on (${interaction.selector})`)
 			if (interaction.value !== undefined) {
 				console.error(`   값: ${interaction.value}`)
 			}
@@ -905,10 +976,22 @@ function analyzeShrunkSequence(shrunkSequence) {
 	}
 
 	console.error('\n[Shrinking 과정 요약]')
-	console.error(`최종 축소 단계: ${shrunkSequence.length}회`)
+	console.error(`최종 축소 단계: ${counterExample.length}회`)
 	console.error('단계별 상세:')
-	shrunkSequence.forEach((interaction, idx) => {
-		console.error(`${idx + 1}. ${interaction.type} on ${interaction.selector}`)
+
+	const counterExampleLength = counterExample.length
+	const reversedCounterExample = [...counterExample].reverse()
+
+	reversedCounterExample.forEach((sequence, sequenceIndex) => {
+		if (sequenceIndex === counterExampleLength - 1) {
+			console.error(`마지막 ${sequenceIndex + 1} 단계: ${sequence.length}개의 인터랙션`)
+		} else {
+			console.error(`${sequenceIndex + 1} 단계: ${sequence.length}개의 인터랙션`)
+		}
+
+		sequence.forEach((interaction, interactionIndex) => {
+			console.error(`${interactionIndex + 1}) ${interaction.type} on (${interaction.selector})`)
+		})
 	})
 
 	console.error('---------------------------------------------')
@@ -962,7 +1045,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			currentInteraction: stepTracker.currentInteraction,
 		}
 		pageErrors.push(errorInfo)
-		console.error(`페이지 에러 감지 (디버깅 계속 진행): ${error.message}`)
+		console.error(`페이지 에러 감지: ${error.message}`)
 		if (stepTracker.currentStep !== null) {
 			console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 		}
@@ -979,7 +1062,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 				currentInteraction: stepTracker.currentInteraction,
 			}
 			consoleErrors.push(errorInfo)
-			console.error(`콘솔 에러 감지 (디버깅 계속 진행): ${msg.text()}`)
+			console.error(`콘솔 에러 감지: ${msg.text()}`)
 			if (stepTracker.currentStep !== null) {
 				console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 			}
@@ -1010,12 +1093,12 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			stepTracker.currentInteraction = shrunkSequence[i]
 
 			console.error(
-				`단계 ${i + 1}/${shrunkSequence.length}: ${shrunkSequence[i].type} on ${shrunkSequence[i].selector}`,
+				`${i + 1} 단계/${shrunkSequence.length}: ${shrunkSequence[i].type} on (${shrunkSequence[i].selector})`,
 			)
 
 			// 페이지가 닫혔는지 확인
 			if (await isPageClosed(page)) {
-				console.error(`단계 ${i + 1} 실행 전 페이지가 이미 닫혀 있습니다.`)
+				console.error(`${i + 1} 단계 실행 전 페이지가 이미 닫혀 있습니다.`)
 				break
 			}
 
@@ -1026,34 +1109,33 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			try {
 				// 페이지가 닫혔는지 확인
 				if (await isPageClosed(page)) {
-					console.error(`단계 ${i + 1} 실행 후 페이지가 닫혔습니다.`)
+					console.error(`${i + 1} 단계 실행 후 페이지가 닫혔습니다.`)
 					break
 				}
 
 				// 인터랙션 실행
 				const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
-				console.error(`단계 ${i + 1} 인터랙션 실행: ${result.message || 'OK'}`)
+				console.error(`[ ${i + 1} 단계 인터랙션 실행: ${result.message} ]`)
 
 				// 인터랙션 후 페이지 에러 확인 - shrinking을 위한 중요 지점
 				if (consoleErrors.length > 0 || pageErrors.length > 0) {
 					// 에러가 감지되었음을 보고
-					console.error(`단계 ${i + 1} 실행 후 에러 발생 감지됨:`)
+					console.error(`< ${i + 1} 단계 실행 후 에러 발생: ${result.message} >`)
 					if (pageErrors.length > 0) {
-						console.error(`- 페이지 에러: ${pageErrors.map((e) => e.message).join(', ')}`)
+						console.error(`- 페이지 에러: ${pageErrors.map((e) => e.message).join(' / ')}`)
 					}
 					if (consoleErrors.length > 0) {
-						console.error(`- 콘솔 에러: ${consoleErrors.map((e) => e.message).join(', ')}`)
+						console.error(`- 콘솔 에러: ${consoleErrors.map((e) => e.message).join(' / ')}`)
 					}
 
-					// 에러가 발생했지만 디버깅을 위해 계속 진행
-					console.error(`디버깅을 위해 계속 진행합니다...`)
+					break
 				}
 
 				// 컴포넌트 상태 확인
 				try {
 					const stateCheck = await verifyComponentState(page, componentSelector)
 					console.error(
-						`상태: ${stateCheck.isVisible ? '정상' : '문제있음'} - ${stateCheck.summary}`,
+						`상태: ${stateCheck.isVisible ? 'visible' : 'invisible'} - ${stateCheck.summary}`,
 					)
 				} catch (stateError) {
 					console.error(`상태 확인 중 오류 발생: ${stateError.message}`)
@@ -1061,7 +1143,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 				}
 			} catch (error) {
 				// 인터랙션 실행 중 발생한 에러를 로깅하고 계속 진행
-				console.error(`단계 ${i + 1} 실행 중 에러 발생 (계속 진행): ${error.message}`)
+				console.error(`< ${i + 1} 단계 실행 중 에러 발생: ${error.message} >`)
 				console.error(`에러 스택: ${error.stack?.split('\n')[0] || 'N/A'}`)
 
 				// 페이지가 닫혔는지 확인
@@ -1070,15 +1152,13 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 					break
 				}
 
-				// 에러가 있더라도 테스트를 계속 진행함
-				console.error(`디버깅을 위해 계속 진행합니다...`)
+				break
 			}
 		}
 	} catch (error) {
 		// 예상치 못한 에러가 발생해도 로깅만 하고 정상 종료
 		console.error(`디버깅 중 예상치 못한 에러 발생: ${error.message}`)
 		console.error(`에러 스택: ${error.stack || 'N/A'}`)
-		console.error(`그러나 디버깅 정보 수집을 위해 계속 진행합니다...`)
 	} finally {
 		// 단계 추적 정보 초기화
 		stepTracker.currentStep = null
@@ -1214,7 +1294,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 	}
 
 	// 인터랙션 시퀀스 생성을 위한 arbitrary 생성
-	const sequenceArbitrary = createInteractionSequenceArbitrary(interactions, sequenceLength)
+	const sequenceArb = createShrinkableSequence(interactions, sequenceLength)
 	let failureInfo
 	let checkResult = null
 
@@ -1236,11 +1316,13 @@ async function runSingleIteration(page, iteration, errors, config) {
 	try {
 		// fast-check 실행
 		checkResult = await fc.check(
-			fc.asyncProperty(sequenceArbitrary, async (sequence) => {
+			fc.asyncProperty(sequenceArb, async (sequence) => {
+				// 이제 sequence는 직접 인터랙션 배열입니다 (객체가 아님)
+
 				// 페이지가 닫혔는지 확인
 				if (await isPageClosed(page)) {
 					console.error('페이지가 닫혀 있습니다. 시퀀스 실행을 중단합니다.')
-					return false // 페이지가 닫혔으면 실패로 처리하고 계속 진행
+					throw new Error('페이지가 닫혀 있어 시퀀스를 실행할 수 없습니다.')
 				}
 
 				// 시퀀스 정보 초기화 - 명시적 타입 지정
@@ -1271,13 +1353,18 @@ async function runSingleIteration(page, iteration, errors, config) {
 					console.log(`시퀀스 실행 (${sequence.length}개 인터랙션)`)
 				}
 
+				let returnValue = true
 				try {
-					// 시퀀스의 각 인터랙션 차례로 실행
-					for (const interaction of sequence) {
+					// 시퀀스의 각 인터랙션 차례로 실행 (for-of 대신 인덱스 기반 루프 사용)
+					for (let i = 0; i < sequence.length; i++) {
+						const interaction = sequence[i]
+
 						// 각 인터랙션마다 페이지가 닫혔는지 확인
 						if (await isPageClosed(page)) {
-							console.error(`인터랙션 ${interaction.type} 실행 전 페이지가 닫혀 있습니다.`)
-							return false // 페이지가 닫혔으면 실패로 처리하고 계속 진행
+							console.error(`인터랙션 #${i} (${interaction.type}) 실행 전 페이지가 닫혀 있습니다.`)
+							throw new Error(
+								`인터랙션 #${i} (${interaction.type}) 실행 전 페이지가 닫혀 있습니다.`,
+							)
 						}
 
 						const result = await executeInteraction(
@@ -1289,21 +1376,25 @@ async function runSingleIteration(page, iteration, errors, config) {
 						// @ts-ignore - 타입 호환성 오류 무시
 						sequenceInfo.results.push(result)
 
-						// 인터랙션이 실패했을 경우 처리
+						// 인터랙션이 실패했을 경우 처리 - 인덱스 정보 추가
 						if (!result.success) {
 							if (result.errorMessage) {
 								errors.push({
 									message: result.errorMessage,
 									stack: result.errorStack,
+									interactionIndex: i, // 인덱스 정보 추가
 								})
 								// @ts-ignore - 타입 호환성 오류 무시
 								sequenceInfo.errors.push({
 									message: result.errorMessage,
 									stack: result.errorStack,
+									interactionIndex: i, // 인덱스 정보 추가
 								})
 							}
-							// 성공 여부를 체크하여 중단
-							return false
+							// 인덱스가 포함된 에러 메시지로 변경
+							throw new Error(
+								`인터랙션 #${i} (${interaction.type} on (${interaction.selector})) 실행 실패: ${result.errorMessage || '알 수 없는 오류'}`,
+							)
 						}
 
 						// 인터랙션 후 페이지 에러 확인 - shrinking을 위한 중요 지점
@@ -1312,20 +1403,23 @@ async function runSingleIteration(page, iteration, errors, config) {
 							// @ts-ignore - 타입 호환성 오류 무시
 							sequenceInfo.errors.push(
 								...sequencePageErrors.map((err) => ({
-									message: `인터랙션 실행 중 페이지 에러: ${err.message}`,
+									message: `인터랙션 #${i} 실행 중 페이지 에러: ${err.message}`,
 									stack: err.stack,
+									interactionIndex: i, // 인덱스 정보 추가
 								})),
 							)
 
-							// 중요: Shrinking이 제대로 작동하도록 명확하게 false 반환
-							return false
+							// 인덱스가 포함된 에러 메시지로 변경
+							throw new Error(
+								`인터랙션 #${i} (${interaction.type} on (${interaction.selector})) 실행 중 페이지 에러 발생: ${sequencePageErrors[0].message}`,
+							)
 						}
 					}
 
 					// 페이지가 닫혔는지 확인 후 상태 검증
 					if (await isPageClosed(page)) {
 						console.error('상태 검증 전 페이지가 닫혀 있습니다.')
-						return false
+						throw new Error('상태 검증 전 페이지가 닫혀 있습니다.')
 					}
 
 					// 시퀀스 실행 후 컴포넌트 상태 검증
@@ -1333,9 +1427,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 					sequenceInfo.finalState = stateCheck.summary
 					sequenceInfo.endTime = new Date().toISOString()
 					iterationInfo.sequences.push(sequenceInfo)
-
-					// 시퀀스 성공 여부 확인
-					return stateCheck.isVisible
 				} catch (error) {
 					// 예상치 못한 에러 발생 시 처리
 					errors.push({
@@ -1347,7 +1438,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 					iterationInfo.sequences.push(sequenceInfo)
 
 					// 에러 발생해도 fc.check는 계속 진행
-					return false
+					throw error
 				} finally {
 					// 시퀀스별 에러 핸들러 제거
 					page.removeListener('pageerror', sequenceErrorHandler)
@@ -1363,9 +1454,16 @@ async function runSingleIteration(page, iteration, errors, config) {
 						)
 					}
 				}
+
+				return returnValue
 			}),
 			{
 				numRuns,
+				verbose: 2,
+				// 즉시 실패 시 shrinking을 시작하여 불필요한 인터랙션 제거 진행
+				endOnFailure: false,
+				// 더 적극적인 shrinking 수행을 위해 설정 조정
+				maxSkipsPerRun: 1000,
 			},
 		)
 
@@ -1378,42 +1476,37 @@ async function runSingleIteration(page, iteration, errors, config) {
 
 			// fast-check의 반례가 있는지 확인
 			if (checkResult.counterexample && checkResult.counterexample.length > 0) {
+				console.log('💬 runSingleIteration checkResult:', checkResult)
+				console.log('💬 runSingleIteration counterexample:', checkResult.counterexample)
+
 				// shrinking 후 발견된 최소 반례
-				const shrunkValue = checkResult.counterexample[0]
+				const shrunkValue = /** @type {Interaction[]} */ (checkResult?.counterexample[0])
 
 				// 반례 분석 (타입 확인하여 호출)
-				if (Array.isArray(shrunkValue)) {
-					analyzeShrunkSequence(shrunkValue)
+				analyzeShrunkSequence(checkResult)
 
-					// failureInfo 타입을 맞춰서 설정
-					failureInfo = {
-						counterExample: shrunkValue,
-						error: {
-							message: 'Property failed',
-							stack: checkResult.failed ? 'Fast-check 속성 검증 실패' : '',
-						},
-						property: 'Component interaction sequence',
-					}
+				// failureInfo 타입을 맞춰서 설정
+				failureInfo = {
+					checkResult,
+					counterExample: shrunkValue,
+					error: {
+						message: 'Property failed',
+						stack: checkResult.failed ? 'Fast-check 속성 검증 실패' : '',
+					},
+					property: 'Component interaction sequence',
+				}
 
-					// 페이지가 닫혔는지 확인 후 디버깅 수행
-					const isPageAlreadyClosed = await isPageClosed(page)
-					if (isPageAlreadyClosed) {
-						console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
-					} else {
-						// 축소된 반례로 디버깅
-						try {
-							await debugWithShrunkExample(
-								page,
-								shrunkValue,
-								componentSelector,
-								waitAfterInteraction,
-							)
-						} catch (debugError) {
-							console.error(`축소된 반례 디버깅 중 오류 발생: ${debugError.message}`)
-						}
-					}
+				// 페이지가 닫혔는지 확인 후 디버깅 수행
+				const isPageAlreadyClosed = await isPageClosed(page)
+				if (isPageAlreadyClosed) {
+					console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
 				} else {
-					console.error('반례가 예상된 형식이 아닙니다:', shrunkValue)
+					// 축소된 반례로 디버깅
+					try {
+						await debugWithShrunkExample(page, shrunkValue, componentSelector, waitAfterInteraction)
+					} catch (debugError) {
+						console.error(`축소된 반례 디버깅 중 오류 발생: ${debugError.message}`)
+					}
 				}
 			} else {
 				console.error('반례를 찾을 수 없습니다')
@@ -1422,7 +1515,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 	} catch (fcError) {
 		// fast-check 자체 에러 발생 시
 		console.error('--------------------------------')
-		console.error('Fast-check 테스트 실패:', fcError.message)
+		console.error('Fast-check 테스트 실패:', fcError)
 
 		if (fcError.counterexample) {
 			const counterExample = fcError.counterexample
@@ -1430,9 +1523,10 @@ async function runSingleIteration(page, iteration, errors, config) {
 
 			// 반례가 있으면 분석해보기
 			if (Array.isArray(counterExample) && counterExample.length > 0) {
-				const shrunkValue = counterExample[0]
+				console.log('counterExample', counterExample)
+				const shrunkValue = /** @type {Interaction[]} */ (counterExample[0])
 				if (Array.isArray(shrunkValue)) {
-					analyzeShrunkSequence(shrunkValue)
+					analyzeShrunkSequence(counterExample)
 
 					failureInfo = {
 						counterExample: shrunkValue,
@@ -1478,26 +1572,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 			})),
 		)
 	}
-
-	iterationInfo.failureInfo = failureInfo
-
-	// 최종 컴포넌트 상태 검증 (페이지가 닫히지 않은 경우에만)
-	try {
-		if (!(await isPageClosed(page))) {
-			const finalStateCheck = await verifyComponentState(page, componentSelector)
-			iterationInfo.finalState = finalStateCheck
-		} else {
-			console.warn('최종 상태 검증을 시도했으나 페이지가 이미 닫혀 있습니다.')
-			iterationInfo.finalState = { isVisible: false, summary: '페이지가 닫혀 있어 상태 확인 불가' }
-		}
-	} catch (error) {
-		console.error(`최종 상태 검증 중 오류 발생: ${error.message}`)
-		iterationInfo.finalState = { isVisible: false, summary: `상태 확인 중 오류: ${error.message}` }
-	}
-
-	// 반복 정보 마무리 및 저장
-	iterationInfo.endTime = new Date().toISOString()
-
 	return iterationInfo
 }
 
@@ -1509,6 +1583,8 @@ async function runSingleIteration(page, iteration, errors, config) {
  * @returns {Promise<Object>} 테스트 결과 객체
  */
 async function testUIComponent(page, config = {}) {
+	console.log('시작 시간 3', new Date().toLocaleString())
+
 	// 기본 설정값과 사용자 정의 설정 병합
 	const {
 		iterationCount = 3, // 테스트 반복 횟수
@@ -1532,7 +1608,7 @@ async function testUIComponent(page, config = {}) {
 
 	// 페이지 오류 및 콘솔 오류 핸들러 설정 - 인터랙션과 에러 연결
 	const errorHandler = (exception) => {
-		const associatedInteractionMessage = `관련 인터랙션: ${currentInteraction.type} on ${currentInteraction.selector}`
+		const associatedInteractionMessage = `관련 인터랙션: ${currentInteraction.type} on (${currentInteraction.selector})`
 
 		const errorInfo = {
 			message: `페이지 에러: ${exception.message}`,
@@ -1562,7 +1638,9 @@ async function testUIComponent(page, config = {}) {
 			// 인터랙션 정보가 있을 경우 로그에 표시
 			if (currentInteraction) {
 				console.error(`콘솔 에러 발생: ${msg.text()}`)
-				console.error(`관련 인터랙션: ${currentInteraction.type} on ${currentInteraction.selector}`)
+				console.error(
+					`관련 인터랙션: ${currentInteraction.type} on (${currentInteraction.selector})`,
+				)
 			}
 		}
 	}
@@ -1580,7 +1658,7 @@ async function testUIComponent(page, config = {}) {
 
 			if (errors.length > 0) {
 				console.warn(`${componentName} - 반복#${iteration + 1}: 에러 발생`)
-				console.warn(`발생한 에러: ${errors.map((e) => e.message).join(', ')}`)
+				console.warn(`발생한 에러: ${errors.map((e) => e.message).join(' / ')}`)
 				// 테스트 실패 상태 기록
 				isSuccessful = false
 				debugInfo.success = false
@@ -1621,6 +1699,13 @@ async function testUIComponent(page, config = {}) {
 
 		const latestTestFailureInfo = debugInfo.iterations.at(-1)?.failureInfo
 
+		console.log('디버그용', {
+			isSuccessful,
+			latestTestFailureInfo,
+			counterExample: latestTestFailureInfo?.counterExample,
+			debugInfo,
+		})
+
 		// 축소된 반례 정보 출력
 		if (!isSuccessful && latestTestFailureInfo && latestTestFailureInfo.counterExample) {
 			console.error('\n--------- 테스트 실패 정보 (축소된 반례) ---------')
@@ -1633,9 +1718,12 @@ async function testUIComponent(page, config = {}) {
 				const interaction = shrunkSequence[i]
 				console.error(`${i + 1}. ${interaction.type}`)
 				if (interaction.value !== undefined) {
-					console.error(`   값: ${interaction.value}`)
+					console.error(`   값: ${interaction.value} on (${interaction.selector})`)
 				}
 			}
+			test.info().attach('축소된 반례', {
+				body: JSON.stringify(shrunkSequence, undefined, 2),
+			})
 
 			console.error(`에러: ${errors.map((e) => e.message).join('\n')}`)
 			console.error('--------------------------------------------------\n')
@@ -1649,7 +1737,7 @@ async function testUIComponent(page, config = {}) {
 			test.step(`${componentName}: 테스트 결과 확인`, async () => {
 				expect(
 					false,
-					`테스트 실패: 에러 발생 - ${debugInfo.errors.map((e) => e.message).join(', ')}`,
+					`테스트 실패: 에러 발생 - ${debugInfo.errors.map((e) => e.message).join(' / ')}`,
 				).toBeTruthy()
 			})
 		}
@@ -1667,4 +1755,23 @@ export {
 	resetComponentState, // 컴포넌트 상태 초기화
 	testUIComponent, // 메인 테스트 함수 (전체 테스트 프로세스 실행)
 	verifyComponentState, // 컴포넌트 상태 검증
+}
+
+/**
+ * 각 valueType에 맞는 랜덤 값을 생성합니다.
+ *
+ * @param {string} valueType - 값 유형 (email, number, textarea 등)
+ * @returns {string} 생성된 값
+ */
+function getRandomValueForType(valueType) {
+	switch (valueType) {
+		case 'email':
+			return `test${getSecureRandomString()}@example.com`
+		case 'number':
+			return getSecureRandom(0, 100).toString()
+		case 'textarea':
+			return `테스트 텍스트 ${getSecureRandomString()}`
+		default:
+			return `테스트 입력 ${getSecureRandomString()}`
+	}
 }
