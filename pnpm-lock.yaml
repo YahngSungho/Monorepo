@@ -49,8 +49,8 @@ importers:
         specifier: ^2.18.1
         version: 2.18.1
       '@inlang/paraglide-js':
-        specifier: 2.0.4
-        version: 2.0.4
+        specifier: 2.0.5
+        version: 2.0.5
       '@intlify/eslint-plugin-svelte':
         specifier: ^0.5.0
         version: 0.5.0(eslint@9.23.0(jiti@2.4.2))(svelte@5.25.3)
@@ -1814,8 +1814,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@inlang/paraglide-js@2.0.4':
-    resolution: {integrity: sha512-5p2Mia2PnwafJQtG6S2UqoHKhqUK7l0goMc5mI6AqQ2lEh14Fkl5uqYwUaI49s6Du4GX5Or1Wp+yBlOA74MKOQ==}
+  '@inlang/paraglide-js@2.0.5':
+    resolution: {integrity: sha512-vf1gVFbqeXluZTPdjetC8rG1EHzTS4CthhxYe1ECjxRma9Rxtnfu5utaKtAswCI/gVkDrpUgAUIepfEQMGO1AA==}
     hasBin: true
 
   '@inlang/recommend-sherlock@0.2.1':
@@ -9650,7 +9650,7 @@ snapshots:
     dependencies:
       esbuild-wasm: 0.19.12
 
-  '@inlang/paraglide-js@2.0.4':
+  '@inlang/paraglide-js@2.0.5':
     dependencies:
       '@inlang/recommend-sherlock': 0.2.1
       '@inlang/sdk': 2.4.4
