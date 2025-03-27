@@ -13,12 +13,19 @@
 		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"test:unit": "vitest run"
 	},
+	"dependencies": {
+		"mutative": "^1.1.0",
+		"ramda": "^0.30.1",
+		"random-js": "^2.1.0"
+	},
 	"devDependencies": {
-		"@library/base": "workspace:*",
-		"@library/library_wrappers": "workspace:*"
+		"@library/base": "workspace:*"
 	},
 	"keywords": [],
 	"exports": {
-		"./monads": "./src/monads.js"
+		"./monads": "./src/monads.js",
+		"./mutative": "./src/mutative.js",
+		"./random_engine": "./src/random_engine.js",
+		"./R": "./src/R.js"
 	}
 }
