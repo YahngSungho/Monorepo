@@ -5,6 +5,7 @@
 		"isolatedModules": true,
 		"module": "ESNext",
 		"moduleResolution": "bundler",
+		"noImplicitAny": false,
 		"paths": {
 			"$shadcn/*": ["../libraries/ui/src/shadcn/*"],
 			"$shadcn": ["../libraries/ui/src/shadcn"]

@@ -110,72 +110,69 @@ import fc from 'fast-check'
  * @returns {Promise<any[]>} 요소 정보 배열
  */
 async function discoverInteractions(page, componentSelector) {
-	const rootComponent = await page.$(componentSelector)
-	if (!rootComponent) return []
+	// page.$ 대신 locator 사용 고려했으나, evaluate 내 복잡한 DOM 탐색 로직으로 인해 유지
+	const rootComponentExists = await page.evaluate(
+		(selector) => !!document.querySelector(selector),
+		componentSelector,
+	)
+	if (!rootComponentExists) return []
 
 	// 브라우저 컨텍스트 내에서 직접 요소 정보와 선택자를 추출
-	const elementInfos = await page.evaluate(
-		(componentSelector) => {
-			// 브라우저 컨텍스트 내에서 getUniqueSelector 함수 재정의
-			function getUniqueSelector(el, base) {
-				let testId = el.getAttribute('data-testid')
-				if (testId) {
-					return `${base} [data-testid="${testId}"]` // data-testid 속성이 있으면 최우선 사용
-				} else if (el.id) {
-					return `${base} #${el.id}` // id가 있으면 두 번째 우선순위로 사용
-				} else if (el.className && typeof el.className === 'string' && el.className.trim() !== '') {
-					// 클래스 이름이 있으면 처리하여 선택자 생성
-					let classes = el.className
-						.split(' ')
-						.filter((c) => {
-							return c.trim()
-						})
-						.join('.')
-					return `${base} .${classes}`
-				}
-				// 위 조건을 만족하지 않으면 DOM 계층 구조를 이용한 선택자 생성
-				if (el.parentElement) {
-					let children = Array.from(el.parentElement.children)
-					let index = children.indexOf(el) + 1
-					return `${base} ${el.tagName.toLowerCase()}:nth-child(${index})`
-				}
-				return base
+	// Playwright Locator API로는 브라우저 내부의 복잡한 DOM 순회 및 속성 접근 로직을
+	// 효과적으로 대체하기 어려워 page.evaluate 유지.
+	const elementInfos = await page.evaluate((componentSelector) => {
+		// 브라우저 컨텍스트 내에서 getUniqueSelector 함수 재정의
+		function getUniqueSelector(el, base) {
+			let testId = el.getAttribute('data-testid')
+			if (testId) {
+				return `${base} [data-testid="${testId}"]` // data-testid 속성이 있으면 최우선 사용
+			} else if (el.id) {
+				return `${base} #${el.id}` // id가 있으면 두 번째 우선순위로 사용
 			}
+			// 위 조건을 만족하지 않으면 DOM 계층 구조를 이용한 선택자 생성
+			if (el.parentElement) {
+				let children = Array.from(el.parentElement.children)
+				let index = children.indexOf(el) + 1
+				return `${base} ${el.tagName.toLowerCase()}:nth-child(${index})`
+			}
+			return base
+		}
 
-			const root = document.querySelector(componentSelector)
-			if (!root) return []
+		const root = document.querySelector(componentSelector)
+		if (!root) return []
 
-			// 모든 하위 요소에 대한 필요 정보 추출
-			return Array.from(root.querySelectorAll('*'), (el) => {
-				const uniqueSelector = getUniqueSelector(el, componentSelector)
-				return {
-					tagName: el.tagName.toLowerCase(),
-					selector: uniqueSelector,
-					type: el.getAttribute('type'),
-					role: el.getAttribute('role'),
-					disabled: el.hasAttribute('disabled'),
-					readonly: el.hasAttribute('readonly'),
-					options:
-						el.tagName.toLowerCase() === 'select' ?
-							Array.from(el.querySelectorAll('option'), (option) => option.value)
-						:	[],
-					min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
-					max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
-					draggable: el.getAttribute('draggable') === 'true',
-					hasOnClick: el.hasAttribute('onclick'),
-				}
-			})
-		},
-		componentSelector, // getUniqueSelector 함수를 전달하는 대신 내부에서 재정의
-	)
+		// 모든 하위 요소에 대한 필요 정보 추출
+		return Array.from(root.querySelectorAll('*'), (el) => {
+			const uniqueSelector = getUniqueSelector(el, componentSelector)
+			return {
+				tagName: el.tagName.toLowerCase(),
+				selector: uniqueSelector,
+				type: el.getAttribute('type'),
+				role: el.getAttribute('role'),
+				disabled: el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true', // aria-disabled 추가
+				readonly: el.hasAttribute('readonly'),
+				options:
+					el.tagName.toLowerCase() === 'select' ?
+						Array.from(el.querySelectorAll('option'), (option) => option.value)
+					:	[],
+				min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
+				max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
+				draggable: el.getAttribute('draggable') === 'true',
+				hasOnClick: el.hasAttribute('onclick'),
+			}
+		})
+	}, componentSelector)
 
 	// 각 요소에 대해 가시성 체크 및 인터랙션 생성
 	const interactions = []
 	for (const elementInfo of elementInfos) {
-		const isVisible = await page.isVisible(elementInfo.selector)
+		// locator 사용
+		const locator = page.locator(elementInfo.selector)
+		// isVisible 대신 locator.isVisible 사용
+		const isVisible = await locator.isVisible()
 		if (!isVisible) continue
 
-		// 요소 정보를 기반으로 가능한 인터랙션 생성
+		// 요소 정보를 기반으로 가능한 인터랙션 생성 (elementInfo에서 disabled 체크는 이미 evaluate에서 수행)
 		interactions.push(...getInteractionsFromElementInfo(elementInfo))
 	}
 
@@ -293,7 +290,7 @@ async function resetComponentState(page) {
 	// 페이지에 정의된 resetComponentState 함수가 있으면 호출
 	// 스토리북에서 특별히 리셋 함수를 제공하는 경우 사용
 	try {
-		// 함수 존재 여부 확인 및 결과 반환
+		// 전역 범위 함수 호출 필요하므로 page.evaluate 유지
 		const hasResetFunction = await page.evaluate(
 			() => {
 				if (typeof globalThis.resetComponentState === 'function') {
@@ -423,31 +420,23 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 	page.on('pageerror', pageErrorHandler)
 
 	try {
-		// 대상 요소가 존재하는지 확인
-		const elementExists = (await page.$(interaction.selector)) !== null
-		if (!elementExists) {
-			const error = new Error(`요소가 페이지에 존재하지 않음: (${interaction.selector})`)
-			result.errorMessage = error.message
-			result.errorStack = error.stack
-			return result // 요소가 없을 경우 결과 객체 반환, 예외를 던지지 않음
-		}
+		// 대상 요소를 locator로 가져옴
+		const locator = page.locator(interaction.selector)
 
-		// 요소의 상호작용 가능 상태 확인 (visible, enabled 등)
-		const isVisible = await page.isVisible(interaction.selector)
+		// 요소 존재 및 가시성 확인 (locator 사용)
+		const isVisible = await locator.isVisible()
 		if (!isVisible) {
-			const error = new Error(`요소가 화면에 표시되지 않음: (${interaction.selector})`)
+			// isVisible()이 false를 반환하면 요소가 없거나 보이지 않음
+			const error = new Error(
+				`요소가 화면에 표시되지 않거나 존재하지 않음: (${interaction.selector})`,
+			)
 			result.errorMessage = error.message
 			result.errorStack = error.stack
 			return result
 		}
 
-		// 요소가 disabled 상태인지 확인 (버튼, 입력 필드 등에 적용)
-		const isDisabled = await page.evaluate((selector) => {
-			const element = document.querySelector(selector)
-			if (!element) return false
-			// disabled 속성이 있는지 확인 (HTMLInputElement, HTMLButtonElement 등에만 존재)
-			return element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true'
-		}, interaction.selector)
+		// 요소가 disabled 상태인지 확인 (locator 사용)
+		const isDisabled = await locator.isDisabled() // isDisabled()는 disabled 속성과 aria-disabled="true" 모두 확인
 
 		if (isDisabled) {
 			const error = new Error(`요소가 비활성화됨: (${interaction.selector})`)
@@ -457,24 +446,31 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		}
 
 		// 인터랙션 타입에 따른 처리
-		await executeInteractionByType(page, interaction, result)
+		// executeInteractionByType 내에서 locator를 사용할 수 있도록 locator 전달 또는 selector만 사용
+		await executeInteractionByType(page, interaction, result) // locator 대신 selector 기반으로 동작하도록 유지
 
 		// 인터랙션 후 지정된 시간만큼 대기
-		await page.waitForTimeout(waitTime)
+		// eslint-disable-next-line playwright/no-wait-for-timeout
+		await page.waitForTimeout(waitTime) // 의도된 동작일 수 있으므로 유지 (린트 규칙 비활성화)
+		// 참고: 일반적으로는 locator.waitFor와 같은 명시적 대기를 권장합니다.
+		// 예: await locator.waitFor({ state: 'visible', timeout: waitTime });
+		// 하지만 모든 인터랙션 후 기다려야 할 특정 상태를 정의하기 어려움.
 
 		// 페이지 에러가 발생했는지 확인
 		if (pageErrorOccurred) {
 			// 페이지 에러가 발생했지만 계속 진행하기 위해 에러 정보만 기록
 			result.errorMessage = `페이지 에러 발생 (계속 진행): ${pageErrorMessage}`
-			result.success = false
-		} else {
-			result.success = true
+			result.success = false // 페이지 에러 시 실패로 간주 (기존 로직 유지 시 주석 처리)
 		}
+		// else { // 페이지 에러가 없을 때만 성공 처리하던 기존 로직 -> 페이지 에러 있어도 성공으로 간주하던 로직 수정
+		//  result.success = true;
+		//}
 	} catch (error) {
 		// 에러 정보 기록
 		result.errorMessage = error.message
 		result.errorStack = error.stack
 		result.error = error // 원본 에러 객체도 보존
+		result.success = false // 에러 발생 시 명시적으로 실패 처리
 
 		if (verbose) {
 			console.error(
@@ -602,24 +598,22 @@ async function executeRangeInteraction(page, interaction, result) {
 	const max = interaction.max || 100
 	const newValue = interaction.value !== undefined ? interaction.value : getRandom(min, max)
 
-	// JavaScript 평가를 통해 범위 값 설정 및 이벤트 발생
-	await page.$eval(
-		interaction.selector,
+	// locator.evaluate를 사용하여 범위 값 설정 및 이벤트 발생
+	const locator = page.locator(interaction.selector)
+	await locator.evaluate(
 		(el, val) => {
-			// input 태그이고 범위 또는 숫자 타입인 경우 값 설정
-			if (
-				el.tagName === 'INPUT' &&
-				el.hasAttribute('type') &&
-				(el.getAttribute('type') === 'range' || el.getAttribute('type') === 'number')
-			) {
-				// setAttribute를 사용하여 value 설정
-				el.setAttribute('value', String(val))
+			// el은 이미 선택된 요소이므로 타입 체크만 수행
+			if (el instanceof HTMLInputElement && (el.type === 'range' || el.type === 'number')) {
+				// Input 요소의 value 속성을 직접 설정하는 것이 더 안정적일 수 있음
+				el.value = String(val)
+				// setAttribute를 사용해야 하는 경우
+				// el.setAttribute('value', String(val));
 			}
 			// 값 변경 후 이벤트 발생시켜 변경을 감지하도록 함
 			el.dispatchEvent(new Event('input', { bubbles: true }))
 			el.dispatchEvent(new Event('change', { bubbles: true }))
 		},
-		newValue,
+		newValue, // evaluate 함수의 두 번째 인자로 전달
 	)
 	result.value = newValue
 	result.message = `범위 값 설정: ${newValue}`
@@ -907,20 +901,27 @@ function createShrinkableSequence(interactions, length) {
  * @returns {Promise<{ isVisible: boolean; summary: string }>} 컴포넌트 상태 검증 결과
  */
 async function verifyComponentState(page, componentSelector) {
+	const locator = page.locator(componentSelector)
 	// 컴포넌트가 화면에 보이는지 확인
-	const isVisible = await page.isVisible(componentSelector)
-	const summary =
-		isVisible ?
-			// 컴포넌트가 보이면 자세한 정보 수집
-			await page.evaluate((selector) => {
-				const component = document.querySelector(selector)
-				if (!component) return '컴포넌트를 찾을 수 없음'
-				const childCount = component.children.length
-				const classes = component.className
-				const { id } = component
-				return `컴포넌트 정보 - 자식 요소: ${childCount}개, 클래스: ${classes || 'none'}, ID: ${id || 'none'}`
-			}, componentSelector)
-		:	'컴포넌트가 화면에 표시되지 않음'
+	const isVisible = await locator.isVisible()
+
+	let summary = '컴포넌트가 화면에 표시되지 않음'
+	if (isVisible) {
+		try {
+			// 로케이터를 사용하여 정보 수집
+			const childCount = await locator.locator('> *').count() // 직계 자식 요소 수
+			const classes = (await locator.getAttribute('class')) || 'none'
+			const id = (await locator.getAttribute('id')) || 'none'
+			summary = `컴포넌트 정보 - 자식 요소: ${childCount}개, 클래스: ${classes}, ID: ${id}`
+		} catch (error) {
+			// 로케이터 작업 중 오류 발생 시 (예: 요소가 사라짐)
+			console.warn(`상태 확인 중 오류 (${componentSelector}): ${error.message}`)
+			summary = '컴포넌트 정보 수집 중 오류 발생'
+			// isVisible은 true였지만, 정보 수집 중 상태가 변경될 수 있음
+			// 필요시 isVisible = false 처리 가능
+		}
+	}
+
 	return { isVisible, summary }
 }
 
@@ -1111,7 +1112,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			const interactionString = `${shrunkSequence[i].type}${shrunkSequence[i].value ? `: ${shrunkSequence[i].value}` : ''}`
 
 			logPush(
-				`${i + 1} 단계/${shrunkSequence.length}: <${interactionString}> on (${shrunkSequence[i].selector})`,
+				`${i + 1}/${shrunkSequence.length}: <${interactionString}> on (${shrunkSequence[i].selector})`,
 			)
 
 			// 페이지가 닫혔는지 확인
@@ -1196,15 +1197,17 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
  */
 async function isPageClosed(page) {
 	try {
-		// 페이지가 닫혔는지 간단한 연산으로 확인
+		// 페이지가 닫혔는지 간단한 연산으로 확인 (evaluate 사용 불가피)
 		// 페이지가 닫혔다면 예외가 발생함
+
 		await page.evaluate('1 + 1')
 		return false // 예외가 발생하지 않으면 페이지가 열려 있음
 	} catch (error) {
+		// Playwright 최신 버전에서는 에러 메시지가 다를 수 있음
 		return (
-			error.message.includes('Target closed') ||
 			error.message.includes('Target page, context or browser has been closed') ||
-			error.message.includes('Protocol error')
+			error.message.includes('Target closed') || // 이전 버전 호환성
+			error.message.includes('Protocol error') // 일반적인 연결 오류
 		)
 	}
 }

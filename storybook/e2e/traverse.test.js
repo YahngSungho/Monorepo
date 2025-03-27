@@ -43,24 +43,26 @@ for (const entry of Object.values(manifest.entries)) {
 		})
 
 		// 테스트 정보 기록
-		test.info().attach(`Debug Info:${title}`, {
+		test.info().attach(`Debug Info`, {
 			body: JSON.stringify(results, undefined, 2),
 		})
 
 		const dateNow = new Date()
-		test.info().attach(`Time:${title}`, {
+		test.info().attach(`Date`, {
 			body: dateNow.toLocaleString('ko-KR'),
 		})
 
 		expect(consoleErrors, '콘솔 에러 체크').toHaveLength(0)
 		expect(failedRequests, '네트워크 에러 체크').toHaveLength(0)
 
-		if (results.errors && results.errors.length > 0) {
-			console.log(`컴포넌트에서 ${results.errors.length}개의 에러가 발생했습니다:`)
-			results.errors.forEach((error) => {
-				console.log(`- ${error.message}`)
-			})
-		}
+		// UI 컴포넌트 에러 정보 첨부
+		const errorMessages =
+			(results.errors || []).map((error) => `- ${error.message}`).join('\\n') ||
+			'UI 컴포넌트 에러가 감지되지 않았습니다.'
+		test.info().attach(`UI Component Errors (${results.errors?.length ?? 0})`, {
+			body: errorMessages,
+			contentType: 'text/plain',
+		})
 
 		expect(results.errors.length).toBe(0)
 		expect(results.success).toBe(true)

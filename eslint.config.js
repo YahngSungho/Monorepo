@@ -1,5 +1,8 @@
 // import * as parser_mdx from 'eslint-mdx' <- parser 이거로 설정하면 오히려 eslint-plugin-mdx는 작동안함
 // import security from 'eslint-plugin-security' <- @microsoft/eslint-plugin-sdl에서 중복 사용
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
@@ -44,8 +47,6 @@ import xstate from 'eslint-plugin-xstate'
 import yml from 'eslint-plugin-yml'
 import globals from 'globals'
 import parser_jsonc from 'jsonc-eslint-parser'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import * as parser_svelte from 'svelte-eslint-parser'
 import parser_toml from 'toml-eslint-parser'
 import parser_yaml from 'yaml-eslint-parser'
@@ -53,6 +54,7 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'sonarjs/cognitive-complexity': 'warn',
 	'promise/always-return': 'off',
 	'unicorn/prefer-top-level-await': 'off',
 	'unicorn/no-zero-fractions': 'off',
@@ -357,6 +359,7 @@ export default defineFlatConfig([
 		],
 
 		rules: {
+			'array-func/no-unnecessary-this-arg': 'off',
 			'@intlify/svelte/no-raw-text': 'off',
 			'functional/immutable-data': 'off',
 			'redos/no-vulnerable': 'off',
