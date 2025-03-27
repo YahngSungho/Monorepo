@@ -38,7 +38,7 @@ for (const entry of Object.values(manifest.entries)) {
 		const results = await testUIComponent(page, {
 			numRuns: 5,
 			sequenceLength: 3,
-			waitAfterInteraction: 300,
+			waitAfterInteraction: 50,
 			verbose: false,
 		})
 

@@ -8,6 +8,7 @@ import path from 'node:path'
 
 import { errors, expect, test } from '@playwright/test'
 import fc, { json } from 'fast-check'
+import { R } from '@library/helpers/R'
 
 /**
  * 인터랙션 타입 정의
@@ -292,19 +293,34 @@ async function resetComponentState(page) {
 	// 페이지에 정의된 resetComponentState 함수가 있으면 호출
 	// 스토리북에서 특별히 리셋 함수를 제공하는 경우 사용
 	try {
-		await page.evaluate(
+		// 함수 존재 여부 확인 및 결과 반환
+		const hasResetFunction = await page.evaluate(
 			() => {
 				if (typeof globalThis.resetComponentState === 'function') {
 					globalThis.resetComponentState()
+					return true // 함수가 존재하고 실행됨
 				}
-				// 명시적으로 값을 반환하여 평가가 완료되었음을 확인
-				return 'resetComponentState 완료'
+				return false // 함수가 존재하지 않음
 			},
 			{ timeout: 1000 },
-		) // 1초 타임아웃 추가
+		)
+
+		// 함수가 없으면 페이지 리로드
+		if (!hasResetFunction) {
+			await page.reload()
+			// 페이지가 완전히 로드될 때까지 대기
+			await page.waitForLoadState('domcontentloaded')
+		}
 	} catch (error) {
 		console.warn('컴포넌트 상태 초기화 중 오류 발생:', error.message)
-		// 오류가 발생해도 테스트는 계속 진행
+		// 오류가 발생한 경우에도 페이지 리로드 시도
+		try {
+			console.log('오류 발생으로 페이지를 리로드합니다.')
+			await page.reload()
+			await page.waitForLoadState('domcontentloaded')
+		} catch (reloadError) {
+			console.warn('페이지 리로드 중 오류 발생:', reloadError.message)
+		}
 	}
 }
 
@@ -944,57 +960,36 @@ function extractComponentName(url) {
 	}
 }
 
-/** 축소된 반례를 분석하여 테스트 실패 원인 파악 */
-function analyzeShrunkSequence(checkResult) {
+function pushAndConsoleError(logArray, message) {
+	logArray.push(message)
+	console.error(message)
+}
+
+function logShrunkSequence(checkResult) {
+	const logArray = []
+	const logPush = R.curry(pushAndConsoleError)(logArray)
+
 	const counterExample = checkResult.counterexample
 
 	// 이제 직접 배열로 받아옴 (객체의 sequence 속성이 아님)
 	const shrunkSequence = counterExample[0]
 
-	console.error('----------- 축소된 실패 케이스 분석 -----------')
-
 	console.log('checkResult:', checkResult)
 
-	console.error(`총 ${shrunkSequence.length}개의 인터랙션이 필요합니다`)
+	logPush('----------- 축소된 실패 케이스  -----------')
 
 	// 핵심 인터랙션 식별
 	if (shrunkSequence.length === 1) {
-		console.error('단일 인터랙션으로 실패를 재현할 수 있습니다:')
-		console.error(`- ${shrunkSequence[0].type} on (${shrunkSequence[0].selector})`)
-		if (shrunkSequence[0].value !== undefined) {
-			console.error(`  값: ${shrunkSequence[0].value}`)
-		}
+		const interactionString = `${shrunkSequence[0].type}${shrunkSequence[0].value ? `: ${shrunkSequence[0].value}` : ''}`
+		logPush(`- <${interactionString}> on (${shrunkSequence[0].selector})`)
 	} else {
-		console.error('주요 인터랙션 시퀀스:')
 		for (let i = 0; i < shrunkSequence.length; i++) {
 			const interaction = shrunkSequence[i]
-			console.error(`${i + 1}. ${interaction.type} on (${interaction.selector})`)
-			if (interaction.value !== undefined) {
-				console.error(`   값: ${interaction.value}`)
-			}
+			const interactionString = `${interaction.type}${interaction.value ? `: ${interaction.value}` : ''}`
+			logPush(`${i + 1}. <${interactionString}> on (${interaction.selector})`)
 		}
 	}
-
-	console.error('\n[Shrinking 과정 요약]')
-	console.error(`최종 축소 단계: ${counterExample.length}회`)
-	console.error('단계별 상세:')
-
-	const counterExampleLength = counterExample.length
-	const reversedCounterExample = [...counterExample].reverse()
-
-	reversedCounterExample.forEach((sequence, sequenceIndex) => {
-		if (sequenceIndex === counterExampleLength - 1) {
-			console.error(`마지막 ${sequenceIndex + 1} 단계: ${sequence.length}개의 인터랙션`)
-		} else {
-			console.error(`${sequenceIndex + 1} 단계: ${sequence.length}개의 인터랙션`)
-		}
-
-		sequence.forEach((interaction, interactionIndex) => {
-			console.error(`${interactionIndex + 1}) ${interaction.type} on (${interaction.selector})`)
-		})
-	})
-
-	console.error('---------------------------------------------')
+	return logArray
 }
 
 /**
@@ -1006,20 +1001,23 @@ function analyzeShrunkSequence(checkResult) {
  * @param {number} waitTime - 대기 시간
  */
 async function debugWithShrunkExample(page, shrunkSequence, componentSelector, waitTime) {
-	console.error('----------- 축소된 실패 케이스 디버깅 시작 -----------')
+	const logArray = []
+	const logPush = R.curry(pushAndConsoleError)(logArray)
+
+	logPush('----------- 축소된 실패 케이스 디버깅 시작 -----------')
 
 	// 페이지가 닫혔는지 확인
 	if (await isPageClosed(page)) {
-		console.error('디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
-		console.error('----------- 축소된 반례 디버깅 완료 (페이지 닫힘) -----------')
-		return
+		logPush('디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
+		logPush('----------- 축소된 반례 디버깅 완료 (페이지 닫힘) -----------')
+		return logArray
 	}
 
 	// 컴포넌트 상태 초기화
 	try {
 		await resetComponentState(page)
 	} catch (error) {
-		console.error(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
+		logPush(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
 		// 초기화 실패해도 계속 진행
 	}
 
@@ -1045,9 +1043,9 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			currentInteraction: stepTracker.currentInteraction,
 		}
 		pageErrors.push(errorInfo)
-		console.error(`페이지 에러 감지: ${error.message}`)
+		logPush(`페이지 에러 감지: ${error.message}`)
 		if (stepTracker.currentStep !== null) {
-			console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
+			logPush(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 		}
 	}
 
@@ -1062,18 +1060,18 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 				currentInteraction: stepTracker.currentInteraction,
 			}
 			consoleErrors.push(errorInfo)
-			console.error(`콘솔 에러 감지: ${msg.text()}`)
+			logPush(`콘솔 에러 감지: ${msg.text()}`)
 			if (stepTracker.currentStep !== null) {
-				console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
+				logPush(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 			}
 		}
 	}
 
 	// 페이지가 닫혔는지 다시 확인
 	if (await isPageClosed(page)) {
-		console.error('이벤트 핸들러 등록 전 페이지가 이미 닫혀 있습니다.')
-		console.error('----------- 축소된 반례 디버깅 완료 (페이지 닫힘) -----------')
-		return
+		logPush('이벤트 핸들러 등록 전 페이지가 이미 닫혀 있습니다.')
+		logPush('----------- 축소된 반례 디버깅 완료 (페이지 닫힘) -----------')
+		return logArray
 	}
 
 	// 이벤트 리스너 등록
@@ -1081,7 +1079,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		page.on('pageerror', pageErrorHandler)
 		page.on('console', consoleErrorHandler)
 	} catch (error) {
-		console.error(`이벤트 리스너 등록 중 오류 발생: ${error.message}`)
+		logPush(`이벤트 리스너 등록 중 오류 발생: ${error.message}`)
 		// 등록 실패해도 계속 진행
 	}
 
@@ -1091,14 +1089,15 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			// 현재 단계 정보 설정
 			stepTracker.currentStep = i + 1
 			stepTracker.currentInteraction = shrunkSequence[i]
+			const interactionString = `${shrunkSequence[i].type}${shrunkSequence[i].value ? `: ${shrunkSequence[i].value}` : ''}`
 
-			console.error(
-				`${i + 1} 단계/${shrunkSequence.length}: ${shrunkSequence[i].type} on (${shrunkSequence[i].selector})`,
+			logPush(
+				`${i + 1} 단계/${shrunkSequence.length}: <${interactionString}> on (${shrunkSequence[i].selector})`,
 			)
 
 			// 페이지가 닫혔는지 확인
 			if (await isPageClosed(page)) {
-				console.error(`${i + 1} 단계 실행 전 페이지가 이미 닫혀 있습니다.`)
+				logPush(`${i + 1} 단계 실행 전 페이지가 이미 닫혀 있습니다.`)
 				break
 			}
 
@@ -1109,46 +1108,37 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			try {
 				// 페이지가 닫혔는지 확인
 				if (await isPageClosed(page)) {
-					console.error(`${i + 1} 단계 실행 후 페이지가 닫혔습니다.`)
+					logPush(`${i + 1} 단계 실행 후 페이지가 닫혔습니다.`)
 					break
 				}
 
 				// 인터랙션 실행
 				const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
-				console.error(`[ ${i + 1} 단계 인터랙션 실행: ${result.message} ]`)
+				logPush(`[ ${i + 1} 단계 인터랙션 실행: <${result.message}> ]`)
 
 				// 인터랙션 후 페이지 에러 확인 - shrinking을 위한 중요 지점
 				if (consoleErrors.length > 0 || pageErrors.length > 0) {
 					// 에러가 감지되었음을 보고
-					console.error(`< ${i + 1} 단계 실행 후 에러 발생: ${result.message} >`)
-					if (pageErrors.length > 0) {
-						console.error(`- 페이지 에러: ${pageErrors.map((e) => e.message).join(' / ')}`)
-					}
-					if (consoleErrors.length > 0) {
-						console.error(`- 콘솔 에러: ${consoleErrors.map((e) => e.message).join(' / ')}`)
-					}
-
+					logPush(`< ${i + 1} 단계 실행 후 에러 발생: <${result.message}> >`)
 					break
 				}
 
 				// 컴포넌트 상태 확인
 				try {
 					const stateCheck = await verifyComponentState(page, componentSelector)
-					console.error(
-						`상태: ${stateCheck.isVisible ? 'visible' : 'invisible'} - ${stateCheck.summary}`,
-					)
+					logPush(`상태: ${stateCheck.isVisible ? 'visible' : 'invisible'} - ${stateCheck.summary}`)
 				} catch (stateError) {
-					console.error(`상태 확인 중 오류 발생: ${stateError.message}`)
+					logPush(`상태 확인 중 오류 발생: ${stateError.message}`)
 					// 상태 확인 실패해도 계속 진행
 				}
 			} catch (error) {
 				// 인터랙션 실행 중 발생한 에러를 로깅하고 계속 진행
-				console.error(`< ${i + 1} 단계 실행 중 에러 발생: ${error.message} >`)
-				console.error(`에러 스택: ${error.stack?.split('\n')[0] || 'N/A'}`)
+				logPush(`< ${i + 1} 단계 실행 중 에러 발생: ${error.message} >`)
+				logPush(`에러 스택: ${error.stack?.split('\n')[0] || 'N/A'}`)
 
 				// 페이지가 닫혔는지 확인
 				if (await isPageClosed(page)) {
-					console.error(`에러 발생 후 페이지가 닫혔습니다.`)
+					logPush(`에러 발생 후 페이지가 닫혔습니다.`)
 					break
 				}
 
@@ -1157,8 +1147,8 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		}
 	} catch (error) {
 		// 예상치 못한 에러가 발생해도 로깅만 하고 정상 종료
-		console.error(`디버깅 중 예상치 못한 에러 발생: ${error.message}`)
-		console.error(`에러 스택: ${error.stack || 'N/A'}`)
+		logPush(`디버깅 중 예상치 못한 에러 발생: ${error.message}`)
+		logPush(`에러 스택: ${error.stack || 'N/A'}`)
 	} finally {
 		// 단계 추적 정보 초기화
 		stepTracker.currentStep = null
@@ -1170,14 +1160,13 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 				page.removeListener('pageerror', pageErrorHandler)
 				page.removeListener('console', consoleErrorHandler)
 			} catch (error) {
-				console.error(`이벤트 리스너 제거 중 오류 발생: ${error.message}`)
+				logPush(`이벤트 리스너 제거 중 오류 발생: ${error.message}`)
 			}
 		} else {
-			console.error('이벤트 리스너 제거를 시도했으나 페이지가 이미 닫혀 있습니다.')
+			logPush('이벤트 리스너 제거를 시도했으나 페이지가 이미 닫혀 있습니다.')
 		}
 	}
-
-	console.error('----------- 축소된 반례 디버깅 완료 -----------')
+	return logArray
 }
 
 /**
@@ -1233,7 +1222,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 		success: false,
 	}
 
-	// 필요시 컴포넌트 상태 초기화
+	// Todos: shrink와 어떻게 조화?
 	if (resetComponent) {
 		try {
 			await resetComponentState(page)
@@ -1483,7 +1472,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 				const shrunkValue = /** @type {Interaction[]} */ (checkResult?.counterexample[0])
 
 				// 반례 분석 (타입 확인하여 호출)
-				analyzeShrunkSequence(checkResult)
+				const logArray1 = logShrunkSequence(checkResult)
 
 				// failureInfo 타입을 맞춰서 설정
 				failureInfo = {
@@ -1502,11 +1491,20 @@ async function runSingleIteration(page, iteration, errors, config) {
 					console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
 				} else {
 					// 축소된 반례로 디버깅
+					let logArray2 = []
 					try {
-						await debugWithShrunkExample(page, shrunkValue, componentSelector, waitAfterInteraction)
+						logArray2 = await debugWithShrunkExample(
+							page,
+							shrunkValue,
+							componentSelector,
+							waitAfterInteraction,
+						)
 					} catch (debugError) {
 						console.error(`축소된 반례 디버깅 중 오류 발생: ${debugError.message}`)
 					}
+					test.info().attach('시퀀스 디버깅 로그', {
+						body: logArray1.join('\n') + '\n' + logArray2.join('\n'),
+					})
 				}
 			} else {
 				console.error('반례를 찾을 수 없습니다')
@@ -1526,7 +1524,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 				console.log('counterExample', counterExample)
 				const shrunkValue = /** @type {Interaction[]} */ (counterExample[0])
 				if (Array.isArray(shrunkValue)) {
-					analyzeShrunkSequence(counterExample)
+					logShrunkSequence(counterExample)
 
 					failureInfo = {
 						counterExample: shrunkValue,
@@ -1583,8 +1581,6 @@ async function runSingleIteration(page, iteration, errors, config) {
  * @returns {Promise<Object>} 테스트 결과 객체
  */
 async function testUIComponent(page, config = {}) {
-	console.log('시작 시간 3', new Date().toLocaleString())
-
 	// 기본 설정값과 사용자 정의 설정 병합
 	const {
 		iterationCount = 3, // 테스트 반복 횟수
@@ -1705,29 +1701,6 @@ async function testUIComponent(page, config = {}) {
 			counterExample: latestTestFailureInfo?.counterExample,
 			debugInfo,
 		})
-
-		// 축소된 반례 정보 출력
-		if (!isSuccessful && latestTestFailureInfo && latestTestFailureInfo.counterExample) {
-			console.error('\n--------- 테스트 실패 정보 (축소된 반례) ---------')
-			console.error(`컴포넌트: ${debugInfo.componentName}`)
-			console.error('최소 실패 케이스:')
-
-			// 축소된 반례 출력
-			const shrunkSequence = latestTestFailureInfo.counterExample
-			for (let i = 0; i < shrunkSequence.length; i++) {
-				const interaction = shrunkSequence[i]
-				console.error(`${i + 1}. ${interaction.type}`)
-				if (interaction.value !== undefined) {
-					console.error(`   값: ${interaction.value} on (${interaction.selector})`)
-				}
-			}
-			test.info().attach('축소된 반례', {
-				body: JSON.stringify(shrunkSequence, undefined, 2),
-			})
-
-			console.error(`에러: ${errors.map((e) => e.message).join('\n')}`)
-			console.error('--------------------------------------------------\n')
-		}
 
 		// 모든 작업이 완료된 후 테스트 실패 확인
 		// 이 시점에서 모든 디버깅 정보 수집과 로깅이 완료됨
