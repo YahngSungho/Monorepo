@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { inspect } from 'node:util'
 
-import { compose, curry, identity } from '@library/library_wrappers/R'
+import { compose, curry, identity } from './R'
 
 const createCompose = curry(
 	(F, G) =>

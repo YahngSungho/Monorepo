@@ -12,7 +12,6 @@
 	"dependencies": {
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
-		"@library/library_wrappers": "workspace:*",
 		"mutative": "^1.1.0",
 		"nanoid": "^5.1.5",
 		"ramda": "^0.30.1",
