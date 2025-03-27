@@ -6,8 +6,8 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
-import { errors, expect, test } from '@playwright/test'
-import fc, { json } from 'fast-check'
+import { expect, test } from '@playwright/test'
+import fc from 'fast-check'
 import { R } from '@library/helpers/R'
 
 /**

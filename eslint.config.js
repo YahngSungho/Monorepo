@@ -354,8 +354,6 @@ export default defineFlatConfig([
 			'**/e2e/*.js',
 			'*.test.js',
 			'**/*.tests.js',
-			'storybook/e2e/*.js',
-			'storybook/e2e/**',
 		],
 
 		rules: {
@@ -369,7 +367,7 @@ export default defineFlatConfig([
 	},
 
 	{
-		files: ['**/e2e/*.js', 'storybook/e2e/*.js', 'storybook/e2e/**'],
+		files: ['**/e2e/*.js'],
 
 		...playwright.configs['flat/recommended'],
 		rules: {
@@ -504,6 +502,4 @@ export default defineFlatConfig([
 			'jsonc/no-comments': 'off',
 		},
 	},
-
-	,
 ])
