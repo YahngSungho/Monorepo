@@ -6,9 +6,9 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
+import { R } from '@library/helpers/R'
 import { expect, test } from '@playwright/test'
 import fc from 'fast-check'
-import { R } from '@library/helpers/R'
 
 /**
  * 인터랙션 타입 정의
@@ -188,7 +188,7 @@ async function discoverInteractions(page, componentSelector) {
  * @param {object} elementInfo - 요소 정보 객체
  * @returns {Interaction[]} 가능한 인터랙션 목록
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
+
 function getInteractionsFromElementInfo(elementInfo) {
 	const interactions = []
 	const {
@@ -345,7 +345,7 @@ let currentInteraction // 현재 실행 중인 인터랙션을 추적하기 위�
  * @param {number} max - 최대값 (포함)
  * @returns {number} Min과 max 사이의 난수
  */
-function getSecureRandom(min, max) {
+function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
@@ -354,8 +354,27 @@ function getSecureRandom(min, max) {
  *
  * @returns {string} 랜덤 문자열
  */
-function getSecureRandomString() {
+function getRandomString() {
 	return Math.random().toString(36).substring(2, 8)
+}
+
+/**
+ * 각 valueType에 맞는 랜덤 값을 생성합니다.
+ *
+ * @param {string} valueType - 값 유형 (email, number, textarea 등)
+ * @returns {string} 생성된 값
+ */
+function getRandomValueForType(valueType) {
+	switch (valueType) {
+		case 'email':
+			return `test${getRandomString()}@example.com`
+		case 'number':
+			return getRandom(0, 100).toString()
+		case 'textarea':
+			return `테스트 텍스트 ${getRandomString()}`
+		default:
+			return `테스트 입력 ${getRandomString()}`
+	}
 }
 
 /**
@@ -537,19 +556,19 @@ async function executeFillInteraction(page, interaction, result) {
 		// 필드 타입에 따라 적절한 테스트 값 생성
 		switch (interaction.valueType) {
 			case 'email': {
-				value = `test${getSecureRandomString()}@example.com`
+				value = `test${getRandomString()}@example.com`
 				break
 			}
 			case 'number': {
-				value = getSecureRandom(0, 100).toString()
+				value = getRandom(0, 100).toString()
 				break
 			}
 			case 'textarea': {
-				value = `테스트 텍스트 ${getSecureRandomString()}`
+				value = `테스트 텍스트 ${getRandomString()}`
 				break
 			}
 			default: {
-				value = `테스트 입력 ${getSecureRandomString()}`
+				value = `테스트 입력 ${getRandomString()}`
 			}
 		}
 	}
@@ -567,7 +586,7 @@ async function executeSelectInteraction(page, interaction, result) {
 		result.message = `옵션 선택: ${interaction.value}`
 	} else if (interaction.options && interaction.options.length > 0) {
 		// 랜덤하게 옵션 선택
-		const randomIndex = getSecureRandom(0, interaction.options.length - 1)
+		const randomIndex = getRandom(0, interaction.options.length - 1)
 		const selectedValue = interaction.options[randomIndex]
 		await page.selectOption(interaction.selector, selectedValue)
 		result.value = selectedValue
@@ -581,7 +600,7 @@ async function executeSelectInteraction(page, interaction, result) {
 async function executeRangeInteraction(page, interaction, result) {
 	const min = interaction.min || 0
 	const max = interaction.max || 100
-	const newValue = interaction.value !== undefined ? interaction.value : getSecureRandom(min, max)
+	const newValue = interaction.value !== undefined ? interaction.value : getRandom(min, max)
 
 	// JavaScript 평가를 통해 범위 값 설정 및 이벤트 발생
 	await page.$eval(
@@ -722,7 +741,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	// 필 인터랙션 처리 - 값 생성 포함, chain 사용 제거
 	if (fillInteractions.length > 0) {
 		// 모든 가능한 valueType을 모읅니다.
-		const valueTypes = [...new Set(fillInteractions.map((i) => i.valueType || 'text'))]
+		const valueTypes = Array.from(new Set(fillInteractions.map((i) => i.valueType || 'text')))
 
 		// 모든 쌍의 (selectorIndex, valueType)을 생성하는 arbitrary
 		const fillBaseArb = fc.record({
@@ -741,7 +760,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				([base]) => {
 					// 여기서 실제 필요한 값 생성
 					const originalInteraction = fillInteractions[base.selectorIndex]
-					const valueType = base.valueType
+					const { valueType } = base
 					// 실제 값은 test 실행 시점에 생성
 					const value = getRandomValueForType(valueType)
 
@@ -799,7 +818,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 					}
 
 					// 옵션 중 하나를 랜덤하게 선택
-					const selectedIndex = getSecureRandom(0, options.length - 1)
+					const selectedIndex = getRandom(0, options.length - 1)
 					const value = options[selectedIndex]
 
 					return {
@@ -838,7 +857,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 					const max = originalInteraction.max || 100
 
 					// min과 max 사이의 값 선택
-					const value = getSecureRandom(min, max)
+					const value = getRandom(min, max)
 
 					return {
 						...originalInteraction,
@@ -1503,7 +1522,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 						console.error(`축소된 반례 디버깅 중 오류 발생: ${debugError.message}`)
 					}
 					test.info().attach('시퀀스 디버깅 로그', {
-						body: logArray1.join('\n') + '\n' + logArray2.join('\n'),
+						body: `${logArray1.join('\n')}\n${logArray2.join('\n')}`,
 					})
 				}
 			} else {
@@ -1728,23 +1747,4 @@ export {
 	resetComponentState, // 컴포넌트 상태 초기화
 	testUIComponent, // 메인 테스트 함수 (전체 테스트 프로세스 실행)
 	verifyComponentState, // 컴포넌트 상태 검증
-}
-
-/**
- * 각 valueType에 맞는 랜덤 값을 생성합니다.
- *
- * @param {string} valueType - 값 유형 (email, number, textarea 등)
- * @returns {string} 생성된 값
- */
-function getRandomValueForType(valueType) {
-	switch (valueType) {
-		case 'email':
-			return `test${getSecureRandomString()}@example.com`
-		case 'number':
-			return getSecureRandom(0, 100).toString()
-		case 'textarea':
-			return `테스트 텍스트 ${getSecureRandomString()}`
-		default:
-			return `테스트 입력 ${getSecureRandomString()}`
-	}
 }
