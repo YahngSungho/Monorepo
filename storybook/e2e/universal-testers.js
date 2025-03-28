@@ -110,12 +110,16 @@ import fc from 'fast-check'
  * @returns {Promise<any[]>} 요소 정보 배열
  */
 async function discoverInteractions(page, componentSelector) {
-	// page.$ 대신 locator 사용 고려했으나, evaluate 내 복잡한 DOM 탐색 로직으로 인해 유지
-	const rootComponentExists = await page.evaluate(
-		(selector) => !!document.querySelector(selector),
-		componentSelector,
-	)
-	if (!rootComponentExists) return []
+	// verifyComponentState를 사용하여 컴포넌트가 보이는지 확인
+	const { isVisible, summary } = await verifyComponentState(page, componentSelector, 10_000)
+
+	// 컴포넌트가 보이지 않으면 빈 배열 반환
+	if (!isVisible) {
+		console.warn(
+			`discoverInteractions: 컴포넌트(${componentSelector})가 표시되지 않음 - ${summary}`,
+		)
+		return []
+	}
 
 	// 브라우저 컨텍스트 내에서 직접 요소 정보와 선택자를 추출
 	// Playwright Locator API로는 브라우저 내부의 복잡한 DOM 순회 및 속성 접근 로직을
@@ -1029,7 +1033,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		pageErrors.push(errorInfo)
 		logPush(`페이지 에러 감지: ${error.message}`)
 		if (stepTracker.currentStep !== undefined) {
-			logPush(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
+			console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 		}
 	}
 
@@ -1046,7 +1050,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			consoleErrors.push(errorInfo)
 			logPush(`콘솔 에러 감지: ${msg.text()}`)
 			if (stepTracker.currentStep !== undefined) {
-				logPush(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
+				console.error(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 			}
 		}
 	}
@@ -1134,12 +1138,12 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 
 		// 페이지가 열려있을 때만 이벤트 리스너 제거 시도
 		if (await isPageClosed(page)) {
-			logPush('페이지가 닫혀 있어 이벤트 리스너를 제거하지 않습니다.')
+			console.error('페이지가 닫혀 있어 이벤트 리스너를 제거하지 않습니다.')
 		} else {
 			try {
 				page.removeListener('pageerror', pageErrorHandler)
 				page.removeListener('console', consoleErrorHandler)
-				logPush('이벤트 리스너가 성공적으로 제거되었습니다.')
+				console.error('이벤트 리스너가 성공적으로 제거되었습니다.')
 			} catch (error) {
 				logPush(`이벤트 리스너 제거 중 오류 발생: ${error.message}`)
 			}

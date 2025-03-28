@@ -26,6 +26,7 @@
 	},
 	"dependencies": {
 		"@sentry/sveltekit": "^9.9.0",
+		"gremlins.js": "^2.2.0",
 		"zod": "^3.24.1"
 	},
 	"devDependencies": {

@@ -13,7 +13,7 @@ for (const entry of Object.values(manifest.entries)) {
 	}
 
 	const title = id.replaceAll('--', ' @ ').replaceAll('-', ' > ')
-	test(`방문: ${title}`, async ({ page }) => {
+	test(`${title}`, async ({ page }) => {
 		// 캐시 비활성화를 위한 라우트 설정
 		// await page.route('**', (route) => route.continue())
 
