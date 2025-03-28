@@ -1,5 +1,5 @@
 ---
-description: Writing tests for testing race condition
+description: Whenever writing fast-check tests for race condition
 globs: 
 alwaysApply: false
 ---
