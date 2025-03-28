@@ -1,6 +1,6 @@
 ---
 description: 
-globs: **/*.xstate.*
+globs: 
 alwaysApply: false
 ---
 Always use the latest version: [XState.md](mdc:.cursor/docs/XState.md)

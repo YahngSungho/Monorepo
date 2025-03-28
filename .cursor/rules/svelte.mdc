@@ -1,6 +1,6 @@
 ---
 description: 
-globs: **/*.svelte,*.svelte,**/*.svelte.*
+globs: *.svelte,*.svelte.*
 alwaysApply: false
 ---
 [svelte.md](mdc:.cursor/docs/svelte.md)
