@@ -226,6 +226,10 @@ export default defineFlatConfig([
 		ignores: ['!.storybook', '**/.svelte-kit/**', 'pnpm-lock.yaml', 'package-lock.json'],
 	},
 
+	js.configs.recommended,
+	unicorn.configs.recommended,
+	sonarjs_configs.recommended,
+
 	depend_configs['flat/recommended'],
 	importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
@@ -290,10 +294,6 @@ export default defineFlatConfig([
 
 	{
 		files: ['**/*.js', '**/*.ts', '**/*.mjs', '**/*.cjs'],
-
-		...js.configs.recommended,
-		...unicorn.configs.recommended,
-		...sonarjs_configs.recommended,
 
 		languageOptions: {
 			ecmaVersion: 'latest',
