@@ -48,7 +48,6 @@ async function visitPage(baseUrl, testRoute, page) {
 	const consoleErrors = []
 	page.on('console', (msg) => {
 		if (msg.type() === 'error') {
-			// eslint-disable-next-line functional/immutable-data
 			consoleErrors.push(msg.text())
 		}
 	})
@@ -56,7 +55,6 @@ async function visitPage(baseUrl, testRoute, page) {
 	const failedRequests = []
 	page.on('response', (response) => {
 		if (response.status() >= 400) {
-			// eslint-disable-next-line functional/immutable-data
 			failedRequests.push(`${response.url()} (${response.status()})`)
 		}
 	})
@@ -108,7 +106,6 @@ async function speedCheck(page, testRoute) {
 	await page.waitForLoadState('domcontentloaded')
 
 	let lcp = await page.evaluate(
-		// eslint-disable-next-line no-shadow
 		([PERFORMANCE_THRESHOLDS]) => {
 			return new Promise((resolve) => {
 				let lcpValue = 0
@@ -137,7 +134,6 @@ async function speedCheck(page, testRoute) {
 	expect(lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.maxLCP)
 
 	let cls = await page.evaluate(
-		// eslint-disable-next-line no-shadow
 		([PERFORMANCE_THRESHOLDS]) => {
 			return new Promise((resolve) => {
 				let clsValue = 0
@@ -296,7 +292,7 @@ function getRoutes(projectRouteRoot, dir = '', routes = []) {
 			}
 
 			const isDynamic = DYNAMIC_ROUTE_PATTERN.test(routePath)
-			// eslint-disable-next-line functional/immutable-data
+
 			routes.push({ dynamic: isDynamic, route: routePath })
 		}
 	}
