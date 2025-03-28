@@ -21,6 +21,8 @@ import fc from 'fast-check'
  * @property {number} [min] - Range 최소값 (setRange에 사용)
  * @property {number} [max] - Range 최대값 (setRange에 사용)
  * @property {string[]} [options] - Select 옵션 (select에 사용)
+ * @property {boolean} [isScrollableX] - 가로 스크롤 가능 여부 (scroll에 사용)
+ * @property {boolean} [isScrollableY] - 세로 스크롤 가능 여부 (scroll에 사용)
  */
 
 /**
@@ -147,6 +149,10 @@ async function discoverInteractions(page, componentSelector) {
 
 		// 모든 하위 요소에 대한 필요 정보 추출
 		return Array.from(root.querySelectorAll('*'), (el) => {
+			// 스크롤 가능 여부 확인
+			const isScrollableY = el.scrollHeight > el.clientHeight
+			const isScrollableX = el.scrollWidth > el.clientWidth
+
 			const uniqueSelector = getUniqueSelector(el, componentSelector)
 			return {
 				tagName: el.tagName.toLowerCase(),
@@ -163,6 +169,13 @@ async function discoverInteractions(page, componentSelector) {
 				max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
 				draggable: el.getAttribute('draggable') === 'true',
 				hasOnClick: el.hasAttribute('onclick'),
+				// 스크롤 가능 여부 추가
+				isScrollableX,
+				isScrollableY,
+				scrollHeight: el.scrollHeight,
+				scrollWidth: el.scrollWidth,
+				clientHeight: el.clientHeight,
+				clientWidth: el.clientWidth,
 			}
 		})
 	}, componentSelector)
@@ -205,6 +218,8 @@ function getInteractionsFromElementInfo(elementInfo) {
 		max,
 		draggable,
 		hasOnClick,
+		isScrollableX,
+		isScrollableY,
 	} = elementInfo
 
 	if (disabled) return []
@@ -293,6 +308,16 @@ function getInteractionsFromElementInfo(elementInfo) {
 		interactions.push({ type: 'drag', selector })
 	}
 
+	// 스크롤 가능한 요소에 대한 인터랙션 추가
+	if (isScrollableY || isScrollableX) {
+		interactions.push({
+			type: 'scroll',
+			selector,
+			isScrollableX,
+			isScrollableY,
+		})
+	}
+
 	return interactions
 }
 
@@ -358,7 +383,9 @@ let currentInteraction // 현재 실행 중인 인터랙션을 추적하기 위�
  * @param {number} [options.min] - Range 최소값
  * @param {number} [options.max] - Range 최대값
  * @param {string[]} [options.options] - Select 옵션 목록
- * @returns {fc.Arbitrary<string | number>} 생성된 값 Arbitrary
+ * @param {boolean} [options.isScrollableX] - 가로 스크롤 가능 여부
+ * @param {boolean} [options.isScrollableY] - 세로 스크롤 가능 여부
+ * @returns {fc.Arbitrary<any>} 생성된 값 Arbitrary
  */
 function _getValueArbitraryForType(valueType, options = {}) {
 	switch (valueType) {
@@ -374,6 +401,24 @@ function _getValueArbitraryForType(valueType, options = {}) {
 			// 단, locator.fill을 사용한다면 문자열 변환 필요할 수 있음
 			return fc.integer({ min: options.min ?? 0, max: options.max ?? 100 })
 		}
+		case 'scroll': {
+			// 스크롤 방향과 양을 생성하는 Arbitrary
+			let directionArb
+			if (options.isScrollableX && options.isScrollableY) {
+				directionArb = fc.constantFrom('vertical', 'horizontal')
+			} else if (options.isScrollableX) {
+				directionArb = fc.constant('horizontal')
+			} else {
+				directionArb = fc.constant('vertical')
+			}
+
+			const amountArb = fc.integer({ min: -100, max: 100 }).filter((n) => n !== 0)
+
+			return fc.record({
+				direction: directionArb,
+				amount: amountArb,
+			})
+		}
 		case 'select': {
 			if (options.options && options.options.length > 0) {
 				return fc.constantFrom(...options.options)
@@ -384,7 +429,7 @@ function _getValueArbitraryForType(valueType, options = {}) {
 		}
 		case 'textarea': {
 			// 여러 줄 텍스트 가능성 고려
-			return fc.string().map((str) => `테스트 텍스트 ${str}`) // 이해하기 쉽게 접두사 추가
+			return fc.lorem().map((str) => `테스트 텍스트 ${str}`) // 이해하기 쉽게 접두사 추가
 		}
 		// 'text', 'password', 'search' 등 기본 문자열 타입
 		default: {
@@ -591,6 +636,10 @@ async function executeInteractionByType(page, interaction, result) {
 				result.message = '호버'
 				break
 			}
+			case 'scroll': {
+				await executeScrollInteraction(page, interaction, result)
+				break
+			}
 			case 'select': {
 				await executeSelectInteraction(page, interaction, result)
 				break
@@ -697,6 +746,53 @@ async function executeRangeInteraction(page, interaction, result) {
 	result.success = true
 }
 
+/** Scroll 인터랙션 실행 */
+async function executeScrollInteraction(page, interaction, result) {
+	// interaction 객체에 이미 value가 포함되어 있는지 확인
+	if (interaction.value) {
+		// fast-check에서 생성된 값 사용
+		const { direction, amount } = interaction.value
+
+		// locator.evaluate를 사용하여 스크롤 실행
+		const locator = page.locator(interaction.selector)
+		await locator.evaluate(
+			(el, { direction, amount }) => {
+				if (direction === 'vertical') {
+					el.scrollTop += amount
+				} else {
+					el.scrollLeft += amount
+				}
+			},
+			{ direction, amount },
+		)
+
+		result.value = interaction.value
+		result.message = `스크롤: ${direction === 'vertical' ? '수직' : '수평'} ${amount}px`
+	} else {
+		// 기본값 설정 (방향은 수직, 크기는 50px)
+		const direction = interaction.isScrollableY ? 'vertical' : 'horizontal'
+		const amount = 50
+
+		// locator.evaluate를 사용하여 스크롤 실행
+		const locator = page.locator(interaction.selector)
+		await locator.evaluate(
+			(el, { direction, amount }) => {
+				if (direction === 'vertical') {
+					el.scrollTop += amount
+				} else {
+					el.scrollLeft += amount
+				}
+			},
+			{ direction, amount },
+		)
+
+		result.value = { direction, amount }
+		result.message = `스크롤: ${direction === 'vertical' ? '수직' : '수평'} ${amount}px`
+	}
+
+	result.success = true
+}
+
 /**
  * 인터랙션 시퀀스 생성을 위한 fast-check arbitrary 생성 fast-check 라이브러리를 사용해 무작위 인터랙션 시퀀스를 생성합니다.
  *
@@ -717,6 +813,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	const rangeInteractions = interactions.filter((i) => i.type === 'setRange')
 	const dragInteractions = interactions.filter((i) => i.type === 'drag')
 	const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
+	const scrollInteractions = interactions.filter((i) => i.type === 'scroll')
 
 	// 2단계: 구조화된 Arbitrary 생성
 	const arbitraries = []
@@ -872,6 +969,36 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				}))
 
 			arbitraries.push(rangeInteractionArb)
+		}
+	}
+
+	// 스크롤 인터랙션 처리 - Shrinking 가능한 값 생성 포함
+	if (scrollInteractions.length > 0) {
+		// 각 scroll 인터랙션에 대해 개별 Arbitrary 생성
+		for (let i = 0; i < scrollInteractions.length; i++) {
+			const originalInteraction = scrollInteractions[i]
+			const { isScrollableX } = originalInteraction
+			const { isScrollableY } = originalInteraction
+
+			// 스크롤 방향과 양을 생성하는 Arbitrary
+			const valueArb = _getValueArbitraryForType('scroll', {
+				isScrollableX,
+				isScrollableY,
+			})
+
+			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
+			const scrollInteractionArb = fc
+				.tuple(
+					fc.constant(i), // 인터랙션 인덱스
+					valueArb, // 값 Arbitrary (shrinking 대상)
+				)
+				.map(([index, value]) => ({
+					...scrollInteractions[index],
+					type: 'scroll',
+					value, // fc가 생성한 값(shrinking 가능)
+				}))
+
+			arbitraries.push(scrollInteractionArb)
 		}
 	}
 
