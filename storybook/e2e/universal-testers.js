@@ -180,6 +180,7 @@ async function discoverInteractions(page, componentSelector) {
 		interactions.push(...getInteractionsFromElementInfo(elementInfo))
 	}
 
+	console.log('💬 discoverInteractions interactions:', interactions)
 	return interactions
 }
 
@@ -211,9 +212,11 @@ function getInteractionsFromElementInfo(elementInfo) {
 	switch (tagName) {
 		case 'a':
 		case 'button': {
-			interactions.push({ type: 'click', selector }, { type: 'hover', selector })
-			// interactions.push({ type: 'hover', selector })
-			// interactions.push({ type: 'click', selector })
+			interactions.push(
+				{ type: 'click', selector },
+				{ type: 'hover', selector },
+				{ type: 'doubleClick', selector },
+			)
 			break
 		}
 
@@ -271,11 +274,19 @@ function getInteractionsFromElementInfo(elementInfo) {
 	}
 
 	if (role === 'button' || hasOnClick) {
-		interactions.push({ type: 'click', selector }, { type: 'hover', selector })
+		interactions.push(
+			{ type: 'click', selector },
+			{ type: 'hover', selector },
+			{ type: 'doubleClick', selector },
+		)
 	}
 
 	if (['listbox', 'menu', 'tablist'].includes(role)) {
-		interactions.push({ type: 'click', selector })
+		interactions.push(
+			{ type: 'click', selector },
+			{ type: 'hover', selector },
+			{ type: 'doubleClick', selector },
+		)
 	}
 
 	if (draggable) {
@@ -556,6 +567,12 @@ async function executeInteractionByType(page, interaction, result) {
 				result.message = '클릭'
 				break
 			}
+			case 'doubleClick': {
+				const locator = page.locator(interaction.selector)
+				await locator.dblclick({ timeout: 5000 })
+				result.message = '더블 클릭'
+				break
+			}
 			case 'drag': {
 				await page.hover(interaction.selector)
 				await page.dragAndDrop(interaction.selector, interaction.selector, {
@@ -699,6 +716,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	const selectInteractions = interactions.filter((i) => i.type === 'select')
 	const rangeInteractions = interactions.filter((i) => i.type === 'setRange')
 	const dragInteractions = interactions.filter((i) => i.type === 'drag')
+	const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
 
 	// 2단계: 구조화된 Arbitrary 생성
 	const arbitraries = []
@@ -755,6 +773,24 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				}),
 			)
 		arbitraries.push(dragInteractionArb)
+	}
+
+	// 더블클릭 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
+	if (doubleClickInteractions.length > 0) {
+		const doubleClickInteractionArb = fc
+			.record({
+				type: fc.constant('doubleClick'),
+				// 인덱스를 사용하여 축소 가능하도록 변경
+				selectorIndex: fc.nat({ max: doubleClickInteractions.length - 1 }),
+			})
+			.map(
+				// 원본 데이터로 변환
+				({ type, selectorIndex }) => ({
+					...doubleClickInteractions[selectorIndex],
+					type,
+				}),
+			)
+		arbitraries.push(doubleClickInteractionArb)
 	}
 
 	// 필 인터랙션 처리 - Shrinking 가능한 값 생성 포함

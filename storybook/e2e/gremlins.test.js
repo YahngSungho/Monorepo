@@ -66,6 +66,10 @@ async function unleashGremlins(page) {
 }
 
 for (const entry of Object.values(manifest.entries)) {
+	if (!process.env.CI) {
+		break
+	}
+
 	if (!entry?.id) {
 		continue
 	}
