@@ -1,3 +1,8 @@
+---
+description: When handling Playwirhgt tests with Fast-check library
+globs: 
+alwaysApply: false
+---
 # Guide to Property-Based Testing for UI Components with Playwright and fast-check
 
 ## Setting Up Property-Based Testing with Playwright and fast-check
