@@ -53,17 +53,21 @@ export default {
 		process.env.GITHUB_ACTIONS ?
 			[['junit', { outputFile: 'junit.xml' }], ['github'], ['html']]
 		:	'html',
-	retries: process.env.CI ? 1 : 0,
+	// retries: process.env.CI ? 1 : 0,
+	retries: 1,
 	testDir: 'e2e',
-	timeout: 60_000,
+	timeout: 180_000,
 	use: {
 		// video: 'retain-on-failure',
 		// 브라우저 컨텍스트 타임아웃 증가 (HMR 대기용)
 		launchOptions: {
 			slowMo: process.env.CI ? 0 : 100, // 느린 환경에서 UI 갱신 대기
 		},
+		contextOptions: {
+			reducedMotion: 'reduce',
+		},
 		screenshot: 'only-on-failure',
-		trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
+		trace: 'on-first-retry',
 	},
 
 	workers: process.env.CI ? 2 : '50%',

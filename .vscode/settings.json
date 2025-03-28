@@ -39,6 +39,7 @@
 		"**/*.less"
 	],
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.semanticHighlighting.enabled": true,
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
 	"eslint.probe": [

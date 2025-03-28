@@ -85,6 +85,7 @@ jobs:
             echo "Markdown 변경사항이 있습니다."
             echo "has_changes=true" >> $GITHUB_OUTPUT
             git diff > markdown-changes.patch
+          fi
 
       - name: Upload patch artifact
         if: steps.check_markdown_changes.outputs.has_changes == 'true'
