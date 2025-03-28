@@ -1250,14 +1250,14 @@ async function runSingleIteration(page, iteration, errors, config) {
 	}
 
 	// Todos: shrink와 어떻게 조화?
-	if (resetComponent) {
-		try {
-			await resetComponentState(page)
-		} catch (error) {
-			console.error(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
-			// 초기화 실패해도 계속 진행
-		}
+	// if (resetComponent) {
+	try {
+		await resetComponentState(page)
+	} catch (error) {
+		console.error(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
+		// 초기화 실패해도 계속 진행
 	}
+	// }
 
 	// 페이지가 닫혔는지 확인
 	if (await isPageClosed(page)) {
