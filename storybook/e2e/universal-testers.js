@@ -23,6 +23,8 @@ import fc from 'fast-check'
  * @property {string[]} [options] - Select 옵션 (select에 사용)
  * @property {boolean} [isScrollableX] - 가로 스크롤 가능 여부 (scroll에 사용)
  * @property {boolean} [isScrollableY] - 세로 스크롤 가능 여부 (scroll에 사용)
+ * @property {string} [sourceSelector] - 드래그 시작 요소 셀렉터 (dragDrop 타입용)
+ * @property {string} [targetSelector] - 드롭 대상 요소 셀렉터 (dragDrop 타입용)
  */
 
 /**
@@ -167,8 +169,10 @@ async function discoverInteractions(page, componentSelector) {
 					:	[],
 				min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
 				max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
-				draggable: el.getAttribute('draggable') === 'true',
-				hasOnClick: el.hasAttribute('onclick'),
+				draggable:
+					el.getAttribute('draggable') === 'true' || el.getAttribute('data-draggable') === 'true',
+				isDroppable: el.getAttribute('data-droppable') === 'true',
+				// hasOnClick: el.hasAttribute('onclick'), <- svelte component가 대상일 때 의미없음
 				// 스크롤 가능 여부 추가
 				isScrollableX,
 				isScrollableY,
@@ -182,6 +186,13 @@ async function discoverInteractions(page, componentSelector) {
 
 	// 각 요소에 대해 가시성 체크 및 인터랙션 생성
 	const interactions = []
+
+	// 드래그 가능한 요소와 드롭 가능한 요소를 분리합니다.
+	const visibleElementInfos = []
+	const draggableElements = []
+	const droppableElements = []
+
+	// 가시성 있는 요소 필터링
 	for (const elementInfo of elementInfos) {
 		// locator 사용
 		const locator = page.locator(elementInfo.selector)
@@ -189,8 +200,45 @@ async function discoverInteractions(page, componentSelector) {
 		const isVisible = await locator.isVisible()
 		if (!isVisible) continue
 
+		visibleElementInfos.push(elementInfo)
+
+		// 드래그 가능한 요소와 드롭 가능한 요소 식별
+		if (elementInfo.draggable && !elementInfo.disabled) {
+			draggableElements.push(elementInfo)
+		}
+
+		if (elementInfo.isDroppable && !elementInfo.disabled) {
+			droppableElements.push(elementInfo)
+		}
+	}
+
+	// 개별 요소에 대한 인터랙션 생성
+	for (const elementInfo of visibleElementInfos) {
 		// 요소 정보를 기반으로 가능한 인터랙션 생성 (elementInfo에서 disabled 체크는 이미 evaluate에서 수행)
 		interactions.push(...getInteractionsFromElementInfo(elementInfo))
+	}
+
+	// 드래그 가능한 요소와 드롭 가능한 요소 간의 dragDrop 인터랙션 생성
+	if (draggableElements.length > 0 && droppableElements.length > 0) {
+		// 모든 (드래그 가능 요소, 드롭 가능 요소) 조합 생성
+		for (const sourceElement of draggableElements) {
+			for (const targetElement of droppableElements) {
+				// 자기 자신에게 드롭하는 경우는 제외 (선택적)
+				if (sourceElement.selector !== targetElement.selector) {
+					interactions.push({
+						type: 'dragDrop',
+						sourceSelector: sourceElement.selector,
+						targetSelector: targetElement.selector,
+					})
+				}
+			}
+		}
+
+		if (draggableElements.length > 0 && droppableElements.length > 0) {
+			console.log(
+				`💬 dragDrop 인터랙션 ${draggableElements.length * droppableElements.length}개 생성됨`,
+			)
+		}
 	}
 
 	console.log('💬 discoverInteractions interactions:', interactions)
@@ -217,7 +265,6 @@ function getInteractionsFromElementInfo(elementInfo) {
 		min,
 		max,
 		draggable,
-		hasOnClick,
 		isScrollableX,
 		isScrollableY,
 	} = elementInfo
@@ -288,7 +335,7 @@ function getInteractionsFromElementInfo(elementInfo) {
 		}
 	}
 
-	if (role === 'button' || hasOnClick) {
+	if (role === 'button') {
 		interactions.push(
 			{ type: 'click', selector },
 			{ type: 'hover', selector },
@@ -627,6 +674,72 @@ async function executeInteractionByType(page, interaction, result) {
 				result.message = '드래그'
 				break
 			}
+			case 'dragDrop': {
+				// sourceSelector와 targetSelector가 있는지 확인
+				if (!interaction.sourceSelector || !interaction.targetSelector) {
+					result.errorMessage =
+						'dragDrop 인터랙션에는 sourceSelector와 targetSelector가 모두 필요합니다.'
+					result.success = false
+					return
+				}
+
+				try {
+					// 소스 요소와 타겟 요소의 locator 생성
+					const sourceLocator = page.locator(interaction.sourceSelector)
+					const targetLocator = page.locator(interaction.targetSelector)
+
+					// 두 요소가 모두 보이는지 확인
+					const isSourceVisible = await sourceLocator.isVisible()
+					const isTargetVisible = await targetLocator.isVisible()
+
+					if (!isSourceVisible) {
+						result.errorMessage = `드래그 소스 요소가 보이지 않음: ${interaction.sourceSelector}`
+						result.success = false
+						return
+					}
+
+					if (!isTargetVisible) {
+						result.errorMessage = `드롭 타겟 요소가 보이지 않음: ${interaction.targetSelector}`
+						result.success = false
+						return
+					}
+
+					// 두 요소가 모두 활성화 되어 있는지 확인
+					const isSourceDisabled = await sourceLocator.isDisabled()
+					const isTargetDisabled = await targetLocator.isDisabled()
+
+					if (isSourceDisabled) {
+						result.errorMessage = `드래그 소스 요소가 비활성화됨: ${interaction.sourceSelector}`
+						result.success = false
+						return
+					}
+
+					if (isTargetDisabled) {
+						result.errorMessage = `드롭 타겟 요소가 비활성화됨: ${interaction.targetSelector}`
+						result.success = false
+						return
+					}
+
+					// 드래그 앤 드롭 수행
+					await sourceLocator.dragTo(targetLocator, { timeout: 7000 })
+					result.message = `드래그 앤 드롭: ${interaction.sourceSelector} → ${interaction.targetSelector}`
+				} catch (actionError) {
+					// 드래그 앤 드롭 액션 실패 시 처리
+					console.error(
+						`드래그 앤 드롭 액션 실패 (${interaction.sourceSelector} → ${interaction.targetSelector}): ${actionError.message}`,
+					)
+
+					result.errorMessage = `드래그 앤 드롭 실패: ${actionError.message}`
+
+					result.errorStack = actionError.stack
+
+					result.error = actionError
+
+					result.success = false
+					return
+				}
+				break
+			}
 			case 'fill': {
 				await executeFillInteraction(page, interaction, result)
 				break
@@ -814,6 +927,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	const dragInteractions = interactions.filter((i) => i.type === 'drag')
 	const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
 	const scrollInteractions = interactions.filter((i) => i.type === 'scroll')
+	const dragDropInteractions = interactions.filter((i) => i.type === 'dragDrop')
 
 	// 2단계: 구조화된 Arbitrary 생성
 	const arbitraries = []
@@ -870,6 +984,24 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				}),
 			)
 		arbitraries.push(dragInteractionArb)
+	}
+
+	// 드래그 앤 드롭 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
+	if (dragDropInteractions.length > 0) {
+		const dragDropInteractionArb = fc
+			.record({
+				type: fc.constant('dragDrop'),
+				// 인덱스를 사용하여 축소 가능하도록 변경
+				interactionIndex: fc.nat({ max: dragDropInteractions.length - 1 }),
+			})
+			.map(
+				// 원본 데이터로 변환
+				({ type, interactionIndex }) => ({
+					...dragDropInteractions[interactionIndex],
+					type: 'dragDrop',
+				}),
+			)
+		arbitraries.push(dragDropInteractionArb)
 	}
 
 	// 더블클릭 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
