@@ -67,12 +67,7 @@ export default {
 			reducedMotion: 'reduce',
 		},
 		screenshot: 'only-on-failure',
-		trace: {
-			mode: 'on-first-retry',
-			snapshots: false, // DOM 스냅샷 기록 비활성화
-			screenshots: true, // 스크린샷 기록은 유지
-			sources: true, // 소스 정보 기록은 유지
-		},
+		trace: 'on-first-retry',
 	},
 
 	workers: process.env.CI ? 2 : '50%',
