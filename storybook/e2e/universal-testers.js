@@ -27,8 +27,8 @@ import fc from 'fast-check'
  * 단계 추적 객체 타입 정의
  *
  * @typedef {Object} StepTracker
- * @property {number | null} currentStep - 현재 실행 중인 단계 번호
- * @property {Interaction | null} currentInteraction - 현재 실행 중인 인터랙션
+ * @property {number | undefined} currentStep - 현재 실행 중인 단계 번호
+ * @property {Interaction | undefined} currentInteraction - 현재 실행 중인 인터랙션
  */
 
 /**
@@ -123,7 +123,7 @@ async function discoverInteractions(page, componentSelector) {
 	const elementInfos = await page.evaluate((componentSelector) => {
 		// 브라우저 컨텍스트 내에서 getUniqueSelector 함수 재정의
 		function getUniqueSelector(el, base) {
-			let testId = el.dataset.testid
+			let testId = el.getAttribute('data-testid')
 			if (testId) {
 				return `${base} [data-testid="${testId}"]` // data-testid 속성이 있으면 최우선 사용
 			} else if (el.id) {
@@ -336,6 +336,53 @@ async function resetComponentState(page) {
 let currentInteraction // 현재 실행 중인 인터랙션을 추적하기 위한 변수
 
 /**
+ * 주어진 타입과 옵션에 맞는 fast-check 값 Arbitrary를 생성합니다. 숫자 타입은 문자열로 변환됩니다.
+ *
+ * @param {string} valueType - 값 유형 (text, email, number, textarea, select, range 등)
+ * @param {object} [options={}] - 추가 옵션 (min, max, select 옵션 목록 등). Default is `{}`
+ * @param {number} [options.min] - Range 최소값
+ * @param {number} [options.max] - Range 최대값
+ * @param {string[]} [options.options] - Select 옵션 목록
+ * @returns {fc.Arbitrary<string | number>} 생성된 값 Arbitrary
+ */
+function _getValueArbitraryForType(valueType, options = {}) {
+	switch (valueType) {
+		case 'email': {
+			return fc.emailAddress()
+		}
+		case 'number': {
+			// page.fill은 문자열을 기대하므로 숫자를 문자열로 변환
+			return fc.integer(options).map(String)
+		}
+		case 'range': {
+			// range input은 보통 숫자를 직접 다루므로 변환 불필요 (evaluate에서 처리)
+			// 단, locator.fill을 사용한다면 문자열 변환 필요할 수 있음
+			return fc.integer({ min: options.min ?? 0, max: options.max ?? 100 })
+		}
+		case 'select': {
+			if (options.options && options.options.length > 0) {
+				return fc.constantFrom(...options.options)
+			}
+			// 선택할 옵션이 없으면 기본값 또는 에러 처리 필요 -> 여기서는 빈 문자열 반환 (혹은 fc.constant('') 등)
+			// Arbitrary 생성 단계에서는 에러보다 기본값 반환이 나을 수 있음
+			return fc.constant('')
+		}
+		case 'textarea': {
+			// 여러 줄 텍스트 가능성 고려
+			return fc.string().map((str) => `테스트 텍스트 ${str}`) // 이해하기 쉽게 접두사 추가
+		}
+		// 'text', 'password', 'search' 등 기본 문자열 타입
+		default: {
+			// 빈 문자열 포함 가능하도록 fc.string 사용
+			return fc.string().map((str) => {
+				// 너무 짧은 문자열은 접두사 추가
+				return str.length < 3 ? `테스트 입력 ${str}` : str
+			})
+		}
+	}
+}
+
+/**
  * 안전한 난수 생성을 위한 유틸리티 함수
  *
  * @param {number} min - 최소값 (포함)
@@ -356,7 +403,8 @@ function getRandomString() {
 }
 
 /**
- * 각 valueType에 맞는 랜덤 값을 생성합니다.
+ * 각 valueType에 맞는 랜덤 값을 생성합니다. 참고: 이 함수는 이제 주로 legacy 코드에서 사용됩니다. 새로운 값 생성은
+ * _getValueArbitraryForType 함수를 사용하세요.
  *
  * @param {string} valueType - 값 유형 (email, number, textarea 등)
  * @returns {string} 생성된 값
@@ -558,49 +606,43 @@ async function executeInteractionByType(page, interaction, result) {
 
 /** Fill 인터랙션 실행 */
 async function executeFillInteraction(page, interaction, result) {
-	// 생성된 값을 사용하거나 없으면 새로 생성
-	let { value } = interaction
-	if (value === undefined) {
-		// 필드 타입에 따라 적절한 테스트 값 생성
-		switch (interaction.valueType) {
-			case 'email': {
-				value = `test${getRandomString()}@example.com`
-				break
-			}
-			case 'number': {
-				value = getRandom(0, 100).toString()
-				break
-			}
-			case 'textarea': {
-				value = `테스트 텍스트 ${getRandomString()}`
-				break
-			}
-			default: {
-				value = `테스트 입력 ${getRandomString()}`
-			}
-		}
+	// interaction 객체에 이미 value가 포함되어 있는지 확인
+	if (interaction.value === undefined) {
+		// 필드 타입에 따라 적절한 테스트 값 생성 - legacy 지원 (이전 버전 호환성)
+		const valueType = interaction.valueType || 'text'
+		const value = getRandomValueForType(valueType)
+		await page.fill(interaction.selector, value)
+		result.value = value
+		result.message = `값 입력: ${value}`
+	} else {
+		// fc에서 생성된 값(문자열) 사용
+		await page.fill(interaction.selector, interaction.value)
+		result.value = interaction.value
+		result.message = `값 입력: ${interaction.value}`
 	}
-	await page.fill(interaction.selector, value)
-	result.value = value
-	result.message = `값 입력: ${value}`
+
+	result.success = true
 }
 
 /** Select 인터랙션 실행 */
 async function executeSelectInteraction(page, interaction, result) {
 	if (interaction.value !== undefined) {
-		// 생성된 값 사용
+		// fc에서 생성된 값 사용
 		await page.selectOption(interaction.selector, interaction.value)
 		result.value = interaction.value
 		result.message = `옵션 선택: ${interaction.value}`
+		result.success = true
 	} else if (interaction.options && interaction.options.length > 0) {
-		// 랜덤하게 옵션 선택
+		// legacy 지원 - 랜덤하게 옵션 선택 (이전 버전 호환성)
 		const randomIndex = getRandom(0, interaction.options.length - 1)
 		const selectedValue = interaction.options[randomIndex]
 		await page.selectOption(interaction.selector, selectedValue)
 		result.value = selectedValue
 		result.message = `옵션 선택: ${selectedValue}`
+		result.success = true
 	} else {
-		throw new Error('선택 가능한 옵션이 없음')
+		result.errorMessage = '선택 가능한 옵션이 없음'
+		result.success = false
 	}
 }
 
@@ -608,6 +650,8 @@ async function executeSelectInteraction(page, interaction, result) {
 async function executeRangeInteraction(page, interaction, result) {
 	const min = interaction.min || 0
 	const max = interaction.max || 100
+
+	// interaction.value가 있으면 사용, 없으면 legacy 지원으로 값 생성
 	const newValue = interaction.value === undefined ? getRandom(min, max) : interaction.value
 
 	// locator.evaluate를 사용하여 범위 값 설정 및 이벤트 발생
@@ -629,6 +673,7 @@ async function executeRangeInteraction(page, interaction, result) {
 	)
 	result.value = newValue
 	result.message = `범위 값 설정: ${newValue}`
+	result.success = true
 }
 
 /**
@@ -708,104 +753,86 @@ function createInteractionSequenceArbitrary(interactions, length) {
 		arbitraries.push(dragInteractionArb)
 	}
 
-	// 필 인터랙션 처리 - 값 생성 포함, chain 사용 제거
+	// 필 인터랙션 처리 - Shrinking 가능한 값 생성 포함
 	if (fillInteractions.length > 0) {
-		// 모든 가능한 valueType을 모읅니다.
-		const valueTypes = Array.from(new Set(fillInteractions.map((i) => i.valueType || 'text')))
+		// 각 fill 인터랙션에 대해 개별 Arbitrary 생성
+		for (let i = 0; i < fillInteractions.length; i++) {
+			const originalInteraction = fillInteractions[i]
+			const valueType = originalInteraction.valueType || 'text'
 
-		// 모든 쌍의 (selectorIndex, valueType)을 생성하는 arbitrary
-		const fillBaseArb = fc.record({
-			selectorIndex: fc.nat({ max: fillInteractions.length - 1 }),
-			valueType: fc.constantFrom(...valueTypes),
-		})
+			// 해당 valueType에 맞는 값 Arbitrary 생성
+			const valueArb = _getValueArbitraryForType(valueType)
 
-		// fc.tuple을 사용하여 독립적인 arbitrary 생성
-		const fillInteractionArb = fc
-			.tuple(
-				fillBaseArb,
-				// 두 번째 값은 사용하지 않음
-				fc.constant(null),
-			)
-			.map(([base]) => {
-				// 여기서 실제 필요한 값 생성
-				const originalInteraction = fillInteractions[base.selectorIndex]
-				const { valueType } = base
-				// 실제 값은 test 실행 시점에 생성
-				const value = getRandomValueForType(valueType)
-
-				return {
-					...originalInteraction,
+			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
+			const fillInteractionArb = fc
+				.tuple(
+					fc.constant(i), // 인터랙션 인덱스
+					valueArb, // 값 Arbitrary (shrinking 대상)
+				)
+				.map(([index, value]) => ({
+					...fillInteractions[index],
 					type: 'fill',
-					valueType,
-					value,
-				}
-			})
+					value, // fc가 생성한 값(shrinking 가능)
+				}))
 
-		arbitraries.push(fillInteractionArb)
+			arbitraries.push(fillInteractionArb)
+		}
 	}
 
-	// 셀렉트 인터랙션 처리 - chain 사용 제거
+	// 셀렉트 인터랙션 처리 - Shrinking 가능한 값 생성 포함
 	if (selectInteractions.length > 0) {
-		// fc.tuple을 사용하여 독립적인 arbitrary 생성
-		const selectInteractionArb = fc
-			.tuple(
-				// 첫번째 요소: 선택할 인터랙션 인덱스
-				fc.nat({ max: selectInteractions.length - 1 }),
-				// 두번째 요소: 옵션 인덱스(실제 값은 런타임에 결정)
-				fc.constant(null),
-			)
-			.map(([selectorIndex]) => {
-				const originalInteraction = selectInteractions[selectorIndex]
-				const options = originalInteraction.options || []
+		// 각 select 인터랙션에 대해 개별 Arbitrary 생성
+		for (let i = 0; i < selectInteractions.length; i++) {
+			const originalInteraction = selectInteractions[i]
+			const options = originalInteraction.options || []
 
-				// 옵션이 없으면 기본 상태 반환
-				if (options.length === 0) {
-					return {
-						...originalInteraction,
-						type: 'select',
-					}
-				}
+			// 옵션이 없으면 건너뜀
+			if (options.length === 0) continue
 
-				// 옵션 중 하나를 랜덤하게 선택
-				const selectedIndex = getRandom(0, options.length - 1)
-				const value = options[selectedIndex]
+			// 옵션 중에서 선택하는 값 Arbitrary 생성
+			const valueArb = _getValueArbitraryForType('select', { options })
 
-				return {
-					...originalInteraction,
+			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
+			const selectInteractionArb = fc
+				.tuple(
+					fc.constant(i), // 인터랙션 인덱스
+					valueArb, // 값 Arbitrary (shrinking 대상)
+				)
+				.map(([index, value]) => ({
+					...selectInteractions[index],
 					type: 'select',
-					value,
-				}
-			})
+					value, // fc가 생성한 값(shrinking 가능)
+				}))
 
-		arbitraries.push(selectInteractionArb)
+			arbitraries.push(selectInteractionArb)
+		}
 	}
 
-	// 범위 인터랙션 처리 - chain 사용 제거
+	// 범위 인터랙션 처리 - Shrinking 가능한 값 생성 포함
 	if (rangeInteractions.length > 0) {
-		// fc.tuple을 사용하여 독립적인 arbitrary 생성
-		const rangeInteractionArb = fc
-			.tuple(
-				// 첫번째 요소: 선택할 인터랙션 인덱스
-				fc.nat({ max: rangeInteractions.length - 1 }),
-				// 두번째 요소: 값은 런타임에 결정
-				fc.constant(null),
-			)
-			.map(([selectorIndex]) => {
-				const originalInteraction = rangeInteractions[selectorIndex]
-				const min = originalInteraction.min || 0
-				const max = originalInteraction.max || 100
+		// 각 range 인터랙션에 대해 개별 Arbitrary 생성
+		for (let i = 0; i < rangeInteractions.length; i++) {
+			const originalInteraction = rangeInteractions[i]
+			const min = originalInteraction.min || 0
+			const max = originalInteraction.max || 100
 
-				// min과 max 사이의 값 선택
-				const value = getRandom(min, max)
+			// min과 max 사이의 값 Arbitrary 생성
+			const valueArb = _getValueArbitraryForType('range', { min, max })
 
-				return {
-					...originalInteraction,
+			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
+			const rangeInteractionArb = fc
+				.tuple(
+					fc.constant(i), // 인터랙션 인덱스
+					valueArb, // 값 Arbitrary (shrinking 대상)
+				)
+				.map(([index, value]) => ({
+					...rangeInteractions[index],
 					type: 'setRange',
-					value,
-				}
-			})
+					value, // fc가 생성한 값(shrinking 가능)
+				}))
 
-		arbitraries.push(rangeInteractionArb)
+			arbitraries.push(rangeInteractionArb)
+		}
 	}
 
 	// 3단계: 최종 시퀀스 Arbitrary 생성
@@ -820,30 +847,28 @@ function createInteractionSequenceArbitrary(interactions, length) {
 }
 
 /**
- * 생성된 인터랙션 시퀀스를 반환합니다. 객체 래핑없이 배열을 직접 반환하여 fast-check가 효과적으로 shrinking을 수행할 수 있도록 합니다.
- *
- * @param {Interaction[]} interactions - 가능한 인터랙션 목록
- * @param {number} length - 시퀀스 길이
- * @returns {fc.Arbitrary<Interaction[]>} 인터랙션 시퀀스 arbitrary
- */
-function createShrinkableSequence(interactions, length) {
-	// 객체 래핑을 제거하고 배열을 직접 반환
-	return createInteractionSequenceArbitrary(interactions, length)
-}
-
-/**
  * 컴포넌트 상태 검증 컴포넌트가 화면에 표시되는지 확인하고 기본 정보를 수집합니다.
  *
  * @param {import('@playwright/test').Page} page - Playwright 페이지 객체
  * @param {string} componentSelector - 컴포넌트의 최상위 셀렉터
  * @returns {Promise<{ isVisible: boolean; summary: string }>} 컴포넌트 상태 검증 결과
  */
-async function verifyComponentState(page, componentSelector) {
+async function verifyComponentState(page, componentSelector, timeout = 5000) {
 	const locator = page.locator(componentSelector)
-	// 컴포넌트가 화면에 보이는지 확인
-	const isVisible = await locator.isVisible()
+	let isVisible = false
+	let summary = `컴포넌트(${componentSelector})가 지정된 시간(${timeout}ms) 내에 표시되지 않음`
 
-	let summary = '컴포넌트가 화면에 표시되지 않음'
+	try {
+		// 지정된 시간 동안 컴포넌트가 화면에 나타날 때까지 기다립니다.
+		await locator.waitFor({ state: 'visible', timeout })
+		isVisible = true // waitFor가 성공하면 컴포넌트가 보이는 것입니다.
+	} catch (error) {
+		// waitFor가 타임아웃되면 에러가 발생합니다. isVisible은 false로 유지됩니다.
+		console.warn(`waitFor 중 오류 발생 또는 타임아웃 (${componentSelector}): ${error.message}`)
+		// 요약 메시지는 이미 초기값으로 설정되어 있습니다.
+	}
+
+	// 컴포넌트가 보이는 경우에만 추가 정보 수집 시도
 	if (isVisible) {
 		try {
 			// 로케이터를 사용하여 정보 수집
@@ -852,11 +877,11 @@ async function verifyComponentState(page, componentSelector) {
 			const id = (await locator.getAttribute('id')) || 'none'
 			summary = `컴포넌트 정보 - 자식 요소: ${childCount}개, 클래스: ${classes}, ID: ${id}`
 		} catch (error) {
-			// 로케이터 작업 중 오류 발생 시 (예: 요소가 사라짐)
+			// 정보 수집 중 오류 발생 시 (예: 요소가 갑자기 사라짐)
 			console.warn(`상태 확인 중 오류 (${componentSelector}): ${error.message}`)
 			summary = '컴포넌트 정보 수집 중 오류 발생'
-			// isVisible은 true였지만, 정보 수집 중 상태가 변경될 수 있음
-			// 필요시 isVisible = false 처리 가능
+			// isVisible은 true였지만, 정보 수집 중 문제가 발생했으므로 상태를 다시 확인하거나 false로 설정할 수 있습니다.
+			// 여기서는 일단 isVisible=true 로 유지하고 요약 메시지만 변경합니다.
 		}
 	}
 
@@ -987,8 +1012,8 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 	// 단계 추적용 객체
 	/** @type {StepTracker} */
 	const stepTracker = {
-		currentStep: null,
-		currentInteraction: null,
+		currentStep: undefined,
+		currentInteraction: undefined,
 	}
 
 	// 페이지 에러 이벤트 리스너 등록 - 각 인터랙션과 에러 연결 강화
@@ -1003,7 +1028,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		}
 		pageErrors.push(errorInfo)
 		logPush(`페이지 에러 감지: ${error.message}`)
-		if (stepTracker.currentStep !== null) {
+		if (stepTracker.currentStep !== undefined) {
 			logPush(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 		}
 	}
@@ -1020,7 +1045,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			}
 			consoleErrors.push(errorInfo)
 			logPush(`콘솔 에러 감지: ${msg.text()}`)
-			if (stepTracker.currentStep !== null) {
+			if (stepTracker.currentStep !== undefined) {
 				logPush(`관련 인터랙션 단계: ${stepTracker.currentStep}`)
 			}
 		}
@@ -1111,8 +1136,8 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		logPush(`에러 스택: ${error.stack || 'N/A'}`)
 	} finally {
 		// 단계 추적 정보 초기화
-		stepTracker.currentStep = null
-		stepTracker.currentInteraction = null
+		stepTracker.currentStep = undefined
+		stepTracker.currentInteraction = undefined
 
 		// 페이지가 닫히지 않았으면 이벤트 리스너 제거
 		if (await isPageClosed(page)) {
@@ -1166,7 +1191,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 		numRuns = 10,
 		componentSelector = '#storybook-root',
 		waitAfterInteraction = 100,
-		resetComponent = false,
 		verbose = false,
 	} = config
 
@@ -1200,7 +1224,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 		iterationInfo.success = false
 		iterationInfo.errors = [
 			...errors,
-			{ message: '페이지가 이미 닫혀 있음', stack: new Error().stack },
+			{ message: '페이지가 이미 닫혀 있음', stack: new Error('페이지가 이미 닫혀 있음').stack },
 		]
 		return iterationInfo
 	}
@@ -1245,7 +1269,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 	}
 
 	// 인터랙션 시퀀스 생성을 위한 arbitrary 생성
-	const sequenceArb = createShrinkableSequence(interactions, sequenceLength)
+	const sequenceArb = createInteractionSequenceArbitrary(interactions, sequenceLength)
 	let checkResult
 
 	// 페이지 에러 발생 시에도 테스트를 계속 진행하기 위한 pageError 핸들러 설정

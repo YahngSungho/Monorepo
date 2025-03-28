@@ -54,6 +54,7 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'unicorn/prefer-dom-node-dataset': 'off',
 	'sonarjs/no-invariant-returns': 'warn',
 	'sonarjs/cognitive-complexity': ['warn', 30],
 	'promise/always-return': 'off',
