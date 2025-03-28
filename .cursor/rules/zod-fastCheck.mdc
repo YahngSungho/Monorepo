@@ -1,0 +1,6 @@
+---
+description: Whenvever handling fast-check tetst with zod or form components
+globs: 
+alwaysApply: false
+---
+[zod-fastCheck.md](mdc:.cursor/docs/zod-fastCheck.md)

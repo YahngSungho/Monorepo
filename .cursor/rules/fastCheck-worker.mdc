@@ -1,0 +1,6 @@
+---
+description: Whenever needs worker isolation for fast-check
+globs: 
+alwaysApply: false
+---
+[fastCheck-worker.md](mdc:.cursor/docs/fastCheck-worker.md)
