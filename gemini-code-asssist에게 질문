@@ -1,0 +1,5 @@
+Summary of Changes, Code Review를 작성하는 gemini-code-assist야
+이 질문에 대답해줘
+문서를 보면 `.gemini/styleguide.md`에 너에게 전달할 지침을 적으면 그게 반영된다고 하던데
+왜 너한테는 반영이 안돼? 다른 사람들이 남긴 글 보면 자기들한텐 반영이 됐다고도 하던데 왜 이 경우엔 안되지?
+`.gemini/styleguide.md`에 적힌 지침을 너한테 전달하고 니가 생성하는 내용에 반영되게 하려면 어떻게 해야돼?
