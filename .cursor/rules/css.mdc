@@ -1,6 +1,6 @@
 ---
-description: 
-globs: **/*.css,**/*.svelte
+description: Wheneven handling CSS
+globs: 
 alwaysApply: false
 ---
 Use predefined CSS variables when possible:
