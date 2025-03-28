@@ -1,0 +1,6 @@
+---
+description: When handling fast-check tests
+globs: 
+alwaysApply: false
+---
+[fastCheck.md](mdc:.cursor/docs/fastCheck.md)
