@@ -52,11 +52,9 @@ Create a systematic document including the following elements:
 - **ER Diagrams**: Express entity relationships if data models are included
 - **Component Diagrams**: Express system components and dependencies
 
-#### Precautions when creating Mermaid diagrams
+#### Precautions when creating Mermaid Diagrams
 
-##### Avoiding text parsing errors in Mermaid diagrams
-
-###### Guidelines to Prevent Mermaid Diagram Parsing Errors
+##### Guidelines to Prevent Mermaid Diagram Parsing Errors
 
 When creating Mermaid diagrams, using certain characters inside nodes can cause parsing errors. Especially special characters like **parentheses()**, **periods(.)**, and **question marks(?)** can cause problems.
 
@@ -68,7 +66,7 @@ When creating Mermaid diagrams, using certain characters inside nodes can cause 
 6. When using HTML tags like `<br/>`, ensure the entire text is quoted
 7. For long text, consider using line breaks instead of cramming everything into one node
 
-###### Error Example
+##### Error Example
 
 The following code causes parsing errors:
 
@@ -80,7 +78,7 @@ flowchart TD
 
 In this code, the parts `B{Check function() call?}` and `C[Next step(process)]` cause parsing errors.
 
-###### Error Cause
+##### Error Cause
 
 In Mermaid syntax:
 
@@ -88,13 +86,13 @@ In Mermaid syntax:
 - Parentheses() have special meaning in flowchart syntax
 - Special characters within text content can confuse the parser
 
-###### Solutions
+##### Solutions
 
 1. **Remove parentheses**:
 2. **Use alternative expressions**:
 3. **Wrap text in quotes** (works in some situations):
 
-###### Recommendations
+##### Recommendations
 
 - Use **simple expressions** for node text
 - **Avoid** parentheses() and special characters if possible
@@ -123,7 +121,7 @@ In Mermaid syntax:
 ### Elements to Improve Document Quality
 
 - Appropriate markdown heading structure and formatting
-- Apply syntax highlighting to code blocks
+- **Apply markdown formatting to make it easier to skim**
 - Use step-by-step explanations and diagrams for complex concepts
 - Balance basic concept explanations for beginners and advanced information for experts
 - Present actual usage scenarios and problem-solving methods
