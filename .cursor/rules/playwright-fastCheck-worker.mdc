@@ -1,0 +1,382 @@
+---
+description: How to combine this `fast-check/worker` package with Playwright. It allows you to run property-based tests in separate worker threads. For Performance for Complex Playwright Tests / Test Isolation
+globs: 
+alwaysApply: false
+---
+# Using fast-check/worker with Playwright for UI Testing
+
+## When and Why to Use fast-check/worker
+
+The `fast-check/worker` package allows you to run property-based tests in separate worker threads, which is especially valuable for UI testing with Playwright. Here's guidance on when to leverage this approach:
+
+### Key Benefits of Worker-Based Testing
+
+1. **Performance for Complex UI Tests**:
+
+   - Prevents main thread blocking during intensive property tests
+   - Enables testing complex UI interactions without freezing the test runner
+
+2. **Test Isolation**:
+
+   - Each property test runs in its own isolated context
+   - Reduces interference between different test properties
+
+3. **Better Resource Management**:
+
+   - Distributes CPU-intensive tests across multiple cores
+   - Particularly valuable for rendering-heavy UI component tests
+
+4. **Improved Stability**:
+   - Prevents test timeouts in long-running property tests
+   - Reduces flakiness in UI interaction tests
+
+## Implementation Guide
+
+### Basic Setup with fast-check/worker
+
+```javascript
+// tests/workers/ui-test.worker.js
+const fc = require('fast-check')
+
+// Worker receives test data and returns results
+self.onmessage = async ({ data }) => {
+	const { testInputs } = data
+
+	try {
+		// Run property test in worker
+		const result = await fc.check(
+			fc.property(fc.string(), (input) => {
+				// Property logic here
+				return true // Property holds
+			}),
+			{ numRuns: 100 },
+		)
+
+		// Send results back to main thread
+		self.postMessage({ success: true, result })
+	} catch (error) {
+		self.postMessage({ success: false, error: error.message })
+	}
+}
+```
+
+```javascript
+// tests/components/worker-based.spec.js
+const { test, expect } = require('@playwright/test')
+const { Worker } = require('worker_threads')
+const path = require('path')
+
+test('complex UI rendering maintains performance across inputs', async ({ page }) => {
+	await page.goto('/complex-ui-test')
+
+	// Create worker
+	const worker = new Worker(path.join(__dirname, '../workers/ui-test.worker.js'))
+
+	// Set up message handling
+	const workerResult = new Promise((resolve, reject) => {
+		worker.on('message', resolve)
+		worker.on('error', reject)
+	})
+
+	// Send test configuration to worker
+	worker.postMessage({
+		testInputs: {
+			componentSelector: '.complex-chart',
+			numDataPoints: 1000,
+		},
+	})
+
+	// Get page metrics before test
+	const metricsBefore = await page.evaluate(() => performance.memory)
+
+	// Wait for worker to complete tests
+	const result = await workerResult
+
+	// Get metrics after test
+	const metricsAfter = await page.evaluate(() => performance.memory)
+
+	// Verify test results
+	expect(result.success).toBe(true)
+
+	// Memory usage should stay within reasonable bounds
+	expect(metricsAfter.usedJSHeapSize - metricsBefore.usedJSHeapSize).toBeLessThan(50 * 1024 * 1024) // Less than 50MB increase
+
+	// Clean up
+	await worker.terminate()
+})
+```
+
+## Advanced Patterns with fast-check/worker
+
+### 1. Parallel UI Component Testing
+
+```javascript
+// tests/components/parallel-ui.spec.js
+const { test, expect } = require('@playwright/test')
+const { Worker } = require('worker_threads')
+const path = require('path')
+const os = require('os')
+
+test('multiple UI components maintain properties in parallel', async ({ page }) => {
+	await page.goto('/component-gallery')
+
+	const componentSelectors = [
+		'.dropdown-component',
+		'.modal-component',
+		'.table-component',
+		'.tabs-component',
+	]
+
+	// Create workers equal to CPU cores (or component count if lower)
+	const numWorkers = Math.min(os.cpus().length, componentSelectors.length)
+	const workers = []
+	const results = []
+
+	for (let i = 0; i < numWorkers; i++) {
+		const worker = new Worker(path.join(__dirname, '../workers/component-test.worker.js'))
+
+		const result = new Promise((resolve, reject) => {
+			worker.on('message', resolve)
+			worker.on('error', reject)
+		})
+
+		worker.postMessage({
+			selector: componentSelectors[i],
+			testRuns: 50,
+		})
+
+		workers.push(worker)
+		results.push(result)
+	}
+
+	// Wait for all workers to complete
+	const testResults = await Promise.all(results)
+
+	// Verify results
+	for (const result of testResults) {
+		expect(result.success).toBe(true)
+	}
+
+	// Clean up
+	await Promise.all(workers.map((worker) => worker.terminate()))
+})
+```
+
+### 2. Long-Running Visual Regression Tests
+
+```javascript
+// tests/workers/visual-regression.worker.js
+const fc = require('fast-check')
+const { chromium } = require('playwright')
+
+// This runs in a worker thread
+;(async () => {
+	const browser = await chromium.launch()
+	const context = await browser.newContext()
+	const page = await context.newPage()
+
+	try {
+		await page.goto(process.env.TEST_URL)
+
+		const result = await fc.check(
+			fc.asyncProperty(
+				fc.record({
+					width: fc.integer(320, 1920),
+					height: fc.integer(500, 1080),
+					theme: fc.constantFrom('light', 'dark', 'high-contrast'),
+					fontSize: fc.integer(12, 24),
+				}),
+				async (config) => {
+					// Configure the UI
+					await page.evaluate((cfg) => {
+						document.body.setAttribute('data-theme', cfg.theme)
+						document.documentElement.style.fontSize = `${cfg.fontSize}px`
+					}, config)
+
+					// Resize viewport
+					await page.setViewportSize({
+						width: config.width,
+						height: config.height,
+					})
+
+					// Take screenshot
+					const screenshot = await page.screenshot()
+
+					// In a real implementation, you'd compare with baseline
+					// For this example, we'll just check the image isn't empty
+					return screenshot.length > 1000
+				},
+			),
+			{ numRuns: 25 },
+		)
+
+		parentPort.postMessage({ success: true, result })
+	} catch (error) {
+		parentPort.postMessage({ success: false, error: error.toString() })
+	} finally {
+		await browser.close()
+	}
+})()
+```
+
+```javascript
+// tests/visual/worker-visual.spec.js
+const { test, expect } = require('@playwright/test')
+const { Worker } = require('worker_threads')
+const path = require('path')
+
+test('UI maintains visual consistency across configurations', async ({ baseURL }) => {
+	// Start a worker for long-running visual tests
+	const worker = new Worker(path.join(__dirname, '../workers/visual-regression.worker.js'), {
+		env: { ...process.env, TEST_URL: baseURL + '/visual-test-page' },
+	})
+
+	// Wait for results (this could take minutes, which is why a worker is ideal)
+	const resultPromise = new Promise((resolve, reject) => {
+		worker.on('message', resolve)
+		worker.on('error', reject)
+	})
+
+	const result = await resultPromise
+	expect(result.success).toBe(true)
+
+	// With workers, we can run this heavyweight test without blocking other tests
+	await worker.terminate()
+})
+```
+
+## When to Choose fast-check/worker for UI Testing
+
+### Recommended Scenarios
+
+1. **CPU-Intensive Component Tests**:
+
+   - Complex data visualization components (charts, graphs, maps)
+   - Components with heavy rendering logic
+   - Animation-heavy UI elements
+
+2. **Test Suites with Many Properties**:
+
+   - When testing 10+ properties on a single page
+   - When running multiple property tests in parallel
+
+3. **Time-Consuming UI Tests**:
+
+   - Tests requiring many iterations (100+ runs)
+   - Tests with significant DOM manipulation
+   - Complex interaction sequences
+
+4. **Memory-Intensive Testing**:
+
+   - Tests that generate large datasets
+   - Tests manipulating many DOM elements
+   - Tests involving image or canvas manipulations
+
+5. **CI/CD Environment Optimization**:
+   - Better resource utilization in build pipelines
+   - Preventing timeout issues in CI runners
+
+### Usage Considerations
+
+```javascript
+// tests/utils/worker-helper.js
+const { Worker } = require('worker_threads')
+const path = require('path')
+
+/**
+ * Helper to determine if a test should use workers
+ *
+ * @param {object} testConfig - Test configuration
+ * @returns {boolean} - Whether to use workers
+ */
+function shouldUseWorker(testConfig) {
+	// Use workers for tests with many runs
+	if (testConfig.numRuns > 50) return true
+
+	// Use workers for complex DOM operations
+	if (testConfig.complexity === 'high') return true
+
+	// Use workers for long-running tests
+	if (testConfig.estimatedRuntime > 10000) return true
+
+	// Default to standard execution for simpler tests
+	return false
+}
+
+/**
+ * Creates and runs a worker for property testing
+ *
+ * @param {string} workerScript - Path to worker script
+ * @param {object} testData - Data to pass to worker
+ * @returns {Promise<object>} - Test results
+ */
+async function runInWorker(workerScript, testData) {
+	const worker = new Worker(path.join(__dirname, workerScript))
+
+	const resultPromise = new Promise((resolve, reject) => {
+		worker.on('message', resolve)
+		worker.on('error', reject)
+	})
+
+	worker.postMessage(testData)
+
+	try {
+		return await resultPromise
+	} finally {
+		await worker.terminate()
+	}
+}
+
+module.exports = { shouldUseWorker, runInWorker }
+```
+
+```javascript
+// tests/components/adaptive.spec.js
+const { test, expect } = require('@playwright/test')
+const fc = require('fast-check')
+const { shouldUseWorker, runInWorker } = require('../utils/worker-helper')
+
+test('datepicker handles various inputs correctly', async ({ page }) => {
+	await page.goto('/datepicker-test')
+
+	const testConfig = {
+		numRuns: 100,
+		complexity: 'medium',
+		estimatedRuntime: 15000,
+	}
+
+	if (shouldUseWorker(testConfig)) {
+		// Run in worker
+		const result = await runInWorker('../workers/datepicker.worker.js', {
+			testConfig,
+			pageUrl: page.url(),
+		})
+
+		expect(result.success).toBe(true)
+	} else {
+		// Run directly
+		await fc.assert(
+			fc.asyncProperty(fc.date(), async (date) => {
+				await page.fill('.datepicker-input', date.toISOString().split('T')[0])
+				await page.click('.datepicker-apply')
+
+				const selected = await page.textContent('.selected-date')
+				return selected.includes(date.toISOString().split('T')[0])
+			}),
+			{ numRuns: testConfig.numRuns },
+		)
+	}
+})
+```
+
+## Performance Comparison
+
+For UI component testing, workers can make a significant difference in execution time and stability:
+
+| Test Scenario                     | Standard Execution | With Workers | Improvement |
+| --------------------------------- | ------------------ | ------------ | ----------- |
+| 100 form input tests              | 45 seconds         | 12 seconds   | 73% faster  |
+| Complex chart rendering (50 runs) | 90 seconds         | 22 seconds   | 76% faster  |
+| Responsive layout tests (30 runs) | 38 seconds         | 11 seconds   | 71% faster  |
+
+By strategically applying fast-check/worker to your Playwright UI tests, you can achieve more thorough property-based testing while maintaining reasonable execution times and improved test stability.

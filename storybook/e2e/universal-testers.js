@@ -1051,13 +1051,6 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		}
 	}
 
-	// 페이지가 닫혔는지 다시 확인
-	if (await isPageClosed(page)) {
-		logPush('이벤트 핸들러 등록 전 페이지가 이미 닫혀 있습니다.')
-		logPush('----------- 축소된 반례 디버깅 완료 (페이지 닫힘) -----------')
-		return logArray
-	}
-
 	// 이벤트 리스너 등록
 	try {
 		page.on('pageerror', pageErrorHandler)
@@ -1070,6 +1063,12 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 	try {
 		// 각 인터랙션 단계별 실행 및 상태 확인
 		for (let i = 0; i < shrunkSequence.length; i++) {
+			// 페이지가 닫혔는지 매 반복마다 확인
+			if (await isPageClosed(page)) {
+				logPush(`${i + 1} 단계 실행 전 페이지가 닫혀 있습니다. 디버깅을 중단합니다.`)
+				break
+			}
+
 			// 현재 단계 정보 설정
 			stepTracker.currentStep = i + 1
 			stepTracker.currentInteraction = shrunkSequence[i]
@@ -1080,26 +1079,20 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 				`${i + 1}/${shrunkSequence.length}: <${interactionString}> on (${shrunkSequence[i].selector})`,
 			)
 
-			// 페이지가 닫혔는지 확인
-			if (await isPageClosed(page)) {
-				logPush(`${i + 1} 단계 실행 전 페이지가 이미 닫혀 있습니다.`)
-				break
-			}
-
 			// 이전 에러들 초기화
 			pageErrors = []
 			consoleErrors = []
 
 			try {
-				// 페이지가 닫혔는지 확인
-				if (await isPageClosed(page)) {
-					logPush(`${i + 1} 단계 실행 후 페이지가 닫혔습니다.`)
-					break
-				}
-
 				// 인터랙션 실행
 				const result = await executeInteraction(page, shrunkSequence[i], waitTime, true)
 				logPush(`[ ${i + 1} 단계 인터랙션 실행: <${result.message}> ]`)
+
+				// 페이지가 닫혔는지 다시 확인
+				if (await isPageClosed(page)) {
+					logPush(`${i + 1} 단계 실행 후 페이지가 닫혔습니다. 디버깅을 중단합니다.`)
+					break
+				}
 
 				// 인터랙션 후 페이지 에러 확인 - shrinking을 위한 중요 지점
 				if (consoleErrors.length > 0 || pageErrors.length > 0) {
@@ -1123,7 +1116,7 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 
 				// 페이지가 닫혔는지 확인
 				if (await isPageClosed(page)) {
-					logPush(`에러 발생 후 페이지가 닫혔습니다.`)
+					logPush(`에러 발생 후 페이지가 닫혔습니다. 디버깅을 중단합니다.`)
 					break
 				}
 
@@ -1139,13 +1132,14 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		stepTracker.currentStep = undefined
 		stepTracker.currentInteraction = undefined
 
-		// 페이지가 닫히지 않았으면 이벤트 리스너 제거
+		// 페이지가 열려있을 때만 이벤트 리스너 제거 시도
 		if (await isPageClosed(page)) {
-			logPush('이벤트 리스너 제거를 시도했으나 페이지가 이미 닫혀 있습니다.')
+			logPush('페이지가 닫혀 있어 이벤트 리스너를 제거하지 않습니다.')
 		} else {
 			try {
 				page.removeListener('pageerror', pageErrorHandler)
 				page.removeListener('console', consoleErrorHandler)
+				logPush('이벤트 리스너가 성공적으로 제거되었습니다.')
 			} catch (error) {
 				logPush(`이벤트 리스너 제거 중 오류 발생: ${error.message}`)
 			}
@@ -1204,12 +1198,12 @@ async function runSingleIteration(page, iteration, errors, config) {
 		sequences: [],
 		errors,
 		startTime: new Date().toISOString(),
-		success: false,
+		success: false, // 초기값은 false로 설정
 		failureInfo: undefined,
 	}
 
 	// Todos: shrink와 어떻게 조화?
-	// if (resetComponent) {
+	// if (resetComponent) { 주석 해제하지말것
 	try {
 		await resetComponentState(page)
 	} catch (error) {
@@ -1259,7 +1253,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 			const stateCheck = await verifyComponentState(page, componentSelector)
 			iterationInfo.stateSummary = stateCheck.summary
 			iterationInfo.noInteractions = true
-			iterationInfo.success = true
+			iterationInfo.success = stateCheck.isVisible // 컴포넌트가 보이면 성공으로 간주
 		} catch (error) {
 			console.error(`상태 확인 중 오류 발생: ${error.message}`)
 			iterationInfo.success = false
@@ -1291,8 +1285,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 		// fast-check 실행
 		checkResult = await fc.check(
 			fc.asyncProperty(sequenceArb, async (sequence) => {
-				// 이제 sequence는 직접 인터랙션 배열입니다 (객체가 아님)
-
 				// 페이지가 닫혔는지 확인
 				if (await isPageClosed(page)) {
 					console.error('페이지가 닫혀 있습니다. 시퀀스 실행을 중단합니다.')
@@ -1439,10 +1431,11 @@ async function runSingleIteration(page, iteration, errors, config) {
 			},
 		)
 
+		// 테스트 결과에 따라 success 설정
+		iterationInfo.success = !checkResult?.failed
+
 		if (checkResult?.failed) {
 			// 테스트 실패 - 축소된 반례 활용
-			iterationInfo.success = false
-
 			// fast-check의 반례가 있는지 확인
 			if (checkResult.counterexample && checkResult.counterexample.length > 0) {
 				console.log('💬 runSingleIteration checkResult:', checkResult)
@@ -1469,7 +1462,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 				if (isPageAlreadyClosed) {
 					console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
 				} else {
-					// 축소된 반례로 디버깅
+					// 페이지가 열려있을 때만 디버깅 수행
 					let logArray2 = []
 					try {
 						logArray2 = await debugWithShrunkExample(
@@ -1488,9 +1481,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 			} else {
 				console.error('반례를 찾을 수 없습니다')
 			}
-		} else {
-			// 테스트 성공
-			iterationInfo.success = true
 		}
 	} catch (fcError) {
 		// fast-check 자체 에러 발생 시
@@ -1514,7 +1504,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 						property: fcError.property?.toString(),
 					}
 
-					// 페이지가 닫히지 않았으면 디버깅 시도
+					// 페이지가 닫히지 않았을 때만 디버깅 시도
 					const isPageAlreadyClosed = await isPageClosed(page)
 					if (isPageAlreadyClosed) {
 						console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
