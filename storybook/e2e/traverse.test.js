@@ -56,9 +56,7 @@ for (const entry of Object.values(manifest.entries)) {
 		expect(failedRequests, '네트워크 에러 체크').toHaveLength(0)
 
 		// UI 컴포넌트 에러 정보 첨부
-		const errorMessages =
-			(results.errors || []).map((error) => `- ${error.message}`).join('\\n') ||
-			'UI 컴포넌트 에러가 감지되지 않았습니다.'
+		const errorMessages = (results.errors ?? []).map((error) => `- ${error.message}`).join('\n')
 		test.info().attach(`UI Component Errors (${results.errors?.length ?? 0})`, {
 			body: errorMessages,
 			contentType: 'text/plain',
