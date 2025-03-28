@@ -532,16 +532,24 @@ async function executeInteractionByType(page, interaction, result) {
 				return // 지원하지 않는 타입이면 에러 정보 기록 후 리턴
 			}
 		}
-		result.success = true
 	} catch (error) {
 		// 에러 정보 기록만 하고 throw 하지 않음
+		// eslint-disable-next-line require-atomic-updates
 		result.errorMessage = error.message
+		// eslint-disable-next-line require-atomic-updates
 		result.errorStack = error.stack
+		// eslint-disable-next-line require-atomic-updates
 		result.error = error
+		// eslint-disable-next-line require-atomic-updates
 		result.success = false
-		console.error(`인터랙션 실행 중 에러 발생 (${interaction.type}): ${error.message}`)
+		console.error(
+			`인터랙션 실행 중 에러 발생 <${interaction.type}> on (${interaction.selector})): ${error.message}`,
+		)
 		// 에러를 throw하지 않고 처리 완료
 	}
+
+	// eslint-disable-next-line require-atomic-updates
+	result.success = true
 }
 
 /** Fill 인터랙션 실행 */
@@ -784,12 +792,6 @@ function createInteractionSequenceArbitrary(interactions, length) {
 
 	// 셀렉트 인터랙션 처리 - chain 사용 제거
 	if (selectInteractions.length > 0) {
-		// 각 select 인터랙션에 대해 선택 가능한 옵션 정보를 수집
-		const selectOptionsMap = selectInteractions.reduce((map, interaction, index) => {
-			map[index] = interaction.options || []
-			return map
-		}, {})
-
 		// fc.tuple을 사용하여 독립적인 arbitrary 생성
 		const selectInteractionArb = fc
 			.tuple(
@@ -1000,12 +1002,14 @@ function logShrunkSequence(checkResult) {
 
 	// 핵심 인터랙션 식별
 	if (shrunkSequence.length === 1) {
-		const interactionString = `${shrunkSequence[0].type}${shrunkSequence[0].value ? `: ${shrunkSequence[0].value}` : ''}`
+		const interactionValue = shrunkSequence[0].value ? `: ${shrunkSequence[0].value}` : ''
+		const interactionString = `${shrunkSequence[0].type}${interactionValue}`
 		logPush(`- <${interactionString}> on (${shrunkSequence[0].selector})`)
 	} else {
 		for (let i = 0; i < shrunkSequence.length; i++) {
 			const interaction = shrunkSequence[i]
-			const interactionString = `${interaction.type}${interaction.value ? `: ${interaction.value}` : ''}`
+			const interactionValue = interaction.value ? `: ${interaction.value}` : ''
+			const interactionString = `${interaction.type}${interactionValue}`
 			logPush(`${i + 1}. <${interactionString}> on (${interaction.selector})`)
 		}
 	}
@@ -1109,7 +1113,8 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 			// 현재 단계 정보 설정
 			stepTracker.currentStep = i + 1
 			stepTracker.currentInteraction = shrunkSequence[i]
-			const interactionString = `${shrunkSequence[i].type}${shrunkSequence[i].value ? `: ${shrunkSequence[i].value}` : ''}`
+			const interactionValue = shrunkSequence[i].value ? `: ${shrunkSequence[i].value}` : ''
+			const interactionString = `${shrunkSequence[i].type}${interactionValue}`
 
 			logPush(
 				`${i + 1}/${shrunkSequence.length}: <${interactionString}> on (${shrunkSequence[i].selector})`,
@@ -1227,7 +1232,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 		componentSelector = '#storybook-root',
 		waitAfterInteraction = 100,
 		resetComponent = false,
-		debugLogDir = './test-results/debug-logs',
 		verbose = false,
 	} = config
 
@@ -1242,6 +1246,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 		errors,
 		startTime: new Date().toISOString(),
 		success: false,
+		failureInfo: undefined,
 	}
 
 	// Todos: shrink와 어떻게 조화?
@@ -1306,8 +1311,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 
 	// 인터랙션 시퀀스 생성을 위한 arbitrary 생성
 	const sequenceArb = createShrinkableSequence(interactions, sequenceLength)
-	let failureInfo
-	let checkResult = null
+	let checkResult
 
 	// 페이지 에러 발생 시에도 테스트를 계속 진행하기 위한 pageError 핸들러 설정
 	const pageErrors = []
@@ -1478,7 +1482,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 			},
 		)
 
-		if (!checkResult.failed) {
+		if (!checkResult?.failed) {
 			// 테스트 성공
 			iterationInfo.success = true
 		} else {
@@ -1497,8 +1501,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 				const logArray1 = logShrunkSequence(checkResult)
 
 				// failureInfo 타입을 맞춰서 설정
-				failureInfo = {
-					checkResult,
+				iterationInfo.failureInfo = {
 					counterExample: shrunkValue,
 					error: {
 						message: 'Property failed',
@@ -1548,7 +1551,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 				if (Array.isArray(shrunkValue)) {
 					logShrunkSequence(counterExample)
 
-					failureInfo = {
+					iterationInfo.failureInfo = {
 						counterExample: shrunkValue,
 						error: { message: fcError.message, stack: fcError.stack },
 						property: fcError.property?.toString(),
@@ -1709,6 +1712,7 @@ async function testUIComponent(page, config = {}) {
 		const saveResult = await saveDebugInfo(debugLogDir, debugFilename, debugInfo)
 
 		if (saveResult.success) {
+			// eslint-disable-next-line require-atomic-updates
 			debugInfo.debugFilePath = saveResult.path
 			if (config.verbose) {
 				console.log(`테스트 디버그 정보 저장: ${debugFilename}`)
@@ -1724,18 +1728,15 @@ async function testUIComponent(page, config = {}) {
 			debugInfo,
 		})
 
-		// 모든 작업이 완료된 후 테스트 실패 확인
 		// 이 시점에서 모든 디버깅 정보 수집과 로깅이 완료됨
-		if (!isSuccessful) {
-			// 최종적으로 테스트 실패 처리
-			// eslint-disable-next-line playwright/missing-playwright-await
-			test.step(`${componentName}: 테스트 결과 확인`, async () => {
-				expect(
-					false,
-					`테스트 실패: 에러 발생 - ${debugInfo.errors.map((e) => e.message).join(' / ')}`,
-				).toBeTruthy()
-			})
-		}
+		// 최종적으로 테스트 실패 처리
+		// eslint-disable-next-line playwright/missing-playwright-await
+		test.step(`${componentName}: 테스트 결과 확인`, async () => {
+			expect(
+				false,
+				`테스트 실패: 에러 발생 - ${debugInfo.errors.map((e) => e.message).join(' / ')}`,
+			).toBeTruthy()
+		})
 	}
 
 	// 테스트 결과 반환

@@ -55,6 +55,7 @@ import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
 	'sonarjs/cognitive-complexity': 'warn',
+	'sonarjs/no-invariant-returns': 'warn',
 	'promise/always-return': 'off',
 	'unicorn/prefer-top-level-await': 'off',
 	'unicorn/no-zero-fractions': 'off',

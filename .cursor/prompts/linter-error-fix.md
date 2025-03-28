@@ -25,3 +25,4 @@ The inclusion of these instructions signifies that your primary mission is to re
    4. **Proposed Solution & Improvement:** Describe the step-by-step changes you will make to the code to resolve the error. Include any related code improvements that should be made concurrently for better quality or clarity.
 
    Please Include _All_ 4 items per Actionable Error.
+   Do NOT write codes in this stage.
