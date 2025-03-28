@@ -2,7 +2,7 @@ name: Mutate Code
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, labeled]
 
 env:
   HUSKY: 0
@@ -19,7 +19,7 @@ jobs:
     outputs:
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && (github.event.action != 'labeled' || github.event.label.name == 'restart')"
     steps:
       - uses: dorny/paths-filter@v3
         id: filter
