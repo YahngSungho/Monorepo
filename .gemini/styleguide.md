@@ -1,4 +1,4 @@
-# Guidelines for Writing a Code Review or Summary of Changes
+# Guidelines for Writing a Code Review
 
 ## Step 1: Code Analysis
 
