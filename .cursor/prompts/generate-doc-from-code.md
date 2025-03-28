@@ -56,9 +56,17 @@ Create a systematic document including the following elements:
 
 ##### Avoiding text parsing errors in Mermaid diagrams
 
-###### Problem Situation
+###### Guidelines to Prevent Mermaid Diagram Parsing Errors
 
 When creating Mermaid diagrams, using certain characters inside nodes can cause parsing errors. Especially special characters like **parentheses()**, **periods(.)**, and **question marks(?)** can cause problems.
+
+1. When creating Mermaid diagrams, using certain characters inside nodes can cause parsing errors. Especially special characters like **parentheses()**, **periods(.)**, and **question marks(?)** can cause problems.
+2. Always enclose node text containing special characters (`()`, `#`, `:`, etc.) in double quotes (`"`)
+3. For subgraph titles, use double quotes around any text containing spaces or special characters
+4. For sequence diagram messages, enclose complex text in quotes
+5. Keep node IDs simple (alphanumeric) and only use special characters in the displayed text
+6. When using HTML tags like `<br/>`, ensure the entire text is quoted
+7. For long text, consider using line breaks instead of cramming everything into one node
 
 ###### Error Example
 
