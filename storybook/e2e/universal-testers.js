@@ -123,7 +123,7 @@ async function discoverInteractions(page, componentSelector) {
 	const elementInfos = await page.evaluate((componentSelector) => {
 		// 브라우저 컨텍스트 내에서 getUniqueSelector 함수 재정의
 		function getUniqueSelector(el, base) {
-			let testId = el.getAttribute('data-testid')
+			let testId = el.dataset.testid
 			if (testId) {
 				return `${base} [data-testid="${testId}"]` // data-testid 속성이 있으면 최우선 사용
 			} else if (el.id) {
@@ -352,7 +352,7 @@ function getRandom(min, max) {
  * @returns {string} 랜덤 문자열
  */
 function getRandomString() {
-	return Math.random().toString(36).substring(2, 8)
+	return Math.random().toString(36).slice(2, 8)
 }
 
 /**
@@ -363,14 +363,18 @@ function getRandomString() {
  */
 function getRandomValueForType(valueType) {
 	switch (valueType) {
-		case 'email':
+		case 'email': {
 			return `test${getRandomString()}@example.com`
-		case 'number':
+		}
+		case 'number': {
 			return getRandom(0, 100).toString()
-		case 'textarea':
+		}
+		case 'textarea': {
 			return `테스트 텍스트 ${getRandomString()}`
-		default:
+		}
+		default: {
 			return `테스트 입력 ${getRandomString()}`
+		}
 	}
 }
 
@@ -604,7 +608,7 @@ async function executeSelectInteraction(page, interaction, result) {
 async function executeRangeInteraction(page, interaction, result) {
 	const min = interaction.min || 0
 	const max = interaction.max || 100
-	const newValue = interaction.value !== undefined ? interaction.value : getRandom(min, max)
+	const newValue = interaction.value === undefined ? getRandom(min, max) : interaction.value
 
 	// locator.evaluate를 사용하여 범위 값 설정 및 이벤트 발생
 	const locator = page.locator(interaction.selector)
@@ -664,18 +668,6 @@ function createInteractionSequenceArbitrary(interactions, length) {
 					...clickInteractions[selectorIndex],
 					type,
 				}),
-				// unmapper 함수: 인터랙션 객체를 record 형태로 복원
-				(interaction) => {
-					// 타입 단언을 통해 타입 오류 해결
-					const typedInteraction = /** @type {Interaction} */ (interaction)
-					// selector를 기준으로 원래 인덱스 찾기
-					const index = clickInteractions.findIndex((i) => i.selector === typedInteraction.selector)
-					// 타입을 상수 문자열로 반환하여 타입 오류 해결
-					return {
-						type: 'click', // 상수 'click'으로 반환
-						selectorIndex: index >= 0 ? index : 0,
-					}
-				},
 			)
 		arbitraries.push(clickInteractionArb)
 	}
@@ -694,18 +686,6 @@ function createInteractionSequenceArbitrary(interactions, length) {
 					...hoverInteractions[selectorIndex],
 					type,
 				}),
-				// unmapper 함수: 인터랙션 객체를 record 형태로 복원
-				(interaction) => {
-					// 타입 단언을 통해 타입 오류 해결
-					const typedInteraction = /** @type {Interaction} */ (interaction)
-					// selector를 기준으로 원래 인덱스 찾기
-					const index = hoverInteractions.findIndex((i) => i.selector === typedInteraction.selector)
-					// 타입을 상수 문자열로 반환하여 타입 오류 해결
-					return {
-						type: 'hover', // 상수 'hover'로 반환
-						selectorIndex: index >= 0 ? index : 0,
-					}
-				},
 			)
 		arbitraries.push(hoverInteractionArb)
 	}
@@ -724,18 +704,6 @@ function createInteractionSequenceArbitrary(interactions, length) {
 					...dragInteractions[selectorIndex],
 					type,
 				}),
-				// unmapper 함수: 인터랙션 객체를 record 형태로 복원
-				(interaction) => {
-					// 타입 단언을 통해 타입 오류 해결
-					const typedInteraction = /** @type {Interaction} */ (interaction)
-					// selector를 기준으로 원래 인덱스 찾기
-					const index = dragInteractions.findIndex((i) => i.selector === typedInteraction.selector)
-					// 타입을 상수 문자열로 반환하여 타입 오류 해결
-					return {
-						type: 'drag', // 상수 'drag'로 반환
-						selectorIndex: index >= 0 ? index : 0,
-					}
-				},
 			)
 		arbitraries.push(dragInteractionArb)
 	}
@@ -758,34 +726,20 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				// 두 번째 값은 사용하지 않음
 				fc.constant(null),
 			)
-			.map(
-				([base]) => {
-					// 여기서 실제 필요한 값 생성
-					const originalInteraction = fillInteractions[base.selectorIndex]
-					const { valueType } = base
-					// 실제 값은 test 실행 시점에 생성
-					const value = getRandomValueForType(valueType)
+			.map(([base]) => {
+				// 여기서 실제 필요한 값 생성
+				const originalInteraction = fillInteractions[base.selectorIndex]
+				const { valueType } = base
+				// 실제 값은 test 실행 시점에 생성
+				const value = getRandomValueForType(valueType)
 
-					return {
-						...originalInteraction,
-						type: 'fill',
-						valueType,
-						value,
-					}
-				},
-				// unmapper 함수
-				(interaction) => {
-					const typedInteraction = /** @type {Interaction} */ (interaction)
-					const index = fillInteractions.findIndex((i) => i.selector === typedInteraction.selector)
-					return [
-						{
-							selectorIndex: index >= 0 ? index : 0,
-							valueType: typedInteraction.valueType || 'text',
-						},
-						null,
-					]
-				},
-			)
+				return {
+					...originalInteraction,
+					type: 'fill',
+					valueType,
+					value,
+				}
+			})
 
 		arbitraries.push(fillInteractionArb)
 	}
@@ -800,38 +754,28 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				// 두번째 요소: 옵션 인덱스(실제 값은 런타임에 결정)
 				fc.constant(null),
 			)
-			.map(
-				([selectorIndex]) => {
-					const originalInteraction = selectInteractions[selectorIndex]
-					const options = originalInteraction.options || []
+			.map(([selectorIndex]) => {
+				const originalInteraction = selectInteractions[selectorIndex]
+				const options = originalInteraction.options || []
 
-					// 옵션이 없으면 기본 상태 반환
-					if (options.length === 0) {
-						return {
-							...originalInteraction,
-							type: 'select',
-						}
-					}
-
-					// 옵션 중 하나를 랜덤하게 선택
-					const selectedIndex = getRandom(0, options.length - 1)
-					const value = options[selectedIndex]
-
+				// 옵션이 없으면 기본 상태 반환
+				if (options.length === 0) {
 					return {
 						...originalInteraction,
 						type: 'select',
-						value,
 					}
-				},
-				// unmapper 함수
-				(interaction) => {
-					const typedInteraction = /** @type {Interaction} */ (interaction)
-					const index = selectInteractions.findIndex(
-						(i) => i.selector === typedInteraction.selector,
-					)
-					return [index >= 0 ? index : 0, null]
-				},
-			)
+				}
+
+				// 옵션 중 하나를 랜덤하게 선택
+				const selectedIndex = getRandom(0, options.length - 1)
+				const value = options[selectedIndex]
+
+				return {
+					...originalInteraction,
+					type: 'select',
+					value,
+				}
+			})
 
 		arbitraries.push(selectInteractionArb)
 	}
@@ -846,28 +790,20 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				// 두번째 요소: 값은 런타임에 결정
 				fc.constant(null),
 			)
-			.map(
-				([selectorIndex]) => {
-					const originalInteraction = rangeInteractions[selectorIndex]
-					const min = originalInteraction.min || 0
-					const max = originalInteraction.max || 100
+			.map(([selectorIndex]) => {
+				const originalInteraction = rangeInteractions[selectorIndex]
+				const min = originalInteraction.min || 0
+				const max = originalInteraction.max || 100
 
-					// min과 max 사이의 값 선택
-					const value = getRandom(min, max)
+				// min과 max 사이의 값 선택
+				const value = getRandom(min, max)
 
-					return {
-						...originalInteraction,
-						type: 'setRange',
-						value,
-					}
-				},
-				// unmapper 함수
-				(interaction) => {
-					const typedInteraction = /** @type {Interaction} */ (interaction)
-					const index = rangeInteractions.findIndex((i) => i.selector === typedInteraction.selector)
-					return [index >= 0 ? index : 0, null]
-				},
-			)
+				return {
+					...originalInteraction,
+					type: 'setRange',
+					value,
+				}
+			})
 
 		arbitraries.push(rangeInteractionArb)
 	}
@@ -1006,8 +942,7 @@ function logShrunkSequence(checkResult) {
 		const interactionString = `${shrunkSequence[0].type}${interactionValue}`
 		logPush(`- <${interactionString}> on (${shrunkSequence[0].selector})`)
 	} else {
-		for (let i = 0; i < shrunkSequence.length; i++) {
-			const interaction = shrunkSequence[i]
+		for (const [i, interaction] of shrunkSequence.entries()) {
 			const interactionValue = interaction.value ? `: ${interaction.value}` : ''
 			const interactionString = `${interaction.type}${interactionValue}`
 			logPush(`${i + 1}. <${interactionString}> on (${interaction.selector})`)
@@ -1180,15 +1115,15 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		stepTracker.currentInteraction = null
 
 		// 페이지가 닫히지 않았으면 이벤트 리스너 제거
-		if (!(await isPageClosed(page))) {
+		if (await isPageClosed(page)) {
+			logPush('이벤트 리스너 제거를 시도했으나 페이지가 이미 닫혀 있습니다.')
+		} else {
 			try {
 				page.removeListener('pageerror', pageErrorHandler)
 				page.removeListener('console', consoleErrorHandler)
 			} catch (error) {
 				logPush(`이벤트 리스너 제거 중 오류 발생: ${error.message}`)
 			}
-		} else {
-			logPush('이벤트 리스너 제거를 시도했으나 페이지가 이미 닫혀 있습니다.')
 		}
 	}
 	return logArray
@@ -1371,9 +1306,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 				let returnValue = true
 				try {
 					// 시퀀스의 각 인터랙션 차례로 실행 (for-of 대신 인덱스 기반 루프 사용)
-					for (let i = 0; i < sequence.length; i++) {
-						const interaction = sequence[i]
-
+					for (const [i, interaction] of sequence.entries()) {
 						// 각 인터랙션마다 페이지가 닫혔는지 확인
 						if (await isPageClosed(page)) {
 							console.error(`인터랙션 #${i} (${interaction.type}) 실행 전 페이지가 닫혀 있습니다.`)
@@ -1482,10 +1415,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 			},
 		)
 
-		if (!checkResult?.failed) {
-			// 테스트 성공
-			iterationInfo.success = true
-		} else {
+		if (checkResult?.failed) {
 			// 테스트 실패 - 축소된 반례 활용
 			iterationInfo.success = false
 
@@ -1534,6 +1464,9 @@ async function runSingleIteration(page, iteration, errors, config) {
 			} else {
 				console.error('반례를 찾을 수 없습니다')
 			}
+		} else {
+			// 테스트 성공
+			iterationInfo.success = true
 		}
 	} catch (fcError) {
 		// fast-check 자체 에러 발생 시
@@ -1559,7 +1492,9 @@ async function runSingleIteration(page, iteration, errors, config) {
 
 					// 페이지가 닫히지 않았으면 디버깅 시도
 					const isPageAlreadyClosed = await isPageClosed(page)
-					if (!isPageAlreadyClosed) {
+					if (isPageAlreadyClosed) {
+						console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
+					} else {
 						try {
 							await debugWithShrunkExample(
 								page,
@@ -1570,8 +1505,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 						} catch (debugError) {
 							console.error(`축소된 반례 디버깅 중 오류 발생: ${debugError.message}`)
 						}
-					} else {
-						console.error('축소된 반례 디버깅을 시작하려 했으나 페이지가 이미 닫혀 있습니다.')
 					}
 				}
 			}
