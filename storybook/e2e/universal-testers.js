@@ -569,17 +569,8 @@ async function executeInteractionByType(page, interaction, result) {
 			}
 			case 'doubleClick': {
 				const locator = page.locator(interaction.selector)
-				try {
-					await locator.dblclick({ timeout: 5000 })
-					result.message = '더블 클릭'
-				} catch (actionError) {
-					console.error(`DoubleClick 액션 실패 (${interaction.selector}): ${actionError.message}`)
-					result.errorMessage = `DoubleClick 실패: ${actionError.message}`
-					result.errorStack = actionError.stack
-					result.error = actionError
-					result.success = false
-					return
-				}
+				await locator.dblclick({ timeout: 5000 })
+				result.message = '더블 클릭'
 				break
 			}
 			case 'drag': {
