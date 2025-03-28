@@ -34,7 +34,7 @@ const eewre = Promise.resolve('test 122')
 	onclick={() => {
 		throw new Error('test')
 	}}
-	variant="default">{'occurs error'}</Button1
+	variant="default">occurs error</Button1
 >
 
 <div class="p1 boxed long-text gutter">
