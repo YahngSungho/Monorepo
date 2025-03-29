@@ -20,7 +20,8 @@ jobs:
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
       package-json: ${{ steps.filter.outputs.package-json }}
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && (github.event.action != 'labeled' || github.event.label.name == 'restart')"
+    if: "(github.event.label.name == 'restart') || (!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.head_commit.message, '[automated-mutation]'))"
+
     steps:
       - uses: dorny/paths-filter@v3
         id: filter
@@ -37,6 +38,24 @@ jobs:
             package-json:
               - 'package.json'
               - '**/package.json'
+
+      - name: Remove Label
+        if: github.event.label.name == 'restart'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            try {
+              github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'restart'
+              });
+              console.log('Label restart removed successfully');
+            } catch (error) {
+              console.log('Error removing label or label not found:', error);
+            }
 
   fix-package-json:
     runs-on: ubuntu-latest
@@ -191,12 +210,10 @@ jobs:
 
   lint-format:
     runs-on: ubuntu-latest
+    needs: path-filter
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.head_commit.message, '[automated-mutation]')"
-    outputs:
-      is_automated: ${{ steps.check_commit.outputs.is_automated }}
 
     steps:
       - name: Checkout Repository
@@ -257,9 +274,8 @@ jobs:
           path: changes.patch
 
   push-and-labeled:
-    needs: [compress-images, lint-format, fix-package-json, fix-markdown]
+    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown]
     runs-on: ubuntu-latest
-    if: "always() && !contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
       # 저장소 체크아웃 단계
@@ -422,14 +438,12 @@ jobs:
       # 커밋 시도
       - name: Commit Changes
         id: auto-commit
-        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
 
       # 커밋 결과 출력
       - name: Print Commit Result
-        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
         run: |
           if [ "${{ steps.auto-commit.outputs.changes_detected }}" == "true" ]; then
             echo "변경사항이 감지되어 자동으로 커밋되었습니다."
@@ -439,7 +453,7 @@ jobs:
 
       # Add a Label to PR 1
       - name: Add a Label to PR 1
-        if: steps.auto-commit.outputs.changes_detected == 'true' && needs.lint-format.outputs.is_automated != 'true'
+        if: steps.auto-commit.outputs.changes_detected == 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
