@@ -117,6 +117,7 @@ for (const entry of Object.values(manifest.entries)) {
 			// 페이지 이동
 			await page.goto(`./iframe.html?id=${id}&viewMode=story`)
 			await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
+			await page.emulateMedia({ reducedMotion: 'reduce' })
 
 			// Gremlins 실행
 			await unleashGremlins(page)
