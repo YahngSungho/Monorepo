@@ -30,6 +30,7 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"bookmarks.useWorkaroundForFormatters": true,
+	"css.styleSheets": ["*/*/src/**/*.css"],
 	"cssVariables.lookupFiles": [
 		"libraries/base/node_modules/open-props/open-props.min.css",
 		"libraries/base/base.css",
@@ -39,6 +40,10 @@
 		"**/*.less"
 	],
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.inlineSuggest.enabled": true,
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
 	"editor.semanticHighlighting.enabled": true,
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
@@ -91,6 +96,9 @@
 		"typescriptreact",
 		"javascriptsvelte"
 	],
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
 	"peacock.color": "#79021b",
 	"prettier.endOfLine": "lf",
 	"prettier.experimentalTernaries": false,
@@ -104,6 +112,15 @@
 	"svelte.plugin.svelte.format.config.singleQuote": true,
 	"svelte.plugin.svelte.format.config.svelteAllowShorthand": true,
 	"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": true,
+	"tailwindCSS.classFunctions": ["tw", "clsx"],
+	"tailwindCSS.emmetCompletions": true,
+	"tailwindCSS.experimental.configFile": "libraries/base/src/tailwind.css",
+	// Svelte 파일 내에서 Tailwind 클래스 자동 완성 활성화
+	"tailwindCSS.includeLanguages": {
+		"svelte": "html",
+		"javascript": "javascript",
+		"typescript": "typescript"
+	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"workbench.colorCustomizations": {
 		"activityBar.activeBackground": "#ab0326",
