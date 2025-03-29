@@ -4,6 +4,7 @@ on:
   pull_request_target:
     types:
       - labeled
+      - synchronize
 
 jobs:
   automerge:
@@ -11,7 +12,11 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.pull_request.labels.*.name, 'dependabot')"
+    if: |
+      !contains(github.event.pull_request.labels.*.name, 'dependabot') && (
+      (github.event.action == 'labeled' && github.event.label.name == 'mutation-finished') ||
+      (github.event.action == 'synchronize' && contains(github.event.head_commit.message, '[automated-mutation]'))
+      )
 
     steps:
       - uses: reitermarkus/automerge@v2
@@ -25,7 +30,11 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed') && contains(github.event.pull_request.labels.*.name, 'dependabot')"
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'dependabot') && (
+      (github.event.action == 'labeled' && github.event.label.name == 'mutation-finished') ||
+      (github.event.action == 'synchronize' && contains(github.event.head_commit.message, '[automated-mutation]'))
+      )
 
     steps:
       - name: Dependabot metadata
@@ -46,7 +55,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-completed')
+    if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-finished')
 
     steps:
       - name: Remove mutation-completed Label
@@ -60,7 +69,7 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                name: 'mutation-completed'
+                name: 'mutation-finished'
               });
               console.log('Label mutation-completed removed successfully');
             } catch (error) {
