@@ -107,7 +107,7 @@ jobs:
 
       - name: Install dependencies 2
         if: steps.check_package_json_changes.outputs.has_changes == 'true'
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Check for Package.json changes 2 & Save .patch file
         run: git diff > package-json-changes.patch
