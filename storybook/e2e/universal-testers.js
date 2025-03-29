@@ -113,7 +113,7 @@ import fc from 'fast-check'
  * @param {string} componentSelector - 컴포넌트의 최상위 셀렉터
  * @returns {Promise<any[]>} 요소 정보 배열
  */
-async function discoverInteractions(page, componentSelector) {
+async function discoverInteractions(page, componentSelector, verbose) {
 	// verifyComponentState를 사용하여 컴포넌트가 보이는지 확인
 	const { isVisible, summary } = await verifyComponentState(page, componentSelector, 10_000)
 
@@ -123,6 +123,17 @@ async function discoverInteractions(page, componentSelector) {
 			`discoverInteractions: 컴포넌트(${componentSelector})가 표시되지 않음 - ${summary}`,
 		)
 		return []
+	}
+
+	// 측정을 시작하기 전에 브라우저가 다음 프레임을 그릴 때까지 기다립니다.
+	// 이를 통해 DOM 업데이트 및 레이아웃 계산이 안정화될 시간을 확보합니다.
+	try {
+		await page.evaluate(() => new Promise(requestAnimationFrame))
+		// 경우에 따라서는 한 프레임 더 기다리는 것이 더 안정적일 수 있습니다.
+		// 예: await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+	} catch (error) {
+		console.error('Error during requestAnimationFrame wait:', error)
+		// 에러가 발생하더라도 계속 진행하도록 할 수 있지만, 원인 파악이 필요합니다.
 	}
 
 	// 브라우저 컨텍스트 내에서 직접 요소 정보와 선택자를 추출
@@ -151,11 +162,28 @@ async function discoverInteractions(page, componentSelector) {
 
 		// 모든 하위 요소에 대한 필요 정보 추출
 		return Array.from(root.querySelectorAll('*'), (el) => {
-			// 스크롤 가능 여부 확인
-			const isScrollableY = el.scrollHeight > el.clientHeight
-			const isScrollableX = el.scrollWidth > el.clientWidth
-
 			const uniqueSelector = getUniqueSelector(el, componentSelector)
+
+			// 요소의 계산된 스타일 가져오기
+			/** @type {CSSStyleDeclaration} */
+			const computedStyle = globalThis.getComputedStyle(el)
+			const { overflowY } = computedStyle
+			const { overflowX } = computedStyle
+
+			// 스크롤 가능 여부 확인 시 미세한 오차(tolerance) 및 overflow 속성 고려
+			/** @constant {number} */
+			const toleranceY = 1
+			/** @constant {number} */
+			const toleranceX = 1
+
+			const isScrollableY =
+				(overflowY === 'scroll' || overflowY === 'auto') &&
+				el.scrollHeight - el.clientHeight > toleranceY
+
+			const isScrollableX =
+				(overflowX === 'scroll' || overflowX === 'auto') &&
+				el.scrollWidth - el.clientWidth > toleranceX
+
 			return {
 				tagName: el.tagName.toLowerCase(),
 				selector: uniqueSelector,
@@ -173,7 +201,6 @@ async function discoverInteractions(page, componentSelector) {
 					el.getAttribute('draggable') === 'true' || el.getAttribute('data-draggable') === 'true',
 				isDroppable: el.getAttribute('data-droppable') === 'true',
 				// hasOnClick: el.hasAttribute('onclick'), <- svelte component가 대상일 때 의미없음
-				// 스크롤 가능 여부 추가
 				isScrollableX,
 				isScrollableY,
 				scrollHeight: el.scrollHeight,
@@ -223,25 +250,25 @@ async function discoverInteractions(page, componentSelector) {
 		// 모든 (드래그 가능 요소, 드롭 가능 요소) 조합 생성
 		for (const sourceElement of draggableElements) {
 			for (const targetElement of droppableElements) {
-				// 자기 자신에게 드롭하는 경우는 제외 (선택적)
-				if (sourceElement.selector !== targetElement.selector) {
-					interactions.push({
-						type: 'dragDrop',
-						sourceSelector: sourceElement.selector,
-						targetSelector: targetElement.selector,
-					})
-				}
+				// 자기 자신에게 드롭하는 경우도 포함
+				interactions.push({
+					type: 'dragDrop',
+					sourceSelector: sourceElement.selector,
+					targetSelector: targetElement.selector,
+				})
 			}
 		}
 
-		if (draggableElements.length > 0 && droppableElements.length > 0) {
+		if (verbose && draggableElements.length > 0 && droppableElements.length > 0) {
 			console.log(
 				`💬 dragDrop 인터랙션 ${draggableElements.length * droppableElements.length}개 생성됨`,
 			)
 		}
 	}
 
-	console.log('💬 discoverInteractions interactions:', interactions)
+	if (verbose) {
+		console.log('💬 discoverInteractions interactions:', interactions)
+	}
 	return interactions
 }
 
@@ -880,9 +907,9 @@ async function executeScrollInteraction(page, interaction, result) {
 		)
 
 		result.value = interaction.value
-		result.message = `스크롤: ${direction === 'vertical' ? '수직' : '수평'} ${amount}px`
+		result.message = `스크롤: ${direction === 'vertical' ? 'Y' : 'X'} ${amount}px`
 	} else {
-		// 기본값 설정 (방향은 수직, 크기는 50px)
+		// 기본값 설정 (방향은 Y, 크기는 50px)
 		const direction = interaction.isScrollableY ? 'vertical' : 'horizontal'
 		const amount = 50
 
@@ -900,10 +927,67 @@ async function executeScrollInteraction(page, interaction, result) {
 		)
 
 		result.value = { direction, amount }
-		result.message = `스크롤: ${direction === 'vertical' ? '수직' : '수평'} ${amount}px`
+		result.message = `스크롤: ${direction === 'vertical' ? 'Y' : 'X'} ${amount}px`
 	}
 
 	result.success = true
+}
+
+// 공통 unmapper 헬퍼 (행위 기반 인터랙션용)
+const unmapActionInteraction = (expectedType) => (mappedInteraction) => {
+	if (
+		typeof mappedInteraction !== 'object' ||
+		mappedInteraction === null ||
+		mappedInteraction.type !== expectedType || // 타입 일치 확인
+		!mappedInteraction.selector // selector 존재 확인 (dragDrop 제외)
+	) {
+		// dragDrop은 별도 unmapper 사용하므로 여기서 selector 체크는 유효
+		throw new Error(`Invalid mapped interaction for unmapping (expected type: ${expectedType})`)
+	}
+	// type 속성을 제외한 나머지 속성으로 원본 객체 복원
+	// eslint-disable-next-line no-unused-vars -- type은 의도적으로 제외
+	const { type, ...originalInteraction } = mappedInteraction
+	return originalInteraction
+}
+
+// 공통 unmapper 헬퍼 (값 기반 인터랙션용) - JSDoc으로 반환 타입 명시
+/**
+ * 값 기반 인터랙션 객체를 원래의 [index, value] 튜플로 변환합니다.
+ *
+ * @param {string} expectedType - 예상되는 인터랙션 타입
+ * @returns {(mappedInteraction: any) => [number, any]} Unmapper 함수
+ */
+const unmapValueInteraction = (expectedType) => (mappedInteraction) => {
+	if (
+		typeof mappedInteraction !== 'object' ||
+		mappedInteraction === null ||
+		mappedInteraction.type !== expectedType || // 타입 일치 확인
+		!('value' in mappedInteraction) || // value 존재 확인
+		!('originalIndex' in mappedInteraction) || // originalIndex 존재 확인
+		typeof mappedInteraction.originalIndex !== 'number'
+	) {
+		throw new Error(`Invalid mapped interaction for unmapping (expected type: ${expectedType})`)
+	}
+	// index와 value를 추출하여 원본 튜플 복원
+	/** @type {[number, any]} */
+	const resultTuple = [mappedInteraction.originalIndex, mappedInteraction.value]
+	return resultTuple
+}
+
+// dragDrop 전용 unmapper
+const unmapDragDrop = (mappedInteraction) => {
+	if (
+		typeof mappedInteraction !== 'object' ||
+		mappedInteraction === null ||
+		mappedInteraction.type !== 'dragDrop' ||
+		!mappedInteraction.sourceSelector || // sourceSelector 확인
+		!mappedInteraction.targetSelector // targetSelector 확인
+	) {
+		throw new Error('Invalid mapped interaction for unmapping (expected type: dragDrop)')
+	}
+	// eslint-disable-next-line no-unused-vars -- type은 의도적으로 제외
+	const { type, ...originalInteraction } = mappedInteraction
+	return originalInteraction
 }
 
 /**
@@ -932,216 +1016,181 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	// 2단계: 구조화된 Arbitrary 생성
 	const arbitraries = []
 
-	// 클릭 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
+	// 클릭 인터랙션 처리 - unmapper 추가
 	if (clickInteractions.length > 0) {
-		const clickInteractionArb = fc
-			.record({
-				type: fc.constant('click'),
-				// 인덱스를 사용하여 축소 가능하도록 변경
-				selectorIndex: fc.nat({ max: clickInteractions.length - 1 }),
-			})
-			.map(
-				// 원본 데이터로 변환
-				({ type, selectorIndex }) => ({
-					...clickInteractions[selectorIndex],
-					type,
-				}),
-			)
+		const clickInteractionArb = fc.constantFrom(...clickInteractions).map(
+			// mapper: type 추가
+			(interaction) => ({
+				...interaction,
+				type: 'click',
+			}),
+			// unmapper: type 제거
+			unmapActionInteraction('click'),
+		)
 		arbitraries.push(clickInteractionArb)
 	}
 
-	// 호버 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
+	// 호버 인터랙션 처리 - unmapper 추가
 	if (hoverInteractions.length > 0) {
-		const hoverInteractionArb = fc
-			.record({
-				type: fc.constant('hover'),
-				// 인덱스를 사용하여 축소 가능하도록 변경
-				selectorIndex: fc.nat({ max: hoverInteractions.length - 1 }),
-			})
-			.map(
-				// 원본 데이터로 변환
-				({ type, selectorIndex }) => ({
-					...hoverInteractions[selectorIndex],
-					type,
-				}),
-			)
+		const hoverInteractionArb = fc.constantFrom(...hoverInteractions).map(
+			// mapper: type 추가
+			(interaction) => ({
+				...interaction,
+				type: 'hover',
+			}),
+			// unmapper: type 제거
+			unmapActionInteraction('hover'),
+		)
 		arbitraries.push(hoverInteractionArb)
 	}
 
-	// 드래그 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
+	// 드래그 인터랙션 처리 - unmapper 추가
 	if (dragInteractions.length > 0) {
-		const dragInteractionArb = fc
-			.record({
-				type: fc.constant('drag'),
-				// 인덱스를 사용하여 축소 가능하도록 변경
-				selectorIndex: fc.nat({ max: dragInteractions.length - 1 }),
-			})
-			.map(
-				// 원본 데이터로 변환
-				({ type, selectorIndex }) => ({
-					...dragInteractions[selectorIndex],
-					type,
-				}),
-			)
+		const dragInteractionArb = fc.constantFrom(...dragInteractions).map(
+			// mapper: type 추가
+			(interaction) => ({
+				...interaction,
+				type: 'drag',
+			}),
+			// unmapper: type 제거
+			unmapActionInteraction('drag'),
+		)
 		arbitraries.push(dragInteractionArb)
 	}
 
-	// 드래그 앤 드롭 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
+	// 드래그 앤 드롭 인터랙션 처리 - unmapDragDrop 적용
 	if (dragDropInteractions.length > 0) {
-		const dragDropInteractionArb = fc
-			.record({
-				type: fc.constant('dragDrop'),
-				// 인덱스를 사용하여 축소 가능하도록 변경
-				interactionIndex: fc.nat({ max: dragDropInteractions.length - 1 }),
-			})
-			.map(
-				// 원본 데이터로 변환
-				({ type, interactionIndex }) => ({
-					...dragDropInteractions[interactionIndex],
-					type: 'dragDrop',
-				}),
-			)
+		const dragDropInteractionArb = fc.constantFrom(...dragDropInteractions).map(
+			// mapper: type 추가
+			(interaction) => ({
+				...interaction,
+				type: 'dragDrop', // type을 'dragDrop'으로 명시
+			}),
+			// unmapper: type 제거
+			unmapDragDrop,
+		)
 		arbitraries.push(dragDropInteractionArb)
 	}
 
-	// 더블클릭 인터랙션 처리 - fc.nat() 사용하여 shrink 가능하게 변경
+	// 더블클릭 인터랙션 처리 - unmapper 추가
 	if (doubleClickInteractions.length > 0) {
-		const doubleClickInteractionArb = fc
-			.record({
-				type: fc.constant('doubleClick'),
-				// 인덱스를 사용하여 축소 가능하도록 변경
-				selectorIndex: fc.nat({ max: doubleClickInteractions.length - 1 }),
-			})
-			.map(
-				// 원본 데이터로 변환
-				({ type, selectorIndex }) => ({
-					...doubleClickInteractions[selectorIndex],
-					type,
-				}),
-			)
+		const doubleClickInteractionArb = fc.constantFrom(...doubleClickInteractions).map(
+			// mapper: type 추가
+			(interaction) => ({
+				...interaction,
+				type: 'doubleClick',
+			}),
+			// unmapper: type 제거
+			unmapActionInteraction('doubleClick'),
+		)
 		arbitraries.push(doubleClickInteractionArb)
 	}
 
-	// 필 인터랙션 처리 - Shrinking 가능한 값 생성 포함
+	// 필 인터랙션 처리 - mapper 수정 (index 포함) 및 unmapper 추가
 	if (fillInteractions.length > 0) {
-		// 각 fill 인터랙션에 대해 개별 Arbitrary 생성
 		for (let i = 0; i < fillInteractions.length; i++) {
 			const originalInteraction = fillInteractions[i]
 			const valueType = originalInteraction.valueType || 'text'
-
-			// 해당 valueType에 맞는 값 Arbitrary 생성
 			const valueArb = _getValueArbitraryForType(valueType)
 
-			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
-			const fillInteractionArb = fc
-				.tuple(
-					fc.constant(i), // 인터랙션 인덱스
-					valueArb, // 값 Arbitrary (shrinking 대상)
-				)
-				.map(([index, value]) => ({
+			const fillInteractionArb = fc.tuple(fc.constant(i), valueArb).map(
+				// mapper: 최종 객체에 originalIndex 포함
+				([index, value]) => ({
 					...fillInteractions[index],
 					type: 'fill',
-					value, // fc가 생성한 값(shrinking 가능)
-				}))
-
+					value,
+					originalIndex: index, // 원본 index 저장
+				}),
+				// unmapper: 튜플 [index, value] 복원
+				unmapValueInteraction('fill'),
+			)
 			arbitraries.push(fillInteractionArb)
 		}
 	}
 
-	// 셀렉트 인터랙션 처리 - Shrinking 가능한 값 생성 포함
+	// 셀렉트 인터랙션 처리 - mapper 수정 (index 포함) 및 unmapper 추가
 	if (selectInteractions.length > 0) {
-		// 각 select 인터랙션에 대해 개별 Arbitrary 생성
 		for (let i = 0; i < selectInteractions.length; i++) {
 			const originalInteraction = selectInteractions[i]
 			const options = originalInteraction.options || []
-
-			// 옵션이 없으면 건너뜀
 			if (options.length === 0) continue
-
-			// 옵션 중에서 선택하는 값 Arbitrary 생성
 			const valueArb = _getValueArbitraryForType('select', { options })
 
-			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
-			const selectInteractionArb = fc
-				.tuple(
-					fc.constant(i), // 인터랙션 인덱스
-					valueArb, // 값 Arbitrary (shrinking 대상)
-				)
-				.map(([index, value]) => ({
+			const selectInteractionArb = fc.tuple(fc.constant(i), valueArb).map(
+				// mapper: 최종 객체에 originalIndex 포함
+				([index, value]) => ({
 					...selectInteractions[index],
 					type: 'select',
-					value, // fc가 생성한 값(shrinking 가능)
-				}))
-
+					value,
+					originalIndex: index, // 원본 index 저장
+				}),
+				// unmapper: 튜플 [index, value] 복원
+				unmapValueInteraction('select'),
+			)
 			arbitraries.push(selectInteractionArb)
 		}
 	}
 
-	// 범위 인터랙션 처리 - Shrinking 가능한 값 생성 포함
+	// 범위 인터랙션 처리 - mapper 수정 (index 포함) 및 unmapper 추가
 	if (rangeInteractions.length > 0) {
-		// 각 range 인터랙션에 대해 개별 Arbitrary 생성
 		for (let i = 0; i < rangeInteractions.length; i++) {
 			const originalInteraction = rangeInteractions[i]
-			const min = originalInteraction.min || 0
-			const max = originalInteraction.max || 100
-
-			// min과 max 사이의 값 Arbitrary 생성
+			const min = originalInteraction.min ?? 0 // Use ?? for default value
+			const max = originalInteraction.max ?? 100 // Use ?? for default value
 			const valueArb = _getValueArbitraryForType('range', { min, max })
 
-			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
-			const rangeInteractionArb = fc
-				.tuple(
-					fc.constant(i), // 인터랙션 인덱스
-					valueArb, // 값 Arbitrary (shrinking 대상)
-				)
-				.map(([index, value]) => ({
+			const rangeInteractionArb = fc.tuple(fc.constant(i), valueArb).map(
+				// mapper: 최종 객체에 originalIndex 포함
+				([index, value]) => ({
 					...rangeInteractions[index],
 					type: 'setRange',
-					value, // fc가 생성한 값(shrinking 가능)
-				}))
-
+					value,
+					originalIndex: index, // 원본 index 저장
+				}),
+				// unmapper: 튜플 [index, value] 복원
+				unmapValueInteraction('setRange'),
+			)
 			arbitraries.push(rangeInteractionArb)
 		}
 	}
 
-	// 스크롤 인터랙션 처리 - Shrinking 가능한 값 생성 포함
+	// 스크롤 인터랙션 처리 - mapper 수정 (index 포함) 및 unmapper 추가
 	if (scrollInteractions.length > 0) {
-		// 각 scroll 인터랙션에 대해 개별 Arbitrary 생성
 		for (let i = 0; i < scrollInteractions.length; i++) {
 			const originalInteraction = scrollInteractions[i]
-			const { isScrollableX } = originalInteraction
-			const { isScrollableY } = originalInteraction
-
-			// 스크롤 방향과 양을 생성하는 Arbitrary
+			const { isScrollableX, isScrollableY } = originalInteraction // Destructure directly
 			const valueArb = _getValueArbitraryForType('scroll', {
 				isScrollableX,
 				isScrollableY,
 			})
 
-			// fc.tuple을 사용하여 인터랙션 정보와 값을 함께 생성
-			const scrollInteractionArb = fc
-				.tuple(
-					fc.constant(i), // 인터랙션 인덱스
-					valueArb, // 값 Arbitrary (shrinking 대상)
-				)
-				.map(([index, value]) => ({
+			const scrollInteractionArb = fc.tuple(fc.constant(i), valueArb).map(
+				// mapper: 최종 객체에 originalIndex 포함
+				([index, value]) => ({
 					...scrollInteractions[index],
 					type: 'scroll',
-					value, // fc가 생성한 값(shrinking 가능)
-				}))
-
+					value,
+					originalIndex: index, // 원본 index 저장
+				}),
+				// unmapper: 튜플 [index, value] 복원
+				unmapValueInteraction('scroll'),
+			)
 			arbitraries.push(scrollInteractionArb)
 		}
 	}
 
 	// 3단계: 최종 시퀀스 Arbitrary 생성
+	if (arbitraries.length === 0) {
+		console.warn('No arbitraries generated for interactions. Returning empty sequence arbitrary.')
+		return fc.constant([]) // arbitraries가 비어있으면 빈 시퀀스 반환
+	}
 	const interactionArb = fc.oneof(...arbitraries)
 
 	// 배열 길이와 요소가 자동으로 축소되도록 함
 	// 최소 길이를 1로 설정하여 개별 상호작용까지 축소 가능하도록 함
 	return fc.array(interactionArb, {
 		minLength: 1, // 여기를 0에서 1로 변경 - 최소 길이는 1이어야 함
-		maxLength: interactions.length + length,
+		maxLength: interactions.length + length, // 이 값 수정하지마라
 	})
 }
 
@@ -1525,7 +1574,7 @@ async function runSingleIteration(page, iteration, errors, config) {
 	// 인터랙티브 요소 탐색하여 가능한 인터랙션 목록 가져오기
 	let interactions = []
 	try {
-		interactions = await discoverInteractions(page, componentSelector)
+		interactions = await discoverInteractions(page, componentSelector, verbose)
 		if (config.verbose) {
 			console.log(`발견된 인터랙션 수: ${interactions.length}`)
 		}
