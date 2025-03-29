@@ -19,7 +19,14 @@ jobs:
     outputs:
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && (github.event.action != 'labeled' || github.event.label.name == 'restart')"
+      package-json: ${{ steps.filter.outputs.package-json }}
+    if: |
+      (github.event.action == 'labeled' && github.event.label.name == 'restart') ||
+      (
+        !contains(github.event.pull_request.labels.*.name, 'mutation-completed') &&
+        !contains(github.event.head_commit.message, '[automated-mutation]')
+      )
+
     steps:
       - uses: dorny/paths-filter@v3
         id: filter
@@ -33,6 +40,79 @@ jobs:
             markdown:
               - '**/*.md'
               - '**/*.mdx'
+            package-json:
+              - 'package.json'
+              - '**/package.json'
+
+      - name: Remove Label
+        if: github.event.label.name == 'restart'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            try {
+              github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'restart'
+              });
+              console.log('Label restart removed successfully');
+            } catch (error) {
+              console.log('Error removing label or label not found:', error);
+            }
+
+  fix-package-json:
+    runs-on: ubuntu-latest
+    needs: path-filter
+    if: needs.path-filter.outputs.package-json == 'true'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.TOKEN1 }}
+          fetch-depth: 0
+
+      # pnpm 설치 (packageManager 버전과 일치)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+          run_install: false
+
+      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.5.0
+          cache: pnpm
+
+      # 의존성 설치 최적화
+      - name: Install dependencies
+        run: pnpm install --prefer-offline
+
+      - name: Fix Mismatches Versions
+        run: pnpm run fix-mismatches
+
+      - name: Check for Package.json changes
+        id: check_package_json_changes
+        run: |
+          if git diff --quiet; then
+            echo "Package.json 변경사항이 없습니다."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Package.json 변경사항이 있습니다."
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff > package-json-changes.patch
+          fi
+
+      - name: Upload patch artifact
+        if: steps.check_package_json_changes.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-json-changes-patch
+          path: package-json-changes.patch
 
   fix-markdown:
     runs-on: ubuntu-latest
@@ -135,12 +215,10 @@ jobs:
 
   lint-format:
     runs-on: ubuntu-latest
+    needs: path-filter
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    if: "!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.head_commit.message, '[automated-mutation]')"
-    outputs:
-      is_automated: ${{ steps.check_commit.outputs.is_automated }}
 
     steps:
       - name: Checkout Repository
@@ -201,9 +279,9 @@ jobs:
           path: changes.patch
 
   push-and-labeled:
-    needs: [compress-images, lint-format]
+    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown]
+    if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
-    if: "always() && !contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
 
     steps:
       # 저장소 체크아웃 단계
@@ -259,6 +337,28 @@ jobs:
           name: markdown-changes-patch
           path: .
 
+      - name: Check if package-json patch exists
+        id: check_package_json_patch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "package-json-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: Download package-json patch artifact
+        if: steps.check_package_json_patch.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: package-json-changes-patch
+          path: .
+
       # 추가: 이미지 압축 결과 patch artifact를 다운로드
       - name: Check if images patch exists
         id: check_images_patch
@@ -299,6 +399,20 @@ jobs:
             echo "No code formatting changes to apply."
           fi
 
+          # package.json 패치 적용
+          if [ -f package-json-changes.patch ]; then
+            echo "Applying package.json formatting changes patch..."
+            if ! git apply package-json-changes.patch; then
+              echo "::warning::Failed to apply package.json formatting patch. The patch may have conflicts."
+            else
+              echo "package.json formatting patch applied successfully."
+            fi
+            # 패치 파일 삭제
+            rm package-json-changes.patch
+          else
+            echo "No package.json formatting changes to apply."
+          fi
+
           # 마크다운 패치 적용
           if [ -f markdown-changes.patch ]; then
             echo "Applying markdown formatting changes patch..."
@@ -330,14 +444,12 @@ jobs:
       # 커밋 시도
       - name: Commit Changes
         id: auto-commit
-        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
 
       # 커밋 결과 출력
       - name: Print Commit Result
-        if: ${{ needs.lint-format.outputs.is_automated != 'true' }}
         run: |
           if [ "${{ steps.auto-commit.outputs.changes_detected }}" == "true" ]; then
             echo "변경사항이 감지되어 자동으로 커밋되었습니다."
@@ -347,7 +459,7 @@ jobs:
 
       # Add a Label to PR 1
       - name: Add a Label to PR 1
-        if: steps.auto-commit.outputs.changes_detected == 'true' && needs.lint-format.outputs.is_automated != 'true'
+        if: steps.auto-commit.outputs.changes_detected == 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
