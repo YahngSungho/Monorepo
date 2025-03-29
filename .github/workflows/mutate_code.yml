@@ -314,7 +314,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({ owner: context.repo.owner, repo: context.repo.repo, run_id: context.runId }); # 현재 runId 사용
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({ owner: context.repo.owner, repo: context.repo.repo, run_id: context.runId });
             return !!artifacts.data.artifacts.find(artifact => artifact.name === "package-json-changes-patch");
       - name: Download package-json patch artifact
         if: steps.check_package_json_patch.outputs.result == 'true'
@@ -452,10 +452,7 @@ jobs:
               repo: context.repo.repo,
               run_id: context.runId
             });
-            const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "package-json-changes-patch"
-            );
-            return !!matchArtifact;
+            return !!artifacts.data.artifacts.find(artifact => artifact.name === "package-json-changes-patch");
 
       - name: Download package-json patch artifact
         if: steps.check_package_json_patch.outputs.result == 'true'
