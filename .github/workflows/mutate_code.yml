@@ -23,7 +23,7 @@ jobs:
     if: |
       (github.event.action == 'labeled' && github.event.label.name == 'restart') ||
       (github.event.action != 'labeled' &&
-        !contains(github.event.pull_request.labels.*.name, 'mutation-completed') &&
+        !contains(github.event.pull_request.labels.*.name, 'mutation-finished') &&
         !contains(github.event.head_commit.message, '[automated-mutation]'))
 
     steps:
@@ -578,6 +578,7 @@ jobs:
 
       # 라벨 추가
       - name: Add a Label to PR 2
+        if: steps.auto-commit.outputs.changes_detected != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
@@ -586,5 +587,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['mutation-completed']
+              labels: ['mutation-finished']
             })

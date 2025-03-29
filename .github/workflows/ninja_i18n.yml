@@ -4,6 +4,7 @@ on:
   pull_request_target:
     types:
       - labeled
+      - synchronize
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -15,7 +16,10 @@ jobs:
   ninja-i18n:
     name: Ninja i18n - GitHub Lint Action
     runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.labels.*.name, 'mutation-completed')"
+    if: |
+      (github.event.action == 'labeled' && github.event.label.name == 'mutation-finished') ||
+      (github.event.action == 'synchronize' && contains(github.event.head_commit.message, '[automated-mutation]'))
+
     steps:
       - name: Run Ninja i18n
         # @main ensures that the latest version of the action is used
