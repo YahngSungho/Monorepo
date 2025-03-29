@@ -77,14 +77,13 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.4.1
           run_install: false
 
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 23.5.0
+          node-version-file: package.json
           cache: pnpm
 
       # 의존성 설치 최적화
@@ -196,14 +195,13 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.4.1
           run_install: false
 
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 23.5.0
+          node-version-file: package.json
           cache: pnpm
 
       # 의존성 설치 최적화
@@ -296,12 +294,11 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.4.1
           run_install: false
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 23.5.0
+          node-version-file: package.json
           cache: pnpm
 
       # package-json 패치 다운로드 및 적용
