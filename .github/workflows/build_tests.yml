@@ -22,9 +22,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    if: |
-      (github.event.action == 'labeled' && github.event.label.name == 'mutation-finished') ||
-      (github.event.action == 'synchronize' && contains(github.event.head_commit.message, '[automated-mutation]'))
+    if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
 
     steps:
       - name: Check out code
