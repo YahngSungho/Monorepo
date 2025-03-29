@@ -16,9 +16,7 @@ jobs:
   ninja-i18n:
     name: Ninja i18n - GitHub Lint Action
     runs-on: ubuntu-latest
-    if: |
-      (github.event.action == 'labeled' && github.event.label.name == 'mutation-finished') ||
-      (github.event.action == 'synchronize' && contains(github.event.head_commit.message, '[automated-mutation]'))
+    if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
 
     steps:
       - name: Run Ninja i18n
