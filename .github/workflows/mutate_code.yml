@@ -89,7 +89,7 @@ jobs:
 
       # 의존성 설치 최적화
       - name: Install dependencies 1
-        run: pnpm install --prefer-offline
+        run: pnpm install --no-frozen-lockfile
 
       - name: Fix Mismatches Versions
         run: pnpm run fix-mismatches
