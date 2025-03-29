@@ -20,7 +20,12 @@ jobs:
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
       package-json: ${{ steps.filter.outputs.package-json }}
-    if: "(github.event.label.name == 'restart') || (!contains(github.event.pull_request.labels.*.name, 'mutation-completed') && !contains(github.event.head_commit.message, '[automated-mutation]'))"
+    if: |
+      (github.event.action == 'labeled' && github.event.label.name == 'restart') ||
+      (
+        !contains(github.event.pull_request.labels.*.name, 'mutation-completed') &&
+        !contains(github.event.head_commit.message, '[automated-mutation]')
+      )
 
     steps:
       - uses: dorny/paths-filter@v3
@@ -275,6 +280,7 @@ jobs:
 
   push-and-labeled:
     needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown]
+    if: needs.path-filter.result == 'success' && success()
     runs-on: ubuntu-latest
 
     steps:
