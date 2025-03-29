@@ -361,6 +361,7 @@ export default defineFlatConfig([
 		],
 
 		rules: {
+			'unicorn/no-array-method-this-argument': 'off',
 			'array-func/no-unnecessary-this-arg': 'off',
 			'@intlify/svelte/no-raw-text': 'off',
 			'functional/immutable-data': 'off',
