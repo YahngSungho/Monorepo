@@ -131,10 +131,52 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
+      - name: Check if package-json patch exists
+        id: check_package_json_patch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "package-json-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: Download package-json patch artifact
+        if: steps.check_package_json_patch.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: package-json-changes-patch
+          path: .
+
+      # 추가: 다운로드한 patch 적용
+      - name: Apply patches
+        if: steps.check_package_json_patch.outputs.result == 'true'
+        run: |
+          # package.json 패치 적용
+          if [ -f package-json-changes.patch ]; then
+            echo "Applying package.json formatting changes patch..."
+            if ! git apply package-json-changes.patch; then
+              echo "::warning::Failed to apply package.json formatting patch. The patch may have conflicts."
+            else
+              echo "package.json formatting patch applied successfully."
+            fi
+            # 패치 파일 삭제
+            rm package-json-changes.patch
+          else
+            echo "No package.json formatting changes to apply."
+          fi
+
       - name: Fix Markdown
         uses: DavidAnson/markdownlint-cli2-action@v19
         with:
-          globs: '**/*.md'
+          globs: |
+            **/*.md
+            **/*.mdx
           config: .markdownlint.json
           fix: true
         continue-on-error: true
@@ -232,6 +274,46 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
+
+      - name: Check if package-json patch exists
+        id: check_package_json_patch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "package-json-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: Download package-json patch artifact
+        if: steps.check_package_json_patch.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: package-json-changes-patch
+          path: .
+
+      # 추가: 다운로드한 patch 적용
+      - name: Apply patches
+        if: steps.check_package_json_patch.outputs.result == 'true'
+        run: |
+          # package.json 패치 적용
+          if [ -f package-json-changes.patch ]; then
+            echo "Applying package.json formatting changes patch..."
+            if ! git apply package-json-changes.patch; then
+              echo "::warning::Failed to apply package.json formatting patch. The patch may have conflicts."
+            else
+              echo "package.json formatting patch applied successfully."
+            fi
+            # 패치 파일 삭제
+            rm package-json-changes.patch
+          else
+            echo "No package.json formatting changes to apply."
+          fi
 
       - name: Cache turbo build setup
         uses: actions/cache@v4
@@ -390,18 +472,19 @@ jobs:
       # 추가: 다운로드한 patch 적용
       - name: Apply patches
         run: |
-          # 코드 포맷팅 패치 적용
-          if [ -f changes.patch ]; then
-            echo "Applying code formatting changes patch..."
-            if ! git apply changes.patch; then
-              echo "::warning::Failed to apply code formatting patch. The patch may have conflicts."
+          # 이미지 압축 패치 적용
+          if [ -f images-changes.patch ]; then
+            echo "Applying image compression changes patch..."
+            if ! git apply images-changes.patch; then
+              echo "::warning::Failed to apply image compression patch. The patch may have conflicts."
+              exit 1 # 실패 시 워크플로우 중단
             else
-              echo "Code formatting patch applied successfully."
+              echo "Image compression patch applied successfully."
             fi
             # 패치 파일 삭제
-            rm changes.patch
+            rm images-changes.patch
           else
-            echo "No code formatting changes to apply."
+            echo "No image compression changes to apply."
           fi
 
           # package.json 패치 적용
@@ -409,6 +492,7 @@ jobs:
             echo "Applying package.json formatting changes patch..."
             if ! git apply package-json-changes.patch; then
               echo "::warning::Failed to apply package.json formatting patch. The patch may have conflicts."
+              exit 1 # 실패 시 워크플로우 중단
             else
               echo "package.json formatting patch applied successfully."
             fi
@@ -423,6 +507,7 @@ jobs:
             echo "Applying markdown formatting changes patch..."
             if ! git apply markdown-changes.patch; then
               echo "::warning::Failed to apply markdown formatting patch. The patch may have conflicts."
+              exit 1 # 실패 시 워크플로우 중단
             else
               echo "Markdown formatting patch applied successfully."
             fi
@@ -432,18 +517,19 @@ jobs:
             echo "No markdown formatting changes to apply."
           fi
 
-          # 이미지 압축 패치 적용
-          if [ -f images-changes.patch ]; then
-            echo "Applying image compression changes patch..."
-            if ! git apply images-changes.patch; then
-              echo "::warning::Failed to apply image compression patch. The patch may have conflicts."
+          # 코드 포맷팅 패치 적용
+          if [ -f changes.patch ]; then
+            echo "Applying code formatting changes patch..."
+            if ! git apply changes.patch; then
+              echo "::warning::Failed to apply code formatting patch. The patch may have conflicts."
+              exit 1 # 실패 시 워크플로우 중단
             else
-              echo "Image compression patch applied successfully."
+              echo "Code formatting patch applied successfully."
             fi
             # 패치 파일 삭제
-            rm images-changes.patch
+            rm changes.patch
           else
-            echo "No image compression changes to apply."
+            echo "No code formatting changes to apply."
           fi
 
       # 커밋 시도
