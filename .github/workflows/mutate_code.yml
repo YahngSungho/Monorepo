@@ -280,7 +280,7 @@ jobs:
 
   push-and-labeled:
     needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown]
-    if: needs.path-filter.result == 'success' && success()
+    if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
 
     steps:
