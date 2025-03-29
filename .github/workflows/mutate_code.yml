@@ -153,20 +153,17 @@ jobs:
           name: package-json-changes-patch
           path: .
 
-      # 추가: 다운로드한 patch 적용
       - name: Apply patches
         if: steps.check_package_json_patch.outputs.result == 'true'
         run: |
-          # package.json 패치 적용
           if [ -f package-json-changes.patch ]; then
             echo "Applying package.json formatting changes patch..."
             if ! git apply package-json-changes.patch; then
-              echo "::warning::Failed to apply package.json formatting patch. The patch may have conflicts."
-              exit 1 # 실패 시 워크플로우 중단
-            else
-              echo "package.json formatting patch applied successfully."
+              echo "::error::package-json-changes.patch check failed. Cannot apply."
+              exit 1
             fi
-            # 패치 파일 삭제
+            git apply package-json-changes.patch
+            echo "package.json formatting patch applied successfully."
             rm package-json-changes.patch
           else
             echo "No package.json formatting changes to apply."
@@ -227,8 +224,7 @@ jobs:
           else
             echo "Markdown 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            # 변경사항 없을 시 빈 패치 생성 또는 업로드 스킵
-            touch markdown-changes.patch
+            # touch markdown-changes.patch # --> 삭제: 변경사항 없을 시 빈 파일 생성 안 함
           fi
 
       - name: Upload patch artifact
@@ -343,7 +339,7 @@ jobs:
       # 패치 적용 후 의존성 설치 (lint-fix 실행 위해)
       - name: Install dependencies after patch
         # 패치가 적용되었거나, 원래 package.json 변경 감지 시 실행 (필요 따라 조건 조정)
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       # 임시 커밋 생성 (git diff 기준점 마련)
       - name: Create temporary commit for diff base
@@ -362,23 +358,26 @@ jobs:
       - name: Run Lint & Format
         run: pnpm run lint-fix
 
-      # changes.patch 생성 (임시 커밋 기준)
+      # changes.patch 생성 (임시 커밋 기준) 및 변경 유무 출력
       - name: Create changes.patch based on temporary commit
+        id: create_changes_patch
         run: |
           # lint-fix로 변경사항이 생겼는지 확인
-          if ! git diff --quiet; then
+          if ! git diff --quiet HEAD; then # --> 수정: --quiet 뒤에 HEAD 추가 (임시 커밋과 비교)
             echo "린트 및 포맷팅 후 변경사항 감지됨. Creating changes.patch..."
             # HEAD (임시 커밋) 와 현재 작업 디렉토리의 차이를 패치 파일로 저장
             git diff HEAD > changes.patch
+            echo "has_changes=true" >> $GITHUB_OUTPUT # --> 추가: 변경 있음 출력
           else
             echo "린트 및 포맷팅 후 추가 변경사항 없음."
-            # 빈 패치 파일 생성 또는 아티팩트 업로드 스킵 로직 추가 가능
-            touch changes.patch # 빈 파일 생성 예시
+            # touch changes.patch # --> 삭제: 빈 파일 생성 안 함
+            echo "has_changes=false" >> $GITHUB_OUTPUT # --> 추가: 변경 없음 출력
           fi
 
-      # patch 파일을 artifact로 업로드
+      # patch 파일을 artifact로 업로드 (변경사항 있을 때만)
       - name: Upload changes.patch artifact
         uses: actions/upload-artifact@v4
+        if: steps.create_changes_patch.outputs.has_changes == 'true' # --> 추가: 조건부 실행
         with:
           name: changes-patch
           path: changes.patch
