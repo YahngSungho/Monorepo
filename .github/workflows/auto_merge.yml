@@ -22,7 +22,7 @@ jobs:
       - uses: reitermarkus/automerge@v2
         with:
           token: ${{ secrets.TOKEN1 }}
-          required-labels: mutation-completed
+          required-labels: mutation-finished
           do-not-merge-labels: never-merge
 
   automerge-dependabot:
@@ -49,7 +49,7 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
           GH_TOKEN: ${{secrets.TOKEN1}}
 
-  remove-mutation-completed-label:
+  remove-mutation-finished-label:
     needs: [automerge, automerge-dependabot]
     runs-on: ubuntu-latest
     permissions:
@@ -58,7 +58,7 @@ jobs:
     if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-finished')
 
     steps:
-      - name: Remove mutation-completed Label
+      - name: Remove mutation-finished Label
         if: always()
         uses: actions/github-script@v6
         with:
@@ -71,7 +71,7 @@ jobs:
                 repo: context.repo.repo,
                 name: 'mutation-finished'
               });
-              console.log('Label mutation-completed removed successfully');
+              console.log('Label mutation-finished removed successfully');
             } catch (error) {
               console.log('Error removing label or label not found:', error);
             }
