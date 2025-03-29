@@ -1,7 +1,7 @@
 name: Ninja i18n action
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - labeled
 

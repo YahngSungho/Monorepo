@@ -1,7 +1,7 @@
 name: Check & Lint
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - labeled
 
@@ -25,6 +25,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 2
           token: ${{ secrets.TOKEN1 }}
 
