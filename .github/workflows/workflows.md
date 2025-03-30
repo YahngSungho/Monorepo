@@ -10,7 +10,7 @@ Pull Request가 생성되거나 업데이트되면, 주로 `mutate_code.yml` 워
 
 ```mermaid
 graph LR
-    A[PR Event (opened, synchronize, labeled)] --> B(mutate_code.yml);
+    A["PR Event (opened, synchronize, labeled)"] --> B(mutate_code.yml);
     B -- "No changes or error" --> F{End};
     B -- "Changes committed" --> C{"Label PR ('mutated' or 'mutation-finished')"};
     C -- "'mutation-finished' Label Added" --> D[Trigger Other Workflows];
