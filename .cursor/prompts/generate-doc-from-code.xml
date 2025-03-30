@@ -17,15 +17,21 @@
 						*   **Detailed Explanation of Confusing Parts & Precautions (혼동하기 쉬운 부분 및 주의사항 - VERY IMPORTANT)**: This section is CRITICAL. Explicitly identify and provide DETAILED explanations for parts of the code that are non-intuitive, complex, easily misunderstood, use non-standard patterns, have performance implications, side effects, or potential errors. Explain *why* they might be confusing and how to correctly understand or use them. Cover potential misunderstanding elements, non-standard patterns, performance considerations, side effects, error possibilities, and common mistake cases.
 						*   **Visual Code Explanations (시각적 코드 설명)**: Integrate visual explanations directly. Include Mermaid diagram code blocks, tables summarizing types or states, step-by-step algorithm visualizations, or data flow diagrams as needed. Use Markdown tables to represent Types. DO NOT just copy the source code; FOCUS ON EXPLANATION.
 				5.  **Emphasize Visuals**: You MUST ACTIVELY USE VISUAL TOOLS. Generate **MERMAID DIAGRAMS** (flowcharts, sequence, class, state, ER, component diagrams as appropriate) to illustrate structure, flow, and relationships. Use Markdown tables for structured data (like types or API parameters). Ensure visuals genuinely aid understanding.
-				6.  **Mermaid Syntax Rules (MANDATORY)**: Adhere STRICTLY to these guidelines to prevent diagram parsing errors:
-						*   ALWAYS enclose node text containing special characters (like `()`, `.`, `?`, `#`, `:`, spaces) in **DOUBLE QUOTES** (`"`). Example: `B["Check function() call?"]` instead of `B{Check function() call?}`.
-						*   Use double quotes for subgraph titles with spaces/special characters.
-						*   Enclose complex sequence diagram messages in quotes.
-						*   Keep node IDs simple (alphanumeric); use quotes for the *displayed text* if it contains special characters. Example: `nodeId["Display Text with ()"]`.
-						*   If using HTML tags like `<br/>`, ensure the entire text is quoted.
-						*   AVOID parentheses `()` and other problematic special characters in node text *if possible*. Use alternative phrasing or simplify (e.g., `evaluate function` instead of `page.evaluate()`).
-						*   **Incorrect Example causing errors:** `flowchart TD\nA[Start] --> B{Check function() call?}\nB --> C[Next step(process)]`
-						*   **Corrected Example:** `flowchart TD\nA[Start] --> B["Check function() call?"]\nB --> C["Next step(process)"]`
+				6.  **Mermaid Syntax Rules (MANDATORY - STRICTLY ENFORCE)**: Adhere **ABSOLUTELY STRICTLY** to these guidelines to prevent diagram parsing errors. **Failure to follow these rules WILL result in broken diagrams.**
+						*   **CRITICAL RULE**: ALWAYS enclose node text containing **ANY** special characters (parentheses `()`, periods `.`, question marks `?`, hashes `#`, colons `:`, spaces, brackets `[]`, braces `{}`, single quotes `'`, etc.) in **DOUBLE QUOTES** (`"`). **NO EXCEPTIONS.**
+							*   Example: `B["Check function() call?"]` **IS CORRECT.**
+							*   Example: `B["Node with space"]` **IS CORRECT.**
+							*   Example: `id1["Text with (parentheses)"]` **IS CORRECT.**
+							*   Example: `A["Trigger (Label 'mutation-fin"]` **IS CORRECT.**
+							*   Example: `B{Check function() call?}` **IS INCORRECT AND WILL CAUSE ERRORS.**
+							*   Example: `A[Trigger (Label 'mutation-fin]` **IS INCORRECT AND WILL CAUSE ERRORS.**
+						*   Use double quotes for subgraph titles with spaces or special characters. Example: `subgraph "Subgraph Title with Space"`
+						*   Enclose complex sequence diagram messages or messages with special characters in quotes. Example: `Alice->>Bob: "Message with () or : characters"`
+						*   Keep node IDs simple (alphanumeric, underscores allowed). Use quotes ONLY for the *displayed text* if it needs special characters. Example: `simpleNodeId["Display Text with Special Chars ()?#"]`.
+						*   If using HTML entities like `<br/>` or `<b>`, ensure the entire node text is enclosed in double quotes. Example: `C["Line 1<br/>Line 2"]`
+						*   **PROACTIVE AVOIDANCE**: If possible, simplify node text to avoid special characters altogether. For instance, instead of `page.evaluate()`, consider using `evaluate function` or `call evaluate`. However, quoting is the primary solution.
+						*   **Incorrect Example causing errors:** `flowchart TD\nA[Start] --> B{Check function() call?}\nB --> C[Next step(process)]` (Uses `{}` and `()` without quotes)
+						*   **Corrected Example:** `flowchart TD\nA[Start] --> B["Check function() call?"]\nB --> C["Next step(process)"]` (Correctly uses `""` for text with special characters)
 				7.  **Formatting and Quality**:
 						*   Use appropriate Markdown heading structure.
 						*   Format the document for easy skimming (bolding key terms, lists, etc.).
@@ -45,8 +51,8 @@
 				g.  **Generate Section: API (Korean, Informal + Tables)** (if applicable).
 				h.  **Generate Section: Usage Examples (Korean, Informal)**.
 				i.  **Generate Section: Confusing Parts / Precautions (Korean, Informal - DETAILED & EXPLICIT)**. This is VERY IMPORTANT. Address all points mentioned in instruction 4, subsection 6.
-				j.  **Generate Section: Visual Explanations (Korean, Informal + Integrate visuals)**. Ensure Mermaid syntax is CORRECT per instruction 6. Use tables for Types.
-				k.  **Review and Refine**: Check for clarity, accuracy, completeness, visual effectiveness, adherence to KOREAN INFORMAL TONE, and **CORRECT MERMAID SYNTAX**. Ensure confusing parts are well-explained. Ensure balance for audience. Ensure creativity was applied. Check against review questions from the original prompt (logical structure, diagrams helpful?, complex logic clear?, confusing parts detailed?, etc.).
+				j.  **Generate Section: Visual Explanations (Korean, Informal + Integrate visuals)**. Ensure Mermaid syntax is **STRICTLY CORRECT** per instruction 6. Use tables for Types.
+				k.  **Review and Refine**: Check for clarity, accuracy, completeness, visual effectiveness, adherence to KOREAN INFORMAL TONE, and **CORRECT MERMAID SYNTAX (per instruction 6)**. Ensure confusing parts are well-explained. Ensure balance for audience. Ensure creativity was applied. Check against review questions from the original prompt (logical structure, diagrams helpful?, complex logic clear?, confusing parts detailed?, etc.).
 		</Instructions>
 
 		<Input>
@@ -60,7 +66,7 @@
 				- A single Markdown document.
 				- Language: **KOREAN**.
 				- Tone: **INFORMAL KOREAN (반말체 / 명사형)**.
-				- Content: Must include all specified sections, with a STRONG EMPHASIS on VISUALS (especially **correctly formatted MERMAID diagrams** adhering to the MANDATORY rules) and DETAILED explanations of **CONFUSING PARTS**.
+				- Content: Must include all specified sections, with a STRONG EMPHASIS on VISUALS (especially **correctly formatted MERMAID diagrams** adhering to the **MANDATORY and STRICT** rules in instruction 6) and DETAILED explanations of **CONFUSING PARTS**.
 				- Structure: Use clear Markdown headings and formatting for readability.
 		</Output_Format>
 </Generated_Action_Prompt>
