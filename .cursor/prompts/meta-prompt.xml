@@ -677,6 +677,10 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 			<Name>Generated_Action_Prompt</Name>
 			<Content>The final, improved Action Prompt itself, written in ENGLISH and enclosed within its own XML tags, ready to be used by an LLM.</Content>
 		</Element>
+		<Element id="5">
+			<Name>Verify Original Prompt Content Preservation</Name>
+			<Content>Perform a final verification: Has any information, intent, or specific part of the `Original Prompt` been inadvertently lost or overly summarized? **Pay SPECIAL attention to whether detailed instructions, specific examples provided *within* the Original Prompt (e.g., Mermaid syntax rules, formatting examples), enumerated lists, or negative constraints have been fully and accurately represented in the `Generated_Action_Prompt`.** The goal is improvement without losing critical substance.</Content>
+		</Element>
 	</Structure_of_Your_Final_Output>
 
 	<Core_Task>
@@ -719,12 +723,14 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 			- Ensure the Action Prompt clearly instructs the LLM on its role, the task, the required reasoning process, input/output format, and constraints.
 			- Double-check that the Action Prompt incorporates the core intent and necessary details from the Original Prompt (addressing the "Content Preservation" constraint).
 			- Ensure the Action Prompt instructs the final LLM to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as a self-correction/verification step.
+			- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), incorporate them thoroughly, potentially verbatim, into the Action Prompt's instructions to the final LLM to ensure faithful execution.
 
+		**Phase 5: Verify Original Prompt Content Preservation**
 	</Core_Task>
 
 	<Available_Prompt_Engineering_Techniques>
 			<Technique name="Examples (n-shot prompt, in-context learning)">
-			<When>Whenever Helpful</When>
+			<When>Whenever Possible</When>
 			<How>
 				Examples provided should include:
 				1.  Clear demonstrations specifically for tricky parts or edge cases.
@@ -753,7 +759,7 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 			<Why>Enables solving highly complex problems that are intractable with standard or CoT prompting alone. By decomposing the problem and building the solution incrementally, it maintains context and reduces the cognitive load at each step, leading to higher accuracy.</Why>
 			<When>Ideal for problems that have a natural sequential decomposition, where solving step N requires the answer from step N-1. Examples include multi-step mathematical derivations, planning tasks requiring intermediate states, or complex string manipulations that build incrementally.</When>
 			<How>Requires careful prompt structuring (often involving multiple LLM calls or a complex single prompt simulating turns) to: 1. Define and solve the first subproblem. 2. Take the output of step 1, formulate the second subproblem using this output, and solve it. 3. Repeat until the final problem is solved. The prompt must explicitly show how the output of one step informs the next. (e.g., "Given [problem P], first solve [subproblem P1]. Output: [O1]. Now, using O1, solve [subproblem P2]...").</How>
-			<Notes>Conceptually different from CoT, as it reintroduces previous results directly into the context for the next step, simplifying each incremental step. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>Conceptually different from CoT, as it reintroduces previous results directly into the context for the next step, simplifying each incremental step. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 		<Technique name="Rephrase and Respond (RaR)">
 			<What>Asks the LLM to first rephrase and potentially expand upon the user's question or instruction in its own words before providing the actual answer or performing the task.</What>
@@ -764,21 +770,21 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 				- **Two-step:** 1. Use an LLM (potentially a stronger one) specifically to rephrase/expand the original query. 2. Feed both the original query AND the rephrased query to the responding LLM.
 				- Can be combined effectively with CoT (e.g., add RaR instruction after CoT examples or before the final problem).
 			</How>
-			<Notes>Be cautious as it might over-complicate very simple questions or inadvertently alter the original intent if the rephrasing is poor. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>Be cautious as it might over-complicate very simple questions or inadvertently alter the original intent if the rephrasing is poor. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 		<Technique name="Tabular Chain-of-Thought (Tab-CoT)">
 			<What>Structures the Chain-of-Thought reasoning process explicitly into a table format within the prompt's output, rather than free-form text.</What>
 			<Why>Provides a highly organized, concise, and structured reasoning path. Enables 2-dimensional reasoning (checking consistency across rows/columns). Often more token-efficient than verbose CoT and easier to parse programmatically.</Why>
 			<When>Excellent for tasks involving structured reasoning, step-by-step calculations, tracking multiple variables or states, or comparing/evaluating items based on several criteria (e.g., logic puzzles, multi-step math problems, financial calculations, feature comparisons).</When>
 			<How>Instruct the LLM to generate its reasoning steps in a table (e.g., using Markdown table syntax). Define clear columns relevant to the task, commonly including `Step`, `Subquestion` (what needs to be figured out), `Process`/`Procedure` (how it's figured out), and `Result` (the outcome of the step). The final answer is typically extracted after the table generation. Example instruction: `Generate a table with columns |step|subquestion|procedure|result| to solve the problem step-by-step. Then state the final answer.`</How>
-			<Notes>**For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>**For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 		<Technique name="Analogical Prompting">
 			<What>Prompts the LLM to self-generate relevant examples (problems and their solutions) or analogies related to the target problem *before* it attempts to solve the actual target problem.</What>
 			<Why>Leverages the LLM's vast internal knowledge to create highly tailored, problem-specific guidance, potentially outperforming fixed few-shot examples. Improves adaptability as the generated exemplars are dynamically suited to the nuances of the input problem.</Why>
 			<When>Especially useful for complex problem-solving domains (e.g., advanced mathematics, code generation, scientific reasoning) where finding effective and diverse few-shot examples manually is challenging or impractical. Effective when the model needs to draw parallels to known solution patterns.</When>
 			<How>Include explicit instructions for the LLM to first generate relevant exemplars. A common structure: `[Target Problem]\n\nInstruction: Before solving the problem above, first recall or generate 3 relevant problems and their detailed solutions as examples. These examples should be distinct from the target problem. Then, using insights from the examples, solve the initial target problem step-by-step.` Ensure the instructions specify the format for the generated exemplars (e.g., Q:/A: pairs).</How>
-			<Notes>**For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>**For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 		<Technique name="Logic-of-Thought (LoT)">
 			<What>Enhances LLM logical reasoning capabilities by explicitly instructing it to perform a three-phase process: 1. Extract logical propositions and relationships (e.g., A implies B) from the input context. 2. Extend these logical statements using formal logic rules (like Transitive Law, Contraposition). 3. Translate the extended logical expressions back into natural language to augment the prompt before final reasoning.</What>
@@ -790,33 +796,33 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 				3.  **Logic Translation Prompt**: Instruct LLM to translate the (original + extended) logical expressions back into clear natural language sentences.
 				4.  Use the original input combined with these translated logical sentences as the context for the final reasoning/question-answering step.
 			</How>
-			<Notes>**For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>**For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 		<Technique name="Code Prompting">
 			<What>Transforms a natural language reasoning problem (especially one involving conditional logic) into a structured pseudo-code representation within the prompt. The LLM reasons based on this code structure and associated comments, not by actually executing the code.</What>
 			<Why>Leverages the inherent capability of code-trained LLMs to handle structured logic, variable tracking, and conditional paths more precisely and robustly than processing purely natural language descriptions for certain types of problems.</Why>
 			<When>Particularly effective for tasks involving complex conditional rules, eligibility determinations, state tracking based on sequential conditions, or applying rules from structured documents (e.g., legal texts, regulations, game rules).</When>
 			<How>Convert the natural language problem description and relevant context into a pseudo-code format. Use variables to represent key entities or concepts. Employ `if/else` structures, loops, or functions to model the logic. Crucially, preserve relevant original text snippets as comments within the code structure. Prompt the LLM to reason based *on the code structure and the comments* to arrive at the answer. Often uses few-shot examples showing the NL-to-pseudo-code transformation and the reasoning process.</How>
-			<Notes>The quality of the pseudo-code representation is key. It needs to accurately capture the logic of the original problem. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>The quality of the pseudo-code representation is key. It needs to accurately capture the logic of the original problem. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 		<Technique name="Emphasis (ALL CAPS)">
 			<What>Using uppercase letters for specific words, phrases, or sentences within the prompt.</What>
 			<Why>Draws the LLM's attention to critical instructions, constraints, keywords, negative constraints (e.g., "DO NOT output explanations"), or parts of the input that are particularly important.</Why>
 			<When>To increase the likelihood that the model adheres to specific requirements, especially those that might be easily overlooked or deviate from its standard behavior.</When>
 			<How>Simply write the specific words or sentences you want to emphasize in ALL CAPS. Be strategic and don't overuse it, as excessive capitalization can be ignored or misinterpreted.</How>
-			<Notes>Often used for negative constraints or to highlight the single most important aspect of the task. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>Often used for negative constraints or to highlight the single most important aspect of the task. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 		<Technique name="Output Schema (TypeScript)">
 			<What>Defining the desired structure of the output (typically JSON) using TypeScript `type` or `interface` definitions directly within the prompt.</What>
 			<Why>Provides a clear, concise, unambiguous, and machine-readable specification for the expected output format. Significantly more reliable than describing the desired JSON structure in natural language. Can minimize tokens compared to verbose descriptions.</Why>
 			<When>Essential when the desired output is structured data (like JSON) and you need to strictly enforce specific fields, data types (string, number, boolean, arrays), nesting, and optionality.</When>
 			<How>Include a TypeScript `type` or `interface` definition in the prompt. Instruct the model explicitly to format its output as a JSON object conforming EXACTLY to that schema. Example: `Your output MUST be a JSON object conforming to this TypeScript interface:\ninterface Result {\n  name: string;\n  score: number;\n  isValid: boolean;\n  items?: string[]; // Optional array of strings\n}\nOutput ONLY the JSON object.`</How>
-			<Notes>Consider using techniques like defining "potential fields" vs. "actual fields" if you want the model to consider options before committing to the final output structure. Validate the output against the schema afterwards. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.**</Notes>
+			<Notes>Consider using techniques like defining "potential fields" vs. "actual fields" if you want the model to consider options before committing to the final output structure. Validate the output against the schema afterwards. **For full details and examples, refer to the corresponding section in the provided `<Prompt_Engineering_Technique_Documentation>` reference material.</Notes>
 		</Technique>
 	</Available_Prompt_Engineering_Techniques>
 
 	<Constraints_and_Guidelines>
-		- **Respect Original Prompt**: Ensure NO essential information or the core intent from the Original Prompt is lost or altered in the Action Prompt. Do not add tasks beyond the Original Prompt's scope.
+		- **PRESERVE ORIGINAL PROMPT INTEGRITY**: ENSURE NO INFORMATION, INTENT, OR **CRUCIAL DETAIL** (such as specific enumerated lists, detailed guidelines, or examples provided for instruction) FROM THE ORIGINAL PROMPT IS LOST OR SIGNIFICANTLY ALTERED IN THE ACTION PROMPT, UNLESS THE ALTERATION IS A CLEAR IMPROVEMENT IN STRUCTURE OR CLARITY WITHOUT LOSING THE CORE INSTRUCTION. **IF SUMMARIZATION RISKS LOSING CRITICAL NUANCE OR DETAIL FROM INSTRUCTIONS OR GUIDELINES, ERR ON THE SIDE OF INCLUDING THEM MORE FULLY OR VERBATIM WITHIN THE ACTION PROMPT.** DO NOT ADD TASKS BEYOND THE ORIGINAL PROMPT'S SCOPE.
 		- **Clarity and Effectiveness**: The primary goal is to create an Action Prompt that is significantly more effective than the Original Prompt.
 		- **English and XML**: The Action Prompt MUST be in English and use XML format.
 		- **Guidance for Action Prompt Construction**: The generated Action Prompt SHOULD instruct the final LLM to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as a self-correction/verification step.
