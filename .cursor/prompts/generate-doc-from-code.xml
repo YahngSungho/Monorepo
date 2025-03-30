@@ -18,7 +18,7 @@
 						*   **Visual Code Explanations (시각적 코드 설명)**: Integrate visual explanations directly. Include Mermaid diagram code blocks, tables summarizing types or states, step-by-step algorithm visualizations, or data flow diagrams as needed. Use Markdown tables to represent Types. DO NOT just copy the source code; FOCUS ON EXPLANATION.
 				5.  **Emphasize Visuals**: You MUST ACTIVELY USE VISUAL TOOLS. Generate **MERMAID DIAGRAMS** (flowcharts, sequence, class, state, ER, component diagrams as appropriate) to illustrate structure, flow, and relationships. Use Markdown tables for structured data (like types or API parameters). Ensure visuals genuinely aid understanding.
 				6.  **Mermaid Syntax Rules (MANDATORY - STRICTLY ENFORCE)**: Adhere **ABSOLUTELY STRICTLY** to these guidelines to prevent diagram parsing errors. **Failure to follow these rules WILL result in broken diagrams.**
-						*   **CRITICAL RULE**: ALWAYS enclose node text containing **ANY** special characters (parentheses `()`, periods `.`, question marks `?`, hashes `#`, colons `:`, spaces, brackets `[]`, braces `{}`, single quotes `'`, etc.) in **DOUBLE QUOTES** (`"`). **NO EXCEPTIONS.**
+						*   **CRITICAL RULE**: ALWAYS enclose node text containing **ANY** special characters (parentheses `()`, periods `.`, question marks `?`, hashes `#`, colons `:`, spaces, brackets `[]`, braces `{}`, single quotes `\'`, etc.) in **DOUBLE QUOTES** (`"`). **NO EXCEPTIONS.**
 							*   Example: `B["Check function() call?"]` **IS CORRECT.**
 							*   Example: `B["Node with space"]` **IS CORRECT.**
 							*   Example: `id1["Text with (parentheses)"]` **IS CORRECT.**
