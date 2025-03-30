@@ -4,7 +4,6 @@ on:
   pull_request_target:
     types:
       - labeled
-			- synchronize
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -17,7 +16,6 @@ jobs:
     name: Sentry
     runs-on: ubuntu-latest
     if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
-
 
     steps:
       - uses: actions/checkout@v4

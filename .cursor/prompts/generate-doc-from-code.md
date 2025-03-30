@@ -1,6 +1,5 @@
 # Code Documentation Request
 
-The attachment of this file means that your job is to document the code provided.
 Please analyze the given code and create a systematic markdown document in Korean. **The core purpose of the document is to help readers clearly understand the intention and implementation of the code**. Please actively use **visual tools** such as diagrams and tables along with text explanations to help intuitively understand the structure and flow of the code.
 
 ## Step 1: Code Analysis
