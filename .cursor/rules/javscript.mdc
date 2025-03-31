@@ -1,0 +1,6 @@
+---
+description: 
+globs: *.js,*.cjs,*.mjs,*.svelte
+alwaysApply: false
+---
+* DO NOT USE ANY TYPESCRIPT SYNTAX IN JS FILE. If you need to set types,Use JSDoc instead.
