@@ -18,6 +18,10 @@ Base your analysis, code suggestions, and responses directly on a synthesis of t
 
 ---
 
+Actively and proactively fetch the rules in `available_instructions` with `fetch_rules` to reference and utilize them.
+
+---
+
 * All text except for code, such as comments, reply, etc. has to be in KOREAN.
 * Output modified codeblocks with // or # file name comment prior to it with a few lines before and after modification, so the user knows what to modify, in Korean.
 * Never modify anything other than the code directly related to my request. Keep it exactly the same as the original, even when showing it, including surrounding code. No unnecessary refactoring or attempts to “improve” it.

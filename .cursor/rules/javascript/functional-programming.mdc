@@ -1,0 +1,7 @@
+---
+description: 
+globs: *.js,*.svelte,*.ts,*.mjs,*.cjs,*.mts,*.cts
+alwaysApply: false
+---
+Use functional programming techniques whenever possible.
+Prefer to use Ramda library. You can import Ramda by `import { R } from '@library/helpers/R'` in this codebase.
