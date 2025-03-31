@@ -19,7 +19,7 @@
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/ui": "workspace:*",
-		"@storybook/addon-essentials": "^8.6.7",
+		"@storybook/addon-essentials": "^8.6.11",
 		"@storybook/addon-interactions": "^8.6.9",
 		"@storybook/addon-links": "^8.6.7",
 		"@storybook/addon-mdx-gfm": "^8.5.3",
