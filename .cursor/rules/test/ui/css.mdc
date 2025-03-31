@@ -1,5 +1,5 @@
 ---
-description: Whenever handling CSS
+description: Whenever handling CSS. Must be used for all CSS modifications.
 globs: 
 alwaysApply: false
 ---
