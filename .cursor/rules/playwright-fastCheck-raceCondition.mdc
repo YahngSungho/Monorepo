@@ -3,8 +3,6 @@ description: Writing Playwright tests for testing race condition with Fast-check
 globs: 
 alwaysApply: false
 ---
- Testing with Playwright and fast-check
-
 ## Introduction to Testing Web Applications with External Dependencies
 
 Property-based testing combined with end-to-end testing provides a powerful approach to verify web applications, especially those connected to databases, APIs, and other external services. This guide focuses on using Playwright with fast-check to thoroughly test web applications while paying special attention to race conditions that frequently occur in real-world applications.
