@@ -585,8 +585,8 @@ importers:
         specifier: ^8.6.9
         version: 8.6.9(storybook@8.6.8(prettier@3.5.3))
       '@storybook/addon-links':
-        specifier: ^8.6.7
-        version: 8.6.8(react@19.0.0)(storybook@8.6.8(prettier@3.5.3))
+        specifier: ^8.6.11
+        version: 8.6.11(react@19.0.0)(storybook@8.6.8(prettier@3.5.3))
       '@storybook/addon-mdx-gfm':
         specifier: ^8.5.3
         version: 8.6.8(storybook@8.6.8(prettier@3.5.3))
@@ -2296,11 +2296,11 @@ packages:
     peerDependencies:
       storybook: ^8.6.9
 
-  '@storybook/addon-links@8.6.8':
-    resolution: {integrity: sha512-vj2+PPjEddSCpctPc6i5PIyAW8Ff470neoOIVX7qKc8XdhGB83yp9+qQmEBkZ1T2BI0Eu3Z+u4cqx7kjmrf2nw==}
+  '@storybook/addon-links@8.6.11':
+    resolution: {integrity: sha512-1srydJWDiXUkYCbhibvZT3IqzMMiTR1hbC4UYPpvh3vT3G3NcZT17OsIyl/F/cYPWnjtYHZ5RI83h7dm0qK5cg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.6.8
+      storybook: ^8.6.11
     peerDependenciesMeta:
       react:
         optional: true
@@ -10291,7 +10291,7 @@ snapshots:
       storybook: 8.6.8(prettier@3.5.3)
       ts-dedent: 2.2.0
 
-  '@storybook/addon-links@8.6.8(react@19.0.0)(storybook@8.6.8(prettier@3.5.3))':
+  '@storybook/addon-links@8.6.11(react@19.0.0)(storybook@8.6.8(prettier@3.5.3))':
     dependencies:
       '@storybook/global': 5.0.0
       storybook: 8.6.8(prettier@3.5.3)
@@ -15352,7 +15352,7 @@ snapshots:
     dependencies:
       postcss: 8.5.3
 
-  postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39):
+  postcss-syntax@0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss-html@1.8.0)(postcss@8.5.3))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39):
     dependencies:
       postcss: 7.0.39
     optionalDependencies:
@@ -16429,7 +16429,7 @@ snapshots:
       postcss-sass: 0.4.4
       postcss-scss: 2.1.1
       postcss-selector-parser: 6.1.2
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss-html@1.8.0)(postcss@8.5.3))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
       postcss-value-parser: 4.2.0
       resolve-from: 5.0.0
       slash: 3.0.0
