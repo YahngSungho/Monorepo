@@ -1,5 +1,5 @@
 ---
-description: Whenvever handling fast-check tetst with zod or form components
+description: Whenever handling fast-check tests with zod or form components
 globs: 
 alwaysApply: false
 ---

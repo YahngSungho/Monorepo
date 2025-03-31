@@ -1,5 +1,5 @@
 ---
-description: When handling Playwirhgt tests with Fast-check library
+description: When handling Playwright tests with Fast-check library
 globs: 
 alwaysApply: false
 ---
