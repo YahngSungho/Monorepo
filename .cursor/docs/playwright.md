@@ -1,983 +1,370 @@
-PLAYWRIGHT CHEATSHEET
+# Best Practices
 
-We have structured our Playwright Cheatsheet in a way that it is easy for both beginners to learn and experts to quickly refer to
-some important snippets they might be looking for.
+## Introduction​
 
-Basic Commands
+This guide should help you to make sure you are following our best practices and writing tests that are more resilient.
 
-- Browser, Context Management
+## Testing philosophy​
 
-- Selectors & Mouse Interactions
-- Locators
-- File and Frame Handling
-- Windows Handling
+### Test user-visible behavior​
 
-Advanced Interactions
+Automated tests should verify that the application code works for the end users, and avoid relying on implementation details such as things which users will not typically use, see, or even know about such as the name of a function, whether something is an array, or the CSS class of some element.
+The end user will see or interact with what is rendered on the page, so your test should typically only see/interact with the same rendered output.
 
-- Special Capabilities
-- Network Interception and Manipulation
-- Screenshots and Visual Comparisons
-- Debugging and Tracing
-- Additional Methods
+### Make tests as isolated as possible​
 
-BROWSER, CONTEXT MANAGEMENT
+Each test should be completely isolated from another test and should run independently with its own local storage, session storage, data, cookies etc. Test isolation improves reproducibility, makes debugging easier and prevents cascading test failures.
 
-First up in our Playwright Cheatsheet, we’re going to start with the basics to see how to launch a browser instance in regular
-mode, incognito mode, and so on.
+In order to avoid repetition for a particular part of your test you can use before and after hooks. Within your test file add a before hook to run a part of your test before each test such as going to a particular URL or logging in to a part of your app. This keeps your tests isolated as no test relies on another.
+However it is also ok to have a little duplication when tests are simple enough especially if it keeps your tests clearer and easier to read and maintain.
 
-1. LAUNCHING A BROWSER INSTANCE
-
-- chromium.launch(): Initiates a new instance of the Chromium browser.
-- browser.newContext(): Establishes a fresh browser context, which represents an incognito mode profile.
-- context.newPage(): Generates a new browser tab (page) within the context for interaction.
-
-// Step 1: Initiate a new instance of the Chromium browser
-const browser = await chromium.launch({ headless: false });
-// Step 2: Establish a fresh browser context
-const context = await browser.newContext();
-// Step 3: Generate a new browser tab within the context
-const page = await context.newPage();
-
-2. CREATING A PERSISTENT CONTEXT
-
-You can use persistent contexts to maintain session continuity and reuse authentication states across tests. It allows for testing
-scenarios where user sessions need to be preserved.
-
-// Launch a persistent context using the specified user data dir
-const context = await chromium.launchPersistentContext(userDataDir, {headless: false });
-
-SELECTORS & MOUSE INTERACTIONS
-
-Once the browser instance has been launched, the next steps in the automation will involve keyboard and mouse interactions which
-we will be seeing now in our Playwright Cheatsheet.
-
-1. USING SELECTORS FOR ELEMENT INTERACTION
-
-- page.goto(): Directs the browser tab to a specified URL.
-- page.click(): Locates and triggers a button with the identifier Example: ‘submit’.
-- page.fill(): Finds an input field with the name ‘username’ and inputs the value.
-- page.selectOption(): Identifies a dropdown menu and chooses the option.
-
-await page.goto('<https://example.com>');
-await page.click('button#submit');
-await page.fill('input[name="username"]', 'example_user');
-await page.selectOption('select[name="city"]', 'New York');
-
-Checkboxes and Radio Buttons: Easily toggle checkboxes and radio buttons using locator.setChecked() in Playwright. This method
-simplifies the process of both selecting and deselecting options.
-
-// Step 3: Locate a checkbox using its label
-const checkbox = page.getByLabel('Terms and Conditions');
-// Ensure the checkbox is checked
-await checkbox.setChecked(true);
-// Step 4: Assert that the checkbox is checked
-await expect(checkbox).toBeChecked();
-
-type() : The type method in Playwright is used to simulate keyboard input into a text input field, text area, or any other element
-that accepts text input.
-
-await page.getByPlaceholder('Enter your name').type('John Doe');
-
-press(): The press method in Playwright is used to simulate pressing a key on the keyboard. This method allows you to automate
-keyboard interactions with web pages.
-
-await page.keyboard.press("Enter");
-
-title(): The title method in Playwright is used to retrieve the title of the current web page. You can use this method to extract
-the title of the web page you are interacting with during your automation or testing scripts.
-
-const pageTitle = await page.title();
-console.log(`page title is : ${pageTitle});
-
-check(): The check method in Playwright is used to interact with checkboxes and radio buttons on a web page.
-
-await page.check('input#myCheckbox');
-Or
-await page.locator('input#myCheckbox').check();
-
-unCheck(): The uncheck method in Playwright is used to uncheck (deselect) checkboxes or radio buttons on a web page.
-
-await page.uncheck('input#myCheckbox');
-Or
-await page.locator('input#myCheckbox').uncheck();
-
-focus(): This method can be particularly useful when you want to simulate user interactions like keyboard input or navigating
-through a web application using keyboard shortcuts.
-
-await page.locator('input#username').focus();
-
-hover(): The hover method in Playwright is used to simulate a mouse hover action over a web page element. When you hover over an
-element, it can trigger various interactions or reveal hidden content.
-
-await page.locator('button#myButton').hover();
-or
-await page.hover('button#myButton');
-
-textContent(): Although the textContent method is not a built-in method in Playwright, it is a standard JavaScript method used to
-retrieve the text content of a DOM element.
-
-const element = await page.locator('div#myElement');
-const textContent = await
-element.textContent()console.log('Text Content:', textContent);
-
-allTextContents(): In Playwright, the allTextContent method is used to find array of multiple elements in the DOM. which returns
-an array of textContent values for all matching nodes.
-
-const element = page.locator('div#Element');
-const textContents = await element.allTextContents();
-console.log(`All Text Contents : ${textContents}`);
-
-inputValue(): The inputValue method in Playwright is used to retrieve the current value of an input element, such as a text input,
-textarea, or password field.
-
-// Using inputValue to retrieve the current value of the input field
-const inputValue = await page.inputValue('input#username');
-console.log('Current input value:', inputValue);
-
-close(): The close method is the last selector we’re going to see in our Playwright cheatsheet and it is used to close a browser,
-browser context, or page. You can use this method to gracefully shut down browser instances or specific pages. Here’s how you can
-use the close method in Playwright.
-
-// Close the page when done
-await page.close();
-// Close the browser context
-await context.close();
-// Close the browser instance
-await browser.close();
-
-2. MOUSE INTERACTIONS
-
-Clicks and Double Clicks: Playwright can simulate both single clicks and double clicks on elements.
-
-// Single click
-await page.click('selector');
-// Double click
-await page.dblclick('selector');
-
-Hover and Tooltips: You can use Playwright to hover over elements and reveal tooltips or activate dropdown menus.
-
-await page.hover('selector');
-const tooltip = await page.waitForSelector('tooltip-selector');
-const tooltipText = await tooltip.innerText(); // Get text from the tooltip
-console.log(tooltipText);
-
-Drag and Drop: Here are the Playwright techniques for simulating drag-and-drop interactions between elements on a webpage.
-
-// Locate the source and target elements
-const source = await page.$('source-selector');
-const target = await page.$('target-selector');
-// Perform drag-and-drop
-await source.dragAndDrop(target);
-
-move(): mouse.move(x, y) in Playwright is used to move the mouse to a specific position on the page. This can be useful for
-simulating mouse movements during automated testing. The x and y parameters represent the coordinates where you want the mouse to
-move, with (0, 0) being the top-left corner of the page.
-
-await page.mouse.move(100, 100);
-
-dragTo(): This method is useful for automating drag-and-drop interactions in your web application. Let’s see how to use the
-dragTo() method with a sample snippet in our Playwright cheatsheet.
-
-//Locate the source and target elements you want to drag & drop
-const sourceElement = await page.locator('source-element-selector')
-const targetElement = await page.locator('target-element-selector')
-// Perform the drag-and-drop action
-await sourceElement.dragTo(targetElement)
-
-Pressing and Releasing Mouse Buttons: In Playwright, you can simulate pressing and releasing mouse buttons using the mouse.down()
-and mouse.up() methods.
-
-const myElement = page.locator('.my-element')
-await myElement.mouse.down() // Press the left mouse button
-await myElement.mouse.up() // Release the left mouse button
-
-Context Menu: See how Playwright interacts with context menus by right-clicking elements and selecting options.
-
-// Right-click on an element to open the context menu
-await page.click('element-selector', { button: 'right' });
-// Wait for the context menu to appear
-await page.waitForSelector('context-menu-selector', { state: 'visible' });
-// Click on an option within the context menu
-await page.click('context-menu-option-selector');
-
-Scrolling: Discover how to simulate scrolling actions in Playwright using mouse interactions. Demonstrate scrolling through a long
-webpage to ensure all content loads correctly or to capture elements that only appear when scrolled into view.
-
-// Click on an option within the context menu
-await page.click('context-menu-option-selector');
-await page.evaluate((x, y) => { window.scrollBy(x, y); });
-
-Note: Use stable selectors like IDs or data attributes to ensure robust tests; validate mouse interactions by asserting resulting
-UI changes.
-
-LOCATORS
-
-As we all know, a locator is a tool for locating elements on a webpage and Playwright has a lot of available locators. Now in our
-Playwright cheatsheet, we’re going to see the several available methods for finding elements, and the chosen parameters are sent
-to the methods for finding elements.
-
-1. getByRole(): getByRole is used to query and retrieve elements on a web page based on their accessibility roles, such as
-   “button,” “link,” “textbox,” “menu,” and so on. This is particularly useful for writing tests that focus on the accessibility and
-   user experience of a web application.
-
-// Click on an option within the context menu
-await page.getByRole('textbox', {name:'Username'}).fill(‘vijay’);
-
-2. getByText(): Although getByText() is not a built-in method in Playwright, it is a method that is often used in testing
-   libraries like Testing Library (e.g., React Testing Library or DOM Testing Library) to query and interact with elements based on
-   their text content.
-
-await page.getByText('Forgot your password? ').click();
-
-3. getByPlaceholder(): The getByPlaceholderText method is used to select a DOM element based on its placeholder attribute in an
-   input element.
-
-await page.getByPlaceholder('Username').fill('vijay');
-
-4. getByAltText(): getByAltText() is not a method associated with Playwright; it’s actually a method commonly used in testing
-   libraries like React Testing Library and Testing Library (for various JavaScript frameworks) to select an element by its alt
-   attribute. If you are writing tests using one of these testing libraries, here’s how you can use getByAltText().
-
-await page.getByAltText('client brand banner').isVisible();
-
-5. getByTitle() :getByTitle() method in Playwright is for interacting with an HTML element that has a specific title attribute.If
-   you are writing tests using one of the testing libraries mentioned above, here’s how you can use it
-
-- await page.getByTitle('Become a Seller').click();
-
-FILE AND FRAME HANDLING
-
-As we have seen how to launch the browser instance, use selectors, and handle mouse interactions in our Playwright cheatsheet, the
-next step would be to see how we can handle files, frames, and windows. Let’s start with files and frames now.
-
-1. HANDLING FILE UPLOADS
-
-- Easily handle file uploads during testing to ensure the functionality works as expected in your application by referring to the
-  below code.
-
-  // Navigate to the page with the file upload form
-  await page.goto('your-page-url');
-  // Trigger the file input dialog
-  const [fileChooser] = await Promise.all([page.waitForEvent('filechooser'),
-  page.click('button-to-trigger-file chooser')]);
-  // Set the files to upload
-  await fileChooser.setFiles('path/to/your/file.txt');
-
-  2. INTERACTING WITH FRAMES
-
-- Playwright allows you to interact with frames on a web page using methods like frame(), frames(), and waitForLoadState().
-  Here’s how you can do it.
-- Use the frame() method to access a specific frame by its name, URL, or element handle.
-- Get Frame using Name FrameSelector :
-
-  const allFrames = page.frames();
-
-- Get Frame using Name Option :
-
-  const myFrame = page.frame({name: "frame1"});
-  or
-  const myFrame = page.frame("frame1");
-
-- Get Frame using URL option :
-
-  const
-  Myframe=page.frame({url:"<http://autopract.com/playwright/form1/"}>);
-
-- Get Frame using Selector :
-
-  const
-  myFrame = page.frameLocator("iframe[name='frame1']");
-
-- Navigate within a specific frame using the goto() method.
-
-  await frame.goto('<https://codoid.com>');
-
-- Go back and forward within a frame using the goBack() and goForward() methods
-
-  await frame.goBack();
-  await frame.goForward();
-
-- Wait for a frame to load or reach a specific load state using the waitForLoadState() method.
-
-await frame.waitForLoadState('domcontentloaded');
-
-Best Practices:
-
-Automate file uploads and downloads to streamline file-related workflows. You can switch between frames using IDs or names for
-seamless interaction.
-
-WINDOWS HANDLING
-
-Windows handling is an important aspect of web automation and testing, especially when dealing with scenarios where you need to
-interact with multiple browser windows or tabs. And that is why we have covered it in our Playwright Cheatsheet.
-
-Playwright provides methods for handling multiple browser windows and tabs within a single browser instance. Here’s how you can
-work with windows handling in Playwright.
-
-const [newWindow] = await Promise.all([context.waitForEvent('page'),
-await page.getByText('APPLE iPhone 14 (Blue, 128 GB)').first().click()]);
-await newWindow.waitForLoadState();
-expect(newWindow.url()).toContain('apple-iphone-14');
-
-- To switch to a specific window or tab using the page title or URL:
-
-  const secondPage = pages.find((page) => page.url()==='<https://codoid.com>');
-  await secondPage.bringToFront();
-
-- Close a specific window/tab when you are done with it:
-
-- await secondPage.close();
-
-Best Practices:
-
-Manage multiple windows or tabs by tracking handles and switching context as necessary. Make sure to close windows or tabs after
-tests to maintain a clean testing environment.
-
-SPECIAL CAPABILITIES
-
-As stated earlier in our Playwright Cheatsheet, we have also covered advanced interactions in addition to the basic commands. The
-first of the many advanced interactions we’re going to see special capabilities such as device emulation and record and playback
-capabilities.
-
-1. Emulating Devices:
-
-- You can emulate a device for responsive testing to ensure your app looks good on various devices. This is crucial for testing
-  mobile responsiveness and user experience.
-
-const { devices, chromium } = require('playwright');
-// Define the device you want to emulate
-const iPhone = devices['iPhone 11'];
-// Launch a browser and create a new context with device emulation
-const browser = await chromium.launch();
-const context = await browser.newContext({...iPhone,});
-
-2. Recording and Replaying Actions
-
-- You can automatically generate Playwright scripts with ease by recording your actions within a browser. This speeds up the
-  creation of test scripts by capturing real user interactions.
-
-npx playwright codegen
-
-NETWORK INTERCEPTION AND MANIPULATION
-
-Testing is not just about validating the results with happy paths as users might face numerous challenges in real-world scenarios.
-One of the common challenges can be with the network and we can manipulate it based on our testing needs. Let’s see how in our
-Playwright Cheatsheet.
-
-1. Mocking Responses
-
-Intercept and mock network responses to evaluate your app’s handling of different API responses. This is useful for testing error
-scenarios and verifying API integrations.
-
-// Intercept requests to a specific URL
-await page.route('\*\*/api/data', async (route) => {
-// Respond with custom data
-await route.fulfill({
-contentType: 'application/json',
-body: JSON.stringify({ key: 'mockedValue' }) }); });
-
-2. Simulating Offline Mode
-
-Test how your application behaves when offline by simulating network disconnections. This ensures that your app handles offline
-scenarios seamlessly.
-
-- // Set the page to offline mode
-  await page.setOffline(true);
-  // Navigate to a page and perform actions
-  await page.goto('<https://example.com>');
-  // Restore network connection (optional)
-  await page.setOffline(false);
-
-SCREENSHOTS AND VISUAL COMPARISONS
-
-Screenshots play a vital role in terms of reporting and with Playwright, you have the provision of capturing full-page screenshots
-and also screenshots of a particular element if required.
-
-1. SCREENSHOTS
-
-Capturing a Full-Page Screenshot
-
-- You can take a screenshot of the entire page to visually verify the UI. This is beneficial for visual regression testing to
-  identify unexpected changes.
-
-// Take a full-page screenshot
-await page.screenshot({ path: 'fullpage-screenshot.png', fullPage: true});
-
-- There is also a provision to capture a screenshot of a specific element to focus on individual UI components. It helps in
-  verifying the appearance of particular elements.
-
-// Locate the element
-const element = await page.$('selector-for-element');
-if (element) {
-// Take a screenshot of the element
-await element.screenshot({ path: 'element-screenshot.png' });
-console.log('Element screenshot taken'); }
-
-DEBUGGING AND TRACING
-
-The next set of advanced interactions we’re going to see in our Playwright cheatsheet is the debugging and tracing features that
-enable easier debugging and failure analysis/
-
-ENABLING DEBUG MODE(SLOWMO)
-
-- Using Playwright, you can execute tests in a visible browser with slow motion enabled for easier debugging. This helps you see
-  what’s happening in real time and diagnose the issues.
-
-// Launch the browser with slowMo
-const browser = await chromium.launch({
-headless: false, // Run in headful mode to see the browser
-slowMo: 1000 // Slow down actions by 1000 milliseconds (1 second)
+```
+import{ test }from'@playwright/test';
+test.beforeEach(async({ page })=>{
+// Runs before each test and signs in each page.
+await page.goto('https://github.com/login');
+await page.getByLabel('Username or email address').fill('username');
+await page.getByLabel('Password').fill('password');
+await page.getByRole('button',{name:'Sign in'}).click();
+});
+test('first',async({ page })=>{
+// page is signed in.
+});
+test('second',async({ page })=>{
+// page is signed in.
 });
 
-CAPTURING TRACES
+```
 
-- You can capture detailed traces to analyze test failures and performance issues. This offers insights into test execution for
-  debugging purposes.
+You can also reuse the signed-in state in the tests with setup project. That way you can log in only once and then skip the log in step for all of the tests.
 
-- // Start tracing
-  await context.tracing.start({ screenshots: true, snapshots: true });
-  const page = await context.newPage();
-  await page.goto('<https://example.com>');
-  // Perform actions
-  await page.click('selector-for-button');
-  await page.fill('selector-for-input', 'some text');
-  // Stop tracing and save it to a file
-  await context.tracing.stop({ path: 'trace.zip' });
+### Avoid testing third-party dependencies​
 
-Best Practices:
+Only test what you control. Don't try to test links to external sites or third party servers that you do not control.
+Not only is it time consuming and can slow down your tests but also you cannot control the content of the page you are linking to, or if there are cookie banners or overlay pages or anything else that might cause your test to fail.
 
-You can also use console logs and debug statements within tests to troubleshoot issues and enable tracing to capture detailed logs
-for performance analysis.
+Instead, use the Playwright Network API and guarantee the response needed.
 
-ADDITIONAL METHODS
+```
+await page.route('**/api/fetch_data_third_party_dependency',route=> route.fulfill({
+status:200,
+body: testData,
+}));
+await page.goto('https://example.com');
 
-In the final section of our Playwright cheatsheet, we are going to see a few additional methods such as retrying actions, using
-locator assertions, and forcing colors mode.
+```
 
-Retrying Actions
+### Testing with a database​
 
-Retrying actions addresses intermittent issues by repeatedly attempting a failed action until it either succeeds or the maximum
-number of retries is exhausted.
+If working with a database then make sure you control the data. Test against a staging environment and make sure it doesn't change. For visual regression tests make sure the operating system and browser versions are the same.
 
-const retryDelay = 1000; const maxRetries = 3; // 1 second delay between retries
-await new Promise(resolve => setTimeout(resolve, retryDelay)); // Delay before retrying
+## Best Practices​
 
-Using Locator Assertions
+### Use locators​
 
-- You can add assertions to ensure elements are visible, improving test reliability. This verifies that critical elements are
-  present on the page.
+In order to write end to end tests we need to first find elements on the webpage. We can do this by using Playwright's built in locators. Locators come with auto waiting and retry-ability. Auto waiting means that Playwright performs a range of actionability checks on the elements, such as ensuring the element is visible and enabled before it performs the click.
+To make tests resilient, we recommend prioritizing user-facing attributes and explicit contracts.
 
-// Check if the element is visible
-await expect(page.locator('selector-for-element')).toBeVisible();
+```
+// 👍
+page.getByRole('button',{name:'submit'});
 
-- Enabled/Disabled State Assertions
+```
 
-  await expect(page.locator('selector-for-element')).toBeEnabled();
-  await expect(page.locator('selector-for-element')).toBeDisabled();
+#### Use chaining and filtering​
 
-- Text and Count Assertion
+Locators can be chained to narrow down the search to a particular part of the page.
 
-  await expect(page.locator('selector-for-element')).toHaveText('Expected Text');
-  await expect(page.locator('selector-for-elements')).toHaveCount(expectedCount);
+```
+const product = page.getByRole('listitem').filter({hasText:'Product 2'});
 
-- Invisibility Assertion
+```
 
-await expect(page.locator('selector-for-element')).toBeHidden();
+You can also filter locators by text or by another locator.
 
-Forcing Colors Mode
+```
+await page
+.getByRole('listitem')
+.filter({hasText:'Product 2'})
+.getByRole('button',{name:'Add to cart'})
+.click();
 
-- There is even an option to simulate the high contrast mode for accessibility testing, ensuring usability for all users. This is
-  crucial for testing the accessibility features of your application.
+```
 
-// Force dark color scheme
-await page.emulateMedia({ forcedColors: 'dark' });
-await browser.close(); })();
+#### Prefer user-facing attributes to XPath or CSS selectors​
 
----
+Your DOM can easily change so having your tests depend on your DOM structure can lead to failing tests. For example consider selecting this button by its CSS classes. Should the designer change something then the class might change, thus breaking your test.
 
-THE COMPLETE PLAYWRIGHT CHEATSHEET
+```
+// 👎
+page.locator('button.buttonIcon.episode-actions-later');
 
-OVERVIEW
+```
 
-Playwright is a Node.js library for cross-browser end-to-end testing. It enables reliable testing across Chromium, Firefox and
-WebKit.
+Use locators that are resilient to changes in the DOM.
 
-// Install Playwright
-npm i -D @playwright/test
+```
+// 👍
+page.getByRole('button',{name:'submit'});
 
-KEY FEATURES
+```
 
-Cross-browser testing: Chromium, Firefox, WebKitNetwork layer (mocking/stubbing requests and responses)CPU throttling, Device
-emulationScreenshots, Videos, Trace Viewer
+### Generate locators​
 
-CORE CONCEPTS
+Playwright has a test generator that can generate tests and pick locators for you. It will look at your page and figure out the best locator, prioritizing role, text and test id locators.
+If the generator finds multiple elements matching the locator, it will improve the locator to make it resilient and uniquely identify the target element, so you don't have to worry about failing tests due to locators.
 
-BROWSER TYPES
+#### Use `codegen` to generate locators​
 
-Playwright supports 3 browser types - chromium, firefox and webkit. Browser instances can be created as:
+To pick a locator run the `codegen` command followed by the URL that you would like to pick a locator from.
 
-const { chromium } = require('playwright');
+- npm
+- yarn
+- pnpm
 
-const browser = await chromium.launch();
+```
+npx playwright codegen playwright.dev
 
-BROWSER CONTEXTS
+```
 
-Browser contexts isolates browser state like cookies, storage etc. New context guarantees clean state.
+This will open a new browser window as well as the Playwright inspector. To pick a locator first click on the 'Record' button to stop the recording. By default when you run the `codegen` command it will start a new recording. Once you stop the recording the 'Pick Locator' button will be available to click.
 
-const context = await browser.newContext();
+You can then hover over any element on your page in the browser window and see the locator highlighted below your cursor. Clicking on an element will add the locator into the Playwright inspector.
+You can either copy the locator and paste into your test file or continue to explore the locator by editing it in the Playwright Inspector, for example by modifying the text, and seeing the results in the browser window.
 
-PAGES
+!generating locators with codegen
 
-Pages represent tabs and hold the actual page state. New pages open fresh empty tabs.
+#### Use the VS Code extension to generate locators​
 
-const page = await context.newPage();
+You can also use the VS Code Extension to generate locators as well as record a test. The VS Code extension also gives you a great developer experience when writing, running, and debugging tests.
 
-BASIC EXAMPLES
+!generating locators in vs code with codegen
 
-NAVIGATE TO PAGE
+### Use web first assertions​
 
-await page.goto('<https://www.example.com>');
+Assertions are a way to verify that the expected result and the actual result matched or not. By using web first assertions Playwright will wait until the expected condition is met. For example, when testing an alert message, a test would click a button that makes a message appear and check that the alert message is there. If the alert message takes half a second to appear, assertions such as `toBeVisible()` will wait and retry if needed.
 
-GET PAGE TITLE
+```
+// 👍
+awaitexpect(page.getByText('welcome')).toBeVisible();
+// 👎
+expect(await page.getByText('welcome').isVisible()).toBe(true);
 
-await page.title();
+```
 
-CLICK ELEMENT
+#### Don't use manual assertions​
 
-await page.click('button');
+Don't use manual assertions that are not awaiting the expect. In the code below the await is inside the expect rather than before it. When using assertions such as `isVisible()` the test won't wait a single second, it will just check the locator is there and return immediately.
 
-TYPE TEXT
+```
+// 👎
+expect(await page.getByText('welcome').isVisible()).toBe(true);
 
-await page.fill('input', 'text');
+```
 
-ASSERTIONS
+Use web first assertions such as `toBeVisible()` instead.
 
-// Assertion helpers
-expect(page.url()).toBe('<https://example.com>');
-await expect(page.locator('h1')).toHaveText('Title');
+```
+// 👍
+awaitexpect(page.getByText('welcome')).toBeVisible();
 
-SCREENSHOT
+```
 
-await page.screenshot({ path: 'screenshot.png' });
+### Configure debugging​
 
-ADVANCED INTERACTIONS
+#### Local debugging​
 
-CLICKING ELEMENTS
+For local debugging we recommend you debug your tests live in VSCode. by installing the VS Code extension. You can run tests in debug mode by right clicking on the line next to the test you want to run which will open a browser window and pause at where the breakpoint is set.
 
-Options like click count, button type etc.:
+!debugging tests in vscode
 
-await page.click('#submit', { clickCount: 2 });
-await page.click('#checkbox', { button: 'right' });
+You can live debug your test by clicking or editing the locators in your test in VS Code which will highlight this locator in the browser window as well as show you any other matching locators found on the page.
 
-TYPING TEXT
+!live debugging locators in vscode
 
-Handle delays while typing, useful for UI/UX testing:
+You can also debug your tests with the Playwright inspector by running your tests with the `--debug` flag.
 
-await page.type('#address', 'Hello World', { delay: 100 });
+- npm
+- yarn
+- pnpm
 
-ELEMENT STATES
+```
+npx playwright test--debug
 
-Force element states before interacting:
+```
 
-await page.focus('#email');
-await page.check('#checkbox');
+You can then step through your test, view actionability logs and edit the locator live and see it highlighted in the browser window. This will show you which locators match, how many of them there are.
 
-SELECTOR STRATEGIES
+!debugging with the playwright inspector
 
-Playwright offers different selector engines to query elements:
+To debug a specific test add the name of the test file and the line number of the test followed by the `--debug` flag.
 
-CSS SELECTOR
+- npm
+- yarn
+- pnpm
 
-await page.click('button');
+```
+npx playwright test example.spec.ts:9 --debug
 
-TEXT SELECTOR
+```
 
-Selects elements based on inner text
+#### Debugging on CI​
 
-await page.click('text=Login');
+For CI failures, use the Playwright trace viewer instead of videos and screenshots. The trace viewer gives you a full trace of your tests as a local Progressive Web App (PWA) that can easily be shared.
+With the trace viewer you can view the timeline, inspect DOM snapshots for each action using dev tools, view network requests and more.
 
-XPATH SELECTOR
+!playwrights trace viewer
 
-Full XPath support
+Traces are configured in the Playwright config file and are set to run on CI on the first retry of a failed test. We don't recommend setting this to `on` so that traces are run on every test as it's very performance heavy. However you can run a trace locally when developing with the `--trace` flag.
 
-await page.click('//button[text()="Login"]');
+- npm
+- yarn
+- pnpm
 
-ID Selector
+```
+npx playwright test--trace on
 
-Select element by ID attribute
+```
 
-await page.click('#login-button');
+Once you run this command your traces will be recorded for each test and can be viewed directly from the HTML report.
 
-Data Test ID
+- npm
+- yarn
+- pnpm
 
-Custom test id attributes for unique selection
+```
+npx playwright show-report
 
-await page.click('[data-testid="submit-form"]');
+```
 
-By Role
+!Playwrights HTML report
 
-Semantic selector by element role
+Traces can be opened by clicking on the icon next to the test file name or by opening each of the test reports and scrolling down to the traces section.
 
-await page.click('.role-button');
+!Screenshot 2023-01-13 at 09 58 34
 
-ADVANCED ELEMENT SELECTORS
+### Use Playwright's Tooling​
 
-Pass selector functions to customize selection:
+Playwright comes with a range of tooling to help you write tests.
 
-await page.locator(({ hasText }) => hasText('Save')).click();
+- The VS Code extension gives you a great developer experience when writing, running, and debugging tests.
+- The test generator can generate tests and pick locators for you.
+- The trace viewer gives you a full trace of your tests as a local PWA that can easily be shared. With the trace viewer you can view the timeline, inspect DOM snapshots for each action, view network requests and more.
+- The UI Mode lets you explore, run and debug tests with a time travel experience complete with watch mode. All test files are loaded into the testing sidebar where you can expand each file and describe block to individually run, view, watch and debug each test.
+- TypeScript in Playwright works out of the box and gives you better IDE integrations. Your IDE will show you everything you can do and highlight when you do something wrong.
+  No TypeScript experience is needed and it is not necessary for your code to be in TypeScript, all you need to do is create your tests with a `.ts` extension.
 
-DOM Path:
+### Test across all browsers​
 
-await page.getByTestId('email-id', { path: 'form div' });
+Playwright makes it easy to test your site across all browsers no matter what platform you are on. Testing across all browsers ensures your app works for all users. In your config file you can set up projects adding the name and which browser or device to use.
 
-Select visible elements:
+playwright.config.ts
 
-await page.getByText('Save', { exact: true, visible: true });
-
-ADVANCED USAGE
-
-CONFIGURE BROWSER SETTINGS
-
-Settings like viewport size, user agent etc. can be configured for browsers using browserType.launch()
-
-await chromium.launch({
-headless: false,
-slowMo: 50,
-viewport: {width: 1280, height: 720}
-});
-
-INTERCEPT NETWORK REQUESTS
-
-Network requests can be mocked and stubbed for testing using route handlers.
-
-await context.route('\*_/_.{png,jpg}', route => {
-route.abort();
-});
-
-This aborts all image requests.
-
-EMULATE DEVICES
-
-Playwright allows emulation of devices like iPhone, iPad etc.
-
-const context = await browser.newContext({
-...devices['iPhone X']
-});
-
-LOCAL STORAGE
-
-Handle browser storage (localStorage, sessionStorage)
-
-await context.storageState({path: 'state.json'}); // save storage state
-await context.storageState({path: 'state.json'}); // restore state
-
-MULTI-BROWSER TESTING
-
-Run same tests across Chromium, Firefox and WebKit using test runner.
-
-npm test // runs tests over all 3 browsers
-
-DOCKER IMAGES
-
-Playwright provides official docker images with browsers installed. This removes need for browser drivers on CI.
-
-docker pull mcr.microsoft.com/playwright:v1.24.0-focal
-
-TRACING VIEWER
-
-Playwright captures browser traces during test execution which helps debug tests.
-
-npx playwright show-trace trace.zip
-
-ADDITIONAL ASSERTIONS
-
-Element State
-
-Assert element states like disabled, visible etc.
-
-await expect(page.locator('button')).toBeDisabled();
-
-Visual Comparison
-
-Compare screenshots to baseline images
-
-await expect(page.screenshot()).toMatchSnapshot('landing.png');
-
-WAIT HELPERS
-
-Wait For Selector
-
-Wait until selector is available before performing action
-
-await page.waitForSelector('div.loaded');
-
-Wait For Navigation
-
-Wait for navigation to finish before asserting page state
-
-await page.waitForNavigation();
-
-AUTHENTICATION
-
-Persist Credentials
-
-Use context storage state to persist login sessions
-
-await context.storageState({path: 'state.json'});
-
-REPORTING
-
-Playwright Cloud
-
-Upload test results and artifacts to Playwright Cloud
-
-npm test --project=myCloudProject
-
-DYNAMIC MOCK RESPONSE
-
-Return different mock data based on request:
-
-await context.route('\*_/_.json', route => {
-if (route.request().url().includes('data')) {
-route.fulfill({
-status: 200,
-body: JSON.stringify({data: 'mock'})
-});
-} else {
-route.abort();
-}
-});
-
-GRAPHQL MOCKING
-
-Stub GraphQL API response with dummy data:
-
-await context.route('<https://api.graph.cool/simple/v1/movies>', route => {
-route.fulfill({
-status: 200,
-contentType: 'application/json',
-body: JSON.stringify({data: {movies: ['Movie 1']}})
-});
-});
-
-DEVICES AND EMULATION
-
-Emulating various mobile devices:
-
-// iPhone XR
-await context.emulate(devices['iPhone XR']);
-
-// Google Pixel 5
-await context.emulate(devices['Pixel 5']);
-
-Device specific viewports:
-
-await context.emulateViewport(1920, 1080); // Full HD
-await context.emulateViewport(360, 640); // iPhone 5/SE
-
-ASSERTIONS & VALIDATION
-
-Element count assertion:
-
-await expect(page.locator('.items')).toHaveCount(5);
-
-Validate JS expression:
-
-await page.waitForFunction(() => window.innerWidth < 1000);
-
-Assert response times:
-
-await expect(page).toRespondIn(50); // ms
-
-BROWSER CONTEXT SHARING
-
-You can share data between browser contexts using the browserContext.storageState() method. This can be useful for scenarios where
-you want to reuse cookies or authentication tokens between different contexts.
-
-// Saving browser context storage state
-const storageState = await context.storageState({ path: 'auth.json' });
-
-// Create a new browser context and restore storage state
-const newContext = await browser.newContext();
-await newContext.addCookies(storageState.cookies);
-await newContext.clearCookies(); // If needed, clear cookies before adding
-await newContext.addCookies(storageState.cookies);
-
-ELEMENT HOVER AND SCROLL
-
-You can hover over an element using the hover() method, and you can scroll to an element using the scrollIntoView() method.
-
-// Hover over an element
-await page.hover('#element-to-hover');
-
-// Scroll to an element
-await page.$eval('#element-to-scroll-to', (element) => {
-element.scrollIntoView();
-});
-
-FILE UPLOAD AND DOWNLOAD
-
-To interact with file upload buttons, you can use the input.uploadFile() method. To handle file downloads, you can use the
-browserContext.waitForEvent('download') method.
-
-// Upload a file
-await page.setInputFiles('#file-input', 'path/to/file.txt');
-
-// Handle file downloads
-const [download] = await Promise.all([
-context.waitForEvent('download'),
-page.click('#download-button'),
-]);
-await download.saveAs('path/to/save/file.txt');
-
-WORKING WITH FRAMES AND IFRAMES
-
-You can interact with frames and iframes using the frame() method.
-
-// Switch to a frame by name or ID
-const frame = page.frame('frameName');
-await frame.click('#element-in-frame');
-
-// Switch back to the main frame
-await page.waitForLoadState('domcontentloaded');
-
-HEADLESS MODE
-
-You can run Playwright tests in headless mode by configuring the headless option when launching the browser.
-
-await chromium.launch({ headless: true });
-
-PAGE EVENTS
-
-You can listen for and handle various page events using the page.on() method.
-
-page.on('dialog', async (dialog) => {
-console.log('Dialog message:', dialog.message());
-await dialog.accept();
-});
-
-page.on('console', (message) => {
-console.log('Console message:', message.text());
-});
-
-ERROR HANDLING
-
-Use try-catch blocks to handle errors that may occur during test execution.
-
-try {
-// Perform actions that may throw errors
-} catch (error) {
-console.error('An error occurred:', error.message);
-}
-
-PAGE NAVIGATION STRATEGIES
-
-You can navigate back and forward in the browser's history using the goBack() and goForward() methods.
-
-await page.goBack(); // Navigate back
-await page.goForward(); // Navigate forward
-
-PARALLEL TESTING
-
-To run tests in parallel, you can leverage Playwright's built-in test runner.
-
-npx playwright test --workers 4
-
-CUSTOM TEST CONFIGURATION
-
-Set up custom test configurations for different environments using Playwright's configuration files.
-
-// playwright.config.js
-module.exports = {
-projects: [
+```
+import{ defineConfig, devices }from'@playwright/test';
+exportdefaultdefineConfig({
+projects:[
 {
-name: 'dev',
-use: { ... },
+name:'chromium',
+use:{...devices['Desktop Chrome']},
 },
 {
-name: 'prod',
-use: { ... },
+name:'firefox',
+use:{...devices['Desktop Firefox']},
+},
+{
+name:'webkit',
+use:{...devices['Desktop Safari']},
 },
 ],
-};
-
-PAGE OBJECTS
-
-Implement the page object pattern to separate page interactions from test code.
-
-// Example page object
-class LoginPage {
-constructor(page) {
-this.page = page;
-}
-
-async login(username, password) {
-// Implement login logic
-}
-}
-
-TEST STRUCTURE
-
-Follow a clear test structure that includes setup, execution, and teardown phases. Use before and after hooks to handle common
-setup and cleanup tasks.
-
-// Example using Jest hooks
-beforeEach(async () => {
-// Perform common setup steps here
-await page.goto('<https://example.com>');
 });
 
-afterEach(async () => {
-// Perform common cleanup tasks here
-});
+```
 
-test('Test case description', async () => {
-// Test execution code
-});
+### Keep your Playwright dependency up to date​
 
-TIMING ISSUES
+By keeping your Playwright version up to date you will be able to test your app on the latest browser versions and catch failures before the latest browser version is released to the public.
 
-Ensure that your tests handle asynchronous operations correctly. Use await to wait for elements to become available, and consider
-using waitForSelector or waitForFunction when necessary.
+- npm
+- yarn
+- pnpm
 
-// Wait for an element to become visible
-await page.waitForSelector('.my-element', { state: 'visible' });
+```
+npminstall-D @playwright/test@latest
 
-UNHANDLED ERRORS
+```
 
-Always include error handling in your tests to catch and handle exceptions gracefully. Use try-catch blocks to capture errors and
-provide informative error messages.
+Check the release notes to see what the latest version is and what changes have been released.
 
-try {
-// Test actions that may throw errors
-} catch (error) {
-console.error('An error occurred:', error.message);
-}
+You can see what version of Playwright you have by running the following command.
 
-MEASURING PAGE LOAD TIME
+- npm
+- yarn
+- pnpm
 
-You can measure the time it takes for a page to load using the page.goto method along with the performance.timing API.
+```
+npx playwright --version
 
-const startTime = Date.now();
-await page.goto('<https://example.com>');
-const loadTime = Date.now() - startTime;
-console.log(`Page loaded in ${loadTime}ms`);
+```
 
-NETWORK THROTTLING
+### Run tests on CI​
 
-Playwright allows you to simulate different network conditions, such as slow 3G or offline mode, to test how your application
-behaves under varying network speeds.
+Setup CI/CD and run your tests frequently. The more often you run your tests the better. Ideally you should run your tests on each commit and pull request. Playwright comes with a GitHub actions workflow so that tests will run on CI for you with no setup required. Playwright can also be setup on the CI environment of your choice.
 
-// Simulate slow 3G network
-await context.route('\*_/_', (route) => {
-route.throttle('Regular3G');
-route.continue();
-});
+Use Linux when running your tests on CI as it is cheaper. Developers can use whatever environment when running locally but use linux on CI. Consider setting up Sharding to make CI faster.
 
-ANALYZING PERFORMANCE METRICS
+#### Optimize browser downloads on CI​
 
-You can gather various performance metrics using the page.metrics() method to assess the performance of your web application.
+Only install the browsers that you actually need, especially on CI. For example, if you're only testing with Chromium, install just Chromium.
 
-await page.goto('<https://example.com>');
-const metrics = await page.metrics();
-console.log('Performance metrics:', metrics);
+.github/workflows/playwright.yml
+
+```
+# Instead of installing all browsers
+npx playwright install --with-deps
+# Install only Chromium
+npx playwright install chromium --with-deps
+
+```
+
+This saves both download time and disk space on your CI machines.
+
+### Lint your tests​
+
+We recommend TypeScript and linting with ESLint for your tests to catch errors early. Use `@typescript-eslint/no-floating-promises` ESLint rule to make sure there are no missing awaits before the asynchronous calls to the Playwright API. On your CI you can run `tsc --noEmit` to ensure that functions are called with the right signature.
+
+### Use parallelism and sharding​
+
+Playwright runs tests in parallel by default. Tests in a single file are run in order, in the same worker process. If you have many independent tests in a single file, you might want to run them in parallel
+
+```
+import{ test }from'@playwright/test';
+test.describe.configure({mode:'parallel'});
+test('runs in parallel 1',async({ page })=>{/* ... */});
+test('runs in parallel 2',async({ page })=>{/* ... */});
+
+```
+
+Playwright can shard a test suite, so that it can be executed on multiple machines.
+
+- npm
+- yarn
+- pnpm
+
+```
+npx playwright test--shard=1/3
+
+```
+
+## Productivity tips​
+
+### Use Soft assertions​
+
+If your test fails, Playwright will give you an error message showing what part of the test failed which you can see either in VS Code, the terminal, the HTML report, or the trace viewer. However, you can also use soft assertions. These do not immediately terminate the test execution, but rather compile and display a list of failed assertions once the test ended.
+
+```
+// Make a few checks that will not stop the test when failed...
+await expect.soft(page.getByTestId('status')).toHaveText('Success');
+// ... and continue the test to check more things.
+await page.getByRole('link',{name:'next page'}).click();
+```
