@@ -588,8 +588,8 @@ importers:
         specifier: ^8.6.11
         version: 8.6.11(react@19.0.0)(storybook@8.6.8(prettier@3.5.3))
       '@storybook/addon-mdx-gfm':
-        specifier: ^8.5.3
-        version: 8.6.8(storybook@8.6.8(prettier@3.5.3))
+        specifier: ^8.6.11
+        version: 8.6.11(storybook@8.6.8(prettier@3.5.3))
       '@storybook/addon-svelte-csf':
         specifier: 5.0.0-next.28
         version: 5.0.0-next.28(@storybook/svelte@8.6.8(storybook@8.6.8(prettier@3.5.3))(svelte@5.25.3))(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.13)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0)))(storybook@8.6.8(prettier@3.5.3))(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.13)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.0))
@@ -2305,10 +2305,10 @@ packages:
       react:
         optional: true
 
-  '@storybook/addon-mdx-gfm@8.6.8':
-    resolution: {integrity: sha512-6yheJU88VrJEbuq0ES1TAfzAV3GCovYOHyU+kFDaCsyCT2BVD1mXdrLu/HkFO6uxbmOePZqF2SJSJN0qe0gyPg==}
+  '@storybook/addon-mdx-gfm@8.6.11':
+    resolution: {integrity: sha512-81x7GNn58vKIfmGAJwxFfWctKqxfml7p1XX7KzpO0YJBrtZg6VXZ4+xN4yh0KVCDqiLuxTor+imz0ePs1NIyyQ==}
     peerDependencies:
-      storybook: ^8.6.8
+      storybook: ^8.6.11
 
   '@storybook/addon-measure@8.6.8':
     resolution: {integrity: sha512-cRnxYhAuEOGPzfxaggOQr7cpOrqMfM73hozH1TvgnYTuCaiqGHyQLCv4DD1a5ikomKhhEsgmANVI2NfwNp9dCg==}
@@ -10341,7 +10341,7 @@ snapshots:
     optionalDependencies:
       react: 19.0.0
 
-  '@storybook/addon-mdx-gfm@8.6.8(storybook@8.6.8(prettier@3.5.3))':
+  '@storybook/addon-mdx-gfm@8.6.11(storybook@8.6.8(prettier@3.5.3))':
     dependencies:
       remark-gfm: 4.0.1
       storybook: 8.6.8(prettier@3.5.3)
