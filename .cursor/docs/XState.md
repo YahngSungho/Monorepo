@@ -2,19 +2,19 @@
 
 ## XState v4 to v5
 
-### Creating [machines]() and actors
+### Creating  and actors
 
 - Use `createMachine()`, not `Machine()`
 - Use `createActor()`, not `interpret()`
 - Use `machine.provide()`, not `machine.withConfig()`
 - Set context with input, not `machine.withContext()`
 - Actions ordered by default, predictableActionArguments no longer needed
-- The `spawn()` function [has]() been removed
+- The `spawn()` function been removed
 - Use getNextSnapshot(…) instead of machine.transition(…)
 - Send events explictly instead of using autoForward
 - The `state.toStrings()` method has been removed
 
-##### states
+#### states
 
 - Use `state.getMeta()` instead of state.meta
 - Use state.\_nodes instead of state.configuration
