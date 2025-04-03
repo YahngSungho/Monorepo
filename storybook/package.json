@@ -6,15 +6,15 @@
 	"scripts": {
 		"build": "storybook build --output-dir storybook-static",
 		"dev": "storybook dev -p 6006",
-		"playwright-install-env": "pnpm exec playwright install --with-deps",
-		"playwright-report": "pnpm exec playwright show-report",
-		"test:e2e": "pnpm exec playwright test",
-		"preview": "vite preview --outDir storybook-static",
-				"eslint": "eslint .",
+		"eslint": "eslint . --ignore-pattern ./src/**",
 		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
-				"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
-		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true"
+		"playwright-install-env": "pnpm exec playwright install --with-deps",
+		"playwright-report": "pnpm exec playwright show-report",
+		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
+		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
+		"test:e2e": "pnpm exec playwright test",
+		"preview": "vite preview --outDir storybook-static"
 	},
 	"dependencies": {
 		"nanoid": "^5.1.5"

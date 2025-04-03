@@ -1,17 +1,19 @@
 <script>
 import './app.css'
-import svelteLogo from './assets/svelte.svg'
+
 import viteLogo from '/vite.svg'
+
+import svelteLogo from './assets/svelte.svg'
 import Counter from './lib/Counter.svelte'
 </script>
 
 <main>
 	<div>
-		<a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-			<img src={viteLogo} class="logo" alt="Vite Logo" />
+		<a href="https://vitejs.dev" rel="noreferrer" target="_blank">
+			<img class="logo" alt="Vite Logo" src={viteLogo} />
 		</a>
-		<a href="https://svelte.dev" target="_blank" rel="noreferrer">
-			<img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
+		<a href="https://svelte.dev" rel="noreferrer" target="_blank">
+			<img class="logo svelte" alt="Svelte Logo" src={svelteLogo} />
 		</a>
 	</div>
 	<h1>Vite + Svelte</h1>
@@ -21,7 +23,7 @@ import Counter from './lib/Counter.svelte'
 	</div>
 
 	<p>
-		Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer"
+		Check out <a href="https://github.com/sveltejs/kit#readme" rel="noreferrer" target="_blank"
 			>SvelteKit</a
 		>, the official Svelte app framework powered by Vite!
 	</p>
