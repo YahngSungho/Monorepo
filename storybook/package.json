@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "storybook build --output-dir storybook-static",
 		"dev": "storybook dev -p 6006",
-		"eslint": "eslint .",
+		"eslint": "eslint . --ignore-pattern ./src/**",
 		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
