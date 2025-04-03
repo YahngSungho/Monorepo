@@ -20,6 +20,7 @@ jobs:
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
       package-json: ${{ steps.filter.outputs.package-json }}
+      projects: ${{ steps.filter.outputs.projects }}
     if: |
       (github.event.action == 'labeled' && github.event.label.name == 'restart') ||
       (github.event.action != 'labeled' &&
@@ -30,7 +31,10 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
-          filters: |
+          projects: |
+            projects:
+              - 'apps/**'
+              - 'libraries/**'
             images:
               - '**.jpg'
               - '**.jpeg'
@@ -276,7 +280,7 @@ jobs:
     # fix-package-json 잡이 완료된 후 실행되도록 명시적 의존성 추가
     needs: [path-filter, fix-package-json]
     # 실행 조건은 기존 로직 유지 또는 필요에 따라 조정
-    if: needs.path-filter.result == 'success' # 예시 조건
+    if: needs.path-filter.outputs.projects == 'true'
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
