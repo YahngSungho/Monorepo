@@ -1,0 +1,611 @@
+---
+description:
+globs: **/*.stories.svelte
+alwaysApply: false
+---
+# Svelte CSF
+
+The  directory contains examples describing each feature of the addon. The  is a good one to get started with.
+
+Svelte CSF stories files must always have the `.stories.svelte` extension.## Defining the meta
+
+All stories files must have a "meta" (aka. "default export") defined, and its structure follows what's described in . To define the meta in Svelte CSF, call the `defineMeta` function **within the module context**, with the meta properties you want:
+
+```
+<script module\>
+  //    👆 notice the module context, defineMeta does not work in a regular <script> tag - instance
+  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import MyComponent from './MyComponent.svelte';
+  //      👇 Get the Story component from the return value
+  const { Story } \= defineMeta({
+    title: 'Path/To/MyComponent',
+    component: MyComponent,
+    decorators: \[
+      /\* ... \*/
+    \],
+    parameters: {
+      /\* ... \*/
+    },
+  });
+</script\>
+```
+
+`defineMeta` returns an object with a `Story` component  that you must destructure out to use.
+
+## Defining stories
+
+To define stories, you use the `Story` component returned from the `defineMeta` function. Depending on what you want the story to contain, . Common for all the use case is that all properties of  are passed as props to the `Story` component, with the exception of the `render` function, which does not have any effect in Svelte CSF.
+
+All story requires either the `name` prop or .
+
+Tip
+
+In versions prior to v5 of this addon, it was always required to define a template story with the `<Template>` component. This is no longer required and stories will default to render the component from `meta` if no template is set.
+
+### Plain Story
+
+If your component only accepts props and doesn't require snippets or slots, you can use the simple form of defining stories, only using args:
+
+```
+<Story name\="Primary" args\={{ primary: true }} />
+```
+
+This will render the component defined in the meta, with the args passed as props.
+
+### Static template
+
+If you need more customization of the story, like composing components or defining snippets, you can pass in children to the `Story`, and write whatever component structure you desire:
+
+```
+<Story name\="Composed"\>
+  <MyComponent\>
+    <AChild label\="Hello world!" />
+  </MyComponent\>
+</Story\>
+```
+
+Important
+
+This format completely ignores args, as they are not passed down to any of the child components defined. Even if your story has args and Controls, they won't have an effect. See the snippet-based formats below.
+
+### Inline snippet
+
+If you need composition/snippets but also want a dynamic story that reacts to args or the story context, you can define a `children` snippet in the `Story` component:
+
+```
+<Story name\="Simple Children" args\={{ simpleChild: true }}>
+  {#snippet children(args)}
+    <MyComponent {...args}>Component with args</MyComponent\>
+  {/snippet}
+</Story\>
+```
+
+### Shared snippet
+
+Often your stories are very similar and their only differences are args or play-functions. In this case it can be cumbersome to define the same `children` snippet over and over again. You can share snippets by defining them at the top-level and passing them as props to `Story`:
+
+```
+{#snippet template(args)}
+  <MyComponent {...args}>
+    {#if args.simpleChild}
+      <AChild data\={args.childProps} />
+    {:else}
+      <ComplexChildA data\={args.childProps} />
+      <ComplexChildB data\={args.childProps} />
+    {/if}
+  </MyComponent\>
+{/snippet}
+
+<Story name\="Simple Children" args\={{ simpleChild: true }} children\={template} />
+
+<Story name\="Complex Children" args\={{ simpleChild: false }} children\={template} />
+```
+
+You can also use this pattern to define multiple templates and share the different templates among different stories.
+
+### Default snippet
+
+If you only need a single template that you want to share, it can be tedious to include `children={template}` in each `Story` component. Like in th example below:
+
+```
+<Story name\="Primary" args\={{ variant: 'primary' }} children\={template} />
+<Story name\="Secondary" args\={{ variant: 'secondary' }} children\={template} />
+<Story name\="Tertiary" args\={{ variant: 'tertiary' }} children\={template} />
+
+<Story name\="Denary" args\={{ variant: 'denary' }} children\={template} />
+```
+
+In this case you can use the `setTemplate()` helper function that sets a default template for all stories. In regular CSF terms, this is the equivalent of defining a meta-level `render`\-function versus story-level `render`\-functions:
+
+```
+<script module\>
+  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  //                   👆 import the function
+  import MyComponent from './MyComponent.svelte';
+  const { Story } \= defineMeta({
+    /\* ... \*/
+  });
+</script\>
+
+<script\>
+  // 👆 note this must be within a instance (regular) <script> tag as the module context can not reference snippets defined in the markup
+  setTemplate(template);
+  //          👆 the name of the snippet as defined below (can be any name)
+</script\>
+
+{#snippet template(args)}
+  <MyComponent {...args}>
+    {#if args.simpleChild}
+      <AChild data\={args.childProps} />
+    {:else}
+      <ComplexChildA data\={args.childProps} />
+      <ComplexChildB data\={args.childProps} />
+    {/if}
+  </MyComponent\>
+{/snippet}
+
+<Story name\="Simple Children" args\={{ simpleChild: true }} />
+
+<Story name\="Complex Children" args\={{ simpleChild: false }} />
+```
+
+Stories can still override this default snippet using any of the methods for defining story-level content.
+
+### Custom export name
+
+Behind-the-scenes, each `<Story />` definition is compiled to a variable export like `export const MyStory = ...;`. In most cases you don't have to care about this detail, however sometimes naming conflicts can arise from this. The variable names are simplifications of the story names - to make them valid JavaScript variables.
+
+This can cause conflicts, eg. two stories with the names *"my story!"* and *"My Story"* will both be simplified to `MyStory`.
+
+You can explicitly define the variable name of any story by passing the `exportName` prop:
+
+```
+<Story exportName\="MyStory1" name\="my story!" />
+<Story exportName\="MyStory2" name\="My Story" />
+```
+
+At least one of the `name` or `exportName` props must be passed to the `Story` component - passing both is also valid.
+
+### Accessing Story context
+
+If for some reason you need to access the  *(e.g. for mocking)* while rendering the story, then `<Story />`'s attribute `children` snippet provides an optional second argument.
+
+```
+<Story name\="Default"\>
+  {#snippet children(args, context)}
+
+     <MyComponent {...args}>
+  {/snippet}
+</Story\>
+```
+
+## TypeScript
+
+Story snippets and args can be type-safe when necessary. The type of the args are inferred from the component props passed to `defineMeta`.
+
+You can make your snippets type-safe with the `Args` and `StoryContext` helper types:
+
+```
+<script module lang\="ts"\>
+  import { defineMeta, type Args, type StoryContext } from '@storybook/addon-svelte-csf';
+  //                   👆         👆 import those type helpers from this addon -->
+  import MyComponent from './MyComponent.svelte';
+  const { Story } \= defineMeta({
+    component: MyComponent,
+  });
+</script\>
+
+
+{#snippet template(args: Args<typeof Story\>, context: StoryContext<typeof Story\>)}
+
+  <MyComponent {...args} />
+{/snippet}
+```
+
+If you need to customize the type of the `args`, you can pass in a generic type parameter to `defineMeta` that will override the types inferred from the component:
+
+```
+const { Story } = defineMeta<{ anotherProp: boolean }>( ... );
+```
+
+---
+
+# Comprehensive Guide to Writing Storybook Stories for Svelte Components
+
+This document provides a guide on how to write Storybook stories for Svelte components, leveraging the `storybook-addon-svelte-csf` addon and core Storybook concepts. It synthesizes information from the official Storybook documentation and the specifics of the Svelte CSF format.
+
+## 1. File Structure and Naming
+
+-   **File Extension:** Svelte CSF story files **must** use the `.stories.svelte` extension.
+-   **Naming and Hierarchy:** Use the `title` property in the `meta` export to define the component's position in the Storybook sidebar hierarchy. Follow the format `Category/SubCategory/ComponentName` (e.g., `title: 'Components/Input/Button'`).
+
+## 2. Defining Meta (Component Metadata)
+
+Every `.stories.svelte` file requires a default export, known as `meta`, which contains metadata about the component and its stories. Use the `defineMeta` function **within the `<script module>` context**.
+
+```svelte
+<script module lang="ts">
+  // ❗️ Must be in the module context
+  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import MyComponent from './MyComponent.svelte';
+
+  // 👇 Destructure the Story component from the return value
+  const { Story } = defineMeta({
+    // Recommended: Path-based grouping for hierarchy
+    title: 'Path/To/MyComponent',
+    component: MyComponent,
+    // Optional: Default args for all stories
+    args: {
+      label: 'Default Label',
+      disabled: false,
+      // Example: For action logging
+      // onClick: fn(), // Requires import { fn } from '@storybook/test';
+    },
+    // Optional: Define controls, descriptions, default values, types etc.
+    argTypes: {
+      label: {
+        control: 'text',
+        description: 'The text content of the button',
+        table: { // Controls appearance in the args table
+          type: { summary: 'string' },
+          defaultValue: { summary: 'Default Label' },
+        },
+      },
+      disabled: {
+        control: 'boolean',
+        description: 'Disables interactions with the button'
+      },
+      variant: {
+        control: { type: 'select' }, // Example: Dropdown control
+        options: ['primary', 'secondary', 'ghost'],
+        description: 'Visual style of the button',
+      },
+      // Example: Explicitly map an arg to an action
+      // onClick: { action: 'clicked' },
+    },
+    // Optional: Global parameters for the component
+    parameters: {
+      layout: 'centered', // Example parameter: centers component in canvas
+      // backgrounds: { ... }, // Configure background addon
+      // viewport: { ... }, // Configure viewport addon
+      // docs: { description: { component: 'Documentation for MyComponent...' } } // Add component description in Docs tab
+    },
+    // Optional: Decorators applied to all stories
+    decorators: [
+      // Functions or Svelte components that wrap stories
+      (Story) => ({
+        Component: Story, // Simple functional decorator example
+        props: { style: 'margin: 1em;' } // Add wrapper props
+      }),
+      // DecoratorComponent, // Svelte component decorator example
+    ],
+    // Optional: Loaders for async data fetching before rendering
+    // loaders: [async () => ({ user: await fetch('/api/user').then(res => res.json()) })],
+    // Optional: Tags for filtering/categorization and enabling features like autodocs
+    tags: ['autodocs', 'component-tag'], // 'autodocs' enables automatic documentation
+  });
+</script>
+
+<!-- Rest of the story definitions -->
+```
+
+-   **`defineMeta`:** The core function to define component metadata.
+-   **`component`:** The Svelte component itself.
+-   **`title`:** Determines the story's location in the Storybook UI.
+-   **`args`:** Default props passed to the component in all stories. Can include mocked functions (`fn()`) for testing interactions.
+-   **`argTypes`:** Provides fine-grained control over Storybook controls, actions, and the documentation table for each prop. Define `control`, `description`, `options`, `table`, `action`, etc.
+-   **`parameters`:** Storybook features and addon configuration (e.g., `layout`, `backgrounds`, `viewport`, `docs`).
+-   **`decorators`:** Wrap stories with extra markup or context (e.g., adding padding, providers). Can be global (`meta`), component-level, or story-level.
+-   **`loaders`:** Async functions that fetch data before a story renders. The loaded data is available in the story context.
+-   **`tags`:** Used for filtering stories in the UI and enabling specific features. `['autodocs']` is crucial for automatic documentation generation.
+-   **Return Value:** `defineMeta` returns an object containing the `Story` component, which is used to define individual stories.
+
+## 3. Defining Stories
+
+Use the `Story` component obtained from `defineMeta` to define individual stories within the standard `<script>` tag or markup area.
+
+### 3.1. Plain Story (Args Only)
+
+For components that only need props, define stories using the `name` (or `exportName`) and `args` props on the `Story` component.
+
+```svelte
+<script module>
+  // ... defineMeta as above ...
+  const { Story } = defineMeta({ component: MyComponent /* ... */ });
+</script>
+
+<Story name="Primary" args={{ variant: 'primary', label: 'Primary Button' }} />
+<Story name="Disabled" args={{ disabled: true, label: 'Disabled Button' }} />
+```
+
+### 3.2. Stories with Templates/Snippets
+
+Use Svelte snippets (`{#snippet ...}`) for composition, slots, or custom rendering logic.
+
+**a) Static Template (No Args Propagation)**
+
+Define children directly within `Story`. **Note:** This method ignores story `args`.
+
+```svelte
+<script module>
+  // ... defineMeta as above ...
+  import AnotherComponent from './AnotherComponent.svelte';
+  const { Story } = defineMeta({ component: MyComponent /* ... */ });
+</script>
+
+<Story name="ComposedStatic">
+  <MyComponent>
+    <AnotherComponent label="Child Content" />
+  </MyComponent>
+</Story>
+```
+
+**b) Inline Snippet (Args Aware)**
+
+Define a `children` snippet within `Story`. It receives `args`.
+
+```svelte
+<script module>
+  // ... defineMeta as above ...
+  const { Story } = defineMeta({ component: MyComponent /* ... */ });
+</script>
+
+<Story name="WithArgsAndSnippet" args={{ label: 'Dynamic Label' }}>
+  {#snippet children(args)}
+    <MyComponent {...args}>
+      <span>{args.label}</span>
+    </MyComponent>
+  {/snippet}
+</Story>
+```
+
+**c) Shared Snippet (Args Aware)**
+
+Define a snippet at the top level and pass it as the `children` prop.
+
+```svelte
+<script module>
+  // ... defineMeta as above ...
+  const { Story } = defineMeta({ component: MyComponent /* ... */ });
+</script>
+
+{#snippet commonTemplate(args)}
+  <MyComponent {...args}>
+    {#if args.icon} <i class="icon">{args.icon}</i> {/if}
+    {args.label}
+  </MyComponent>
+{/snippet}
+
+<Story name="With Icon" args={{ label: 'Save', icon: 'disk' }} children={commonTemplate} />
+<Story name="No Icon" args={{ label: 'Cancel' }} children={commonTemplate} />
+```
+
+**d) Default Snippet (Args Aware)**
+
+Set a default template using `setTemplate` in the **instance `<script>` tag**.
+
+```svelte
+<script module>
+  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import MyComponent from './MyComponent.svelte';
+  const { Story } = defineMeta({ component: MyComponent /* ... */ });
+</script>
+
+<script>
+  // ❗️ Must be in the instance context
+  setTemplate(defaultTemplate);
+</script>
+
+{#snippet defaultTemplate(args)}
+  <div style="border: 1px solid blue; padding: 10px;">
+    <MyComponent {...args} />
+  </div>
+{/snippet}
+
+<Story name="DefaultA" args={{ label: 'A' }} /> <!-- Uses defaultTemplate -->
+<Story name="DefaultB" args={{ label: 'B' }} /> <!-- Uses defaultTemplate -->
+```
+
+### 3.3. Story Naming and Export
+
+-   **`name`:** Display name in the Storybook UI.
+-   **`exportName`:** Explicit exported variable name (avoids conflicts).
+-   At least one (`name` or `exportName`) is required.
+
+```svelte
+<Story name="Friendly Name" exportName="UniqueExport1" args={{ /* ... */ }} />
+```
+
+### 3.4. Accessing Story Context and Loaders
+
+The `children` snippet can access `args` and the full `context` (including loader data).
+
+```svelte
+<script module>
+ // ... defineMeta with loaders ...
+ const { Story } = defineMeta({
+    component: MyComponent,
+    loaders: [async () => ({ user: { name: 'Fetched User' } })],
+ });
+</script>
+
+<Story name="Using Context And Loader">
+  {#snippet children(args, context)}
+    {#if context.loaded?.user}
+        <p>Welcome, {context.loaded.user.name}!</p>
+    {/if}
+    <MyComponent {...args} />
+    <!-- <pre>{JSON.stringify(context, null, 2)}</pre> -->
+  {/snippet}
+</Story>
+```
+
+## 4. Interaction Testing with Play Functions
+
+Use `play` functions to simulate user interactions and run assertions directly within Storybook, verifying component behavior. This leverages the `@storybook/addon-interactions` for visualization and `@storybook/test` for testing utilities.
+
+**Setup:**
+Ensure you have installed `@storybook/addon-interactions` and `@storybook/test`:
+`npm install @storybook/test @storybook/addon-interactions --save-dev`
+And register the addon in `.storybook/main.js|ts`:
+`addons: ['@storybook/addon-interactions']`
+
+```svelte
+<script module lang="ts">
+  import { defineMeta } from '@storybook/addon-svelte-csf';
+  // 👇 Import testing utilities
+  import { userEvent, within, expect, fn, waitFor, step } from '@storybook/test';
+  import FormComponent from './FormComponent.svelte';
+
+  const { Story } = defineMeta({
+    title: 'Components/Form',
+    component: FormComponent,
+    tags: ['autodocs'],
+    args: {
+      // 👇 Use fn() to create a mock function for spying
+      onSubmit: fn(),
+    },
+  });
+</script>
+
+<Story
+  name="Successful Submission"
+  args={{ initialValue: '' }}
+  play={async ({ canvasElement, args, mount }) => {
+    // `mount` can be used to run code *before* the component mounts, e.g., mocking dates
+    // await mount(); // Default mount, or mount(<Component {...args} />) with modified args/data
+
+    const canvas = within(canvasElement); // Scoped queries
+
+    // Example: Using step for grouping interactions
+    await step('Fill out the form', async () => {
+      const emailInput = canvas.getByLabelText('Email');
+      const passwordInput = canvas.getByLabelText('Password');
+      await userEvent.type(emailInput, 'test@example.com', { delay: 50 });
+      await userEvent.type(passwordInput, 'password123', { delay: 50 });
+    });
+
+    await step('Submit the form', async () => {
+       const submitButton = canvas.getByRole('button', { name: /submit/i });
+       await userEvent.click(submitButton);
+    });
+
+    // Example: Assertions using expect from @storybook/test
+    await waitFor(() => {
+      // Assert that the mocked onSubmit function was called
+      expect(args.onSubmit).toHaveBeenCalledTimes(1);
+      expect(args.onSubmit).toHaveBeenCalledWith({
+         email: 'test@example.com',
+         password: 'password123'
+      });
+    });
+
+    // Example: Assert DOM state
+    await expect(canvas.queryByText(/invalid input/i)).not.toBeInTheDocument();
+    await expect(canvas.getByText(/form submitted successfully/i)).toBeInTheDocument();
+  }}
+>
+  {#snippet children(args)}
+     <!-- Render component if needed, play runs after render -->
+     <FormComponent {...args} />
+  {/snippet}
+</Story>
+```
+
+-   **`play` function:** Async function executed after the story renders. Receives context (`canvasElement`, `args`, `step`, `mount`, etc.).
+-   **`@storybook/test` Utilities:**
+    -   `within(canvasElement)`: Creates a query scope bound to the story's root element.
+    -   `userEvent`: Simulates realistic user interactions (`type`, `click`, `hover`, `selectOptions`, etc.).
+    -   `expect`: Assertion library (Vitest's `expect` API) for checking conditions (`toBeInTheDocument`, `toHaveBeenCalled`, `toHaveAttribute`, etc.).
+    -   `fn()`: Creates a spy function to track calls, arguments, and return values. Essential for testing callbacks like `onSubmit`.
+    -   `waitFor`: Waits for an assertion to pass within a timeout, useful for async updates.
+    -   `step`: Groups related interactions under a descriptive label in the interactions panel.
+    -   `mount`: (Advanced) Allows running setup code *before* the component renders, or re-rendering with different props/state during the play function. Requires ES2017+ target.
+-   **Interactions Addon:** Visualizes the execution of the `play` function step-by-step, allowing debugging (pause, rewind, step).
+-
+
+## 5. Automating Tests with Test Runner
+
+While the Storybook UI runs `play` functions when a story is viewed, `@storybook/test-runner` allows you to run *all* interaction tests automatically from the command line or in CI.
+
+**Setup:**
+Install the test runner: `npm install @storybook/test-runner --save-dev`
+Add a script to your `package.json`: `"test-storybook": "test-storybook"`
+
+**Execution:**
+Run `npm run test-storybook`. It will launch a browser (using Playwright), visit each story, execute its `play` function, and report any failures.
+
+
+
+## 6. Documentation
+
+-   **Autodocs:** Enable with `tags: ['autodocs']` in `meta`. Generates a documentation page from `argTypes`, code comments (JSDoc/TSDoc), and the component definition.
+-   **MDX for Custom Docs:** Create `.mdx` files alongside or instead of `.stories.svelte` for narrative documentation, embedding stories, and using Doc Blocks.
+-   **Doc Blocks:** Reusable documentation components (e.g., `<Meta>`, `<Story>`, `<Controls>`, `<Description>`, `<Source>`) for building custom documentation pages in MDX.
+
+## 7. TypeScript Integration
+
+Use TypeScript for type safety (`lang="ts"`).
+
+```svelte
+<script module lang="ts">
+  // ❗️ Ensure lang="ts"
+  import { defineMeta, type Args, type StoryContext } from '@storybook/addon-svelte-csf';
+  import MyComponent from './MyComponent.svelte';
+
+  // Optional: Define a more specific args type
+  type MyComponentArgs = { customProp: string; } & import('svelte').ComponentProps<MyComponent>;
+
+  const { Story } = defineMeta<MyComponentArgs>({ // Pass generic type
+    component: MyComponent,
+    // ...
+  });
+</script>
+
+{#snippet typeSafeTemplate(args: Args<typeof Story>, context: StoryContext<typeof Story>)}
+  <MyComponent {...args} customProp={args.customProp.toUpperCase()} />
+{/snippet}
+
+<Story name="Typed Story" args={{ customProp: 'hello' }} children={typeSafeTemplate} />
+```
+
+-   **`lang="ts"`:** Enables TypeScript in `<script>` tags.
+-   **`Args<typeof Story>`:** Helper type for `args` in snippets.
+-   **`StoryContext<typeof Story>`:** Helper type for `context` in snippets.
+-   **`defineMeta<Type>()`:** Explicitly type `args` via generics.
+
+## 8. Stories for Multiple Components
+
+Compose components within story snippets to demonstrate interactions or layouts.
+
+```svelte
+<script module>
+  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import Container from './Container.svelte';
+  import Item from './Item.svelte';
+
+  const { Story } = defineMeta({
+    title: 'Layouts/ContainerWithItems',
+    component: Container, // Or null if just a composition story
+  });
+</script>
+
+<Story name="Three Items">
+  {#snippet children(args)}
+    <Container {...args}>
+      <Item id="1" /> <Item id="2" /> <Item id="3" />
+    </Container>
+  {/snippet}
+</Story>
+```
+
+
+
+## 9. Mocking
+
+-   **Args Mocking:** Use `argTypes` with `action` or `fn()` from `@storybook/test` to mock callbacks passed as props.
+-   **Module Mocking:** For mocking imported modules (e.g., API calls, utilities), Storybook integrates with Jest/Vitest mocking capabilities, often configured via test runner setup or global decorators/parameters.
+
+---
+
+This enhanced guide provides a more detailed overview, especially regarding testing and advanced Storybook features within the Svelte CSF context. Refer to the linked official documentation for the most in-depth information.
