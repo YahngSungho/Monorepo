@@ -809,7 +809,7 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 		- **Original Prompt**: The user-provided prompt that needs improvement.
 		- **Meta Prompt**: This current prompt you are following.
 		- **Action Prompt**: The improved, highly effective prompt generated based on this Meta Prompt. It will be written in English and use XML, Markdown format.
-		- **Action Output**: The final result produced by an LLM executing the Action Prompt.
+		- **Action Output**: The final result produced by an LLM executing the Action Prompt. **This encompasses the *entire* response from the LLM, which may include reasoning, planning, explanations, intermediate steps, AND the final deliverable (e.g., code, summary, answer), as instructed by the Action Prompt. It is NOT limited to only the final deliverable.**
 			<Relationship>
 			Meta Prompt takes Original Prompt -> Generates Action Prompt -> Action Prompt takes reference materials -> Generates Action Output.
 			</Relationship>
@@ -877,8 +877,8 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 			- Based on the Original Prompt's task type (e.g., reasoning, code generation, creative writing, information extraction, etc.), determine which prompt engineering techniques will be most effective. Consider combinations.
 			- **Justify your choices**: Explain *why* specific techniques are chosen (e.g., "Use Tab-CoT for structured reasoning because the Original Prompt requires step-by-step calculation based on multiple conditions."). Use a structured format like Tab-CoT internally if comparing multiple techniques.
 			- Define the precise structure and key instructions for the Action Prompt.
-			- Specify the desired format for the **Action Output**. If the Original Prompt implies a structured output, define an **Output Schema** (preferably using JSDoc syntax description within the Action Prompt plan).
-			- Plan the inclusion of **Examples (n-shot)** if beneficial, ensuring they cover tricky cases and follow real-world distribution as noted in the techniques list.
+			- Specify the desired **overall structure** for the **Action Output** (e.g., "First, provide step-by-step reasoning using Tab-CoT, then output the final answer formatted as JSON."). If the Original Prompt implies a structured *final deliverable* within the Action Output, define an **Output Schema** (preferably using JSDoc syntax description within the Action Prompt plan) specifically for *that part*. **CRITICALLY, DO NOT plan the Action Prompt to ONLY request the final deliverable format unless the Original Prompt explicitly demands just that.** The Action Prompt should typically instruct the LLM to produce reasoning or planning *alongside* the final result.
+			- Plan the inclusion of **Examples (n-shot)** if beneficial, ensuring they cover tricky cases and follow real-world distribution as noted in the techniques list. Examples should ideally demonstrate the desired *overall structure* of the Action Output (reasoning + final result).
 			- Decide where **Emphasis (ALL CAPS)** is needed for critical instructions.
 			- Document this detailed plan within the `<Action_Prompt_Plan>` tags.
 
@@ -976,7 +976,7 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 			<Why>Provides a clear, concise, unambiguous, and machine-readable specification for the expected output format.</Why>
 			<When>Essential when the desired output is structured data (like JSON) and you need to strictly enforce specific fields, data types (string, number, boolean, arrays), nesting, and optionality.</When>
 			<How>Include a JSDoc `type` or `interface` definition in the prompt. Instruct the model explicitly to format its output conforming EXACTLY to that schema. Example: `Your output MUST be a JSON object conforming to this JSDoc interface:\ninterface Result {\n  name: string;\n  score: number;\n  isValid: boolean;\n  items?: string[]; // Optional array of strings\n}\nOutput ONLY the JSON object.`</How>
-			<Notes>Consider using techniques like defining "potential fields" vs. "actual fields" if you want the model to consider options before committing to the final output structure. Validate the output against the schema afterwards.</Notes>
+			<Notes>Consider using techniques like defining "potential fields" vs. "actual fields" if you want the model to consider options before committing to the final output structure. Validate the output against the schema afterwards. **IMPORTANT: This schema typically defines the format for the *final structured deliverable part* of the Action Output. The Action Prompt may still instruct the LLM to include preceding text like reasoning steps or explanations before the output conforming to this schema.**</Notes>
 		</Technique>
 		<Technique name="Thread of Thought (ThoT)">
 			<What>A technique designed to handle "Chaotic Contexts" (large inputs with varying relevance) by methodically segmenting and analyzing the context in manageable parts, extracting relevant details sequentially to address a specific query without needing fine-tuning.</What>
@@ -1006,6 +1006,6 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 		- **PRESERVE ORIGINAL PROMPT INTEGRITY**: ENSURE NO INFORMATION, INTENT, OR **CRUCIAL DETAIL** (such as specific enumerated lists, detailed guidelines, or examples provided for instruction) FROM THE ORIGINAL PROMPT IS LOST OR SIGNIFICANTLY ALTERED IN THE ACTION PROMPT, UNLESS THE ALTERATION IS A CLEAR IMPROVEMENT IN STRUCTURE OR CLARITY WITHOUT LOSING THE CORE INSTRUCTION. **IF SUMMARIZATION RISKS LOSING CRITICAL NUANCE OR DETAIL FROM INSTRUCTIONS OR GUIDELINES, ERR ON THE SIDE OF INCLUDING THEM MORE FULLY OR VERBATIM WITHIN THE ACTION PROMPT.** DO NOT ADD TASKS BEYOND THE ORIGINAL PROMPT'S SCOPE.
 		- **Clarity and Effectiveness**: The primary goal is to create an Action Prompt that is significantly more effective than the Original Prompt.
 		- **English and XML, Markdown**: The Action Prompt MUST be in English and use XML, Markdown format.
-		- **Guidance for Action Prompt Construction**: The generated Action Prompt SHOULD instruct the final LLM to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as a self-correction/verification step.
+		- **Guidance for Action Prompt Construction**: The generated Action Prompt SHOULD instruct the final LLM to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as a self-correction/verification step. The Action Prompt should also guide the LLM to produce a *complete* response, which often includes reasoning, planning, or explanations *alongside* the final output, as appropriate for the task and defined in the `Action_Prompt_Plan`.
 	</Constraints_and_Guidelines>
 </Meta_Prompt>
