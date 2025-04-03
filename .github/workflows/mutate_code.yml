@@ -25,29 +25,40 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const prNodeId = context.payload.pull_request.node_id; // 이벤트 페이로드에서 PR의 node_id 가져오기
             const prNumber = context.issue.number;
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
+            const owner = context.repo.owner; // 필요시 로그 출력용
+            const repo = context.repo.repo; // 필요시 로그 출력용
+
+            if (!prNodeId) {
+              console.log(`Could not get Pull Request Node ID from context for PR #${prNumber}.`);
+              // 만약 context에 node_id가 없다면, API로 다시 조회해야 할 수 있지만,
+              // pull_request 이벤트에서는 보통 포함되어 있습니다.
+              core.setFailed("Could not determine Pull Request Node ID.");
+              return;
+            }
+
+            console.log(`Attempting to disable auto-merge for PR #${prNumber} (Node ID: ${prNodeId}) via GraphQL`);
 
             try {
-              // 자동 병합 비활성화를 시도합니다.
-              await github.rest.pulls.disableAutoMerge({
-                owner: owner,
-                repo: repo,
-                pull_number: prNumber
-              });
-              console.log(`✅ Auto-merge successfully disabled for PR #${prNumber}.`);
+              // github.graphql을 사용하여 disablePullRequestAutoMerge 뮤테이션 실행
+              await github.graphql(`
+                mutation($prId: ID!) {
+                  disablePullRequestAutoMerge(input: {pullRequestId: $prId}) {
+                    clientMutationId
+                  }
+                }
+              `, { prId: prNodeId });
+              console.log(`✅ Auto-merge successfully disabled for PR #${prNumber} via GraphQL.`);
             } catch (error) {
-              // 오류가 발생했을 때 상태 코드를 확인합니다.
-              // 404 또는 유사한 오류는 자동 병합이 활성화되지 않았음을 의미할 수 있습니다.
-              // (API 응답은 상황에 따라 다를 수 있으므로 실제 테스트를 통해 확인하는 것이 좋습니다.)
-              if (error.status === 404 || error.message.includes("Auto merge is not enabled")) {
-                console.log(`ℹ️ Auto-merge was not enabled for PR #${prNumber}. No action taken.`);
+              // GraphQL 오류 메시지를 확인하여 자동 병합이 활성화되지 않았는지 판단합니다.
+              // 실제 오류 메시지에 따라 이 조건은 조정될 수 있습니다.
+              if (error.message.includes("Pull request auto-merge cannot be disabled") || error.message.includes("Could not resolve to a PullRequest") || error.message.includes("already disabled")) {
+                 console.log(`ℹ️ Auto-merge was not enabled or already disabled for PR #${prNumber}. (GraphQL Error: ${error.message})`);
               } else {
-                // 예상치 못한 다른 오류가 발생한 경우
-                console.error(`❌ Failed to disable auto-merge for PR #${prNumber}. Error: ${error.message}`);
+                console.error(`❌ Failed to disable auto-merge for PR #${prNumber} via GraphQL. Error: ${error.message}`);
                 // 필요시 오류를 다시 던져서 워크플로우 스텝을 실패시킬 수 있습니다.
-                // core.setFailed(`Failed to disable auto-merge: ${error.message}`);
+                // core.setFailed(`Failed to disable auto-merge via GraphQL: ${error.message}`);
               }
             }
         env:
