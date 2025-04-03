@@ -627,3 +627,171 @@ Let's think step by step:
 ## Conclusion
 
 Code prompting is an effective strategy for eliciting **conditional reasoning abilities** in text+code LLMs, enhancing their performance on logical tasks by providing structured inputs. This method not only improves accuracy but also **reduces the need for extensive demonstrations**, making it a valuable tool for improving reasoning in AI applications.
+
+---
+
+# Thread of Thought (ThoT)
+
+## Introduction
+
+Large Language Models (LLMs) have achieved a remarkable performance in natural language understanding and generation. They are used for a variety of tasks such as translation, summarization, question answering, etc. As LLMs become more capable, their applications grow increasingly diverse and complex.
+
+In advanced applications like Retrieval-Augmented Generation (RAG), users often input vast texts containing tens of thousands of tokens. This data may vary widely in relevance and connectivity, with some details critical to the query and others irrelevant. Such scenarios exemplify **"Chaotic Contexts"**---more challenging than mere "long contexts," which involve a large token count but lack the same degree of informational disarray.
+
+## Challenges in Handling Chaotic Contexts
+
+Current techniques for managing chaotic contexts include:
+
+- **Retrieval-Augmentation with Long Context Extensions:** Combining extended model contexts with retrieval mechanisms.
+- **Prompt Streamlining:** Reducing irrelevant or redundant information within the input.
+
+However, both approaches often require fine-tuning or retraining, demanding labeled data and substantial computational resources.
+
+## Introducing Thread of Thought Prompting
+
+Thread of Thought (ThoT) prompting offers an alternative that eliminates the need for fine-tuning. Instead, it methodically segments and analyzes extended contexts, extracting relevant details to address specific queries.
+Much like how humans sift through large volumes of information by isolating key points, ThoT helps LLMs handle complex inputs efficiently.
+
+In short, ThoT prompting helps LLMs to methodically process, summarize, and analyze extended contexts in manageable parts, resulting in more accurate responses in tasks such as multi-turn conversations and complex question answering.
+
+## Key Features of ThoT Prompting
+
+1. **Guided Step-by-Step Processing:** ThoT prompts the model to "walk through" chaotic contexts, analyzing and summarizing each part progressively.
+2. **Selective Attention:** By breaking down information into smaller segments, ThoT helps the model ignore irrelevant details and focus on pertinent information.
+3. **Two-Tiered Prompting System:** This system involves a first pass for analysis and a second pass for summarizing and deriving conclusions, enhancing the model's ability to synthesize complex information.
+
+For example, if the model is asked about the founding place of "Reclam" from multiple retrieved passages, ThoT helps the model sift through each passage in stages, retaining only the relevant details about "Reclam" and its founding location.
+
+## How to Use ThoT Prompting
+
+ThoT prompting uses a simple and effective two-step process. As discussed previously, it doesn't require any fine-tuning or re-training and can easily be used with a variety of existing language models. Let's briefly discuss the two steps involved in the process:
+
+### Step 1: Initiating the Reasoning
+
+The goal of this step is to provide the "chaotic" context, followed by the question and a trigger to elicit a response from the LLM. The prompt template for this step looks like this:
+
+#### Template for initiating the reasoning
+
+CHAOTIC CONTEXT HERE
+
+Q: QUERY HERE
+
+TRIGGER SENTENCE HERE
+
+A:
+
+#### Example in Action
+
+Now, let's look at a concrete example. Say, given multiple sources of information regarding Reclam, you want to know where Reclam was founded. Your input to the model will look like:
+
+#### Prompt
+
+As a content reviewer, I provide multiple retrieved passages about this question; you need to answer the question.
+retrieved Passage 1 is: to introduce book vending machines, ... retrieved Passage 2 is: of the Carlsbad Decrees, it quickly ... retrieved Passage 3 is: It is at "Kreuzstrae 12", opposite ... retrieved Passage 4 is: house in Leipzig remained there, ... retrieved Passage 5 is: Delcam Delcam is a supplier of ... retrieved Passage 6 is: inhabitants are called recreinos.
+... retrieved Passage 7 is: 'politically unreliable' writers like ... retrieved Passage 8 is: Recheio Recheio is the biggest ... retrieved Passage 9 is: via the Internet, large volumes of ... retrieved Passage 10 is: without needing to pay any royalties, ...
+
+Q: Where was Reclam founded? Walk me through this context in manageable parts step by step, summarizing and analyzing as we go.
+
+A:
+
+#### AI Output
+
+According to retrieved Passage 2, Anton Philipp Reclam founded his own publishing ... In retrieved Passage 4, it is mentioned that the Reclam publishing house in Leipzig ... Finally, in retrieved Passage 7, it is stated that after the partition of Germany ... Therefore, Reclam was originally founded in Leipzig, Germany, and later moved its main office to Stuttgart.
+
+Notice the trigger sentence "Walk me through this context in manageable parts step by step, summarizing and analyzing as we go".
+The trigger sentence guides LLM to navigate chaotic context by asking it to summarize and analyze the information as it goes thorough the input context.
+
+### Step 2: Refining the Conclusion
+
+The goal of the second step is to extract the conclusion using the response of the LLM in the previous step. The prompt template for this step looks like this:
+
+#### Template for initiating the reasoning
+
+CHAOTIC CONTEXT HERE
+
+Q: QUERY HERE
+
+TRIGGER SENTENCE HERE
+
+A: ANSWER FROM LLM HERE
+
+Therefore, the answer is:
+
+#### Example in Action
+
+Let's use the template to extract the final answer from the LLM.
+
+#### Prompt
+
+As a content reviewer, I provide multiple retrieved passages about this question; you need to answer the question.
+retrieved Passage 1 is: to introduce book vending machines, ... retrieved Passage 2 is: of the Carlsbad Decrees, it quickly ... retrieved Passage 3 is: It is at "Kreuzstrae 12", opposite ... retrieved Passage 4 is: house in Leipzig remained there, ... retrieved Passage 5 is: Delcam Delcam is a supplier of ... retrieved Passage 6 is: inhabitants are called recreinos.
+... retrieved Passage 7 is: 'politically unreliable' writers like ... retrieved Passage 8 is: Recheio Recheio is the biggest ... retrieved Passage 9 is: via the Internet, large volumes of ... retrieved Passage 10 is: without needing to pay any royalties, ...
+
+Q: Where was Reclam founded? Walk me through this context in manageable parts step by step, summarizing and analyzing as we go.
+
+A: According to retrieved Passage 2, Anton Philipp Reclam founded his own publishing ... In retrieved Passage 4, it is mentioned that the Reclam publishing house in Leipzig ... Finally, in retrieved Passage 7, it is stated that after the partition of Germany ... Therefore, Reclam was originally founded in Leipzig, Germany, and later moved its main office to Stuttgart.
+
+Therefore, the answer is:
+
+#### AI Output
+
+Reclam was originally founded in Leipzig
+
+## How ThoT Differs from Existing Techniques
+
+ThoT stands apart from traditional approaches:
+
+- **Enhanced Focus vs. Chain-of-Thought (CoT)**: While CoT improves reasoning, it falters in chaotic contexts. ThoT's segmentation approach ensures no key details are overlooked.
+- **Plug-and-Play Simplicity**: ThoT works with pre-trained models without the need for additional training, making it cost-effective and easy to implement.
+- **Adaptability**: ThoT excels across tasks like retrieval-augmented generation, multi-turn dialogues, and summarizing unstructured data.
+
+### Applications and Benefits of Thread of Thought
+
+ThoT is useful in scenarios where complex or unrelated information must be processed for relevant insights:
+
+- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
+- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
+- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
+
+## Conclusion
+
+Thread of Thought (ThoT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights.
+This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
+
+---
+
+# Tree of Thoughts (ToT)
+
+## A Single Prompt Example
+
+Imagine three different experts are answering this question.
+All experts will write down 1 step of their thinking,
+then share it with the group.
+Then all experts will go on to the next step, etc.
+If any expert realises they're wrong at any point then they leave.
+The question is...
+
+## What is Tree of Thoughts (ToT)?
+
+A prompting approach guiding the LLM to explore multiple reasoning paths ('thoughts') concurrently for complex problems, instead of a single linear sequence (like CoT). Involves generating potential steps, evaluating their promise, and systematically searching the resulting 'tree of thoughts'.
+
+## How ToT Differs from Existing Techniques
+
+ThoT stands apart from traditional approaches:
+
+- **Enhanced Focus vs. Chain-of-Thought (CoT)**: While CoT improves reasoning, it falters in chaotic contexts. ThoT's segmentation approach ensures no key details are overlooked.
+- **Plug-and-Play Simplicity**: ThoT works with pre-trained models without the need for additional training, making it cost-effective and easy to implement.
+- **Adaptability**: ThoT excels across tasks like retrieval-augmented generation, multi-turn dialogues, and summarizing unstructured data.
+
+### Applications and Benefits of Tree of Thoughts
+
+ThoT is useful in scenarios where complex or unrelated information must be processed for relevant insights:
+
+- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
+- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
+- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
+
+## Conclusion
+
+Tree of Thoughts (ToT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights.
+This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
