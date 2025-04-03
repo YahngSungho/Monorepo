@@ -1,6 +1,9 @@
+import path from 'node:path';
+
 import { expect, test } from '@playwright/test'
 
 import manifest from '../storybook-static/index.json' with { type: 'json' }
+import { CACHE_DIR,isSameState, readCache, serializePage, writeCache } from './cache.js';
 import { testUIComponent } from './universal-testers.js'
 
 for (const entry of Object.values(manifest.entries)) {
@@ -13,6 +16,10 @@ for (const entry of Object.values(manifest.entries)) {
 	}
 
 	const title = id.replaceAll('--', ' @ ').replaceAll('-', ' > ')
+
+	const cacheFileName = `${id}.html`;
+	const cacheFilePath = path.join(CACHE_DIR, `storybook-${cacheFileName}`);
+
 	test(`${title}`, async ({ page }) => {
 		// 캐시 비활성화를 위한 라우트 설정
 		// await page.route('**', (route) => route.continue())
@@ -35,8 +42,21 @@ for (const entry of Object.values(manifest.entries)) {
 
 		await page.goto(`./iframe.html?id=${id}&viewMode=story`)
 		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
-		await page.emulateMedia({ reducedMotion: 'reduce' })
 
+		const cachedState = readCache(cacheFilePath);
+		const currentState = await serializePage(page);
+
+		if (isSameState(cachedState, currentState)) {
+			console.log(`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`);
+			test.info().annotations.push({ type: 'cache-status', description: 'hit' });
+			expect(consoleErrors, '콘솔 에러 체크 (캐시 히트)').toHaveLength(0)
+			expect(failedRequests, '네트워크 에러 체크 (캐시 히트)').toHaveLength(0)
+			return;
+		}
+		console.log(`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`);
+		test.info().annotations.push({ type: 'cache-status', description: 'miss' });
+
+			await page.emulateMedia({ reducedMotion: 'reduce' })
 		const results = await testUIComponent(page, {
 			numRuns: 5,
 			sequenceLength: 3,
@@ -54,9 +74,6 @@ for (const entry of Object.values(manifest.entries)) {
 			body: dateNow.toLocaleString('ko-KR'),
 		})
 
-		expect(consoleErrors, '콘솔 에러 체크').toHaveLength(0)
-		expect(failedRequests, '네트워크 에러 체크').toHaveLength(0)
-
 		// UI 컴포넌트 에러 정보 첨부
 		const errorMessages = (results.errors ?? []).map((error) => `- ${error.message}`).join('\n')
 		test.info().attach(`UI Component Errors (${results.errors?.length ?? 0})`, {
@@ -66,5 +83,10 @@ for (const entry of Object.values(manifest.entries)) {
 
 		expect(results.errors.length).toBe(0)
 		expect(results.success).toBe(true)
+
+		if (results.success && results.errors.length === 0) {
+						console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`);
+			writeCache(currentState, cacheFilePath);
+		}
 	})
 }

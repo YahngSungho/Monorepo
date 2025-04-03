@@ -1550,16 +1550,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 		failureInfo: undefined,
 	}
 
-	// Todos: shrink와 어떻게 조화?
-	// if (resetComponent) { 주석 해제하지말것
-	try {
-		await resetComponentState(page)
-	} catch (error) {
-		console.error(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
-		// 초기화 실패해도 계속 진행
-	}
-	// }
-
 	// 페이지가 닫혔는지 확인
 	if (await isPageClosed(page)) {
 		console.error('페이지가 이미 닫혀 있습니다. 이번 반복은 중단합니다.')
@@ -1637,6 +1627,15 @@ async function runSingleIteration(page, iteration, errors, config) {
 				if (await isPageClosed(page)) {
 					console.error('페이지가 닫혀 있습니다. 시퀀스 실행을 중단합니다.')
 					throw new Error('페이지가 닫혀 있어 시퀀스를 실행할 수 없습니다.')
+				}
+
+				// !!! 각 시퀀스 실행 전에 상태 초기화 !!!
+				try {
+					await resetComponentState(page) // <--- 이동된 위치
+				} catch (error) {
+					console.error(`[시퀀스 실행 전] 컴포넌트 상태 초기화 중 오류: ${error.message}`)
+					// 초기화 실패 시 테스트를 중단하거나 계속 진행할지 결정 필요
+					throw new Error(`컴포넌트 상태 초기화 실패: ${error.message}`)
 				}
 
 				// 시퀀스 정보 초기화 - 명시적 타입 지정

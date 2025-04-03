@@ -379,6 +379,8 @@ export default defineFlatConfig([
 		rules: {
 			...playwright.configs['flat/recommended'].rules,
 			'no-shadow': 'off',
+			'playwright/no-conditional-in-test': 'off',
+			'playwright/no-conditional-expect': 'off'
 		},
 	},
 
