@@ -141,6 +141,7 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 	const visibleElementInfos = await page.evaluate((selector) => {
 		/**
 		 * 요소의 고유 CSS 선택자를 생성합니다. data-testid, id, nth-child 순서로 우선순위를 가집니다.
+		 *
 		 * @param {Element} el - 대상 요소
 		 * @param {string} base - 기본 선택자 (루트 컴포넌트 선택자)
 		 * @returns {string} 고유 CSS 선택자
@@ -175,6 +176,7 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 
 		/**
 		 * 요소가 시각적으로 보이는지 CSS 속성 및 크기를 기준으로 확인합니다.
+		 *
 		 * @param {Element} element - 확인할 요소
 		 * @returns {boolean} 요소가 보이면 true, 아니면 false
 		 */
@@ -183,7 +185,11 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 
 			// 1. getComputedStyle 확인
 			const style = globalThis.getComputedStyle(element)
-			if (style.display === 'none' || style.visibility === 'hidden' || Number.parseFloat(style.opacity) === 0) {
+			if (
+				style.display === 'none' ||
+				style.visibility === 'hidden' ||
+				Number.parseFloat(style.opacity) === 0
+			) {
 				return false
 			}
 
@@ -197,11 +203,10 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 				}
 			} else if (element instanceof SVGElement) {
 				// SVG 요소의 경우 getBBox() 등으로 크기 확인 가능하나, 여기서는 일단 통과시킴
-                // 필요시 SVG 크기 확인 로직 추가
+				// 필요시 SVG 크기 확인 로직 추가
 			} else {
-                // HTMLElement나 SVGElement가 아닌 다른 타입의 Element는 크기 확인 생략
-            }
-
+				// HTMLElement나 SVGElement가 아닌 다른 타입의 Element는 크기 확인 생략
+			}
 
 			// 3. 부모 요소 가시성 확인 (재귀적)
 			// document.body까지 올라가면서 숨겨진 부모가 있는지 확인
@@ -254,8 +259,7 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 					min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
 					max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
 					draggable:
-						el.getAttribute('draggable') === 'true' ||
-							el.getAttribute('data-draggable') === 'true',
+						el.getAttribute('draggable') === 'true' || el.getAttribute('data-draggable') === 'true',
 					isDroppable: el.getAttribute('data-droppable') === 'true',
 					isScrollableX,
 					isScrollableY,
