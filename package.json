@@ -132,7 +132,7 @@
 		"stylelint-value-no-unknown-custom-properties": "^6.0.1",
 		"svelte": "^5.25.3",
 		"svelte-check": "^4.1.5",
-		"svelte-eslint-parser": "^1.1.1",
+		"svelte-eslint-parser": "^1.1.2",
 		"svelte-language-server": "^0.17.11",
 		"syncpack": "^13.0.3",
 		"toml-eslint-parser": "^0.10.0",
