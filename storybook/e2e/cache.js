@@ -9,18 +9,18 @@ const CACHE_DIR = path.join(__dirname, '..', '.cache'); // 프로젝트 루트�
 /**
  * 지정된 경로에서 캐시 파일을 읽어 내용을 반환합니다. 파일이 없거나 오류 발생 시 null을 반환합니다.
  * @param {string} cacheFilePath - 읽어올 캐시 파일의 전체 경로
- * @returns {string | null} 캐시 파일 내용 또는 null
+ * @returns {string | undefined} 캐시 파일 내용 또는 undefined
  */
 function readCache(cacheFilePath) {
   try {
-    if (!fs.existsSync(cacheFilePath)) {
-      return null;
-    }
-    return fs.readFileSync(cacheFilePath, 'utf8');
+		if (!fs.existsSync(cacheFilePath)) {
+			return undefined
+		}
+		return fs.readFileSync(cacheFilePath, 'utf8')
   } catch (error) {
-    console.error(`캐시 읽기 오류 (${cacheFilePath}):`, error);
-    return null;
-  }
+		console.error(`캐시 읽기 오류 (${cacheFilePath}):`, error)
+		return undefined
+	}
 }
 
 /**
