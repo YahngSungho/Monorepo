@@ -629,6 +629,174 @@ Let's think step by step:
 
 Code prompting is an effective strategy for eliciting **conditional reasoning abilities** in text+code LLMs, enhancing their performance on logical tasks by providing structured inputs. This method not only improves accuracy but also **reduces the need for extensive demonstrations**, making it a valuable tool for improving reasoning in AI applications.
 
+---
+
+# Thread of Thought (ThoT)
+
+## Introduction
+
+Large Language Models (LLMs) have achieved a remarkable performance in natural language understanding and generation. They are used for a variety of tasks such as translation, summarization, question answering, etc. As LLMs become more capable, their applications grow increasingly diverse and complex.
+
+In advanced applications like Retrieval-Augmented Generation (RAG), users often input vast texts containing tens of thousands of tokens. This data may vary widely in relevance and connectivity, with some details critical to the query and others irrelevant. Such scenarios exemplify **"Chaotic Contexts"**---more challenging than mere "long contexts," which involve a large token count but lack the same degree of informational disarray.
+
+## Challenges in Handling Chaotic Contexts
+
+Current techniques for managing chaotic contexts include:
+
+- **Retrieval-Augmentation with Long Context Extensions:** Combining extended model contexts with retrieval mechanisms.
+- **Prompt Streamlining:** Reducing irrelevant or redundant information within the input.
+
+However, both approaches often require fine-tuning or retraining, demanding labeled data and substantial computational resources.
+
+## Introducing Thread of Thought Prompting
+
+Thread of Thought (ThoT) prompting offers an alternative that eliminates the need for fine-tuning. Instead, it methodically segments and analyzes extended contexts, extracting relevant details to address specific queries.
+Much like how humans sift through large volumes of information by isolating key points, ThoT helps LLMs handle complex inputs efficiently.
+
+In short, ThoT prompting helps LLMs to methodically process, summarize, and analyze extended contexts in manageable parts, resulting in more accurate responses in tasks such as multi-turn conversations and complex question answering.
+
+## Key Features of ThoT Prompting
+
+1. **Guided Step-by-Step Processing:** ThoT prompts the model to "walk through" chaotic contexts, analyzing and summarizing each part progressively.
+2. **Selective Attention:** By breaking down information into smaller segments, ThoT helps the model ignore irrelevant details and focus on pertinent information.
+3. **Two-Tiered Prompting System:** This system involves a first pass for analysis and a second pass for summarizing and deriving conclusions, enhancing the model's ability to synthesize complex information.
+
+For example, if the model is asked about the founding place of "Reclam" from multiple retrieved passages, ThoT helps the model sift through each passage in stages, retaining only the relevant details about "Reclam" and its founding location.
+
+## How to Use ThoT Prompting
+
+ThoT prompting uses a simple and effective two-step process. As discussed previously, it doesn't require any fine-tuning or re-training and can easily be used with a variety of existing language models. Let's briefly discuss the two steps involved in the process:
+
+### Step 1: Initiating the Reasoning
+
+The goal of this step is to provide the "chaotic" context, followed by the question and a trigger to elicit a response from the LLM. The prompt template for this step looks like this:
+
+#### Template for initiating the reasoning
+
+CHAOTIC CONTEXT HERE
+
+Q: QUERY HERE
+
+TRIGGER SENTENCE HERE
+
+A:
+
+#### Example in Action
+
+Now, let's look at a concrete example. Say, given multiple sources of information regarding Reclam, you want to know where Reclam was founded. Your input to the model will look like:
+
+#### Prompt
+
+As a content reviewer, I provide multiple retrieved passages about this question; you need to answer the question.
+retrieved Passage 1 is: to introduce book vending machines, ... retrieved Passage 2 is: of the Carlsbad Decrees, it quickly ... retrieved Passage 3 is: It is at "Kreuzstrae 12", opposite ... retrieved Passage 4 is: house in Leipzig remained there, ... retrieved Passage 5 is: Delcam Delcam is a supplier of ... retrieved Passage 6 is: inhabitants are called recreinos.
+... retrieved Passage 7 is: 'politically unreliable' writers like ... retrieved Passage 8 is: Recheio Recheio is the biggest ... retrieved Passage 9 is: via the Internet, large volumes of ... retrieved Passage 10 is: without needing to pay any royalties, ...
+
+Q: Where was Reclam founded? Walk me through this context in manageable parts step by step, summarizing and analyzing as we go.
+
+A:
+
+#### AI Output
+
+According to retrieved Passage 2, Anton Philipp Reclam founded his own publishing ... In retrieved Passage 4, it is mentioned that the Reclam publishing house in Leipzig ... Finally, in retrieved Passage 7, it is stated that after the partition of Germany ... Therefore, Reclam was originally founded in Leipzig, Germany, and later moved its main office to Stuttgart.
+
+Notice the trigger sentence "Walk me through this context in manageable parts step by step, summarizing and analyzing as we go".
+The trigger sentence guides LLM to navigate chaotic context by asking it to summarize and analyze the information as it goes thorough the input context.
+
+### Step 2: Refining the Conclusion
+
+The goal of the second step is to extract the conclusion using the response of the LLM in the previous step. The prompt template for this step looks like this:
+
+#### Template for initiating the reasoning
+
+CHAOTIC CONTEXT HERE
+
+Q: QUERY HERE
+
+TRIGGER SENTENCE HERE
+
+A: ANSWER FROM LLM HERE
+
+Therefore, the answer is:
+
+#### Example in Action
+
+Let's use the template to extract the final answer from the LLM.
+
+#### Prompt
+
+As a content reviewer, I provide multiple retrieved passages about this question; you need to answer the question.
+retrieved Passage 1 is: to introduce book vending machines, ... retrieved Passage 2 is: of the Carlsbad Decrees, it quickly ... retrieved Passage 3 is: It is at "Kreuzstrae 12", opposite ... retrieved Passage 4 is: house in Leipzig remained there, ... retrieved Passage 5 is: Delcam Delcam is a supplier of ... retrieved Passage 6 is: inhabitants are called recreinos.
+... retrieved Passage 7 is: 'politically unreliable' writers like ... retrieved Passage 8 is: Recheio Recheio is the biggest ... retrieved Passage 9 is: via the Internet, large volumes of ... retrieved Passage 10 is: without needing to pay any royalties, ...
+
+Q: Where was Reclam founded? Walk me through this context in manageable parts step by step, summarizing and analyzing as we go.
+
+A: According to retrieved Passage 2, Anton Philipp Reclam founded his own publishing ... In retrieved Passage 4, it is mentioned that the Reclam publishing house in Leipzig ... Finally, in retrieved Passage 7, it is stated that after the partition of Germany ... Therefore, Reclam was originally founded in Leipzig, Germany, and later moved its main office to Stuttgart.
+
+Therefore, the answer is:
+
+#### AI Output
+
+Reclam was originally founded in Leipzig
+
+## How ThoT Differs from Existing Techniques
+
+ThoT stands apart from traditional approaches:
+
+- **Enhanced Focus vs. Chain-of-Thought (CoT)**: While CoT improves reasoning, it falters in chaotic contexts. ThoT's segmentation approach ensures no key details are overlooked.
+- **Plug-and-Play Simplicity**: ThoT works with pre-trained models without the need for additional training, making it cost-effective and easy to implement.
+- **Adaptability**: ThoT excels across tasks like retrieval-augmented generation, multi-turn dialogues, and summarizing unstructured data.
+
+### Applications and Benefits of Thread of Thought
+
+ThoT is useful in scenarios where complex or unrelated information must be processed for relevant insights:
+
+- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
+- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
+- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
+
+## Conclusion
+
+Thread of Thought (ThoT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights.
+This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
+
+---
+
+# Tree of Thoughts (ToT)
+
+## A Single Prompt Example
+
+Imagine three different experts are answering this question.
+All experts will write down 1 step of their thinking,
+then share it with the group.
+Then all experts will go on to the next step, etc.
+If any expert realises they're wrong at any point then they leave.
+The question is...
+
+## What is Tree of Thoughts (ToT)?
+
+A prompting approach guiding the LLM to explore multiple reasoning paths ('thoughts') concurrently for complex problems, instead of a single linear sequence (like CoT). Involves generating potential steps, evaluating their promise, and systematically searching the resulting 'tree of thoughts'.
+
+## How ToT Differs from Existing Techniques
+
+ThoT stands apart from traditional approaches:
+
+- **Enhanced Focus vs. Chain-of-Thought (CoT)**: While CoT improves reasoning, it falters in chaotic contexts. ThoT's segmentation approach ensures no key details are overlooked.
+- **Plug-and-Play Simplicity**: ThoT works with pre-trained models without the need for additional training, making it cost-effective and easy to implement.
+- **Adaptability**: ThoT excels across tasks like retrieval-augmented generation, multi-turn dialogues, and summarizing unstructured data.
+
+### Applications and Benefits of Tree of Thoughts
+
+ThoT is useful in scenarios where complex or unrelated information must be processed for relevant insights:
+
+- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
+- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
+- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
+
+## Conclusion
+
+Tree of Thoughts (ToT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights.
+This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
+
 </Prompt_Engineering_Technique_documentation>
 
 
@@ -648,14 +816,14 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 	</Definitions>
 
 	<Information_Required_to_Execute_This_Meta_Prompt>
-		<Purpose>To successfully generate the improved Action Prompt, you MUST be provided with the following information:</Purpose>
+		<Purpose>To successfully generate the improved Action Prompt, you will be provided with the following information:</Purpose>
 		<Item id="1">
 			<Name>Original Prompt</Name>
 			<Description>The user-provided text prompt that is the target for analysis and improvement.</Description>
 		</Item>
 		<Item id="2">
 			<Name>Reference Materials</Name>
-			<Description>Any additional documents, context, examples, or specific knowledge (like the provided `<Prompt_Engineering_Technique_Documentation>` content, user instructions, etc.) relevant to understanding the Original Prompt's task or applying advanced prompting techniques.</Description>
+			<Description>Any additional documents, context, examples, or specific knowledge relevant to understanding the Original Prompt's task or applying advanced prompting techniques.</Description>
 		</Item>
 	</Information_Required_to_Execute_This_Meta_Prompt>
 
@@ -699,8 +867,7 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 		- **Goal**: Identify and summarize information from the provided Reference Materials that directly informs the improvement of the Original Prompt and the creation of the Action Prompt.
 		- **Action**:
 			- Review all Reference Materials.
-			- Extract definitions, concepts, prompt engineering techniques, examples, or constraints relevant to the Original Prompt's task and the goal of creating a high-performance Action Prompt.
-			- Prioritize information about the prompt engineering techniques listed below.
+			- Extract definitions, concepts, examples, or constraints relevant to the Original Prompt's task and the goal of creating a high-performance Action Prompt.
 			- Cite the source of the information (e.g., filename, document section).
 			- Summarize these findings within the `<Relevant_Data_Summary>` tags.
 
@@ -710,7 +877,7 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 			- Based on the Original Prompt's task type (e.g., reasoning, code generation, creative writing, information extraction, etc.), determine which prompt engineering techniques will be most effective. Consider combinations.
 			- **Justify your choices**: Explain *why* specific techniques are chosen (e.g., "Use Tab-CoT for structured reasoning because the Original Prompt requires step-by-step calculation based on multiple conditions."). Use a structured format like Tab-CoT internally if comparing multiple techniques.
 			- Define the precise structure and key instructions for the Action Prompt.
-			- Specify the desired format for the **Action Output**. If the Original Prompt implies a structured output, define an **Output Schema** (preferably using TypeScript syntax description within the Action Prompt plan).
+			- Specify the desired format for the **Action Output**. If the Original Prompt implies a structured output, define an **Output Schema** (preferably using JSDoc syntax description within the Action Prompt plan).
 			- Plan the inclusion of **Examples (n-shot)** if beneficial, ensuring they cover tricky cases and follow real-world distribution as noted in the techniques list.
 			- Decide where **Emphasis (ALL CAPS)** is needed for critical instructions.
 			- Document this detailed plan within the `<Action_Prompt_Plan>` tags.
@@ -723,7 +890,7 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 			- Ensure the Action Prompt clearly instructs the LLM on its role, the task, the required reasoning process, input/output format, and constraints.
 			- Double-check that the Action Prompt incorporates the core intent and necessary details from the Original Prompt (addressing the "Content Preservation" constraint).
 			- Ensure the Action Prompt instructs the final LLM to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as a self-correction/verification step.
-			- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), incorporate them thoroughly, potentially verbatim, into the Action Prompt's instructions to the final LLM to ensure faithful execution.
+			- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), incorporate them thoroughly, potentially verbatim, into the Action Prompt's instructions to ensure faithful execution.
 
 		**Phase 5: Verify Original Prompt Content Preservation**
 	</Core_Task>
@@ -793,7 +960,7 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 		<Technique name="Code Prompting">
 			<What>Transforms a natural language reasoning problem (especially one involving conditional logic) into a structured pseudo-code representation within the prompt. The LLM reasons based on this code structure and associated comments, not by actually executing the code.</What>
 			<Why>Leverages the inherent capability of code-trained LLMs to handle structured logic, variable tracking, and conditional paths more precisely and robustly than processing purely natural language descriptions for certain types of problems.</Why>
-			<When>Particularly effective for tasks involving complex conditional rules, eligibility determinations, state tracking based on sequential conditions, or applying rules from structured documents (e.g., legal texts, regulations, game rules).</When>
+			<When>Particularly effective for tasks involving loops, conditional if/else rules, eligibility determinations, state tracking based on sequential conditions, or applying rules from structured documents (e.g., legal texts, regulations, game rules).</When>
 			<How>Convert the natural language problem description and relevant context into a pseudo-code format. Use variables to represent key entities or concepts. Employ `if/else` structures, loops, or functions to model the logic. Crucially, preserve relevant original text snippets as comments within the code structure. Prompt the LLM to reason based *on the code structure and the comments* to arrive at the answer. Often uses few-shot examples showing the NL-to-pseudo-code transformation and the reasoning process.</How>
 			<Notes>The quality of the pseudo-code representation is key. It needs to accurately capture the logic of the original problem.</Notes>
 		</Technique>
@@ -804,12 +971,34 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 			<How>Simply write the specific words or sentences you want to emphasize in ALL CAPS. Be strategic and don't overuse it, as excessive capitalization can be ignored or misinterpreted.</How>
 			<Notes>Often used for negative constraints or to highlight the single most important aspect of the task.</Notes>
 		</Technique>
-		<Technique name="Output Schema (TypeScript)">
-			<What>Defining the desired structure of the output (typically JSON) using TypeScript `type` or `interface` definitions directly within the prompt.</What>
-			<Why>Provides a clear, concise, unambiguous, and machine-readable specification for the expected output format. Significantly more reliable than describing the desired JSON structure in natural language. Can minimize tokens compared to verbose descriptions.</Why>
+		<Technique name="Output Schema (JSDoc)">
+			<What>Defining the desired structure of the output directly within the prompt.</What>
+			<Why>Provides a clear, concise, unambiguous, and machine-readable specification for the expected output format.</Why>
 			<When>Essential when the desired output is structured data (like JSON) and you need to strictly enforce specific fields, data types (string, number, boolean, arrays), nesting, and optionality.</When>
-			<How>Include a TypeScript `type` or `interface` definition in the prompt. Instruct the model explicitly to format its output as a JSON object conforming EXACTLY to that schema. Example: `Your output MUST be a JSON object conforming to this TypeScript interface:\ninterface Result {\n  name: string;\n  score: number;\n  isValid: boolean;\n  items?: string[]; // Optional array of strings\n}\nOutput ONLY the JSON object.`</How>
-			<Notes>Consider using techniques like defining "potential fields" vs. "actual fields" if you want the model to consider options before committing to the final output structure. Validate the output against the schema afterwards.
+			<How>Include a JSDoc `type` or `interface` definition in the prompt. Instruct the model explicitly to format its output conforming EXACTLY to that schema. Example: `Your output MUST be a JSON object conforming to this JSDoc interface:\ninterface Result {\n  name: string;\n  score: number;\n  isValid: boolean;\n  items?: string[]; // Optional array of strings\n}\nOutput ONLY the JSON object.`</How>
+			<Notes>Consider using techniques like defining "potential fields" vs. "actual fields" if you want the model to consider options before committing to the final output structure. Validate the output against the schema afterwards.</Notes>
+		</Technique>
+		<Technique name="Thread of Thought (ThoT)">
+			<What>A technique designed to handle "Chaotic Contexts" (large inputs with varying relevance) by methodically segmenting and analyzing the context in manageable parts, extracting relevant details sequentially to address a specific query without needing fine-tuning.</What>
+			<Why>Improves LLM performance in scenarios with long, disorganized, or potentially distracting context (like RAG outputs or long conversation histories) by guiding the model to process information step-by-step, focus on relevant segments, and synthesize findings progressively.</Why>
+			<When>Ideal for tasks involving processing extensive or complex texts with potentially irrelevant information, such as question answering over multiple retrieved documents (RAG), summarizing long dialogues, or extracting information from unstructured data where key details might be scattered.</When>
+			<How>Typically uses a two-step prompting approach:
+				1.  **Initiating Reasoning:** Provide the chaotic context and the query, then add a trigger phrase like "Walk me through this context in manageable parts step by step, summarizing and analyzing as we go." to prompt the LLM to process the context sequentially and generate an initial analysis.
+				2.  **Refining the Conclusion:** Take the LLM's response from step 1, append the original context and query, and add a concluding phrase like "Therefore, the answer is:" to guide the LLM to extract the final, synthesized answer from its step-by-step analysis.
+			</How>
+			<Notes>Offers a plug-and-play solution for handling long/chaotic contexts without retraining. Helps maintain focus and prevents the model from getting lost in irrelevant details. Differs from CoT by specifically focusing on segmenting and processing large external contexts rather than just generating internal reasoning steps.</Notes>
+		</Technique>
+		<Technique name="Tree of Thoughts (ToT)">
+			<What>A prompting approach guiding the LLM to explore multiple reasoning paths ('thoughts') concurrently for complex problems, instead of a single linear sequence (like CoT). Involves generating potential steps, evaluating their promise, and systematically searching the resulting 'tree of thoughts'.</What>
+			<Why>Improves performance on tasks requiring exploration, strategic planning, lookahead, or backtracking where a single reasoning path might fail. Allows the LLM to self-correct and consider diverse strategies by explicitly evaluating intermediate steps.</Why>
+			<When>Ideal for complex problem-solving like multi-step math/logic puzzles (e.g., Game of 24), code generation involving exploration of different algorithms, strategic game analysis, or creative tasks needing evaluation of various plot lines or ideas.</When>
+			<How>The core idea is to instruct the final LLM within the Action Prompt to simulate the ToT process. Key instructions typically involve:
+				1.  **Generating Multiple Candidates:** At key decision points or steps, instruct the LLM to generate several distinct next steps, continuations, or intermediate solutions (e.g., "Generate 3 potential next steps...").
+				2.  **Self-Evaluating Candidates:** Instruct the LLM to evaluate the viability, progress, or quality of each generated candidate concerning the problem's goal (e.g., "For each step, evaluate its promise towards the solution: 'promising', 'possible', 'dead end'."). This often involves criteria-based reasoning or comparison.
+				3.  **Selecting and Proceeding:** Instruct the LLM to choose the most promising candidate(s) based on the evaluation and continue the reasoning process from there, simulating a search strategy (e.g., beam search or best-first).
+				The simple "Imagine three different experts..." prompt offers a basic way to direct this parallel exploration and self-critique within a single prompt structure. More complex implementations require more explicit step-by-step instructions in the Action Prompt.
+			</How>
+			<Notes>Can be significantly more computationally expensive than linear approaches. Effectiveness depends on clear instructions within the Action Prompt for generation, evaluation criteria, and selection logic.</Notes>
 		</Technique>
 	</Available_Prompt_Engineering_Techniques>
 
