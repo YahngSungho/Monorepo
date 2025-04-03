@@ -35,6 +35,7 @@ jobs:
             projects:
               - 'apps/**'
               - 'libraries/**'
+              - 'storybook/**'
             images:
               - '**.jpg'
               - '**.jpeg'
