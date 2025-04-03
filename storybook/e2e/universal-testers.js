@@ -652,13 +652,19 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		// 대상 요소를 locator로 가져옴
 		const locator = page.locator(interaction.selector)
 
+		// 요소가 표시될 때까지 대기 (최대 5초)
+		try {
+			if (verbose) console.log(`요소 표시 대기 중: ${interaction.selector}`)
+			await locator.waitFor({ state: 'visible', timeout: 5000 })
+		} catch {
+			// 타임아웃 내에 요소가 표시되지 않음
+			if (verbose) console.log(`요소 대기 타임아웃: ${interaction.selector}`)
+		}
+
 		// 요소 존재 및 가시성 확인 (locator 사용)
 		const isVisible = await locator.isVisible()
 		if (!isVisible) {
 			// isVisible()이 false를 반환하면 요소가 없거나 보이지 않음
-			const error = new Error(
-				`요소가 화면에 표시되지 않거나 존재하지 않음: (${interaction.selector})`,
-			)
 			result.message = `요소가 화면에 표시되지 않거나 존재하지 않음: (${interaction.selector})`
 			result.success = true
 			return result
