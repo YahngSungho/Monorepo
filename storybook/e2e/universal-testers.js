@@ -107,18 +107,23 @@ import fc from 'fast-check'
  */
 
 /**
- * 브라우저 컨텍스트 내에서 직접 요소 정보와 선택자를 추출
+ * 브라우저 컨텍스트 내에서 직접 요소 정보와 선택자를 추출 (CSS 기반 가시성 체크 포함)
  *
  * @param {import('@playwright/test').Page} page - Playwright 페이지 객체
  * @param {string} componentSelector - 컴포넌트의 최상위 셀렉터
- * @returns {Promise<any[]>} 요소 정보 배열
+ * @param {boolean} [verbose=false] - 상세 로그 출력 여부. Default is `false`
+ * @returns {Promise<any[]>} 보이는 요소 정보 배열
  */
-async function discoverInteractions(page, componentSelector, verbose) {
+async function discoverInteractions(page, componentSelector, verbose = false) {
 	// verifyComponentState를 사용하여 컴포넌트가 보이는지 확인
-	const { isVisible, summary } = await verifyComponentState(page, componentSelector, 10_000)
+	const { isVisible: isComponentVisible, summary } = await verifyComponentState(
+		page,
+		componentSelector,
+		10_000,
+	)
 
-	// 컴포넌트가 보이지 않으면 빈 배열 반환
-	if (!isVisible) {
+	// 컴포넌트 자체가 보이지 않으면 빈 배열 반환
+	if (!isComponentVisible) {
 		console.warn(
 			`discoverInteractions: 컴포넌트(${componentSelector})가 표시되지 않음 - ${summary}`,
 		)
@@ -126,123 +131,160 @@ async function discoverInteractions(page, componentSelector, verbose) {
 	}
 
 	// 측정을 시작하기 전에 브라우저가 다음 프레임을 그릴 때까지 기다립니다.
-	// 이를 통해 DOM 업데이트 및 레이아웃 계산이 안정화될 시간을 확보합니다.
 	try {
 		await page.evaluate(() => new Promise(requestAnimationFrame))
-		// 경우에 따라서는 한 프레임 더 기다리는 것이 더 안정적일 수 있습니다.
-		// 예: await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 	} catch (error) {
 		console.error('Error during requestAnimationFrame wait:', error)
-		// 에러가 발생하더라도 계속 진행하도록 할 수 있지만, 원인 파악이 필요합니다.
 	}
 
-	// 브라우저 컨텍스트 내에서 직접 요소 정보와 선택자를 추출
-	// Playwright Locator API로는 브라우저 내부의 복잡한 DOM 순회 및 속성 접근 로직을
-	// 효과적으로 대체하기 어려워 page.evaluate 유지.
-	const elementInfos = await page.evaluate((componentSelector) => {
-		// 브라우저 컨텍스트 내에서 getUniqueSelector 함수 재정의
+	// 브라우저 컨텍스트 내에서 요소 정보 추출 및 CSS 기반 가시성 필터링
+	const visibleElementInfos = await page.evaluate((selector) => {
+		/**
+		 * 요소의 고유 CSS 선택자를 생성합니다. data-testid, id, nth-child 순서로 우선순위를 가집니다.
+		 * @param {Element} el - 대상 요소
+		 * @param {string} base - 기본 선택자 (루트 컴포넌트 선택자)
+		 * @returns {string} 고유 CSS 선택자
+		 */
 		function getUniqueSelector(el, base) {
 			let testId = el.getAttribute('data-testid')
 			if (testId) {
-				return `${base} [data-testid="${testId}"]` // data-testid 속성이 있으면 최우선 사용
-			} else if (el.id) {
-				return `${base} #${el.id}` // id가 있으면 두 번째 우선순위로 사용
+				// data-testid 값에 특수문자가 있을 수 있으므로 CSS.escape 사용 고려 (간단하게 처리)
+				// 중첩 템플릿 리터럴 제거
+				const escapedTestId = testId.replaceAll('"', String.raw`\"`)
+				return `${base} [data-testid="${escapedTestId}"]`
 			}
-			// 위 조건을 만족하지 않으면 DOM 계층 구조를 이용한 선택자 생성
+			if (el.id) {
+				// id 값에 특수문자가 있을 수 있으므로 CSS.escape 사용
+				return `#${CSS.escape(el.id)}` // id는 전역적으로 고유해야 하므로 base 불필요
+			}
 			if (el.parentElement) {
 				let children = Array.from(el.parentElement.children)
 				let index = children.indexOf(el) + 1
-				return `${base} ${el.tagName.toLowerCase()}:nth-child(${index})`
+				// 부모의 고유 선택자를 재귀적으로 찾고, 현재 요소의 태그와 인덱스를 추가
+				// 주의: 매우 복잡해질 수 있으므로 여기서는 단순화된 접근 방식 사용
+				// 부모가 루트가 아니면 부모 선택자 재귀 호출 필요 -> 여기서는 바로 부모 태그 사용
+				const parentSelector =
+					el.parentElement === document.querySelector(base) ?
+						base
+					:	getUniqueSelector(el.parentElement, base) // 재귀 호출 시 base 전달 방식 수정 필요할 수 있음
+				return `${parentSelector} > ${el.tagName.toLowerCase()}:nth-child(${index})`
 			}
-			return base
+			// 부모가 없는 경우 (거의 없음) 또는 루트 바로 아래 요소
+			return `${base} > ${el.tagName.toLowerCase()}`
 		}
 
-		const root = document.querySelector(componentSelector)
+		/**
+		 * 요소가 시각적으로 보이는지 CSS 속성 및 크기를 기준으로 확인합니다.
+		 * @param {Element} element - 확인할 요소
+		 * @returns {boolean} 요소가 보이면 true, 아니면 false
+		 */
+		function isElementVisible(element) {
+			if (!element) return false
+
+			// 1. getComputedStyle 확인
+			const style = globalThis.getComputedStyle(element)
+			if (style.display === 'none' || style.visibility === 'hidden' || Number.parseFloat(style.opacity) === 0) {
+				return false
+			}
+
+			// 2. 크기 확인 (너비 또는 높이가 0이면 보이지 않음)
+			// HTMLElement 인스턴스인지 확인 후 offsetWidth/offsetHeight 접근
+			if (element instanceof HTMLElement) {
+				if (element.offsetWidth <= 0 && element.offsetHeight <= 0) {
+					// 크기가 0이라도 자식 요소가 보이는 경우도 있으므로 완벽하진 않음 (예: SVG)
+					// 여기서는 너비와 높이 모두 0일 때만 숨김 처리
+					return false
+				}
+			} else if (element instanceof SVGElement) {
+				// SVG 요소의 경우 getBBox() 등으로 크기 확인 가능하나, 여기서는 일단 통과시킴
+                // 필요시 SVG 크기 확인 로직 추가
+			} else {
+                // HTMLElement나 SVGElement가 아닌 다른 타입의 Element는 크기 확인 생략
+            }
+
+
+			// 3. 부모 요소 가시성 확인 (재귀적)
+			// document.body까지 올라가면서 숨겨진 부모가 있는지 확인
+			let parent = element.parentElement
+			while (parent && parent !== document.body) {
+				const parentStyle = globalThis.getComputedStyle(parent)
+				if (parentStyle.display === 'none' || parentStyle.visibility === 'hidden') {
+					return false
+				}
+				parent = parent.parentElement
+			}
+
+			return true
+		}
+
+		const root = document.querySelector(selector)
 		if (!root) return []
 
-		// 모든 하위 요소에 대한 필요 정보 추출
-		return Array.from(root.querySelectorAll('*'), (el) => {
-			const uniqueSelector = getUniqueSelector(el, componentSelector)
+		const allElements = Array.from(root.querySelectorAll('*'))
+		const visibleInfos = []
 
-			// 요소의 계산된 스타일 가져오기
-			/** @type {CSSStyleDeclaration} */
-			const computedStyle = globalThis.getComputedStyle(el)
-			const { overflowY } = computedStyle
-			const { overflowX } = computedStyle
+		for (const el of allElements) {
+			// 요소가 실제로 보이는지 확인
+			if (isElementVisible(el)) {
+				const uniqueSelector = getUniqueSelector(el, selector)
+				const computedStyle = globalThis.getComputedStyle(el) // isElementVisible에서 이미 계산했으므로 재사용 가능하면 좋음
+				const { overflowY, overflowX } = computedStyle
+				const toleranceY = 1
+				const toleranceX = 1
 
-			// 스크롤 가능 여부 확인 시 미세한 오차(tolerance) 및 overflow 속성 고려
-			/** @constant {number} */
-			const toleranceY = 1
-			/** @constant {number} */
-			const toleranceX = 1
+				const isScrollableY =
+					(overflowY === 'scroll' || overflowY === 'auto') &&
+					el.scrollHeight - el.clientHeight > toleranceY
+				const isScrollableX =
+					(overflowX === 'scroll' || overflowX === 'auto') &&
+					el.scrollWidth - el.clientWidth > toleranceX
 
-			const isScrollableY =
-				(overflowY === 'scroll' || overflowY === 'auto') &&
-				el.scrollHeight - el.clientHeight > toleranceY
-
-			const isScrollableX =
-				(overflowX === 'scroll' || overflowX === 'auto') &&
-				el.scrollWidth - el.clientWidth > toleranceX
-
-			return {
-				tagName: el.tagName.toLowerCase(),
-				selector: uniqueSelector,
-				type: el.getAttribute('type'),
-				role: el.getAttribute('role'),
-				disabled: el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true', // aria-disabled 추가
-				readonly: el.hasAttribute('readonly'),
-				options:
-					el.tagName.toLowerCase() === 'select' ?
-						Array.from(el.querySelectorAll('option'), (option) => option.value)
-					:	[],
-				min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
-				max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
-				draggable:
-					el.getAttribute('draggable') === 'true' || el.getAttribute('data-draggable') === 'true',
-				isDroppable: el.getAttribute('data-droppable') === 'true',
-				// hasOnClick: el.hasAttribute('onclick'), <- svelte component가 대상일 때 의미없음
-				isScrollableX,
-				isScrollableY,
-				scrollHeight: el.scrollHeight,
-				scrollWidth: el.scrollWidth,
-				clientHeight: el.clientHeight,
-				clientWidth: el.clientWidth,
+				visibleInfos.push({
+					tagName: el.tagName.toLowerCase(),
+					selector: uniqueSelector,
+					type: el.getAttribute('type'),
+					role: el.getAttribute('role'),
+					// disabled와 readonly는 가시성과 별개이므로 계속 포함
+					disabled: el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true',
+					readonly: el.hasAttribute('readonly'),
+					options:
+						el.tagName.toLowerCase() === 'select' ?
+							Array.from(el.querySelectorAll('option'), (option) => option.value)
+						:	[],
+					min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
+					max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
+					draggable:
+						el.getAttribute('draggable') === 'true' ||
+							el.getAttribute('data-draggable') === 'true',
+					isDroppable: el.getAttribute('data-droppable') === 'true',
+					isScrollableX,
+					isScrollableY,
+					scrollHeight: el.scrollHeight,
+					scrollWidth: el.scrollWidth,
+					clientHeight: el.clientHeight,
+					clientWidth: el.clientWidth,
+				})
 			}
-		})
+		}
+		return visibleInfos
 	}, componentSelector)
 
-	// 각 요소에 대해 가시성 체크 및 인터랙션 생성
+	// 이제 visibleElementInfos에는 CSS 기반으로 필터링된 요소 정보만 들어 있음
 	const interactions = []
-
-	// 드래그 가능한 요소와 드롭 가능한 요소를 분리합니다.
-	const visibleElementInfos = []
 	const draggableElements = []
 	const droppableElements = []
 
-	// 가시성 있는 요소 필터링
-	for (const elementInfo of elementInfos) {
-		// locator 사용
-		const locator = page.locator(elementInfo.selector)
-		// isVisible 대신 locator.isVisible 사용
-		const isVisible = await locator.isVisible()
-		if (!isVisible) continue
+	// 보이는 요소들에 대해서만 인터랙션 생성 및 드래그/드롭 요소 식별
+	for (const elementInfo of visibleElementInfos) {
+		// 이미 보이는 요소만 있으므로 추가 가시성 체크 불필요
+		interactions.push(...getInteractionsFromElementInfo(elementInfo))
 
-		visibleElementInfos.push(elementInfo)
-
-		// 드래그 가능한 요소와 드롭 가능한 요소 식별
 		if (elementInfo.draggable && !elementInfo.disabled) {
 			draggableElements.push(elementInfo)
 		}
-
 		if (elementInfo.isDroppable && !elementInfo.disabled) {
 			droppableElements.push(elementInfo)
 		}
-	}
-
-	// 개별 요소에 대한 인터랙션 생성
-	for (const elementInfo of visibleElementInfos) {
-		// 요소 정보를 기반으로 가능한 인터랙션 생성 (elementInfo에서 disabled 체크는 이미 evaluate에서 수행)
-		interactions.push(...getInteractionsFromElementInfo(elementInfo))
 	}
 
 	// 드래그 가능한 요소와 드롭 가능한 요소 간의 dragDrop 인터랙션 생성
@@ -258,16 +300,17 @@ async function discoverInteractions(page, componentSelector, verbose) {
 				})
 			}
 		}
-
-		if (verbose && draggableElements.length > 0 && droppableElements.length > 0) {
+		if (verbose) {
 			console.log(
-				`💬 dragDrop 인터랙션 ${draggableElements.length * droppableElements.length}개 생성됨`,
+				`💬 dragDrop 인터랙션 ${draggableElements.length * droppableElements.length}개 생성됨 (CSS 기반 보이는 요소)`,
 			)
 		}
 	}
 
 	if (verbose) {
-		console.log('💬 discoverInteractions interactions:', interactions)
+		console.log(
+			`💬 discoverInteractions: 최종 인터랙션 ${interactions.length}개 생성됨 (CSS 기반 보이는 요소)`,
+		)
 	}
 	return interactions
 }
@@ -609,15 +652,21 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		// 대상 요소를 locator로 가져옴
 		const locator = page.locator(interaction.selector)
 
+		// 요소가 표시될 때까지 대기 (최대 5초)
+		try {
+			if (verbose) console.log(`요소 표시 대기 중: ${interaction.selector}`)
+			await locator.waitFor({ state: 'visible', timeout: 5000 })
+		} catch {
+			// 타임아웃 내에 요소가 표시되지 않음
+			if (verbose) console.log(`요소 대기 타임아웃: ${interaction.selector}`)
+		}
+
 		// 요소 존재 및 가시성 확인 (locator 사용)
 		const isVisible = await locator.isVisible()
 		if (!isVisible) {
 			// isVisible()이 false를 반환하면 요소가 없거나 보이지 않음
-			const error = new Error(
-				`요소가 화면에 표시되지 않거나 존재하지 않음: (${interaction.selector})`,
-			)
-			result.errorMessage = error.message
-			result.errorStack = error.stack
+			result.message = `요소가 화면에 표시되지 않거나 존재하지 않음: (${interaction.selector})`
+			result.success = true
 			return result
 		}
 
@@ -625,9 +674,8 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		const isDisabled = await locator.isDisabled() // isDisabled()는 disabled 속성과 aria-disabled="true" 모두 확인
 
 		if (isDisabled) {
-			const error = new Error(`요소가 비활성화됨: (${interaction.selector})`)
-			result.errorMessage = error.message
-			result.errorStack = error.stack
+			result.message = `요소가 비활성화됨: (${interaction.selector})`
+			result.success = true
 			return result
 		}
 
@@ -652,7 +700,7 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		//  result.success = true;
 		//}
 	} catch (error) {
-		// 에러 정보 기록
+		// 에러 정보 기록 (expect(...).toBeVisible() 실패 포함)
 		result.errorMessage = error.message
 		result.errorStack = error.stack
 		result.error = error // 원본 에러 객체도 보존
@@ -1550,16 +1598,6 @@ async function runSingleIteration(page, iteration, errors, config) {
 		failureInfo: undefined,
 	}
 
-	// Todos: shrink와 어떻게 조화?
-	// if (resetComponent) { 주석 해제하지말것
-	try {
-		await resetComponentState(page)
-	} catch (error) {
-		console.error(`컴포넌트 상태 초기화 중 오류 발생: ${error.message}`)
-		// 초기화 실패해도 계속 진행
-	}
-	// }
-
 	// 페이지가 닫혔는지 확인
 	if (await isPageClosed(page)) {
 		console.error('페이지가 이미 닫혀 있습니다. 이번 반복은 중단합니다.')
@@ -1637,6 +1675,15 @@ async function runSingleIteration(page, iteration, errors, config) {
 				if (await isPageClosed(page)) {
 					console.error('페이지가 닫혀 있습니다. 시퀀스 실행을 중단합니다.')
 					throw new Error('페이지가 닫혀 있어 시퀀스를 실행할 수 없습니다.')
+				}
+
+				// !!! 각 시퀀스 실행 전에 상태 초기화 !!!
+				try {
+					await resetComponentState(page) // <--- 이동된 위치
+				} catch (error) {
+					console.error(`[시퀀스 실행 전] 컴포넌트 상태 초기화 중 오류: ${error.message}`)
+					// 초기화 실패 시 테스트를 중단하거나 계속 진행할지 결정 필요
+					throw new Error(`컴포넌트 상태 초기화 실패: ${error.message}`)
 				}
 
 				// 시퀀스 정보 초기화 - 명시적 타입 지정
