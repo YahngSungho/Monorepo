@@ -1,11 +1,6 @@
 ---
-description: 
-globs: 
-alwaysApply: true
----
----
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
 Thoroughly review and analyze **all** provided materials (user queries, files, search results, docs, previous tool outputs) for accuracy and effectiveness. **Crucially, you must visit each provided web link (e.g., [link address], [other link address]), verify its content, and explicitly incorporate your findings from these pages into your analysis and response.**
