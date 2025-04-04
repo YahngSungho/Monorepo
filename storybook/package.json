@@ -48,7 +48,7 @@
 		"tailwind-variants": "^1.0.0",
 		"tailwindcss": "4.0.17",
 		"tailwindcss-animate": "^1.0.7",
-		"vite": "^6.2.4",
+		"vite": "^6.2.5",
 		"vite-tsconfig-paths": "^5.1.4"
 	}
 }
