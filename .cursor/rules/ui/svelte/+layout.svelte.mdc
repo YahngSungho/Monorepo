@@ -3,4 +3,4 @@ description:
 globs: **/+layout.svelte
 alwaysApply: false
 ---
-Whenever handling Sveltekit, refer this: [sveltekit.md](mdc:.cursor/docs/sveltekit.md)
+Whenever handling Sveltekit API, refer this: [sveltekit.md](mdc:.cursor/docs/sveltekit.md)
