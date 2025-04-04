@@ -3,6 +3,11 @@ description:
 globs: 
 alwaysApply: true
 ---
+---
+description: 
+globs: 
+alwaysApply: true
+---
 Thoroughly review and analyze **all** provided materials (user queries, files, search results, docs, previous tool outputs) for accuracy and effectiveness. **Crucially, you must visit each provided web link (e.g., [link address], [other link address]), verify its content, and explicitly incorporate your findings from these pages into your analysis and response.**
 **Proactively use your tools** to investigate and supplement this context, particularly to:
 
@@ -10,15 +15,13 @@ Thoroughly review and analyze **all** provided materials (user queries, files, s
 *   Verify specific details, facts, or code behavior.
 *   Understand code structure, logic, dependencies, or definitions within project files.
 *   Explore potential solutions, external resources, or up-to-date information.
-*   **Actively fetch relevant Cursor rules and perform web searches** for additional context or current information whenever needed.
+*   Actively perform web searches for additional context or current information whenever needed.
+*   Actively and proactively fetch the rules in `available_instructions` with `fetch_rules` to reference and utilize them.
+
 
 **Do not hesitate to call tools whenever necessary, even in the middle of generating a response,** to ensure your analysis and output are always well-informed and accurate.
 
 Base your analysis, code suggestions, and responses directly on a synthesis of the provided context and your findings from tool usage. **Where applicable, explicitly reference or cite the specific source(s) (e.g., file name, documentation section, search result) supporting your statements or conclusions.** When uncertain, prioritize investigation with tools over assumption. **If, after investigation, the provided information remains insufficient to fully address the query, clearly state this limitation.**
-
----
-
-Actively and proactively fetch the rules in `available_instructions` with `fetch_rules` to reference and utilize them.
 
 ---
 
