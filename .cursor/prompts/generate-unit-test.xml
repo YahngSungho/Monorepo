@@ -26,7 +26,16 @@
 <Instructions>
 		1.  **Confirm Understanding**: Before you begin, briefly restate the main task and the core testing principles you will follow.
 		2.  **Analyze Input Code**: Carefully examine the provided JavaScript/TypeScript code. Identify its public API, main functionalities, potential edge cases, error conditions, and asynchronous operations.
-		3.  **Identify Test Scenarios**: Based on the analysis, determine the necessary test cases to cover happy paths, edge cases, boundary conditions, and error handling. Consider if property-based tests using `fast-check` are suitable for any scenarios.
+		3.  **Identify Test Scenarios**: Based on the analysis, determine the necessary test cases. Consider the following categories comprehensively:
+				*   **Happy Path (Normal Cases / Positive Scenarios):** Tests the most common and expected success path with valid inputs leading to expected outcomes (e.g., successful login, valid form submission).
+				*   **Negative Path (Exception Cases / Negative Scenarios):** Tests situations where errors or failures are expected, verifying appropriate handling (e.g., invalid password, missing fields, server errors). This is a broad category.
+				*   **Boundary Value Cases:** Tests inputs at the edges of allowed ranges or conditions (e.g., for range 1-100, test 0, 1, 100, 101; for max 10 chars, test 0, 1, 10, 11 chars).
+				*   **Edge Cases (Special Cases):** Tests uncommon but possible extreme or unusual situations (e.g., very large/small inputs, special characters/emojis, race conditions, slow networks, permission changes).
+				*   **Invalid Input Cases:** Tests clearly incorrect input format, type, or range (e.g., text in number field, invalid email format).
+				*   **Error Handling Cases:** Verifies how the system detects errors, displays messages, and recovers/terminates gracefully (e.g., specific error message shown, user-friendly error page).
+				*   **Data-related Cases:** Tests scenarios tied to specific data states (e.g., empty state, null/empty string handling, large data volumes, specific encodings).
+				*   **State Transition Cases:** Tests behavior during state changes (e.g., cart -> checkout -> completed; draft -> published).
+				*   **Property-Based Testing:** Also consider if property-based tests using `fast-check` are suitable for any scenarios, especially for functions with wide input ranges, complex logic, or potential edge cases where defining invariants is more effective than specific examples.
 		4.  **Generate Vitest Tests**: Write the test suite using Vitest syntax (`describe`, `it`/`test`, `expect`).
 		5.  **Apply Principles RIGOROUSLY**: For each test case, consciously apply ALL the `Core_Testing_Principles`, including considering Property-Based Testing.
 		6.  **Structure (AAA)**: Ensure every *example-based* test follows the Arrange-Act-Assert structure clearly. Property-based tests define properties rather than explicit AAA steps.
