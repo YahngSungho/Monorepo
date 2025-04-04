@@ -52,8 +52,8 @@ importers:
         specifier: ^3.0.10
         version: 3.0.10
       '@inlang/paraglide-js':
-        specifier: 2.0.7
-        version: 2.0.7
+        specifier: 2.0.10
+        version: 2.0.10
       '@intlify/eslint-plugin-svelte':
         specifier: ^1.0.0
         version: 1.0.0(eslint@9.23.0(jiti@2.4.2))(svelte@5.25.3)
@@ -1663,16 +1663,12 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@inlang/paraglide-js@2.0.7':
-    resolution: {integrity: sha512-+YOQZuK1KAdeqovDiNqNEgYiSmIp/ACizz2Ms58KXIofJisRyuChweDAYQva98F7Hd/LEUPQWeWpdxPMl+R3Xg==}
+  '@inlang/paraglide-js@2.0.10':
+    resolution: {integrity: sha512-rsG6GfQwAtr9oby9vPtkEw0RItADGyS3ru82fc8DHpuSeQO9BVHnX5l7jsNLcV991GcwCodc+b72doEUtvRXVA==}
     hasBin: true
 
   '@inlang/recommend-sherlock@0.2.1':
     resolution: {integrity: sha512-ckv8HvHy/iTqaVAEKrr+gnl+p3XFNwe5D2+6w6wJk2ORV2XkcRkKOJ/XsTUJbPSiyi4PI+p+T3bqbmNx/rDUlg==}
-
-  '@inlang/sdk@2.4.6':
-    resolution: {integrity: sha512-Oh0MEWHE1VneS82MHUt8ieFoyGMMlM0mwTI1t2rMG+KBJjCEoSpUCc58IkE3K4c+3p0L5U4PcBTL0D7ebzjcbA==}
-    engines: {node: '>=18.0.0'}
 
   '@inlang/sdk@2.4.7':
     resolution: {integrity: sha512-EKq1mituvRjYVT4iCLFQyz4W4c5L0i5JsPKcjiOZnFUN7gcnKgnoqQB/M7eBy2dNTinH+yR6lftmurOdh77rzA==}
@@ -1721,10 +1717,6 @@ packages:
 
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
-
-  '@lix-js/sdk@0.4.5':
-    resolution: {integrity: sha512-H0bu99QlzYArFtyV+5aKHGfgjAvtUYMxatQVXFddG0q+I3GtjR4PyNAjQdh0zeTnMJkSXWo2giSsQpXpFBz4Dw==}
-    engines: {node: '>=18'}
 
   '@lix-js/sdk@0.4.6':
     resolution: {integrity: sha512-uxdDhD9kKLaySyTPlMw5GfPDEDH7YIPcReoCaktFoZ1HUEtdcvABWH+nzC7TTP5nvUIrW70u72ThEczysUgnrw==}
@@ -9652,10 +9644,10 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
-  '@inlang/paraglide-js@2.0.7':
+  '@inlang/paraglide-js@2.0.10':
     dependencies:
       '@inlang/recommend-sherlock': 0.2.1
-      '@inlang/sdk': 2.4.6
+      '@inlang/sdk': 2.4.7
       commander: 11.1.0
       consola: 3.4.0
       json5: 2.2.3
@@ -9667,16 +9659,6 @@ snapshots:
   '@inlang/recommend-sherlock@0.2.1':
     dependencies:
       comment-json: 4.2.5
-
-  '@inlang/sdk@2.4.6':
-    dependencies:
-      '@lix-js/sdk': 0.4.5
-      '@sinclair/typebox': 0.31.28
-      kysely: 0.27.6
-      sqlite-wasm-kysely: 0.3.0(kysely@0.27.6)
-      uuid: 10.0.0
-    transitivePeerDependencies:
-      - babel-plugin-macros
 
   '@inlang/sdk@2.4.7':
     dependencies:
@@ -9741,18 +9723,6 @@ snapshots:
   '@keyv/serialize@1.0.3':
     dependencies:
       buffer: 6.0.3
-
-  '@lix-js/sdk@0.4.5':
-    dependencies:
-      '@lix-js/server-protocol-schema': 0.1.1
-      dedent: 1.5.1
-      human-id: 4.1.1
-      js-sha256: 0.11.0
-      kysely: 0.27.6
-      sqlite-wasm-kysely: 0.3.0(kysely@0.27.6)
-      uuid: 10.0.0
-    transitivePeerDependencies:
-      - babel-plugin-macros
 
   '@lix-js/sdk@0.4.6':
     dependencies:
