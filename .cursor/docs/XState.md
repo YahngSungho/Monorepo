@@ -2,7 +2,7 @@
 
 ## XState v4 to v5
 
-### Creating  and actors
+### Creating and actors
 
 - Use `createMachine()`, not `Machine()`
 - Use `createActor()`, not `interpret()`
