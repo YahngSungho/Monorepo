@@ -34,6 +34,7 @@ import optimizeRegex from 'eslint-plugin-optimize-regex'
 import perfectionist from 'eslint-plugin-perfectionist'
 import playwright from 'eslint-plugin-playwright'
 import promise from 'eslint-plugin-promise'
+import ramda from 'eslint-plugin-ramda'
 import redos from 'eslint-plugin-redos'
 import { configs as regexp_configs } from 'eslint-plugin-regexp'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
@@ -211,6 +212,31 @@ const baseRules = {
 	'unicorn/prevent-abbreviations': 'off',
 	'unicorn/require-array-join-separator': 'off',
 	indent: 'off',
+	      "ramda/always-simplification": "warn",
+      "ramda/any-pass-simplification": "warn",
+      "ramda/both-simplification": "warn",
+      "ramda/complement-simplification": "warn",
+      "ramda/compose-simplification": "warn",
+      "ramda/cond-simplification": "warn",
+      "ramda/either-simplification": "warn",
+      "ramda/eq-by-simplification": "warn",
+      "ramda/filter-simplification": "warn",
+      "ramda/if-else-simplification": "warn",
+      "ramda/map-simplification": "warn",
+      "ramda/merge-simplification": "warn",
+      "ramda/no-redundant-and": "warn",
+      "ramda/no-redundant-not": "warn",
+      "ramda/no-redundant-or": "warn",
+      "ramda/pipe-simplification": "warn",
+      "ramda/prefer-both-either": "warn",
+      "ramda/prefer-complement": "warn",
+      "ramda/prefer-ramda-boolean": "warn",
+      "ramda/prop-satisfies-simplification": "warn",
+      "ramda/reduce-simplification": "warn",
+      "ramda/reject-simplification": "warn",
+      "ramda/set-simplification": "warn",
+      "ramda/unless-simplification": "warn",
+      "ramda/when-simplification": "warn"
 }
 
 const __filename = fileURLToPath(import.meta.url)
@@ -289,6 +315,7 @@ export default defineFlatConfig([
 			'simple-import-sort': simpleImportSort,
 			sql,
 			xstate,
+			ramda,
 		},
 
 		rules: baseRules,

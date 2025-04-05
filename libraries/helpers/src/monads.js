@@ -113,6 +113,10 @@ class List {
 		this.$value = xs
 	}
 
+	static empty() {
+		return List.of()
+	}
+
 	// ----- Pointed List
 	static of(x) {
 		return new List([x])

@@ -260,6 +260,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --prefer-offline
 
+      - name: Lint Markdown Files
+        run: pnpm dlx eslint --fix '**/*.{md,mdx}'
+        continue-on-error: true # ESLint 오류 시 워크플로우 중단 방지 (선택 사항)
+
       - name: Format Markdown
         run: pnpm run format-all-path '**/*.{md,mdx}'
 

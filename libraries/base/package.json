@@ -12,7 +12,7 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint .",
 		"eslint-fix": "eslint --fix . || true",
-		"format": "prettier . --write --ignore-unknown --ignore-path ../../.prettierignore",
+		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
 		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
 		"test:unit": "vitest run"

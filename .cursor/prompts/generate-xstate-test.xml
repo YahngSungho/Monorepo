@@ -20,7 +20,7 @@
         *   Time-based transitions (`after`, `delay`) using Vitest's fake timers.
         *   AVOID testing the internal logic within action or guard functions directly; MOCK them using `machine.provide` and assert that they were called with expected arguments.
 
-    2.  **Clarity and Simplicity**: Tests MUST be easy to read and understand in isolation. PRIORITIZE OBVIOUSNESS. Use LONG, DESCRIPTIVE test names (e.g., `it('should transition from idle to loading on FETCH event')`).
+    2.  **Clarity and Simplicity**: Tests MUST be easy to read and understand in isolation. PRIORITIZE OBVIOUSNESS. Use LONG, DESCRIPTIVE test names for `it`/`test` blocks (e.g., `it('should transition from idle to loading on FETCH event')`). When using model-based testing tools like `@xstate/test`, leverage the automatically generated descriptive names for plans and paths to maintain clarity.
 
     3.  **Readability and Structure (AAA for XState)**:
         *   Use Vitest `describe`, `it`/`test`, `expect`.
@@ -56,12 +56,21 @@
         *   Focus on testing *invariants* (properties that should always hold true across a wide range of generated inputs) rather than specific input/output pairs.
         *   Example use cases: Ensuring a guard correctly allows/denies transitions across many possible context values; verifying `assign` updates context predictably for various event payloads; checking that certain context properties remain within bounds regardless of event sequence (might need `fc.commands`). **Actively look for opportunities where PBT can provide more robust validation than single examples.**
 
-    11. **Model-Based Testing (`@xstate/test`)**: For machines with many states/transitions where comprehensive path coverage is desired, `@xstate/test` is a powerful option. Mention its core idea: define the model using `createModel(machine)`, event logic with `.withEvents({ EVENT: { exec: ... } })`, state assertions in `meta: { test: ... }`, generate paths (`.getSimplePathPlans()`), and run `path.test()`. This provides high coverage but requires more setup than standard unit tests or basic PBT.
+    11. **Model-Based Testing (`@xstate/test`)**: For machines with many states/transitions where comprehensive path coverage is desired, `@xstate/test` is a powerful option. Mention its core idea: define the model using `createModel(machine)`, event logic with `.withEvents({ EVENT: { exec: ... } })`, state assertions in `meta: { test: ... }`, generate paths (`.getSimplePathPlans()`), and run `path.test()`. This provides high coverage but requires more setup than standard unit tests or basic PBT. **See the detailed example in the snippets section below.**
 </XState_Testing_Principles>
 
 <Instructions>
     1.  **Understand and Rephrase**: Before generating the tests, briefly restate your understanding of the provided XState machine's primary function, its main states, events, initial context, and any complex interactions (like guards, actions, invoked/spawned actors).
-    2.  **Plan (Chain of Thought)**: First, analyze the provided XState machine definition to understand its states, events, transitions, context, actions, guards, and any invoked/spawned actors. Then, devise a set of test cases covering key behaviors (initial state, basic transitions, guarded transitions, `assign` actions modifying context, mocked actions/actors/guards, final states, delays if present). **Critically evaluate where property-based tests with `@fast-check/vitest` should be used** to increase confidence beyond example-based tests (e.g., for guards, assigns with calculations, or event payload variations). Finally, write the Vitest test suite step-by-step, applying the XState Testing Principles RIGOROUSLY.
+    2.  **Plan (Chain of Thought)**: First, analyze the provided XState machine definition to understand its states, events, transitions, context, actions, guards, and any invoked/spawned actors. Then, devise a set of test cases covering key behaviors (initial state, basic transitions, guarded transitions, `assign` actions modifying context, mocked actions/actors/guards, final states, delays if present). **When devising test cases, explicitly consider the following categories to ensure comprehensive coverage:**
+        *   **Happy Path:** Test the most common and expected success path with valid inputs leading to expected outcomes. (e.g., successful login with valid credentials, successful form submission with all required fields).
+        *   **Negative Path:** Test scenarios where errors or failures are expected, verifying the system handles them gracefully. This is broad and can include many sub-types below. (e.g., invalid password, missing required fields, server connection failure).
+        *   **Boundary Value Cases:** Test inputs or conditions at their boundary points, as errors often occur here. (e.g., for a range 1-100, test 0, 1, 100, 101; for max string length 10, test 0, 1, 10, 11 chars; for lists, test empty, 1 item, max items, max+1 items).
+        *   **Edge Cases:** Test extreme, unusual, but possible situations. Often includes boundary cases but is broader. (e.g., very large/small inputs near system limits, unexpected characters like special symbols/emojis, concurrent requests testing race conditions, very slow network conditions, permission changes occurring mid-operation).
+        *   **Invalid Input Cases:** Test inputs that are clearly incorrect in format, type, or range (a specific type of Negative Path). (e.g., text in a number field, invalid email format, value outside allowed range).
+        *   **Error Handling Cases:** Test how the system detects errors, displays appropriate user messages, and recovers or terminates safely (focuses on verifying the *outcome* of Negative Paths). (e.g., specific error message shown for missing input, user-friendly page displayed on DB error).
+        *   **Data-related Cases:** Test scenarios related to specific data states. (e.g., behavior with no data (empty state), handling of null values or empty strings, behavior with very large amounts of data (performance/load), handling specific data encodings).
+        *   **State Transition Cases:** Test the behavior specifically when the system or object changes state (inherent in XState testing, but good to call out explicitly). (e.g., cart item added -> checkout process -> payment complete; post status 'draft' -> 'published').
+        **Critically evaluate where property-based tests with `@fast-check/vitest` should be used** to increase confidence beyond example-based tests (e.g., for guards, assigns with calculations, or event payload variations). Finally, write the Vitest test suite step-by-step, applying the XState Testing Principles RIGOROUSLY.
     3.  **Generate Vitest Tests**: Write the test suite using Vitest and XState v5 JavaScript syntax (`describe`, `it`/`test`, `expect`, `vi`, `setup`, `createMachine`, `createActor`, `provide`, `getSnapshot`). Include imports from `@fast-check/vitest` if PBT is used.
     4.  **Apply Principles**: For each test case, consciously apply ALL the `XState_Testing_Principles`.
     5.  **Structure (AAA)**: Ensure every example-based test follows the Arrange-Act-Assert structure as defined for XState. Property-based tests define properties.
@@ -363,6 +372,87 @@
         } else {
             expect(actor.getSnapshot().value).toBe('idle');
         }
+    });
+
+    // --- Model-Based Testing Example with @xstate/test ---
+    // Assume a simple toggle machine and a testing environment (like Playwright's page)
+    // Import createModel from @xstate/test
+    import { createModel } from '@xstate/test';
+    // Assume toggleMachine is defined elsewhere as in standard examples
+
+    const toggleMachineWithMeta = setup({
+      // Assume setup actions/guards if needed
+    }).createMachine({
+      id: 'toggle_meta',
+      initial: 'inactive',
+      states: {
+        inactive: {
+          on: { TOGGLE: 'active' },
+          // Principle: MBT - Asserting state in the SUT (System Under Test)
+          meta: {
+            test: async (page) => { // `page` is the testContext passed to path.test(page)
+              // Example assertion: Check if a toggle switch element is unchecked
+              // await expect(page.locator('#toggle-switch')).not.toBeChecked();
+              console.log('Verifying state: inactive'); // Placeholder for real assertion
+            },
+          },
+        },
+        active: {
+          on: { TOGGLE: 'inactive' },
+          // Principle: MBT - Asserting state in the SUT
+          meta: {
+            test: async (page) => {
+              // Example assertion: Check if a toggle switch element is checked
+              // await expect(page.locator('#toggle-switch')).toBeChecked();
+              console.log('Verifying state: active'); // Placeholder for real assertion
+            },
+          },
+        },
+      },
+    });
+
+    // Principle: MBT - Defining the model and event execution
+    const toggleModel = createModel(toggleMachineWithMeta).withEvents({
+      TOGGLE: {
+        // How to execute the TOGGLE event in the SUT
+        exec: async (page) => { // `page` is the testContext passed to path.test(page)
+          // Example execution: Click the toggle switch
+          // await page.locator('#toggle-switch').click();
+          console.log('Executing event: TOGGLE'); // Placeholder for real action
+        },
+        // Optionally add event cases: cases: [{ type: 'TOGGLE' }] (often inferred)
+      },
+      // Add other events here if the machine has them
+    });
+
+    // Principle: MBT - Generating and running test plans
+    describe('toggle machine model-based tests', () => {
+      // Generate plans (e.g., shortest paths to cover states)
+      const testPlans = toggleModel.getShortestPathPlans();
+
+      testPlans.forEach((plan) => {
+        describe(plan.description, () => { // e.g., "reaches state inactive"
+          plan.paths.forEach((path) => {
+            // Using 'it' from vitest here, assuming no PBT needed *for the path generation*
+            it(path.description, async () => { // e.g., "via TOGGLE"
+              // Setup context if needed (e.g., const page = await browser.newPage();)
+              const testContext = { /* provide page or other SUT handle */ };
+              console.log(`--- Testing Path: ${path.description} ---`);
+              // Execute the path: Verifies states (meta.test) and executes events (exec)
+              await path.test(testContext);
+              console.log(`--- Path Complete: ${path.description} ---`);
+              // Cleanup context if needed (e.g., await page.close();)
+            });
+          });
+        });
+      });
+
+      // Using 'it' from vitest
+      it('should have full state coverage', () => {
+        // Asserts that all states defined in the model were covered by the plans
+        return toggleModel.testCoverage();
+        // Optionally filter states: testCoverage({ filter: stateNode => ... })
+      });
     });
 
     ```
