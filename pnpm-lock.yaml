@@ -168,9 +168,6 @@ importers:
       eslint-plugin-regexp:
         specifier: ^2.7.0
         version: 2.7.0(eslint@9.23.0(jiti@2.4.2))
-      eslint-plugin-security:
-        specifier: ^3.0.1
-        version: 3.0.1
       eslint-plugin-simple-import-sort:
         specifier: ^12.1.1
         version: 12.1.1(eslint@9.23.0(jiti@2.4.2))
@@ -4667,10 +4664,6 @@ packages:
   eslint-plugin-security@1.4.0:
     resolution: {integrity: sha512-xlS7P2PLMXeqfhyf3NpqbvbnW04kN8M9NtmhpR3XGyOvt/vNKS7XPXT5EDbwKW9vCjWH4PpfQvgD/+JgN0VJKA==}
 
-  eslint-plugin-security@3.0.1:
-    resolution: {integrity: sha512-XjVGBhtDZJfyuhIxnQ/WMm385RbX3DBu7H1J7HNNhmB2tnGxMeqVSnYv79oAj992ayvIBZghsymwkYFS6cGH4Q==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
   eslint-plugin-simple-import-sort@12.1.1:
     resolution: {integrity: sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA==}
     peerDependencies:
@@ -7566,9 +7559,6 @@ packages:
 
   safe-regex@1.1.0:
     resolution: {integrity: sha512-aJXcif4xnaNUzvUuC5gcb46oTS7zvg4jpMTnuqtrEPlR3vFr4pxtdTwaF1Qs3Enjn9HK+ZlwQui+a7z0SywIzg==}
-
-  safe-regex@2.1.1:
-    resolution: {integrity: sha512-rx+x8AMzKb5Q5lQ95Zoi6ZbJqwCLkqi3XuJXp5P3rT8OEc6sZCJG5AE5dU3lsgRr/F4Bs31jSlVN+j5KrsGu9A==}
 
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
@@ -13553,10 +13543,6 @@ snapshots:
     dependencies:
       safe-regex: 1.1.0
 
-  eslint-plugin-security@3.0.1:
-    dependencies:
-      safe-regex: 2.1.1
-
   eslint-plugin-simple-import-sort@12.1.1(eslint@9.23.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.23.0(jiti@2.4.2)
@@ -16862,10 +16848,6 @@ snapshots:
   safe-regex@1.1.0:
     dependencies:
       ret: 0.1.15
-
-  safe-regex@2.1.1:
-    dependencies:
-      regexp-tree: 0.1.27
 
   safer-buffer@2.1.2: {}
 
