@@ -3,6 +3,340 @@ description:
 globs: *.js,*.svelte,*.ts,*.mjs,*.cjs,*.mts,*.cts
 alwaysApply: false
 ---
-Use functional programming techniques whenever possible.
-- Prefer to use Ramda. You can import Ramda by `import { R } from '@library/helpers/R'` in this codebase.
-e.g. `myArray1.concat(myArray2)` -> `R.concat(myArray1, myArray2)`
+# Functional Programming Principles & Guidelines
+
+FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES WHENEVER POSSIBLE.
+
+## Core Principles
+
+1. **Code Separation:** Clearly distinguish and manage code into the following three types:
+    1. Data
+    2. Pure Functions
+    3. Impure Functions, Side Effects
+
+2. **Preference Order:** **Data > Pure Functions > Side Effects**
+    * Whenever possible, implement logic as pure functions. Consider if pure functions can be represented as data.
+    * Use side effects only when necessary. Isolate side effects by extracting as much logic as possible into pure functions, minimizing and isolating the code sections with side effects.
+
+3. **Managing Side Effects:**
+    * **Isolation:** Manage functions containing side effects so they are clearly identifiable (e.g., grouped in specific modules, using naming conventions).
+    * **Naming:** **Consider** suffixing the names of functions with side effects with `_impure` (e.g., `updateDOM_impure`, `fetchData_impure`).
+
+4. **Immutability:** Do not modify data structures (objects, arrays) directly. When changes are needed, create and return new data structures. This improves predictability and simplifies state management.
+
+5. **Function Composition:** Build complex functionality by combining smaller, reusable functions. This enhances code reuse and helps separate logic clearly (e.g., using `R.pipe`).
+
+6. **Currying:** A technique of transforming a function that takes multiple arguments into a sequence of functions that each take a single argument. It can improve function reusability and composition (e.g., using `R.curry`).
+
+## Library Usage
+
+* **Ramda:** A utility library for functional programming.
+    * **Preferred Use:** Prioritize using Ramda for implementing pure functions, function composition, and currying.
+    * **Import:** `import { R } from '@library/helpers/R'`
+    * **Example:** Consider `R.concat(myArray1, myArray2)` instead of `myArray1.concat(myArray2)`. Use `R.pipe` for composition and `R.curry` for currying.
+
+* **Mutative:** A library to help modify objects or arrays while maintaining immutability.
+    * **When to Use:** Consider using `mutative` when Ramda doesn't provide a simple method, when the Ramda equivalent is complicated or just unpopular, or when dealing with deeply nested objects that need immutable updates.
+    * **Import:** `import { create } from '@library/helpers/mutative'`
+    * **Example:**
+
+        ```javascript
+        import { create } from '@library/helpers/mutative' // Path verification needed
+
+        const baseState = { count: 0, items: [] }
+        const nextState = create(baseState, draft => {
+          draft.count++
+          draft.items.push('new')
+        })
+        // baseState remains unchanged
+        ```
+
+## Functional Data Structure Concepts
+
+In this codebase, 'Functor', 'Monad', 'Monoid' are simulated using class structures, sometimes referred to as 'Functor Class', 'Monad Class', or 'Monoid Class'.
+
+### Guidelines for choosing the appropriate structure
+
+* For Class-like data structures encapsulating a value: Consider using a **Functor Class**.
+* For nestable or chainable computations, especially when dealing with context (e.g., potential absence of value, side effects) where basic Array/Object structures are insufficient: Consider using a **Monad Class**.
+* For combining or aggregating values of the same type, particularly when a neutral "empty" value exists and basic Array/Object combination is insufficient: Consider using a **Monoid Class**.
+
+### Examples
+
+The code examples provided below illustrate how such classes could be structured to simulate these concepts. They are generic examples intended solely to illustrate these ideas.
+
+#### Functor Class Concept Example
+
+"Functor Class" implements immutability and a static constructor (`of`), using regular methods to operate on the internal value instead of strictly requiring a `map` method as in the formal definition.
+
+```javascript
+// Example: A simple Functor implementation concept (as per rule's description)
+class MyFunctor {
+  constructor(value) {
+    this._value = value // Use underscore for internal value convention
+  }
+
+  // 'of' is a common way to put a value into the Functor context
+  static of(value) {
+    return new MyFunctor(value)
+  }
+
+  // Instead of map, we use regular methods that return new instances
+  // This method operates on the internal value and returns a new MyFunctor
+  add(newValue) {
+    // Returns a new MyFunctor instance, doesn't modify the original
+    return MyFunctor.of(this._value + newValue)
+  }
+
+  // Another example immutable method
+  multiply(factor) {
+    return MyFunctor.of(this._value * factor)
+  }
+
+  // A way to extract the value if needed
+  getValue() {
+      return this._value
+  }
+}
+
+```
+
+#### Monad Class Concept Examples
+
+Monads typically provide a way to `chain` computations within a context or `join` nested contexts.
+
+```javascript
+// Example: Maybe Monad concept
+class Maybe {
+  get isJust() { return !this.isNothing }
+  get isNothing() { return this.$value === null || this.$value === undefined }
+
+  constructor(x) { this.$value = x }
+  static of(x) { return new Maybe(x) } // Pointed
+
+  map(fn) { // Functor part
+    return this.isNothing ? this : Maybe.of(fn(this.$value))
+  }
+
+  join() { // Monad part - removes one level of nesting
+    return this.isNothing ? this : this.$value
+  }
+
+  chain(fn) { // Monad part - map then join
+    // The function 'fn' should return a Maybe
+    return this.map(fn).join()
+  }
+
+  getOrElse(defaultValue) {
+    return this.isNothing ? defaultValue : this.$value
+  }
+
+  // Example for Applicative Functor (optional concept)
+  ap(f) {
+    // f should be a Maybe containing a function
+    return this.isNothing || !(f instanceof Maybe) || f.isNothing ? Maybe.of(null) : this.map(f.$value)
+  }
+
+  // Example for logging/inspection
+  [Symbol.for('nodejs.util.inspect.custom')]() { // For Node.js inspect
+     return this.isNothing ? 'Nothing' : `Just(${typeof this.$value === 'function' ? this.$value : JSON.stringify(this.$value)})`
+  }
+  toString() { // Fallback toString
+      return this.isNothing ? 'Nothing' : `Just(${this.$value})`
+  }
+}
+
+// Example: IO Monad concept
+class IO {
+  constructor(fn) {
+      if (typeof fn !== 'function') {
+          throw new Error('IO requires a function')
+      }
+      // The function fn represents the effectful computation
+      this.unsafePerformIO = fn
+  }
+  static of(x) { return new IO(() => x) } // Pointed
+
+  map(fn) { // Functor part
+    // Creates a new IO where the effect is composed: perform original IO, then apply fn
+    return IO.of(compose(fn, this.unsafePerformIO))
+  }
+
+  join() { // Monad part
+     // Returns a IO.of that performs the outer IO to get the inner IO, then performs the inner IO
+     // Requires the result of the outer IO to be another IO instance
+    return IO.of(() => {
+        const innerIO = this.unsafePerformIO()
+        if (!(innerIO instanceof IO)) {
+             throw new Error('Cannot join: Outer IO did not return an IO instance.')
+        }
+        return innerIO.unsafePerformIO()
+    })
+  }
+
+  chain(fn) { // Monad part
+    // fn must return an IO instance
+    // Equivalent to map(fn).join()
+    return IO.of(() => {
+        const value = this.unsafePerformIO()
+        const nextIO = fn(value)
+         if (!(nextIO instanceof IO)) {
+             throw new Error('Cannot chain: Function did not return an IO instance.')
+        }
+        return nextIO.unsafePerformIO()
+    })
+    // Or conceptually: return this.map(fn).join()
+  }
+
+  // Example for Applicative Functor (optional concept)
+  ap(f) {
+      // f should be an IO containing a function
+      return this.chain(value => f.map(fn => fn(value)))
+  }
+
+   // Example for logging/inspection
+  [Symbol.for('nodejs.util.inspect.custom')]() { return 'IO(?)' }
+  toString() { return 'IO(?)' }
+
+  // Execution is separate and explicitly marked as "unsafe"
+  // const result = ioInstance.unsafePerformIO()
+}
+
+```
+
+#### Monoid Class Concept Example
+
+A Monoid provides a way to `concat` two values of the same type and has an `empty` value (identity element).
+
+```javascript
+// Example: List Monoid concept
+class List {
+  constructor(xs) { this.$value = Array.isArray(xs) ? xs : [] }
+  static of(x) { return new List(x === undefined || x === null ? [] : [x]) } // Pointed
+
+  // Monoid part:
+  static empty() { return List.of([]) } // Identity element
+  concat(otherList) { // Binary operation
+    // Ensure the argument is a List instance for safety and extract its value
+    const otherValue = otherList instanceof List ? otherList.$value : []
+    return List.of(this.$value.concat(otherValue))
+  }
+
+  // Functor part:
+  map(fn) {
+    return List.of(this.$value.map(fn))
+  }
+
+   // Example for logging/inspection
+  [Symbol.for('nodejs.util.inspect.custom')]() {
+    return `List(${this.$value.map(v => typeof v === 'function' ? v : JSON.stringify(v)).join(', ')})`
+  }
+  toString() {
+    return `List(${this.$value})`
+  }
+  // ... other potential methods like sequence, traverse (more advanced concepts) ...
+}
+
+```
+
+## Practical Examples
+
+### Example 1: State Update with Immutability
+
+```javascript
+// Before (mutation)
+function addItem_impure(cart, item) {
+  // Assume calculateTotal exists and is pure
+  cart.items.push(item) // Side effect: modifies original array
+  cart.total = calculateTotal(cart.items) // Side effect: modifies original object
+  return cart
+}
+
+// After (immutability + pure function)
+import { R } from '@library/helpers/R' // Example using Ramda
+
+// Assume calculateTotal exists and is pure, e.g.:
+const calculateTotal = (items) => R.sum(R.pluck('price', items || []))
+
+const addItem = (cart, item) => {
+  const currentItems = cart.items || []
+  const newItems = R.append(item, currentItems) // Creates a new array
+  return { // Creates a new object
+    ...cart, // Copy existing properties
+    items: newItems,
+    total: calculateTotal(newItems), // Uses pure function
+  }
+}
+
+// Example Usage:
+// const cart1 = { items: [{ name: 'apple', price: 1 }], total: 1 }
+// const item1 = { name: 'banana', price: 2 }
+// const cart2 = addItem(cart1, item1)
+// console.log(cart1) // { items: [{ name: 'apple', price: 1 }], total: 1 } (unchanged)
+// console.log(cart2) // { items: [{ name: 'apple', price: 1 }, { name: 'banana', price: 2 }], total: 3 }
+```
+
+### Example 2: Data Processing with Function Composition**
+
+```javascript
+// Before (imperative)
+// Assume fetchUser_impure(userId) performs a side effect (e.g., API call)
+// Assume formatName(name) is a pure function
+function processUserData_impure(userId) {
+  try {
+      const user = fetchUser_impure(userId) // Side effect
+      if (user && user.isActive) {
+        const formattedName = formatName(user.name) // Pure function call
+        console.log(`Active user: ${formattedName}`) // Side effect
+        return formattedName // Returns data but also had side effects
+      }
+      return null
+  } catch (error) {
+      console.error("Failed to process user data:", error) // Side effect (error logging)
+      return null
+  }
+}
+
+// After (function composition + Maybe concept)
+import { R } from '@library/helpers/R'
+
+// Assume fetchUser_impure exists
+// Assume formatName exists, e.g., const formatName = (name) => String(name).toUpperCase()
+
+// Function returning a Maybe-like result (conceptual example using simple object)
+const fetchActiveUser = (userId) => {
+  try {
+      const user = fetchUser_impure(userId) // Side effect is isolated here
+      // Return a consistent structure indicating success/failure or value presence
+      return user && user.isActive ? { type: 'Just', value: user } : { type: 'Nothing' }
+  } catch(error) {
+      console.error("fetchActiveUser failed:", error) // Keep error side effect contained if desired
+      return { type: 'Nothing' } // Represent failure as Nothing
+  }
+}
+
+// Helper to work with our Maybe-like structure
+const mapMaybe = R.curry((fn, maybe) =>
+    maybe.type === 'Just' ? { type: 'Just', value: fn(maybe.value) } : maybe
+)
+
+const logUserInfo = R.pipe(
+  fetchActiveUser,                // userId => Maybe<User>
+  mapMaybe(R.prop('name')),       // Maybe<User> => Maybe<string>
+  mapMaybe(formatName),           // Maybe<string> => Maybe<string>
+  R.ifElse(                       // Maybe<string> => void (due to side effect)
+    R.propEq('type', 'Just'),
+    (maybeName) => console.log(`Active user: ${maybeName.value}`), // Side effect kept at the end
+    R.always(undefined)           // Do nothing if Nothing. R.always(null) or R.identity could also be used.
+  )
+)
+
+// Example Usage:
+// logUserInfo(123) // Side effect (logging or nothing) occurs upon execution
+```
+
+## Style Guide
+
+* **Function Composition:** Use `R.pipe` (left-to-right) to break down complex logic into smaller, reusable functions.
+* **Naming:** Use clear names that reveal the function's role. Pure functions should indicate the relationship between input and output (e.g., `calculateTotal`, `formatUserName`). Functions with side effects should indicate what effect they cause (e.g., `saveUser_impure`, `logMessage_impure`), especially if not immediately obvious from context.
+* **Conciseness:** Avoid unnecessary abstractions or overly complex functional techniques where simpler imperative or object-oriented approaches are more readable and maintainable. Functional programming is a tool, not a dogma. Prioritize clarity.
