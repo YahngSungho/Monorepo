@@ -82,7 +82,6 @@ jobs:
               console.log('Error removing label or label not found:', error);
             }
 
-
   # 공통 경로 필터링 job
   path-filter:
     runs-on: ubuntu-latest

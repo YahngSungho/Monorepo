@@ -30,6 +30,7 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"bookmarks.useWorkaroundForFormatters": true,
+	"codium.codeCompletion.enable": false,
 	"css.styleSheets": ["*/*/src/**/*.css"],
 	"cssVariables.lookupFiles": [
 		"libraries/base/node_modules/open-props/open-props.min.css",
@@ -142,6 +143,5 @@
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#79021b99",
 		"titleBar.inactiveForeground": "#e7e7e799"
-	},
-	"codium.codeCompletion.enable": false
+	}
 }
