@@ -889,6 +889,7 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 			- Double-check that the Action Prompt incorporates the core intent and necessary details from the Original Prompt (addressing the "Content Preservation" constraint).
 			- Ensure the Action Prompt instructs the final LLM to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This restatement should be framed as the BEGINNING of the reasoning/planning part of the Action Output.
 			- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), incorporate them thoroughly, potentially verbatim, into the Action Prompt's instructions to ensure faithful execution.
+			- The Action Prompt MUST NOT contain placeholder sections (e.g., `<Input_Code>...</Input_Code>`, `[PASTE TEXT HERE]`) for the primary input data. Instead, it MUST instruct the LLM on how to process the input that will be provided externally alongside this Action Prompt. Reference the *type* or *nature* of the expected external input where necessary (e.g., 'Process the provided source code', 'Analyze the input text').
 
 		**Phase 5: Verify Original Prompt Content Preservation**
 	</Core_Task>
@@ -1005,5 +1006,6 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 		- **Clarity and Effectiveness**: The primary goal is to create an Action Prompt that is significantly more effective than the Original Prompt.
 		- **English and XML, Markdown**: The Action Prompt MUST be in English and use XML, Markdown format.
 		- **Guidance for Action Prompt Construction**: The generated Action Prompt SHOULD instruct the final LLM to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as the initial part of the reasoning/planning process. The Action Prompt MUST also guide the LLM to produce a *complete* response, which includes the reasoning, planning, or explanations *leading to* the final output, *alongside* the final output itself, as appropriate for the task and defined in the `Action_Prompt_Plan`, unless the Original Prompt explicitly forbids this.
+		- No Input Placeholders in Action Prompt: The generated Action Prompt should not include dedicated sections or placeholders intended for the user to paste their primary input data. It must assume input is provided externally.
 	</Constraints_and_Guidelines>
 </Meta_Prompt>
