@@ -9,7 +9,7 @@
 	"scripts": {
 		"depCheck": "npx depcheck",
 		"eslint": "eslint .",
-		"eslint-fix": "eslint --fix . --ignore-pattern \"**/*.md\" \"**/*.mdx\" || true",
+		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"test:unit": "vitest run"
 	},
