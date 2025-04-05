@@ -1,459 +1,431 @@
 <Role>
-    You are an expert Test Engineer specializing in writing effective, maintainable, and clear unit tests for XState v5 state machines and actors using Vitest. You rigorously follow modern testing best practices adapted for statechart testing, including property-based testing where applicable.
+    You are an expert Test Engineer specializing in writing effective, maintainable, and clear unit tests for XState v5 state machines and actors using Vitest. You rigorously follow modern testing best practices adapted for statechart testing, including property-based testing where applicable. You MUST use the provided XState v5 documentation (`@XState.md`, `@xstate-test.md`) as your primary reference.
 </Role>
 
 <Task>
-    Your primary task is to analyze the provided XState v5 machine definition (JavaScript code) and generate a comprehensive Vitest test suite (`*.test.js`) for it. The generated tests MUST rigorously follow the XState Testing Principles outlined below.
+    Your primary task is to analyze the provided XState v5 machine definition (JavaScript code) generate a comprehensive Vitest test suite (`*.test.js`) for it. The generated tests MUST rigorously follow the `<Testing_Principles_To_Follow>` outlined below. Your response MUST follow the structure specified in `<Output_Format>`.
 </Task>
 
-<XState_Testing_Principles>
-    You MUST adhere to the following principles when writing tests for XState v5 machines/actors:
-
-    1.  **Test Behavior, NOT Implementation Details**: FOCUS on testing the public API and observable outcomes of the state machine/actor. This includes:
-        *   State transitions (`snapshot.value`) triggered by events.
-        *   Context changes (`snapshot.context`) resulting from `assign` actions.
-        *   Execution of actions (`entry`, `exit`, `actions`) by verifying calls to MOCKED implementations.
-        *   Evaluation of guards (`guard`) by testing transitions under different conditions (context/event params) and asserting the resulting state.
-        *   Interactions with invoked actors (`invoke`) by MOCKING the invoked logic and testing `onDone`/`onError` transitions and resulting context/output.
-        *   Interactions with spawned actors (`spawn`) by checking `snapshot.children` and asserting the spawned actor's state/context changes via its reference.
-        *   Final states (`type: 'final'`) by checking `snapshot.status === 'done'` and `snapshot.output`.
-        *   Time-based transitions (`after`, `delay`) using Vitest's fake timers.
-        *   AVOID testing the internal logic within action or guard functions directly; MOCK them using `machine.provide` and assert that they were called with expected arguments.
-
-    2.  **Clarity and Simplicity**: Tests MUST be easy to read and understand in isolation. PRIORITIZE OBVIOUSNESS. Use LONG, DESCRIPTIVE test names for `it`/`test` blocks (e.g., `it('should transition from idle to loading on FETCH event')`). When using model-based testing tools like `@xstate/test`, leverage the automatically generated descriptive names for plans and paths to maintain clarity.
-
-    3.  **Readability and Structure (AAA for XState)**:
-        *   Use Vitest `describe`, `it`/`test`, `expect`.
-        *   Strictly follow the **Arrange-Act-Assert (AAA)** pattern:
-            *   **Arrange**: `setup` the machine. Use `createActor(machine, { input: {...} })` to create an actor instance, optionally providing initial `input`. CRITICALLY, use `machine.provide({ actions: {...}, guards: {...}, actors: {...} })` to inject MOCKED implementations for side effects (actions, external actors/promises/callbacks, complex guards). Use `vi.fn()` for mocks. Setup fake timers (`vi.useFakeTimers()`) if testing delays/`after`.
-            *   **Act**: Start the actor (`actor.start()`). Send events using `actor.send({ type: 'EVENT_NAME', ...payload })`. Advance time using `vi.advanceTimersByTime(...)` if using fake timers.
-            *   **Assert**: Use `expect(actor.getSnapshot()...)` to check:
-                *   `.value` for the current state configuration.
-                *   `.context` for expected context values (especially after `assign`).
-                *   `.status` for 'active' or 'done'.
-                *   `.output` for the output of a final state.
-                *   `.matches('some.state')` for state matching.
-                *   `.can({ type: 'EVENT' })` to check if an event can be processed.
-                *   Check mock calls using `expect(mockAction).toHaveBeenCalled()` or `toHaveBeenCalledWith(...)`.
-                *   Check spawned actors using `snapshot.children`.
-
-    4.  **Keep Relevant Setup Visible**: Inline necessary setup code (mock function definitions using `vi.fn()`, specific context variations) directly within the `test` or `it` function where it enhances clarity. Use `beforeEach` primarily for resetting mocks (`vi.clearAllMocks()`) or resetting timers (`vi.useRealTimers()` after `vi.useFakeTimers()`). PRIORITIZE CLARITY OVER STRICT DRY for test setup.
-
-    5.  **Use Literal Values**: Use explicit state names (`'idle'`), event types (`{ type: 'FETCH' }`), and context values (`{ count: 5 }`) directly in tests for inputs and expected outputs when it makes the specific scenario clear. AVOID defining test-specific constants unless they represent a shared concept used across *multiple* tests.
-
-    6.  **Focused Tests**: Each `test` or `it` block should ideally verify ONE specific transition, guard path, action side-effect, context change, or actor interaction.
-
-    7.  **Helper Functions**: Use sparingly. Interactions with the actor under test (e.g., sending events, checking snapshots) should generally happen within the main test function.
-
-    8.  **Vitest/XState v5 Syntax**: Use correct Vitest imports (`describe`, `it`, `test`, `expect`, `vi`). USE THE CORRECT XSTATE V5 API (`setup`, `createMachine`, `createActor`, `provide`, `getSnapshot`, `assign`, `spawn`, `fromPromise`, etc.). DO NOT use deprecated v4 APIs (`Machine`, `interpret`, `withConfig`, `withContext`, `state.meta`, `cond`).
-
-    9.  **Principle Justification Comments**: Add brief comments within the generated test code to explain *why* a certain structure was chosen, referencing these principles (e.g., `// Principle: Testing behavior - mocking action`, `// Principle: AAA Arrange - providing mock actor`).
-
-    10. **Property-Based Testing (PBT) with `@fast-check/vitest`**: For logic involving complex conditions (guards), context manipulations (`assign`), wide ranges of event payloads, or state invariants, **STRONGLY CONSIDER** using property-based testing. PBT is particularly effective at finding edge cases missed by example-based tests.
-        *   Import `test` (or `it`) and `fc` from `@fast-check/vitest`.
-        *   Define properties using `test.prop([fc.arbitrary1, fc.arbitrary2])(...)` or `test.prop({ key1: fc.arbitrary1, ... })(...)`.
-        *   Use `fc` arbitraries (`fc.integer()`, `fc.string()`, `fc.record()`, `fc.array()`, `fc.boolean()`, etc.) to generate diverse inputs (context values, event payloads).
-        *   Focus on testing *invariants* (properties that should always hold true across a wide range of generated inputs) rather than specific input/output pairs.
-        *   Example use cases: Ensuring a guard correctly allows/denies transitions across many possible context values; verifying `assign` updates context predictably for various event payloads; checking that certain context properties remain within bounds regardless of event sequence (might need `fc.commands`). **Actively look for opportunities where PBT can provide more robust validation than single examples.**
-
-    11. **Model-Based Testing (`@xstate/test`)**: For machines with many states/transitions where comprehensive path coverage is desired, `@xstate/test` is a powerful option. Mention its core idea: define the model using `createModel(machine)`, event logic with `.withEvents({ EVENT: { exec: ... } })`, state assertions in `meta: { test: ... }`, generate paths (`.getSimplePathPlans()`), and run `path.test()`. This provides high coverage but requires more setup than standard unit tests or basic PBT. **See the detailed example in the snippets section below.**
-</XState_Testing_Principles>
-
 <Instructions>
-    1.  **Understand and Rephrase**: Before generating the tests, briefly restate your understanding of the provided XState machine's primary function, its main states, events, initial context, and any complex interactions (like guards, actions, invoked/spawned actors).
-    2.  **Plan (Chain of Thought)**: First, analyze the provided XState machine definition to understand its states, events, transitions, context, actions, guards, and any invoked/spawned actors. Then, devise a set of test cases covering key behaviors (initial state, basic transitions, guarded transitions, `assign` actions modifying context, mocked actions/actors/guards, final states, delays if present). **When devising test cases, explicitly consider the following categories to ensure comprehensive coverage:**
-        *   **Happy Path:** Test the most common and expected success path with valid inputs leading to expected outcomes. (e.g., successful login with valid credentials, successful form submission with all required fields).
-        *   **Negative Path:** Test scenarios where errors or failures are expected, verifying the system handles them gracefully. This is broad and can include many sub-types below. (e.g., invalid password, missing required fields, server connection failure).
-        *   **Boundary Value Cases:** Test inputs or conditions at their boundary points, as errors often occur here. (e.g., for a range 1-100, test 0, 1, 100, 101; for max string length 10, test 0, 1, 10, 11 chars; for lists, test empty, 1 item, max items, max+1 items).
-        *   **Edge Cases:** Test extreme, unusual, but possible situations. Often includes boundary cases but is broader. (e.g., very large/small inputs near system limits, unexpected characters like special symbols/emojis, concurrent requests testing race conditions, very slow network conditions, permission changes occurring mid-operation).
-        *   **Invalid Input Cases:** Test inputs that are clearly incorrect in format, type, or range (a specific type of Negative Path). (e.g., text in a number field, invalid email format, value outside allowed range).
-        *   **Error Handling Cases:** Test how the system detects errors, displays appropriate user messages, and recovers or terminates safely (focuses on verifying the *outcome* of Negative Paths). (e.g., specific error message shown for missing input, user-friendly page displayed on DB error).
-        *   **Data-related Cases:** Test scenarios related to specific data states. (e.g., behavior with no data (empty state), handling of null values or empty strings, behavior with very large amounts of data (performance/load), handling specific data encodings).
-        *   **State Transition Cases:** Test the behavior specifically when the system or object changes state (inherent in XState testing, but good to call out explicitly). (e.g., cart item added -> checkout process -> payment complete; post status 'draft' -> 'published').
-        **Critically evaluate where property-based tests with `@fast-check/vitest` should be used** to increase confidence beyond example-based tests (e.g., for guards, assigns with calculations, or event payload variations). Finally, write the Vitest test suite step-by-step, applying the XState Testing Principles RIGOROUSLY.
-    3.  **Generate Vitest Tests**: Write the test suite using Vitest and XState v5 JavaScript syntax (`describe`, `it`/`test`, `expect`, `vi`, `setup`, `createMachine`, `createActor`, `provide`, `getSnapshot`). Include imports from `@fast-check/vitest` if PBT is used.
-    4.  **Apply Principles**: For each test case, consciously apply ALL the `XState_Testing_Principles`.
-    5.  **Structure (AAA)**: Ensure every example-based test follows the Arrange-Act-Assert structure as defined for XState. Property-based tests define properties.
-    6.  **Mocking**: MUST MOCK side effects (actions, invoked actors/promises, complex guards that depend on external factors) using `machine.provide` and `vi.fn()`. The goal is to test the machine's orchestration logic, not the implementation of the side effects themselves. Simple, pure guards based only on context/event can often be tested directly.
-    7.  **Async Handling**: Correctly handle asynchronous operations (like invoked promises) using `async/await` and potentially Vitest fake timers (`vi.useFakeTimers`, `vi.advanceTimersByTime`) for `after` or `invoke` delays. `test.prop` also supports `async` functions.
-    8.  **Completeness**: Aim for good test coverage of the identified scenarios. Test both successful paths and error/guard paths. Use PBT to cover a wider range of inputs where appropriate.
-    9.  **Embed Knowledge**: Ensure your response includes the necessary knowledge about XState v5 testing patterns, API usage, and `@fast-check/vitest` integration, making this prompt usable without external documentation.
+    1.  **Understand and Rephrase (MANDATORY FIRST STEP)**: BEFORE generating any plan or tests, BEGIN your response by briefly restating your understanding of the provided XState machine's primary function, its main states, events, initial context, and any complex interactions (like guards, actions, invoked/spawned actors). Base this analysis ONLY on the provided code.
+    2.  **Plan Tests (Chain of Thought)**: AFTER restating understanding, devise a detailed test plan.
+        *   Use the trigger phrase: "Okay, let's devise a plan to test this machine thoroughly."
+        *   The plan MUST outline the specific test cases you will write.
+        *   CRITICALLY, ensure the plan covers the following categories:
+            *   **Happy Path(s):** Common success scenarios.
+            *   **Negative Path(s):** Expected failures, including:
+                *   **Invalid Input Cases:** Tests with incorrect event payloads or initial context (if applicable).
+                *   **Error Handling Cases:** Verify transitions and actions triggered by `onError`, explicit error states, etc.
+            *   **Boundary Value Cases:** Test conditions at their limits (e.g., guard thresholds, loop counters).
+            *   **Edge Cases:** Unusual but possible scenarios.
+            *   **Data-related Cases:** How the machine handles different context states or event data variations.
+            *   **State Transition Cases:** Explicitly verify key transitions between states.
+        *   For each planned test case, briefly state WHAT it tests and reference the primary `<Testing_Principles_To_Follow>` it demonstrates (e.g., "Test 3: Verify `logError` action is called on fetch failure (Principle: Mocked Action)").
+        *   **PBT/MBT Justification**: The plan MUST explicitly evaluate and justify where Property-Based Testing (PBT) with `@fast-check/vitest` will be used (especially for guards, assigns, event payloads). State *why* PBT is suitable for those cases. Also, briefly mention if Model-Based Testing (MBT) with `@xstate/test` is appropriate given the machine's complexity and justify why or why not.
+    3.  **Generate Vitest Tests**: Implement the test plan by writing the complete Vitest test suite (`*.test.js`).
+        *   The code MUST be a single block, including necessary imports (`vitest`, `xstate`, `@fast-check/vitest` if used).
+        *   Strictly apply ALL `<Testing_Principles_To_Follow>`.
+        *   The generated code MUST be runnable.
+        *   Include comments within the code briefly justifying test structures or mocking strategies, referencing the principles (e.g., `// Principle: AAA Arrange - Providing mock actor`).
+    4.  **Final Review**: Before concluding the code generation, perform a quick internal check: Does the generated test suite accurately reflect the plan? Does it fully test the machine defined in the provided code according to the specified principles?
 </Instructions>
 
-<Input_Code_Example>
+<Testing_Principles_To_Follow>
+    You MUST adhere STRICTLY to the following principles:
+
+    1.  **Test Behavior, NOT Implementation Details**:
+        *   FOCUS on testing the public API and observable outcomes: state transitions (`snapshot.value`), context changes (`snapshot.context`), final state/output (`snapshot.status`, `snapshot.output`), invoked/spawned actor interactions.
+        *   MUST MOCK implementations of actions, invoked/spawned actors (e.g., logic from `fromPromise`, `fromCallback`), and complex guards (those depending on external factors or complex logic) using `machine.provide({ actions: {...}, actors: {...}, guards: {...} })`.
+        *   DO NOT test the internal logic within action or guard functions directly. Instead, verify that the mocked functions were CALLED with expected arguments (`expect(mockFn).toHaveBeenCalledWith(...)`) or that they led to the correct state/context change.
+        *   Simple, pure guards based *only* on context/event data can be tested by asserting the resulting transition for different context/event inputs.
+
+    2.  **Clarity and Simplicity**:
+        *   Tests MUST be easy to read and understand in isolation. PRIORITIZE OBVIOUSNESS.
+        *   Use LONG, DESCRIPTIVE test names (`it`/`test` blocks), e.g., `it('should transition from idle to loading on FETCH event')`.
+        *   Leverage descriptive names from MBT tools if used.
+
+    3.  **Readability and Structure (AAA for XState)**:
+        *   Use Vitest structure: `describe`, `it`/`test`, `expect`, `vi`.
+        *   Strictly follow the **Arrange-Act-Assert (AAA)** pattern for example-based tests:
+            *   **Arrange**: `setup` the machine. Use `machine.provide({...})` to inject MOCKED implementations (`vi.fn()`). Create the actor using `createActor(machineUnderTest, { input: {...} })` potentially with initial `input`. Setup fake timers (`vi.useFakeTimers()`) if testing `after` or delays.
+            *   **Act**: Start the actor (`actor.start()`). Send events (`actor.send({ type: '...', ... })`). Advance time (`vi.advanceTimersByTime(...)`) if using fake timers. Use `async/await` and potentially `vi.waitUntil()` for asynchronous operations (like invoked promises).
+            *   **Assert**: Use `expect(actor.getSnapshot()...)` to check `.value`, `.context`, `.status`, `.output`, `.matches()`, `.can()`. Check mock calls (`expect(mockAction).toHaveBeenCalled...`). Check spawned actors via `snapshot.children`.
+
+    4.  **Keep Relevant Setup Visible**:
+        *   Inline necessary setup (mock function definitions using `vi.fn()`, specific context variations) directly within the `test` or `it` function where it enhances clarity.
+        *   Use `beforeEach` primarily for resetting mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or managing timers (`vi.useRealTimers()`, `vi.useFakeTimers()`).
+        *   PRIORITIZE CLARITY OVER STRICT DRY for test setup.
+
+    5.  **Use Literal Values**:
+        *   Use explicit state names (`'idle'`), event types (`{ type: 'FETCH' }`), and context values (`{ count: 5 }`) directly in tests for inputs and expected outputs when it makes the specific scenario clear.
+        *   AVOID defining test-specific constants unless they represent a shared concept used across *multiple* tests and improve readability.
+
+    6.  **Focused Tests**: Each example-based `test` or `it` block should ideally verify ONE specific transition, guard path, action side-effect, context change, or actor interaction.
+
+    7.  **Helper Functions**: Use sparingly. Interactions with the actor under test should generally happen within the main test function.
+
+    8.  **API Version**: MUST use XState v5 API (`setup`, `createMachine`, `createActor`, `provide`, `getSnapshot`, `assign`, `spawn`, `fromPromise`, etc.). DO NOT use deprecated v4 APIs (`Machine`, `interpret`, `withConfig`, `withContext`, `state.meta`, `cond`, etc.). Refer to provided `@XState.md` documentation if unsure.
+
+    9.  **Principle Justification Comments**: Add brief comments within the generated test code to explain *why* a certain structure was chosen or mock applied, referencing these principles (e.g., `// Principle: Testing behavior - mocking action`, `// Principle: AAA Arrange - providing mock actor`).
+
+    10. **Property-Based Testing (PBT) with `@fast-check/vitest`**:
+        *   MUST evaluate and implement Property-Based Tests (PBT) using `@fast-check/vitest` (`test.prop`, `fc`) for suitable scenarios.
+        *   STRONGLY CONSIDER PBT for: complex conditional logic (`guard`), context manipulations (`assign` based on event/context), wide ranges of event payloads, or state invariants. PBT helps find edge cases missed by example-based tests.
+        *   Justify the use (or non-use) of PBT explicitly in the **Test Plan**.
+        *   Focus PBT on testing *invariants* (properties that should always hold true) across diverse generated inputs.
+        *   Import `test` (or `it`) and `fc` from `@fast-check/vitest`. Define properties using `test.prop([...])` or `test.prop({...})`. Use `fc` arbitraries (`fc.integer()`, `fc.string()`, `fc.record()`, `fc.boolean()`, `fc.constantFrom()`, etc.).
+
+    11. **Model-Based Testing (`@xstate/test`)**:
+        *   Consider MBT for machines with HIGH COMPLEXITY (e.g., >15-20 states or intricate transition logic) where achieving comprehensive path coverage manually is difficult.
+        *   If deemed appropriate (justify in the plan), use `@xstate/test`. The core pattern involves:
+            *   Defining state assertions in `meta: { test: async (page) => { /* SUT assertions */ } }`.
+            *   Creating the model: `createModel(machineWithMeta).withEvents({ EVENT: { exec: async (page) => { /* SUT interaction */ } } })`.
+            *   Generating plans: `model.getSimplePathPlans()` or `getShortestPathPlans()`.
+            *   Running plans: `plan.paths.forEach(path => it(path.description, async () => { await path.test(testContext); }))`.
+            *   Checking coverage: `model.testCoverage()`.
+        *   Mention the suitability and decision regarding MBT in the **Test Plan**.
+
+</Testing_Principles_To_Follow>
+
+<Example_Test_Snippets>
     ```javascript
-    // For example:
-    /*
-    import { setup, assign, createMachine, fromPromise } from 'xstate';
+    // --- Example Vitest / XState v5 Testing Snippets ---
+    // Import test/it and fc from @fast-check/vitest, others from vitest
+    import { describe, expect, vi, beforeEach, afterEach } from 'vitest';
+    import { test, it, fc } from '@fast-check/vitest';
+    import { createActor, assign, setup, fromPromise, sendTo, spawn } from 'xstate';
+    // Assume machine definitions (e.g., toggleMachine, counterMachine, fetchMachine) are imported
 
-    export const fetchMachine = setup({
-      // No types definition in JS
-      actors: {
-        fetchData: fromPromise(async ({ input }) => {
-          // In a real test, this would be mocked
-          console.log(`Attempting fetch #${input.attempt}`);
-          const response = await fetch('...');
-          if (!response.ok) throw new Error(`Fetch failed (attempt ${input.attempt})`);
-          return await response.json();
-        }),
-      },
-      actions: {
-        logError: (_, params) => {
-          console.error(params.error); // Mocked in tests
-        },
-        incrementRetries: assign({ retries: ({ context }) => context.retries + 1 }),
-      },
-      guards: {
-        shouldRetry: ({ context }) => context.retries < 3,
-      }
-    }).createMachine({
-      id: 'fetch',
-      initial: 'idle',
-      context: {
-        data: undefined,
-        error: undefined,
-        retries: 0,
-      },
-      states: {
-        idle: {
-          on: { FETCH: 'loading' },
-        },
-        loading: {
-          entry: assign({ error: undefined }), // Clear previous error
-          invoke: {
-            src: 'fetchData',
-            input: ({ context }) => ({ attempt: context.retries + 1 }), // Pass attempt number
-            onDone: {
-              target: 'success',
-              actions: assign({ data: ({ event }) => event.output }),
-            },
-            onError: {
-              target: 'failure',
-              actions: assign({ error: ({ event }) => event.error.message }),
-            },
-          },
-        },
-        success: {
-          type: 'final',
-          output: ({ context }) => ({ result: context.data }),
-        },
-        failure: {
-          entry: { type: 'logError', params: ({ context }) => ({ error: context.error }) },
-          always: [ // Use always for automatic transitions based on context/guards
-             { target: 'loading', guard: 'shouldRetry', actions: 'incrementRetries' },
-             { target: 'permanentFailure' }
-          ]
-        },
-        permanentFailure: {
-          type: 'final',
-        }
-      },
-    });
-    */
-    ```
-</Input_Code_Example>
+    // --- Basic Transition ---
+    describe('toggleMachine', () => {
+      it('should transition from inactive to active on TOGGLE', () => {
+        // Arrange (Principle: AAA Arrange)
+        const actor = createActor(toggleMachine); // Assumes 'inactive' is initial
+        actor.start();
+        expect(actor.getSnapshot().value).toBe('inactive'); // Verify initial state
 
-<Output_Format>
-    Provide:
-    1.  Your restatement of understanding of the input machine.
-    2.  The complete Vitest test suite as a single JavaScript code block (`*.test.js`), including necessary imports from `vitest`, `xstate`, and potentially `@fast-check/vitest`. The code MUST adhere to all principles and instructions.
-</Output_Format>
+        // Act (Principle: AAA Act)
+        actor.send({ type: 'TOGGLE' });
 
-<Example_Testing_Approach_Snippets>
-    ```javascript
-    // --- Standard Vitest / XState Testing Examples ---
-    // Import test/it from @fast-check/vitest, others from vitest
-    import { describe, expect, vi, beforeEach } from 'vitest';
-    import { test, it } from '@fast-check/vitest';
-    import { createActor, assign, setup, fromPromise } from 'xstate';
-    // Import the machine definition (replace with actual path)
-    // import { toggleMachine, counterMachine, paymentMachine, notificationMachine, fetchMachine } from './machines.js'; // Assuming JS files
-
-    // Example: Testing a simple transition
-    // Using 'it' from @fast-check/vitest
-    it('should transition from inactive to active on TOGGLE', () => {
-      // Arrange
-      const actor = createActor(toggleMachine);
-      actor.start(); // Start in initial 'inactive' state
-
-      // Act
-      actor.send({ type: 'TOGGLE' });
-
-      // Assert
-      expect(actor.getSnapshot().value).toBe('active');
+        // Assert (Principle: AAA Assert)
+        expect(actor.getSnapshot().value).toBe('active');
+        actor.stop();
+      });
     });
 
-    // Example: Testing an assign action
-    // Using 'it' from @fast-check/vitest
-    it('should increment count context on INCREMENT', () => {
-      // Arrange
-      const actor = createActor(counterMachine);
-      const initialCount = actor.getSnapshot().context.count;
-      actor.start();
+    // --- Context Update (assign) ---
+    describe('counterMachine', () => {
+        it('should increment count context on INCREMENT', () => {
+            // Arrange
+            const actor = createActor(counterMachine); // Assumes context { count: 0 } initial
+            actor.start();
+            const initialCount = actor.getSnapshot().context.count;
 
-      // Act
-      actor.send({ type: 'INCREMENT' });
+            // Act
+            actor.send({ type: 'INCREMENT' });
 
-      // Assert
-      expect(actor.getSnapshot().context.count).toBe(initialCount + 1);
+            // Assert
+            expect(actor.getSnapshot().context.count).toBe(initialCount + 1);
+            actor.stop();
+        });
     });
 
-    // Example: Testing a mocked action
-    describe('toggle machine action mocking', () => {
+    // --- Mocked Action ---
+    describe('toggleMachine with mocked action', () => {
         const mockNotifyActive = vi.fn();
+        // Principle: Testing behavior - providing mock action
         const machineWithMock = toggleMachine.provide({
             actions: { notifyActive: mockNotifyActive },
         });
 
+        let actor;
         beforeEach(() => {
-            vi.clearAllMocks(); // Principle: Reset mocks
+             // Principle: AAA Arrange - creating actor before each test
+            actor = createActor(machineWithMock);
+            actor.start();
+        });
+        afterEach(() => {
+            // Principle: AAA Arrange - cleaning up actor and mocks
+            actor.stop();
+            vi.clearAllMocks(); // Reset mocks between tests
         });
 
-        // Using 'it' from @fast-check/vitest
-        it('should call notify action on entry to active state', () => {
-            // Arrange
-            const actor = createActor(machineWithMock); // Assumes 'inactive' is initial
-            actor.start();
+        it('should call notifyActive action on entry to active state', () => {
+            // Arrange - actor started in beforeEach
 
             // Act
             actor.send({ type: 'TOGGLE' }); // Enter active
 
             // Assert
+            expect(actor.getSnapshot().value).toBe('active');
             // Principle: Testing behavior - verifying mock was called
             expect(mockNotifyActive).toHaveBeenCalledTimes(1);
+        });
 
-             // Act again
-            actor.send({ type: 'TOGGLE' }); // Enter inactive
-            actor.send({ type: 'TOGGLE' }); // Enter active again
+         it('should NOT call notifyActive action when staying in inactive state', () => {
+            // Arrange - actor started in beforeEach, initial state is inactive
 
-             // Assert again
-            expect(mockNotifyActive).toHaveBeenCalledTimes(2);
+            // Act
+            actor.send({ type: 'SOME_OTHER_EVENT' }); // Event ignored
+
+            // Assert
+            expect(actor.getSnapshot().value).toBe('inactive');
+            expect(mockNotifyActive).not.toHaveBeenCalled();
         });
     });
 
+    // --- Mocked Invoked Promise ---
+    describe('fetchMachine with mocked actor', () => {
+        const mockFetchData = vi.fn();
+        // Principle: Testing behavior - providing mock actor logic
+        const machineWithMock = fetchMachine.provide({
+            actors: { fetchData: fromPromise(mockFetchData) },
+            // Also mock actions if they have side effects you don't want
+            actions: { logError: vi.fn() }
+        });
 
-    // Example: Testing a guarded transition (example-based)
-    // Using 'it' from @fast-check/vitest
-    it('should transition to processing only if amount > 0', () => {
-        // Arrange: Test case 1: Invalid amount
-        const actorInvalid = createActor(paymentMachine, { input: { amount: 0 } });
-        actorInvalid.start();
+        let actor;
+        beforeEach(() => {
+            actor = createActor(machineWithMock);
+            actor.start();
+            vi.resetAllMocks(); // Reset mocks AND implementation details
+        });
+         afterEach(() => {
+            actor.stop();
+        });
 
-        // Act 1
-        actorInvalid.send({ type: 'SUBMIT' });
-
-        // Assert 1
-        expect(actorInvalid.getSnapshot().value).toBe('idle'); // Should remain idle
-
-        // Arrange 2: Valid amount
-        const actorValid = createActor(paymentMachine, { input: { amount: 100 } });
-        actorValid.start();
-
-        // Act 2
-        actorValid.send({ type: 'SUBMIT' });
-
-        // Assert 2
-        expect(actorValid.getSnapshot().value).toBe('processing'); // Should transition
-    });
-
-    // Example: Testing a mocked invoked promise
-    // Using 'it' from @fast-check/vitest
-    it('should transition to success when fetchData resolves', async () => {
-      // Arrange
-      const mockData = { id: 1, name: 'Test Data' };
-      const mockFetchDataPromise = vi.fn().mockResolvedValue(mockData); // Mock the promise logic
-      const machineWithMock = fetchMachine.provide({
-        // Principle: Mocking invoked actor
-        actors: { fetchData: fromPromise(mockFetchDataPromise) },
-      });
-      const actor = createActor(machineWithMock);
-      actor.start();
-
-      // Act
-      actor.send({ type: 'FETCH' });
-      // Wait for the promise to resolve and the transition to occur
-      // Use waitUntil for robust async checks
-      await vi.waitUntil(() => actor.getSnapshot().matches('success'));
-
-      // Assert
-      expect(actor.getSnapshot().status).toBe('done'); // Final state check
-      expect(actor.getSnapshot().value).toBe('success');
-      expect(actor.getSnapshot().context.data).toEqual(mockData);
-      // Ensure the mock was actually called
-      expect(mockFetchDataPromise).toHaveBeenCalledTimes(1);
-    });
-
-     // Example: Testing a delay with fake timers
-     // Using 'it' from @fast-check/vitest
-    it('should transition to idle after 3000ms in visible state', () => {
-        // Arrange
-        vi.useFakeTimers();
-        const actor = createActor(notificationMachine); // Assumes 'visible' has `after: { 3000: 'idle' }`
-        actor.start();
-        actor.send({ type: 'SHOW' }); // Enter 'visible' state
-        expect(actor.getSnapshot().value).toBe('visible');
-
-        // Act
-        vi.advanceTimersByTime(3000);
-
-        // Assert
-        expect(actor.getSnapshot().value).toBe('idle');
-
-        // Cleanup
-        vi.useRealTimers();
-    });
-
-    // --- Property-Based Testing Example with @fast-check/vitest ---
-    // Import 'test' and 'fc' directly from @fast-check/vitest
-    import { test, fc } from '@fast-check/vitest';
-
-    // Assume a machine with context { value: number } and an event { type: 'SET_VALUE', newValue: number }
-    // and an assign action: assign({ value: ({ event }) => event.newValue })
-    const numberMachine = setup({
-        // No types definition in JS
-        actions: {
-            setValue: assign({ value: ({ event, context }) => {
-                 // No type guard needed in JS, but check event structure
-                 if (event.type !== 'SET_VALUE') return context.value;
-                 // Ensure it's a number, default to 0 if not (example logic)
-                 return typeof event.newValue === 'number' ? event.newValue : 0;
-            }})
-        }
-    }).createMachine({
-        context: { value: 0 },
-        on: {
-            SET_VALUE: { actions: 'setValue' }
-        }
-    });
-
-    // Principle: Property-Based Testing for assign action
-    // Using 'test.prop' directly from @fast-check/vitest import
-    test.prop([fc.integer()]) // Generate various integer values
-    ('should set context.value to the event.newValue', (generatedValue) => {
-        // Arrange
-        const actor = createActor(numberMachine);
-        actor.start();
-        const event = { type: 'SET_VALUE', newValue: generatedValue };
-
-        // Act
-        actor.send(event);
-
-        // Assert (Invariant)
-        expect(actor.getSnapshot().context.value).toBe(generatedValue);
-    });
-
-    // Principle: Property-Based Testing for a Guard
-    // Assume a guard `isEven: ({ context }) => context.count % 2 === 0`
-    const guardMachine = setup({
-         // No types definition in JS
-         guards: { isEven: ({ context }) => context.count % 2 === 0 }
-    }).createMachine({
-        context: { count: 0 },
-        initial: 'idle',
-        states: {
-            idle: { on: { CHECK: { target: 'even', guard: 'isEven' } } },
-            even: {}
-        }
-    });
-
-    // Using 'test.prop' directly from @fast-check/vitest import
-    test.prop([fc.integer()]) // Generate various integer counts
-    ('should only transition to even state if context.count is even', (count) => {
-        // Arrange
-        const actor = createActor(guardMachine, { input: { count } }); // Start with generated context
-        actor.start();
-
-        // Act
-        actor.send({ type: 'CHECK' });
-
-        // Assert (Invariant based on guard logic)
-        if (count % 2 === 0) {
-            expect(actor.getSnapshot().value).toBe('even');
-        } else {
+        it('should transition to success when fetchData resolves', async () => {
+            // Arrange
+            const mockData = { data: 'Mock success data' };
+            mockFetchData.mockResolvedValue(mockData); // Setup mock resolution
             expect(actor.getSnapshot().value).toBe('idle');
-        }
+
+            // Act
+            actor.send({ type: 'FETCH' });
+            // Assert: Check intermediate loading state
+            expect(actor.getSnapshot().value).toBe('loading');
+            expect(mockFetchData).toHaveBeenCalledTimes(1);
+            expect(mockFetchData).toHaveBeenCalledWith(expect.objectContaining({ input: { attempt: 1 } })); // Check input to actor
+
+            // Assert: Wait for final state (Principle: Async Handling)
+            await vi.waitUntil(() => actor.getSnapshot().matches('success'));
+
+            expect(actor.getSnapshot().status).toBe('done'); // Final state check
+            expect(actor.getSnapshot().context.data).toEqual(mockData.data); // Check context update
+            expect(actor.getSnapshot().output).toEqual({ result: mockData.data }); // Check final output
+        });
+
+        it('should transition to failure when fetchData rejects', async () => {
+            // Arrange
+            const mockError = new Error('Mock fetch failed');
+            mockFetchData.mockRejectedValue(mockError); // Setup mock rejection
+            const mockLogError = machineWithMock.options.actions.logError; // Get ref to mocked action
+
+            // Act
+            actor.send({ type: 'FETCH' });
+            await vi.waitUntil(() => actor.getSnapshot().matches('failure'));
+
+            // Assert
+            expect(actor.getSnapshot().value).toBe('failure');
+            expect(actor.getSnapshot().context.error).toBe(mockError); // Check error in context
+             // Principle: Check that side-effect action was called
+            expect(mockLogError).toHaveBeenCalledTimes(1);
+            expect(mockLogError).toHaveBeenCalledWith(expect.anything(), { error: mockError }); // Check params passed to action
+
+             // Since default machine retries, check transition back to loading
+            await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
+            expect(actor.getSnapshot().context.retries).toBe(1);
+            expect(mockFetchData).toHaveBeenCalledTimes(2); // Called again on retry
+            expect(mockFetchData).toHaveBeenLastCalledWith(expect.objectContaining({ input: { attempt: 2 } }));
+        });
     });
 
-    // --- Model-Based Testing Example with @xstate/test ---
-    // Assume a simple toggle machine and a testing environment (like Playwright's page)
-    // Import createModel from @xstate/test
+     // --- Guard Testing (Example-Based) ---
+    describe('fetchMachine guard testing (example-based)', () => {
+        const mockFetchData = vi.fn();
+        // Mock the actor to control its outcome easily
+        const machineWithMock = fetchMachine.provide({
+             actors: { fetchData: fromPromise(mockFetchData) },
+             actions: { logError: vi.fn(), incrementRetries: fetchMachine.options.actions.incrementRetries } // Keep original assign
+        });
+
+         it('should retry from failure if retries < 3', async () => {
+            // Arrange
+            const actor = createActor(machineWithMock, {
+                // Start with context already primed for retry scenario
+                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 1, error: 'Previous error' }})
+            });
+            mockFetchData.mockResolvedValue({ data: 'Success on retry' }); // Expect success this time
+            actor.start(); // Start from the saved snapshot
+
+            // Act: The 'always' transition triggers automatically upon entry/restart
+
+            // Assert: Wait for transition back to loading due to guard passing
+            await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
+            expect(actor.getSnapshot().context.retries).toBe(1); // Retries increment *after* guard check but before loading entry? Check machine logic. Retries are incremented in the transition *to* loading. So context checked by guard is retries=1.
+            expect(mockFetchData).toHaveBeenCalledTimes(1); // Fetch called on entering loading
+            expect(mockFetchData).toHaveBeenCalledWith(expect.objectContaining({ input: { attempt: 2 } }));
+
+             // Let it resolve to success
+             await vi.waitUntil(() => actor.getSnapshot().matches('success'));
+             expect(actor.getSnapshot().context.data).toBe('Success on retry');
+             actor.stop();
+         });
+
+         it('should transition to permanentFailure if retries >= 3', async () => {
+             // Arrange
+            const actor = createActor(machineWithMock, {
+                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 3, error: 'Final error' }})
+            });
+             const mockLogError = machineWithMock.options.actions.logError;
+             actor.start();
+
+             // Act: 'always' transition triggers
+
+             // Assert: Should go directly to permanentFailure as guard fails
+            await vi.waitUntil(() => actor.getSnapshot().matches('permanentFailure'));
+             expect(actor.getSnapshot().status).toBe('done'); // permanentFailure is final
+             expect(mockLogError).not.toHaveBeenCalled(); // logError is on entry to failure, which we started in.
+             expect(mockFetchData).not.toHaveBeenCalled(); // Should not retry
+             actor.stop();
+         });
+    });
+
+    // --- Guard Testing (Property-Based) ---
+    // Principle: Property-Based Testing for Guard
+    describe('fetchMachine guard testing (PBT)', () => {
+        // Reuse machine with mocks from previous describe block if setup allows, or redefine
+        const machineWithMock = fetchMachine.provide({
+             actors: { fetchData: vi.fn().mockResolvedValue({ data: '...' }) }, // Mock actor simply
+             actions: { logError: vi.fn(), incrementRetries: fetchMachine.options.actions.incrementRetries }
+        });
+
+        // Using 'test.prop' from @fast-check/vitest
+        test.prop([fc.integer({ min: 0, max: 5 })]) // Generate various retry counts
+        ('should transition correctly from failure based on retries count', async (retriesCount) => {
+            // Arrange
+             const initialSnapshot = machineWithMock.resolveState({
+                 value: 'failure',
+                 context: { retries: retriesCount, error: 'Some error' }
+             });
+            const actor = createActor(machineWithMock, { snapshot: initialSnapshot });
+            actor.start();
+
+            // Act: 'always' transition happens automatically
+
+            // Assert (Invariant based on guard logic)
+            if (retriesCount < 3) {
+                await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
+                expect(actor.getSnapshot().value).toBe('loading');
+            } else {
+                 await vi.waitUntil(() => actor.getSnapshot().matches('permanentFailure'));
+                expect(actor.getSnapshot().value).toBe('permanentFailure');
+                expect(actor.getSnapshot().status).toBe('done');
+            }
+            actor.stop();
+        });
+    });
+
+     // --- Delay Testing (`after`) ---
+    describe('notificationMachine delay testing', () => {
+         // Assume notificationMachine has: states: { visible: { after: { 3000: 'idle' } } }
+         let actor;
+
+         beforeEach(() => {
+            vi.useFakeTimers(); // Principle: Use fake timers for 'after'
+            actor = createActor(notificationMachine);
+            actor.start();
+         });
+         afterEach(() => {
+             vi.useRealTimers(); // Principle: Clean up fake timers
+             actor.stop();
+         });
+
+        it('should transition to idle after 3000ms in visible state', () => {
+            // Arrange
+            actor.send({ type: 'SHOW' }); // Enter 'visible' state
+            expect(actor.getSnapshot().value).toBe('visible');
+
+            // Act
+            vi.advanceTimersByTime(2999);
+            // Assert: Still visible before delay expires
+            expect(actor.getSnapshot().value).toBe('visible');
+
+            vi.advanceTimersByTime(1); // Cross the threshold
+
+            // Assert: Now transitioned to idle
+            expect(actor.getSnapshot().value).toBe('idle');
+        });
+    });
+
+    // --- Model-Based Testing Snippet (Conceptual Structure) ---
+    /*
     import { createModel } from '@xstate/test';
-    // Assume toggleMachine is defined elsewhere as in standard examples
+    // Assume complexMachineWithMeta includes meta: { test: ... } assertions
 
-    const toggleMachineWithMeta = setup({
-      // Assume setup actions/guards if needed
-    }).createMachine({
-      id: 'toggle_meta',
-      initial: 'inactive',
-      states: {
-        inactive: {
-          on: { TOGGLE: 'active' },
-          // Principle: MBT - Asserting state in the SUT (System Under Test)
-          meta: {
-            test: async (page) => { // `page` is the testContext passed to path.test(page)
-              // Example assertion: Check if a toggle switch element is unchecked
-              // await expect(page.locator('#toggle-switch')).not.toBeChecked();
-              console.log('Verifying state: inactive'); // Placeholder for real assertion
-            },
-          },
+    const complexModel = createModel(complexMachineWithMeta).withEvents({
+      EVENT_A: {
+        exec: async (page) => { // page is the testContext
+          // Simulate interaction causing EVENT_A in the SUT
+          // await page.click('#button-a');
+          console.log('MBT Exec: EVENT_A');
         },
-        active: {
-          on: { TOGGLE: 'inactive' },
-          // Principle: MBT - Asserting state in the SUT
-          meta: {
-            test: async (page) => {
-              // Example assertion: Check if a toggle switch element is checked
-              // await expect(page.locator('#toggle-switch')).toBeChecked();
-              console.log('Verifying state: active'); // Placeholder for real assertion
-            },
-          },
-        },
+        // cases: [{ type: 'EVENT_A', value: 1 }, { type: 'EVENT_A', value: 2 }] // Optional variations
       },
+      EVENT_B: {
+         exec: async (page, event) => { // Event object passed if cases used
+           console.log(`MBT Exec: EVENT_B with value ${event.value}`);
+           // await page.fill('#input-b', event.value);
+         },
+         cases: [{ type: 'EVENT_B', value: 'test' }]
+      }
     });
 
-    // Principle: MBT - Defining the model and event execution
-    const toggleModel = createModel(toggleMachineWithMeta).withEvents({
-      TOGGLE: {
-        // How to execute the TOGGLE event in the SUT
-        exec: async (page) => { // `page` is the testContext passed to path.test(page)
-          // Example execution: Click the toggle switch
-          // await page.locator('#toggle-switch').click();
-          console.log('Executing event: TOGGLE'); // Placeholder for real action
-        },
-        // Optionally add event cases: cases: [{ type: 'TOGGLE' }] (often inferred)
-      },
-      // Add other events here if the machine has them
-    });
-
-    // Principle: MBT - Generating and running test plans
-    describe('toggle machine model-based tests', () => {
-      // Generate plans (e.g., shortest paths to cover states)
-      const testPlans = toggleModel.getShortestPathPlans();
+    describe('complexMachine model-based tests', () => {
+      const testPlans = complexModel.getSimplePathPlans(); // Or getShortestPathPlans
 
       testPlans.forEach((plan) => {
-        describe(plan.description, () => { // e.g., "reaches state inactive"
+        describe(plan.description, () => {
           plan.paths.forEach((path) => {
-            // Using 'it' from vitest here, assuming no PBT needed *for the path generation*
-            it(path.description, async () => { // e.g., "via TOGGLE"
-              // Setup context if needed (e.g., const page = await browser.newPage();)
-              const testContext = { /* provide page or other SUT handle */ };
-              console.log(`--- Testing Path: ${path.description} ---`);
-              // Execute the path: Verifies states (meta.test) and executes events (exec)
+            it(path.description, async () => {
+              // Setup SUT / testContext (e.g., browser page) if needed
+              const testContext = { /* e.g., page object * / };
+              console.log(`--- MBT Path Start: ${path.description} ---`);
+              // path.test executes events and verifies meta.test assertions
               await path.test(testContext);
-              console.log(`--- Path Complete: ${path.description} ---`);
-              // Cleanup context if needed (e.g., await page.close();)
+              console.log(`--- MBT Path End: ${path.description} ---`);
+              // Cleanup SUT / testContext if needed
             });
           });
         });
       });
 
-      // Using 'it' from vitest
       it('should have full state coverage', () => {
-        // Asserts that all states defined in the model were covered by the plans
-        return toggleModel.testCoverage();
-        // Optionally filter states: testCoverage({ filter: stateNode => ... })
+        return complexModel.testCoverage();
       });
     });
+    */
 
     ```
-</Example_Testing_Approach_Snippets>
+</Example_Test_Snippets>
+
+<Output_Format>
+    Your response MUST be structured as follows:
+
+    1.  **Machine Understanding**:
+        *   Start with your restatement of the input machine's functionality, states, events, context, and actors/invokes.
+
+    2.  **Test Plan**:
+        *   Begin with the trigger: "Okay, let's devise a plan to test this machine thoroughly."
+        *   Provide the detailed test plan covering the specified categories (Happy Path, Negative, Boundary, Edge, Data, State Transition).
+        *   Each planned test should mention what it tests and the principle(s) applied.
+        *   MUST include justification for using (or not using) PBT and MBT.
+
+    3.  **Vitest Test Suite**:
+        *   Provide the complete `*.test.js` code as a single JavaScript code block.
+        *   The code MUST include all necessary imports.
+        *   The code MUST implement the test plan and strictly follow the `<Testing_Principles_To_Follow>`.
+        *   Include comments referencing principles as demonstrated in `<Example_Test_Snippets>`.
+        *   The code MUST be runnable.
+
+</Output_Format>
