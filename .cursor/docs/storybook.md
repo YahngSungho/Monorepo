@@ -492,12 +492,11 @@ This replaces the input with a radio group for a more intuitive experience.
 
 Controls can automatically be inferred from arg's name with regex, but currently only for the color picker and date picker controls. If you've used the Storybook CLI to setup your project, it should have automatically created the following defaults in `.storybook/preview.js|ts`:
 
-| Control   | Default regex | Description                                              |
-| --------- | ------------- | -------------------------------------------------------- | --------------------------------------------------------- |
-| **color** | `/(background | color)$/i`                                               | Will display a color picker UI for the args that match it |
-| ---       | ---           | ---                                                      |
-| **date**  | `/Date$/`     | Will display a date picker UI for the args that match it |
-
+ | Control   | Default regex | Description                                              |
+ | --------- | ------------- | -------------------------------------------------------- |
+ | **color** | `/(background | color)$/i`                                               | Will display a color picker UI for the args that match it |
+ | ---       | ---           | ---                                                      |
+ | **date**  | `/Date$/`     | Will display a date picker UI for the args that match it |
 If you haven't used the CLI to set the configuration, or if you want to define your patterns, use the `matchers` property in the `controls` parameter:
 
 .storybook/preview.js
