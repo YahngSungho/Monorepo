@@ -474,7 +474,7 @@ export default defineFlatConfig([
 	},
 
 	{
-		files: ['**/*.md'],
+		files: ['**/*.md', '**/*.mdc'],
 		plugins: {
 			markdown,
 		},

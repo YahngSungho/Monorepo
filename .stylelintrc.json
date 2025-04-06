@@ -7,12 +7,16 @@
 	],
 	"overrides": [
 		{
-			"customSyntax": "postcss-syntax",
-			"files": ["**/*.css"]
+			"files": ["**/*.css"],
+			"customSyntax": "postcss-syntax"
 		},
 		{
 			"files": ["**/*.svelte"],
 			"customSyntax": "postcss-html"
+		},
+		{
+			"files": ["**/*.md", "**/*.mdx", "**/*.mdc"],
+			"customSyntax": "postcss-markdown"
 		}
 	],
 	"plugins": [
