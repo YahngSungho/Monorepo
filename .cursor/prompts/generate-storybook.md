@@ -51,7 +51,7 @@ In versions prior to v5 of this addon, it was always required to define a templa
 If your component only accepts props and doesn't require snippets or slots, you can use the simple form of defining stories, only using args:
 
 ```source-svelte
-<Story name="Primary" args={{ primary: true }} />
+<Story args={{ primary: true }} name="Primary" />
 ```
 
 This will render the component defined in the meta, with the args passed as props.

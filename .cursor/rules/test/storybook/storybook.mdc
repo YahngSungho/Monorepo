@@ -225,9 +225,10 @@ This document provides a guide on how to write Storybook stories for Svelte comp
 Every `.stories.svelte` file requires a default export, known as `meta`, which contains metadata about the component and its stories. Use the `defineMeta` function **within the `<script module>` context**.
 
 ```svelte
-<script module lang="ts">
+<script lang="ts" module>
   // ❗️ Must be in the module context
   import { defineMeta } from '@storybook/addon-svelte-csf';
+
   import MyComponent from './MyComponent.svelte';
 
   // 👇 Destructure the Story component from the return value
@@ -388,6 +389,7 @@ Set a default template using `setTemplate` in the **instance `<script>` tag**.
 ```svelte
 <script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+
   import MyComponent from './MyComponent.svelte';
   const { Story } = defineMeta({ component: MyComponent /* ... */ });
 </script>
@@ -398,7 +400,7 @@ Set a default template using `setTemplate` in the **instance `<script>` tag**.
 </script>
 
 {#snippet defaultTemplate(args)}
-  <div style="border: 1px solid blue; padding: 10px;">
+  <div style:border="1px solid blue" style:padding="10px">
     <MyComponent {...args} />
   </div>
 {/snippet}
@@ -414,7 +416,7 @@ Set a default template using `setTemplate` in the **instance `<script>` tag**.
 - At least one (`name` or `exportName`) is required.
 
 ```svelte
-<Story name="Friendly Name" exportName="UniqueExport1" args={{ /* ... */ }} />
+<Story name="Friendly Name" args={{ /* ... */ }} exportName="UniqueExport1" />
 ```
 
 ### 3.4. Accessing Story Context and Loaders
@@ -452,10 +454,11 @@ And register the addon in `.storybook/main.js|ts`:
 `addons: ['@storybook/addon-interactions']`
 
 ```svelte
-<script module lang="ts">
+<script lang="ts" module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
   // 👇 Import testing utilities
-  import { userEvent, within, expect, fn, waitFor, step } from '@storybook/test';
+  import { expect, fn, step,userEvent, waitFor, within } from '@storybook/test';
+
   import FormComponent from './FormComponent.svelte';
 
   const { Story } = defineMeta({
@@ -547,13 +550,14 @@ Run `npm run test-storybook`. It will launch a browser (using Playwright), visit
 Use TypeScript for type safety (`lang="ts"`).
 
 ```svelte
-<script module lang="ts">
+<script lang="ts" module>
   // ❗️ Ensure lang="ts"
-  import { defineMeta, type Args, type StoryContext } from '@storybook/addon-svelte-csf';
+  import { type Args, defineMeta, type StoryContext } from '@storybook/addon-svelte-csf';
+
   import MyComponent from './MyComponent.svelte';
 
   // Optional: Define a more specific args type
-  type MyComponentArgs = { customProp: string; } & import('svelte').ComponentProps<MyComponent>;
+  type MyComponentArgs = import('svelte').ComponentProps<MyComponent> & { customProp: string; };
 
   const { Story } = defineMeta<MyComponentArgs>({ // Pass generic type
     component: MyComponent,
@@ -580,6 +584,7 @@ Compose components within story snippets to demonstrate interactions or layouts.
 ```svelte
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
+
   import Container from './Container.svelte';
   import Item from './Item.svelte';
 

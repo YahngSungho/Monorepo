@@ -7,8 +7,8 @@ Testing actor logic is important for ensuring that the logic is correct and that
 - **Assert** - assert that the actor(s) reached their expected state(s) and/or executed the expected side effects.
 
 ```ts
-import { setup, createActor } from 'xstate'
-import { test, expect } from 'vitest'
+import { expect,test } from 'vitest'
+import { createActor,setup } from 'xstate'
 
 test('some actor', async () => {
 	const notifiedMessages: string[] = []
@@ -114,8 +114,8 @@ The @xstate/test package contains utilities for facilitating model-based testing
 3. Create the model:
 
    ```js
-   import { createMachine } from 'xstate'
    import { createModel } from '@xstate/test'
+   import { createMachine } from 'xstate'
    
    const toggleMachine = createMachine(/* ... */)
    
@@ -136,17 +136,17 @@ The @xstate/test package contains utilities for facilitating model-based testing
    describe('toggle', () => {
    	const testPlans = toggleModel.getShortestPathPlans()
    
-   	testPlans.forEach((plan) => {
+   	for (const plan of testPlans) {
    		describe(plan.description, () => {
-   			plan.paths.forEach((path) => {
+   			for (const path of plan.paths) {
    				it(path.description, async () => {
    					// do any setup, then...
    
    					await path.test(page)
    				})
-   			})
+   			}
    		})
-   	})
+   	}
    
    	it('should have full coverage', () => {
    		return toggleModel.testCoverage()
@@ -292,8 +292,8 @@ State machine testing begins with verifying basic state transitions. We'll use J
 
 ```javascript
 // Import necessary testing utilities
-import { createMachine, interpret } from 'xstate'
 import { createModel } from '@xstate/test'
+import { createMachine, interpret } from 'xstate'
 
 // Define a simple toggle machine for testing
 const toggleMachine = createMachine({
@@ -441,15 +441,15 @@ const toggleModel = createModel(toggleMachine).withEvents({
 describe('Toggle Model', () => {
 	const testPlans = toggleModel.getSimplePathPlans()
 
-	testPlans.forEach((plan) => {
+	for (const plan of testPlans) {
 		describe(plan.description, () => {
-			plan.paths.forEach((path) => {
+			for (const path of plan.paths) {
 				it(path.description, async () => {
 					await path.test()
 				})
-			})
+			}
 		})
-	})
+	}
 })
 ```
 
@@ -543,6 +543,7 @@ Here's how to test the counter machine using Jest:
 ```javascript
 // counter.test.js
 import { interpret } from 'xstate'
+
 import { counterMachine } from './counter.machine'
 
 describe('Counter Machine', () => {
@@ -571,6 +572,7 @@ Testing communication between actors requires a more comprehensive approach. We 
 ```javascript
 // parent.machine.js
 import { createMachine, spawn } from 'xstate'
+
 import { counterMachine } from './counter.machine'
 
 const parentMachine = createMachine({
@@ -599,6 +601,7 @@ Testing actor communication involves verifying that messages are properly forwar
 ```javascript
 // integration.test.js
 import { interpret } from 'xstate'
+
 import { parentMachine } from './parent.machine'
 
 describe('Parent-Child Communication', () => {
@@ -687,7 +690,7 @@ test('should handle multiple actors efficiently', async () => {
 	const actors = Array.from({ length: 100 }, () => interpret(counterMachine).start())
 
 	// Send messages to all actors
-	actors.forEach((actor) => actor.send('INCREMENT'))
+	for (const actor of actors) actor.send('INCREMENT')
 
 	const endTime = performance.now()
 	const executionTime = endTime - startTime
@@ -695,7 +698,7 @@ test('should handle multiple actors efficiently', async () => {
 	expect(executionTime).toBeLessThan(1000) // Should complete within 1 second
 
 	// Cleanup
-	actors.forEach((actor) => actor.stop())
+	for (const actor of actors) actor.stop()
 })
 ```
 
@@ -713,8 +716,8 @@ Let's set up the XState Inspector in a React application:
 
 ```javascript
 // Import necessary dependencies
-import { useMachine } from '@xstate/react'
 import { inspect } from '@xstate/inspect'
+import { useMachine } from '@xstate/react'
 
 // Initialize the inspector before your app renders
 if (process.env.NODE_ENV === 'development') {
@@ -1042,6 +1045,14 @@ Create a monitoring dashboard to visualize the current state of your actor syste
 class ActorSystemDashboard {
 	private activeActors = new Map()
 
+	// Get system statistics
+	getSystemStats() {
+		return {
+			totalActors: this.activeActors.size,
+			activeStates: Array.from(this.activeActors.values(), (a) => a.currentState),
+		}
+	}
+
 	// Track actor lifecycle
 	registerActor(actor) {
 		this.activeActors.set(actor.id, {
@@ -1057,14 +1068,6 @@ class ActorSystemDashboard {
 		if (actor) {
 			actor.currentState = newState
 			actor.lastUpdate = Date.now()
-		}
-	}
-
-	// Get system statistics
-	getSystemStats() {
-		return {
-			totalActors: this.activeActors.size,
-			activeStates: Array.from(this.activeActors.values()).map((a) => a.currentState),
 		}
 	}
 }

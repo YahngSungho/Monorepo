@@ -94,14 +94,14 @@ class MyFunctor {
 		return MyFunctor.of(this._value + newValue)
 	}
 
-	// Another example immutable method
-	multiply(factor) {
-		return MyFunctor.of(this._value * factor)
-	}
-
 	// A way to extract the value if needed
 	getValue() {
 		return this._value
+	}
+
+	// Another example immutable method
+	multiply(factor) {
+		return MyFunctor.of(this._value * factor)
 	}
 }
 ```
@@ -127,14 +127,12 @@ class Maybe {
 		return new Maybe(x)
 	} // Pointed
 
-	map(fn) {
-		// Functor part
-		return this.isNothing ? this : Maybe.of(fn(this.$value))
-	}
-
-	join() {
-		// Monad part - removes one level of nesting
-		return this.isNothing ? this : this.$value
+	// Example for Applicative Functor (optional concept)
+	ap(f) {
+		// f should be a Maybe containing a function
+		return this.isNothing || !(f instanceof Maybe) || f.isNothing ?
+				Maybe.of(null)
+			:	this.map(f.$value)
 	}
 
 	chain(fn) {
@@ -147,12 +145,14 @@ class Maybe {
 		return this.isNothing ? defaultValue : this.$value
 	}
 
-	// Example for Applicative Functor (optional concept)
-	ap(f) {
-		// f should be a Maybe containing a function
-		return this.isNothing || !(f instanceof Maybe) || f.isNothing ?
-				Maybe.of(null)
-			:	this.map(f.$value)
+	join() {
+		// Monad part - removes one level of nesting
+		return this.isNothing ? this : this.$value
+	}
+
+	map(fn) {
+		// Functor part
+		return this.isNothing ? this : Maybe.of(fn(this.$value))
 	}
 
 	// Example for logging/inspection
@@ -172,7 +172,7 @@ class Maybe {
 class IO {
 	constructor(fn) {
 		if (typeof fn !== 'function') {
-			throw new Error('IO requires a function')
+			throw new TypeError('IO requires a function')
 		}
 		// The function fn represents the effectful computation
 		this.unsafePerformIO = fn
@@ -181,23 +181,10 @@ class IO {
 		return new IO(() => x)
 	} // Pointed
 
-	map(fn) {
-		// Functor part
-		// Creates a new IO where the effect is composed: perform original IO, then apply fn
-		return IO.of(compose(fn, this.unsafePerformIO))
-	}
-
-	join() {
-		// Monad part
-		// Returns a IO.of that performs the outer IO to get the inner IO, then performs the inner IO
-		// Requires the result of the outer IO to be another IO instance
-		return IO.of(() => {
-			const innerIO = this.unsafePerformIO()
-			if (!(innerIO instanceof IO)) {
-				throw new Error('Cannot join: Outer IO did not return an IO instance.')
-			}
-			return innerIO.unsafePerformIO()
-		})
+	// Example for Applicative Functor (optional concept)
+	ap(f) {
+		// f should be an IO containing a function
+		return this.chain((value) => f.map((fn) => fn(value)))
 	}
 
 	chain(fn) {
@@ -208,17 +195,30 @@ class IO {
 			const value = this.unsafePerformIO()
 			const nextIO = fn(value)
 			if (!(nextIO instanceof IO)) {
-				throw new Error('Cannot chain: Function did not return an IO instance.')
+				throw new TypeError('Cannot chain: Function did not return an IO instance.')
 			}
 			return nextIO.unsafePerformIO()
 		})
 		// Or conceptually: return this.map(fn).join()
 	}
 
-	// Example for Applicative Functor (optional concept)
-	ap(f) {
-		// f should be an IO containing a function
-		return this.chain((value) => f.map((fn) => fn(value)))
+	join() {
+		// Monad part
+		// Returns a IO.of that performs the outer IO to get the inner IO, then performs the inner IO
+		// Requires the result of the outer IO to be another IO instance
+		return IO.of(() => {
+			const innerIO = this.unsafePerformIO()
+			if (!(innerIO instanceof IO)) {
+				throw new TypeError('Cannot join: Outer IO did not return an IO instance.')
+			}
+			return innerIO.unsafePerformIO()
+		})
+	}
+
+	map(fn) {
+		// Functor part
+		// Creates a new IO where the effect is composed: perform original IO, then apply fn
+		return IO.of(compose(fn, this.unsafePerformIO))
 	}
 
 	// Example for logging/inspection
@@ -244,14 +244,14 @@ class List {
 	constructor(xs) {
 		this.$value = Array.isArray(xs) ? xs : []
 	}
-	static of(x) {
-		return new List(x === undefined || x === null ? [] : [x])
-	} // Pointed
-
 	// Monoid part:
 	static empty() {
 		return List.of([])
 	} // Identity element
+
+	static of(x) {
+		return new List(x === undefined || x === null ? [] : [x])
+	} // Pointed
 	concat(otherList) {
 		// Binary operation
 		// Ensure the argument is a List instance for safety and extract its value
