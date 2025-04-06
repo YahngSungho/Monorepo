@@ -57,7 +57,7 @@ async function serializePage(page) {
 /**
  * 두 상태 문자열을 비교하여 동일한지 여부를 반환합니다.
  *
- * @param {string | null} cachedState - 캐시에서 읽어온 상태 문자열 (없으면 null)
+ * @param {string | undefined} cachedState - 캐시에서 읽어온 상태 문자열 (없으면 undefined)
  * @param {string} currentState - 현재 페이지에서 직렬화된 상태 문자열
  * @returns {boolean} 두 상태가 동일하면 true, 아니면 false
  */
