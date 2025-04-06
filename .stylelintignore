@@ -4,8 +4,6 @@
 **/*.toml
 **/*.yaml
 **/*.yml
-**/*.md
-**/*.mdx
 **/*.jsonc
 **/*.json5
 **/*.sql
