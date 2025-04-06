@@ -635,7 +635,6 @@ jobs:
 
       # 라벨 추가
       - name: Add a Label to PR 2
-        if: steps.auto-commit.outputs.changes_detected != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
