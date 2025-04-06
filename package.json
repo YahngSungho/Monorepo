@@ -97,6 +97,7 @@
 		"jest-junit": "^16.0.0",
 		"jsdom": "^26.0.0",
 		"jsonc-eslint-parser": "^2.4.0",
+		"mdsvex": "^0.12.3",
 		"pnpm": "10.4.1",
 		"postcss": "^8.5.3",
 		"postcss-html": "^1.8.0",

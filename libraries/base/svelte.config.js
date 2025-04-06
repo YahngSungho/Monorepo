@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-cloudflare'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import { mdsvex } from 'mdsvex'
 
 const ifNotProduction = process.env.NODE_ENV !== 'production'
 
@@ -18,7 +19,8 @@ const config = {
 			'$shadcn/*': '../../libraries/ui/src/shadcn/*',
 		},
 	},
-	preprocess: vitePreprocess(),
+	preprocess: [vitePreprocess(), mdsvex()],
+	extensions: ['.svelte', '.svx'],
 }
 
 export default config

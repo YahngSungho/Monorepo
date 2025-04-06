@@ -219,6 +219,9 @@ importers:
       jsonc-eslint-parser:
         specifier: ^2.4.0
         version: 2.4.0
+      mdsvex:
+        specifier: ^0.12.3
+        version: 0.12.3(svelte@5.25.3)
       pnpm:
         specifier: 10.4.1
         version: 10.4.1
@@ -6154,6 +6157,11 @@ packages:
   mdn-data@2.12.2:
     resolution: {integrity: sha512-IEn+pegP1aManZuckezWCO+XZQDplx1366JoVhTpMpBB1sPey/SbveZQUosKiKiGYjg1wH4pMlNgXbCiYgihQA==}
 
+  mdsvex@0.12.3:
+    resolution: {integrity: sha512-C/uIJamjNo5PHHnR3JHqsBPoLcfUBpzRmAEB6FLMXI/s7XHOceswjDMKqSPEW2WHmYpKm0taZ3U20GSyhMridA==}
+    peerDependencies:
+      svelte: ^3.56.0 || ^4.0.0 || ^5.0.0-next.120
+
   memoize-weak@1.0.2:
     resolution: {integrity: sha512-gj39xkrjEw7nCn4nJ1M5ms6+MyMlyiGmttzsqAUsAKn6bYKwuTHh/AO3cKPF8IBrTIYTxb0wWXFs3E//Y8VoWQ==}
 
@@ -7232,6 +7240,13 @@ packages:
 
   printable-characters@1.0.42:
     resolution: {integrity: sha512-dKp+C4iXWK4vVYZmYSd0KBH5F/h1HoZRsbJ82AVKRO3PEo8L4lBS/vLwhVtpwwuYcoIsVY+1JYKR268yn480uQ==}
+
+  prism-svelte@0.4.7:
+    resolution: {integrity: sha512-yABh19CYbM24V7aS7TuPYRNMqthxwbvx6FF/Rw920YbyBWO3tnyPIqRMgHuSVsLmuHkkBS1Akyof463FVdkeDQ==}
+
+  prismjs@1.30.0:
+    resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
+    engines: {node: '>=6'}
 
   proc-log@4.2.0:
     resolution: {integrity: sha512-g8+OnU/L2v+wyiVK+D5fA34J7EH8jZ8DDlvwhRCMxmMj7UCBvxiO1mGeN+36JXIKF4zevU4kRBd8lVgG9vLelA==}
@@ -15223,6 +15238,14 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
+  mdsvex@0.12.3(svelte@5.25.3):
+    dependencies:
+      '@types/unist': 2.0.11
+      prism-svelte: 0.4.7
+      prismjs: 1.30.0
+      svelte: 5.25.3
+      vfile-message: 2.0.4
+
   memoize-weak@1.0.2: {}
 
   memoizerific@1.11.3:
@@ -16483,6 +16506,10 @@ snapshots:
       react-is: 17.0.2
 
   printable-characters@1.0.42: {}
+
+  prism-svelte@0.4.7: {}
+
+  prismjs@1.30.0: {}
 
   proc-log@4.2.0: {}
 
