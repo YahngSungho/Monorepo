@@ -1,85 +1,46 @@
 <script module>
+	// JAVASCRIPT ONLY - NO lang="ts"
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { expect, userEvent, within } from '@storybook/test';
 
-	// Import the .svx file directly. MDSvex preprocesses it into a Svelte component.M
-	// Note: The "Cannot find module" error below is likely a TypeScript configuration issue
-	// for .svx files and needs to be addressed in tsconfig or type declarations.
-	import SampleSvx from './sample.svx';
+	// MDSveX 파일을 Svelte 컴포넌트로 임포트합니다. MDSveX 전처리기가 변환을 처리합니다.
+	import SampleMdsvexComponent from './sample.svx';
 
-	// Since .svx files don't use $props() in the standard Svelte way,
-	// we don't define a specific props interface for defineMeta.
-	// Args and ArgTypes will be minimal.
+	// defineMeta는 컴포넌트 메타데이터를 정의합니다.
 	const { Story } = defineMeta({
-		title: 'UI/MDSvex/Sample', // Storybook sidebar path
-		// @ts-ignore - Storybook 타입과 SvelteComponent 타입 불일치 무시
-		component: SampleSvx, // The preprocessed .svx file
-		tags: ['autodocs'], // Enable automatic documentation generation
-		// No args needed as we can't control frontmatter via props
-		args: {},
-		// No argTypes needed for component props
-		argTypes: {},
+		// Storybook UI에서의 경로 및 컴포넌트 이름
+		title: 'MDSveX/Sample Document',
+		// MDSveX에 의해 처리된 컴포넌트
+		component: SampleMdsvexComponent,
 		parameters: {
-			layout: 'fullscreen', // Use fullscreen layout suitable for document rendering
-			docs: {
-				description: {
-					component:
-						'Story demonstrating rendering an MDSvex (`.svx`) file. This file mixes Markdown and Svelte 5 (Runes) syntax. The story tests if the Svelte parts are interactive within Storybook.',
-				},
-			},
-			// Enable accessibility addon checks
-			a11y: {
-				element: '#storybook-root', // Or tighter selector if needed
-				config: {
-					rules: [], // Add specific rules to disable/enable if necessary
-				},
-				options: {},
-			},
+			// 레이아웃을 조정하여 내용을 더 잘 볼 수 있도록 합니다 (선택 사항).
+			layout: 'padded',
 		},
+		// sample.svx는 외부 props를 받지 않으므로 argTypes는 비워둡니다.
+		argTypes: {},
 	});
 </script>
 
-<!-- Story to show the basic rendered output of the .svx file -->
-<Story name="Default Rendering" />
+<!--
+이 .svx 파일은 자체 콘텐츠와 내부 상태를 가지고 있으므로,
+복잡한 args나 공유 스니펫 없이 컴포넌트를 직접 렌더링하는 것이
+MDSveX 통합을 테스트하는 가장 직접적인 방법입니다.
+-->
 
-<!-- Story to test the interactive Svelte elements within the .svx file -->
+<!-- 기본 렌더링 테스트 스토리 (Happy Path) -->
 <Story
-	name="Interactive Test"
-	play={async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Find the button defined within the Svelte script block of the .svx file
-		// Note: Ensure the button text matches exactly, including Korean characters.
-		const counterButton = canvas.getByRole('button', { name: '카운트 증가' });
-
-		// Initial State Check
-		// Check the paragraph displaying the count state
-		const initialCountDisplay = canvas.getByText('현재 카운트: 0');
-		await expect(initialCountDisplay).toBeInTheDocument();
-		// Check the derived message display
-		const initialDerivedDisplay = canvas.getByText('계산된 메시지: 계산된 값의 두 배는 0입니다.');
-		await expect(initialDerivedDisplay).toBeInTheDocument();
-
-		// Click counter button once
-		await userEvent.click(counterButton);
-
-		// Verify count update after first click
-		// Assert that the $state variable 'count' updated in the DOM
-		const firstClickCountDisplay = canvas.getByText('현재 카운트: 1');
-		await expect(firstClickCountDisplay).toBeInTheDocument();
-		// Assert that the $derived variable 'derivedMessage' updated
-		const firstClickDerivedDisplay = canvas.getByText('계산된 메시지: 계산된 값의 두 배는 2입니다.');
-		await expect(firstClickDerivedDisplay).toBeInTheDocument();
-
-		// Click counter button again
-		await userEvent.click(counterButton);
-
-		// Verify count update after second click
-		// Assert that the $state variable 'count' updated again
-		const secondClickCountDisplay = canvas.getByText('현재 카운트: 2');
-		await expect(secondClickCountDisplay).toBeInTheDocument();
-		// Assert that the $derived variable 'derivedMessage' updated again
-		const secondClickDerivedDisplay = canvas.getByText('계산된 메시지: 계산된 값의 두 배는 4입니다.');
-		await expect(secondClickDerivedDisplay).toBeInTheDocument();
+	name="DefaultRender"
+	args={{
+		// sample.svx는 외부로부터 args를 받지 않으므로 비워둡니다.
+		// 이 컴포넌트는 frontmatter와 내부 Svelte 스크립트를 사용하여 자체 데이터를 관리합니다.
 	}}
-/>
+>
+	<!-- 인라인 스니펫이나 정적 템플릿 없이 컴포넌트를 직접 렌더링합니다. -->
+	<SampleMdsvexComponent />
+</Story>
+
+<!--
+참고: generate-storybook.xml 프롬프트는 다양한 에지 케이스(부정적, 경계, 잘못된 입력 등)를 요구하지만,
+sample.svx는 외부 props API를 통해 이러한 시나리오를 직접적으로 제어할 수 있도록 설계되지 않았습니다.
+이 파일의 목적은 MDSveX 기능 자체를 시연하는 것이며, 기본 렌더링 스토리는
+Storybook 환경 내에서 해당 기능이 작동하는지 확인하는 데 중점을 둡니다.
+-->

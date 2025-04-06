@@ -74,7 +74,7 @@ You can use args in your stories to configure the component's appearance, simila
 
 You can also override the set of initial args for the active story by adding an `args` query parameter to the URL. Typically you would use the Controls addon to handle this. For example, here's how you could set a `size` and `style` arg in the Storybook's URL:
 
-```
+```text
 ?path=/story/avatar--default&args=style:rounded;size:100
 
 ```
@@ -83,7 +83,7 @@ As a safeguard against XSS attacks, the arg's keys and values provided in the 
 
 The `args` param is always a set of `key: value` pairs delimited with a semicolon `;`. Values will be coerced (cast) to their respective `argTypes` (which may have been automatically inferred). Objects and arrays are supported. Special values `null` and `undefined` can be set by prefixing with a bang `!`. For example, `args=obj.key:val;arr[0]:one;arr[1]:two;nil:!null` will be interpreted as:
 
-```
+```js
 {  obj: { key: 'val' },  arr: ['one', 'two'],  nil: null}
 ```
 
