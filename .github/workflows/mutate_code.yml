@@ -260,6 +260,7 @@ jobs:
             **/*.mdx
             **/*.mdc
             **/*.svx
+            !**/node_modules/**
           config: .markdownlint.json
           fix: true
         continue-on-error: true
