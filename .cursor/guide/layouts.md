@@ -222,7 +222,7 @@ A **Box** is only really a **Box** if it has a box-like shape. Yes, all elements
 
 Like `padding`, `border` should be applied on all sides or none at all. In cases where borders are used to _separate_ elements, they should be applied contextually, via a parent, like `margin` is in the **Stack**. Otherwise, borders will come into contact and 'double up'.
 
-*(Example Description: Left: A simple box with a border around its perimeter. Right: The same box contains child elements. Borders are applied *only between* the child elements (e.g., using `* + _ { border-top: ... }`), preventing borders from touching the parent's outer border or doubling up between children.)_
+_(Example Description: Left: A simple box with a border around its perimeter. Right: The same box contains child elements. Borders are applied *only between* the child elements (e.g., using `_ + _ { border-top: ... }`), preventing borders from touching the parent's outer border or doubling up between children.)_
 Image caption: By applying a `border-top` value via the `* + *` selector, only borders _between_ child elements appear. None come into contact with the parent **Box's** bordered perimeter.
 
 If you've written CSS before, you've no doubt used `background-color` to create a visual box shape. Changing the `background-color` often requires you to change the `color` to ensure the content is still legible. This can be made easier by applying `color: inherit` to any elements inside that **Box**.
@@ -400,7 +400,7 @@ _(Example Description: Two scenarios are compared. Left (Wide Viewport): The cen
 
 But I have to be wary of the box model. If, as suggested in **Boxes**, I have set all elements to adopt `box-sizing: border-box`, any padding added to my `<center-l>` will contribute to the `60ch` total. In other words, adding `padding` will make the _content_ of my element narrower. However, as covered in **Axioms** CSS is designed for _exceptions_. I just need to override `border-box` with `content-box`, and allow the padding to 'grow out' from the `60ch` content threshold.
 
-*(Example Description: Compares `border-box` vs. `content-box` for a centered element with padding. Left (`border-box`): The `max-width: 60ch` includes the padding, resulting in a content area narrower than 60ch. Right (`content-box`): The `max-width: 60ch` applies only to the content area, and the padding is added *outside* this, preserving the 60ch measure for the text.)*
+_(Example Description: Compares `border-box` vs. `content-box` for a centered element with padding. Left (`border-box`): The `max-width: 60ch` includes the padding, resulting in a content area narrower than 60ch. Right (`content-box`): The `max-width: 60ch` applies only to the content area, and the padding is added \_outside_ this, preserving the 60ch measure for the text.)\_
 
 Here's a version that preserves the `60ch` `max-width`, but ensures there are, at least, `var(--s1)` "margins" on either side (`--s1` is the first point on the custom property-based modular scale).
 
