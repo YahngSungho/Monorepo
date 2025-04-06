@@ -222,7 +222,7 @@ A **Box** is only really a **Box** if it has a box-like shape. Yes, all elements
 
 Like `padding`, `border` should be applied on all sides or none at all. In cases where borders are used to _separate_ elements, they should be applied contextually, via a parent, like `margin` is in the **Stack**. Otherwise, borders will come into contact and 'double up'.
 
-_(Example Description: Left: A simple box with a border around its perimeter. Right: The same box contains child elements. Borders are applied *only between* the child elements (e.g., using `_ + _ { border-top: ... }`), preventing borders from touching the parent's outer border or doubling up between children.)_
+_(Example Description: Left: A simple box with a border around its perimeter. Right: The same box contains child elements. Borders are applied **only between** the child elements (e.g., using `_ + _ { border-top: ... }`), preventing borders from touching the parent's outer border or doubling up between children.)_
 Image caption: By applying a `border-top` value via the `* + *` selector, only borders _between_ child elements appear. None come into contact with the parent **Box's** bordered perimeter.
 
 If you've written CSS before, you've no doubt used `background-color` to create a visual box shape. Changing the `background-color` often requires you to change the `color` to ensure the content is still legible. This can be made easier by applying `color: inherit` to any elements inside that **Box**.
@@ -828,13 +828,13 @@ In order to achieve this switch, first a basic horizontal layout is instated, wi
 
 The `flex-basis` value enters the (current) width of the container, expressed as `100%`, into a calculation with the designated `30rem` breakpoint.
 
-```
+```text
 30rem - 100%
 ```
 
 Depending on the parsed value of `100%`, this will return either a _positive_ or _negative_ value: positive if the container is narrower than `30rem`, or negative if it is wider. This number is then multiplied by `999` to produce either a _very large_ positive number or a _very large_ negative number:
 
-```
+```text
 (30rem - 100%) * 999
 ```
 
@@ -1509,13 +1509,13 @@ In order to achieve this switch, first a basic horizontal layout is instated, wi
 
 The `flex-basis` value enters the (current) width of the container, expressed as `100%`, into a calculation with the designated `30rem` breakpoint.
 
-```
+```text
 30rem - 100%
 ```
 
 Depending on the parsed value of `100%`, this will return either a _positive_ or _negative_ value: positive if the container is narrower than `30rem`, or negative if it is wider. This number is then multiplied by `999` to produce either a _very large_ positive number or a _very large_ negative number:
 
-```
+```text
 (30rem - 100%) * 999
 ```
 
@@ -1974,12 +1974,6 @@ Grids are great for browsing teasers for permalinks or products. I can quickly c
 
 # The Frame
 
-- [The problem](#the-problem)
-- [The solution](#the-solution)
-- [Use cases](#use-cases)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
-
 ## The problem
 
 Some things exist as relationships. A line exists as the relationship between two points; without both the points, the line cannot come into being.
@@ -2019,7 +2013,7 @@ Now the image's width will match one of two values:
 
 Importantly, the height---in either case---is determined by the aspect ratio. It's the same as writing `block-size: auto`, but that explicit declaration isn't needed by modern, compliant browsers.
 
-```
+```text
 height == width / aspect ratio
 ```
 
@@ -2124,12 +2118,6 @@ The Flexbox provision means you can crop any kind of HTML to the given aspect ra
 ---
 
 # The Reel
-
-- [The problem](#the-problem-1)
-- [The solution](#the-solution-1)
-- [Use cases](#use-cases-1)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
 
 ## The problem
 
@@ -2422,12 +2410,6 @@ Use this tool to generate basic **Reel** CSS and HTML. You would want to include
 
 # The Imposter
 
-- [The problem](#the-problem-2)
-- [The solution](#the-solution-2)
-- [Use cases](#use-cases-2)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
-
 ## The problem
 
 Positioning in CSS, using one or more instances of the `position` property's `relative`, `absolute`, and `fixed` values, is like manually overriding web layout. It is to switch off automatic layout and take matters into your own hands. As with piloting a commercial airliner, this is not a responsibility you would wish to undertake except in rare and extreme circumstances.
@@ -2610,12 +2592,6 @@ When creating a dialog using an **Imposter**, be wary of the accessibility consi
 
 # The Container
 
-- [The problem](#the-problem-3)
-- [The solution](#the-solution-3)
-- [Use cases](#use-cases-3)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
-
 Something we are starting to get asked a lot is this:
 
 > Now we have container queries, is Every Layout obsolete?
@@ -2704,7 +2680,7 @@ This is not something container queries are capable of because they only know th
 }
 ```
 
-### The :has() functional pseudo-class
+## The :has() functional pseudo-class
 
 I'm using the `:has()` function to check whether the sidebar layout includes an element with the class `.sidebar--large` or with the class `.sidebar--small`. It's the only way of making an element aware of its children and is not necessary in the Sidebar layout component.
 

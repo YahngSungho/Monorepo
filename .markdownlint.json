@@ -5,5 +5,9 @@
 	"MD024": false,
 	"MD025": false,
 	"MD033": false,
-	"MD041": false
+	"MD036": false,
+	"MD041": false,
+	"MD049": {
+		"style": "underscore"
+	}
 }
