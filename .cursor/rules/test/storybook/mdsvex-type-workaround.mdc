@@ -1,0 +1,64 @@
+---
+description: Things to keep in mind when importing *.svx files to write Storybook code
+globs: **/*.svx
+alwaysApply: false
+---
+
+# Handling TypeScript Errors with MDSveX (.svx) Imports in Storybook Svelte CSF
+
+## Context
+
+When importing components processed by MDSveX (files with the `.svx` extension) into Storybook stories using the Svelte CSF format (`.stories.svelte` with `@storybook/addon-svelte-csf`), you might encounter TypeScript errors.
+
+## Problem
+
+Specifically, a type mismatch error often occurs when passing the imported `.svx` component to the `component` property within the `defineMeta` function:
+
+```svelte
+// Example: sample.stories.svelte
+<script module>
+    import { defineMeta } from '@storybook/addon-svelte-csf'
+    import MdsvexComponent from './my-component.svx' // Import .svx file
+
+    const { Story } = defineMeta({
+        title: 'MDSveX/My Component',
+        // ERROR occurs here: Type mismatch between imported .svx component
+        // and the type expected by Storybook's 'component' property.
+        component: MdsvexComponent,
+        // ... rest of meta
+    })
+</script>
+<!-- ... stories ... -->
+```
+
+The error message typically indicates that the type inferred for the imported `.svx` component (even with custom `*.svx.d.ts` definitions) is not assignable to the specific `Component<any, {}, string>` type (or similar) expected by `@storybook/addon-svelte-csf`.
+
+## Workaround: Use `@ts-ignore`
+
+The most practical and reliable solution currently is to suppress the TypeScript error for that specific line using a `// @ts-ignore` comment.
+
+**Apply the workaround as follows:**
+
+```svelte
+// Example: sample.stories.svelte with workaround
+<script module>
+    import { defineMeta } from '@storybook/addon-svelte-csf'
+    import MdsvexComponent from './my-component.svx'
+
+    const { Story } = defineMeta({
+        title: 'MDSveX/My Component',
+        // Add @ts-ignore on the line directly above the component assignment
+        // @ts-ignore - Workaround for type mismatch between .svx import and Storybook type
+        component: MdsvexComponent,
+        // ... rest of meta
+    })
+</script>
+<!-- ... stories ... -->
+
+```
+
+**Reasoning:**
+
+While attempts can be made to create a global type definition (`*.svx.d.ts`) for `.svx` files, these definitions often struggle to perfectly match the specific internal types used by `@storybook/addon-svelte-csf`'s `defineMeta` function. Using `@ts-ignore` provides a targeted way to bypass this specific integration friction point without disabling type checking elsewhere.
+
+Remember to include a brief comment explaining _why_ `@ts-ignore` is being used for future reference.
