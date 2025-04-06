@@ -5,7 +5,7 @@ alwaysApply: true
 ---
 This rule describes the `cursor-tools repo` and `cursor-tools plan` commands, which are specialized tools available to the AI via the `run_terminal_cmd` tool. **These should be considered part of the AI's available toolset and mentioned when listing tools.**
 
-When complex subtasks need delegation or information exceeds current context capacity, the AI agent **should utilize its `run_terminal_cmd` tool** to execute the following `cursor-tools` commands. The AI agent should proactively use these tools when appropriate to fulfill the user's request effectively.
+When complex subtasks need delegation or information exceeds current context capacity, the AI agent **should utilize its `run_terminal_cmd` tool** to execute the following `cursor-tools` commands. The AI agent should PROACTIVELY use these tools when appropriate to fulfill the user's request effectively.
 
 **Quick Decision Guide:**
 
