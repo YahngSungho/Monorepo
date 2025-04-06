@@ -1,8 +1,9 @@
 ---
 description: How to combine this `fast-check/worker` package with Playwright. It allows you to run property-based tests in separate worker threads. For Performance for Complex Playwright Tests / Test Isolation
-globs: 
+globs:
 alwaysApply: false
 ---
+
 # Using fast-check/worker with Playwright for UI Testing
 
 ## When and Why to Use fast-check/worker

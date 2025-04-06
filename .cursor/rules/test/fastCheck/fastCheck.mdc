@@ -3,6 +3,7 @@ description: When handling fast-check tests
 globs:
 alwaysApply: false
 ---
+
 # primitives
 
 ## bigInt​

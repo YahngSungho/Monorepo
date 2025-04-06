@@ -3,6 +3,7 @@ description:
 globs: **/e2e/**
 alwaysApply: false
 ---
+
 # Best Practices
 
 ## Introduction​

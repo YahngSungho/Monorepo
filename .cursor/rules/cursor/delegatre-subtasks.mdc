@@ -3,14 +3,15 @@ description:
 globs:
 alwaysApply: true
 ---
+
 This rule describes the `cursor-tools repo` and `cursor-tools plan` commands, which are specialized tools available to the AI via the `run_terminal_cmd` tool. **These should be considered part of the AI's available toolset and mentioned when listing tools.**
 
 When complex subtasks need delegation or information exceeds current context capacity, the AI agent **should utilize its `run_terminal_cmd` tool** to execute the following `cursor-tools` commands. The AI agent should PROACTIVELY use these tools when appropriate to fulfill the user's request effectively.
 
 **Quick Decision Guide:**
 
-*   **Use `repo` for:** Broad codebase understanding, wide searches, exploratory tasks, holistic reviews/debugging. (Keywords: analyze, find all, understand architecture, explain, review globally)
-*   **Use `plan` for:** Step-by-step plans for specific files, refactoring, implementation, focused debugging. (Keywords: refactor, implement, debug module, generate steps, plan changes)
+- **Use `repo` for:** Broad codebase understanding, wide searches, exploratory tasks, holistic reviews/debugging. (Keywords: analyze, find all, understand architecture, explain, review globally)
+- **Use `plan` for:** Step-by-step plans for specific files, refactoring, implementation, focused debugging. (Keywords: refactor, implement, debug module, generate steps, plan changes)
 
 ---
 
@@ -20,21 +21,24 @@ When complex subtasks need delegation or information exceeds current context cap
 Sends your request along with the **entire codebase** to an AI assistant specialized in processing large contexts. Ideal for tasks requiring a comprehensive, repository-wide understanding.
 
 **Arguments:**
-*   `<your request>`: (String) The natural language query or instruction describing the task or question requiring whole-repo context.
+
+- `<your request>`: (String) The natural language query or instruction describing the task or question requiring whole-repo context.
 
 **Details:**
-*   **Functionality**: Analyzes the request against the full codebase context using a large context window model (e.g., Gemini 2.0 Flash).
-*   **Use Case**: Comprehensive codebase understanding, global search/analysis, high-level planning, broad code review & cross-file debugging. Think of it as a teammate who knows the *entire codebase* inside out.
-*   **Trade-offs**: Provides the most complete context but can be slower. Less focused on generating granular, step-by-step implementation plans compared to `plan`.
-*   **Expected Output**: Explanations, relevant code snippets, file paths, high-level analysis, architectural insights.
+
+- **Functionality**: Analyzes the request against the full codebase context using a large context window model (e.g., Gemini 2.0 Flash).
+- **Use Case**: Comprehensive codebase understanding, global search/analysis, high-level planning, broad code review & cross-file debugging. Think of it as a teammate who knows the _entire codebase_ inside out.
+- **Trade-offs**: Provides the most complete context but can be slower. Less focused on generating granular, step-by-step implementation plans compared to `plan`.
+- **Expected Output**: Explanations, relevant code snippets, file paths, high-level analysis, architectural insights.
 
 **Examples:**
+
 ```bash
 # Ask about a cross-cutting concern
 cursor-tools repo "Explain how the authentication flow works across the frontend and backend."
 
 # Find all usages for potential refactoring
-cursor-tools repo "Find all places where the `UserService` is used and suggest potential areas for optimization."
+cursor-tools repo "Find all places where the $(UserService) is used and suggest potential areas for optimization."
 ```
 
 ---
@@ -45,23 +49,26 @@ cursor-tools repo "Find all places where the `UserService` is used and suggest p
 Generates a step-by-step plan for well-defined tasks within a specific set of files. Uses a two-step process: identifies relevant files, then creates a detailed plan based on those files.
 
 **Arguments:**
-*   `<your request>`: (String) The natural language query or instruction describing a specific task (like refactoring, implementation, or debugging) focused on a limited set of files.
+
+- `<your request>`: (String) The natural language query or instruction describing a specific task (like refactoring, implementation, or debugging) focused on a limited set of files.
 
 **Details:**
-*   **Functionality**:
-    1.  Performs a whole-repo search to identify files relevant to the request.
-    2.  Sends *only the relevant files* to a reasoning model to generate a detailed plan.
-*   **Use Case**: Detailed task planning, specific refactoring guidance, targeted debugging procedures, generating implementation steps for a feature within known components. Think of it as a smart teammate focused on a *well-defined problem*.
-*   **Trade-offs**: Faster for focused tasks and provides concrete steps. May lack full context if the initial file identification step misses relevant files outside the immediate scope.
-*   **Expected Output**: Step-by-step plans, specific code modification suggestions, debugging procedures, list of files to modify.
+
+- **Functionality**:
+  1. Performs a whole-repo search to identify files relevant to the request.
+  2. Sends _only the relevant files_ to a reasoning model to generate a detailed plan.
+- **Use Case**: Detailed task planning, specific refactoring guidance, targeted debugging procedures, generating implementation steps for a feature within known components. Think of it as a smart teammate focused on a _well-defined problem_.
+- **Trade-offs**: Faster for focused tasks and provides concrete steps. May lack full context if the initial file identification step misses relevant files outside the immediate scope.
+- **Expected Output**: Step-by-step plans, specific code modification suggestions, debugging procedures, list of files to modify.
 
 **Examples:**
+
 ```bash
 # Get a plan to refactor a specific function
-cursor-tools plan "Refactor the `calculateTotal` function in `src/utils/cart.js` to improve readability and add error handling."
+cursor-tools plan "Refactor the $(calculateTotal) function in $(src/utils/cart.js) to improve readability and add error handling."
 
 # Get steps to implement a UI feature
-cursor-tools plan "Outline the steps needed to add a new 'dark mode' toggle to the settings component located in `src/components/Settings.jsx`."
+cursor-tools plan "Outline the steps needed to add a new 'dark mode' toggle to the settings component located in $(src/components/Settings.jsx)."
 ```
 
 ---
