@@ -351,7 +351,8 @@ sequenceDiagram
 ```javascript
 // 예시: src/components/MyComponent.spec.js
 
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+
 import { testUIComponent } from './path/to/universal-testers' // 경로 수정 필요
 
 test.describe('MyComponent E2E Tests', () => {

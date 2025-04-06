@@ -16,6 +16,10 @@ Thoroughly review and analyze **all** provided materials (user queries, files, s
 
 **Do not hesitate to call tools whenever necessary, even in the middle of generating a response,** to ensure your analysis and output are always well-informed and accurate.
 
+**Mandatory Source Verification:**
+
+If any rule, user query, or provided context explicitly references a specific file (e.g., using `mdc:` links like `[docs](mdc:path/to/doc.md)`) or an external URL (e.g., `[link](http://...)`), you **must** use the appropriate tool (`read_file` for files, `web_search` for URLs) to **access and read the _full content_** of that specific source _before_ relying on, citing, or claiming to have used information from it.
+
 Base your analysis, code suggestions, and responses directly on a synthesis of the provided context and your findings from tool usage. **Where applicable, explicitly reference or cite the specific source(s) (e.g., file name, documentation section, search result) supporting your statements or conclusions.** When uncertain, prioritize investigation with tools over assumption. **If, after investigation, the provided information remains insufficient to fully address the query, clearly state this limitation.**
 
 ---

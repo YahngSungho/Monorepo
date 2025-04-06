@@ -1,6 +1,6 @@
 ---
 description:
-globs: *.js,*.cjs,*.mjs,*.svelte
+globs: *.js,*.cjs,*.mjs,*.svelte,*.svx
 alwaysApply: false
 ---
 
