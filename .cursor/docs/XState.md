@@ -295,7 +295,7 @@
   	enqueue({ type: 'action1' })
   	enqueue.assign({ counter: ({ context }) => context.counter + 1 })
   	enqueue.sendTo('childId', { type: 'DO_SOMETHING' })
-  
+
   	// conditionally enqueue
   	if (check('someGuard')) {
   		enqueue({ type: 'conditionalAction' })
@@ -474,17 +474,17 @@
     const actorLogic = fromCallback(({ sendBack, receive, input }) => {
     	// sendBack(event): Sends an event back to the invoker (parent by default)
     	// receive(callback): Registers a listener for events sent TO this callback actor
-    
+
     	receive((event) => {
     		console.log('Callback actor received:', event)
     		// Example: Perform task and send result back
     		const result = performTask(event.data)
     		sendBack({ type: 'CALLBACK_RESULT', result })
     	})
-    
+
     	// Optional: Perform initial action
     	sendBack({ type: 'CALLBACK_READY' })
-    
+
     	// Optional: Return a cleanup function (stopCallback)
     	return () => {
     		/* cleanup logic */
@@ -635,18 +635,18 @@
   invoke: {
     // Required: The actor logic to invoke
     src: actorLogicOrId, // Can be actor logic object or a string ID registered in setup
-  
+
     // Optional: Unique ID for this invoked actor instance
     id: 'myInvokedActor',
-  
+
     // Optional: Input data for the invoked actor
     input: ({ context, event }) => ({ data: context.someData, trigger: event.type }),
-  
+
     // Optional: Handle events sent back *from* the invoked actor
     onDone: { target: 'successState', actions: assign({ result: ({ event }) => event.output }) },
     onError: { target: 'failureState', actions: assign({ error: ({ event }) => event.data }) }, // Note: onError often has event.data
     onSnapshot: { actions: ({ event }) => console.log('Actor snapshot:', event.snapshot) },
-  
+
     // ... other transition properties like guards can be used on onDone/onError/onSnapshot
   }
   ```
@@ -1234,45 +1234,4 @@ const actor = createActor(machine)
 actor.start()
 // eventually logs:
 // { id: 3, name: 'Clementine Bauch', ... }
-```
-
-### Types
-
-```ts
-import { setup, fromPromise } from 'xstate';
-
-const promiseLogic = fromPromise(async () => {
-  /* ... */
-});
-
-const machine = setup({
-  types: {
-    context: {} as {
-      count: number;
-    };
-    events: {} as
-      | { type: 'inc'; }
-      | { type: 'dec' }
-      | { type: 'incBy'; amount: number };
-    actions: {} as
-      | { type: 'notify'; params: { message: string } }
-      | { type: 'handleChange' };
-    guards: {} as
-      | { type: 'canBeToggled' }
-      | { type: 'isAfterTime'; params: { time: string } };
-    children: {} as {
-      promise1: 'someSrc';
-      promise2: 'someSrc';
-    };
-    delays: 'shortTimeout' | 'longTimeout';
-    tags: 'tag1' | 'tag2';
-    input: number;
-    output: string;
-  },
-  actors: {
-    promiseLogic
-  }
-}).createMachine({
-  // ...
-});
 ```
