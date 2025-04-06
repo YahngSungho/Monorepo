@@ -15,8 +15,14 @@
 				"parser": "markdown"
 			}
 		},
-				{
+		{
 			"files": "*.mdc",
+			"options": {
+				"parser": "markdown"
+			}
+		},
+		{
+			"files": "*.svx",
 			"options": {
 				"parser": "markdown"
 			}
