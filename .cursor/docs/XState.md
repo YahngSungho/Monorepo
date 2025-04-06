@@ -2,7 +2,7 @@
 
 ## XState v4 to v5
 
-### Creating and actors
+### Creating machines and actors
 
 - Use `createMachine()`, not `Machine()`
 - Use `createActor()`, not `interpret()`
@@ -10,8 +10,13 @@
 - Set context with input, not `machine.withContext()`
 - Actions ordered by default, predictableActionArguments no longer needed
 - The `spawn()` function been removed
-- Use getNextSnapshot(…) instead of machine.transition(…)
-- Send events explictly instead of using autoForward
+  - Instead of using the imported `spawn()` function to create actors inside `assign(...)` actions:
+		Use the `spawnChild(...)` action creator (preferred)
+		Or use the `spawn(...)` method from the first argument passed to the assigner function inside of `assign(...)` actions (useful if you need the actor ref in `context`)
+- Use `getNextSnapshot(…)` instead of `machine.transition(…)`
+  - The `machine.transition(...)` method now requires an "actor scope" for the 3rd argument, which is internally created by `createActor(...)`. Instead, use `getNextSnapshot(...)` to get the next snapshot from some actor logic based on the current snapshot and event:
+- Send events explictly instead of using `autoForward`
+  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's *not* recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
 - The `state.toStrings()` method has been removed
 
 #### states
@@ -24,38 +29,56 @@
 
 - Implementation functions receive a single argument
 - `send()` is removed; use `raise()` or `sendTo()`
+	- The `send(...)` action creator is removed. Use `raise(...)` for sending events to self or `sendTo(...)` for sending events to other actors instead.
 - Use `enqueueActions()` instead of `pure()` and `choose()`
+  - The `pure()` and `choose()` methods have been removed. Use `enqueueActions()` instead.
 - `actor.send()` no longer accepts string types
+  - String event types can no longer be sent to, e.g., `actor.send(event)`; you must send an event object instead
 - `state.can()` no longer accepts string types
-- Guarded transitions use guard, not cond
-- Use params to pass params to actions & guards
-- Use wildcard \*transitions, not strict mode
-- Use explicit eventless (always) transitions
-- Use reenter: true, not internal: false
+  - String event types can no longer be sent to, e.g., `state.can(event)`; you must send an event object instead
+- Guarded transitions use `guard`, not `cond`
+  - The `cond` transition property for guarded transitions is now called `guard`
+- Use `params` to pass params to actions & guards
+  - Properties other than `type` on action objects and guard objects should be nested under a `params` property; `{ type: 'someType', message: 'hello' }` becomes `{ type: 'someType', params: { message: 'hello' }}`. These `params` are then passed to the 2nd argument of the action or guard implementation:
+- Use wildcard `*` transitions, not strict mode
+- Use explicit eventless (`always`) transitions
+  - Eventless ("always") transitions must now be defined through the `always: { ... }` property of a state node; they can no longer be defined via an empty string:
+- Use `reenter: true`, not `internal: false`
+  - `internal: false` is now `reenter: true`. External transitions previously specified with `internal: false` are now specified with `reente`
 - Transitions are internal by default, not external
+  - All transitions are **internal by default**. This change is relevant for transitions defined on state nodes with `entry` or `exit` actions, invoked actors, or delayed transitions (`after`). If you relied on the previous XState v4 behavior where transitions implicitly re-entered a state node, use `reenter: true`
 - Child state nodes are always re-entered
+  - Child state nodes are always re-entered when they are targeted by transitions (both external and internal) defined on compound state nodes. This change is relevant only if a child state node has `entry` or `exit` actions, invoked actors, or delayed transitions (`after`). Add a `stateIn` guard to prevent undesirable re-entry of the child state.
 - Use `stateIn()` to validate state transitions, not in
 - Use `actor.subscribe()` instead of state.history
-- Actions can throw errors without escalate
+- Actions can throw errors without `eatscale`
+  - The `escalate` action creator is removed. In XState v5 actions can throw errors, and they will propagate as expected. Errors can be handled using an `onError` transition.
 
 ### Actors
 
-- Use actor logic creators for invoke.src instead of functions
-- Use invoke.input instead of invoke.data
-- Use output in final states instead of data
-- Don't use property mappers in input or output
-- Use actors property on options object instead of services
+- Use actor logic creators for `invoke.src` instead of functions
+- Use `invoke.input` instead of `invoke.data`
+- Use `output` in final states instead of `data`
+- Don't use property mappers in `input` or `output`
+  - If you want to provide dynamic context to invoked actors, or produce dynamic output from final states, use a function instead of an object with property mappers.
+- Use `actors` property on `options` object instead of `services`
+  - services have been renamed to actors
 - Use `subscribe()` for changes, not `onTransition()`
+  - The actor.onTransition(...) method is removed. Use actor.subscribe(...) instead
 - `createActor()` (formerly `interpret()`) accepts a second argument to restore state
+  - `interpret(machine).start(state)` is now `createActor(machine, { snapshot }).start()`. To restore an actor at a specific state, you should now pass the state as the `snapshot` property of the `options` argument of `createActor(logic, options)`. The `actor.start()` property no longer takes in a `state` argument.
 - Use `actor.getSnapshot()` to get actor’s state
+  - Subscribing to an actor (`actor.subscribe(...)`) after the actor has started will no longer emit the current snapshot immediately. Instead, read the current snapshot from `actor.getSnapshot()`
 - Loop over events instead of using `actor.batch()`
-- Use snapshot.status === 'done' instead of snapshot.done
-- state.nextEvents has been removed
+- Use `snapshot.status === 'done'` instead of `snapshot.done`
+  - The `snapshot.done` property, which was previously in the snapshot object of state machine actors, is removed. Use `snapshot.status === 'done'` instead, which is available to all actors
+- `state.nextEvents` has been removed
+  - The `state.nextEvents` property is removed, since it is not a completely safe/reliable way of determining the next events that can be sent to the actor. If you want to get the next events according to the previous behavior, you can use this helper function:
 
 ### TypeScript
 
-- Use types instead of schema
-- Use types.typegen instead of tsTypes
+- Use `types` instead of `schema`
+- Use `types.typegen` instead of `tsTypes`
 
 ---
 
@@ -82,7 +105,7 @@
 
 - **Get Next Snapshot**: Get the snapshot resulting from an event occurring in a specific state.
 
-    ```javascript
+    ```js
     getNextSnapshot(
       myMachine,
       myMachine.resolveState({ value: 'myState' }), // The state snapshot to transition from
@@ -92,7 +115,7 @@
 
 - **Get Initial Snapshot**: Get the machine's initial snapshot, potentially with input.
 
-    ```javascript
+    ```js
     getInitialSnapshot(
       myMachine,
       { ...inputs } // Optional input object
@@ -142,7 +165,7 @@
     - Static update: `assign({ key: newValue, anotherKey: 'literal' })`.
     - Dynamic update:
 
-        ```javascript
+        ```js
         assign({
           key: ({ event, context }) => /* calculate newValue based on event/context */
         })
@@ -150,13 +173,13 @@
 
 - **Dynamic Initial Context**: Define `context` as a function to compute it when the actor is created. Actors created at different times can have different initial contexts.
 
-    ```javascript
+    ```js
     context: () => ({ timestamp: Date.now(), /* ... */ })
     ```
 
 - **Input-based Initial Context**: Define `context` as a function receiving `input`.
 
-    ```javascript
+    ```js
     context: ({ input }) => ({ userId: input.id, /* ... */ })
     ```
 
@@ -164,7 +187,7 @@
 
 - **Setting in Machine Config**: Defined within the `on` property of a state node.
 
-    ```javascript
+    ```js
     states: {
       myState: {
         on: {
@@ -187,7 +210,7 @@
 - **Relative Targeting**:
     - Target Sibling State: Use a dot prefix (`.`). Defined in the *parent* state's `on` object.
 
-        ```javascript
+        ```js
         // In parent state config
         on: { myEvent: { target: '.targetSiblingState' } }
         ```
@@ -204,7 +227,7 @@
     - `myState: { after: { 5000: { target: 'nextState', actions: [/* ... */] } } }` (Delay in milliseconds)
     - Using Named Delays (defined in `setup`):
 
-        ```javascript
+        ```js
         // 1. In setup
         setup({ delays: { myTime: 2000 } })
         // 2. In state node
@@ -222,7 +245,7 @@
     - `{ type: 'actionName', params: { key: 'value' } }`
     - **Dynamic Parameters**: Calculate params based on context/event.
 
-        ```javascript
+        ```js
         {
           type: 'myAction',
           params: ({ context, event }) => ({ dynamicValue: event.value, userId: context.user.id })
@@ -234,7 +257,7 @@
 
 - **Context Update (`assign`)**: The primary action for updating context.
 
-    ```javascript
+    ```js
     assign({
       count: 10, // Static assignment
       user: ({ event }) => event.user, // Dynamic assignment
@@ -254,7 +277,7 @@
     - Can include options: `sendTo(target, eventObj, { id: 'mySendId', delay: 'shortDelay' })`
 - **`enqueueActions` Action**: Define a sequence of actions to be executed one after another, potentially conditionally.
 
-    ```javascript
+    ```js
     enqueueActions(({ context, event, enqueue, check }) => {
       // enqueue an action object or inline function
       enqueue({ type: 'action1' });
@@ -296,7 +319,7 @@
     - `myEvent: { guard: stateIn('#someStateId'), target: '...' }`
 - **Conditional Transitions (Guard Array)**: Define multiple transitions for the same event, guarded differently. The *first* one whose guard evaluates to `true` is taken.
 
-    ```javascript
+    ```js
     on: {
       myEvent: [
         { guard: 'isVip', target: 'vipArea' },
@@ -368,7 +391,7 @@
 
 ### 액터 시작 (Starting Actors)
 
-- ```javascript
+- ```js
     const actor = createActor(someActorLogic, { input: /* optional input */ });
     actor.start(); // Starts the actor and its mailbox processing
     ```
@@ -397,7 +420,7 @@
     - *Snapshot Spec*: `{ value: string | object, context: any }`
 - **`fromTransition`**: Simple logic that only determines the next state based on the current state and received event. No actions, context changes built-in.
 
-    - ```javascript
+    - ```js
 
       const actorLogic = fromTransition(
         (currentState, event) => { // Transition function
@@ -415,7 +438,7 @@
 
     - **Implementation**:
 
-        ```javascript
+        ```js
         const actorLogic = fromObservable(({ input, self }) => {
           // Return an Observable here
           return someObservableSource(input.config);
@@ -429,7 +452,7 @@
     - **Intent**: Receive event -> Run callback -> Send event back to parent. Like a callback attached to the parent's event.
     - **Implementation**:
 
-        ```javascript
+        ```js
         const actorLogic = fromCallback(({ sendBack, receive, input }) => {
           // sendBack(event): Sends an event back to the invoker (parent by default)
           // receive(callback): Registers a listener for events sent TO this callback actor
@@ -453,7 +476,7 @@
 - **`fromPromise`**: Logic based on a Promise.
     - **Implementation**:
 
-        ```javascript
+        ```js
         const actorLogic = fromPromise(async ({ input }) => {
           const result = await someAsyncOperation(input.data);
           return result; // This becomes the output on success
@@ -470,7 +493,7 @@
 - Wrappers around existing actor logic to add or modify behavior.
 - **Implementation Pattern**:
 
-    ```javascript
+    ```js
     const enhancedLogic = (originalLogic) => {
       // Create new logic based on original
       const newLogic = {
@@ -506,7 +529,7 @@
 - **Wait for Condition**: Create a Promise that resolves when the actor's snapshot satisfies a specific condition.
     - **Implementation**:
 
-        ```javascript
+        ```js
         const snapshotSatisfyingCondition = await waitFor(
           myActor,
           (snapshot) => snapshot.matches('someState') && snapshot.context.value > 10, // Predicate function
@@ -536,7 +559,7 @@
 - **Pattern Code**:
     - **Save Current State**:
 
-        ```javascript
+        ```js
         myActor.subscribe((snapshot) => {
           if (snapshot.status !== 'active') return; // Or handle other statuses
           try {
@@ -549,7 +572,7 @@
 
     - **Restore State**:
 
-        ```javascript
+        ```js
         const persistedStateJSON = localStorage.getItem('myActorStateKey');
         let actorOptions = {};
         if (persistedStateJSON) {
@@ -572,7 +595,7 @@
     - Invoked machine actors can invoke/spawn their *own* child actors, forming hierarchies.
 - **Implementation (within a state node's config)**:
 
-    ```javascript
+    ```js
     invoke: {
       // Required: The actor logic to invoke
       src: actorLogicOrId, // Can be actor logic object or a string ID registered in setup
@@ -624,7 +647,7 @@
     - `spawnChild(actorLogic, options)`: Action creator for spawning. Options: `{ input, id, systemId }`.
     - Using `assign` with the `spawn` action creator (available in `assign`'s callback) to store the reference (`ActorRef`) in context:
 
-        ```javascript
+        ```js
         assign({
           spawnedActorRef: ({ spawn, context, event }) =>
             spawn(someActorLogic, {
@@ -638,7 +661,7 @@
         - **Use Case**: When you need to reference the spawned actor later (e.g., to send it events or stop it).
         - **Cleanup Caution**: To prevent memory leaks, when the actor is no longer needed, explicitly stop it using `stopChild` and remove its reference from the context:
 
-            ```javascript
+            ```js
             actions: [
               stopChild(({ context }) => context.spawnedActorRef), // or stopChild('actorId')
               assign({ spawnedActorRef: undefined })
