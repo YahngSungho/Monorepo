@@ -492,6 +492,96 @@ export default defineFlatConfig([
 		},
 		processor: 'markdown/markdown',
 	},
+	{
+		files: [
+			'**/*.md/*.*',
+			'**/*.mdc/*.*',
+			'**/*.mdx/*.*',
+			'**/*.svx/*.*',
+		],
+		languageOptions: {
+			parserOptions: {
+				project: undefined, // 타입 인식을 위한 tsconfig 사용 안 함
+				projectService: false,
+			},
+		},
+		rules: {
+			'unicorn/prefer-module': 'off',
+			'no-undef': 'off',
+			'no-unused-expressions': 'off',
+			'no-unused-vars': 'off',
+			'sonarjs/no-unused-vars': 'off',
+			'padded-blocks': 'off',
+			'@typescript-eslint/await-thenable': 'off',
+			'@typescript-eslint/dot-notation': 'off',
+			'@typescript-eslint/naming-convention': 'off',
+			'@typescript-eslint/no-base-to-string': 'off',
+			'@typescript-eslint/no-confusing-void-expression': 'off',
+			'@typescript-eslint/no-duplicate-type-constituents': 'off',
+			'@typescript-eslint/no-floating-promises': 'off',
+			'@typescript-eslint/no-for-in-array': 'off',
+			'@typescript-eslint/no-implied-eval': 'off',
+			'@typescript-eslint/no-meaningless-void-operator': 'off',
+			'@typescript-eslint/no-misused-promises': 'off',
+			'@typescript-eslint/no-mixed-enums': 'off',
+			'@typescript-eslint/no-redundant-type-constituents': 'off',
+			'@typescript-eslint/no-throw-literal': 'off',
+			'@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
+			'@typescript-eslint/no-unnecessary-condition': 'off',
+			'@typescript-eslint/no-unnecessary-qualifier': 'off',
+			'@typescript-eslint/no-unnecessary-type-arguments': 'off',
+			'@typescript-eslint/no-unnecessary-type-assertion': 'off',
+			'@typescript-eslint/no-unnecessary-type-constraint': 'off',
+			'@typescript-eslint/no-unsafe-argument': 'off',
+			'@typescript-eslint/no-unsafe-assignment': 'off',
+			'@typescript-eslint/no-unsafe-call': 'off',
+			'@typescript-eslint/no-unsafe-declaration-merging': 'off',
+			'@typescript-eslint/no-unsafe-enum-comparison': 'off',
+			'@typescript-eslint/no-unsafe-member-access': 'off',
+			'@typescript-eslint/no-unsafe-return': 'off',
+			'@typescript-eslint/non-nullable-type-assertion-style': 'off',
+			'@typescript-eslint/prefer-as-const': 'off',
+			'@typescript-eslint/prefer-find': 'off',
+			'@typescript-eslint/prefer-includes': 'off',
+			'@typescript-eslint/prefer-literal-enum-member': 'off',
+			'@typescript-eslint/prefer-namespace-keyword': 'off',
+			'@typescript-eslint/prefer-nullish-coalescing': 'off',
+			'@typescript-eslint/prefer-optional-chain': 'off',
+			'@typescript-eslint/prefer-readonly': 'off',
+			'@typescript-eslint/prefer-readonly-parameter-types': 'off',
+			'@typescript-eslint/prefer-reduce-type-parameter': 'off',
+			'@typescript-eslint/prefer-regexp-exec': 'off',
+			'@typescript-eslint/prefer-return-this-type': 'off',
+			'@typescript-eslint/prefer-string-starts-ends-with': 'off',
+			'@typescript-eslint/promise-function-async': 'off',
+			'@typescript-eslint/require-array-sort-compare': 'off',
+			'@typescript-eslint/require-await': 'off',
+			'@typescript-eslint/restrict-plus-operands': 'off',
+			'@typescript-eslint/restrict-template-expressions': 'off',
+			'@typescript-eslint/return-await': 'off',
+			'@typescript-eslint/strict-boolean-expressions': 'off',
+			'@typescript-eslint/switch-exhaustiveness-check': 'off',
+			'@typescript-eslint/triple-slash-reference': 'off',
+			'@typescript-eslint/unbound-method': 'off',
+			'@typescript-eslint/unified-signatures': 'off',
+			'functional/no-promise-reject': 'off',
+			'functional/immutable-data': 'off',
+			'functional/prefer-immutable-types': 'off', // 오류 발생 규칙
+			'functional/prefer-tacit': 'off',
+			'functional/type-declaration-immutability': 'off',
+			'promise/no-native': 'off',
+			'ramda/prefer-ramda-boolean': 'off',
+			'depend/ban-dependencies': 'off', // 타입 정보 필요
+			'import-x/default': 'off', // 타입 정보 필요
+			'import-x/named': 'off', // 타입 정보 필요
+			'import-x/namespace': 'off', // 타입 정보 필요
+			'import-x/no-cycle': 'off', // 타입 정보 필요
+			'import-x/no-deprecated': 'off', // 타입 정보 필요
+			'import-x/no-named-as-default': 'off', // 타입 정보 필요
+			'import-x/no-named-as-default-member': 'off', // 타입 정보 필요
+			'import-x/no-unused-modules': 'off', // 타입 정보 필요
+		}
+	},
 
 	...jsonc.configs['flat/prettier'],
 	...yml.configs['flat/prettier'],
