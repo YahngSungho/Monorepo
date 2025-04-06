@@ -1,6 +1,6 @@
 # @xstate/svelte
 
-The @xstate/svelte package contains utilities for using XState with Svelte.
+The '@xstate/svelte' package contains utilities for using XState with Svelte.
 
 ## API
 
