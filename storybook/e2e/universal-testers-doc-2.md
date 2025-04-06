@@ -196,7 +196,8 @@ flowchart TD
 
 ```javascript
 // example.spec.js
-import { test, expect } from '@playwright/test'
+import { expect,test } from '@playwright/test'
+
 import { testUIComponent } from './path/to/universal-testers.js'
 
 test.describe('MyComponent Tests', () => {

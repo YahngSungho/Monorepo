@@ -1,9 +1,9 @@
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
-import { defineConfig } from 'vite'
-import { sveltePreprocess } from 'svelte-preprocess'
+import { mdsvex } from 'mdsvex'
 
-export default defineConfig({
+export default {
 	// Consult https://svelte.dev/docs#compile-time-svelte-preprocess
 	// for more information about preprocessors
-	preprocess: vitePreprocess(),
-})
+	preprocess: [vitePreprocess(), mdsvex()],
+	extensions: ['.svelte', '.svx'],
+}
