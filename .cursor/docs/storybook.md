@@ -40,7 +40,6 @@ You can also define args at the global level; they will apply to every component
 
 .storybook/preview.js
 
-```svelte
 export default {  // The default value of the theme arg for all stories  args: { theme: 'light' },};
 ```
 
