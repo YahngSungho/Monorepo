@@ -175,13 +175,13 @@
 - **Dynamic Initial Context**: Define `context` as a function to compute it when the actor is created. Actors created at different times can have different initial contexts.
 
   ```js
-  () => ({ timestamp: Date.now() /* ... */ })
+  ;() => ({ timestamp: Date.now() /* ... */ })
   ```
 
 - **Input-based Initial Context**: Define `context` as a function receiving `input`.
 
   ```js
-  ({ input }) => ({ userId: input.id /* ... */ })
+  ;({ input }) => ({ userId: input.id /* ... */ })
   ```
 
 ### 트랜지션 (Transitions)
@@ -217,7 +217,7 @@
     // In parent state config
     {
     	{
-    		'.targetSiblingState'
+    		;('.targetSiblingState')
     	}
     }
     ```
@@ -334,7 +334,7 @@
 
   ```js
   {
-  	[
+  	;[
   		{ guard: 'isVip', target: 'vipArea' },
   		{ guard: ({ context }) => context.age >= 18, target: 'adultSection' },
   		{ target: 'defaultSection' }, // Fallback transition (no guard or guard is true)
@@ -700,7 +700,7 @@
     - **Cleanup Caution**: To prevent memory leaks, when the actor is no longer needed, explicitly stop it using `stopChild` and remove its reference from the context:
 
       ```js
-      [
+      ;[
       	stopChild(({ context }) => context.spawnedActorRef), // or stopChild('actorId')
       	assign({ spawnedActorRef: undefined }),
       ]

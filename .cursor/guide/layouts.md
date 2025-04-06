@@ -143,12 +143,6 @@ The potential remit of the **Stack** layout can hardly be overestimated. Anywher
 
 # The Box
 
-- [Problem](#problem-1)
-- [Solution](#solution-1)
-- [Use Cases](#use-cases-1)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
-
 ## Problem
 
 As I established in **Boxes**, every rendered element creates a box shape. So what is the use of a **Box** layout, encapsulated as a dedicated **Box** component?
@@ -308,12 +302,6 @@ You can also combine just boxes to make some useful compositions. A **Box** with
 
 # The Center
 
-- [Problem](#problem-2)
-- [Solution](#solution-2)
-- [Use Cases](#use-cases-2)
-- The Generator (Removed - relates to specific implementation not present)
-- The Component (Removed - relates to specific implementation not present)
-
 ## Problem
 
 In the early days of HTML, there were a number of presentational elements; elements devised purely to affect the appearance of their content. The `<center>` was one such element, but has long since been considered obsolete. Curiously, it _is_ still supported in some browsers, including Google's Chrome. Presumably this is because Google's search homepage still uses a `<center>` to center-justify its famous search input.
@@ -449,12 +437,6 @@ Whenever you wish something to be horizontally centered, the **Center** is your 
 ---
 
 # The Cluster
-
-- [Problem](#problem-3)
-- [Solution](#solution-3)
-- [Use Cases](#use-cases-3)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
 
 ## Problem
 
@@ -1220,7 +1202,7 @@ function observeGrid(gridNode) {
 	// Feature detect ResizeObserver
 	if ('ResizeObserver' in globalThis) {
 		// Get the min value from data-min="[min]"
-		const {min} = gridNode.dataset
+		const { min } = gridNode.dataset
 		// Create a proxy element to measure and convert
 		// the `min` value (which might be em, rem, etc) to `px`
 		const test = document.createElement('div')
@@ -1901,7 +1883,7 @@ function observeGrid(gridNode) {
 	// Feature detect ResizeObserver
 	if ('ResizeObserver' in globalThis) {
 		// Get the min value from data-min="[min]"
-		const {min} = gridNode.dataset
+		const { min } = gridNode.dataset
 		// Create a proxy element to measure and convert
 		// the `min` value (which might be em, rem, etc) to `px`
 		const test = document.createElement('div')

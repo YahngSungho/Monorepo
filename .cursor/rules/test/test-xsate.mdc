@@ -13,8 +13,8 @@ Testing actor logic is important for ensuring that the logic is correct and that
 - **Assert** - assert that the actor(s) reached their expected state(s) and/or executed the expected side effects.
 
 ```ts
-import { expect,test } from 'vitest'
-import { createActor,setup } from 'xstate'
+import { expect, test } from 'vitest'
+import { createActor, setup } from 'xstate'
 
 test('some actor', async () => {
 	const notifiedMessages: string[] = []

@@ -229,7 +229,7 @@ const path = require('node:path')
 test('UI maintains visual consistency across configurations', async ({ baseURL }) => {
 	// Start a worker for long-running visual tests
 	const worker = new Worker(path.join(__dirname, '../workers/visual-regression.worker.js'), {
-		env: { ...process.env, TEST_URL: `${baseURL  }/visual-test-page` },
+		env: { ...process.env, TEST_URL: `${baseURL}/visual-test-page` },
 	})
 
 	// Wait for results (this could take minutes, which is why a worker is ideal)

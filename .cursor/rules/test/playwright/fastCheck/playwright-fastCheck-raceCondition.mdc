@@ -758,16 +758,15 @@ test('cart model matches real cart even with race conditions', async ({ page }) 
 				if (model.isCheckoutComplete) {
 					// If checkout completed in model, cart should be empty and confirmation visible
 					return cartItems.length === 0 && isCheckoutComplete
-				} 
-					// Otherwise, cart items should match model
-					if (cartItems.length !== model.items.size) return false
+				}
+				// Otherwise, cart items should match model
+				if (cartItems.length !== model.items.size) return false
 
-					for (const item of cartItems) {
-						if (model.items.get(item.id) !== item.quantity) return false
-					}
+				for (const item of cartItems) {
+					if (model.items.get(item.id) !== item.quantity) return false
+				}
 
-					return true
-				
+				return true
 			},
 		),
 		{ numRuns: 3 },

@@ -209,7 +209,7 @@ test('todo list state transitions work correctly', async ({ page }) => {
 				for (const action of actions) {
 					switch (action) {
 						case 'addItem': {
-							await page.fill('.new-todo-input', `New todo item ${  Date.now()}`)
+							await page.fill('.new-todo-input', `New todo item ${Date.now()}`)
 							await page.click('.add-button')
 							break
 						}
