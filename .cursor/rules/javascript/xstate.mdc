@@ -22,7 +22,7 @@ alwaysApply: false
 - Use `getNextSnapshot(…)` instead of `machine.transition(…)`
   - The `machine.transition(...)` method now requires an "actor scope" for the 3rd argument, which is internally created by `createActor(...)`. Instead, use `getNextSnapshot(...)` to get the next snapshot from some actor logic based on the current snapshot and event:
 - Send events explictly instead of using `autoForward`
-  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's _not_ recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
+  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's *not* recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
 - The `state.toStrings()` method has been removed
 
 #### states
@@ -301,7 +301,7 @@ alwaysApply: false
   	enqueue({ type: 'action1' })
   	enqueue.assign({ counter: ({ context }) => context.counter + 1 })
   	enqueue.sendTo('childId', { type: 'DO_SOMETHING' })
-
+  
   	// conditionally enqueue
   	if (check('someGuard')) {
   		enqueue({ type: 'conditionalAction' })
@@ -480,17 +480,17 @@ alwaysApply: false
     const actorLogic = fromCallback(({ sendBack, receive, input }) => {
     	// sendBack(event): Sends an event back to the invoker (parent by default)
     	// receive(callback): Registers a listener for events sent TO this callback actor
-
+    
     	receive((event) => {
     		console.log('Callback actor received:', event)
     		// Example: Perform task and send result back
     		const result = performTask(event.data)
     		sendBack({ type: 'CALLBACK_RESULT', result })
     	})
-
+    
     	// Optional: Perform initial action
     	sendBack({ type: 'CALLBACK_READY' })
-
+    
     	// Optional: Return a cleanup function (stopCallback)
     	return () => {
     		/* cleanup logic */
@@ -641,18 +641,18 @@ alwaysApply: false
   invoke: {
     // Required: The actor logic to invoke
     src: actorLogicOrId, // Can be actor logic object or a string ID registered in setup
-
+  
     // Optional: Unique ID for this invoked actor instance
     id: 'myInvokedActor',
-
+  
     // Optional: Input data for the invoked actor
     input: ({ context, event }) => ({ data: context.someData, trigger: event.type }),
-
+  
     // Optional: Handle events sent back *from* the invoked actor
     onDone: { target: 'successState', actions: assign({ result: ({ event }) => event.output }) },
     onError: { target: 'failureState', actions: assign({ error: ({ event }) => event.data }) }, // Note: onError often has event.data
     onSnapshot: { actions: ({ event }) => console.log('Actor snapshot:', event.snapshot) },
-
+  
     // ... other transition properties like guards can be used on onDone/onError/onSnapshot
   }
   ```
