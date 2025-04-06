@@ -354,7 +354,6 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       HUSKY: 0
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -362,6 +361,39 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }} # 필요시 토큰 사용
           fetch-depth: 0 # diff를 위해
+
+      # package-json 패치 다운로드 및 적용
+      - name: Check if package-json patch exists
+        id: check_package_json_patch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({ owner: context.repo.owner, repo: context.repo.repo, run_id: context.runId });
+            return !!artifacts.data.artifacts.find(artifact => artifact.name === "package-json-changes-patch");
+
+      - name: Download package-json patch artifact
+        if: steps.check_package_json_patch.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: package-json-changes-patch
+          path: .
+
+      - name: Apply package-json patch
+        if: steps.check_package_json_patch.outputs.result == 'true'
+        run: |
+          if [ -f package-json-changes.patch ]; then
+            echo "Applying package.json formatting changes patch..."
+            # 적용 전 확인, 실패 시 에러
+            if ! git apply --check package-json-changes.patch; then
+              echo "::error::package-json-changes.patch check failed. Cannot apply."
+              exit 1
+            fi
+            git apply package-json-changes.patch
+            echo "package.json formatting patch applied successfully."
+            rm package-json-changes.patch
+          else
+            echo "No package.json formatting changes to apply."
+          fi
 
       # Node.js 및 pnpm 설정
       - name: Setup pnpm
@@ -373,6 +405,11 @@ jobs:
         with:
           node-version-file: package.json
           cache: pnpm
+
+      # 패치 적용 후 의존성 설치 (lint-fix 실행 위해)
+      - name: Install dependencies after patch
+        # 패치가 적용되었거나, 원래 package.json 변경 감지 시 실행 (필요 따라 조건 조정)
+        run: pnpm install --prefer-offline
 
       # 임시 커밋 생성 (git diff 기준점 마련)
       - name: Create temporary commit for diff base
@@ -406,7 +443,6 @@ jobs:
             # touch changes.patch # --> 삭제: 빈 파일 생성 안 함
             echo "has_changes=false" >> $GITHUB_OUTPUT # --> 추가: 변경 없음 출력
           fi
-
       # patch 파일을 artifact로 업로드 (변경사항 있을 때만)
       - name: Upload changes.patch artifact
         uses: actions/upload-artifact@v4
