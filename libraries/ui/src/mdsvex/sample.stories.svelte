@@ -1,9 +1,9 @@
 <script module>
-// JAVASCRIPT ONLY - NO lang="ts"
-import { defineMeta } from '@storybook/addon-svelte-csf'
+	// JAVASCRIPT ONLY - NO lang="ts"
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 
-// MDSveX 파일을 Svelte 컴포넌트로 임포트합니다. MDSveX 전처리기가 변환을 처리합니다.
-import SampleMdsvexComponent from './sample.svx'
+	// MDSveX 파일을 Svelte 컴포넌트로 임포트합니다. MDSveX 전처리기가 변환을 처리합니다.
+	import SampleMdsvexComponent from './sample.svx';
 
 <<<<<<< ours
 	// defineMeta는 컴포넌트 메타데이터를 정의합니다.

@@ -1,8 +1,8 @@
 <script>
-let { message } = $props()
+	let { message } = $props()
 </script>
 
-<div style:margin-block-start="10px" style:padding="10px" style:border="1px solid blue">
+<div style=" margin-block-start: 10px; padding: 10px;border: 1px solid blue;">
 	<h4>다른 간단한 컴포넌트 (AnotherSimpleComponent)</h4>
 	<p>부모로부터 받은 메시지 (양방향 바인딩됨):</p>
 	<input type="text" bind:value={message} />
