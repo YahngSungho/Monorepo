@@ -1,8 +1,9 @@
 ---
 description: Use this when you have the opportunity to combine Playwright and fast-check with zod
-globs: 
+globs:
 alwaysApply: false
 ---
+
 # Extended Guide: Using zod-fast-check with Playwrighzod-fast-check
 
 ## Leveraging zod-fast-check for UI Component Testing

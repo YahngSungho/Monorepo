@@ -3,6 +3,7 @@ description:
 globs: *.css,*.svelte
 alwaysApply: false
 ---
+
 Use predefined CSS variables:
 [openProps.md](mdc:.cursor/docs/openProps.md)
 [baseVariables.css](mdc:libraries/base/src/baseVariables.css)

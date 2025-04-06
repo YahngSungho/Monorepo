@@ -6,6 +6,6 @@ alwaysApply: false
 
 # Codebase Rules
 
-* draggable component에는 `data-draggable="true"` 속성이 있어야 함
-* dropabble component에는 `data-droppable="true"` 속성이 있어야 함
-* <button>이 아니면서 clickable component인 경우 `role="button"` 속성이 있어야 함
+- draggable component에는 `data-draggable="true"` 속성이 있어야 함
+- dropabble component에는 `data-droppable="true"` 속성이 있어야 함
+- <button>이 아니면서 clickable component인 경우 `role="button"` 속성이 있어야 함

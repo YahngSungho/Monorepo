@@ -238,6 +238,7 @@ jobs:
           globs: |
             **/*.md
             **/*.mdx
+            **/*.mdc
           config: .markdownlint.json
           fix: true
         continue-on-error: true
@@ -260,11 +261,15 @@ jobs:
         run: pnpm install --prefer-offline
 
       - name: Lint Markdown Files
-        run: pnpm dlx eslint --fix '**/*.{md,mdx}'
+        run: pnpm dlx eslint --fix '**/*.{md,mdx,mdc}'
         continue-on-error: true # ESLint 오류 시 워크플로우 중단 방지 (선택 사항)
 
+      - name: Stylelint Markdown Files
+        run: pnpm dlx stylelint --fix '**/*.{md,mdx,mdc}'
+        continue-on-error: true # Stylelint 오류 시 워크플로우 중단 방지 (선택 사항)
+
       - name: Format Markdown
-        run: pnpm run format-all-path '**/*.{md,mdx}'
+        run: pnpm run format-all-path '**/*.{md,mdx,mdc}'
 
       - name: Check for Markdown changes
         id: check_markdown_changes
@@ -630,7 +635,6 @@ jobs:
 
       # 라벨 추가
       - name: Add a Label to PR 2
-        if: steps.auto-commit.outputs.changes_detected != 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}

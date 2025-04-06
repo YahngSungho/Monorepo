@@ -3,4 +3,5 @@ description:
 globs: **/+page.svelte
 alwaysApply: false
 ---
+
 Whenever handling Sveltekit API, refer this: [sveltekit.md](mdc:.cursor/docs/sveltekit.md)

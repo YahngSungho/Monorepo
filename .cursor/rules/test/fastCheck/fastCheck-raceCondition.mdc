@@ -3,6 +3,7 @@ description: Whenever writing fast-check tests for race condition
 globs:
 alwaysApply: false
 ---
+
 # Race conditions
 
 Easily detect race conditions in your JavaScript code

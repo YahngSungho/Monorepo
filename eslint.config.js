@@ -450,7 +450,6 @@ export default defineFlatConfig([
 		},
 	},
 
-	...markdown.configs.recommended,
 	{
 		files: ['**/*.mdx'],
 
@@ -473,8 +472,9 @@ export default defineFlatConfig([
 		},
 	},
 
+	...markdown.configs.recommended,
 	{
-		files: ['**/*.md'],
+		files: ['**/*.md', '**/*.mdc'],
 		plugins: {
 			markdown,
 		},

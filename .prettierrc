@@ -8,6 +8,18 @@
 			"options": {
 				"parser": "svelte"
 			}
+		},
+		{
+			"files": "*.mdx",
+			"options": {
+				"parser": "markdown"
+			}
+		},
+				{
+			"files": "*.mdc",
+			"options": {
+				"parser": "markdown"
+			}
 		}
 	],
 	"plugins": [

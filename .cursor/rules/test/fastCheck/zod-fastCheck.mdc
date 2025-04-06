@@ -3,6 +3,7 @@ description: Whenever handling fast-check tests with zod or form components
 globs:
 alwaysApply: false
 ---
+
 # zod-fast-check
 
 A small library to automatically derive fast-check arbitraries from schemas defined using the validation library Zod. These enables easy and thorough property-based testing.

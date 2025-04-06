@@ -3,4 +3,5 @@ description:
 globs: .cursor/**
 alwaysApply: false
 ---
+
 The contents of the files in the `.cursor` directory should all be written in English, because the files in this directory are targeted to LLM, and English is the most effective language for LLM. **This requirement overrides any general instructions requesting non-code text (like comments or replies) in other languages when dealing specifically with files within the `.cursor` directory or their direct content.**

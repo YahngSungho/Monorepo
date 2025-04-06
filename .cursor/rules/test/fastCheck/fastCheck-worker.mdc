@@ -3,6 +3,7 @@ description: Whenever needs worker isolation for fast-check
 globs:
 alwaysApply: false
 ---
+
 # `@fast-check/worker`
 
 Provide built-ins to run predicates directly within dedicated work

@@ -3,6 +3,7 @@ description:
 globs: **/*.stories.svelte
 alwaysApply: false
 ---
+
 # Svelte CSF
 
 The  directory contains examples describing each feature of the addon. The  is a good one to get started with.
@@ -30,7 +31,7 @@ All stories files must have a "meta" (aka. "default export") defined, and its st
 </script\>
 ```
 
-`defineMeta` returns an object with a `Story` component  that you must destructure out to use.
+`defineMeta` returns an object with a `Story` component that you must destructure out to use.
 
 ## Defining stories
 
@@ -216,8 +217,8 @@ This document provides a guide on how to write Storybook stories for Svelte comp
 
 ## 1. File Structure and Naming
 
--   **File Extension:** Svelte CSF story files **must** use the `.stories.svelte` extension.
--   **Naming and Hierarchy:** Use the `title` property in the `meta` export to define the component's position in the Storybook sidebar hierarchy. Follow the format `Category/SubCategory/ComponentName` (e.g., `title: 'Components/Input/Button'`).
+- **File Extension:** Svelte CSF story files **must** use the `.stories.svelte` extension.
+- **Naming and Hierarchy:** Use the `title` property in the `meta` export to define the component's position in the Storybook sidebar hierarchy. Follow the format `Category/SubCategory/ComponentName` (e.g., `title: 'Components/Input/Button'`).
 
 ## 2. Defining Meta (Component Metadata)
 
@@ -289,16 +290,16 @@ Every `.stories.svelte` file requires a default export, known as `meta`, which c
 <!-- Rest of the story definitions -->
 ```
 
--   **`defineMeta`:** The core function to define component metadata.
--   **`component`:** The Svelte component itself.
--   **`title`:** Determines the story's location in the Storybook UI.
--   **`args`:** Default props passed to the component in all stories. Can include mocked functions (`fn()`) for testing interactions.
--   **`argTypes`:** Provides fine-grained control over Storybook controls, actions, and the documentation table for each prop. Define `control`, `description`, `options`, `table`, `action`, etc.
--   **`parameters`:** Storybook features and addon configuration (e.g., `layout`, `backgrounds`, `viewport`, `docs`).
--   **`decorators`:** Wrap stories with extra markup or context (e.g., adding padding, providers). Can be global (`meta`), component-level, or story-level.
--   **`loaders`:** Async functions that fetch data before a story renders. The loaded data is available in the story context.
--   **`tags`:** Used for filtering stories in the UI and enabling specific features. `['autodocs']` is crucial for automatic documentation generation.
--   **Return Value:** `defineMeta` returns an object containing the `Story` component, which is used to define individual stories.
+- **`defineMeta`:** The core function to define component metadata.
+- **`component`:** The Svelte component itself.
+- **`title`:** Determines the story's location in the Storybook UI.
+- **`args`:** Default props passed to the component in all stories. Can include mocked functions (`fn()`) for testing interactions.
+- **`argTypes`:** Provides fine-grained control over Storybook controls, actions, and the documentation table for each prop. Define `control`, `description`, `options`, `table`, `action`, etc.
+- **`parameters`:** Storybook features and addon configuration (e.g., `layout`, `backgrounds`, `viewport`, `docs`).
+- **`decorators`:** Wrap stories with extra markup or context (e.g., adding padding, providers). Can be global (`meta`), component-level, or story-level.
+- **`loaders`:** Async functions that fetch data before a story renders. The loaded data is available in the story context.
+- **`tags`:** Used for filtering stories in the UI and enabling specific features. `['autodocs']` is crucial for automatic documentation generation.
+- **Return Value:** `defineMeta` returns an object containing the `Story` component, which is used to define individual stories.
 
 ## 3. Defining Stories
 
@@ -408,9 +409,9 @@ Set a default template using `setTemplate` in the **instance `<script>` tag**.
 
 ### 3.3. Story Naming and Export
 
--   **`name`:** Display name in the Storybook UI.
--   **`exportName`:** Explicit exported variable name (avoids conflicts).
--   At least one (`name` or `exportName`) is required.
+- **`name`:** Display name in the Storybook UI.
+- **`exportName`:** Explicit exported variable name (avoids conflicts).
+- At least one (`name` or `exportName`) is required.
 
 ```svelte
 <Story name="Friendly Name" exportName="UniqueExport1" args={{ /* ... */ }} />
@@ -512,21 +513,21 @@ And register the addon in `.storybook/main.js|ts`:
 </Story>
 ```
 
--   **`play` function:** Async function executed after the story renders. Receives context (`canvasElement`, `args`, `step`, `mount`, etc.).
--   **`@storybook/test` Utilities:**
-    -   `within(canvasElement)`: Creates a query scope bound to the story's root element.
-    -   `userEvent`: Simulates realistic user interactions (`type`, `click`, `hover`, `selectOptions`, etc.).
-    -   `expect`: Assertion library (Vitest's `expect` API) for checking conditions (`toBeInTheDocument`, `toHaveBeenCalled`, `toHaveAttribute`, etc.).
-    -   `fn()`: Creates a spy function to track calls, arguments, and return values. Essential for testing callbacks like `onSubmit`.
-    -   `waitFor`: Waits for an assertion to pass within a timeout, useful for async updates.
-    -   `step`: Groups related interactions under a descriptive label in the interactions panel.
-    -   `mount`: (Advanced) Allows running setup code *before* the component renders, or re-rendering with different props/state during the play function. Requires ES2017+ target.
--   **Interactions Addon:** Visualizes the execution of the `play` function step-by-step, allowing debugging (pause, rewind, step).
+- **`play` function:** Async function executed after the story renders. Receives context (`canvasElement`, `args`, `step`, `mount`, etc.).
+- **`@storybook/test` Utilities:**
+  - `within(canvasElement)`: Creates a query scope bound to the story's root element.
+  - `userEvent`: Simulates realistic user interactions (`type`, `click`, `hover`, `selectOptions`, etc.).
+  - `expect`: Assertion library (Vitest's `expect` API) for checking conditions (`toBeInTheDocument`, `toHaveBeenCalled`, `toHaveAttribute`, etc.).
+  - `fn()`: Creates a spy function to track calls, arguments, and return values. Essential for testing callbacks like `onSubmit`.
+  - `waitFor`: Waits for an assertion to pass within a timeout, useful for async updates.
+  - `step`: Groups related interactions under a descriptive label in the interactions panel.
+  - `mount`: (Advanced) Allows running setup code _before_ the component renders, or re-rendering with different props/state during the play function. Requires ES2017+ target.
+- **Interactions Addon:** Visualizes the execution of the `play` function step-by-step, allowing debugging (pause, rewind, step).
 -
 
 ## 5. Automating Tests with Test Runner
 
-While the Storybook UI runs `play` functions when a story is viewed, `@storybook/test-runner` allows you to run *all* interaction tests automatically from the command line or in CI.
+While the Storybook UI runs `play` functions when a story is viewed, `@storybook/test-runner` allows you to run _all_ interaction tests automatically from the command line or in CI.
 
 **Setup:**
 Install the test runner: `npm install @storybook/test-runner --save-dev`
@@ -535,13 +536,11 @@ Add a script to your `package.json`: `"test-storybook": "test-storybook"`
 **Execution:**
 Run `npm run test-storybook`. It will launch a browser (using Playwright), visit each story, execute its `play` function, and report any failures.
 
-
-
 ## 6. Documentation
 
--   **Autodocs:** Enable with `tags: ['autodocs']` in `meta`. Generates a documentation page from `argTypes`, code comments (JSDoc/TSDoc), and the component definition.
--   **MDX for Custom Docs:** Create `.mdx` files alongside or instead of `.stories.svelte` for narrative documentation, embedding stories, and using Doc Blocks.
--   **Doc Blocks:** Reusable documentation components (e.g., `<Meta>`, `<Story>`, `<Controls>`, `<Description>`, `<Source>`) for building custom documentation pages in MDX.
+- **Autodocs:** Enable with `tags: ['autodocs']` in `meta`. Generates a documentation page from `argTypes`, code comments (JSDoc/TSDoc), and the component definition.
+- **MDX for Custom Docs:** Create `.mdx` files alongside or instead of `.stories.svelte` for narrative documentation, embedding stories, and using Doc Blocks.
+- **Doc Blocks:** Reusable documentation components (e.g., `<Meta>`, `<Story>`, `<Controls>`, `<Description>`, `<Source>`) for building custom documentation pages in MDX.
 
 ## 7. TypeScript Integration
 
@@ -569,10 +568,10 @@ Use TypeScript for type safety (`lang="ts"`).
 <Story name="Typed Story" args={{ customProp: 'hello' }} children={typeSafeTemplate} />
 ```
 
--   **`lang="ts"`:** Enables TypeScript in `<script>` tags.
--   **`Args<typeof Story>`:** Helper type for `args` in snippets.
--   **`StoryContext<typeof Story>`:** Helper type for `context` in snippets.
--   **`defineMeta<Type>()`:** Explicitly type `args` via generics.
+- **`lang="ts"`:** Enables TypeScript in `<script>` tags.
+- **`Args<typeof Story>`:** Helper type for `args` in snippets.
+- **`StoryContext<typeof Story>`:** Helper type for `context` in snippets.
+- **`defineMeta<Type>()`:** Explicitly type `args` via generics.
 
 ## 8. Stories for Multiple Components
 
@@ -599,12 +598,10 @@ Compose components within story snippets to demonstrate interactions or layouts.
 </Story>
 ```
 
-
-
 ## 9. Mocking
 
--   **Args Mocking:** Use `argTypes` with `action` or `fn()` from `@storybook/test` to mock callbacks passed as props.
--   **Module Mocking:** For mocking imported modules (e.g., API calls, utilities), Storybook integrates with Jest/Vitest mocking capabilities, often configured via test runner setup or global decorators/parameters.
+- **Args Mocking:** Use `argTypes` with `action` or `fn()` from `@storybook/test` to mock callbacks passed as props.
+- **Module Mocking:** For mocking imported modules (e.g., API calls, utilities), Storybook integrates with Jest/Vitest mocking capabilities, often configured via test runner setup or global decorators/parameters.
 
 ---
 
