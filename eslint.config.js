@@ -338,6 +338,11 @@ export default defineFlatConfig([
 				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
+				allowDefaultProject: [
+					'**/*.md/*.*',
+					'**/*.mdc/*.*',
+					'**/*.mdx/*.*',
+				],
 			},
 			sourceType: 'module',
 		},
@@ -364,6 +369,11 @@ export default defineFlatConfig([
 				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
+				allowDefaultProject: [
+					'**/*.md/*.*',
+					'**/*.mdc/*.*',
+					'**/*.mdx/*.*',
+				],
 				svelteConfig,
 				svelteFeatures: {
 					experimentalRunes: true,
