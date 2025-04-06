@@ -183,6 +183,7 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
+      # 1. package-json 패치 다운로드
       - name: Check if package-json patch exists
         id: check_package_json_patch
         uses: actions/github-script@v6
@@ -205,15 +206,19 @@ jobs:
           name: package-json-changes-patch
           path: .
 
-      - name: Apply patches
+      # 2. package-json 패치 적용
+      - name: Apply package-json patch
         if: steps.check_package_json_patch.outputs.result == 'true'
         run: |
           if [ -f package-json-changes.patch ]; then
             echo "Applying package.json formatting changes patch..."
-            if ! git apply package-json-changes.patch; then
-              echo "::error::package-json-changes.patch check failed. Cannot apply."
+            # --check 옵션으로 적용 가능 여부 확인
+            if ! git apply --check package-json-changes.patch; then
+              echo "::error::package-json-changes.patch check failed. Cannot apply cleanly."
+              # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
+            # 실제 패치 적용
             git apply package-json-changes.patch
             echo "package.json formatting patch applied successfully."
             rm package-json-changes.patch
@@ -221,20 +226,33 @@ jobs:
             echo "No package.json formatting changes to apply."
           fi
 
-      # --> 추가: 임시 커밋 생성 (git diff 기준점 마련)
+      # 3. pnpm 설치 및 의존성 설치 (패치 적용 후)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --prefer-offline # 패치 적용된 package.json/lock 기준
+
+      # 4. 임시 커밋 생성 (패치 + 설치 후 상태 기준)
       - name: Create temporary commit for diff base
         run: |
           git config user.name "GitHub Actions Temp"
           git config user.email "actions-temp@github.com"
-          git add . # 모든 변경사항 스테이징 (패치 적용 및 install 결과 포함)
-          # 변경사항이 있을 때만 커밋 시도
+          git add . # 모든 변경사항 스테이징 (패치 적용 + install 결과 포함)
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit before fixing markdown"
+            git commit -m "Temporary commit after applying package-json patch and install"
           else
             echo "No changes to commit temporarily before fixing markdown."
           fi
 
-      - name: Fix Markdown
+      # 5. 마크다운 수정 도구 실행
+      - name: Fix Markdown (markdownlint)
         uses: DavidAnson/markdownlint-cli2-action@v19
         with:
           globs: |
@@ -246,35 +264,23 @@ jobs:
           fix: true
         continue-on-error: true
 
-      # pnpm 설치 (packageManager 버전과 일치)
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
+      # pnpm 설치 (packageManager 버전과 일치) - 중복 제거
+      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치) - 중복 제거
+      # 의존성 설치 최적화 - 중복 제거
 
-      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: package.json
-          cache: pnpm
-
-      # 의존성 설치 최적화
-      - name: Install dependencies
-        run: pnpm install --prefer-offline
-
-      - name: Lint Fix Markdown Files
+      - name: Lint Fix Markdown Files (eslint-md)
         run: pnpm run eslint-md
         continue-on-error: true # ESLint 오류 시 워크플로우 중단 방지 (선택 사항)
 
-      - name: Stylelint Fix Markdown Files
+      - name: Stylelint Fix Markdown Files (stylelint-md)
         run: pnpm run stylelint-md
         continue-on-error: true # Stylelint 오류 시 워크플로우 중단 방지 (선택 사항)
 
-      - name: Format Markdown
+      - name: Format Markdown (prettier)
         run: pnpm run format-md
 
-      - name: Check for Markdown changes
+      # 6. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
+      - name: Check for Markdown changes and create patch
         id: check_markdown_changes
         run: |
           # --> 수정: git diff HEAD 사용하여 패치 생성
@@ -288,7 +294,8 @@ jobs:
             # touch markdown-changes.patch # --> 삭제: 변경사항 없을 시 빈 파일 생성 안 함
           fi
 
-      - name: Upload patch artifact
+      # 7. 마크다운 패치 업로드
+      - name: Upload markdown patch artifact
         if: steps.check_markdown_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
@@ -365,43 +372,6 @@ jobs:
         with:
           node-version-file: package.json
           cache: pnpm
-
-      # package-json 패치 다운로드 및 적용
-      - name: Check if package-json patch exists
-        id: check_package_json_patch
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({ owner: context.repo.owner, repo: context.repo.repo, run_id: context.runId });
-            return !!artifacts.data.artifacts.find(artifact => artifact.name === "package-json-changes-patch");
-      - name: Download package-json patch artifact
-        if: steps.check_package_json_patch.outputs.result == 'true'
-        uses: actions/download-artifact@v4
-        with:
-          name: package-json-changes-patch
-          path: .
-
-      - name: Apply package-json patch
-        if: steps.check_package_json_patch.outputs.result == 'true'
-        run: |
-          if [ -f package-json-changes.patch ]; then
-            echo "Applying package.json formatting changes patch..."
-            # 적용 전 확인, 실패 시 에러
-            if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch check failed. Cannot apply."
-              exit 1
-            fi
-            git apply package-json-changes.patch
-            echo "package.json formatting patch applied successfully."
-            rm package-json-changes.patch
-          else
-            echo "No package.json formatting changes to apply."
-          fi
-
-      # 패치 적용 후 의존성 설치 (lint-fix 실행 위해)
-      - name: Install dependencies after patch
-        # 패치가 적용되었거나, 원래 package.json 변경 감지 시 실행 (필요 따라 조건 조정)
-        run: pnpm install
 
       # 임시 커밋 생성 (git diff 기준점 마련)
       - name: Create temporary commit for diff base

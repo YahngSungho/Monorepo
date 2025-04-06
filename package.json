@@ -9,7 +9,7 @@
 		"dev": "turbo run dev --affected",
 		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook --affected",
 		"eslint-md": "eslint --fix **/*.{md,mdx,mdc,svx}",
-		"fix-mismatches": "pnpm dlx syncpack fix-mismatches",
+		"fix-mismatches": "syncpack fix-mismatches",
 		"format": "turbo run format --affected",
 		"format-all": "pnpm run format-all-path .",
 		"format-all-path": "prettier --write --ignore-unknown --ignore-path .prettierignore",
