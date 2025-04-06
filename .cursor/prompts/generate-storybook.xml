@@ -44,20 +44,11 @@
 				- **Meta Definition**: Use `defineMeta` within `<script module context="module">`. Returns object with `Story` component.
 					```svelte
 					// Example assuming MyComponent uses Svelte 5 Runes
-					<script module lang="ts">
-						import type { Meta } from '@storybook/svelte';
+					<script module>
 						import { defineMeta } from '@storybook/addon-svelte-csf';
 						import MyComponent from './MyComponent.svelte'; // Assume Svelte 5 component
 
-						// Define the type for $props() if using TypeScript
-						// This should match the $props() definition in MyComponent.svelte
-						interface MyComponentProps {
-							label?: string;
-							primary?: boolean;
-							onClick?: () => void;
-						}
-
-						const { Story } = defineMeta<MyComponentProps>({ // Pass props type if needed
+						const { Story } = defineMeta({
 							title: 'Path/To/MyComponent', // Sidebar path
 							component: MyComponent,       // The component itself
 							tags: ['autodocs'],           // Enable Autodocs
@@ -102,14 +93,13 @@
 						```
 					- **Default Snippet**: Define top-level, use `setTemplate(snippetName)` in instance `<script>`. **MUST be in instance script, not module.** (Less common with Svelte 5 but possible).
 						```svelte
-						<script> // INSTANCE script
+						<script>
 							import { setTemplate } from '@storybook/addon-svelte-csf';
 							setTemplate(sharedTemplate); // Assumes sharedTemplate is defined in <script module>
 						</script>
 						<Story name="Uses Default" args={{...}} /> <!-- Implicitly uses sharedTemplate -->
 						```
 				- **`exportName`**: `<Story name="Complex Name!" exportName="ComplexStory" />` for explicit export variable name.
-				- **TypeScript**: Use `Args<MyComponentProps>`, `StoryContext<MyComponentProps>` where `MyComponentProps` matches the component's `$props()` interface. Override types via `defineMeta<MyComponentProps & { extra: type }>`.
 		</Knowledge_Svelte_CSF>
 
 		<Knowledge_Component_Testing>
@@ -118,7 +108,7 @@
 				- **Purpose**: Simulate user interactions and assert component state/behavior post-render, considering Svelte 5 Rune reactivity and potential XState integration. Tests run in the browser.
 				- **Setup**: Ensure `@storybook/test` and `@storybook/addon-interactions` are installed and the addon registered.
 				- **Core Usage**: Attach an `async play` function to a `<Story>`.
-					```typescript
+					```javascript
 					import { userEvent, within, expect, fn, waitFor, step, get } from '@storybook/test';
 					// Import `get` from @storybook/test or svelte/store if needed for XState snapshot
 
@@ -165,7 +155,7 @@
 						- **Use Case**: Run setup code *before* the component renders (e.g., mocking APIs, dates, global state, **setting up initial XState state via options.snapshot**).
 						- **Requirements**: Destructure `mount`, ES2017+ target.
 						- **Usage**:
-								```typescript
+								```javascript
 								play: async ({ mount, args }) => {
 									// Setup before render
 									// const initialXStateSnapshot = { value: 'someInitialState', context: {...} };
@@ -224,14 +214,8 @@
 <Example_Enhanced_Structure>
 		```svelte
 		<!-- Example Svelte 5 Component: ./src/components/CounterButton.svelte -->
-		<script lang="ts">
-			interface Props {
-				initialCount?: number;
-				label?: string;
-				onIncrement?: (newCount: number) => void;
-			}
-
-			let { initialCount = 0, label = 'Count', onIncrement }: Props = $props();
+		<script>
+			let { initialCount = 0, label = 'Count', onIncrement } = $props();
 			let count = $state(initialCount);
 
 			function increment() {
@@ -267,25 +251,17 @@
 
 		```svelte
 		<!-- Corresponding Storybook File: ./src/components/CounterButton.stories.svelte -->
-		<script module lang="ts">
-			import type { Meta } from '@storybook/svelte';
-			import { defineMeta, type Args } from '@storybook/addon-svelte-csf';
+		<script module>
+			import { defineMeta } from '@storybook/addon-svelte-csf';
 			import { userEvent, within, expect, fn, step, waitFor } from '@storybook/test';
 
 			import CounterButton from './CounterButton.svelte';
 
-			// Define props type matching the component's $props()
-			interface CounterButtonProps {
-				initialCount?: number;
-				label?: string;
-				onIncrement?: (newCount: number) => void;
-			}
-
-			const { Story } = defineMeta<CounterButtonProps>({
+			const { Story } = defineMeta({
 				title: 'Components/CounterButton',
 				component: CounterButton,
 				tags: ['autodocs'],
-				args: { // Default initial prop values
+				args: {
 					label: 'Count is',
 					initialCount: 0,
 				},

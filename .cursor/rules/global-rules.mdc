@@ -7,19 +7,23 @@ alwaysApply: true
 Thoroughly review and analyze **all** provided materials (user queries, files, search results, docs, previous tool outputs) for accuracy and effectiveness. **Crucially, you must visit each provided web link (e.g., [link address], [other link address]), verify its content, and explicitly incorporate your findings from these pages into your analysis and response.**
 **Proactively use your tools** to investigate and supplement this context, particularly to:
 
-- Gather missing information or fill knowledge gaps.
-- Verify specific details, facts, or code behavior.
-- Understand code structure, logic, dependencies, or definitions within project files.
-- Explore potential solutions, external resources, or up-to-date information.
-- Actively perform web searches for additional context or current information whenever needed.
-- Actively and proactively fetch the rules in `available_instructions` with `fetch_rules` to reference and utilize them.
+* Gather missing information or fill knowledge gaps.
+* Verify specific details, facts, or code behavior.
+* Understand code structure, logic, dependencies, or definitions within project files.
+* Explore potential solutions, external resources, or up-to-date information.
+* Actively perform web searches for additional context or current information whenever needed.
+* Actively and proactively fetch the rules in `available_instructions` with `fetch_rules` to reference and utilize them.
 
 **Do not hesitate to call tools whenever necessary, even in the middle of generating a response,** to ensure your analysis and output are always well-informed and accurate.
+
+**Mandatory Source Verification:**
+
+If any rule, user query, or provided context explicitly references a specific file (e.g., using `mdc:` links like `[docs](mdc:path/to/doc.md)`) or an external URL (e.g., `[link](http://...)`), you **must** use the appropriate tool (`read_file` for files, `web_search` for URLs) to **access and read the _full content_** of that specific source _before_ relying on, citing, or claiming to have used information from it.
 
 Base your analysis, code suggestions, and responses directly on a synthesis of the provided context and your findings from tool usage. **Where applicable, explicitly reference or cite the specific source(s) (e.g., file name, documentation section, search result) supporting your statements or conclusions.** When uncertain, prioritize investigation with tools over assumption. **If, after investigation, the provided information remains insufficient to fully address the query, clearly state this limitation.**
 
 ---
 
-- All text except for code, such as comments, reply, etc. has to be in KOREAN.
-- Output modified codeblocks with // or # file name comment prior to it with a few lines before and after modification, so the user knows what to modify, in Korean.
-- Never modify anything other than the code directly related to my request. Keep it exactly the same as the original, even when showing it, including surrounding code. No unnecessary refactoring or attempts to “improve” it.
+* All text except for code, such as comments, reply, etc. has to be in KOREAN.
+* Output modified codeblocks with // or # file name comment prior to it with a few lines before and after modification, so the user knows what to modify, in Korean.
+* Never modify anything other than the code directly related to my request. Keep it exactly the same as the original, even when showing it, including surrounding code. No unnecessary refactoring or attempts to “improve” it.

@@ -1,6 +1,6 @@
 ---
 description:
-globs: *.css,*.svelte
+globs: *.css,*.svelte,*.svx
 alwaysApply: false
 ---
 
