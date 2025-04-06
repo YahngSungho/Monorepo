@@ -36,14 +36,6 @@
 				options: {},
 			},
 		},
-		// decorators: [
-		// 	// Optional decorator to add padding if needed for fullscreen
-		// 	(StoryComponent) => ({
-		// 		// @ts-ignore - Storybook 데코레이터 타입과 Svelte 컴포넌트 타입 불일치 무시
-		// 		Component: StoryComponent,
-		// 		props: { style: 'padding: 1rem;' }, // Add some padding around the doc
-		// 	}),
-		// ],
 	});
 </script>
 
