@@ -64,14 +64,19 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN1 }}
           script: |
+            const core = require('@actions/core');
             try {
-              github.rest.issues.removeLabel({
+              await github.rest.issues.removeLabel({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 name: 'mutation-finished'
               });
-              console.log('Label mutation-finished removed successfully');
+              core.info('Label "mutation-finished" removed successfully.');
             } catch (error) {
-              console.log('Error removing label or label not found:', error);
+              if (error.status === 404) {
+                core.info('Label "mutation-finished" not found or already removed.');
+              } else {
+                core.setFailed(`Error removing label: ${error.message}`);
+              }
             }

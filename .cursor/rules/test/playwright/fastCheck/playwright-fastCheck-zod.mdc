@@ -70,7 +70,7 @@ test('data grid renders correctly with various props configurations', async ({ p
 		fc.asyncProperty(dataGridPropsArb, async (props) => {
 			// Pass props to component
 			await page.evaluate((componentProps) => {
-				window.renderDataGrid(componentProps)
+				globalThis.renderDataGrid(componentProps)
 			}, props)
 
 			// Wait for rendering
@@ -120,7 +120,7 @@ test('form validation handles valid and invalid data properly', async ({ page })
 				Object.keys(validUser).map((key) => [key, fc.constant(validUser[key])]),
 			),
 			// Make email invalid by removing @ symbol
-			email: fc.string().map((s) => s.replace(/@/g, '')),
+			email: fc.string().map((s) => s.replaceAll('@', '')),
 		}),
 	)
 
@@ -202,31 +202,35 @@ test('todo list state transitions work correctly', async ({ page }) => {
 			async (initialState, actions) => {
 				// Initialize component with state
 				await page.evaluate((state) => {
-					window.initTodoList(state)
+					globalThis.initTodoList(state)
 				}, initialState)
 
 				// Perform actions
 				for (const action of actions) {
 					switch (action) {
-						case 'toggleFirstItem':
-							await page.click('.todo-item:first-child .toggle-button')
+						case 'addItem': {
+							await page.fill('.new-todo-input', `New todo item ${Date.now()}`)
+							await page.click('.add-button')
 							break
-						case 'changeFilter':
+						}
+						case 'changeFilter': {
 							await page.selectOption(
 								'.filter-select',
 								['all', 'active', 'completed'][Math.floor(Math.random() * 3)],
 							)
 							break
-						case 'changeSorting':
+						}
+						case 'changeSorting': {
 							await page.selectOption(
 								'.sort-select',
 								['priority', 'alphabetical', 'date'][Math.floor(Math.random() * 3)],
 							)
 							break
-						case 'addItem':
-							await page.fill('.new-todo-input', 'New todo item ' + Date.now())
-							await page.click('.add-button')
+						}
+						case 'toggleFirstItem': {
+							await page.click('.todo-item:first-child .toggle-button')
 							break
+						}
 					}
 					// Wait for UI update
 					await page.waitForTimeout(50)
@@ -256,9 +260,9 @@ const { PNG } = require('pngjs')
 
 // Define schema for theme configuration
 const ThemeSchema = z.object({
-	primaryColor: z.string().regex(/^#[0-9A-F]{6}$/i),
-	secondaryColor: z.string().regex(/^#[0-9A-F]{6}$/i),
-	textColor: z.string().regex(/^#[0-9A-F]{6}$/i),
+	primaryColor: z.string().regex(/^#[\da-f]{6}$/i),
+	secondaryColor: z.string().regex(/^#[\da-f]{6}$/i),
+	textColor: z.string().regex(/^#[\da-f]{6}$/i),
 	fontSize: z.number().min(12).max(24).default(16),
 	spacing: z.enum(['compact', 'normal', 'loose']).default('normal'),
 	roundedCorners: z.boolean().default(true),
@@ -279,7 +283,7 @@ test('theme switcher applies themes consistently', async ({ page }) => {
 			async (theme, _) => {
 				// Apply theme
 				await page.evaluate((themeConfig) => {
-					window.applyTheme(themeConfig)
+					globalThis.applyTheme(themeConfig)
 				}, theme)
 
 				// Wait for theme to apply
@@ -294,7 +298,7 @@ test('theme switcher applies themes consistently', async ({ page }) => {
 
 					// Apply same theme again
 					await page.evaluate((themeConfig) => {
-						window.applyTheme(themeConfig)
+						globalThis.applyTheme(themeConfig)
 					}, theme)
 
 					// Capture again
@@ -396,7 +400,7 @@ test('complex stateful component handles various state configurations', async ({
 				)
 			}
 			return fc.oneof(
-				...Array.from(mappers.entries()).map(([k, v]) => fc.constant(k).chain((k) => v())),
+				...Array.from(mappers.entries(), ([k, v]) => fc.constant(k).chain((k) => v())),
 			)
 		},
 	})
@@ -407,7 +411,7 @@ test('complex stateful component handles various state configurations', async ({
 		fc.asyncProperty(componentStateArb, async (state) => {
 			// Initialize component with generated state
 			await page.evaluate((componentState) => {
-				window.initComplexComponent(componentState)
+				globalThis.initComplexComponent(componentState)
 			}, state)
 
 			// Wait for rendering to complete
@@ -480,8 +484,8 @@ test('user profile renders efficiently across many configurations', async ({ pag
 				// Set up state quickly
 				await page.evaluate(
 					({ userData, darkMode }) => {
-						window.setUserProfileData(userData)
-						window.setDarkMode(darkMode)
+						globalThis.setUserProfileData(userData)
+						globalThis.setDarkMode(darkMode)
 					},
 					{ userData: user, darkMode: isDarkMode },
 				)

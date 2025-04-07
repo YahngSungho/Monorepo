@@ -1,23 +1,24 @@
 <script module>
-	// JAVASCRIPT ONLY - NO lang="ts"
-	import { defineMeta } from '@storybook/addon-svelte-csf';
+// JAVASCRIPT ONLY - NO lang="ts"
+import { defineMeta } from '@storybook/addon-svelte-csf'
 
-	// MDSveX 파일을 Svelte 컴포넌트로 임포트합니다. MDSveX 전처리기가 변환을 처리합니다.
-	import SampleMdsvexComponent from './sample.svx';
+// MDSveX 파일을 Svelte 컴포넌트로 임포트합니다. MDSveX 전처리기가 변환을 처리합니다.
+import SampleMdsvexComponent from './sample.svx'
 
-	// defineMeta는 컴포넌트 메타데이터를 정의합니다.
-	const { Story } = defineMeta({
-		// Storybook UI에서의 경로 및 컴포넌트 이름
-		title: 'MDSveX/Sample Document',
-		// MDSveX에 의해 처리된 컴포넌트
-		component: SampleMdsvexComponent,
-		parameters: {
-			// 레이아웃을 조정하여 내용을 더 잘 볼 수 있도록 합니다 (선택 사항).
-			layout: 'padded',
-		},
-		// sample.svx는 외부 props를 받지 않으므로 argTypes는 비워둡니다.
-		argTypes: {},
-	});
+// defineMeta는 컴포넌트 메타데이터를 정의합니다.
+const { Story } = defineMeta({
+	// Storybook UI에서의 경로 및 컴포넌트 이름
+	title: 'MDSveX/Sample Document',
+	// MDSveX에 의해 처리된 컴포넌트
+	// @ts-ignore
+	component: SampleMdsvexComponent,
+	parameters: {
+		// 레이아웃을 조정하여 내용을 더 잘 볼 수 있도록 합니다 (선택 사항).
+		layout: 'padded',
+	},
+	// sample.svx는 외부 props를 받지 않으므로 argTypes는 비워둡니다.
+	argTypes: {},
+})
 </script>
 
 <!--

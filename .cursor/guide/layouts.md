@@ -143,12 +143,6 @@ The potential remit of the **Stack** layout can hardly be overestimated. Anywher
 
 # The Box
 
-- [Problem](#problem-1)
-- [Solution](#solution-1)
-- [Use Cases](#use-cases-1)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
-
 ## Problem
 
 As I established in **Boxes**, every rendered element creates a box shape. So what is the use of a **Box** layout, encapsulated as a dedicated **Box** component?
@@ -308,12 +302,6 @@ You can also combine just boxes to make some useful compositions. A **Box** with
 
 # The Center
 
-- [Problem](#problem-2)
-- [Solution](#solution-2)
-- [Use Cases](#use-cases-2)
-- The Generator (Removed - relates to specific implementation not present)
-- The Component (Removed - relates to specific implementation not present)
-
 ## Problem
 
 In the early days of HTML, there were a number of presentational elements; elements devised purely to affect the appearance of their content. The `<center>` was one such element, but has long since been considered obsolete. Curiously, it _is_ still supported in some browsers, including Google's Chrome. Presumably this is because Google's search homepage still uses a `<center>` to center-justify its famous search input.
@@ -449,12 +437,6 @@ Whenever you wish something to be horizontally centered, the **Center** is your 
 ---
 
 # The Cluster
-
-- [Problem](#problem-3)
-- [Solution](#solution-3)
-- [Use Cases](#use-cases-3)
-- The generator (Removed - relates to specific implementation not present)
-- The component (Removed - relates to specific implementation not present)
 
 ## Problem
 
@@ -1094,16 +1076,16 @@ A typical use for the **Cover** would be to create the "above the fold" introduc
 It might be that you treat each section of the page as a **Cover**, and use the Intersection Observer API to animate aspects of the cover as it comes into view. A simple implementation is provided below (where the `data-visible` attribute is added as the element comes into view).
 
 ```javascript
-if ('IntersectionObserver' in window) {
+if ('IntersectionObserver' in globalThis) {
 	const targets = Array.from(document.querySelectorAll('cover-l'))
-	targets.forEach((t) => t.setAttribute('data-observe', ''))
+	for (const t of targets) t.setAttribute('data-observe', '')
 	const callback = (entries, observer) => {
-		entries.forEach((entry) => {
+		for (const entry of entries) {
 			entry.target.setAttribute('data-visible', entry.isIntersecting)
-		})
+		}
 	}
 	const observer = new IntersectionObserver(callback)
-	targets.forEach((t) => observer.observe(t))
+	for (const t of targets) observer.observe(t)
 }
 ```
 
@@ -1218,16 +1200,16 @@ The `aboveMin` class presides over an overriding declaration that produces the r
 ```javascript
 function observeGrid(gridNode) {
 	// Feature detect ResizeObserver
-	if ('ResizeObserver' in window) {
+	if ('ResizeObserver' in globalThis) {
 		// Get the min value from data-min="[min]"
-		const min = gridNode.dataset.min
+		const { min } = gridNode.dataset
 		// Create a proxy element to measure and convert
 		// the `min` value (which might be em, rem, etc) to `px`
 		const test = document.createElement('div')
 		test.style.width = min
-		gridNode.appendChild(test)
+		gridNode.append(test)
 		const minToPixels = test.offsetWidth
-		gridNode.removeChild(test)
+		test.remove()
 		const ro = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				// Get the element's current dimensions
@@ -1775,16 +1757,16 @@ A typical use for the **Cover** would be to create the "above the fold" introduc
 It might be that you treat each section of the page as a **Cover**, and use the Intersection Observer API to animate aspects of the cover as it comes into view. A simple implementation is provided below (where the `data-visible` attribute is added as the element comes into view).
 
 ```javascript
-if ('IntersectionObserver' in window) {
+if ('IntersectionObserver' in globalThis) {
 	const targets = Array.from(document.querySelectorAll('cover-l'))
-	targets.forEach((t) => t.setAttribute('data-observe', ''))
+	for (const t of targets) t.setAttribute('data-observe', '')
 	const callback = (entries, observer) => {
-		entries.forEach((entry) => {
+		for (const entry of entries) {
 			entry.target.setAttribute('data-visible', entry.isIntersecting)
-		})
+		}
 	}
 	const observer = new IntersectionObserver(callback)
-	targets.forEach((t) => observer.observe(t))
+	for (const t of targets) observer.observe(t)
 }
 ```
 
@@ -1899,16 +1881,16 @@ The `aboveMin` class presides over an overriding declaration that produces the r
 ```javascript
 function observeGrid(gridNode) {
 	// Feature detect ResizeObserver
-	if ('ResizeObserver' in window) {
+	if ('ResizeObserver' in globalThis) {
 		// Get the min value from data-min="[min]"
-		const min = gridNode.dataset.min
+		const { min } = gridNode.dataset
 		// Create a proxy element to measure and convert
 		// the `min` value (which might be em, rem, etc) to `px`
 		const test = document.createElement('div')
 		test.style.width = min
-		gridNode.appendChild(test)
+		gridNode.append(test)
 		const minToPixels = test.offsetWidth
-		gridNode.removeChild(test)
+		test.remove()
 		const ro = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				// Get the element's current dimensions
@@ -2311,7 +2293,7 @@ const toggleOverflowClass = (elem) => {
 	elem.classList.toggle('overflowing', elem.scrollWidth > elem.clientWidth)
 }
 for (let reel of reels) {
-	if ('ResizeObserver' in window) {
+	if ('ResizeObserver' in globalThis) {
 		new ResizeObserver((entries) => {
 			toggleOverflowClass(entries[0].target)
 		}).observe(reel)
@@ -2341,12 +2323,12 @@ const toggleOverflowClass = (elem) => {
 	elem.classList.toggle('overflowing', elem.scrollWidth > elem.clientWidth)
 }
 for (let reel of reels) {
-	if ('ResizeObserver' in window) {
+	if ('ResizeObserver' in globalThis) {
 		new ResizeObserver((entries) => {
 			toggleOverflowClass(entries[0].target)
 		}).observe(reel)
 	}
-	if ('MutationObserver' in window) {
+	if ('MutationObserver' in globalThis) {
 		new MutationObserver((entries) => {
 			toggleOverflowClass(entries[0].target)
 		}).observe(reel, { childList: true })
@@ -2392,12 +2374,12 @@ Use this tool to generate basic **Reel** CSS and HTML. You would want to include
 		elem.classList.toggle('overflowing', elem.scrollWidth > elem.clientWidth)
 	}
 	for (let reel of reels) {
-		if ('ResizeObserver' in window) {
+		if ('ResizeObserver' in globalThis) {
 			new ResizeObserver((entries) => {
 				toggleOverflowClass(entries[0].target)
 			}).observe(reel)
 		}
-		if ('MutationObserver' in window) {
+		if ('MutationObserver' in globalThis) {
 			new MutationObserver((entries) => {
 				toggleOverflowClass(entries[0].target)
 			}).observe(reel, { childList: true })

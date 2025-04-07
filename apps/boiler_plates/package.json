@@ -11,12 +11,12 @@
 		"depCheck": "npx depcheck",
 		"dev": "dotenv -e ../../.env vite dev",
 		"eslint": "eslint .",
-		"eslint-fix": "eslint --fix . || true",
-		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
+		"eslint-fix": "eslint --fix . --ignore-pattern '*.md' --ignore-pattern '*.mdx' --ignore-pattern '*.svx' || true",
+		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
 		"playwright-report": "pnpm exec playwright show-report",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
-		"stylelint-fix": "stylelint --fix --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore || true",
+		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --ignore-path ../../.stylelintignore || true",
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
@@ -37,8 +37,8 @@
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {
-		"daisyui": "5.0.9",
-		"tailwindcss": "4.0.17",
+		"daisyui": "5.0.12",
+		"tailwindcss": "4.1.3",
 		"tailwindcss-animate": "^1.0.7"
 	},
 	"import": {

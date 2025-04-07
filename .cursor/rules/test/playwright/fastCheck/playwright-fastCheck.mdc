@@ -184,7 +184,7 @@ test('user profile displays generated user data correctly', async ({ page }) => 
 			// Use page.evaluate to pass props to the component via the test harness function
 			await page.evaluate((props) => {
 				// Assuming window.renderUserProfile exists on the test page
-				window.renderUserProfile(props)
+				globalThis.renderUserProfile(props)
 			}, userProps)
 
 			// Wait for potential async rendering/updates
@@ -235,7 +235,7 @@ test('dropdown menu renders generated options correctly', async ({ page }) => {
 		optionsArb,
 		async (options) => {
 			// Assume a function exists to set dropdown options
-			await page.evaluate((opts) => window.setDropdownOptions(opts), options)
+			await page.evaluate((opts) => globalThis.setDropdownOptions(opts), options)
 
 			await page.click('.dropdown-toggle')
 			await page.waitForSelector('.dropdown-menu', { state: 'visible' })
@@ -376,7 +376,7 @@ test('complex component interaction property', async ({ page }) => {
 		complexInputArb,
 		async (input) => {
 			// Simulate interaction based on input
-			await page.evaluate((data) => window.configureComponent(data), input)
+			await page.evaluate((data) => globalThis.configureComponent(data), input)
 			await page.click('#action-button')
 
 			// Wait for expected outcome (which might depend on input)
@@ -431,7 +431,7 @@ test('component test with fixed seed for reproducibility', async ({ page }) => {
 		},
 		{
 			numRuns: 10,
-			seed: 4815162342, // Use a fixed seed for deterministic runs
+			seed: 4_815_162_342, // Use a fixed seed for deterministic runs
 		},
 	)
 })
@@ -454,7 +454,7 @@ test('replay failing case for property X', async ({ page }) => {
 			// Path obtained from a previous failing run's output
 			path: '5:0:0:1', // Example path
 			endOnFailure: true, // Stop after replaying the failing case
-			seed: 4815162342, // Use the same seed as the original failing run
+			seed: 4_815_162_342, // Use the same seed as the original failing run
 		},
 	)
 })
@@ -488,7 +488,7 @@ test('button component maintains visual consistency across variants and text len
 		buttonConfigArb,
 		async (config) => {
 			// Configure the button using a helper function on the page
-			await page.evaluate((cfg) => window.configureButton(cfg), config)
+			await page.evaluate((cfg) => globalThis.configureButton(cfg), config)
 
 			// Wait for any potential re-render
 			await page.waitForTimeout(50) // Small delay if needed
@@ -507,14 +507,14 @@ test('button component maintains visual consistency across variants and text len
 			// Store height based on size and check consistency (simplified example)
 			const key = `${config.size}`
 			const currentHeight = boundingBox.height
-			const storedHeight = await page.evaluate((k) => window.buttonHeights?.[k], key)
+			const storedHeight = await page.evaluate((k) => globalThis.buttonHeights?.[k], key)
 
 			if (storedHeight === undefined) {
 				// Store height for this size for the first time
 				await page.evaluate(
 					(k, h) => {
-						if (!window.buttonHeights) window.buttonHeights = {}
-						window.buttonHeights[k] = h
+						if (!globalThis.buttonHeights) globalThis.buttonHeights = {}
+						globalThis.buttonHeights[k] = h
 					},
 					key,
 					currentHeight,

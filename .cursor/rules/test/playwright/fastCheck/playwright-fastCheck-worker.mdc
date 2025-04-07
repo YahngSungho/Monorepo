@@ -40,7 +40,7 @@ The `fast-check/worker` package allows you to run property-based tests in separa
 const fc = require('fast-check')
 
 // Worker receives test data and returns results
-self.onmessage = async ({ data }) => {
+globalThis.onmessage = async ({ data }) => {
 	const { testInputs } = data
 
 	try {
@@ -64,8 +64,8 @@ self.onmessage = async ({ data }) => {
 ```javascript
 // tests/components/worker-based.spec.js
 const { test, expect } = require('@playwright/test')
-const { Worker } = require('worker_threads')
-const path = require('path')
+const { Worker } = require('node:worker_threads')
+const path = require('node:path')
 
 test('complex UI rendering maintains performance across inputs', async ({ page }) => {
 	await page.goto('/complex-ui-test')
@@ -114,9 +114,9 @@ test('complex UI rendering maintains performance across inputs', async ({ page }
 ```javascript
 // tests/components/parallel-ui.spec.js
 const { test, expect } = require('@playwright/test')
-const { Worker } = require('worker_threads')
-const path = require('path')
-const os = require('os')
+const { Worker } = require('node:worker_threads')
+const path = require('node:path')
+const os = require('node:os')
 
 test('multiple UI components maintain properties in parallel', async ({ page }) => {
 	await page.goto('/component-gallery')
@@ -223,13 +223,13 @@ const { chromium } = require('playwright')
 ```javascript
 // tests/visual/worker-visual.spec.js
 const { test, expect } = require('@playwright/test')
-const { Worker } = require('worker_threads')
-const path = require('path')
+const { Worker } = require('node:worker_threads')
+const path = require('node:path')
 
 test('UI maintains visual consistency across configurations', async ({ baseURL }) => {
 	// Start a worker for long-running visual tests
 	const worker = new Worker(path.join(__dirname, '../workers/visual-regression.worker.js'), {
-		env: { ...process.env, TEST_URL: baseURL + '/visual-test-page' },
+		env: { ...process.env, TEST_URL: `${baseURL}/visual-test-page` },
 	})
 
 	// Wait for results (this could take minutes, which is why a worker is ideal)
@@ -281,8 +281,8 @@ test('UI maintains visual consistency across configurations', async ({ baseURL }
 
 ```javascript
 // tests/utils/worker-helper.js
-const { Worker } = require('worker_threads')
-const path = require('path')
+const { Worker } = require('node:worker_threads')
+const path = require('node:path')
 
 /**
  * Helper to determine if a test should use workers
@@ -298,7 +298,7 @@ function shouldUseWorker(testConfig) {
 	if (testConfig.complexity === 'high') return true
 
 	// Use workers for long-running tests
-	if (testConfig.estimatedRuntime > 10000) return true
+	if (testConfig.estimatedRuntime > 10_000) return true
 
 	// Default to standard execution for simpler tests
 	return false
@@ -343,7 +343,7 @@ test('datepicker handles various inputs correctly', async ({ page }) => {
 	const testConfig = {
 		numRuns: 100,
 		complexity: 'medium',
-		estimatedRuntime: 15000,
+		estimatedRuntime: 15_000,
 	}
 
 	if (shouldUseWorker(testConfig)) {

@@ -1,6 +1,6 @@
 # Args
 
-A story is a component with a set of arguments that define how the component should render. "Args" are Storybook's mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. It allows Storybook and its addons to live edit components. You _do not_ need to modify your underlying component code to use args.
+A story is a component with a set of arguments that define how the component should render. "Args" are Storybook's mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. It allows Storybook and its addons to live edit components. You *do not* need to modify your underlying component code to use args.
 
 When an arg's value changes, the component re-renders, allowing you to interact with components in Storybook's UI via addons that affect args.
 
@@ -15,13 +15,17 @@ The `args` object can be defined at the story, component and global level.
 To define the args of a single story, use the `args` property in the `Story` component if you are using Svelte CSF with the native templating syntax, or use the `args` key on a CSF story file:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    primary: true,    label: 'Button'  }}/>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    primary: true,    label: 'Button'  }}/>
 ```
 
 These args will only apply to the story for which they are attached, although you can reuse them via JavaScript object reuse:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    primary: true,    label: 'Button',  }</script><Story name="Primary" args={primaryArgs} /><Story name="PrimaryLongName"  args={{    ...primaryArgs,    label: 'Primary with a really long name'  }} />
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    primary: true,    label: 'Button',  }</script><Story name="Primary" args={primaryArgs} /><Story name="PrimaryLongName"  args={{    ...primaryArgs,    label: 'Primary with a really long name'  }} />
 ```
 
 In the above example, we use the object spread feature of ES 2015.
@@ -40,8 +44,9 @@ You can also define args at the global level; they will apply to every component
 
 .storybook/preview.js
 
-export default {  // The default value of the theme arg for all stories  args: { theme: 'light' },};
-```
+export default { // The default value of the theme arg for all stories args: { theme: 'light' },};
+
+````
 
 For most uses of global args, globals are a better tool for defining globally-applied settings, such as a theme. Using globals enables users to change the value with the toolbar menu.
 
@@ -51,14 +56,17 @@ You can separate the arguments to a story to compose in other stories. Here's ho
 
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    primary: true,    label: 'Button',  }</script><Story name="Primary" args={primaryArgs} /><Story name="Secondary" args={{...primaryArgs, primary: false}} />
-```
+````
 
 If you find yourself re-using the same args for most of a component's stories, you should consider using component-level args.
 
 Args are useful when writing stories for composite components that are assembled from other components. Composite components often pass their arguments unchanged to their child components, and similarly, their stories can be compositions of their child components stories. With args, you can directly compose the arguments:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Page from './Page.svelte';  //👇 Imports all Header stories  import * as HeaderStories from './Header.stories.svelte';  const { Story } = defineMeta({    component: Page,  });</script><Story name="LoggedIn" args={{ ...HeaderStories.LoggedIn.args }} />
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Page from './Page.svelte';  //👇 Imports all Header stories  import * as HeaderStories from './Header.stories.svelte';  const { Story } = defineMeta({    component: Page,  });
+</script><Story name="LoggedIn" args={{ ...HeaderStories.LoggedIn.args }} />
 ```
 
 ## Args can modify any aspect of your component
@@ -66,7 +74,9 @@ Args are useful when writing stories for composite components that are assembled
 You can use args in your stories to configure the component's appearance, similar to what you would do in an application. For example, here's how you could use a `footer` arg to populate a child component:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
 ```
 
 ## Setting args through the URL
@@ -98,7 +108,7 @@ Complex values such as JSX elements cannot be serialized to the manager (e.g., t
 import { Example } from './Example';export default {  component: Example,  argTypes: {    label: {      options: ['Normal', 'Bold', 'Italic'],      mapping: {        Bold: <b>Bold</b>,        Italic: <i>Italic</i>,      },    },  },};
 ```
 
-Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg _values_, not their index in the `options` array.
+Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg *values*, not their index in the `options` array.
 
 # Parameters
 
@@ -113,7 +123,9 @@ For example, let's customize the backgrounds addon via a parameter. We'll use `
 With Svelte, we can set the `parameters` property in the `Story` component to define parameters for a single story using Svelte CSF with the native templating syntax, or we can use the `parameters` key on a CSF named export:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="OnDark"  parameters={{    backgrounds: { default: 'dark' }  }}/>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="OnDark"  parameters={{    backgrounds: { default: 'dark' }  }}/>
 ```
 
 ## Component parameters
@@ -230,13 +242,14 @@ The `storySort` can also accept a configuration object.
 ```svelte
 export default {  parameters: {    options: {      storySort: {        method: '',        order: [],        locales: '',      },    },  },};
 ```
- | Field            | Type    | Description                                              | Required | Default Value           | Example                   |
- | ---------------- | ------- | -------------------------------------------------------- | -------- | ----------------------- | ------------------------- |
- | **method**       | String  | Tells Storybook in which order the stories are displayed | No       | Storybook configuration | `'alphabetical'`          |
- | ---              | ---     | ---                                                      | ---      | ---                     | ---                       |
- | **order**        | Array   | The stories to be shown, ordered by supplied name        | No       | Empty Array `[]`        | `['Intro', 'Components']` |
- | **includeNames** | Boolean | Include story name in sort calculation                   | No       | `false`                 | `true`                    |
- | **locales**      | String  | The locale required to be displayed                      | No       | System locale           | `en-US`                   |
+
+| Field            | Type    | Description                                              | Required | Default Value           | Example                   |
+| ---------------- | ------- | -------------------------------------------------------- | -------- | ----------------------- | ------------------------- |
+| **method**       | String  | Tells Storybook in which order the stories are displayed | No       | Storybook configuration | `'alphabetical'`          |
+| ---              | ---     | ---                                                      | ---      | ---                     | ---                       |
+| **order**        | Array   | The stories to be shown, ordered by supplied name        | No       | Empty Array `[]`        | `['Intro', 'Components']` |
+| **includeNames** | Boolean | Include story name in sort calculation                   | No       | `false`                 | `true`                    |
+| **locales**      | String  | The locale required to be displayed                      | No       | System locale           | `en-US`                   |
 
 To sort your stories alphabetically, set `method` to `'alphabetical'` and optionally set the `locales` string. To sort your stories using a custom list, use the `order` array; stories that don't match an item in the `order` list will appear after the items in the list.
 
@@ -294,7 +307,7 @@ Note that by adding a `subcomponents` property to the default export, we get a
 Subcomponents are only intended for documentation purposes and have some limitations:
 
 1. The argTypes of subcomponents are inferred (for the renderers that support that feature) and cannot be manually defined or overridden.
-2. The table for each documented subcomponent does _not_ include controls to change the value of the props, because controls always apply to the main component's args.
+2. The table for each documented subcomponent does *not* include controls to change the value of the props, because controls always apply to the main component's args.
 
 Let's talk about some techniques you can use to mitigate the above, which are especially useful in more complicated situations.
 
@@ -457,7 +470,9 @@ If you have stories in the older pre-Storybook 6 style, check the args & contro
 By default, Storybook will choose a control for each arg based on its initial value. This will work well with specific arg types (e.g., `boolean` or `string`). To enable them, add the `component` annotation to the default export of your story file, and it will be used to infer the controls and auto-generate the matching `argTypes` for your component provided by the framework you've chosen to use.
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script>
 ```
 
 If you're using a framework that doesn't support this feature, you'll need to define the `argTypes` for your component manually.
@@ -465,7 +480,9 @@ If you're using a framework that doesn't support this feature, you'll need to de
 For instance, suppose you have a `variant` arg on your story that should be `primary` or `secondary`:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story name="Primary" args={{ variant: 'primary' }} />
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story name="Primary" args={{ variant: 'primary' }} />
 ```
 
 By default, Storybook will render a free text input for the `variant` arg:
@@ -479,7 +496,9 @@ We can specify which controls get used by declaring a custom argType for the 
 `ArgTypes` can also contain arbitrary annotations, which the user can override. Since `variant` is a component property, let's put that annotation on the `defineMeta` function, or the default export if you're using standard CSF.
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,    argTypes: {      variant: {        options: ['primary', 'secondary'],        control: { type: 'radio' },      },    },  });</script>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,    argTypes: {      variant: {        options: ['primary', 'secondary'],        control: { type: 'radio' },      },    },  });</script>
 ```
 
 ArgTypes are a powerful feature that can be used to customize the controls for your stories. For more information, see the documentation about customizing controls with `argTypes` annotation.
@@ -492,11 +511,12 @@ This replaces the input with a radio group for a more intuitive experience.
 
 Controls can automatically be inferred from arg's name with regex, but currently only for the color picker and date picker controls. If you've used the Storybook CLI to setup your project, it should have automatically created the following defaults in `.storybook/preview.js|ts`:
 
- | Control   | Default regex | Description                                              |
- | --------- | ------------- | -------------------------------------------------------- |
- | **color** | `/(background | color)$/i`                                               | Will display a color picker UI for the args that match it |
- | ---       | ---           | ---                                                      |
- | **date**  | `/Date$/`     | Will display a date picker UI for the args that match it |
+| Control   | Default regex | Description                                              |
+| --------- | ------------- | -------------------------------------------------------- | --------------------------------------------------------- |
+| **color** | `/(background | color)$/i`                                               | Will display a color picker UI for the args that match it |
+| ---       | ---           | ---                                                      |
+| **date**  | `/Date$/`     | Will display a date picker UI for the args that match it |
+
 If you haven't used the CLI to set the configuration, or if you want to define your patterns, use the `matchers` property in the `controls` parameter:
 
 .storybook/preview.js
@@ -510,7 +530,9 @@ export default {  parameters: {    controls: {      matchers: {        color: /(
 Until now, we only used auto-generated controls based on the component for which we're writing stories. If we are writing complex stories, we may want to add controls for args that aren't part of the component. For example, here's how you could use a `footer` arg to populate a child component:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
 ```
 
 By default, Storybook will add controls for all args that:
@@ -578,28 +600,31 @@ Annotation
 
 As shown above, you can configure individual controls with the "control" annotation in the argTypes field of either a component or story. Below is a condensed example and table featuring all available controls.
 
- | Data Type   | Control        | Description                                                                                                                                                                                                   |
- | ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- | **boolean** | `boolean`      | Provides a toggle for switching between possible states.`argTypes: { active: { control: 'boolean' }}`                                                                                                         |
- | ---         | ---            | ---                                                                                                                                                                                                           |
- | **number**  | `number`       | Provides a numeric input to include the range of all possible values.`argTypes: { even: { control: { type: 'number', min:1, max:30, step: 2 } }}`                                                             |
- |             | `range`        | Provides a range slider component to include all possible values.`argTypes: { odd: { control: { type: 'range', min: 1, max: 30, step: 3 } }}`                                                                 |
- | **object**  | `object`       | Provides a JSON-based editor component to handle the object's values.Also allows edition in raw mode.`argTypes: { user: { control: 'object' }}`                                                               |
- | **array**   | `object`       | Provides a JSON-based editor component to handle the array's values.Also allows edition in raw mode.`argTypes: { odd: { control: 'object' }}`                                                                 |
- |             | `file`         | Provides a file input component that returns an array of URLs.Can be further customized to accept specific file types.`argTypes: { avatar: { control: { type: 'file', accept: '.png' } }}`                    |
- | **enum**    | `radio`        | Provides a set of radio buttons based on the available options.`argTypes: { contact: { control: 'radio', options: ['email', 'phone', 'mail'] }}`                                                              |
- |             | `inline-radio` | Provides a set of inlined radio buttons based on the available options.`argTypes: { contact: { control: 'inline-radio', options: ['email', 'phone', 'mail'] }}`                                               |
- |             | `check`        | Provides a set of checkbox components for selecting multiple options.`argTypes: { contact: { control: 'check', options: ['email', 'phone', 'mail'] }}`                                                        |
- |             | `inline-check` | Provides a set of inlined checkbox components for selecting multiple options.`argTypes: { contact: { control: 'inline-check', options: ['email', 'phone', 'mail'] }}`                                         |
- |             | `select`       | Provides a drop-down list component to handle single value selection. `argTypes: { age: { control: 'select', options: [20, 30, 40, 50] }}`                                                                    |
- |             | `multi-select` | Provides a drop-down list that allows multiple selected values. `argTypes: { countries: { control: 'multi-select', options: ['USA', 'Canada', 'Mexico'] }}`                                                   |
- | **string**  | `text`         | Provides a freeform text input.`argTypes: { label: { control: 'text' }}`                                                                                                                                      |
- |             | `color`        | Provides a color picker component to handle color values.Can be additionally configured to include a set of color presets.`argTypes: { color: { control: { type: 'color', presetColors: ['red', 'green']} }}` |
- |             | `date`         | Provides a datepicker component to handle date selection. `argTypes: { startDate: { control: 'date' }}`                                                                                                       |
+| Data Type   | Control        | Description                                                                                                                                                                                                   |
+| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **boolean** | `boolean`      | Provides a toggle for switching between possible states.`argTypes: { active: { control: 'boolean' }}`                                                                                                         |
+| ---         | ---            | ---                                                                                                                                                                                                           |
+| **number**  | `number`       | Provides a numeric input to include the range of all possible values.`argTypes: { even: { control: { type: 'number', min:1, max:30, step: 2 } }}`                                                             |
+|             | `range`        | Provides a range slider component to include all possible values.`argTypes: { odd: { control: { type: 'range', min: 1, max: 30, step: 3 } }}`                                                                 |
+| **object**  | `object`       | Provides a JSON-based editor component to handle the object's values.Also allows edition in raw mode.`argTypes: { user: { control: 'object' }}`                                                               |
+| **array**   | `object`       | Provides a JSON-based editor component to handle the array's values.Also allows edition in raw mode.`argTypes: { odd: { control: 'object' }}`                                                                 |
+|             | `file`         | Provides a file input component that returns an array of URLs.Can be further customized to accept specific file types.`argTypes: { avatar: { control: { type: 'file', accept: '.png' } }}`                    |
+| **enum**    | `radio`        | Provides a set of radio buttons based on the available options.`argTypes: { contact: { control: 'radio', options: ['email', 'phone', 'mail'] }}`                                                              |
+|             | `inline-radio` | Provides a set of inlined radio buttons based on the available options.`argTypes: { contact: { control: 'inline-radio', options: ['email', 'phone', 'mail'] }}`                                               |
+|             | `check`        | Provides a set of checkbox components for selecting multiple options.`argTypes: { contact: { control: 'check', options: ['email', 'phone', 'mail'] }}`                                                        |
+|             | `inline-check` | Provides a set of inlined checkbox components for selecting multiple options.`argTypes: { contact: { control: 'inline-check', options: ['email', 'phone', 'mail'] }}`                                         |
+|             | `select`       | Provides a drop-down list component to handle single value selection. `argTypes: { age: { control: 'select', options: [20, 30, 40, 50] }}`                                                                    |
+|             | `multi-select` | Provides a drop-down list that allows multiple selected values. `argTypes: { countries: { control: 'multi-select', options: ['USA', 'Canada', 'Mexico'] }}`                                                   |
+| **string**  | `text`         | Provides a freeform text input.`argTypes: { label: { control: 'text' }}`                                                                                                                                      |
+|             | `color`        | Provides a color picker component to handle color values.Can be additionally configured to include a set of color presets.`argTypes: { color: { control: { type: 'color', presetColors: ['red', 'green']} }}` |
+|             | `date`         | Provides a datepicker component to handle date selection. `argTypes: { startDate: { control: 'date' }}`                                                                                                       |
+
 The `date` control will convert the date into a UNIX timestamp when the value changes. It's a known limitation that will be fixed in a future release. If you need to represent the actual date, you'll need to update the story's implementation and convert the value into a date object.
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Gizmo from './Gizmo.svelte';  const { Story } = defineMeta({    component: Gizmo,    argTypes: {      canRotate: {        control: 'boolean',      },      width: {        control: { type: 'number', min: 400, max: 1200, step: 50 },      },      height: {        control: { type: 'range', min: 200, max: 1500, step: 50 },      },      rawData: {        control: 'object',      },      coordinates: {        control: 'object',      },      texture: {        control: {          type: 'file',          accept: '.png',        },      },      position: {        control: 'radio',        options: ['left', 'right', 'center'],      },      rotationAxis: {        control: 'check',        options: ['x', 'y', 'z'],      },      scaling: {        control: 'select',        options: [10, 50, 75, 100, 200],      },      label: {        control: 'text',      },      meshColors: {        control: {          type: 'color',          presetColors: ['#ff0000', '#00ff00', '#0000ff'],        },      },      revisionDate: {        control: 'date',      },    },  });</script>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import Gizmo from './Gizmo.svelte';  const { Story } = defineMeta({    component: Gizmo,    argTypes: {      canRotate: {        control: 'boolean',      },      width: {        control: { type: 'number', min: 400, max: 1200, step: 50 },      },      height: {        control: { type: 'range', min: 200, max: 1500, step: 50 },      },      rawData: {        control: 'object',      },      coordinates: {        control: 'object',      },      texture: {        control: {          type: 'file',          accept: '.png',        },      },      position: {        control: 'radio',        options: ['left', 'right', 'center'],      },      rotationAxis: {        control: 'check',        options: ['x', 'y', 'z'],      },      scaling: {        control: 'select',        options: [10, 50, 75, 100, 200],      },      label: {        control: 'text',      },      meshColors: {        control: {          type: 'color',          presetColors: ['#ff0000', '#00ff00', '#0000ff'],        },      },      revisionDate: {        control: 'date',      },    },  });</script>
 ```
 
 Numeric data types will default to a `number` control unless additional configuration is provided.
@@ -653,7 +678,9 @@ To make this possible, you can use optional `include` and `exclude` configur
 Consider the following story snippets:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,  });</script><Story  name="ArrayInclude"  parameters={{    controls: { include: ['foo', 'bar'] },  }}/><Story  name="RegexInclude"  parameters={{    controls: { include: /^hello*/ },  }}/><Story  name="ArrayExclude"  parameters={{    controls: { exclude: ['foo', 'bar'] },  }}/><Story  name="RegexExclude"  parameters={{    controls: { exclude: /^hello*/ },  }}/>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,  });</script><Story  name="ArrayInclude"  parameters={{    controls: { include: ['foo', 'bar'] },  }}/><Story  name="RegexInclude"  parameters={{    controls: { include: /^hello*/ },  }}/><Story  name="ArrayExclude"  parameters={{    controls: { exclude: ['foo', 'bar'] },  }}/><Story  name="RegexExclude"  parameters={{    controls: { exclude: /^hello*/ },  }}/>
 ```
 
 ####
@@ -665,7 +692,9 @@ By default, controls are unsorted and use whatever order the args data is proces
 Consider the following snippet to force required args first:
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,    parameters: { controls: { sort: 'requiredFirst' } },  });</script>
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
+
+import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,    parameters: { controls: { sort: 'requiredFirst' } },  });</script>
 ```
 
 ###

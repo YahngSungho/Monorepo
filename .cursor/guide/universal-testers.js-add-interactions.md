@@ -346,12 +346,11 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     
     // ... (기존 switch 문 또는 if 문 내부) ...
     
-    // 예시: button 이거나 role='button' 인 요소에 doubleClick 추가
-    if (tagName === 'button' || role === 'button') {
-    	// 기존 click, hover 외에 doubleClick 추가 (이미 추가되지 않았다면)
-    	if (!interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)) {
-    		interactions.push({ type: 'doubleClick', selector })
-    		console.log(`[Interaction Discovery] Added 'doubleClick' for selector: ${selector}`) // 디버깅 로그 추가
+    // 예시: button 이거나 role='button' 인 요소에 doubleCl((tagName === 'button' || role === 'button') && // 기존 click, hover 외에 doubleClick 추가 (이미 추가되지 않았다면)
+    !interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)) {
+    	interactions.push({ type: 'doubleClick', selector })
+    	console.log(`[Interaction Discovery] Added 'doubleClick' for selector: ${selector}`) // 디버깅 로그 추가
+    }`) // 디버깅 로그 추가
     	}
     }
     
@@ -584,12 +583,12 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    // storybook/e2e/universal-testers.js
    // ... inside getInteractionsFromElementInfo ...
    // 예시: tagName이 'button' 이거나 role이 'button'인 요소에 doubleClick 추가
-   if (tagName === 'button' || role === 'button') {
-   	// 이미 click/hover가 추가되었을 수 있음. doubleClick 중복 체크 및 추가
-   	if (!interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)) {
-   		interactions.push({ type: 'doubleClick', selector })
-   		// console.log(`[Interaction Discovery] Added 'doubleClick' for: ${selector}`); // 디버깅용 로그
-   	}
+   if (
+   	(tagName === 'button' || role === 'button') && // 이미 click/hover가 추가되었을 수 있음. doubleClick 중복 체크 및 추가
+   	!interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)
+   ) {
+   	interactions.push({ type: 'doubleClick', selector })
+   	// console.log(`[Interaction Discovery] Added 'doubleClick' for: ${selector}`); // 디버깅용 로그
    }
    // ...
    ```

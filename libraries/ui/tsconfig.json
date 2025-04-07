@@ -42,6 +42,7 @@
 
 		"**/*.svelte",
 		"**/*.cjs",
-		"**/*.mjs"
+		"**/*.mjs",
+		"src/types/*.ts"
 	]
 }

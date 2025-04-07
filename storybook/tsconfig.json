@@ -46,6 +46,7 @@
 		".storybook/*.ts",
 		".svelte-kit/ambient.d.ts",
 
-		".svelte-kit/types/**/$types.d.ts"
+		".svelte-kit/types/**/$types.d.ts",
+		"src/types/*.ts"
 	]
 }

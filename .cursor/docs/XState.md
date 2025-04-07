@@ -175,13 +175,13 @@
 - **Dynamic Initial Context**: Define `context` as a function to compute it when the actor is created. Actors created at different times can have different initial contexts.
 
   ```js
-  context: () => ({ timestamp: Date.now() /* ... */ })
+  ;() => ({ timestamp: Date.now() /* ... */ })
   ```
 
 - **Input-based Initial Context**: Define `context` as a function receiving `input`.
 
   ```js
-  context: ({ input }) => ({ userId: input.id /* ... */ })
+  ;({ input }) => ({ userId: input.id /* ... */ })
   ```
 
 ### 트랜지션 (Transitions)
@@ -215,9 +215,9 @@
 
     ```js
     // In parent state config
-    on: {
-    	myEvent: {
-    		target: '.targetSiblingState'
+    {
+    	{
+    		;('.targetSiblingState')
     	}
     }
     ```
@@ -333,8 +333,8 @@
 - **Conditional Transitions (Guard Array)**: Define multiple transitions for the same event, guarded differently. The _first_ one whose guard evaluates to `true` is taken.
 
   ```js
-  on: {
-  	myEvent: [
+  {
+  	;[
   		{ guard: 'isVip', target: 'vipArea' },
   		{ guard: ({ context }) => context.age >= 18, target: 'adultSection' },
   		{ target: 'defaultSection' }, // Fallback transition (no guard or guard is true)
@@ -593,8 +593,8 @@
     		// getPersistedSnapshot includes state value, context, and potentially child states
     		const persistedState = JSON.stringify(actor.getPersistedSnapshot())
     		localStorage.setItem('myActorStateKey', persistedState)
-    	} catch (e) {
-    		console.error('Failed to save state', e)
+    	} catch (error) {
+    		console.error('Failed to save state', error)
     	}
     })
     ```
@@ -609,8 +609,8 @@
     		const persistedSnapshot = JSON.parse(persistedStateJSON)
     		// Pass the deserialized snapshot to createActor
     		actorOptions = { snapshot: persistedSnapshot }
-    	} catch (e) {
-    		console.error('Failed to parse persisted state', e)
+    	} catch (error) {
+    		console.error('Failed to parse persisted state', error)
     	}
     }
     // Add other options like input if needed
@@ -700,7 +700,7 @@
     - **Cleanup Caution**: To prevent memory leaks, when the actor is no longer needed, explicitly stop it using `stopChild` and remove its reference from the context:
 
       ```js
-      actions: [
+      ;[
       	stopChild(({ context }) => context.spawnedActorRef), // or stopChild('actorId')
       	assign({ spawnedActorRef: undefined }),
       ]
@@ -919,7 +919,7 @@ actor.send({ type: 'NEXT' })
 ### Actions
 
 ```js
-import { setup, createActor } from 'xstate';
+import { createActor,setup } from 'xstate';
 
 const machine = setup({
   actions: {
@@ -1162,7 +1162,7 @@ actor.send({ type: 'loadUser' })
 ### Input and output
 
 ```js
-import { setup, createActor } from 'xstate';
+import { createActor,setup } from 'xstate';
 
 const greetMachine = setup({
   types: {
