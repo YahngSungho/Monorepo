@@ -18,6 +18,7 @@ Specifically, a type mismatch error often occurs when passing the imported `.svx
 // Example: sample.stories.svelte
 <script module>
     import { defineMeta } from '@storybook/addon-svelte-csf'
+
     import MdsvexComponent from './my-component.svx' // Import .svx file
 
     const { Story } = defineMeta({
@@ -43,6 +44,7 @@ The most practical and reliable solution currently is to suppress the TypeScript
 // Example: sample.stories.svelte with workaround
 <script module>
     import { defineMeta } from '@storybook/addon-svelte-csf'
+
     import MdsvexComponent from './my-component.svx'
 
     const { Story } = defineMeta({
@@ -54,7 +56,6 @@ The most practical and reliable solution currently is to suppress the TypeScript
     })
 </script>
 <!-- ... stories ... -->
-
 ```
 
 **Reasoning:**
