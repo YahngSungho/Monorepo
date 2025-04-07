@@ -50,7 +50,7 @@ jobs:
           GH_TOKEN: ${{secrets.TOKEN1}}
 
   remove-mutation-finished-label:
-    needs: [automerge, automerge-dependabot]
+    needs: [automerge-dependabot]
     runs-on: ubuntu-latest
     permissions:
       contents: write
