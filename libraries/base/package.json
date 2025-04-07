@@ -10,10 +10,10 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"eslint": "eslint .",
-		"eslint-fix": "eslint --fix . --ignore-pattern '*.md' --ignore-pattern '*.mdx' --ignore-pattern '*.svx' || true",
+		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
+		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
-		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} --ignore-path ../../.stylelintignore",
+		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --ignore-path ../../.stylelintignore",
 		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --ignore-path ../../.stylelintignore || true",
 		"test:unit": "vitest run"
 	},
