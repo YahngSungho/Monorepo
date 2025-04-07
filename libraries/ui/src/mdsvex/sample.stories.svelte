@@ -10,6 +10,7 @@
 		// Storybook UI에서의 경로 및 컴포넌트 이름
 		title: 'MDSveX/Sample Document',
 		// MDSveX에 의해 처리된 컴포넌트
+		// @ts-ignore
 		component: SampleMdsvexComponent,
 		parameters: {
 			// 레이아웃을 조정하여 내용을 더 잘 볼 수 있도록 합니다 (선택 사항).
