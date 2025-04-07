@@ -259,7 +259,6 @@ jobs:
             **/*.md
             **/*.mdx
             **/*.mdc
-            **/*.svx
             !**/node_modules/**
           config: .markdownlint.json
           fix: true

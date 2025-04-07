@@ -342,7 +342,6 @@ export default defineFlatConfig([
 					'**/*.md/*.*',
 					'**/*.mdc/*.*',
 					'**/*.mdx/*.*',
-					'**/*.svx/*.*',
 				],
 			},
 			sourceType: 'module',
@@ -374,7 +373,6 @@ export default defineFlatConfig([
 					'**/*.md/*.*',
 					'**/*.mdc/*.*',
 					'**/*.mdx/*.*',
-					'**/*.svx/*.*',
 				],
 				svelteConfig,
 				svelteFeatures: {
@@ -463,7 +461,7 @@ export default defineFlatConfig([
 	},
 
 	{
-		files: ['**/*.mdx', '**/*.svx'],
+		files: ['**/*.mdx'],
 
 		...mdx.flat,
 		// optional, if you want to lint code blocks at the same
@@ -475,7 +473,7 @@ export default defineFlatConfig([
 		}),
 	},
 	{
-		files: ['**/*.mdx', '**/*.svx'],
+		files: ['**/*.mdx'],
 
 		...mdx.flatCodeBlocks,
 		rules: {
@@ -490,14 +488,13 @@ export default defineFlatConfig([
 		plugins: {
 			markdown,
 		},
-		processor: 'markdown/markdown',
+		language: "markdown/commonmark",
 	},
 	{
 		files: [
 			'**/*.md/*.*',
 			'**/*.mdc/*.*',
 			'**/*.mdx/*.*',
-			'**/*.svx/*.*',
 		],
 		languageOptions: {
 			parserOptions: {

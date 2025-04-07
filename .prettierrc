@@ -20,12 +20,6 @@
 			"options": {
 				"parser": "markdown"
 			}
-		},
-		{
-			"files": "*.svx",
-			"options": {
-				"parser": "markdown"
-			}
 		}
 	],
 	"plugins": [
