@@ -50,12 +50,12 @@ jobs:
           GH_TOKEN: ${{secrets.TOKEN1}}
 
   remove-mutation-finished-label:
-    needs: [automerge, automerge-dependabot]
+    needs: [automerge-dependabot]
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-    if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-finished')
+    if: contains(github.event.pull_request.labels.*.name, 'mutation-finished')
 
     steps:
       - name: Remove mutation-finished Label

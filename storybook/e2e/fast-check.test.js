@@ -24,6 +24,25 @@ for (const entry of Object.values(manifest.entries)) {
 		// 캐시 비활성화를 위한 라우트 설정
 		// await page.route('**', (route) => route.continue())
 
+		// --- 네비게이션 차단 설정 ---
+		let allowNavigation = true // 초기 네비게이션 허용 플래그
+
+		await page.route('**/*', (route, request) => {
+			if (request.resourceType() === 'document') {
+				if (allowNavigation) {
+					console.log(`네비게이션 허용 (초기): ${request.url()}`)
+					allowNavigation = false // 첫 번째 document 요청 후 플래그 변경
+					route.continue()
+				} else {
+					console.log(`네비게이션 차단 시도: ${request.url()}`)
+					route.abort('aborted') // 이후 모든 document 요청 차단
+				}
+			} else {
+				route.continue() // 다른 리소스(css, js 등)는 허용
+			}
+		})
+		// --- ---
+
 		// 콘솔 오류 감지 설정 (페이지 이동 전에 설정)
 		const consoleErrors = []
 		page.on('console', (msg) => {
