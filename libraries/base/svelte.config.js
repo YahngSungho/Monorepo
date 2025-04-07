@@ -9,7 +9,6 @@ const __dirname = path.dirname(__filename)
 
 const ifNotProduction = process.env.NODE_ENV !== 'production'
 
-
 const config = {
 	compilerOptions: {
 		accessors: ifNotProduction, // 타입 접근성 향상

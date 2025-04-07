@@ -15,8 +15,8 @@
 		"preview": "vite preview --outDir storybook-static"
 	},
 	"dependencies": {
-		"nanoid": "^5.1.5",
-		"@library/base": "workspace:*"
+		"@library/base": "workspace:*",
+		"nanoid": "^5.1.5"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^3.2.6",
