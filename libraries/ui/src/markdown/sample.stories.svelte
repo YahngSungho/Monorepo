@@ -3,12 +3,12 @@
 import { defineMeta } from '@storybook/addon-svelte-csf'
 
 // MDSveX 파일을 Svelte 컴포넌트로 임포트합니다. MDSveX 전처리기가 변환을 처리합니다.
-import SampleMdsvexComponent from './sample.svx'
+import SampleMdsvexComponent from './sample.svelte'
 
 // defineMeta는 컴포넌트 메타데이터를 정의합니다.
 const { Story } = defineMeta({
 	// Storybook UI에서의 경로 및 컴포넌트 이름
-	title: 'MDSveX/Sample Document',
+	title: 'MDSveX',
 	// MDSveX에 의해 처리된 컴포넌트
 	// @ts-ignore
 	component: SampleMdsvexComponent,

@@ -241,12 +241,12 @@ const baseRules = {
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const gitignorePath = path.join(__dirname, '.gitignore')
 const flatCompat = new FlatCompat({
 	allConfig: js.configs.all,
 	baseDirectory: __dirname,
 	recommendedConfig: js.configs.recommended,
 })
-const gitignorePath = path.join(__dirname, '.gitignore')
 
 export default defineFlatConfig([
 	includeIgnoreFile(gitignorePath),
