@@ -64,7 +64,6 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN1 }}
           script: |
-            const core = require('@actions/core');
             try {
               await github.rest.issues.removeLabel({
                 issue_number: context.issue.number,
