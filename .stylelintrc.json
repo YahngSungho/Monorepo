@@ -15,7 +15,7 @@
 			"customSyntax": "postcss-html"
 		},
 		{
-			"files": ["**/*.md", "**/*.mdx", "**/*.mdc", "**/*.svx"],
+			"files": ["**/*.md", "**/*.mdx", "**/*.mdc"],
 			"customSyntax": "postcss-markdown"
 		}
 	],

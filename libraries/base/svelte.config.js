@@ -1,6 +1,11 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import adapter from '@sveltejs/adapter-cloudflare'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
-import { mdsvex } from 'mdsvex'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const ifNotProduction = process.env.NODE_ENV !== 'production'
 
@@ -15,12 +20,12 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-			$shadcn: '../../libraries/ui/src/shadcn',
-			'$shadcn/*': '../../libraries/ui/src/shadcn/*',
+			$shadcn: path.join(__dirname, '../ui/src/shadcn'),
+			'$shadcn/*': path.join(__dirname, '../ui/src/shadcn/*'),
 		},
 	},
-	preprocess: [vitePreprocess(), mdsvex()],
-	extensions: ['.svelte', '.svx'],
+	preprocess: [vitePreprocess()],
+	extensions: ['.svelte', '.md'],
 }
 
 export default config
