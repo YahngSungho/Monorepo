@@ -173,8 +173,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [path-filter, fix-package-json]
     if: |
-      needs.path-filter.outputs.markdown == 'true' &&
-      (needs.fix-package-json.result == 'success' || needs.fix-package-json.result == 'skipped')
+      needs.path-filter.outputs.markdown == 'true' && !failure() && !cancelled()
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -347,8 +346,7 @@ jobs:
     needs: [path-filter, fix-package-json]
     # --> 수정: fix-package-json이 성공하거나 스킵되었을 때 실행하도록 조건 변경
     if: |
-      needs.path-filter.outputs.projects == 'true' &&
-      (needs.fix-package-json.result == 'success' || needs.fix-package-json.result == 'skipped')
+      needs.path-filter.outputs.projects == 'true' && !failure() && !cancelled()
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
