@@ -12,9 +12,9 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . || true",
-		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
-		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --ignore-path ../../.stylelintignore",
-		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" \"!**/*.svx\" --ignore-path ../../.stylelintignore || true",
+		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
+		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
+		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore || true",
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
