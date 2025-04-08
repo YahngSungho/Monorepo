@@ -483,13 +483,8 @@ export default defineFlatConfig([
 	},
 
 	...markdown.configs.recommended,
-	{
-		files: ['**/*.md', '**/*.mdc'],
-		plugins: {
-			markdown,
-		},
-		language: "markdown/commonmark",
-	},
+	...markdown.configs.processor,
+
 	{
 		files: [
 			'**/*.md/*.*',
