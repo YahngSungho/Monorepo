@@ -59,7 +59,7 @@ The @xstate/test package contains utilities for facilitating model-based testing
 
    ```js
    import { createMachine } from 'xstate'
-   
+
    const toggleMachine = createMachine({
    	id: 'toggle',
    	initial: 'inactive',
@@ -82,7 +82,7 @@ The @xstate/test package contains utilities for facilitating model-based testing
 
    ```js
    // ...
-   
+
    const toggleMachine = createMachine({
    	id: 'toggle',
    	initial: 'inactive',
@@ -116,9 +116,9 @@ The @xstate/test package contains utilities for facilitating model-based testing
    ```js
    import { createModel } from '@xstate/test'
    import { createMachine } from 'xstate'
-   
+
    const toggleMachine = createMachine(/* ... */)
-   
+
    const toggleModel = createModel(toggleMachine).withEvents({
    	TOGGLE: {
    		exec: async (page) => {
@@ -132,22 +132,22 @@ The @xstate/test package contains utilities for facilitating model-based testing
 
    ```js
    // ...
-   
+
    describe('toggle', () => {
    	const testPlans = toggleModel.getShortestPathPlans()
-   
+
    	for (const plan of testPlans) {
    		describe(plan.description, () => {
    			for (const path of plan.paths) {
    				it(path.description, async () => {
    					// do any setup, then...
-   
+
    					await path.test(page)
    				})
    			}
    		})
    	}
-   
+
    	it('should have full coverage', () => {
    		return toggleModel.testCoverage()
    	})
