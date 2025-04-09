@@ -1,5 +1,6 @@
 <script>
+import { TableRow } from '$shadcn/components/ui/table/index'
 let { children } = $props()
 </script>
 
-<tr>{@render children()}</tr>
+<TableRow>{@render children()}</TableRow>

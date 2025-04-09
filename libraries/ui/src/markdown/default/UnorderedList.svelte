@@ -2,4 +2,4 @@
 let { children } = $props()
 </script>
 
-<ul>{@render children()}</ul>
+<ul class='ml-6 list-disc [&>li]:mt-2"'>{@render children()}</ul>
