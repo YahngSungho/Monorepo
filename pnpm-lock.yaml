@@ -190,8 +190,8 @@ importers:
         specifier: ^0.12.0
         version: 0.12.0(eslint@9.23.0(jiti@2.4.2))
       eslint-plugin-turbo:
-        specifier: ^2.4.4
-        version: 2.4.4(eslint@9.23.0(jiti@2.4.2))(turbo@2.5.0)
+        specifier: ^2.5.0
+        version: 2.5.0(eslint@9.23.0(jiti@2.4.2))(turbo@2.5.0)
       eslint-plugin-unicorn:
         specifier: ^58.0.0
         version: 58.0.0(eslint@9.23.0(jiti@2.4.2))
@@ -4650,12 +4650,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
-
-  eslint-plugin-turbo@2.4.4:
-    resolution: {integrity: sha512-myEnQTjr3FkI0j1Fu0Mqnv1z8n0JW5iFTOUNzHaEevjzl+1uzMSsFwks/x8i3rGmI3EYtC1BY8K2B2pS0Vfx6w==}
-    peerDependencies:
-      eslint: '>6.6.0'
-      turbo: '>2.0.0'
 
   eslint-plugin-turbo@2.5.0:
     resolution: {integrity: sha512-qQk54MrUZv0gnpxV23sccTc+FL3UJ8q7vG7HmXuS2RP8gdjWDwI1CCJTJD8EdRIDjsMxF0xi0AKcMY0CwIlXVg==}
@@ -13797,12 +13791,6 @@ snapshots:
       toml-eslint-parser: 0.10.0
     transitivePeerDependencies:
       - supports-color
-
-  eslint-plugin-turbo@2.4.4(eslint@9.23.0(jiti@2.4.2))(turbo@2.5.0):
-    dependencies:
-      dotenv: 16.0.3
-      eslint: 9.23.0(jiti@2.4.2)
-      turbo: 2.5.0
 
   eslint-plugin-turbo@2.5.0(eslint@9.23.0(jiti@2.4.2))(turbo@2.5.0):
     dependencies:

@@ -90,7 +90,7 @@
 		"eslint-plugin-storybook": "^0.12.0",
 		"eslint-plugin-svelte": "^3.5.1",
 		"eslint-plugin-toml": "^0.12.0",
-		"eslint-plugin-turbo": "^2.4.4",
+		"eslint-plugin-turbo": "^2.5.0",
 		"eslint-plugin-unicorn": "^58.0.0",
 		"eslint-plugin-xstate": "^3.2.1",
 		"eslint-plugin-yml": "^1.17.0",
