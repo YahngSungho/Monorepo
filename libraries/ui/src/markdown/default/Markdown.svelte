@@ -1,5 +1,6 @@
 <script>
 import { Markdown } from 'svelte-exmarkdown'
+import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
 import Blockquote from './Blockquote.svelte'
 import CodeBlock from './CodeBlock.svelte'
@@ -30,6 +31,7 @@ import UnorderedList from './UnorderedList.svelte'
 const { value, plugins = []} = $props()
 
 const defaultPlugins = [
+	gfmPlugin(),
 	{
 		renderer: {
 			blockquote: Blockquote,
@@ -53,8 +55,8 @@ const defaultPlugins = [
 			table: Table,
 			tbody: TableBody,
 			td: TableCell,
-			thead: TableHead,
-			th: TableHeader,
+			thead: TableHeader,
+			th: TableHead,
 			tr: TableRow,
 			ul: UnorderedList,
 		},

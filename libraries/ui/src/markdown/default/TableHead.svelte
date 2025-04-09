@@ -1,5 +1,25 @@
 <script>
-let { children } = $props()
+import { TableHead } from '$shadcn/components/ui/table/index'
+let { align, children } = $props()
+
+let alignClass = ''
+switch (align) {
+case 'center': {
+	alignClass = 'text-center'
+
+break;
+}
+case 'left': {
+	alignClass = 'text-left'
+
+break;
+}
+case 'right': {
+	alignClass = 'text-right'
+
+break;
+}
+}
 </script>
 
-<thead>{@render children()}</thead>
+<TableHead class={alignClass}>{@render children()}</TableHead>

@@ -1,5 +1,14 @@
 <script>
+import { Table } from '$shadcn/components/ui/table/index'
 let { children } = $props()
 </script>
 
-<table>{@render children()}</table>
+<div class='myTable'>
+	<Table>{@render children()}</Table>
+</div>
+
+<style>
+  .myTable {
+		margin: var(--space-s);
+	}
+</style>
