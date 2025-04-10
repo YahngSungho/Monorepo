@@ -316,8 +316,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(stylelint@16.17.0(typescript@5.8.3))
       stylelint-plugin-logical-css:
-        specifier: ^1.2.2
-        version: 1.2.2(stylelint@16.17.0(typescript@5.8.3))
+        specifier: ^1.2.3
+        version: 1.2.3(stylelint@16.17.0(typescript@5.8.3))
       stylelint-use-nesting:
         specifier: ^6.0.0
         version: 6.0.0(stylelint@16.17.0(typescript@5.8.3))
@@ -8244,8 +8244,8 @@ packages:
     peerDependencies:
       stylelint: ^14.0.0 || ^15.0.0 || ^16.0.0
 
-  stylelint-plugin-logical-css@1.2.2:
-    resolution: {integrity: sha512-UYtMSKBMTUytlhFwoYzwIK6Tzq0qD9Kt43wWuo9uUtRc1wAfpVGZxO7SY8t9wcZudW8lPbv6zGhZAC7KgisctQ==}
+  stylelint-plugin-logical-css@1.2.3:
+    resolution: {integrity: sha512-yzSDrw4yyZJosgMablqqQzCeJmsPRAK/H7X1XzliQkYvoC/ZHBfHKos27dQEwwSLBUaYg+7nJ1ct7OlST4iqZA==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       stylelint: ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -17958,7 +17958,7 @@ snapshots:
     dependencies:
       stylelint: 16.17.0(typescript@5.8.3)
 
-  stylelint-plugin-logical-css@1.2.2(stylelint@16.17.0(typescript@5.8.3)):
+  stylelint-plugin-logical-css@1.2.3(stylelint@16.17.0(typescript@5.8.3)):
     dependencies:
       stylelint: 16.17.0(typescript@5.8.3)
 
