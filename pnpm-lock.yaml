@@ -202,8 +202,8 @@ importers:
         specifier: ^1.17.0
         version: 1.17.0(eslint@9.24.0(jiti@2.4.2))
       fast-check:
-        specifier: ^4.0.1
-        version: 4.0.1
+        specifier: ^4.1.1
+        version: 4.1.1
       globals:
         specifier: ^16.0.0
         version: 16.0.0
@@ -374,7 +374,7 @@ importers:
         version: 1.3.0
       zod-fast-check:
         specifier: ^0.10.1
-        version: 0.10.1(fast-check@4.0.1)(zod@3.24.2)
+        version: 0.10.1(fast-check@4.1.1)(zod@3.24.2)
 
   apps/Swift_Linker:
     dependencies:
@@ -779,8 +779,8 @@ packages:
   '@browserbasehq/sdk@2.5.0':
     resolution: {integrity: sha512-bcnbYZvm5Ht1nrHUfWDK4crspiTy1ESJYMApsMiOTUnlKOan0ocRD6m7hZH34iSC2c2XWsoryR80cwsYgCBWzQ==}
 
-  '@browserbasehq/stagehand@2.0.1-alpha-c87733f6830b7dcc0af5a890b66fe306c4b97ac3':
-    resolution: {integrity: sha512-8K623DGNw1NOUhSWHQD3X7qbN+aRjSUM3HGEWd90pxjknB99dqNvJi5hO2++8mZzAHP7Jvtu7QxOzqoLt5Cakg==}
+  '@browserbasehq/stagehand@2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc':
+    resolution: {integrity: sha512-F2+HLWxrJXlLTvzAYRo/HugfoxdHXXtywt24Vsf+5Aun5HuA4Hkeqsh7yvbx3H5wy/8IQ9KGjewBNuvpA9sS6g==}
     peerDependencies:
       '@playwright/test': ^1.42.1
       deepmerge: ^4.3.1
@@ -4838,8 +4838,8 @@ packages:
     resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
     engines: {node: '>=8.0.0'}
 
-  fast-check@4.0.1:
-    resolution: {integrity: sha512-Z91jcH02ySQBQlKrCIs3tKTEHdkzOqQhHW5Mg4aZRo4lbI39a28jrFlik6FaRUNzm823VDDTtAi5AEV6lZZprQ==}
+  fast-check@4.1.1:
+    resolution: {integrity: sha512-8+yQYeNYqBfWem0Nmm7BUnh27wm+qwGvI0xln60c8RPM5rVekxZf/Ildng2GNBfjaG6utIebFmVBPlNtZlBLxg==}
     engines: {node: '>=12.17.0'}
 
   fast-copy@3.0.2:
@@ -9554,7 +9554,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@browserbasehq/stagehand@2.0.1-alpha-c87733f6830b7dcc0af5a890b66fe306c4b97ac3(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)':
+  '@browserbasehq/stagehand@2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)':
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
       '@browserbasehq/sdk': 2.5.0
@@ -10187,12 +10187,12 @@ snapshots:
 
   '@fast-check/vitest@0.2.0(vitest@3.1.1(@types/debug@4.1.12)(@types/node@22.14.0)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1))':
     dependencies:
-      fast-check: 4.0.1
+      fast-check: 4.1.1
       vitest: 3.1.1(@types/debug@4.1.12)(@types/node@22.14.0)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1)
 
   '@fast-check/worker@0.5.0':
     dependencies:
-      fast-check: 4.0.1
+      fast-check: 4.1.1
       pure-rand: 7.0.1
 
   '@fastify/busboy@2.1.1': {}
@@ -12811,7 +12811,7 @@ snapshots:
   cursor-tools@0.60.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(pino-pretty@13.0.0)(pino@9.6.0)(ws@8.18.1):
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
-      '@browserbasehq/stagehand': 2.0.1-alpha-c87733f6830b7dcc0af5a890b66fe306c4b97ac3(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)
+      '@browserbasehq/stagehand': 2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)
       '@modelcontextprotocol/sdk': 1.9.0
       '@types/glob': 8.1.0
       dotenv: 16.4.7
@@ -14098,7 +14098,7 @@ snapshots:
     dependencies:
       pure-rand: 6.1.0
 
-  fast-check@4.0.1:
+  fast-check@4.1.1:
     dependencies:
       pure-rand: 7.0.1
 
@@ -19306,9 +19306,9 @@ snapshots:
 
   zimmerframe@1.1.2: {}
 
-  zod-fast-check@0.10.1(fast-check@4.0.1)(zod@3.24.2):
+  zod-fast-check@0.10.1(fast-check@4.1.1)(zod@3.24.2):
     dependencies:
-      fast-check: 4.0.1
+      fast-check: 4.1.1
       zod: 3.24.2
 
   zod-to-json-schema@3.24.5(zod@3.24.2):
