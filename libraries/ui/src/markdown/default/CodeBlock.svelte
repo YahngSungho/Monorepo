@@ -6,6 +6,6 @@ let { children } = $props()
 
 <style>
 	pre {
-		margin: var(--space-s);
+		margin: var(--space-xs-s);
 	}
 </style>

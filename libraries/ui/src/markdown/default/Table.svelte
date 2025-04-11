@@ -9,6 +9,6 @@ let { children } = $props()
 
 <style>
   .myTable {
-		margin: var(--space-s);
+		margin: var(--space-xs-s);
 	}
 </style>
