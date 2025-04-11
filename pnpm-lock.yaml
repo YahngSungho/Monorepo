@@ -418,7 +418,7 @@ importers:
         specifier: workspace:*
         version: link:../../libraries/ui
       luxon:
-        specifier: ^3.5.0
+        specifier: ^3.6.1
         version: 3.6.1
       nanoid:
         specifier: ^5.1.5
