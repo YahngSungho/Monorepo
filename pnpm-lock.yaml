@@ -88,8 +88,8 @@ importers:
         specifier: latest
         version: 0.60.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(pino-pretty@13.0.0)(pino@9.6.0)(ws@8.18.1)
       dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
+        specifier: ^16.5.0
+        version: 16.5.0
       eslint:
         specifier: ^9.24.0
         version: 9.24.0(jiti@2.4.2)
@@ -779,8 +779,8 @@ packages:
   '@browserbasehq/sdk@2.5.0':
     resolution: {integrity: sha512-bcnbYZvm5Ht1nrHUfWDK4crspiTy1ESJYMApsMiOTUnlKOan0ocRD6m7hZH34iSC2c2XWsoryR80cwsYgCBWzQ==}
 
-  '@browserbasehq/stagehand@2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc':
-    resolution: {integrity: sha512-F2+HLWxrJXlLTvzAYRo/HugfoxdHXXtywt24Vsf+5Aun5HuA4Hkeqsh7yvbx3H5wy/8IQ9KGjewBNuvpA9sS6g==}
+  '@browserbasehq/stagehand@2.0.1-alpha-178f5f0a8fecd876adfb4e29983853bdf7ec72fd':
+    resolution: {integrity: sha512-3Y9zOWVaSOQJUzkOx7ZX9VCwIyq1dvkfDQRsdVCVVnV6G8vLfToqi6MWISumvjKzea10m5pybdFZ3vvevSFmVw==}
     peerDependencies:
       '@playwright/test': ^1.42.1
       deepmerge: ^4.3.1
@@ -4154,6 +4154,10 @@ packages:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
+    engines: {node: '>=12'}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -6489,6 +6493,7 @@ packages:
 
   mvdan-sh@0.10.1:
     resolution: {integrity: sha512-kMbrH0EObaKmK3nVRKUIIya1dpASHIEusM13S4V1ViHFuxuNxCo+arxoa6j/dbV22YBGjl7UKJm9QQKJ2Crzhg==}
+    deprecated: See https://github.com/mvdan/sh/issues/1145
 
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
@@ -9554,7 +9559,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@browserbasehq/stagehand@2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)':
+  '@browserbasehq/stagehand@2.0.1-alpha-178f5f0a8fecd876adfb4e29983853bdf7ec72fd(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)':
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
       '@browserbasehq/sdk': 2.5.0
@@ -10996,7 +11001,7 @@ snapshots:
       '@babel/core': 7.26.10
       '@sentry/babel-plugin-component-annotate': 3.2.4
       '@sentry/cli': 2.42.2
-      dotenv: 16.4.7
+      dotenv: 16.5.0
       find-up: 5.0.0
       glob: 9.3.5
       magic-string: 0.30.8
@@ -12811,7 +12816,7 @@ snapshots:
   cursor-tools@0.60.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(pino-pretty@13.0.0)(pino@9.6.0)(ws@8.18.1):
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
-      '@browserbasehq/stagehand': 2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)
+      '@browserbasehq/stagehand': 2.0.1-alpha-178f5f0a8fecd876adfb4e29983853bdf7ec72fd(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)
       '@modelcontextprotocol/sdk': 1.9.0
       '@types/glob': 8.1.0
       dotenv: 16.4.7
@@ -13035,6 +13040,8 @@ snapshots:
   dotenv@16.0.3: {}
 
   dotenv@16.4.7: {}
+
+  dotenv@16.5.0: {}
 
   dunder-proto@1.0.1:
     dependencies:
