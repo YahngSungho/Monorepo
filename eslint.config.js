@@ -23,7 +23,7 @@ import { plugin as exceptionHandling } from 'eslint-plugin-exception-handling'
 import functional from 'eslint-plugin-functional'
 import github from 'eslint-plugin-github'
 import importX from 'eslint-plugin-import-x'
-import jsonSchema from 'eslint-plugin-json-schema-validator'
+// import jsonSchema from 'eslint-plugin-json-schema-validator'
 import jsonc from 'eslint-plugin-jsonc'
 import lodash from 'eslint-plugin-lodash'
 import * as mdx from 'eslint-plugin-mdx'
@@ -426,7 +426,7 @@ export default defineFlatConfig([
 	...jsonc.configs['flat/recommended-with-json'],
 	...jsonc.configs['flat/recommended-with-jsonc'],
 	...jsonc.configs['flat/recommended-with-json5'],
-	...jsonSchema.configs['flat/recommended'],
+	// ...jsonSchema.configs['flat/recommended'],
 	{
 		files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
 
