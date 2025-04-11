@@ -418,8 +418,8 @@ importers:
         specifier: workspace:*
         version: link:../../libraries/ui
       luxon:
-        specifier: ^3.5.0
-        version: 3.5.0
+        specifier: ^3.6.1
+        version: 3.6.1
       nanoid:
         specifier: ^5.1.5
         version: 5.1.5
@@ -779,8 +779,8 @@ packages:
   '@browserbasehq/sdk@2.5.0':
     resolution: {integrity: sha512-bcnbYZvm5Ht1nrHUfWDK4crspiTy1ESJYMApsMiOTUnlKOan0ocRD6m7hZH34iSC2c2XWsoryR80cwsYgCBWzQ==}
 
-  '@browserbasehq/stagehand@2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc':
-    resolution: {integrity: sha512-F2+HLWxrJXlLTvzAYRo/HugfoxdHXXtywt24Vsf+5Aun5HuA4Hkeqsh7yvbx3H5wy/8IQ9KGjewBNuvpA9sS6g==}
+  '@browserbasehq/stagehand@2.0.1-alpha-178f5f0a8fecd876adfb4e29983853bdf7ec72fd':
+    resolution: {integrity: sha512-3Y9zOWVaSOQJUzkOx7ZX9VCwIyq1dvkfDQRsdVCVVnV6G8vLfToqi6MWISumvjKzea10m5pybdFZ3vvevSFmVw==}
     peerDependencies:
       '@playwright/test': ^1.42.1
       deepmerge: ^4.3.1
@@ -6105,8 +6105,8 @@ packages:
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
 
-  luxon@3.5.0:
-    resolution: {integrity: sha512-rh+Zjr6DNfUYR3bPwJEnuwDdqMbxZW7LOQfUN4B54+Cl+0o5zaU9RJ6bcidfDtC1cWCZXQ+nvX8bf6bAji37QQ==}
+  luxon@3.6.1:
+    resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
     engines: {node: '>=12'}
 
   lz-string@1.5.0:
@@ -6489,6 +6489,7 @@ packages:
 
   mvdan-sh@0.10.1:
     resolution: {integrity: sha512-kMbrH0EObaKmK3nVRKUIIya1dpASHIEusM13S4V1ViHFuxuNxCo+arxoa6j/dbV22YBGjl7UKJm9QQKJ2Crzhg==}
+    deprecated: See https://github.com/mvdan/sh/issues/1145
 
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
@@ -9554,7 +9555,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@browserbasehq/stagehand@2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)':
+  '@browserbasehq/stagehand@2.0.1-alpha-178f5f0a8fecd876adfb4e29983853bdf7ec72fd(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)':
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
       '@browserbasehq/sdk': 2.5.0
@@ -12811,7 +12812,7 @@ snapshots:
   cursor-tools@0.60.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(pino-pretty@13.0.0)(pino@9.6.0)(ws@8.18.1):
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
-      '@browserbasehq/stagehand': 2.0.1-alpha-b19ca34b20385d83708b901d938e1c1a9db5bacc(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)
+      '@browserbasehq/stagehand': 2.0.1-alpha-178f5f0a8fecd876adfb4e29983853bdf7ec72fd(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pino-pretty@13.0.0)(pino@9.6.0)(zod@3.24.2)
       '@modelcontextprotocol/sdk': 1.9.0
       '@types/glob': 8.1.0
       dotenv: 16.4.7
@@ -15342,7 +15343,7 @@ snapshots:
     dependencies:
       svelte: 5.25.10
 
-  luxon@3.5.0: {}
+  luxon@3.6.1: {}
 
   lz-string@1.5.0: {}
 

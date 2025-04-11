@@ -29,7 +29,7 @@
 		"@library/helpers": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
-		"luxon": "^3.5.0",
+		"luxon": "^3.6.1",
 		"nanoid": "^5.1.5",
 		"ramda": "^0.30.1",
 		"ufo": "^1.5.4",
