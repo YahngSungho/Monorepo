@@ -48,6 +48,10 @@
 	--font-size-fluid-01: clamp(0.7292rem, 0.7045rem + 0.1232vi, 0.8rem);
 	/* Step 0: 14px → 16px */
 	--font-size-fluid-0: clamp(0.875rem, 0.8315rem + 0.2174vi, 1rem);
+	/* Step 0.33: 14.93px → 17.33px */
+	--font-size-fluid-0p3: clamp(1rem, 0.8811rem + 0.2609vi, 1.0833rem);
+	/* Step 0.66: 15.87px → 18.67px */
+	--font-size-fluid-0p6: clamp(1rem, 0.9308rem + 0.3043vi, 1.1667rem);
 	/* Step 1: 16.8px → 20px */
 	--font-size-fluid-1: clamp(1.05rem, 0.9804rem + 0.3478vi, 1.25rem);
 	/* Step 2: 20.16px → 25px */
