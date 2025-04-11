@@ -2,10 +2,11 @@
 let { children } = $props()
 </script>
 
-<ul class='list-disc [&>li]:mt-2"'>{@render children()}</ul>
+<ul class='list-disc [&>li]:mt-1"'>{@render children()}</ul>
 
 <style>
 	ul {
-		margin: var(--space-xs-s);
+		margin-block: var(--space-3xs-2xs);
+		margin-inline: var(--space-xs-s);
 	}
 </style>

@@ -207,7 +207,7 @@
   padding-inline: var(--size-1);
 }
 
-:where(ol, ul) { padding-inline-start: var(--size-8) }
+/* :where(ol, ul) { padding-inline-start: var(--size-8) } */
 :where(li) { padding-inline-start: var(--size-2) }
 :where(li, dd, figcaption) { max-inline-size: var(--size-content-2) }
 :where(p) { max-inline-size: var(--size-content-3); text-wrap: pretty; }
