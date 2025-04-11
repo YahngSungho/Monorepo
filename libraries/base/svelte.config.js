@@ -21,7 +21,6 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$shadcn: path.join(__dirname, '../ui/src/shadcn'),
-			'$shadcn/*': path.join(__dirname, '../ui/src/shadcn/*'),
 		},
 	},
 	preprocess: [vitePreprocess()],

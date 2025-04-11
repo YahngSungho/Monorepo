@@ -1,1 +1,6 @@
 @import url('@library/base/base.css');
+@import url('@library/base/fontStyle.css');
+
+html {
+	font-family: 'IBM Plex Sans KR';
+}

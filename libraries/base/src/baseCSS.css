@@ -1,5 +1,5 @@
 :root {
-	font-size: var(--font-size-0);
+	font-size: var(--font-size-fluid-1);
 	text-size-adjust: 100%;
 	color-scheme: light dark;
 }
@@ -108,7 +108,7 @@ h6 {
 	max-inline-size: initial;
 	margin-block-end: 0.25em;
 
-	font-size: 1em;
+	font-size: var(--font-size-1);
 	line-height: var(--font-lineheight-1);
 	hyphens: none;
 	text-wrap: balance;
@@ -116,21 +116,23 @@ h6 {
 
 h1 {
 	margin-block-end: 0.5em;
-	font-weight: 700;
+	font-size: var(--font-size-fluid-2);
+	font-weight: var(--font-weight-9);
 }
 
 h2 {
-	font-weight: 600;
+	font-size: var(--font-size-fluid-1);
+	font-weight: var(--font-weight-8);
 }
 
 h3 {
-	font-weight: 500;
+	font-weight: var(--font-weight-7);
 }
 
 h4,
 h5,
 h6 {
-	font-weight: 400;
+	font-weight: var(--font-weight-6);
 }
 
 [id] {

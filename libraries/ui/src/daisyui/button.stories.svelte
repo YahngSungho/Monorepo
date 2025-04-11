@@ -6,6 +6,7 @@ import { defineMeta } from '@storybook/addon-svelte-csf'
 import Button from './button.svelte'
 
 const { Story } = defineMeta({
+	title: 'DaisyUI/Buttons',
 	component: Button,
 	tags: ['autodocs'],
 })
