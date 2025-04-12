@@ -1,8 +1,7 @@
 <script>
 import remarkCjkFriendly from "remark-cjk-friendly";
 import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
-import { remarkExtendedTable } from 'remark-extended-table';
-import remarkRemoveUrlTrailingSlash from 'remark-remove-url-trailing-slash';
+import smartypants from "remark-smartypants";
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
@@ -44,10 +43,7 @@ const defaultPlugins = [
 		remarkPlugin: remarkCjkFriendlyGfmStrikethrough
 	},
 	{
-		remarkPlugin: remarkRemoveUrlTrailingSlash
-	},
-	{
-		remarkPlugin: remarkExtendedTable
+		remarkPlugin: smartypants
 	},
 	{
 		renderer: {
