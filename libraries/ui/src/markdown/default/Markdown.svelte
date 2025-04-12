@@ -1,10 +1,6 @@
 <script>
-import './katex.min.css'
-
-	import rehypeKatex from 'rehype-katex';
 import remarkCjkFriendly from "remark-cjk-friendly";
 import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
-	import remarkMath from 'remark-math';
 import smartypants from "remark-smartypants";
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
@@ -33,14 +29,13 @@ import TableCell from './TableCell.svelte'
 import TableHead from './TableHead.svelte'
 import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
-import Text from './Text.svelte'
 import UnorderedList from './UnorderedList.svelte'
 
 const { value, plugins = []} = $props()
 
 const defaultPlugins = [
 	gfmPlugin(),
-	{ remarkPlugin: [remarkMath], rehypePlugin: [rehypeKatex] },
+
 	{
 		remarkPlugin: remarkCjkFriendly
 	},
@@ -52,7 +47,7 @@ const defaultPlugins = [
 	},
 	{
 		renderer: {
-			text: Text,
+			// text: Text, <- 안됨
 			blockquote: Blockquote,
 			code: InlineCode,
 			del: Delete,
