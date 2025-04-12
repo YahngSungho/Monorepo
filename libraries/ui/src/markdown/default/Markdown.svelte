@@ -1,4 +1,8 @@
 <script>
+import remarkCjkFriendly from "remark-cjk-friendly";
+import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
+import { remarkExtendedTable } from 'remark-extended-table';
+import remarkRemoveUrlTrailingSlash from 'remark-remove-url-trailing-slash';
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
@@ -34,10 +38,22 @@ const { value, plugins = []} = $props()
 const defaultPlugins = [
 	gfmPlugin(),
 	{
+		remarkPlugin: remarkCjkFriendly
+	},
+	{
+		remarkPlugin: remarkCjkFriendlyGfmStrikethrough
+	},
+	{
+		remarkPlugin: remarkRemoveUrlTrailingSlash
+	},
+	{
+		remarkPlugin: remarkExtendedTable
+	},
+	{
 		renderer: {
 			text: Text,
 			blockquote: Blockquote,
-			code: InlineCode, // 인라인 코드용
+			code: InlineCode,
 			del: Delete,
 			em: Emphasis,
 			h1: Heading1,
@@ -48,11 +64,11 @@ const defaultPlugins = [
 			h6: Heading6,
 			hr: HorizontalRule,
 			img: Image,
-			a: Link, // 링크는 'a' 태그 사용
+			a: Link,
 			li: ListItem,
 			ol: OrderedList,
 			p: Paragraph,
-			pre: CodeBlock, // 코드 블록용
+			pre: CodeBlock,
 			strong: Strong,
 			table: Table,
 			tbody: TableBody,
