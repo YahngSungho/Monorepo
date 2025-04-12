@@ -4,7 +4,6 @@ body {
 	--radius-2-5: 0.5rem;
 }
 
-
 :root {
 	/* Space 3xs: 5px → 5px */
 	--space-3xs: clamp(0.3125rem, 0.3125rem + 0vi, 0.3125rem);
@@ -179,7 +178,6 @@ body {
 	/* Step 5: 34.8365px → 48.8281px */
 	--font-size-fluid-cqi-5: clamp(2.1773rem, 1.8731rem + 1.5208cqi, 3.0518rem);
 }
-
 
 :root {
 	/* Step -2: 9.7222px → 10.24px */

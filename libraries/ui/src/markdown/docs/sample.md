@@ -10,7 +10,6 @@
 
 ###### 이것은 H6 제목입니다
 
-
 > [!NOTE]
 > Highlights information that users should take into account, even when skimming.
 
@@ -26,10 +25,9 @@
 > [!CAUTION]
 > Negative potential consequences of an action.
 
-
 ## 2. 텍스트 서식
 
-일반 텍스트와 **굵은 텍스트**, _기울임 텍스트_, _**굵은 기울임 텍스트**_를 혼합할 수 있습니다.
+일반 텍스트와 **굵은 텍스트**, _기울임 텍스트_, ***굵은 기울임 텍스트***를 혼합할 수 있습니다.
 또한 ~~취소선~~도 사용할 수 있습니다.
 
 ## 3. 목록

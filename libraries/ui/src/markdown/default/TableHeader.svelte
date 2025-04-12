@@ -5,24 +5,23 @@ let { align = 'left', children } = $props()
 
 let alignClass = ''
 switch (align) {
-case 'center': {
-	alignClass = 'text-center'
+	case 'center': {
+		alignClass = 'text-center'
 
-break;
-}
-case 'left': {
-	alignClass = 'text-left'
+		break
+	}
+	case 'left': {
+		alignClass = 'text-left'
 
-break;
-}
-case 'right': {
-	alignClass = 'text-right'
+		break
+	}
+	case 'right': {
+		alignClass = 'text-right'
 
-break;
+		break
+	}
+	// No default
 }
-// No default
-}
-
 </script>
 
 <TableHeader class={alignClass}>{@render children()}</TableHeader>

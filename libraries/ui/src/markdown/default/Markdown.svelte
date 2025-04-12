@@ -1,11 +1,11 @@
 <script>
-	import './style.css'
+import './style.css'
 
-	import remarkCjkFriendly from "remark-cjk-friendly";
-	import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
-	import smartypants from "remark-smartypants";
-	import { Markdown } from 'svelte-exmarkdown'
-	import { gfmPlugin } from 'svelte-exmarkdown/gfm'
+import remarkCjkFriendly from 'remark-cjk-friendly'
+import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
+import smartypants from 'remark-smartypants'
+import { Markdown } from 'svelte-exmarkdown'
+import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
 import Blockquote from './Blockquote.svelte'
 import CodeBlock from './CodeBlock.svelte'
@@ -33,19 +33,19 @@ import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 
-const { value, plugins = []} = $props()
+const { value, plugins = [] } = $props()
 
 const defaultPlugins = [
 	gfmPlugin(),
 
 	{
-		remarkPlugin: remarkCjkFriendly
+		remarkPlugin: remarkCjkFriendly,
 	},
 	{
-		remarkPlugin: remarkCjkFriendlyGfmStrikethrough
+		remarkPlugin: remarkCjkFriendlyGfmStrikethrough,
 	},
 	{
-		remarkPlugin: smartypants
+		remarkPlugin: smartypants,
 	},
 	{
 		renderer: {

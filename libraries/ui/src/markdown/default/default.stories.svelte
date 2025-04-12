@@ -15,7 +15,6 @@ const { Story } = defineMeta({
 })
 </script>
 
-
 <!-- 기본 렌더링 테스트 스토리 (Happy Path) -->
 <Story name="DefaultRender">
 	<div class="story-container boxed">
@@ -24,9 +23,8 @@ const { Story } = defineMeta({
 </Story>
 
 <style>
-	.story-container {
-		max-inline-size: var(--size-content-4);
-		margin: auto;
-	}
-
+.story-container {
+	max-inline-size: var(--size-content-4);
+	margin: auto;
+}
 </style>

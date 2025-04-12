@@ -1,16 +1,16 @@
 /* global.css 또는 관련 CSS 파일 */
 .icon.icon-link::before {
-  content: '#'; /* 간단한 # 문자 표시 */
-  display: inline-block;
-  margin-inline-start: 0.5ch;
-  color: var(--link); /* 적절한 색상 변수 사용 */
-  /* 또는 SVG 배경 이미지 사용 */
-  /* content: ""; */
-  /* background-image: url('path/to/link-icon.svg'); */
-  /* background-size: contain; */
-  /* width: 1em; */
-  /* height: 1em; */
-  /* ... */
+	content: '#'; /* 간단한 # 문자 표시 */
+	display: inline-block;
+	margin-inline-start: 0.5ch;
+	color: var(--link); /* 적절한 색상 변수 사용 */
+	/* 또는 SVG 배경 이미지 사용 */
+	/* content: ""; */
+	/* background-image: url('path/to/link-icon.svg'); */
+	/* background-size: contain; */
+	/* width: 1em; */
+	/* height: 1em; */
+	/* ... */
 }
 
 /* 링크에 호버 시 아이콘 표시 (선택 사항) */
@@ -20,8 +20,8 @@ h3 .icon.icon-link,
 h4 .icon.icon-link,
 h5 .icon.icon-link,
 h6 .icon.icon-link {
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+	opacity: 0;
+	transition: opacity 0.2s ease-in-out;
 }
 
 h1:hover .icon.icon-link,
@@ -30,5 +30,5 @@ h3:hover .icon.icon-link,
 h4:hover .icon.icon-link,
 h5:hover .icon.icon-link,
 h6:hover .icon.icon-link {
-  opacity: 1;
+	opacity: 1;
 }

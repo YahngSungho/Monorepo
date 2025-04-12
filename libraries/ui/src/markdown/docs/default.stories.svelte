@@ -15,7 +15,6 @@ const { Story } = defineMeta({
 })
 </script>
 
-
 <Story name="DefaultRender">
 	<div class="story-container boxed">
 		<Markdown value={sampleText} />
@@ -23,8 +22,8 @@ const { Story } = defineMeta({
 </Story>
 
 <style>
-	.story-container {
-		max-inline-size: var(--size-content-4);
-		margin: auto;
-	}
+.story-container {
+	max-inline-size: var(--size-content-4);
+	margin: auto;
+}
 </style>

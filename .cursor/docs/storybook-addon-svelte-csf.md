@@ -42,7 +42,7 @@ In versions prior to v5 of this addon, it was always required to define a templa
 If your component only accepts props and doesn't require snippets or slots, you can use the simple form of defining stories, only using args:
 
 ```svelte
-<Story name\="Primary" args\={{ primary: true }} />
+<Story args\={{ primary: true }} name\="Primary" />
 ```
 
 This will render the component defined in the meta, with the args passed as props.
@@ -103,11 +103,11 @@ You can also use this pattern to define multiple templates and share the differe
 If you only need a single template that you want to share, it can be tedious to include `children={template}` in each `Story` component. Like in th example below:
 
 ```svelte
-<Story name\="Primary" args\={{ variant: 'primary' }} children\={template} />
-<Story name\="Secondary" args\={{ variant: 'secondary' }} children\={template} />
-<Story name\="Tertiary" args\={{ variant: 'tertiary' }} children\={template} />
+<Story args\={{ variant: 'primary' }} children\={template} name\="Primary" />
+<Story args\={{ variant: 'secondary' }} children\={template} name\="Secondary" />
+<Story args\={{ variant: 'tertiary' }} children\={template} name\="Tertiary" />
 
-<Story name\="Denary" args\={{ variant: 'denary' }} children\={template} />
+<Story args\={{ variant: 'denary' }} children\={template} name\="Denary" />
 ```
 
 In this case you can use the `setTemplate()` helper function that sets a default template for all stories. In regular CSF terms, this is the equivalent of defining a meta-level `render`\-function versus story-level `render`\-functions:
