@@ -1,9 +1,11 @@
 <script>
-import remarkCjkFriendly from "remark-cjk-friendly";
-import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
-import smartypants from "remark-smartypants";
-import { Markdown } from 'svelte-exmarkdown'
-import { gfmPlugin } from 'svelte-exmarkdown/gfm'
+	import './style.css'
+
+	import remarkCjkFriendly from "remark-cjk-friendly";
+	import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
+	import smartypants from "remark-smartypants";
+	import { Markdown } from 'svelte-exmarkdown'
+	import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
 import Blockquote from './Blockquote.svelte'
 import CodeBlock from './CodeBlock.svelte'
