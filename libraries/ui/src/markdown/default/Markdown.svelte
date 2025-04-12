@@ -1,6 +1,10 @@
 <script>
+import './katex.min.css'
+
+	import rehypeKatex from 'rehype-katex';
 import remarkCjkFriendly from "remark-cjk-friendly";
 import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
+	import remarkMath from 'remark-math';
 import smartypants from "remark-smartypants";
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
@@ -36,6 +40,7 @@ const { value, plugins = []} = $props()
 
 const defaultPlugins = [
 	gfmPlugin(),
+	{ remarkPlugin: [remarkMath], rehypePlugin: [rehypeKatex] },
 	{
 		remarkPlugin: remarkCjkFriendly
 	},
@@ -78,4 +83,4 @@ const defaultPlugins = [
 ]
 </script>
 
-<Markdown md={value} plugins={defaultPlugins.concat(plugins)} />
+<Markdown md={value} plugins={[...defaultPlugins, ...plugins]} />
