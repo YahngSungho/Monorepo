@@ -2,7 +2,7 @@
 let { children } = $props()
 </script>
 
-<ul class='list-disc [&>li]:mt-1"'>{@render children()}</ul>
+<ul class='list-disc [&>li]:mt-1'>{@render children()}</ul>
 
 <style>
 	ul {
