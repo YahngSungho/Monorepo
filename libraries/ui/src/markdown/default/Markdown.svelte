@@ -26,6 +26,7 @@ import TableCell from './TableCell.svelte'
 import TableHead from './TableHead.svelte'
 import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
+import Text from './Text.svelte'
 import UnorderedList from './UnorderedList.svelte'
 
 const { value, plugins = []} = $props()
@@ -34,6 +35,7 @@ const defaultPlugins = [
 	gfmPlugin(),
 	{
 		renderer: {
+			text: Text,
 			blockquote: Blockquote,
 			code: InlineCode, // 인라인 코드용
 			del: Delete,
@@ -64,12 +66,4 @@ const defaultPlugins = [
 ]
 </script>
 
-<div class='markdown-root'>
-	<Markdown md={value} plugins={defaultPlugins.concat(plugins)} />
-</div>
-
-<style>
-	.markdown-root {
-		font-size: var(--font-size-fluid-cqi-0p3);
-	}
-</style>
+<Markdown md={value} plugins={defaultPlugins.concat(plugins)} />

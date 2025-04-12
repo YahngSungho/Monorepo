@@ -10,27 +10,6 @@
 
 ###### 이것은 H6 제목입니다
 
-```mermaid
-flowchart TD
-    A[Start] --> B{Check function() call?}
-    B --> C[Next step(process)]
-```
-
-> [!NOTE]
-> Highlights information that users should take into account, even when skimming.
-
-> [!TIP]
-> Optional information to help a user be more successful.
-
-> [!IMPORTANT]
-> Crucial information necessary for users to succeed.
-
-> [!WARNING]
-> Critical content demanding immediate user attention due to potential risks.
-
-> [!CAUTION]
-> Negative potential consequences of an action.
-
 ## 2. 텍스트 서식
 
 일반 텍스트와 **굵은 텍스트**, _기울임 텍스트_, _**굵은 기울임 텍스트**_를 혼합할 수 있습니다.
@@ -56,7 +35,7 @@ flowchart TD
 
 ### 작업 목록
 
-- [x] 완료된 **작업**
+- [x] 완료된 작업
 
 - [ ] 진행 중인 작업
 - [ ] 아직 시작하지 않은 작업
@@ -64,7 +43,7 @@ flowchart TD
 ## 4. 링크
 
 [GitHub](https://github.com)에 방문하세요.
-[**내부** 링크](#1-제목-스타일)를 사용하여 문서 내에서 이동할 수 있습니다.
+[내부 링크](#1-제목-스타일)를 사용하여 문서 내에서 이동할 수 있습니다.
 
 ## 5. 이미지
 
@@ -105,7 +84,7 @@ print(greet("사용자"))
 
 | 이름   | 나이 | 직업     |
 | ------ | ---- | -------- |
-| 홍길동 | 30   | **개발자**   |
+| 홍길동 | 30   | 개발자   |
 | 김철수 | 25   | 디자이너 |
 | 이영희 | 28   | 마케터   |
 
