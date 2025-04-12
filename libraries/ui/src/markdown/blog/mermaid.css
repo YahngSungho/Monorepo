@@ -1,0 +1,45 @@
+.flowchart-link {
+	/* stroke-dasharray: 4, 4 !important; 기존 점선 정의 주석 처리 */
+	stroke-dasharray: 10, 5 !important;
+	animation: flow-highlight 1.5s linear infinite; /* 새 애니메이션 적용 */
+	stroke-width: 2px !important;
+}
+
+/* 기존 flow 키프레임 대신 새로운 키프레임 정의 */
+@keyframes flow-highlight {
+	from {
+		/* 전체 대시 패턴 길이(15 + 30 = 45)만큼 오프셋 시작 */
+		stroke-dashoffset: 15;
+	}
+	to {
+		stroke-dashoffset: 0; /* 오프셋을 0으로 만들어 한 패턴 이동 완료 */
+	}
+}
+
+/* 기존 @keyframes flow 는 주석 처리하거나 삭제합니다. */
+/*
+@keyframes flow {
+	from {
+		stroke-dashoffset: 8;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+*/
+
+/* libraries/ui/src/markdown/blog/mermaid.css */
+/* ... 기존 CSS 코드 ... */
+
+/* Hover 효과를 위한 스타일 */
+.mermaid-dim {
+  opacity: 0.3 !important; /* 흐리게 만들기 (값 조절 가능) */
+  transition: opacity 0.2s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+/* 기본 상태 및 전환 효과 */
+svg.flowchart g.node,
+svg.flowchart path.flowchart-link {
+  opacity: 1; /* 기본 투명도는 1 */
+  transition: opacity 0.2s ease-in-out; /* 마우스 아웃 시 부드러운 전환 */
+}

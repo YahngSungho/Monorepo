@@ -10,6 +10,54 @@
 
 ###### 이것은 H6 제목입니다
 
+<Mermaid>
+flowchart TD
+    A[Start] --> B{Middle}
+    B --> C[End]
+</Mermaid>
+
+<Mermaid>
+graph TD
+    A["testUIComponent 시작"] --> B{"테스트 반복 (iterationCount 만큼)"};
+    B -- "반복" --> C["runSingleIteration 실행"];
+    C --> D("컴포넌트 상태 초기화 - resetComponentState");
+    D --> E("상호작용 요소 탐색 - discoverInteractions");
+    E --> F{"인터랙션 존재?"};
+    F -- "Yes" --> G("인터랙션 시퀀스 Arbitrary 생성 - createInteractionSequenceArbitrary");
+    F -- "No" --> H("기본 렌더링 상태 확인 - verifyComponentState");
+    H --> I["반복 종료"];
+    G --> J("fast-check 실행 - fc.check");
+    J -- "asyncProperty" --> K{"인터랙션 시퀀스 생성"};
+    K -- "각 인터랙션" --> L("인터랙션 실행 - executeInteraction");
+    L -- "성공" --> M{"모든 인터랙션 성공?"};
+    M -- "Yes" --> N("최종 상태 검증 - verifyComponentState");
+    N --> O{"Property 만족?"};
+    O -- "Yes" --> P("테스트 성공");
+    P --> K;
+    M -- "No" --> Q("실패: 인터랙션 오류");
+    L -- "실패" --> Q;
+    O -- "No" --> R("실패: 최종 상태 검증 실패");
+    Q --> S{"Shrinking 시도"};
+    R --> S;
+    S -- "축소된 반례 발견" --> T("디버깅 실행 - debugWithShrunkExample");
+    T --> U("실패 정보 기록");
+    U --> I;
+    J -- "fast-check 종료" --> V{"테스트 실패?"};
+    V -- "Yes" --> W("디버그 정보 저장 - saveDebugInfo");
+    W --> I;
+    V -- "No" --> I;
+    B -- "모든 반복 완료" --> X("최종 결과 반환 및 Playwright 단언");
+    X --> Y["testUIComponent 종료"];
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style Y fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#ccf,stroke:#333,stroke-width:2px
+    style J fill:#ccf,stroke:#333,stroke-width:2px
+    style L fill:#ccf,stroke:#333,stroke-width:2px
+    style T fill:#ccf,stroke:#333,stroke-width:2px
+    style W fill:#fcc,stroke:#333,stroke-width:1px
+</Mermaid>
+
 ## 2. 텍스트 서식
 
 일반 '텍스트'와 **굵은 텍스트**, _기울임 텍스트_, _**굵은 기울임 텍스트**_를 혼합할 수 있습니다.

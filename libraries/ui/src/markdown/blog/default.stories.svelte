@@ -18,5 +18,15 @@ const { Story } = defineMeta({
 
 <!-- 기본 렌더링 테스트 스토리 (Happy Path) -->
 <Story name="DefaultRender">
-	<Markdown value={sampleText} />
+	<div class="story-container boxed">
+		<Markdown value={sampleText} />
+	</div>
 </Story>
+
+<style>
+	.story-container {
+		max-inline-size: var(--size-content-4);
+		margin: auto;
+	}
+
+</style>

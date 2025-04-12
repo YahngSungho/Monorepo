@@ -1,5 +1,5 @@
 <script>
-let { children } = $props()
+let { children, ...restProps } = $props()
 </script>
 
 <pre>{@render children()}</pre>
@@ -8,7 +8,7 @@ let { children } = $props()
 	pre {
 		margin: var(--space-em-cqi-xs-s);
 		padding: var(--space-em-cqi-s-l);
+		color: var(--gray-0);
 		background-color: var(--gray-12);
-		color: var(--gray-1);
 	}
 </style>

@@ -1,5 +1,10 @@
 <script>
+	import './style.css'
+
 	import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
+	import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+	import rehypeRaw from 'rehype-raw';
+	import rehypeSlug from 'rehype-slug'
 	import { createHighlighterCoreSync } from 'shiki/core'
 	import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 	import langCss from 'shiki/langs/css.mjs'
@@ -11,7 +16,9 @@
 	// Import themes
 	import themeLight from 'shiki/themes/vitesse-light.mjs'
 
+
 	import Markdown from '../default/Markdown.svelte'
+	import Mermaid from './Mermaid.svelte'
 
 	const { value, plugins = [] } = $props()
 
@@ -35,9 +42,24 @@
 	}
 
 	const addedPlugins = [
+		{
+			rehypePlugin: rehypeRaw,
+		},
+{
+			rehypePlugin: rehypeSlug,
+		},
+		{
+			rehypePlugin: [rehypeAutolinkHeadings, { behavior: 'append'}],
+		},
 		shikiPlugin,
-		...Array.from(plugins),
+		...plugins,
+				{
+			renderer: {
+				mermaid: Mermaid
+			},
+		},
 	]
+
 </script>
 
 <Markdown plugins={addedPlugins} {value} />
