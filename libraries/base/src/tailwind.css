@@ -7,26 +7,9 @@
 @source '../../../libraries/*/src/**/*.{html,js,ts,svelte,mdx}';
 @source '../../../storybook/src/**/*.{html,js,ts,svelte,mdx}';
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-	*,
-	::after,
-	::before,
-	::backdrop,
-	::file-selector-button {
-		border-color: var(--gray-2, currentColor);
-	}
-}
-
 :root {
 	--radius: var(--radius-2);
+	--text-sm: var(--font-size-fluid-em-cqi-0);
 }
 
 /* Shadcn variables 덮어쓰기 Or 확장 */
@@ -34,12 +17,12 @@
 	--background: hsl(0deg 0% 100%); /* white */
 	--foreground: hsl(210deg 40% 2%); /* gray-12 */
 	--muted: hsl(210deg 16.7% 95.3%); /* gray-1 */
-	--muted-foreground: hsl(228deg 100% 86.5%); /* indigo-2 */
+	--muted-foreground: hsl(210 7.1% 55.7%); /* gray-6 */
 	--popover: hsl(0deg 0% 100%); /* white */
 	--popover-foreground: hsl(210deg 40% 2%); /* gray-12 */
 	--card: hsl(0deg 0% 100%); /* white */
 	--card-foreground: hsl(210deg 40% 2%); /* gray-12 */
-	--border: hsl(223deg 100% 96.5%); /* indigo-0 */
+	--border: hsl(210 7.1% 55.7%); /* gray-6 */
 	--input: hsl(223deg 100% 96.5%); /* indigo-0 */
 	--primary: hsl(214deg 13.7% 10%); /* gray-10 */
 	--primary-foreground: hsl(210deg 16.7% 97.6%); /* gray-0 */
@@ -193,5 +176,23 @@
 	body {
 		/* stylelint-disable-next-line at-rule-no-deprecated */
 		@apply bg-background text-foreground;
+	}
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--gray-2, currentColor);
 	}
 }

@@ -64,4 +64,12 @@ const defaultPlugins = [
 ]
 </script>
 
-<Markdown md={value} plugins={defaultPlugins.concat(plugins)} />
+<div class='markdown-root'>
+	<Markdown md={value} plugins={defaultPlugins.concat(plugins)} />
+</div>
+
+<style>
+	.markdown-root {
+		font-size: var(--font-size-fluid-cqi-0p3);
+	}
+</style>

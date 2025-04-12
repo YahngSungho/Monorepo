@@ -6,7 +6,7 @@ let { start = undefined, children } = $props()
 
 <style>
 	ol {
-		margin-block: var(--space-3xs-2xs);
-		margin-inline: var(--space-xs-s);
+		margin-block: var(--space-em-cqi-3xs-2xs);
+		margin-inline: var(--space-em-cqi-s-l);
 	}
 </style>

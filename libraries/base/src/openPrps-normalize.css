@@ -313,7 +313,7 @@
 
 :where(table) {
   width: fit-content;
-  border: 1px solid var(--surface-2);
+  /* border: 1px solid var(--surface-2); */
 }
 
 :where(th) {
