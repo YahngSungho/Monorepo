@@ -1,11 +1,9 @@
 <script>
 	import Markdown from '../default/Markdown.svelte'
 
-	const { value, plugins = [] } = $props()
+	const { value } = $props()
 
-	const addedPlugins = [
-		...plugins,
-	]
+	const addedPlugins = []
 </script>
 
 <Markdown {value} plugins={addedPlugins} />
