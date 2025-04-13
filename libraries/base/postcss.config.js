@@ -15,9 +15,7 @@ const config = {
 	plugins: [
 		postcssGlobalData({
 			// presetEnv보다 먼저 실행되도록 추가
-			files: [
-				path.resolve(__dirname, './src/openProps-props-media.css'),
-			],
+			files: [path.resolve(__dirname, './src/openProps-props-media.css')],
 		}),
 		tailwindcss(),
 		presetEnv({
@@ -27,12 +25,10 @@ const config = {
 			stage: 3,
 		}),
 		postcssJitProps(openProps),
-    // @ts-ignore
-    postcssJitProps({
-      files: [
-        path.resolve(__dirname, './node_modules/open-props/open-props.min.css'),
-      ]
-    }),
+		// @ts-ignore
+		postcssJitProps({
+			files: [path.resolve(__dirname, './node_modules/open-props/open-props.min.css')],
+		}),
 	],
 }
 

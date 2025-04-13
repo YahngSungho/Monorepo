@@ -2,7 +2,6 @@
 
 /* theme.light.css */
 :where(html) {
-
 	--link: var(--indigo-7);
 	--link-visited: var(--purple-7);
 
