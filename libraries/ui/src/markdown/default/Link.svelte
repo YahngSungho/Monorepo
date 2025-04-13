@@ -20,8 +20,8 @@ const isHeadingLink = $derived(href.startsWith('#'))
 {/if}
 
 <style>
-	.headingLink {
-		display: inline-block;
-		margin-inline-start: -0.5ch;
-	}
+.headingLink {
+	display: inline-block;
+	margin-inline-start: -0.5ch;
+}
 </style>

@@ -1,12 +1,23 @@
-svg rect, svg circle, svg ellipse, svg polygon, svg line {
+svg rect,
+svg circle,
+svg ellipse,
+svg polygon,
+svg line {
 	stroke: var(--gray-12) !important;
 }
 
-svg rect, svg circle, svg ellipse, svg polygon {
+svg rect,
+svg circle,
+svg ellipse,
+svg polygon {
 	stroke-width: 2px !important;
 }
 
-.node rect, .node circle, .node ellipse, .node polygon, .node path {
+.node rect,
+.node circle,
+.node ellipse,
+.node polygon,
+.node path {
 	stroke-width: 4px !important;
 }
 

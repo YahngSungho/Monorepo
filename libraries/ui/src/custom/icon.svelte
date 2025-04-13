@@ -2,7 +2,6 @@
 import Icon from '@iconify/svelte'
 
 let { children, icon, right = false, noMargin = false, small = false, ...restProps } = $props()
-
 </script>
 
 {#snippet iconElement(iconName)}
@@ -36,18 +35,18 @@ let { children, icon, right = false, noMargin = false, small = false, ...restPro
 
 		font-size: 1.125em;
 
-	&.right {
-		margin-inline: 0.5ch 0;
-	}
+		&.right {
+			margin-inline: 0.5ch 0;
+		}
 
-	&.noMargin {
-		margin-inline: 0;
-	}
+		&.noMargin {
+			margin-inline: 0;
+		}
 
-	&.small {
-		inset-block-start: -0.3ex;
-		font-size: 0.75em;
+		&.small {
+			inset-block-start: -0.3ex;
+			font-size: 0.75em;
+		}
 	}
-}
 }
 </style>

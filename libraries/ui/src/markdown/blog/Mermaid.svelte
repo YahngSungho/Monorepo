@@ -63,7 +63,8 @@ function initializeMermaidHover(svgElement) {
 	}
 
 	// 엣지 정보 파싱 및 연결 정보 구축 (레이블 포함)
-	for (const [index, edgeEl] of edges.entries()) { // forEach와 index 사용
+	for (const [index, edgeEl] of edges.entries()) {
+		// forEach와 index 사용
 		const fullId = edgeEl.id
 		// ID 형식: L_시작노드ID_끝노드ID_인덱스 (예: L_A_B_0)
 		const match = fullId.match(/^L_([^_]+)_([^_]+)_\d+$/)
