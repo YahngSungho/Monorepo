@@ -10,7 +10,7 @@ mermaid.initialize({
 import './mermaid.css'
 
 import { nanoid } from 'nanoid'
-import { onMount,tick } from 'svelte'
+import { onMount, tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
 
 /**
@@ -85,9 +85,9 @@ function initializeMermaidHover(svgElement) {
 
 			const fullId = currentTarget.id
 			// 정규식을 상수로 정의
-			const nodeIdRegex = /^flowchart-([^-]+)-\d+$/;
+			const nodeIdRegex = /^flowchart-([^-]+)-\d+$/
 			// exec 사용
-			const match = nodeIdRegex.exec(fullId);
+			const match = nodeIdRegex.exec(fullId)
 			if (!match || !match[1]) return
 			const hoveredNodeId = match[1]
 
@@ -119,7 +119,7 @@ function initializeMermaidHover(svgElement) {
 	// SVG 컨테이너에 mouseout 이벤트 리스너 추가 (요소 간 이동 시 깜빡임 방지)
 	svgElement.addEventListener('mouseout', (event) => {
 		// relatedTarget이 Node 인스턴스인지 확인하는 타입 가드 추가
-		const {relatedTarget} = event
+		const { relatedTarget } = event
 		// 마우스 포인터가 SVG 영역을 벗어났는지 확인
 		// relatedTarget이 Node 인스턴스이거나 null일 경우 검사
 		if (
