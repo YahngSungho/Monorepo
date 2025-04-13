@@ -17,12 +17,12 @@
 	--background: hsl(0deg 0% 100%); /* white */
 	--foreground: hsl(210deg 40% 2%); /* gray-12 */
 	--muted: hsl(210deg 16.7% 95.3%); /* gray-1 */
-	--muted-foreground: hsl(210 7.1% 55.7%); /* gray-6 */
+	--muted-foreground: hsl(210deg 7.1% 55.7%); /* gray-6 */
 	--popover: hsl(0deg 0% 100%); /* white */
 	--popover-foreground: hsl(210deg 40% 2%); /* gray-12 */
 	--card: hsl(0deg 0% 100%); /* white */
 	--card-foreground: hsl(210deg 40% 2%); /* gray-12 */
-	--border: hsl(210 7.1% 55.7%); /* gray-6 */
+	--border: hsl(210deg 7.1% 55.7%); /* gray-6 */
 	--input: hsl(223deg 100% 96.5%); /* indigo-0 */
 	--primary: hsl(214deg 13.7% 10%); /* gray-10 */
 	--primary-foreground: hsl(210deg 16.7% 97.6%); /* gray-0 */

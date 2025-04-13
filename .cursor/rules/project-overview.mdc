@@ -1,0 +1,114 @@
+---
+description: Provides a comprehensive overview of the monorepo structure, tech stack, libraries (base, ui, helpers, paraglide), application structure (SvelteKit based on boiler_plates), configurations (Vite, Turborepo, TypeScript, linting, testing), i18n setup (Paraglide JS), and common development scenarios. Consult this rule when broad context about the project is needed, especially for understanding interactions between packages, build processes, configurations, or when starting analysis on a new file/task where overall context might be missing.
+globs: **/*.{json,yaml,yml,toml,rc},**/turbo.json,pnpm-workspace.yaml,**/vite.config.js,.**/svelte.config.js,.**/package.json,**/index.{ts,js}
+alwaysApply: false
+---
+
+# Codebase Overview for LLM Context
+
+This document provides a detailed overview of the monorepo structure, key components, configurations, and technologies used. It has been enhanced with specific details relevant to common development scenarios to provide deeper context for Large Language Models (LLMs).
+
+## Project Structure & Philosophy
+
+The codebase is organized as a **monorepo** using **pnpm workspaces** (`pnpm-workspace.yaml`) and **Turborepo** (`turbo.json`) for efficient management of multiple packages and optimized task execution (builds, tests, linting). The structure separates deployable **applications** (`/apps`) from shared **libraries** (`/libraries`), promoting code reuse and modularity.
+
+### Root Directory (`/`)
+
+Contains global configurations and common development tooling setup. Key takeaways for LLMs:
+
+* **Consistency:** Linters (ESLint, Stylelint, Markdownlint) and formatters (Prettier) ensure uniform code style across all packages. Check `eslint.config.js` for specific rules.
+* **Environment:** `.nvmrc` defines the Node.js version. `.browserslistrc` defines target browsers impacting CSS/JS transpilation.
+* **Automation:** `.husky/` likely runs checks (lint, format, test) before commits/pushes. `.github/` contains CI/CD workflows (testing, building, deployment).
+
+### Applications (`/apps`)
+
+This directory contains standalone, deployable **SvelteKit applications**. **All applications within this directory are expected to follow the structure and conventions established by the `boiler_plates` package.** Therefore, `boiler_plates` serves as the canonical example for any application residing here.
+
+* **`boiler_plates/` (Canonical Application Structure):**
+    * **Framework:** SvelteKit. Understanding SvelteKit's file-based routing (`src/routes`), hooks (`src/hooks.*.ts`), server (`+server.js`, `load` functions in `+page.server.js`/`+layout.server.js`), client (`load` in `+page.js`/`+layout.js`), and shared (`+page.svelte`, `+layout.svelte`) concepts is crucial.
+    * **Build:** Uses Vite. Configuration (`vite.config.js`) relies heavily on `@library/base/vite.config.js`. Key integrations: Sentry for error tracking, Paraglide JS for i18n.
+    * **Configuration:** Inherits SvelteKit config from `@library/base/svelte.config.js`. App-specific dependencies are in `package.json`. Uses app-level `tsconfig.json`, `postcss.config.js`, `turbo.json`.
+    * **Testing:** Uses Vitest for unit/integration tests (`src/**/*.test.js`) and Playwright for E2E tests (`e2e/`). Configuration largely inherited from `libraries/base`.
+    * **Deployment:** Targets Cloudflare Pages (inferred from `adapter: 'cloudflare'` in Sentry config and environment checks in base Vite config).
+
+### Libraries (`/libraries`)
+
+Contains reusable packages consumed by applications or other libraries. Understanding dependencies _between_ libraries and how applications consume them is key.
+
+* **`base/`:** Foundational configurations and potentially core utilities/types.
+    * **Centralized Config:** Provides shared configs for Vite, SvelteKit, PostCSS, Playwright, TypeScript. Changes here affect _all_ consuming packages.
+    * **Vite Setup (`vite.config.js`):** Includes Tailwind CSS, Partytown (web workers for 3rd party scripts), Fontaine (font optimization), tsconfig paths, Vitest setup (including CI reporters), and environment variable handling (`currentEnv`). Crucial for build/dev process.
+    * **SvelteKit Setup (`svelte.config.js`):** Defines shared SvelteKit options (adapter, preprocessors).
+    * **PostCSS Setup (`postcss.config.js`):** Includes Tailwind CSS, Autoprefixer, and potentially custom plugins or normalization (mentions `openPrps-normalize.css` in `src/`, commented out `postcss-custom-media`).
+    * **Playwright Setup (`playwright.config.js`):** Base configuration for E2E tests.
+    * `src/`: May contain essential types, constants, or utility functions used very broadly (e.g., the `openPrps-normalize.css` file).
+
+* **`ui/`:** Shared Svelte UI component library.
+    * **Components:** Located in `src/`. Built using Svelte & styled with Tailwind CSS.
+    * **Tooling:** `components.json` might indicate usage of `shadcn-svelte` or similar.
+    * **Development:** Use Storybook (`/storybook`) for isolated development.
+    * **Accessibility (A11y):** Specific rules apply (from `ui/a11y` rule): Draggables need `data-draggable="true"`, droppables need `data-droppable="true"`, clickable non-buttons need `role="button"`.
+
+* **`helpers/`:** General-purpose utility functions (likely pure TS/JS modules in `src/`).
+
+* **`paraglide/`:** Centralized **Paraglide JS** i18n setup.
+    * **Configuration:** `project.inlang/` directory.
+    * **Messages:** `messages/{locale}.json`.
+    * **Output:** Generated code in `paraglide-output/` (consumed by apps).
+    * **Integration:** Via `paraglideVitePlugin` in app's Vite config.
+
+### Storybook (`/storybook`)
+
+Isolated environment for `/libraries/ui` components. Check stories (`*.stories.svelte`) for component usage examples.
+
+### Scripts (`/scripts`)
+
+Contains custom automation scripts for tasks beyond standard `pnpm`/`turbo` commands.
+
+## Scenario-Based Context Needs (Expanded)
+
+Here's how this overview helps with specific LLM queries:
+
+1. **"How do I add a new page to an application (e.g., the one in `apps/my-new-app`)?"**
+    * **Needed Context:** SvelteKit routing, app structure (`apps/my-new-app` follows `boiler_plates`), shared libraries (`ui`, `helpers`, `base` types).
+    * **Key Info:** Create `.svelte`, `+page.js`, `+page.server.js` files in `apps/my-new-app/src/routes/your-new-route`. Use components from `@library/ui`. Fetch data in `load` functions (server vs. client matters). Check `libraries/base/svelte.config.js` for layout/adapter info.
+
+2. **"Fix a bug in the shared Button component."**
+    * **Needed Context:** UI library location (`libraries/ui`), styling (Tailwind via `libraries/base`), dev environment (Storybook), A11y rules (`ui/a11y`).
+    * **Key Info:** Edit `libraries/ui/src/button/Button.svelte` (or similar). Test in `/storybook`. Check Tailwind classes (config: `libraries/base/postcss.config.js`). Ensure A11y rules (`data-*`, `role`). Changes affect _all_ apps.
+
+3. **"Add French language support."**
+    * **Needed Context:** i18n library (Paraglide JS), config (`libraries/paraglide/project.inlang`), messages (`libraries/paraglide/messages`), build integration (`paraglideVitePlugin`).
+    * **Key Info:** Update `project.inlang/settings.json`, create `messages/fr.json`, translate. Build process generates code in `paraglide-output/`. Apps consume generated code.
+
+4. **"CI build failing during tests."**
+    * **Needed Context:** CI (GitHub Actions - `.github/`), Tests (Vitest, Playwright), Config (`libraries/base/vite.config.js`, `libraries/base/playwright.config.js`), Runner (Turborepo - `turbo.json`).
+    * **Key Info:** Check GH Actions logs (`.github/workflows/*.yml`). Check Turborepo task deps (`turbo.json`). Check base test configs. Check specific failing test files. Note CI vs. local env differences (`currentEnv`).
+
+5. **"Update Svelte dependency across the monorepo."**
+    * **Needed Context:** Package manager (pnpm), workspaces (`pnpm-workspace.yaml`), consistency tools (`.syncpackrc`).
+    * **Key Info:** `pnpm up -r svelte`. Run `syncpack fix-mismatches`. Run tests (`pnpm test` via Turborepo).
+
+6. **"Where are environment variables defined/used?"**
+    * **Needed Context:** SvelteKit (`.env`), Vite (`vite.config.js` `process.env`, `define`), Base library (`libraries/base/vite.config.js` `currentEnv`), Deployment (Cloudflare Pages), Specific integrations (Sentry `SENTRY_AUTH_TOKEN`).
+    * **Key Info:** `.env` files for SvelteKit. Base Vite config reads `CF_PAGES_BRANCH`, `GITHUB_ACTIONS`, `NODE_ENV`. `boiler_plates` Vite config needs `SENTRY_AUTH_TOKEN`. Check Cloudflare Pages settings.
+
+7. **"How can I improve the build time?"**
+    * **Needed Context:** Build tool (Vite), Monorepo runner (Turborepo), Configuration (`vite.config.js`, `turbo.json`), Dependency graph between packages.
+    * **Key Info:** Analyze Turborepo cache hits/misses (`turbo run build --dry`). Check `turbo.json` pipeline definitions for bottlenecks. Examine Vite build logs for slow plugins or large assets. Ensure library builds are properly cached and apps only rebuild when necessary. Consider code splitting strategies within SvelteKit/Vite.
+
+8. **"I need to add a utility function shared between two applications."**
+    * **Needed Context:** Shared library locations (`libraries/helpers`, `libraries/base`), Monorepo structure.
+    * **Key Info:** Add the function to `libraries/helpers/src/` (if general purpose) or `libraries/base/src/` (if more foundational). Export it from the library's entry point (e.g., `libraries/helpers/src/index.ts`). Import it in the applications using the workspace alias (e.g., `import { newUtil } from '@library/helpers'`).
+
+9. **"How do static assets (like images) work?"**
+    * **Needed Context:** SvelteKit static file handling, potential shared assets location.
+    * **Key Info:** Place app-specific assets in `apps/<app-name>/static/`. Place shared assets in `libraries/base/static/` (like the fonts used by `fontaine`). SvelteKit serves the `static` directory at the root. Reference them with root-relative paths (e.g., `/my-image.png`).
+
+10. **"Debug an issue: Is it happening on the server or client?"**
+    * **Needed Context:** SvelteKit's client/server architecture, hooks (`hooks.client.ts`, `hooks.server.ts`), load functions (`+page.js` vs `+page.server.js`). Error tracking (Sentry).
+    * **Key Info:** Check where the code runs: `+page.server.js` / `+layout.server.js` / `hooks.server.ts` are server-only. Code inside `.svelte` files or `+page.js` / `+layout.js` / `hooks.client.ts` can run on both server (SSR) and client (hydration/navigation). Use browser dev tools for client issues, check server logs (or Sentry) for server issues.
+
+11. **"How to integrate a new third-party JS library?"**
+    * **Needed Context:** SvelteKit/Vite integration, Partytown usage (`libraries/base/vite.config.js`), Client vs. Server execution.
+    * **Key Info:** Install via pnpm (`pnpm add <library>`). If it's heavy or causes main thread blocking, consider configuring it with Partytown (check `libraries/base/vite.config.js` `partytownVite` plugin). Import normally in Svelte components or JS/TS files. Be mindful if it's client-only or needs specific server-side setup.

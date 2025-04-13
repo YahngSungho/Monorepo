@@ -69,7 +69,7 @@ button,
 	}
 }
 
-div {
+:where(div) {
 	color: inherit;
 	outline: var(--size-1) solid transparent;
 	outline-offset: calc(-1 * var(--size-1));
@@ -149,10 +149,10 @@ blockquote {
 	line-height: var(--font-lineheight-1);
 
 	background-color: var(--surface-1);
-}
 
-blockquote * {
+& * {
 	font-size: var(--font-size-fluid-em-cqi-0) !important;
+}
 }
 
 /* Scrollbar */

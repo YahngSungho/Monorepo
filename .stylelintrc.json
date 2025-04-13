@@ -34,6 +34,8 @@
 		"stylelint-gamut"
 	],
 	"rules": {
+		"custom-property-pattern": null,
+		"layer-name-pattern": null,
 		"selector-class-pattern": null,
 		"custom-property-empty-line-before": null,
 		"at-rule-no-unknown": null,

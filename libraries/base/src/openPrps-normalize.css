@@ -1,6 +1,7 @@
+@import './openProps-props-media.css';
+
 /* theme.light.css */
 :where(html) {
-	color-scheme: light;
 
 	--link: var(--indigo-7);
 	--link-visited: var(--purple-7);
@@ -15,12 +16,7 @@
 
 	--scrollthumb-color: var(--gray-7);
 
-	@media (--HDcolor) {
-		@supports (color: color(display-p3 0 0 0)) {
-			--link: color(display-p3 0.1 0.39 1);
-			--link-visited: color(display-p3 0.6 0.2 1);
-		}
-	}
+	color-scheme: light;
 
 	& :where(dialog) {
 		background-color: var(--surface-1);
@@ -44,6 +40,13 @@
 	& :where(textarea, select, input:not([type='button'], [type='submit'], [type='reset'])) {
 		background-color: var(--surface-2);
 	}
+
+	@media (--HDcolor) {
+		@supports (color: color(display-p3 0 0 0)) {
+			--link: color(display-p3 0.1 0.39 1);
+			--link-visited: color(display-p3 0.6 0.2 1);
+		}
+	}
 }
 
 /* normalize.light.css */
@@ -59,15 +62,15 @@
 }
 
 :where(:not(fieldset, progress, meter)) {
-	border-width: 0;
 	border-style: solid;
-	background-origin: border-box;
+	border-width: 0;
 	background-repeat: no-repeat;
+	background-origin: border-box;
 }
 
 :where(html) {
 	line-height: var(--font-lineheight-3);
-	-webkit-text-size-adjust: none; /* https://kilianvalkhof.com/2022/css-html/your-css-reset-needs-text-size-adjust-probably/ */
+	text-size-adjust: none; /* https://kilianvalkhof.com/2022/css-html/your-css-reset-needs-text-size-adjust-probably/ */
 
 	@media (--motionOK) {
 		scroll-behavior: smooth;
@@ -78,6 +81,7 @@
 	:where(:focus-visible) {
 		transition: outline-offset 145ms var(--ease-2);
 	}
+
 	:where(:not(:active):focus-visible) {
 		transition-duration: 0.25s;
 	}
@@ -132,6 +136,7 @@
 	[tabindex]:not([tabindex*='-'])
 ) {
 	touch-action: manipulation;
+
 	-webkit-tap-highlight-color: transparent;
 }
 
@@ -162,41 +167,43 @@
 :where(input[type='file'])::-webkit-file-upload-button {
 	font: inherit;
 	font-size: inherit;
-	color: inherit;
+	/* color: inherit; */
 	letter-spacing: inherit;
 }
 
 ::placeholder {
-	color: var(--gray-7);
+	color: var(--text-2);
 	opacity: 0.75;
 }
 
 :where(input:not([type='range']), textarea) {
-	padding-inline: var(--size-2);
 	padding-block: var(--size-1);
+	padding-inline: var(--size-2);
 }
 
 :where(select) {
-	padding-inline: var(--size-relative-4) 0;
 	padding-block: 0.75ch;
+	padding-inline: var(--size-relative-4) 0;
+
 	field-sizing: content;
 }
 
 :where(textarea, select, input:not([type='button'], [type='submit'], [type='reset'])) {
-	background-color: var(--surface-2);
 	border-radius: var(--radius-2);
+	background-color: var(--surface-2);
 }
 
 :where(textarea) {
 	resize: block;
-	field-sizing: content;
 	min-inline-size: var(--size-content-1);
 	min-block-size: 2lh;
+
+	field-sizing: content;
 }
 
 :where(input[type='checkbox'], input[type='radio']) {
-	block-size: var(--size-3);
 	inline-size: var(--size-3);
+	block-size: var(--size-3);
 }
 
 :where(svg:not([width])) {
@@ -206,49 +213,56 @@
 :where(code, kbd, samp, pre) {
 	font-family: var(--font-monospace-code), monospace;
 }
+
 :where(:not(pre) > code, kbd) {
 	white-space: nowrap;
 }
 
 :where(pre) {
-	white-space: pre;
+	direction: ltr;
+
 	min-inline-size: 0;
 	max-inline-size: max-content;
+
 	writing-mode: lr;
-	direction: ltr;
+	white-space: pre;
+
 	background-color: var(--surface-2);
 }
 
 :where(:not(pre) > code) {
 	padding: var(--size-1) var(--size-2);
-	background: var(--surface-2);
 	border-radius: var(--radius-2);
 	writing-mode: lr;
+	background: var(--surface-2);
 }
 
 :where(kbd, var) {
 	padding: var(--size-1) var(--size-2);
-	border-width: var(--border-size-1);
 	border-color: var(--surface-4);
+	border-width: var(--border-size-1);
 	border-radius: var(--radius-2);
 }
 
 :where(mark) {
-	border-radius: var(--radius-2);
 	padding-inline: var(--size-1);
+	border-radius: var(--radius-2);
 }
 
 /* :where(ol, ul) { padding-inline-start: var(--size-8) } */
 :where(li) {
 	padding-inline-start: var(--size-2);
 }
+
 :where(li, dd, figcaption) {
 	max-inline-size: var(--size-content-2);
 }
+
 :where(p) {
 	max-inline-size: var(--size-content-3);
 	text-wrap: pretty;
 }
+
 :where(dt, summary) {
 	font-weight: var(--font-weight-7);
 }
@@ -258,13 +272,13 @@
 }
 
 :where(small) {
-	font-size: max(0.5em, var(--font-size-0));
 	max-inline-size: var(--size-content-1);
+	font-size: max(0.5em, var(--font-size-0));
 }
 
 :where(hr) {
+	block-size: var(--border-size-2);
 	margin-block: var(--size-fluid-5);
-	height: var(--border-size-2);
 	background-color: var(--surface-3);
 }
 
@@ -286,9 +300,10 @@
 :where(blockquote) {
 	display: grid;
 	gap: var(--size-3);
+
+	max-inline-size: var(--size-content-2);
 	padding-block: var(--size-3);
 	padding-inline: var(--size-4);
-	max-inline-size: var(--size-content-2);
 }
 
 :where(:not(blockquote) > cite) {
@@ -296,38 +311,38 @@
 }
 
 :where(summary) {
-	background: var(--surface-3);
-	padding: var(--size-2) var(--size-3);
 	margin: calc(var(--size-2) * -1) calc(var(--size-3) * -1);
+	padding: var(--size-2) var(--size-3);
 	border-radius: var(--radius-2);
+	background: var(--surface-3);
 }
 
 :where(details) {
-	padding-inline: var(--size-3);
 	padding-block: var(--size-2);
-	background: var(--surface-2);
+	padding-inline: var(--size-3);
 	border-radius: var(--radius-2);
+	background: var(--surface-2);
 }
 
 :where(details[open] > summary) {
-	margin-bottom: var(--size-2);
+	margin-block-end: var(--size-2);
 	border-end-start-radius: 0;
 	border-end-end-radius: 0;
 }
 
 :where(fieldset) {
-	border-radius: var(--radius-2);
 	border: var(--border-size-1) solid var(--surface-4);
+	border-radius: var(--radius-2);
 }
 
 :where(del) {
-	background: var(--red-9);
 	color: var(--red-2);
+	background: var(--red-9);
 }
 
 :where(ins) {
-	background: var(--green-9);
 	color: var(--green-1);
+	background: var(--green-9);
 }
 
 :where(abbr) {
@@ -335,16 +350,16 @@
 }
 
 :where(dialog) {
-	background-color: var(--surface-1);
-	color: inherit;
 	border-radius: var(--radius-3);
+	color: inherit;
+	background-color: var(--surface-1);
 	box-shadow: var(--shadow-6);
 }
 
 :where(menu) {
-	padding-inline-start: 0;
 	display: flex;
 	gap: var(--size-3);
+	padding-inline-start: 0;
 }
 
 :where(sup) {
@@ -352,7 +367,7 @@
 }
 
 :where(table) {
-	width: fit-content;
+	inline-size: fit-content;
 	/* border: 1px solid var(--surface-2); */
 }
 
@@ -370,8 +385,8 @@
 }
 
 :where(td, th) {
-	text-align: left;
 	padding: var(--size-2);
+	text-align: start;
 }
 
 :where(:is(td, th):not([align])) {
@@ -381,10 +396,10 @@
 :where(thead) {
 	border-collapse: collapse;
 }
-
+/*
 :where(table tr:hover td),
 :where(tbody tr:nth-child(even):hover td) {
-}
+} */
 
 :where(table > caption) {
 	margin: var(--size-3);
