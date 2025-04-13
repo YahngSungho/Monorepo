@@ -9,6 +9,8 @@ let { children } = $props()
 
 <style>
 .myTable {
-	margin: var(--space-em-cqi-s-l);
+	inline-size: fit-content;
+	margin: var(--space-em-cqi-xs-s);
+	border: 2px solid var(--gray-12);
 }
 </style>
