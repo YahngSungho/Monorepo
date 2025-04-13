@@ -12,8 +12,20 @@
 
 <Mermaid>
 flowchart TD
-    A[Start] --> B{Middle}
+    A[Start] -- "라벨" --> B{Middle}
     B --> C[End]
+</Mermaid>
+
+<Mermaid>
+journey
+    title My working day
+    section Go to work
+      Make tea: 5: Me
+      Go upstairs: 3: Me
+      Do work: 1: Me, Cat
+    section Go home
+      Go downstairs: 5: Me
+      Sit down: 5: Me
 </Mermaid>
 
 <Mermaid>
@@ -61,7 +73,7 @@ graph TD
 
 ## 2. 텍스트 서식
 
-일반 '텍스트'와 **굵은 텍스트**, _기울임 텍스트_, ***굵은 기울임 텍스트***를 혼합할 수 있습니다.
+일반 '텍스트'와 **굵은 텍스트**, _기울임 텍스트_, _**굵은 기울임 텍스트**_를 혼합할 수 있습니다.
 또한 ~~취소선~~도 사용할 수 있습니다.
 
 ## 3. 목록

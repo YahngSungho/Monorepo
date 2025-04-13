@@ -37,6 +37,7 @@
 		"mermaid": "^11.6.0",
 		"mode-watcher": "^0.5.1",
 		"nanoid": "^5.1.5",
+		"open-props": "^1.7.15",
 		"paneforge": "1.0.0-next.5",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-callouts": "^2.0.2",

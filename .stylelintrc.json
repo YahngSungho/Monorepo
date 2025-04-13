@@ -33,6 +33,7 @@
 		"stylelint-gamut"
 	],
 	"rules": {
+		"selector-id-pattern": null,
 		"custom-media-pattern": null,
 		"custom-property-pattern": null,
 		"layer-name-pattern": null,

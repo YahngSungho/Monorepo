@@ -1,3 +1,15 @@
+svg rect, svg circle, svg ellipse, svg polygon, svg line {
+	stroke: var(--gray-12) !important;
+}
+
+svg rect, svg circle, svg ellipse, svg polygon {
+	stroke-width: 2px !important;
+}
+
+.node rect, .node circle, .node ellipse, .node polygon, .node path {
+	stroke-width: 4px !important;
+}
+
 .flowchart-link {
 	/* stroke-dasharray: 4, 4 !important; 기존 점선 정의 주석 처리 */
 	stroke-dasharray: 10, 5 !important;
