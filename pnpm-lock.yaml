@@ -515,6 +515,8 @@ importers:
 
   libraries/paraglide: {}
 
+  libraries/scripts: {}
+
   libraries/ui:
     dependencies:
       '@formkit/auto-animate':

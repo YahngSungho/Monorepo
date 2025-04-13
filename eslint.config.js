@@ -55,6 +55,9 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'perfectionist/sort-named-exports': 'warn',
+	'unicorn/import-style': 'off',
+	'functional/immutable-data': 'off',
 	'unicorn/no-useless-undefined': 'off',
 	'unicorn/prefer-dom-node-dataset': 'off',
 	'sonarjs/no-invariant-returns': 'warn',
@@ -84,7 +87,6 @@ const baseRules = {
 	'eslint-comments/no-unlimited-disable': 'off',
 	'eslint-comments/no-use': 'off',
 	'functional/functional-parameters': 'warn',
-	'functional/immutable-data': 'warn',
 	'functional/no-expression-statements': ['off', { ignoreSelfReturning: true, ignoreVoid: true }],
 	'functional/no-let': 'off',
 	'functional/no-loop-statements': 'off',
@@ -403,7 +405,6 @@ export default defineFlatConfig([
 			'unicorn/no-array-method-this-argument': 'off',
 			'array-func/no-unnecessary-this-arg': 'off',
 			'@intlify/svelte/no-raw-text': 'off',
-			'functional/immutable-data': 'off',
 			'redos/no-vulnerable': 'off',
 			'sonarjs/pseudo-random': 'off',
 			'sonarjs/slow-regex': 'off',
