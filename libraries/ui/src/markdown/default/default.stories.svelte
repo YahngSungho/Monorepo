@@ -2,6 +2,7 @@
 // JAVASCRIPT ONLY - NO lang="ts"
 import { defineMeta } from '@storybook/addon-svelte-csf'
 
+import Icon from '../../custom/icon.svelte'
 import Markdown from './Markdown.svelte'
 import sampleText from './sample.md?raw'
 
@@ -18,6 +19,7 @@ const { Story } = defineMeta({
 <!-- 기본 렌더링 테스트 스토리 (Happy Path) -->
 <Story name="DefaultRender">
 	<div class="story-container boxed">
+		<Icon icon="mdi:home">아이콘</Icon>
 		<Markdown value={sampleText} />
 	</div>
 </Story>

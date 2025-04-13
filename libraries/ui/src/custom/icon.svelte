@@ -1,33 +1,53 @@
 <script>
-let { children, icon, ...restProps } = $props()
+import Icon from '@iconify/svelte'
 
-;('') // eslint-disable-line no-unused-expressions
+let { children, icon, right = false, noMargin = false, small = false, ...restProps } = $props()
+
 </script>
 
+{#snippet iconElement(iconName)}
+	<span class="icon-container" class:noMargin class:right class:small>
+		<Icon icon={iconName}></Icon>
+	</span>
+{/snippet}
+
 <span class="with-icon" {...restProps}>
-	<iconify-icon class="icon" {icon}></iconify-icon>
-	{@render children?.()}
+	{#if right}
+		{@render children?.()}
+		{@render iconElement(icon)}
+	{:else}
+		{@render iconElement(icon)}
+		{@render children?.()}
+	{/if}
 </span>
 
 <style>
-.icon {
-	inline-size: 0.75em;
-	inline-size: 1cap;
-	block-size: 0.75em;
-	block-size: 1cap;
-
-	font-size: 1.125em;
-}
-
 .with-icon {
 	display: inline-flex;
 	align-items: baseline;
 
-	& .icon {
+	& .icon-container {
 		position: relative;
-		/* IBM Plex Sans 기준 */
-		inset-block-end: 0.125em;
-		margin-inline-end: 0.5em;
+		inset-block-start: 0.4ex;
+
+		display: inline-block;
+
+		margin-inline-end: 0.5ch;
+
+		font-size: 1.125em;
+
+	&.right {
+		margin-inline: 0.5ch 0;
 	}
+
+	&.noMargin {
+		margin-inline: 0;
+	}
+
+	&.small {
+		inset-block-start: -0.3ex;
+		font-size: 0.75em;
+	}
+}
 }
 </style>

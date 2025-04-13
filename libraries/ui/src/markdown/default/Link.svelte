@@ -1,6 +1,11 @@
 <script>
-// MDSvex에서 전달하는 'href', 'title' 등의 속성을 받습니다.
+import Icon from '../../custom/icon.svelte'
+
 let { href = '', title = undefined, children } = $props()
 </script>
 
-<a {href} {title}>{@render children()}</a>
+<a {href} rel="noopener noreferrer" target="_blank" {title}>
+	<Icon icon="carbon:link" noMargin right small>
+		{@render children?.()}
+	</Icon>
+</a>
