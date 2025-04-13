@@ -98,7 +98,7 @@
 		"javascriptsvelte"
 	],
 	"files.associations": {
-		"*.css": "tailwindcss",
+		"*.css": "css",
 		"*.svx": "markdown",
 		"*.mdc": "markdown",
 		"*.mdx": "markdown"

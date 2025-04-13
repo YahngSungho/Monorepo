@@ -143,7 +143,8 @@ dist
 storybook-static
 /others
 pnpm-lock.yaml
-test-results
-playwright-report
-generated
-output
+**/test-results/**
+**/playwright-report/**
+**/generated/**
+**/output/**
+**/.svelte-kit/**

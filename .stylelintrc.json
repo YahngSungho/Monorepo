@@ -3,12 +3,11 @@
 		"stylelint-config-standard",
 		"stylelint-config-html",
 		"@double-great/stylelint-a11y",
-		"stylelint-config-clean-order/error"
+		"stylelint-config-clean-order"
 	],
 	"overrides": [
 		{
-			"files": ["**/*.css"],
-			"customSyntax": "postcss-syntax"
+			"files": ["**/*.css"]
 		},
 		{
 			"files": ["**/*.svelte"],
@@ -34,6 +33,10 @@
 		"stylelint-gamut"
 	],
 	"rules": {
+		"custom-media-pattern": null,
+		"custom-property-pattern": null,
+		"layer-name-pattern": null,
+		"selector-class-pattern": null,
 		"custom-property-empty-line-before": null,
 		"at-rule-no-unknown": null,
 		"color-format/format": {

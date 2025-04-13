@@ -6,8 +6,6 @@ import BaseLayout from '@library/base/baseLayout'
 import { APP_NAME } from './base'
 
 let { children } = $props()
-
-;('') // eslint-disable-line
 </script>
 
 <svelte:head>

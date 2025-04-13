@@ -1,0 +1,16 @@
+section[datafootnotes] h2 {
+	margin: 0;
+	font-size: 0;
+	line-height: 0;
+
+	&::before {
+		content: '';
+
+		display: block;
+
+		block-size: var(--border-size-2);
+		margin-block: var(--space-cqi-m-l);
+
+		background-color: var(--surface-3);
+	}
+}

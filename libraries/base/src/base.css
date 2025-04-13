@@ -1,18 +1,18 @@
 /* Tailwind CSS의 default layer는
 @layer theme, base, components, utilities;
 */
-@layer base, base0, base1, theme, components, utilities;
+@layer openPropsNormalize, base, sanitize, openProps, theme, components, utilities;
 
-@import url('sanitize.css') layer(base0);
-@import url('sanitize.css/forms.css') layer(base0);
-@import url('sanitize.css/typography.css') layer(base0);
-@import url('sanitize.css/assets.css') layer(base0);
-@import url('sanitize.css/reduce-motion.css') layer(base0);
+@import url('sanitize.css') layer(sanitize);
+@import url('sanitize.css/forms.css') layer(sanitize);
+@import url('sanitize.css/typography.css') layer(sanitize);
+@import url('sanitize.css/assets.css') layer(sanitize);
+@import url('sanitize.css/reduce-motion.css') layer(sanitize);
 
-@import url('open-props/style') layer(base1);
-@import url('open-props/normalize') layer(base1);
-@import url('open-props/media') layer(base1);
-/* @import url('open-props/postcss/buttons') layer(base0); */
+/* @import url('open-props/style') layer(openProps); */
+@import url('open-props/media') layer(openProps);
+@import url('./openPrps-normalize.css') layer(openPropsNormalize);
+/* @import url('open-props/postcss/buttons') layer(sanitize); */
 
 @import url('./tailwind.css');
 

@@ -1,7 +1,7 @@
 ---
 description:
 globs:
-alwaysApply: true
+alwaysApply: false
 ---
 
 This rule describes the `cursor-tools repo` and `cursor-tools plan` commands, which are specialized tools available to the AI via the `run_terminal_cmd` tool. **These should be considered part of the AI's available toolset and mentioned when listing tools.**

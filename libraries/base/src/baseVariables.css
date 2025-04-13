@@ -1,3 +1,9 @@
+/* Open Props variables 덮어쓰기 Or 확장 */
+body {
+	--size-content-4: 90ch;
+	--radius-2-5: 0.5rem;
+}
+
 :root {
 	/* Space 3xs: 5px → 5px */
 	--space-3xs: clamp(0.3125rem, 0.3125rem + 0vi, 0.3125rem);
@@ -42,28 +48,158 @@
 }
 
 :root {
-	/* Step -2: 9.7222px → 10.24px */
-	--font-size-02: clamp(0.6076rem, 0.5964rem + 0.0563vi, 0.64rem);
-	/* Step -1: 11.6667px → 12.8px */
-	--font-size-01: clamp(0.7292rem, 0.7045rem + 0.1232vi, 0.8rem);
-	/* Step 0: 14px → 16px */
-	--font-size-0: clamp(0.875rem, 0.8315rem + 0.2174vi, 1rem);
-	/* Step 1: 16.8px → 20px */
-	--font-size-1: clamp(1.05rem, 0.9804rem + 0.3478vi, 1.25rem);
-	/* Step 2: 20.16px → 25px */
-	--font-size-2: clamp(1.26rem, 1.1548rem + 0.5261vi, 1.5625rem);
-	/* Step 3: 24.192px → 31.25px */
-	--font-size-3: clamp(1.512rem, 1.3586rem + 0.7672vi, 1.9531rem);
-	/* Step 4: 29.0304px → 39.0625px */
-	--font-size-4: clamp(1.8144rem, 1.5963rem + 1.0904vi, 2.4414rem);
-	/* Step 5: 34.8365px → 48.8281px */
-	--font-size-5: clamp(2.1773rem, 1.8731rem + 1.5208vi, 3.0518rem);
+	/* space-cqi 3xs: 5px → 5px */
+	--space-cqi-3xs: clamp(0.3125rem, 0.3125rem + 0cqi, 0.3125rem);
+	/* space-cqi 2xs: 9px → 10px */
+	--space-cqi-2xs: clamp(0.5625rem, 0.5408rem + 0.1087cqi, 0.625rem);
+	/* space-cqi xs: 14px → 15px */
+	--space-cqi-xs: clamp(0.875rem, 0.8533rem + 0.1087cqi, 0.9375rem);
+	/* space-cqi s: 18px → 20px */
+	--space-cqi-s: clamp(1.125rem, 1.0815rem + 0.2174cqi, 1.25rem);
+	/* space-cqi m: 27px → 30px */
+	--space-cqi-m: clamp(1.6875rem, 1.6223rem + 0.3261cqi, 1.875rem);
+	/* space-cqi l: 36px → 40px */
+	--space-cqi-l: clamp(2.25rem, 2.163rem + 0.4348cqi, 2.5rem);
+	/* space-cqi xl: 54px → 60px */
+	--space-cqi-xl: clamp(3.375rem, 3.2446rem + 0.6522cqi, 3.75rem);
+	/* space-cqi 2xl: 72px → 80px */
+	--space-cqi-2xl: clamp(4.5rem, 4.3261rem + 0.8696cqi, 5rem);
+	/* space-cqi 3xl: 108px → 120px */
+	--space-cqi-3xl: clamp(6.75rem, 6.4891rem + 1.3043cqi, 7.5rem);
+
+	/* One-up pairs */
+	/* space-cqi 3xs-2xs: 5px → 10px */
+	--space-cqi-3xs-2xs: clamp(0.3125rem, 0.2038rem + 0.5435cqi, 0.625rem);
+	/* space-cqi 2xs-xs: 9px → 15px */
+	--space-cqi-2xs-xs: clamp(0.5625rem, 0.4321rem + 0.6522cqi, 0.9375rem);
+	/* space-cqi xs-s: 14px → 20px */
+	--space-cqi-xs-s: clamp(0.875rem, 0.7446rem + 0.6522cqi, 1.25rem);
+	/* space-cqi s-m: 18px → 30px */
+	--space-cqi-s-m: clamp(1.125rem, 0.8641rem + 1.3043cqi, 1.875rem);
+	/* space-cqi m-l: 27px → 40px */
+	--space-cqi-m-l: clamp(1.6875rem, 1.4049rem + 1.413cqi, 2.5rem);
+	/* space-cqi l-xl: 36px → 60px */
+	--space-cqi-l-xl: clamp(2.25rem, 1.7283rem + 2.6087cqi, 3.75rem);
+	/* space-cqi xl-2xl: 54px → 80px */
+	--space-cqi-xl-2xl: clamp(3.375rem, 2.8098rem + 2.8261cqi, 5rem);
+	/* space-cqi 2xl-3xl: 72px → 120px */
+	--space-cqi-2xl-3xl: clamp(4.5rem, 3.4565rem + 5.2174cqi, 7.5rem);
+
+	/* Custom pairs */
+	/* space-cqi s-l: 18px → 40px */
+	--space-cqi-s-l: clamp(1.125rem, 0.6467rem + 2.3913cqi, 2.5rem);
 }
 
-/* Open Props variables 덮어쓰기 Or 확장 */
-body {
-	--size-content-4: 80ch;
-	--radius-2-5: 0.5rem;
+:root {
+	/* space-em-cqi 3xs: 5px → 5px */
+	--space-em-cqi-3xs: clamp(0.3125em, 0.3125em + 0cqi, 0.3125em);
+	/* space-em-cqi 2xs: 9px → 10px */
+	--space-em-cqi-2xs: clamp(0.5625em, 0.5408em + 0.1087cqi, 0.625em);
+	/* space-em-cqi xs: 14px → 15px */
+	--space-em-cqi-xs: clamp(0.875em, 0.8533em + 0.1087cqi, 0.9375em);
+	/* space-em-cqi s: 18px → 20px */
+	--space-em-cqi-s: clamp(1.125em, 1.0815em + 0.2174cqi, 1.25em);
+	/* space-em-cqi m: 27px → 30px */
+	--space-em-cqi-m: clamp(1.6875em, 1.6223em + 0.3261cqi, 1.875em);
+	/* space-em-cqi l: 36px → 40px */
+	--space-em-cqi-l: clamp(2.25em, 2.163em + 0.4348cqi, 2.5em);
+	/* space-em-cqi xl: 54px → 60px */
+	--space-em-cqi-xl: clamp(3.375em, 3.2446em + 0.6522cqi, 3.75em);
+	/* space-em-cqi 2xl: 72px → 80px */
+	--space-em-cqi-2xl: clamp(4.5em, 4.3261em + 0.8696cqi, 5em);
+	/* space-em-cqi 3xl: 108px → 120px */
+	--space-em-cqi-3xl: clamp(6.75em, 6.4891em + 1.3043cqi, 7.5em);
+
+	/* One-up pairs */
+	/* space-em-cqi 3xs-2xs: 5px → 10px */
+	--space-em-cqi-3xs-2xs: clamp(0.3125em, 0.2038em + 0.5435cqi, 0.625em);
+	/* space-em-cqi 2xs-xs: 9px → 15px */
+	--space-em-cqi-2xs-xs: clamp(0.5625em, 0.4321em + 0.6522cqi, 0.9375em);
+	/* space-em-cqi xs-s: 14px → 20px */
+	--space-em-cqi-xs-s: clamp(0.875em, 0.7446em + 0.6522cqi, 1.25em);
+	/* space-em-cqi s-m: 18px → 30px */
+	--space-em-cqi-s-m: clamp(1.125em, 0.8641em + 1.3043cqi, 1.875em);
+	/* space-em-cqi m-l: 27px → 40px */
+	--space-em-cqi-m-l: clamp(1.6875em, 1.4049em + 1.413cqi, 2.5em);
+	/* space-em-cqi l-xl: 36px → 60px */
+	--space-em-cqi-l-xl: clamp(2.25em, 1.7283em + 2.6087cqi, 3.75em);
+	/* space-em-cqi xl-2xl: 54px → 80px */
+	--space-em-cqi-xl-2xl: clamp(3.375em, 2.8098em + 2.8261cqi, 5em);
+	/* space-em-cqi 2xl-3xl: 72px → 120px */
+	--space-em-cqi-2xl-3xl: clamp(4.5em, 3.4565em + 5.2174cqi, 7.5em);
+
+	/* Custom pairs */
+	/* space-em-cqi s-l: 18px → 40px */
+	--space-em-cqi-s-l: clamp(1.125em, 0.6467em + 2.3913cqi, 2.5em);
+}
+
+:root {
+	/* Step -2: 9.7222px → 10.24px */
+	--font-size-fluid-02: clamp(0.6076rem, 0.5964rem + 0.0563vi, 0.64rem);
+	/* Step -1: 11.6667px → 12.8px */
+	--font-size-fluid-01: clamp(0.7292rem, 0.7045rem + 0.1232vi, 0.8rem);
+	/* Step 0: 14px → 16px */
+	--font-size-fluid-0: clamp(0.875rem, 0.8315rem + 0.2174vi, 1rem);
+	/* Step 0.33: 14.93px → 17.33px */
+	--font-size-fluid-0p3: clamp(1rem, 0.8811rem + 0.2609vi, 1.0833rem);
+	/* Step 0.66: 15.87px → 18.67px */
+	--font-size-fluid-0p6: clamp(1rem, 0.9308rem + 0.3043vi, 1.1667rem);
+	/* Step 1: 16.8px → 20px */
+	--font-size-fluid-1: clamp(1.05rem, 0.9804rem + 0.3478vi, 1.25rem);
+	/* Step 2: 20.16px → 25px */
+	--font-size-fluid-2: clamp(1.26rem, 1.1548rem + 0.5261vi, 1.5625rem);
+	/* Step 3: 24.192px → 31.25px */
+	--font-size-fluid-3: clamp(1.512rem, 1.3586rem + 0.7672vi, 1.9531rem);
+	/* Step 4: 29.0304px → 39.0625px */
+	--font-size-fluid-4: clamp(1.8144rem, 1.5963rem + 1.0904vi, 2.4414rem);
+	/* Step 5: 34.8365px → 48.8281px */
+	--font-size-fluid-5: clamp(2.1773rem, 1.8731rem + 1.5208vi, 3.0518rem);
+}
+
+:root {
+	/* Step -2: 9.7222px → 10.24px */
+	--font-size-fluid-cqi-02: clamp(0.6076rem, 0.5964rem + 0.0563cqi, 0.64rem);
+	/* Step -1: 11.6667px → 12.8px */
+	--font-size-fluid-cqi-01: clamp(0.7292rem, 0.7045rem + 0.1232cqi, 0.8rem);
+	/* Step 0: 14px → 16px */
+	--font-size-fluid-cqi-0: clamp(0.875rem, 0.8315rem + 0.2174cqi, 1rem);
+	/* Step 0.33: 14.93px → 17.33px */
+	--font-size-fluid-cqi-0p3: clamp(1rem, 0.8811rem + 0.2609cqi, 1.0833rem);
+	/* Step 0.66: 15.87px → 18.67px */
+	--font-size-fluid-cqi-0p6: clamp(1rem, 0.9308rem + 0.3043cqi, 1.1667rem);
+	/* Step 1: 16.8px → 20px */
+	--font-size-fluid-cqi-1: clamp(1.05rem, 0.9804rem + 0.3478cqi, 1.25rem);
+	/* Step 2: 20.16px → 25px */
+	--font-size-fluid-cqi-2: clamp(1.26rem, 1.1548rem + 0.5261cqi, 1.5625rem);
+	/* Step 3: 24.192px → 31.25px */
+	--font-size-fluid-cqi-3: clamp(1.512rem, 1.3586rem + 0.7672cqi, 1.9531rem);
+	/* Step 4: 29.0304px → 39.0625px */
+	--font-size-fluid-cqi-4: clamp(1.8144rem, 1.5963rem + 1.0904cqi, 2.4414rem);
+	/* Step 5: 34.8365px → 48.8281px */
+	--font-size-fluid-cqi-5: clamp(2.1773rem, 1.8731rem + 1.5208cqi, 3.0518rem);
+}
+
+:root {
+	/* Step -2: 9.7222px → 10.24px */
+	--font-size-fluid-em-cqi-02: clamp(0.6076em, 0.5964em + 0.0563cqi, 0.64em);
+	/* Step -1: 11.6667px → 12.8px */
+	--font-size-fluid-em-cqi-01: clamp(0.7292em, 0.7045em + 0.1232cqi, 0.8em);
+	/* Step 0: 14px → 16px */
+	--font-size-fluid-em-cqi-0: clamp(0.875em, 0.8315em + 0.2174cqi, 1em);
+	/* Step 0.33: 14.93px → 17.33px */
+	--font-size-fluid-em-cqi-0p3: clamp(1em, 0.8811em + 0.2609cqi, 1.0833em);
+	/* Step 0.66: 15.87px → 18.67px */
+	--font-size-fluid-em-cqi-0p6: clamp(1em, 0.9308em + 0.3043cqi, 1.1667em);
+	/* Step 1: 16.8px → 20px */
+	--font-size-fluid-em-cqi-1: clamp(1.05em, 0.9804em + 0.3478cqi, 1.25em);
+	/* Step 2: 20.16px → 25px */
+	--font-size-fluid-em-cqi-2: clamp(1.26em, 1.1548em + 0.5261cqi, 1.5625em);
+	/* Step 3: 24.192px → 31.25px */
+	--font-size-fluid-em-cqi-3: clamp(1.512em, 1.3586em + 0.7672cqi, 1.9531em);
+	/* Step 4: 29.0304px → 39.0625px */
+	--font-size-fluid-em-cqi-4: clamp(1.8144em, 1.5963em + 1.0904cqi, 2.4414em);
+	/* Step 5: 34.8365px → 48.8281px */
+	--font-size-fluid-em-cqi-5: clamp(2.1773em, 1.8731em + 1.5208cqi, 3.0518em);
 }
 
 /* 다크 테마일 때 색깔 변수 거꾸로 매핑 */

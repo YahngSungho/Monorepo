@@ -6,7 +6,7 @@ Svelte CSF stories files must always have the `.stories.svelte` extension.## D
 
 All stories files must have a "meta" (aka. "default export") defined, and its structure follows what's described in . To define the meta in Svelte CSF, call the `defineMeta` function **within the module context**, with the meta properties you want:
 
-```
+```svelte
 <script module\>
   //    👆 notice the module context, defineMeta does not work in a regular <script> tag - instance
   import { defineMeta } from '@storybook/addon-svelte-csf';
@@ -41,8 +41,8 @@ In versions prior to v5 of this addon, it was always required to define a templa
 
 If your component only accepts props and doesn't require snippets or slots, you can use the simple form of defining stories, only using args:
 
-```
-<Story name\="Primary" args\={{ primary: true }} />
+```svelte
+<Story args\={{ primary: true }} name\="Primary" />
 ```
 
 This will render the component defined in the meta, with the args passed as props.
@@ -51,7 +51,7 @@ This will render the component defined in the meta, with the args passed as prop
 
 If you need more customization of the story, like composing components or defining snippets, you can pass in children to the `Story`, and write whatever component structure you desire:
 
-```
+```svelte
 <Story name\="Composed"\>
   <MyComponent\>
     <AChild label\="Hello world!" />
@@ -67,7 +67,7 @@ This format completely ignores args, as they are not passed down to any of the c
 
 If you need composition/snippets but also want a dynamic story that reacts to args or the story context, you can define a `children` snippet in the `Story` component:
 
-```
+```svelte
 <Story name\="Simple Children" args\={{ simpleChild: true }}>
   {#snippet children(args)}
     <MyComponent {...args}>Component with args</MyComponent\>
@@ -79,7 +79,7 @@ If you need composition/snippets but also want a dynamic story that reacts to ar
 
 Often your stories are very similar and their only differences are args or play-functions. In this case it can be cumbersome to define the same `children` snippet over and over again. You can share snippets by defining them at the top-level and passing them as props to `Story`:
 
-```
+```svelte
 {#snippet template(args)}
   <MyComponent {...args}>
     {#if args.simpleChild}
@@ -102,17 +102,17 @@ You can also use this pattern to define multiple templates and share the differe
 
 If you only need a single template that you want to share, it can be tedious to include `children={template}` in each `Story` component. Like in th example below:
 
-```
-<Story name\="Primary" args\={{ variant: 'primary' }} children\={template} />
-<Story name\="Secondary" args\={{ variant: 'secondary' }} children\={template} />
-<Story name\="Tertiary" args\={{ variant: 'tertiary' }} children\={template} />
+```svelte
+<Story args\={{ variant: 'primary' }} children\={template} name\="Primary" />
+<Story args\={{ variant: 'secondary' }} children\={template} name\="Secondary" />
+<Story args\={{ variant: 'tertiary' }} children\={template} name\="Tertiary" />
 
-<Story name\="Denary" args\={{ variant: 'denary' }} children\={template} />
+<Story args\={{ variant: 'denary' }} children\={template} name\="Denary" />
 ```
 
 In this case you can use the `setTemplate()` helper function that sets a default template for all stories. In regular CSF terms, this is the equivalent of defining a meta-level `render`\-function versus story-level `render`\-functions:
 
-```
+```svelte
 <script module\>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   //                   👆 import the function
@@ -154,7 +154,7 @@ This can cause conflicts, eg. two stories with the names *"my story!"* and *"
 
 You can explicitly define the variable name of any story by passing the `exportName` prop:
 
-```
+```svelte
 <Story exportName\="MyStory1" name\="my story!" />
 <Story exportName\="MyStory2" name\="My Story" />
 ```
@@ -165,7 +165,7 @@ At least one of the `name` or `exportName` props must be passed to the `Sto
 
 If for some reason you need to access the  *(e.g. for mocking)* while rendering the story, then `<Story />`'s attribute `children` snippet provides an optional second argument.
 
-```
+```svelte
 <Story name\="Default"\>
   {#snippet children(args, context)}
 
@@ -180,7 +180,7 @@ Story snippets and args can be type-safe when necessary. The type of the args ar
 
 You can make your snippets type-safe with the `Args` and `StoryContext` helper types:
 
-```
+```svelte
 <script module lang\="ts"\>
   import { defineMeta, type Args, type StoryContext } from '@storybook/addon-svelte-csf';
   //                   👆         👆 import those type helpers from this addon -->
@@ -199,6 +199,6 @@ You can make your snippets type-safe with the `Args` and `StoryContext` help
 
 If you need to customize the type of the `args`, you can pass in a generic type parameter to `defineMeta` that will override the types inferred from the component:
 
-```
+```svelte
 const { Story } = defineMeta<{ anotherProp: boolean }>( ... );
 ```
