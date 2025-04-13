@@ -69,7 +69,7 @@ async function unleashGremlins(page) {
 		})
 
 		try {
-			await horde.unleash({ nb: 1000 })
+			await horde.unleash({ nb: 100 })
 			console.log('Gremlins 공격 완료')
 		} catch (error) {
 			console.error('Gremlins horde.unleash() 실행 중 오류:', error)
