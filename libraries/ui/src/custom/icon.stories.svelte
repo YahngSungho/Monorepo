@@ -1,23 +1,23 @@
 <script module>
-	// JAVASCRIPT ONLY - NO lang="ts"
-	import { defineMeta } from '@storybook/addon-svelte-csf'
+// JAVASCRIPT ONLY - NO lang="ts"
+import { defineMeta } from '@storybook/addon-svelte-csf'
 
-	import IconComponent from './icon.svelte' // Import the target component
+import IconComponent from './icon.svelte' // Import the target component
 
-	// defineMeta defines component metadata
-	const { Story } = defineMeta({
-		title: 'Custom/Icon', // Storybook hierarchy path
-		component: IconComponent,
-		argTypes: {
-			// Basic controls for props
-			icon: { control: 'text', description: 'Iconify icon name (e.g., mdi:home)' },
-			right: { control: 'boolean' },
-			noMargin: { control: 'boolean' },
-			small: { control: 'boolean' },
-			children: { control: 'text', description: 'Text content for the default slot' },
-		},
-		tags: ['autodocs'], // Enable automatic documentation generation
-	})
+// defineMeta defines component metadata
+const { Story } = defineMeta({
+	title: 'Custom/Icon', // Storybook hierarchy path
+	component: IconComponent,
+	argTypes: {
+		// Basic controls for props
+		icon: { control: 'text', description: 'Iconify icon name (e.g., mdi:home)' },
+		right: { control: 'boolean' },
+		noMargin: { control: 'boolean' },
+		small: { control: 'boolean' },
+		children: { control: 'text', description: 'Text content for the default slot' },
+	},
+	tags: ['autodocs'], // Enable automatic documentation generation
+})
 </script>
 
 <!-- Shared snippet for rendering -->

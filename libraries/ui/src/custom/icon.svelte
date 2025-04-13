@@ -27,8 +27,6 @@ let { children, icon, right = false, noMargin = false, small = false, ...restPro
 </span>
 
 <style>
-
-
 .with-icon {
 	display: inline-flex;
 	align-items: baseline;
