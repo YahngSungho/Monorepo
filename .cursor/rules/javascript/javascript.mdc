@@ -1,7 +1,7 @@
 ---
 description:
-globs: *.js,*.cjs,*.mjs,*.svelte,*.svx
+globs: *.js,*.cjs,*.mjs,*.svelte
 alwaysApply: false
 ---
 
-- DO NOT USE ANY TYPESCRIPT SYNTAX IN JS FILE. If you need to set types, Use JSDoc instead.
+- DO NOT USE ANY TYPESCRIPT SYNTAX IN JS FILE. The same is true for svelte files that do not use `<script lang=“ts”>`. Do NOT attempt to use typescript in those svelte files. If you need to set types, Use JSDoc instead.

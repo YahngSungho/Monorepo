@@ -10,7 +10,7 @@ mermaid.initialize({
 import './mermaid.css'
 
 import { nanoid } from 'nanoid'
-import { tick } from 'svelte'
+import { onMount,tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
 
 /**
@@ -81,10 +81,13 @@ function initializeMermaidHover(svgElement) {
 	for (const nodeEl of nodes) {
 		nodeEl.addEventListener('mouseover', (event) => {
 			const { currentTarget } = event
-			if (!currentTarget) return
+			if (!(currentTarget instanceof Element)) return
 
 			const fullId = currentTarget.id
-			const match = fullId.match(/^flowchart-([^-]+)-\d+$/)
+			// 정규식을 상수로 정의
+			const nodeIdRegex = /^flowchart-([^-]+)-\d+$/;
+			// exec 사용
+			const match = nodeIdRegex.exec(fullId);
 			if (!match || !match[1]) return
 			const hoveredNodeId = match[1]
 
@@ -115,8 +118,14 @@ function initializeMermaidHover(svgElement) {
 
 	// SVG 컨테이너에 mouseout 이벤트 리스너 추가 (요소 간 이동 시 깜빡임 방지)
 	svgElement.addEventListener('mouseout', (event) => {
-		// 마우스 포인터가 SVG 영역을 완전히 벗어났는지 확인
-		if (!svgElement.contains(event.relatedTarget)) {
+		// relatedTarget이 Node 인스턴스인지 확인하는 타입 가드 추가
+		const {relatedTarget} = event
+		// 마우스 포인터가 SVG 영역을 벗어났는지 확인
+		// relatedTarget이 Node 인스턴스이거나 null일 경우 검사
+		if (
+			(relatedTarget instanceof Node && !svgElement.contains(relatedTarget)) ||
+			relatedTarget === null // 마우스가 창 밖으로 나간 경우 등
+		) {
 			// 모든 노드와 엣지에서 흐림 효과 제거
 			for (const n of nodes) n.classList.remove('mermaid-dim')
 			for (const e of edges) e.classList.remove('mermaid-dim')
@@ -144,36 +153,38 @@ const id = `mermaid-${nanoid()}` // 각 인스턴스별 고유 ID
 // AST 노드에서 원본 텍스트 추출
 let rawText = $state(ast.current.children?.[0]?.value ?? '')
 
-$effect(async () => {
-	// rawText가 변경될 때마다 다시 렌더링
+// $effect 대신 onMount 사용
+onMount(async () => {
 	const definition = rawText
 		.split(String.raw`\n`) // 줄 단위로 분리
-		.filter((line) => !/^\\s*%%/.test(line)) // '%%' 주석 라인 제거
+		.filter((line) => !/^\s*%%/.test(line)) // '%%' 주석 라인 제거
 		.join(String.raw`\n`) // 다시 문자열로 합침
 		.trim() // 앞뒤 공백 제거
 
 	if (!definition) {
-		svgContent = ''
-		errorMessage = ''
+		// svgContent = '' // onMount에서는 초기 상태가 ''이므로 필요 없을 수 있음
+		// errorMessage = ''
 		return // 정의가 없으면 아무것도 안 함
 	}
 
-	errorMessage = '' // 이전 오류 메시지 초기화
+	// errorMessage = ''; // onMount에서는 초기 상태가 ''이므로 필요 없을 수 있음
 
 	try {
-		// 비동기적으로 Mermaid 렌더링 실행 (async/await 사용)
+		// 비동기적으로 Mermaid 렌더링 실행 (onMount 콜백 자체가 async)
 		const { svg, bindFunctions } = await mermaid.render(id, definition)
 		svgContent = svg // 성공 시 SVG 콘텐츠 업데이트
 		errorMessage = ''
 
-		await tick()
+		await tick() // DOM 업데이트 기다리기
 
 		if (bindFunctions) {
 			bindFunctions(element) // Mermaid의 기본 바인딩 (클릭 등)
 		}
-		const svgElement = element.querySelector('svg') // 렌더링된 SVG 찾기
+		const svgElement = element?.querySelector('svg') // 렌더링된 SVG 찾기 (element가 있을 때만)
 		if (svgElement) {
 			initializeMermaidHover(svgElement) // 커스텀 hover 초기화
+		} else {
+			// console.warn('SVG element not found after rendering for hover init.');
 		}
 	} catch (error) {
 		console.error('Mermaid rendering error:', error)
