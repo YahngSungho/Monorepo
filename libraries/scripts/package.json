@@ -1,5 +1,5 @@
 {
-	"name": "@script/common",
+	"name": "@library/scripts",
 	"version": "0.0.1",
 	"type": "module"
 }

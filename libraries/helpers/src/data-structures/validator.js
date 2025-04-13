@@ -1,6 +1,6 @@
 import { inspect } from 'node:util'
 
-import { R } from './R'
+import { R } from '../library-wrappers/R'
 
 /**
  * @typedef {Object} Condition

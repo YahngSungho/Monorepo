@@ -23,9 +23,9 @@
 	},
 	"keywords": [],
 	"exports": {
-		"./monads": "./src/monads.js",
-		"./mutative": "./src/mutative.js",
-		"./random_engine": "./src/random_engine.js",
-		"./R": "./src/R.js"
+		"./monads": "./src/data-structures/monads.js",
+		"./mutative": "./src/library-wrappers/mutative.js",
+		"./random_engine": "./src/library-wrappers/random_engine.js",
+		"./R": "./src/library-wrappers/R.js"
 	}
 }
