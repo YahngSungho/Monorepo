@@ -1,4 +1,4 @@
-@import './openProps-props-media.css';
+@import url('./openProps-props-media.css');
 
 /* theme.light.css */
 :where(html) {
