@@ -22,44 +22,44 @@
 				- ERROR HANDLING CASES (if the component has explicit error states or handling logic)
 				- STRESS TEST CASES (interpret this as stories using large amounts of data, deeply nested structures, or very long strings for props where applicable)
 		- **Framework:** Use the Svelte CSF format provided by `@storybook/addon-svelte-csf`. This involves using `defineMeta` in `<script module>` and the `<Story>` component for each story definition.
-		- **Clarity:** Story names should clearly indicate the scenario they represent (e.g., `name="InvalidInputEmptyString"`).
+		- **Clarity:** Story names MUST **be in KOREAN** and clearly indicate the scenario they represent (e.g., `name="비활성화_상태"`). **All** other non-code text (comments, analysis steps, etc.) MUST also **be in KOREAN**.
 </Constraints>
 
 <Instructions>
 		**Overall Approach:** Think step-by-step to ensure comprehensive coverage and adherence to all constraints.
 
 		**1. Restate Task & Analyze Component:**
-				- Begin by briefly restating the task: "Generating comprehensive JavaScript Storybook stories for the [ComponentName] component found in the provided file."
-				- Analyze the provided Svelte component (`.svelte` file content). Identify and list its:
-					- Props (name, expected type inferred from usage, default value if any)
-					- Slots (name and expected content, if discernible)
-					- Emitted events (if using `createEventDispatcher`)
-					- General purpose and structure.
-				- Document this analysis clearly BEFORE proceeding.
+				- Begin by briefly restating the task **in KOREAN**: "제공된 파일에서 찾은 [ComponentName] 컴포넌트에 대한 포괄적인 JavaScript Storybook 스토리 생성 중."
+				- Analyze the provided Svelte component (`.svelte` file content). Identify and list its properties **in KOREAN**:
+					- Props (이름, 사용법에서 추론된 예상 타입, 기본값(있는 경우))
+					- Slots (이름 및 예상 콘텐츠(식별 가능한 경우))
+					- Emitted events (`createEventDispatcher` 사용 시)
+					- 일반적인 목적 및 구조.
+				- Document this analysis clearly **in KOREAN** BEFORE proceeding.
 
 		**2. Brainstorm Story Scenarios:**
-				- Based on your component analysis AND the REQUIRED case categories list in `<Constraints>`, generate a detailed list of specific story scenarios to implement.
-				- For each scenario, explain briefly *why* it's relevant (e.g., "Testing boundary case for `maxItems` prop").
-				- Ensure ALL REQUIRED categories (HAPPY PATH, NEGATIVE PATHS, BOUNDARY VALUE CASES, EDGE CASES, INVALID INPUT CASES, ERROR HANDLING CASES, STRESS TEST CASES) are represented by one or more specific scenarios. Be creative but realistic for the component's nature. For 'Stress Test', focus on scenarios pushing data limits (e.g., a list component with 1000 items, a text display with a 10KB string).
+				- Based on your component analysis AND the REQUIRED case categories list in `<Constraints>`, generate a detailed list of specific story scenarios to implement **in KOREAN**.
+				- For each scenario, explain briefly *why* it's relevant **in KOREAN** (e.g., "`maxItems` prop의 경계값 케이스 테스트").
+				- Ensure ALL REQUIRED categories (HAPPY PATH, NEGATIVE PATHS, BOUNDARY VALUE CASES, EDGE CASES, INVALID INPUT CASES, ERROR HANDLING CASES, STRESS TEST CASES) are represented by one or more specific scenarios. Be creative but realistic for the component's nature. For 'Stress Test', focus on scenarios pushing data limits (e.g., 1000개 아이템을 가진 리스트 컴포넌트, 10KB 문자열을 가진 텍스트 디스플레이).
 
 		**3. Choose Implementation Strategy:**
 				- Decide on the most effective Svelte CSF story definition pattern.
-				- **STRONGLY RECOMMENDED:** Use shared `#snippet`s defined at the top-level markup or within an instance `<script>` tag for consistency, especially if many stories share a similar rendering structure but differ mainly in `args`. Define the structure of the primary snippet(s) needed. Explain your choice.
+				- **STRONGLY RECOMMENDED:** Use shared `#snippet`s defined at the top-level markup or within an instance `<script>` tag for consistency, especially if many stories share a similar rendering structure but differ mainly in `args`. Define the structure of the primary snippet(s) needed. Explain your choice **in KOREAN**.
 
 		**4. Generate `.stories.svelte` Code:**
 				- Write the complete content for the `.stories.svelte` file.
 				- **`<script module>` Section:**
 					- Include necessary imports (`defineMeta` from `@storybook/addon-svelte-csf`, the target component).
-					- Call `defineMeta`, providing `title` (e.g., `Path/To/ComponentName`), `component` (the imported component), and potentially basic `argTypes` to enable controls for common props if helpful.
+					- Call `defineMeta`, providing `title` (e.g., `경로/컴포넌트명`), `component` (the imported component), and potentially basic `argTypes` to enable controls for common props if helpful.
 					- **USE JAVASCRIPT ONLY.**
 				- **Snippets:**
-					- Define the shared snippet(s) (e.g., `{#snippet template(args)}...{/snippet}`) as planned. Ensure `args` are correctly passed down to the component within the snippet (typically using `{...args}`).
+					- Define the shared snippet(s) (e.g., `{#snippet template(args)}...{/snippet}`) as planned. Ensure `args` are correctly passed down to the component within the snippet (typically using `{...args}`). Add comments **in KOREAN** if necessary.
 				- **`<Story>` Components:**
 					- Create a `<Story>` component instance for EACH scenario brainstormed in step 2.
-					- Use the `name` prop for descriptive titles reflecting the scenario.
+					- Use the `name` prop for descriptive titles **in KOREAN** reflecting the scenario (e.g., `name="기본_활성화"`).
 					- Pass the appropriate `args` object to define the specific state for that scenario.
 					- If using shared snippets, pass the snippet function to the `children` prop (e.g., `children={template}`).
-					- If a scenario requires a unique structure, define an inline snippet or static template for that specific `<Story>`.
+					- If a scenario requires a unique structure, define an inline snippet or static template for that specific `<Story>`. Add explanatory comments **in KOREAN**.
 
 		**5. Final Review:**
 				- Before concluding, mentally review the generated code.
@@ -67,48 +67,50 @@
 				- Confirm the file structure matches the `.stories.svelte` format.
 				- Ensure stories representing **ALL** the required case categories have been included.
 				- Check that imports, `defineMeta`, snippets, and `Story` components are correctly implemented.
+				- Ensure all non-code text (story names, comments, analysis) is **in KOREAN**.
 
 </Instructions>
 
 <Example>
 		```svelte
-		<!-- Example Structure: src/components/MyExampleComponent.stories.svelte -->
+		<!-- 예시 구조: src/components/MyExampleComponent.stories.svelte -->
 		<script module>
-			// JAVASCRIPT ONLY - NO lang="ts"
+			// 자바스크립트 전용 - lang="ts" 사용 금지
 			import { defineMeta } from '@storybook/addon-svelte-csf';
-			import MyExampleComponent from './MyExampleComponent.svelte'; // Adjust import
+			import MyExampleComponent from './MyExampleComponent.svelte'; // 임포트 경로 조정
 
-			// defineMeta defines component metadata
+			// defineMeta는 컴포넌트 메타데이터를 정의합니다
 			const { Story } = defineMeta({
-				title: 'Example/MyExampleComponent', // Adjust title
+				title: '예시/MyExampleComponent', // 제목 조정
 				component: MyExampleComponent,
-				argTypes: { // Optional basic argTypes for controls
+				argTypes: { // 컨트롤을 위한 선택적 기본 argTypes
 					labelText: { control: 'text' },
 					isDisabled: { control: 'boolean' },
 				},
 			});
 		</script>
 
-		<!-- Shared snippet for consistency -->
+		<!-- 일관성을 위한 공유 스니펫 -->
 		{#snippet template(args)}
+			<!-- 이 스니펫은 여러 스토리에서 재사용됩니다 -->
 			<MyExampleComponent {...args} />
 		{/snippet}
 
-		<!-- Happy Path Story -->
-		<Story name="DefaultEnabled" args={{ labelText: 'Click Me', isDisabled: false }} children={template} />
+		<!-- 정상 경로 스토리 -->
+		<Story name="기본_활성화" args={{ labelText: '클릭하세요', isDisabled: false }} children={template} />
 
-		<!-- Edge Case Story -->
-		<Story name="Disabled" args={{ labelText: 'Cannot Click', isDisabled: true }} children={template} />
+		<!-- 엣지 케이스 스토리 -->
+		<Story name="비활성화_상태" args={{ labelText: '클릭 불가', isDisabled: true }} children={template} />
 
-		<!-- Invalid Input Case Story -->
-		<Story name="InvalidEmptyLabel" args={{ labelText: '', isDisabled: false }} children={template} />
+		<!-- 잘못된 입력 케이스 스토리 -->
+		<Story name="잘못된_입력_빈_레이블" args={{ labelText: '', isDisabled: false }} children={template} />
 
-		<!-- Stress Test Case Example (Long Text) -->
-		<Story name="StressTestLongLabel" args={{ labelText: 'This label is extremely long to test how the component handles overflow or wrapping behavior under stress conditions. '.repeat(10), isDisabled: false }} children={template} />
+		<!-- 스트레스 테스트 케이스 예시 (긴 텍스트) -->
+		<Story name="스트레스_테스트_긴_레이블" args={{ labelText: '이 레이블은 스트레스 조건 하에서 컴포넌트가 오버플로우나 줄 바꿈을 어떻게 처리하는지 테스트하기 위해 매우 깁니다. '.repeat(10), isDisabled: false }} children={template} />
 
 		```
 </Example>
 
 <Output_Format>
-		Your final output MUST be the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with the target filename (e.g., `// ComponentName.stories.svelte`). This code block should be preceded by your detailed step-by-step analysis (Component Analysis, Scenario Brainstorming, Implementation Strategy).
+		Your final output MUST be the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with the target filename (e.g., `// ComponentName.stories.svelte`). This code block should be preceded by your detailed step-by-step analysis (Component Analysis, Scenario Brainstorming, Implementation Strategy) **written in KOREAN**.
 </Output_Format>

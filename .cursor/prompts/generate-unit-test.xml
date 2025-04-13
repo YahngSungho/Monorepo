@@ -19,7 +19,7 @@
       *   **Goal**: Another developer (or your future self) should grasp the test's purpose, setup, action, and expected outcome quickly without needing deep dives into other files or complex helper logic.
 
   3.  **Readability and Structure**:
-      *   **Naming**: Use LONG, DESCRIPTIVE test names that clearly state the scenario being tested (e.g., `it('should throw a RangeError if the deposit amount is negative')`).
+      *   **Naming**: **한국어**로 된, 길고 **설명적인** 테스트 이름을 사용하여 테스트 중인 시나리오를 명확하게 설명하세요 (예: `it('입금액이 음수일 경우 RangeError를 발생시켜야 한다')`).
       *   **AAA Pattern**: Strictly follow the **Arrange-Act-Assert (AAA)** pattern within each *example-based* test body. Clearly separate the setup (Arrange), execution of the code under test (Act), and verification of the outcome (Assert) with comments or spacing.
 
   4.  **Keep Relevant Setup Visible**:
@@ -40,7 +40,7 @@
       *   **Use Correctly**: Employ correct Vitest imports (`describe`, `it`, `test`, `expect`, `vi`) and assertion matchers (`.toBe`, `.toEqual`, `.toThrow`, `.resolves`, `.rejects`, etc.).
 
   9.  **Principle Justification Comments**:
-      *   **Explain WHY**: Add brief comments within the generated test code to explain *why* a certain structure or approach was chosen, explicitly referencing these principles (e.g., `// Principle: Testing behavior via public API`, `// Principle: Inline setup for clarity`, `// Principle: Using fast-check for edge cases`). This demonstrates adherence and aids understanding.
+      *   **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 *이유*를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 공개 API를 통한 동작 테스트`, `// 원칙: 명확성을 위한 인라인 설정`, `// 원칙: 엣지 케이스를 위한 fast-check 사용`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
 
   10. **Property-Based Testing (PBT) with fast-check**:
       *   **Leverage Power**: Where applicable (e.g., functions processing diverse inputs, complex logical conditions, algorithms, state machines, potential edge cases), proactively use property-based testing via `@fast-check/vitest`. PBT automatically generates a wide range of inputs, often finding edge cases missed by traditional example-based tests.
@@ -62,7 +62,7 @@
       *   **Property-Based Testing Applicability**: Explicitly consider if PBT with `fast-check` is suitable for testing properties of the function(s) across a wide range of inputs, especially for computations, validations, or transformations.
   4.  **Outline Plan**: Briefly outline your plan, including the identified scenarios and any necessary mocking strategy, before generating the test code.
   5.  **Generate Vitest Tests**: Write the test suite using Vitest syntax (`describe`, `it`/`test`, `expect`, `vi`).
-  6.  **Apply Principles RIGOROUSLY**: For each test case, consciously apply ALL the `Core_Testing_Principles`. Pay EXTREME attention to Principle #1 (Test Behavior, NOT Implementation). Include justification comments (Principle #9).
+  6.  **Apply Principles RIGOROUSLY**: For each test case, consciously apply ALL the `Core_Testing_Principles`. Pay EXTREME attention to Principle #1 (Test Behavior, NOT Implementation). Include justification comments (Principle #9) **in Korean**.
   7.  **Structure (AAA)**: Ensure every *example-based* test clearly follows the Arrange-Act-Assert structure.
   8.  **Mocking**: If dependencies need mocking to isolate the unit under test, use `vi.fn()` or `vi.spyOn()`. Configure mocks specifically for the behavior needed in each test case. Ensure mocks are properly cleaned up if necessary (e.g., using `vi.restoreAllMocks()` in `afterEach`). CRITICALLY, mock dependencies at the boundary, do NOT mock internal implementation details of the code under test.
   9.  **Async Handling**: Correctly handle asynchronous code using `async/await` and appropriate Vitest matchers (e.g., `expect(promise).resolves.toBe(...)`, `expect(asyncFn).rejects.toThrow(...)`). Remember `test.prop` also supports async properties.
@@ -72,7 +72,7 @@
 
  <Output_Format>
   First, provide your understanding statement (Instruction 1) and analysis/plan (Instruction 4).
-  Then, provide the complete Vitest test suite as a single JavaScript/TypeScript code block, formatted correctly for a `*.test.js` or `*.test.ts` file. Ensure necessary imports from `vitest` and `@fast-check/vitest` (if used) are included. The code block should contain the generated tests with inline comments explaining principle adherence (Principle 9).
+  Then, provide the complete Vitest test suite as a single JavaScript/TypeScript code block, formatted correctly for a `*.test.js` or `*.test.ts` file. Ensure necessary imports from `vitest` and `@fast-check/vitest` (if used) are included. The code block should contain the generated tests with inline comments **in Korean** explaining principle adherence (Principle 9).
  </Output_Format>
 
  <Examples>
@@ -84,88 +84,88 @@
   import { fc, test } from '@fast-check/vitest';
   import { sum } from './sum'; // Assuming sum function is in ./sum.js
 
-  describe('sum function', () => {
-   // --- Example-Based Tests ---
+  describe('sum 함수', () => {
+   // --- 예제 기반 테스트 ---
 
-   // Principle: Test Behavior (Happy Path)
-   // Principle: Use Literal Values for clarity
-   it('should correctly add two specific positive numbers', () => {
-    // Arrange - Principle: Inline setup for clarity
+   // 원칙: 동작 테스트 (정상 경로)
+   // 원칙: 명확성을 위해 리터럴 값 사용
+   it('특정 양수 두 개를 올바르게 더해야 한다', () => {
+    // 준비(Arrange) - 원칙: 명확성을 위한 인라인 설정
     const num1 = 5;
     const num2 = 10;
     const expectedResult = 15;
 
-    // Act
+    // 실행(Act)
     const result = sum(num1, num2);
 
-    // Assert
+    // 검증(Assert)
     expect(result).toBe(expectedResult);
    });
 
-   // Principle: Testing behavior (Error Handling / Negative Path)
-   it('should throw an error if inputs are not numbers', () => {
-    // Arrange
+   // 원칙: 동작 테스트 (오류 처리 / 부정 경로)
+   it('입력이 숫자가 아니면 오류를 발생시켜야 한다', () => {
+    // 준비(Arrange)
     const invalidInput1 = '5';
     const invalidInput2 = null;
     const validInput = 10;
 
-    // Act & Assert
-    // Principle: Testing behavior (throwing an error is observable behavior)
-    expect(() => sum(invalidInput1, validInput)).toThrow('Inputs must be numbers');
-    expect(() => sum(validInput, invalidInput2)).toThrow('Inputs must be numbers');
-    expect(() => sum(undefined, validInput)).toThrow('Inputs must be numbers');
+    // 실행(Act) & 검증(Assert)
+    // 원칙: 동작 테스트 (오류 발생은 관찰 가능한 동작임)
+    expect(() => sum(invalidInput1, validInput)).toThrow('입력값은 숫자여야 합니다'); // 에러 메시지도 번역 또는 한국어로 명시
+    expect(() => sum(validInput, invalidInput2)).toThrow('입력값은 숫자여야 합니다');
+    expect(() => sum(undefined, validInput)).toThrow('입력값은 숫자여야 합니다');
    });
 
-   // --- Property-Based Tests using fast-check ---
+   // --- fast-check를 사용한 속성 기반 테스트 ---
 
-   // Principle: Property-Based Testing (Commutative property)
-   // Description: Tests that sum(a, b) === sum(b, a) for any two numbers generated by fc.double().
+   // 원칙: 속성 기반 테스트 (교환 법칙)
+   // 설명: fc.double()로 생성된 임의의 두 숫자 a, b에 대해 sum(a, b) === sum(b, a)임을 테스트합니다.
    test.prop([fc.double(), fc.double()])
-   ('should satisfy the commutative property (a + b === b + a)', (a, b) => {
-    // Arrange: fast-check generates number inputs a and b
-    // Note: fc.double() covers integers, floats, +/- Infinity, NaN.
-    // We might add fc.pre(!Number.isNaN(a) && !Number.isNaN(b)) if NaN inputs aren't expected to throw but just return NaN.
-    // However, the current 'sum' throws for non-numbers, so this covers NaN indirectly via type checks.
-    // If sum handled NaN specifically, we might need a different approach.
+   ('교환 법칙(a + b === b + a)을 만족해야 한다', (a, b) => {
+    // 준비(Arrange): fast-check가 숫자 입력 a와 b를 생성합니다.
+    // 참고: fc.double()은 정수, 부동소수점, +/- 무한대, NaN을 포함합니다.
+    // NaN 입력 시 오류를 발생시키지 않고 NaN을 반환해야 한다면 fc.pre(!Number.isNaN(a) && !Number.isNaN(b))를 추가할 수 있습니다.
+    // 하지만 현재 'sum'은 숫자가 아닌 경우 오류를 발생시키므로, 타입 검사를 통해 간접적으로 NaN을 처리합니다.
+    // 만약 sum이 NaN을 특별히 처리한다면 다른 접근 방식이 필요할 수 있습니다.
 
-    // Act
+    // 실행(Act)
     const result1 = sum(a, b);
     const result2 = sum(b, a);
 
-    // Assert: Check the invariant property (a behavioral property)
+    // 검증(Assert): 불변 속성(동작 속성)을 확인합니다.
     expect(result1).toBe(result2);
    });
 
-   // Principle: Property-Based Testing (Identity property)
-   // Description: Tests that sum(a, 0) === a for any number 'a'.
+   // 원칙: 속성 기반 테스트 (항등원 속성)
+   // 설명: 임의의 숫자 'a'에 대해 sum(a, 0) === a임을 테스트합니다.
    test.prop([fc.double()])
-   ('should satisfy the identity property (a + 0 === a)', (a) => {
-    // Arrange: fast-check generates number input a
+   ('항등원 속성(a + 0 === a)을 만족해야 한다', (a) => {
+    // 준비(Arrange): fast-check가 숫자 입력 a를 생성합니다.
 
-    // Act
+    // 실행(Act)
     const result = sum(a, 0);
 
-    // Assert: Check the invariant property (a behavioral property)
+    // 검증(Assert): 불변 속성(동작 속성)을 확인합니다.
     expect(result).toBe(a);
    });
 
-   // Principle: Property-Based Testing (Error for non-numbers)
-   // Description: Tests that sum throws if at least one input isn't a number (behavioral property).
+   // 원칙: 속성 기반 테스트 (숫자가 아닌 입력에 대한 오류)
+   // 설명: 입력 중 하나라도 숫자가 아니면 sum 함수가 오류를 발생시키는지 테스트합니다 (동작 속성).
    test.prop([
-    // Generate one value that is definitely not a number
+    // 숫자가 아닌 값을 하나 생성
     fc.anything().filter(v => typeof v !== 'number'),
-    // Generate another value of any type (could be number or not)
+    // 다른 값은 임의의 타입으로 생성 (숫자일 수도 아닐 수도 있음)
     fc.anything(),
-    // Generate a boolean to decide the order
+    // 순서를 결정하기 위한 boolean 값 생성
     fc.boolean()
    ])
-   ('should throw an error if any input is not a number', (notNum, otherVal, swapOrder) => {
-    // Arrange
+   ('입력 중 하나라도 숫자가 아니면 오류를 발생시켜야 한다', (notNum, otherVal, swapOrder) => {
+    // 준비(Arrange)
     const arg1 = swapOrder ? otherVal : notNum;
     const arg2 = swapOrder ? notNum : otherVal;
 
-    // Act & Assert: Verifying the error throwing behavior
-    expect(() => sum(arg1, arg2)).toThrow('Inputs must be numbers');
+    // 실행(Act) & 검증(Assert): 오류 발생 동작 검증
+    expect(() => sum(arg1, arg2)).toThrow('입력값은 숫자여야 합니다');
    });
 
   });
@@ -177,72 +177,72 @@
   import { describe, it, expect, beforeEach } from 'vitest';
   import { Counter } from './counter'; // Assuming Counter class is in counter.js
 
-  describe('Counter class', () => {
+  describe('Counter 클래스', () => {
    let counter;
 
-   // Principle: Use beforeEach for REPETITIVE, NON-CRITICAL setup if needed,
-   // but ensure tests remain understandable in isolation. Here, creating a new
-   // counter for each test is standard practice.
+   // 원칙: 필요한 경우 반복적이고 중요하지 않은 설정에 beforeEach 사용,
+   // 단, 테스트가 독립적으로 이해 가능하도록 유지. 여기서는 각 테스트마다
+   // 새 counter를 만드는 것이 표준 관행임.
    beforeEach(() => {
-    counter = new Counter(); // Default starts at 0
+    counter = new Counter(); // 기본값은 0에서 시작
    });
 
-   // Principle: Descriptive test name & Testing behavior via public API
-   it('should increment the count correctly when increment is called', () => {
-    // Arrange - Principle: Inline setup for specific initial state if needed
-    const counterWithInitial = new Counter(5); // Start at 5 for this test
+   // 원칙: 설명적인 테스트 이름 & 공개 API를 통한 동작 테스트
+   it('increment 호출 시 카운트가 올바르게 증가해야 한다', () => {
+    // 준비(Arrange) - 원칙: 필요시 특정 초기 상태에 대한 인라인 설정
+    const counterWithInitial = new Counter(5); // 이 테스트는 5에서 시작
     const expectedCount = 6;
 
-    // Act
+    // 실행(Act)
     counterWithInitial.increment();
-    // Principle: Testing behavior (get state via public getCount method)
+    // 원칙: 동작 테스트 (공개 getCount 메서드를 통해 상태 확인)
     const actualCount = counterWithInitial.getCount();
 
-    // Assert
+    // 검증(Assert)
     expect(actualCount).toBe(expectedCount);
     // AVOID: expect(counterWithInitial._count).toBe(6); // VIOLATION: Testing implementation detail (_count)
    });
 
-   // Principle: Testing initial state behavior via public API
-   it('should initialize with 0 if no starting value is provided', () => {
-    // Arrange: counter is initialized in beforeEach
+   // 원칙: 공개 API를 통한 초기 상태 동작 테스트
+   it('시작 값이 제공되지 않으면 0으로 초기화해야 한다', () => {
+    // 준비(Arrange): beforeEach에서 카운터 초기화됨
 
-    // Act
-    // Principle: Testing behavior (get state via public getCount method)
+    // 실행(Act)
+    // 원칙: 동작 테스트 (공개 getCount 메서드를 통해 상태 확인)
     const actualInitialValue = counter.getCount();
 
-    // Assert
+    // 검증(Assert)
     expect(actualInitialValue).toBe(0);
    });
 
-   // Principle: Testing behavior with provided initial value
-   it('should initialize with the provided starting value', () => {
-    // Arrange
+   // 원칙: 제공된 초기 값으로 동작 테스트
+   it('제공된 시작 값으로 초기화해야 한다', () => {
+    // 준비(Arrange)
     const initialValue = 10;
-    // Principle: Use Literal Values
+    // 원칙: 리터럴 값 사용
     const expectedInitialValue = 10;
 
-    // Act
+    // 실행(Act)
     const specificCounter = new Counter(initialValue);
-    // Principle: Testing behavior (get state via public getCount method)
+    // 원칙: 동작 테스트 (공개 getCount 메서드를 통해 상태 확인)
     const actualInitialValue = specificCounter.getCount();
 
-    // Assert
+    // 검증(Assert)
     expect(actualInitialValue).toBe(expectedInitialValue);
    });
 
-   // Principle: Test multiple interactions (sequence of behaviors)
-   it('should reflect multiple increments correctly', () => {
-    // Arrange: counter starts at 0 (from beforeEach)
+   // 원칙: 여러 상호작용 테스트 (동작 순서)
+   it('여러 번의 increment가 올바르게 반영되어야 한다', () => {
+    // 준비(Arrange): 카운터가 0에서 시작 (beforeEach로부터)
     const expectedCount = 3;
 
-    // Act
+    // 실행(Act)
     counter.increment();
     counter.increment();
     counter.increment();
     const actualCount = counter.getCount(); // Test via public API
 
-    // Assert
+    // 검증(Assert)
     expect(actualCount).toBe(expectedCount);
    });
   });
@@ -260,12 +260,12 @@
   }
 
   describe('computeDisplayName', () => {
-   // Principle: One-time random mode using 'g' for simple randomized inputs.
-   // Useful for testing basic properties without full PBT setup.
-   // Tests the behavior that the output contains the generated input parts.
-   test('should include first and last names (using g)', ({ g }) => {
-    // Arrange: Generate random user data using 'g' and fc arbitraries
-    // 'g' provides deterministic randomness within a single test run.
+   // 원칙: 간단한 무작위 입력을 위해 'g'를 사용하는 일회성 랜덤 모드.
+   // 완전한 PBT 설정 없이 기본 속성을 테스트하는 데 유용함.
+   // 출력에 생성된 입력 부분이 포함되는 동작을 테스트함.
+   test('성(last name)과 이름(first name)을 포함해야 한다 (g 사용)', ({ g }) => {
+    // 준비(Arrange): 'g'와 fc 아비트러리를 사용하여 무작위 사용자 데이터 생성
+    // 'g'는 단일 테스트 실행 내에서 결정론적 무작위성을 제공함.
     const user = {
      firstName: g(fc.string({ minLength: 1 })), // Random non-empty string
      lastName: g(fc.string({ minLength: 1 })), // Random non-empty string
@@ -282,8 +282,8 @@
     expect(displayName).toBe(`${expectedFirstName} ${expectedLastName}`);
    });
 
-   // Principle: Focused Test (Edge case: empty names)
-   it('should handle empty names gracefully (standard test)', () => {
+   // 원칙: 집중된 테스트 (엣지 케이스: 빈 이름)
+   it('빈 이름을 정상적으로 처리해야 한다 (표준 테스트)', () => {
     // Arrange
     const user = { firstName: '', lastName: '' };
     const expectedOutput = ' ';
@@ -317,8 +317,8 @@
   }
 
   describe('processUserData', () => {
-   // Principle: Property-Based Testing (PBT) with complex data structures.
-   // Tests the core behavioral logic against diverse generated inputs.
+   // 원칙: 속성 기반 테스트 (PBT) - 복잡한 데이터 구조 사용.
+   // 다양한 생성된 입력을 통해 핵심 동작 로직을 테스트함.
    test.prop([
     // Generate an array of user objects using fc.array and fc.record
     fc.array(fc.record({
@@ -383,8 +383,8 @@
   }
 
   describe('divideAsync', () => {
-   // Principle: Property-Based Testing for asynchronous code behavior.
-   // test.prop handles promises returned by the property function automatically.
+   // 원칙: 비동기 코드 동작에 대한 속성 기반 테스트.
+   // test.prop은 속성 함수에서 반환된 프로미스를 자동으로 처리함.
    test.prop([fc.integer(), fc.integer()])
    ('should return the correct division result for non-zero divisor (Async Property)', async (a, b) => {
     // Principle: Using preconditions (fc.pre) to filter inputs for specific behavior test.

@@ -7,27 +7,27 @@
 </Task>
 
 <Instructions>
-    1.  **Understand and Rephrase (MANDATORY FIRST STEP)**: BEFORE generating any plan or tests, BEGIN your response by briefly restating your understanding of the provided XState machine's primary function, its main states, events, initial context, and any complex interactions (like guards, actions, invoked/spawned actors). Base this analysis ONLY on the provided code.
+    1.  **Understand and Rephrase (MANDATORY FIRST STEP)**: BEFORE generating any plan or tests, BEGIN your response by briefly restating your understanding of the provided XState machine's primary function, its main states, events, initial context, and any complex interactions (like guards, actions, invoked/spawned actors). **This understanding MUST be written in KOREAN.** Base this analysis ONLY on the provided code.
     2.  **Plan Tests (Chain of Thought)**: AFTER restating understanding, devise a detailed test plan.
-        *   Use the trigger phrase: "Okay, let's devise a plan to test this machine thoroughly."
-        *   The plan MUST outline the specific test cases you will write.
+        *   Use the trigger phrase **in KOREAN**: "좋습니다, 이 머신을 철저히 테스트하기 위한 계획을 세워 보겠습니다."
+        *   The plan MUST outline the specific test cases you will write. The descriptions in the plan MUST **be in KOREAN**.
         *   CRITICALLY, ensure the plan covers the following categories:
-            *   **Happy Path(s):** Common success scenarios.
-            *   **Negative Path(s):** Expected failures, including:
-                *   **Invalid Input Cases:** Tests with incorrect event payloads or initial context (if applicable).
-                *   **Error Handling Cases:** Verify transitions and actions triggered by `onError`, explicit error states, etc.
-            *   **Boundary Value Cases:** Test conditions at their limits (e.g., guard thresholds, loop counters).
-            *   **Edge Cases:** Unusual but possible scenarios.
-            *   **Data-related Cases:** How the machine handles different context states or event data variations.
-            *   **State Transition Cases:** Explicitly verify key transitions between states.
-        *   For each planned test case, briefly state WHAT it tests and reference the primary `<Testing_Principles_To_Follow>` it demonstrates (e.g., "Test 3: Verify `logError` action is called on fetch failure (Principle: Mocked Action)").
-        *   **PBT/MBT Justification**: The plan MUST explicitly evaluate and justify where Property-Based Testing (PBT) with `@fast-check/vitest` will be used (especially for guards, assigns, event payloads). State *why* PBT is suitable for those cases. Also, briefly mention if Model-Based Testing (MBT) with `@xstate/test` is appropriate given the machine's complexity and justify why or why not.
+            *   **Happy Path(s):** 일반적인 성공 시나리오.
+            *   **Negative Path(s):** 예상되는 실패, 다음 포함:
+                *   **Invalid Input Cases:** 잘못된 이벤트 페이로드 또는 초기 컨텍스트를 사용한 테스트 (해당하는 경우).
+                *   **Error Handling Cases:** `onError`, 명시적 오류 상태 등에 의해 트리거되는 전환 및 액션 검증.
+            *   **Boundary Value Cases:** 한계 상황에서의 조건 테스트 (예: 가드 임계값, 루프 카운터).
+            *   **Edge Cases:** 드물지만 가능한 시나리오.
+            *   **Data-related Cases:** 머신이 다양한 컨텍스트 상태 또는 이벤트 데이터 변형을 처리하는 방식.
+            *   **State Transition Cases:** 상태 간의 주요 전환 명시적 검증.
+        *   For each planned test case, briefly state WHAT it tests **in KOREAN** and reference the primary `<Testing_Principles_To_Follow>` it demonstrates (e.g., "테스트 3: fetch 실패 시 `logError` 액션 호출 확인 (원칙: 모의 액션)").
+        *   **PBT/MBT Justification**: The plan MUST explicitly evaluate and justify **in KOREAN** where Property-Based Testing (PBT) with `@fast-check/vitest` will be used (especially for guards, assigns, event payloads). State *why* PBT is suitable for those cases. Also, briefly mention **in KOREAN** if Model-Based Testing (MBT) with `@xstate/test` is appropriate given the machine's complexity and justify why or why not.
     3.  **Generate Vitest Tests**: Implement the test plan by writing the complete Vitest test suite (`*.test.js`).
         *   The code MUST be a single block, including necessary imports (`vitest`, `xstate`, `@fast-check/vitest` if used).
         *   Strictly apply ALL `<Testing_Principles_To_Follow>`.
         *   The generated code MUST be runnable.
-        *   Include comments within the code briefly justifying test structures or mocking strategies, referencing the principles (e.g., `// Principle: AAA Arrange - Providing mock actor`).
-    4.  **Final Review**: Before concluding the code generation, perform a quick internal check: Does the generated test suite accurately reflect the plan? Does it fully test the machine defined in the provided code according to the specified principles?
+        *   Include comments **in KOREAN** within the code briefly justifying test structures or mocking strategies, referencing the principles (e.g., `// 원칙: AAA 준비 - 모의 액터 제공`).
+    4.  **Final Review**: Before concluding the code generation, perform a quick internal check: Does the generated test suite accurately reflect the plan? Does it fully test the machine defined in the provided code according to the specified principles? Ensure non-code text is in Korean.
 </Instructions>
 
 <Testing_Principles_To_Follow>
@@ -41,8 +41,8 @@
 
     2.  **Clarity and Simplicity**:
         *   Tests MUST be easy to read and understand in isolation. PRIORITIZE OBVIOUSNESS.
-        *   Use LONG, DESCRIPTIVE test names (`it`/`test` blocks), e.g., `it('should transition from idle to loading on FETCH event')`.
-        *   Leverage descriptive names from MBT tools if used.
+        *   Use LONG, DESCRIPTIVE test names (`it`/`test` blocks) **in KOREAN**, e.g., `it('FETCH 이벤트 발생 시 idle에서 loading 상태로 전환되어야 한다')`.
+        *   Leverage descriptive names from MBT tools if used (these might remain in English depending on the tool's output).
 
     3.  **Readability and Structure (AAA for XState)**:
         *   Use Vitest structure: `describe`, `it`/`test`, `expect`, `vi`.
@@ -66,7 +66,7 @@
 
     8.  **API Version**: MUST use XState v5 API (`setup`, `createMachine`, `createActor`, `provide`, `getSnapshot`, `assign`, `spawn`, `fromPromise`, etc.). DO NOT use deprecated v4 APIs (`Machine`, `interpret`, `withConfig`, `withContext`, `state.meta`, `cond`, etc.). Refer to provided `@XState.md` documentation if unsure.
 
-    9.  **Principle Justification Comments**: Add brief comments within the generated test code to explain *why* a certain structure was chosen or mock applied, referencing these principles (e.g., `// Principle: Testing behavior - mocking action`, `// Principle: AAA Arrange - providing mock actor`).
+    9.  **Principle Justification Comments**: Add brief comments **in KOREAN** within the generated test code to explain *why* a certain structure was chosen or mock applied, referencing these principles (e.g., `// 원칙: 동작 테스트 - 액션 모의 처리`, `// 원칙: AAA 준비 - 모의 액터 제공`).
 
     10. **Property-Based Testing (PBT) with `@fast-check/vitest`**:
         *   MUST evaluate and implement Property-Based Tests (PBT) using `@fast-check/vitest` (`test.prop`, `fc`) for suitable scenarios.
@@ -89,98 +89,98 @@
 
 <Example_Test_Snippets>
     ```javascript
-    // --- Example Vitest / XState v5 Testing Snippets ---
-    // Import test/it and fc from @fast-check/vitest, others from vitest
+    // --- 예시 Vitest / XState v5 테스팅 스니펫 ---
+    // @fast-check/vitest에서 test/it 및 fc 임포트, 나머지는 vitest에서 임포트
     import { describe, expect, vi, beforeEach, afterEach } from 'vitest';
     import { test, it, fc } from '@fast-check/vitest';
     import { createActor, assign, setup, fromPromise, sendTo, spawn } from 'xstate';
-    // Assume machine definitions (e.g., toggleMachine, counterMachine, fetchMachine) are imported
+    // 머신 정의(예: toggleMachine, counterMachine, fetchMachine)가 임포트되었다고 가정
 
-    // --- Basic Transition ---
+    // --- 기본 전환 ---
     describe('toggleMachine', () => {
-      it('should transition from inactive to active on TOGGLE', () => {
-        // Arrange (Principle: AAA Arrange)
-        const actor = createActor(toggleMachine); // Assumes 'inactive' is initial
+      it('TOGGLE 시 inactive에서 active로 전환되어야 한다', () => {
+        // 준비 (원칙: AAA 준비)
+        const actor = createActor(toggleMachine); // 'inactive'가 초기 상태라고 가정
         actor.start();
-        expect(actor.getSnapshot().value).toBe('inactive'); // Verify initial state
+        expect(actor.getSnapshot().value).toBe('inactive'); // 초기 상태 확인
 
-        // Act (Principle: AAA Act)
+        // 실행 (원칙: AAA 실행)
         actor.send({ type: 'TOGGLE' });
 
-        // Assert (Principle: AAA Assert)
+        // 검증 (원칙: AAA 검증)
         expect(actor.getSnapshot().value).toBe('active');
         actor.stop();
       });
     });
 
-    // --- Context Update (assign) ---
+    // --- 컨텍스트 업데이트 (assign) ---
     describe('counterMachine', () => {
-        it('should increment count context on INCREMENT', () => {
-            // Arrange
-            const actor = createActor(counterMachine); // Assumes context { count: 0 } initial
+        it('INCREMENT 시 count 컨텍스트를 증가시켜야 한다', () => {
+            // 준비
+            const actor = createActor(counterMachine); // 초기 컨텍스트 { count: 0 } 가정
             actor.start();
             const initialCount = actor.getSnapshot().context.count;
 
-            // Act
+            // 실행
             actor.send({ type: 'INCREMENT' });
 
-            // Assert
+            // 검증
             expect(actor.getSnapshot().context.count).toBe(initialCount + 1);
             actor.stop();
         });
     });
 
-    // --- Mocked Action ---
-    describe('toggleMachine with mocked action', () => {
+    // --- 모의 처리된 액션 ---
+    describe('모의 액션이 있는 toggleMachine', () => {
         const mockNotifyActive = vi.fn();
-        // Principle: Testing behavior - providing mock action
+        // 원칙: 동작 테스트 - 모의 액션 제공
         const machineWithMock = toggleMachine.provide({
             actions: { notifyActive: mockNotifyActive },
         });
 
         let actor;
         beforeEach(() => {
-             // Principle: AAA Arrange - creating actor before each test
+             // 원칙: AAA 준비 - 각 테스트 전에 액터 생성
             actor = createActor(machineWithMock);
             actor.start();
         });
         afterEach(() => {
-            // Principle: AAA Arrange - cleaning up actor and mocks
+            // 원칙: AAA 준비 - 액터 및 모의 정리
             actor.stop();
-            vi.clearAllMocks(); // Reset mocks between tests
+            vi.clearAllMocks(); // 테스트 간 모의 초기화
         });
 
-        it('should call notifyActive action on entry to active state', () => {
-            // Arrange - actor started in beforeEach
+        it('active 상태 진입 시 notifyActive 액션을 호출해야 한다', () => {
+            // 준비 - beforeEach에서 액터 시작됨
 
-            // Act
-            actor.send({ type: 'TOGGLE' }); // Enter active
+            // 실행
+            actor.send({ type: 'TOGGLE' }); // active 진입
 
-            // Assert
+            // 검증
             expect(actor.getSnapshot().value).toBe('active');
-            // Principle: Testing behavior - verifying mock was called
+            // 원칙: 동작 테스트 - 모의 함수 호출 확인
             expect(mockNotifyActive).toHaveBeenCalledTimes(1);
         });
 
-         it('should NOT call notifyActive action when staying in inactive state', () => {
-            // Arrange - actor started in beforeEach, initial state is inactive
+         it('inactive 상태 유지 시 notifyActive 액션을 호출하지 않아야 한다', () => {
+            // 준비 - beforeEach에서 액터 시작됨, 초기 상태는 inactive
 
-            // Act
-            actor.send({ type: 'SOME_OTHER_EVENT' }); // Event ignored
+            // 실행
+            actor.send({ type: 'SOME_OTHER_EVENT' }); // 이벤트 무시됨
 
-            // Assert
+            // 검증
             expect(actor.getSnapshot().value).toBe('inactive');
             expect(mockNotifyActive).not.toHaveBeenCalled();
         });
     });
 
-    // --- Mocked Invoked Promise ---
-    describe('fetchMachine with mocked actor', () => {
+    // --- 모의 처리된 호출된 프로미스 ---
+    describe('모의 액터가 있는 fetchMachine', () => {
         const mockFetchData = vi.fn();
-        // Principle: Testing behavior - providing mock actor logic
+        // 원칙: 동작 테스트 - 모의 액터 로직 제공
         const machineWithMock = fetchMachine.provide({
             actors: { fetchData: fromPromise(mockFetchData) },
-            // Also mock actions if they have side effects you don't want
+            // 원치 않는 부수 효과가 있는 경우 액션도 모의 처리
             actions: { logError: vi.fn() }
         });
 
@@ -188,132 +188,132 @@
         beforeEach(() => {
             actor = createActor(machineWithMock);
             actor.start();
-            vi.resetAllMocks(); // Reset mocks AND implementation details
+            vi.resetAllMocks(); // 모의 및 구현 세부 정보 초기화
         });
          afterEach(() => {
             actor.stop();
         });
 
-        it('should transition to success when fetchData resolves', async () => {
-            // Arrange
-            const mockData = { data: 'Mock success data' };
-            mockFetchData.mockResolvedValue(mockData); // Setup mock resolution
+        it('fetchData가 resolve될 때 success로 전환되어야 한다', async () => {
+            // 준비
+            const mockData = { data: '모의 성공 데이터' };
+            mockFetchData.mockResolvedValue(mockData); // 모의 resolve 설정
             expect(actor.getSnapshot().value).toBe('idle');
 
-            // Act
+            // 실행
             actor.send({ type: 'FETCH' });
-            // Assert: Check intermediate loading state
+            // 검증: 중간 loading 상태 확인
             expect(actor.getSnapshot().value).toBe('loading');
             expect(mockFetchData).toHaveBeenCalledTimes(1);
-            expect(mockFetchData).toHaveBeenCalledWith(expect.objectContaining({ input: { attempt: 1 } })); // Check input to actor
+            expect(mockFetchData).toHaveBeenCalledWith(expect.objectContaining({ input: { attempt: 1 } })); // 액터 입력 확인
 
-            // Assert: Wait for final state (Principle: Async Handling)
+            // 검증: 최종 상태 대기 (원칙: 비동기 처리)
             await vi.waitUntil(() => actor.getSnapshot().matches('success'));
 
-            expect(actor.getSnapshot().status).toBe('done'); // Final state check
-            expect(actor.getSnapshot().context.data).toEqual(mockData.data); // Check context update
-            expect(actor.getSnapshot().output).toEqual({ result: mockData.data }); // Check final output
+            expect(actor.getSnapshot().status).toBe('done'); // 최종 상태 확인
+            expect(actor.getSnapshot().context.data).toEqual(mockData.data); // 컨텍스트 업데이트 확인
+            expect(actor.getSnapshot().output).toEqual({ result: mockData.data }); // 최종 출력 확인
         });
 
-        it('should transition to failure when fetchData rejects', async () => {
-            // Arrange
-            const mockError = new Error('Mock fetch failed');
-            mockFetchData.mockRejectedValue(mockError); // Setup mock rejection
-            const mockLogError = machineWithMock.options.actions.logError; // Get ref to mocked action
+        it('fetchData가 reject될 때 failure로 전환되어야 한다', async () => {
+            // 준비
+            const mockError = new Error('모의 fetch 실패');
+            mockFetchData.mockRejectedValue(mockError); // 모의 reject 설정
+            const mockLogError = machineWithMock.options.actions.logError; // 모의 액션 참조 가져오기
 
-            // Act
+            // 실행
             actor.send({ type: 'FETCH' });
             await vi.waitUntil(() => actor.getSnapshot().matches('failure'));
 
-            // Assert
+            // 검증
             expect(actor.getSnapshot().value).toBe('failure');
-            expect(actor.getSnapshot().context.error).toBe(mockError); // Check error in context
-             // Principle: Check that side-effect action was called
+            expect(actor.getSnapshot().context.error).toBe(mockError); // 컨텍스트의 오류 확인
+             // 원칙: 부수 효과 액션 호출 확인
             expect(mockLogError).toHaveBeenCalledTimes(1);
-            expect(mockLogError).toHaveBeenCalledWith(expect.anything(), { error: mockError }); // Check params passed to action
+            expect(mockLogError).toHaveBeenCalledWith(expect.anything(), { error: mockError }); // 액션에 전달된 파라미터 확인
 
-             // Since default machine retries, check transition back to loading
+             // 기본 머신이 재시도하므로 loading으로 다시 전환되는지 확인
             await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
             expect(actor.getSnapshot().context.retries).toBe(1);
-            expect(mockFetchData).toHaveBeenCalledTimes(2); // Called again on retry
+            expect(mockFetchData).toHaveBeenCalledTimes(2); // 재시도 시 다시 호출됨
             expect(mockFetchData).toHaveBeenLastCalledWith(expect.objectContaining({ input: { attempt: 2 } }));
         });
     });
 
-     // --- Guard Testing (Example-Based) ---
-    describe('fetchMachine guard testing (example-based)', () => {
+     // --- 가드 테스트 (예제 기반) ---
+    describe('fetchMachine 가드 테스트 (예제 기반)', () => {
         const mockFetchData = vi.fn();
-        // Mock the actor to control its outcome easily
+        // 결과를 쉽게 제어하기 위해 액터 모의 처리
         const machineWithMock = fetchMachine.provide({
              actors: { fetchData: fromPromise(mockFetchData) },
-             actions: { logError: vi.fn(), incrementRetries: fetchMachine.options.actions.incrementRetries } // Keep original assign
+             actions: { logError: vi.fn(), incrementRetries: fetchMachine.options.actions.incrementRetries } // 원본 assign 유지
         });
 
-         it('should retry from failure if retries < 3', async () => {
-            // Arrange
+         it('retries < 3 이면 failure에서 재시도해야 한다', async () => {
+            // 준비
             const actor = createActor(machineWithMock, {
-                // Start with context already primed for retry scenario
-                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 1, error: 'Previous error' }})
+                // 재시도 시나리오를 위해 이미 준비된 컨텍스트로 시작
+                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 1, error: '이전 오류' }})
             });
-            mockFetchData.mockResolvedValue({ data: 'Success on retry' }); // Expect success this time
-            actor.start(); // Start from the saved snapshot
+            mockFetchData.mockResolvedValue({ data: '재시도 성공' }); // 이번에는 성공 예상
+            actor.start(); // 저장된 스냅샷에서 시작
 
-            // Act: The 'always' transition triggers automatically upon entry/restart
+            // 실행: 'always' 전환은 진입/재시작 시 자동으로 발생
 
-            // Assert: Wait for transition back to loading due to guard passing
+            // 검증: 가드 통과로 인해 loading으로 다시 전환될 때까지 대기
             await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
-            expect(actor.getSnapshot().context.retries).toBe(1); // Retries increment *after* guard check but before loading entry? Check machine logic. Retries are incremented in the transition *to* loading. So context checked by guard is retries=1.
-            expect(mockFetchData).toHaveBeenCalledTimes(1); // Fetch called on entering loading
+            expect(actor.getSnapshot().context.retries).toBe(1); // 재시도는 가드 확인 *후* loading 진입 전에 증가하는가? 머신 로직 확인. 재시도는 loading으로의 전환 *에서* 증가함. 따라서 가드가 확인하는 컨텍스트는 retries=1.
+            expect(mockFetchData).toHaveBeenCalledTimes(1); // loading 진입 시 fetch 호출됨
             expect(mockFetchData).toHaveBeenCalledWith(expect.objectContaining({ input: { attempt: 2 } }));
 
-             // Let it resolve to success
+             // success로 resolve되도록 함
              await vi.waitUntil(() => actor.getSnapshot().matches('success'));
-             expect(actor.getSnapshot().context.data).toBe('Success on retry');
+             expect(actor.getSnapshot().context.data).toBe('재시도 성공');
              actor.stop();
          });
 
-         it('should transition to permanentFailure if retries >= 3', async () => {
-             // Arrange
+         it('retries >= 3 이면 permanentFailure로 전환되어야 한다', async () => {
+             // 준비
             const actor = createActor(machineWithMock, {
-                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 3, error: 'Final error' }})
+                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 3, error: '최종 오류' }})
             });
              const mockLogError = machineWithMock.options.actions.logError;
              actor.start();
 
-             // Act: 'always' transition triggers
+             // 실행: 'always' 전환 발생
 
-             // Assert: Should go directly to permanentFailure as guard fails
+             // 검증: 가드 실패로 permanentFailure로 직접 전환되어야 함
             await vi.waitUntil(() => actor.getSnapshot().matches('permanentFailure'));
-             expect(actor.getSnapshot().status).toBe('done'); // permanentFailure is final
-             expect(mockLogError).not.toHaveBeenCalled(); // logError is on entry to failure, which we started in.
-             expect(mockFetchData).not.toHaveBeenCalled(); // Should not retry
+             expect(actor.getSnapshot().status).toBe('done'); // permanentFailure는 최종 상태
+             expect(mockLogError).not.toHaveBeenCalled(); // logError는 시작한 failure 상태 진입 시 호출됨.
+             expect(mockFetchData).not.toHaveBeenCalled(); // 재시도해서는 안 됨
              actor.stop();
          });
     });
 
-    // --- Guard Testing (Property-Based) ---
-    // Principle: Property-Based Testing for Guard
-    describe('fetchMachine guard testing (PBT)', () => {
-        // Reuse machine with mocks from previous describe block if setup allows, or redefine
+    // --- 가드 테스트 (속성 기반) ---
+    // 원칙: 가드에 대한 속성 기반 테스트
+    describe('fetchMachine 가드 테스트 (PBT)', () => {
+        // 이전 describe 블록의 설정을 재사용하거나 재정의
         const machineWithMock = fetchMachine.provide({
-             actors: { fetchData: vi.fn().mockResolvedValue({ data: '...' }) }, // Mock actor simply
+             actors: { fetchData: vi.fn().mockResolvedValue({ data: '...' }) }, // 액터 간단히 모의 처리
              actions: { logError: vi.fn(), incrementRetries: fetchMachine.options.actions.incrementRetries }
         });
 
-        // Using 'test.prop' from @fast-check/vitest
-        test.prop([fc.integer({ min: 0, max: 5 })]) // Generate various retry counts
-        ('should transition correctly from failure based on retries count', async (retriesCount) => {
-            // Arrange
+        // @fast-check/vitest의 'test.prop' 사용
+        test.prop([fc.integer({ min: 0, max: 5 })]) // 다양한 재시도 횟수 생성
+        ('재시도 횟수에 따라 failure에서 올바르게 전환되어야 한다', async (retriesCount) => {
+            // 준비
              const initialSnapshot = machineWithMock.resolveState({
                  value: 'failure',
-                 context: { retries: retriesCount, error: 'Some error' }
+                 context: { retries: retriesCount, error: '어떤 오류' }
              });
             const actor = createActor(machineWithMock, { snapshot: initialSnapshot });
             actor.start();
 
-            // Act: 'always' transition happens automatically
+            // 실행: 'always' 전환 자동 발생
 
-            // Assert (Invariant based on guard logic)
+            // 검증 (가드 로직 기반 불변 속성)
             if (retriesCount < 3) {
                 await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
                 expect(actor.getSnapshot().value).toBe('loading');
@@ -326,81 +326,81 @@
         });
     });
 
-     // --- Delay Testing (`after`) ---
-    describe('notificationMachine delay testing', () => {
-         // Assume notificationMachine has: states: { visible: { after: { 3000: 'idle' } } }
+     // --- 지연 테스트 (`after`) ---
+    describe('notificationMachine 지연 테스트', () => {
+         // notificationMachine에 다음이 있다고 가정: states: { visible: { after: { 3000: 'idle' } } }
          let actor;
 
          beforeEach(() => {
-            vi.useFakeTimers(); // Principle: Use fake timers for 'after'
+            vi.useFakeTimers(); // 원칙: 'after'에 가짜 타이머 사용
             actor = createActor(notificationMachine);
             actor.start();
          });
          afterEach(() => {
-             vi.useRealTimers(); // Principle: Clean up fake timers
+             vi.useRealTimers(); // 원칙: 가짜 타이머 정리
              actor.stop();
          });
 
-        it('should transition to idle after 3000ms in visible state', () => {
-            // Arrange
-            actor.send({ type: 'SHOW' }); // Enter 'visible' state
+        it('visible 상태에서 3000ms 후 idle로 전환되어야 한다', () => {
+            // 준비
+            actor.send({ type: 'SHOW' }); // 'visible' 상태 진입
             expect(actor.getSnapshot().value).toBe('visible');
 
-            // Act
+            // 실행
             vi.advanceTimersByTime(2999);
-            // Assert: Still visible before delay expires
+            // 검증: 지연 만료 전에는 여전히 visible
             expect(actor.getSnapshot().value).toBe('visible');
 
-            vi.advanceTimersByTime(1); // Cross the threshold
+            vi.advanceTimersByTime(1); // 임계점 넘기기
 
-            // Assert: Now transitioned to idle
+            // 검증: 이제 idle로 전환됨
             expect(actor.getSnapshot().value).toBe('idle');
         });
     });
 
-    // --- Model-Based Testing Snippet (Conceptual Structure) ---
+    // --- 모델 기반 테스팅 스니펫 (개념적 구조) ---
     /*
     import { createModel } from '@xstate/test';
-    // Assume complexMachineWithMeta includes meta: { test: ... } assertions
+    // complexMachineWithMeta에 meta: { test: ... } 검증이 포함되어 있다고 가정
 
     const complexModel = createModel(complexMachineWithMeta).withEvents({
       EVENT_A: {
-        exec: async (page) => { // page is the testContext
-          // Simulate interaction causing EVENT_A in the SUT
+        exec: async (page) => { // page는 testContext
+          // SUT에서 EVENT_A를 발생시키는 상호작용 시뮬레이션
           // await page.click('#button-a');
-          console.log('MBT Exec: EVENT_A');
+          console.log('MBT 실행: EVENT_A');
         },
-        // cases: [{ type: 'EVENT_A', value: 1 }, { type: 'EVENT_A', value: 2 }] // Optional variations
+        // cases: [{ type: 'EVENT_A', value: 1 }, { type: 'EVENT_A', value: 2 }] // 선택적 변형
       },
       EVENT_B: {
-         exec: async (page, event) => { // Event object passed if cases used
-           console.log(`MBT Exec: EVENT_B with value ${event.value}`);
+         exec: async (page, event) => { // cases 사용 시 이벤트 객체 전달됨
+           console.log(`MBT 실행: EVENT_B 값 ${event.value}`);
            // await page.fill('#input-b', event.value);
          },
          cases: [{ type: 'EVENT_B', value: 'test' }]
       }
     });
 
-    describe('complexMachine model-based tests', () => {
-      const testPlans = complexModel.getSimplePathPlans(); // Or getShortestPathPlans
+    describe('complexMachine 모델 기반 테스트', () => {
+      const testPlans = complexModel.getSimplePathPlans(); // 또는 getShortestPathPlans
 
       testPlans.forEach((plan) => {
         describe(plan.description, () => {
           plan.paths.forEach((path) => {
             it(path.description, async () => {
-              // Setup SUT / testContext (e.g., browser page) if needed
-              const testContext = { /* e.g., page object * / };
-              console.log(`--- MBT Path Start: ${path.description} ---`);
-              // path.test executes events and verifies meta.test assertions
+              // 필요시 SUT / testContext 설정 (예: 브라우저 페이지)
+              const testContext = { /* 예: 페이지 객체 * / };
+              console.log(`--- MBT 경로 시작: ${path.description} ---`);
+              // path.test는 이벤트를 실행하고 meta.test 검증을 확인
               await path.test(testContext);
-              console.log(`--- MBT Path End: ${path.description} ---`);
-              // Cleanup SUT / testContext if needed
+              console.log(`--- MBT 경로 종료: ${path.description} ---`);
+              // 필요시 SUT / testContext 정리
             });
           });
         });
       });
 
-      it('should have full state coverage', () => {
+      it('전체 상태 커버리지를 가져야 한다', () => {
         return complexModel.testCoverage();
       });
     });
@@ -413,19 +413,19 @@
     Your response MUST be structured as follows:
 
     1.  **Machine Understanding**:
-        *   Start with your restatement of the input machine's functionality, states, events, context, and actors/invokes.
+        *   Start with your restatement of the input machine's functionality, states, events, context, and actors/invokes **in KOREAN**.
 
     2.  **Test Plan**:
-        *   Begin with the trigger: "Okay, let's devise a plan to test this machine thoroughly."
-        *   Provide the detailed test plan covering the specified categories (Happy Path, Negative, Boundary, Edge, Data, State Transition).
-        *   Each planned test should mention what it tests and the principle(s) applied.
-        *   MUST include justification for using (or not using) PBT and MBT.
+        *   Begin with the trigger **in KOREAN**: "좋습니다, 이 머신을 철저히 테스트하기 위한 계획을 세워 보겠습니다."
+        *   Provide the detailed test plan **in KOREAN** covering the specified categories (Happy Path, Negative, Boundary, Edge, Data, State Transition).
+        *   Each planned test should mention what it tests **in KOREAN** and the principle(s) applied.
+        *   MUST include justification **in KOREAN** for using (or not using) PBT and MBT.
 
     3.  **Vitest Test Suite**:
         *   Provide the complete `*.test.js` code as a single JavaScript code block.
         *   The code MUST include all necessary imports.
         *   The code MUST implement the test plan and strictly follow the `<Testing_Principles_To_Follow>`.
-        *   Include comments referencing principles as demonstrated in `<Example_Test_Snippets>`.
+        *   Include comments **in KOREAN** referencing principles as demonstrated in `<Example_Test_Snippets>`.
         *   The code MUST be runnable.
 
 </Output_Format>
