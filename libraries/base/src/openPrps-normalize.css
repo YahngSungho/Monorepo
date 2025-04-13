@@ -276,9 +276,9 @@
 }
 
 :where(hr) {
-	block-size: var(--border-size-2);
-	margin-block: var(--size-fluid-5);
-	background-color: var(--surface-3);
+	block-size: var(--border-size-2) !important;
+	margin-block: var(--space-em-cqi-l) !important;
+	background-color: var(--gray-9) !important;
 }
 
 :where(figure) {

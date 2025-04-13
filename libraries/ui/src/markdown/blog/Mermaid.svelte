@@ -1,14 +1,13 @@
 <script module>
-import mermaid from 'mermaid'
+import { initMermaidTheme } from './mermaid-theme'
 
-mermaid.initialize({
-	theme: 'neutral',
-})
+initMermaidTheme()
 </script>
 
 <script>
 import './mermaid.css'
 
+import mermaid from 'mermaid'
 import { nanoid } from 'nanoid'
 import { onMount, tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
@@ -25,6 +24,14 @@ function initializeMermaidHover(svgElement) {
 
 	const nodes = svgElement.querySelectorAll('g.node')
 	const edges = svgElement.querySelectorAll('path.flowchart-link') // 플로우차트의 엣지 선택자
+	const edgeLabels = svgElement.querySelectorAll('g.edgeLabel') // 엣지 레이블 선택자 추가
+
+	// 엣지와 레이블 수가 다르면 경고 (순서 기반 매핑의 한계)
+	if (edges.length !== edgeLabels.length) {
+		console.warn(
+			`Mermaid Hover: Mismatch between edge count (${edges.length}) and label count (${edgeLabels.length}). Label highlighting might be inaccurate.`,
+		)
+	}
 
 	if (nodes.length === 0) {
 		// 아직 렌더링되지 않았을 수 있으므로 잠시 후 다시 시도
@@ -48,27 +55,33 @@ function initializeMermaidHover(svgElement) {
 				element: nodeEl,
 				connectedNodes: new Set(),
 				edges: new Set(),
+				labels: new Set(), // 연결된 엣지의 레이블을 저장할 Set 추가
 			}
 		} else {
 			console.warn(`Mermaid Hover: Could not parse node ID: ${fullId}`)
 		}
 	}
 
-	// 엣지 정보 파싱 및 연결 정보 구축
-	for (const edgeEl of edges) {
+	// 엣지 정보 파싱 및 연결 정보 구축 (레이블 포함)
+	for (const [index, edgeEl] of edges.entries()) {
+		// forEach와 index 사용
 		const fullId = edgeEl.id
 		// ID 형식: L_시작노드ID_끝노드ID_인덱스 (예: L_A_B_0)
 		const match = fullId.match(/^L_([^_]+)_([^_]+)_\d+$/)
 		if (match && match[1] && match[2]) {
 			const sourceId = match[1]
 			const targetId = match[2]
+			const correspondingLabel = edgeLabels[index] // 순서 기반으로 레이블 매칭 (주의!)
 
 			// 양방향으로 연결 정보 추가 (hover 효과를 위해)
 			if (connections[sourceId] && connections[targetId]) {
 				connections[sourceId].connectedNodes.add(targetId)
 				connections[sourceId].edges.add(edgeEl)
+				if (correspondingLabel) connections[sourceId].labels.add(correspondingLabel) // 레이블 추가
+
 				connections[targetId].connectedNodes.add(sourceId)
 				connections[targetId].edges.add(edgeEl)
+				if (correspondingLabel) connections[targetId].labels.add(correspondingLabel) // 레이블 추가
 			} else {
 				console.warn(`Mermaid Hover: Edge connects non-existent node: ${fullId}`)
 			}
@@ -91,9 +104,10 @@ function initializeMermaidHover(svgElement) {
 			if (!match || !match[1]) return
 			const hoveredNodeId = match[1]
 
-			// 모든 노드와 엣지를 흐리게 만듦
+			// 모든 노드, 엣지, 레이블을 흐리게 만듦
 			for (const n of nodes) n.classList.add('mermaid-dim')
 			for (const e of edges) e.classList.add('mermaid-dim')
+			for (const l of edgeLabels) l.classList.add('mermaid-dim') // 모든 레이블 흐리게
 
 			// 마우스가 올라간 노드와 연결된 요소들은 다시 밝게 처리
 			if (connections[hoveredNodeId]) {
@@ -111,6 +125,11 @@ function initializeMermaidHover(svgElement) {
 				for (const edge of connections[hoveredNodeId].edges) {
 					edge.classList.remove('mermaid-dim')
 				}
+
+				// 4. 연결된 엣지의 레이블들
+				for (const label of connections[hoveredNodeId].labels) {
+					label.classList.remove('mermaid-dim')
+				}
 			}
 			event.stopPropagation() // 부모 요소(SVG)의 mouseout 이벤트 방지
 		})
@@ -126,17 +145,19 @@ function initializeMermaidHover(svgElement) {
 			(relatedTarget instanceof Node && !svgElement.contains(relatedTarget)) ||
 			relatedTarget === null // 마우스가 창 밖으로 나간 경우 등
 		) {
-			// 모든 노드와 엣지에서 흐림 효과 제거
+			// 모든 노드, 엣지, 레이블에서 흐림 효과 제거
 			for (const n of nodes) n.classList.remove('mermaid-dim')
 			for (const e of edges) e.classList.remove('mermaid-dim')
+			for (const l of edgeLabels) l.classList.remove('mermaid-dim') // 모든 레이블 밝게
 		}
 	})
 
 	// 혹시 모를 경우를 대비해 mouseleave 이벤트도 추가
 	svgElement.addEventListener('mouseleave', () => {
-		// 모든 노드와 엣지에서 흐림 효과 제거
+		// 모든 노드, 엣지, 레이블에서 흐림 효과 제거
 		for (const n of nodes) n.classList.remove('mermaid-dim')
 		for (const e of edges) e.classList.remove('mermaid-dim')
+		for (const l of edgeLabels) l.classList.remove('mermaid-dim') // 모든 레이블 밝게
 	})
 
 	// console.log(`Mermaid hover effect initialized for SVG: #${svgElement.id}`);
