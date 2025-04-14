@@ -30,11 +30,11 @@ for (const entry of Object.values(manifest.entries)) {
 		await page.route('**/*', (route, request) => {
 			if (request.resourceType() === 'document') {
 				if (allowNavigation) {
-					console.log(`네비게이션 허용 (초기): ${request.url()}`)
+					// console.log(`네비게이션 허용 (초기): ${request.url()}`)
 					allowNavigation = false // 첫 번째 document 요청 후 플래그 변경
 					route.continue()
 				} else {
-					console.log(`네비게이션 차단 시도: ${request.url()}`)
+					// console.log(`네비게이션 차단 시도: ${request.url()}`)
 					route.abort('aborted') // 이후 모든 document 요청 차단
 				}
 			} else {

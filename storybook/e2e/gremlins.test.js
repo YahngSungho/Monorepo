@@ -69,7 +69,7 @@ async function unleashGremlins(page) {
 		})
 
 		try {
-			await horde.unleash({ nb: 100 })
+			await horde.unleash({ nb: 10 })
 			console.log('Gremlins 공격 완료')
 		} catch (error) {
 			console.error('Gremlins horde.unleash() 실행 중 오류:', error)
@@ -80,9 +80,9 @@ async function unleashGremlins(page) {
 }
 
 for (const entry of Object.values(manifest.entries)) {
-	if (!process.env.CI) {
-		break
-	}
+	// if (!process.env.CI) {
+	// 	break
+	// }
 
 	if (!entry?.id) {
 		continue
@@ -104,11 +104,11 @@ for (const entry of Object.values(manifest.entries)) {
 		await page.route('**/*', (route, request) => {
 			if (request.resourceType() === 'document') {
 				if (allowNavigation) {
-					console.log(`네비게이션 허용 (초기): ${request.url()}`)
+					// console.log(`네비게이션 허용 (초기): ${request.url()}`)
 					allowNavigation = false // 첫 번째 document 요청 후 플래그 변경
 					route.continue()
 				} else {
-					console.log(`네비게이션 차단 시도: ${request.url()}`)
+					// console.log(`네비게이션 차단 시도: ${request.url()}`)
 					route.abort('aborted') // 이후 모든 document 요청 차단
 				}
 			} else {
@@ -154,7 +154,7 @@ for (const entry of Object.values(manifest.entries)) {
 				response.status() === 0 &&
 				response.request().failure()?.errorText === 'net::ERR_ABORTED'
 			) {
-				console.log(`차단된 요청 응답 무시: ${response.url()}`)
+				// console.log(`차단된 요청 응답 무시: ${response.url()}`)
 				return
 			}
 			if (response.status() >= 400) {
