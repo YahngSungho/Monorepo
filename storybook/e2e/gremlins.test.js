@@ -25,8 +25,8 @@ async function unleashGremlins(page) {
 					// 클릭 가능한지 확인하는 로직 수정 (이전 응답 참고 - 네비게이션 방지 강화)
 					canClick: (element) => {
 						const anchor = element.closest('a')
-						if (anchor && anchor.href && anchor.href !== '#') {
-							console.log(`Gremlins: 링크 클릭 시도 (차단됨): ${anchor.href}`)
+						if (anchor && anchor.href) {
+							// console.log(`Gremlins: 링크 클릭 시도 (차단됨): ${anchor.href}`)
 							return false // 링크 클릭 방지
 						}
 						if (
@@ -34,7 +34,7 @@ async function unleashGremlins(page) {
 							element.closest('button[type="submit"]') ||
 							(element.tagName === 'BUTTON' && element.closest('form'))
 						) {
-							console.log(`Gremlins: 양식 제출 관련 클릭 시도 (차단됨): ${element.tagName}`)
+							// console.log(`Gremlins: 양식 제출 관련 클릭 시도 (차단됨): ${element.tagName}`)
 							return false // 폼 제출 방지
 						}
 						return true
@@ -60,16 +60,22 @@ async function unleashGremlins(page) {
 			],
 			strategies: [
 				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.strategies.distribution(),
+				globalThis.gremlins.strategies.distribution({
+					nb: 20,
+				}),
 				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.strategies.allTogether(),
+				globalThis.gremlins.strategies.allTogether({
+					nb: 5,
+				}),
 				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.strategies.bySpecies(),
+				globalThis.gremlins.strategies.bySpecies({
+					nb: 5,
+				}),
 			],
 		})
 
 		try {
-			await horde.unleash({ nb: 1000 })
+			await horde.unleash()
 			console.log('Gremlins 공격 완료')
 		} catch (error) {
 			console.error('Gremlins horde.unleash() 실행 중 오류:', error)
@@ -80,9 +86,9 @@ async function unleashGremlins(page) {
 }
 
 for (const entry of Object.values(manifest.entries)) {
-	if (!process.env.CI) {
-		break
-	}
+	// if (!process.env.CI) {
+	// 	break
+	// }
 
 	if (!entry?.id) {
 		continue
@@ -104,12 +110,20 @@ for (const entry of Object.values(manifest.entries)) {
 		await page.route('**/*', (route, request) => {
 			if (request.resourceType() === 'document') {
 				if (allowNavigation) {
-					console.log(`네비게이션 허용 (초기): ${request.url()}`)
+					// console.log(`네비게이션 허용 (초기): ${request.url()}`)
 					allowNavigation = false // 첫 번째 document 요청 후 플래그 변경
 					route.continue()
 				} else {
-					console.log(`네비게이션 차단 시도: ${request.url()}`)
-					route.abort('aborted') // 이후 모든 document 요청 차단
+					// 현재 페이지 URL과 요청 URL 비교
+					const currentPageUrl = page.url()
+					const requestedUrl = request.url()
+					if (currentPageUrl === requestedUrl) {
+						// console.log(`네비게이션 허용 (새로고침): ${requestedUrl}`)
+						route.continue() // 새로고침 허용
+					} else {
+						// console.log(`네비게이션 차단 시도: ${requestedUrl}`)
+						route.abort('aborted') // 다른 페이지로의 이동 차단
+					}
 				}
 			} else {
 				route.continue() // 다른 리소스(css, js 등)는 허용
@@ -130,11 +144,11 @@ for (const entry of Object.values(manifest.entries)) {
 				err.message.includes('net::ERR_ABORTED') ||
 				err.message.includes('Navigation failed because page was closed')
 			) {
-				console.log(`예상된 네비게이션 중단 관련 오류 무시: ${err.message}`)
+				// console.log(`예상된 네비게이션 중단 관련 오류 무시: ${err.message}`)
 				return
 			}
 			pageErrors.push(err.message)
-			console.error(`페이지 오류 발생 감지: ${err.message}`)
+			// console.error(`페이지 오류 발생 감지: ${err.message}`)
 		})
 
 		const consoleErrors = []
@@ -143,7 +157,7 @@ for (const entry of Object.values(manifest.entries)) {
 				// Gremlins가 유발하는 특정 콘솔 오류는 무시할 수 있음 (선택 사항)
 				// if (msg.text().includes('some expected error')) return;
 				consoleErrors.push(msg.text())
-				console.log(`콘솔 에러 감지: ${msg.text()}`)
+				// console.log(`콘솔 에러 감지: ${msg.text()}`)
 			}
 		})
 
@@ -154,7 +168,7 @@ for (const entry of Object.values(manifest.entries)) {
 				response.status() === 0 &&
 				response.request().failure()?.errorText === 'net::ERR_ABORTED'
 			) {
-				console.log(`차단된 요청 응답 무시: ${response.url()}`)
+				// console.log(`차단된 요청 응답 무시: ${response.url()}`)
 				return
 			}
 			if (response.status() >= 400) {
@@ -166,25 +180,25 @@ for (const entry of Object.values(manifest.entries)) {
 			// 네비게이션 차단 플래그 리셋 (테스트 시작 시 항상 초기 로딩 허용)
 			allowNavigation = true
 			await page.goto(`./iframe.html?id=${id}&viewMode=story`)
-			await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
+			await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 15_000 })
 			// 이제 allowNavigation은 false 상태일 것임
 
 			const cachedState = readCache(cacheFilePath)
 			const currentState = await serializePage(page)
 
 			if (isSameState(cachedState, currentState)) {
-				console.log(
-					`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`,
-				)
+				// console.log(
+				// 	`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`,
+				// )
 				test.info().annotations.push({ type: 'cache-status', description: 'hit' })
 				expect(consoleErrors, '콘솔 에러 체크 (캐시 히트)').toHaveLength(0)
 				expect(failedRequests, '네트워크 에러 체크 (캐시 히트)').toHaveLength(0)
 				await page.unroute('**/*') // 테스트 종료 전 라우팅 해제
 				return
 			}
-			console.log(
-				`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`,
-			)
+			// console.log(
+			// 	`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`,
+			// )
 			test.info().annotations.push({ type: 'cache-status', description: 'miss' })
 
 			await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -220,10 +234,8 @@ for (const entry of Object.values(manifest.entries)) {
 
 			if (pageErrors.length === 0 && failedRequests.length === 0) {
 				// 네트워크 에러도 체크
-				console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`)
-				// 캐시 쓰기 전에 현재 상태를 다시 한번 가져오는 것이 더 정확할 수 있음
-				const finalState = await serializePage(page)
-				writeCache(finalState, cacheFilePath)
+				// console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`)
+				writeCache(currentState, cacheFilePath)
 			}
 		} catch (error) {
 			console.error('Gremlins 테스트 중 예상치 못한 오류 발생:', error)

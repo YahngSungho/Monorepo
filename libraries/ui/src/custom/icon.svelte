@@ -10,13 +10,19 @@ let { children, icon, right = false, noMargin = false, small = false, ...restPro
 	</span>
 {/snippet}
 
+{#snippet childrenElement()}
+	<span class="children-container">
+		{@render children?.()}
+	</span>
+{/snippet}
+
 <span class="with-icon" {...restProps}>
 	{#if right}
-		{@render children?.()}
+		{@render childrenElement()}
 		{@render iconElement(icon)}
 	{:else}
 		{@render iconElement(icon)}
-		{@render children?.()}
+		{@render childrenElement()}
 	{/if}
 </span>
 
@@ -30,6 +36,7 @@ let { children, icon, right = false, noMargin = false, small = false, ...restPro
 		inset-block-start: 0.4ex;
 
 		display: inline-block;
+		flex-shrink: 0;
 
 		margin-inline-end: 0.5ch;
 

@@ -109,7 +109,6 @@
 	--color-popover-foreground: var(--popover-foreground);
 	--color-card: var(--card);
 	--color-card-foreground: var(--card-foreground) / <alpha-value>;
-	/* stylelint-disable-next-line custom-property-pattern */
 	--color-sidebar-DEFAULT: var(--sidebar-background);
 	--color-sidebar-foreground: var(--sidebar-foreground);
 	--color-sidebar-primary: var(--sidebar-primary);

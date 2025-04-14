@@ -19,7 +19,7 @@
 		"src/service-worker/**",
 		"static/**"
 	],
-	"extends": ["@library/base/tsconfig.json"],
+	"extends": ["../base/tsconfig.json"],
 	"include": [
 		"src/**/*",
 		"*.js",

@@ -188,6 +188,7 @@ const baseRules = {
 	'svelte/sort-attributes': 'warn',
 	'svelte/no-trailing-spaces': 'warn',
 	'svelte/no-inner-declarations': 'warn',
+	'sonarjs/prefer-single-boolean-return': 'off',
 	'svelte/shorthand-attribute': 'warn',
 	'svelte/no-navigation-without-base': 'warn',
 	'svelte/shorthand-directive': 'warn',

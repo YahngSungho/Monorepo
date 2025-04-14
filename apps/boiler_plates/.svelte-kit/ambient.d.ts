@@ -91,6 +91,7 @@ declare module '$env/static/private' {
 	export const NVM_HOME: string;
 	export const NVM_INC: string;
 	export const NVM_SYMLINK: string;
+	export const OLDPWD: string;
 	export const OneDrive: string;
 	export const ORIGINAL_PATH: string;
 	export const ORIGINAL_TEMP: string;
@@ -240,6 +241,7 @@ declare module '$env/dynamic/private' {
 		NVM_HOME: string;
 		NVM_INC: string;
 		NVM_SYMLINK: string;
+		OLDPWD: string;
 		OneDrive: string;
 		ORIGINAL_PATH: string;
 		ORIGINAL_TEMP: string;
