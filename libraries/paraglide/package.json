@@ -12,6 +12,7 @@
 	},
 	"keywords": [],
 	"dependencies": {
+		"@library/helpers": "workspace:*"
 	},
 	"exports": {
 		"./messages.js": "./paraglide-output/messages.js",

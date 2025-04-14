@@ -10,52 +10,47 @@ export async function getTranslatedMessages_forTest (language, combinedMessages)
 	return translatedMessages
 }
 
-// const messageMapForTest = {
-// 	en: {
-// 	hello_world: 'Hello, world!',
-// 	open: 'Open',
-// 	close: 'Close',
-// 	},
-// 	ko: {
-// 		hello_world: '안녕하세요',
-// 		open: '열기',
-// 		close: '닫기',
-// 	},
-// 	explanations: {
-// 		hello_world: 'This is a test message',
-// 		open: 'This is a test message',
-// 		close: 'This is a test message',
-// 	},
-// 	fr: {
-// 		hello_world: 'Bonjour, le monde!',
-// 	},
-// 	de: {
-// 		open: 'Öffnen',
-// 	},
-// }
+const messageMapForTest = {
+	en: {
+	open: 'Open',
+	},
+	ko: {
+		hello_world: '안녕하세요',
+		open: '열기',
+		close: '닫기',
+	},
+	fr: {
+		hello_world: 'Bonjour, le monde!',
+	},
+	de: {
+		open: 'Öffnen',
+	},
+}
 
-// const combinedMessages_cached_forTest = {
-// 		hello_world: {
-// 			en: 'Hello, world!',
-// 			ko: '안녕하세요',
-// 			explanation: 'This is a test message',
-// 		},
-// 		open: {
-// 			en: 'Open',
-// 			ko: '열기',
-// 			explanation: 'This is a test message',
-// 		},
-// 	}
+const explanations_forTest = {
+		hello_world: 'This is a test message',
+		open: 'This is a test message',
+		close: 'This is a test message',
+	}
 
-export async function getTranslatedLanguageMap (messageMap, combinedMessages_cached, getTranslatedMessages) {
+const combinedMessages_cached_forTest = {
+		hello_world: {
+			ko: '안녕하세요',
+			explanation: 'This is a test message',
+		},
+		open: {
+			ko: '열기',
+			explanation: 'This is a test message',
+		},
+	}
 
-	const messages_en = messageMap.en
+export async function getTranslatedLanguageMap (messageMap, explanations, combinedMessages_cached, getTranslatedMessages) {
+
 	const messages_ko = messageMap.ko
-	const messages_explanations = messageMap.explanations
 
 	const targetLanguageMap = {}
 	for (const [ key, value ] of Object.entries(messageMap)) {
-		if (key === 'en' || key === 'ko' || key === 'explanations') {
+		if (key === 'ko') {
 			continue
 		}
 
@@ -67,11 +62,12 @@ export async function getTranslatedLanguageMap (messageMap, combinedMessages_cac
 
 
 	const combinedMessages_latest = {}
-	for (const [key, value] of Object.entries(messages_en)) {
+	for (const [key, value] of Object.entries(messages_ko)) {
 		combinedMessages_latest[key] = {
-			en: value,
-			ko: messages_ko[key],
-			explanation: messages_explanations[key],
+			ko: value,
+		}
+		if (explanations[key]) {
+			combinedMessages_latest[key].explanation = explanations[key]
 		}
 	}
 	for (const [messageKey, combinedMessage] of Object.entries(combinedMessages_latest)) {
@@ -90,9 +86,18 @@ export async function getTranslatedLanguageMap (messageMap, combinedMessages_cac
 			}
 		}
 	}
+
+	const translatedLanguageMap = {}
 	for (const [language, languageMessage] of Object.entries(targetLanguageMap)) {
-		const combinedMessages_target = {}
-		for (const messageKey of languageMessage.missingMessageKeys) {
+		translatedLanguageMap[language] = await translateOneLanguageMessages(language, languageMessage, combinedMessages_latest, getTranslatedMessages)
+	}
+
+	return translatedLanguageMap
+}
+
+async function translateOneLanguageMessages (language, languageMessageObject, combinedMessages_latest, getTranslatedMessages) {
+	const combinedMessages_target = {}
+		for (const messageKey of languageMessageObject.missingMessageKeys) {
 			combinedMessages_target[messageKey] = combinedMessages_latest[messageKey]
 		}
 		const messageKeysToNumbersMap = {}
@@ -110,22 +115,21 @@ export async function getTranslatedLanguageMap (messageMap, combinedMessages_cac
 		for (const [number, messageKey] of Object.entries(numbersToMessageKeysMap)) {
 			translatedMessages[messageKey] = translatedMessages_numbers[number]
 		}
-		targetLanguageMap[language].translatedMessages = translatedMessages
 
-		const newMessages = create(targetLanguageMap[language].value, draft => {
+		const newMessages = create(languageMessageObject.value, draft => {
 			for (const [messageKey, message] of Object.entries(translatedMessages)) {
 				draft[messageKey] = message
 			}
 		})
 
-		targetLanguageMap[language].newMessages = newMessages
-
-	}
-
-	return targetLanguageMap
+		return create(languageMessageObject, draft => {
+			draft.translatedMessages = translatedMessages
+			draft.newMessages = newMessages
+		})
 }
 
-// const result = await getTranslatedLanguageMap(messageMapForTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)
+const result = await getTranslatedLanguageMap(messageMapForTest, explanations_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)
+console.log('💬 result:', result)
 // result:
 // {
 //     fr: {
