@@ -34,8 +34,16 @@ for (const entry of Object.values(manifest.entries)) {
 					allowNavigation = false // 첫 번째 document 요청 후 플래그 변경
 					route.continue()
 				} else {
-					// console.log(`네비게이션 차단 시도: ${request.url()}`)
-					route.abort('aborted') // 이후 모든 document 요청 차단
+					// 현재 페이지 URL과 요청 URL 비교
+					const currentPageUrl = page.url()
+					const requestedUrl = request.url()
+					if (currentPageUrl === requestedUrl) {
+						// console.log(`네비게이션 허용 (새로고침): ${requestedUrl}`)
+						route.continue() // 새로고침 허용
+					} else {
+						// console.log(`네비게이션 차단 시도: ${requestedUrl}`)
+						route.abort('aborted') // 다른 페이지로의 이동 차단
+					}
 				}
 			} else {
 				route.continue() // 다른 리소스(css, js 등)는 허용
