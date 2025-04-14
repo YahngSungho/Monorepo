@@ -13,18 +13,20 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 1. **Code Separation:** Clearly distinguish and manage code into the following three types:
 
    1. Data
-   2. Pure Functions
-   3. Impure Functions, Side Effects
+   2. 계산 (= Pure Functions )
+   3. 액션 (= Impure Functions, Side Effects)
 
-2. **Preference Order:** **Data > Pure Functions > Side Effects**
+	 Keep in mind that in this codebase, we call pure code “계산(computation or calculation)” and impure code “액션(action)”.
 
-   - Whenever possible, implement logic as pure functions. Consider if pure functions can be represented as data.
-   - Use side effects only when necessary. Isolate side effects by extracting as much logic as possible into pure functions, minimizing and isolating the code sections with side effects.
+2. **Preference Order:** **Data > 계산  > 액션**
 
-3. **Managing Side Effects:**
+   - Whenever possible, implement logic as 계산. Consider if 계산 can be represented as data.
+   - Use 액션 only when necessary. Isolate 액션 by extracting as much logic as possible into 계산, minimizing and isolating the code sections with 액션.
 
-   - **Isolation:** Manage functions containing side effects so they are clearly identifiable (e.g., grouped in specific modules, using naming conventions).
-   - **Naming:** **Consider** suffixing the names of functions with side effects with `_impure` (e.g., `updateDOM_impure`, `fetchData_impure`).
+3. **Managing 액션:**
+
+   - **Isolation:** Manage functions containing 액션 so they are clearly identifiable (e.g., grouped in specific modules, using naming conventions).
+   - **Naming:** **Consider** suffixing the names of functions with 액션 with `_action` (e.g., `updateDOM_action`, `fetchData_action`).
 
 4. **Immutability:** Do not modify data structures (objects, arrays) directly. When changes are needed, create and return new data structures. This improves predictability and simplifies state management.
 
@@ -36,7 +38,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
 - **Ramda:** A utility library for functional programming.
 
-  - **Preferred Use:** Prioritize using Ramda for implementing pure functions, function composition, and currying.
+  - **Preferred Use:** Prioritize using Ramda for implementing 계산, function composition, and currying.
   - **Import:** `import { R } from '@library/helpers/R'`
   - **Example:** Consider `R.concat(myArray1, myArray2)` instead of `myArray1.concat(myArray2)`. Use `R.pipe` for composition and `R.curry` for currying.
 
@@ -48,7 +50,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
     ```javascript
     import { create } from '@library/helpers/mutative' // Path verification needed
-    
+
     const baseState = { count: 0, items: [] }
     const nextState = create(baseState, (draft) => {
     	draft.count++
@@ -64,7 +66,7 @@ In this codebase, 'Functor', 'Monad', 'Monoid' are simulated using class structu
 ### Guidelines for choosing the appropriate structure
 
 - For Class-like data structures encapsulating a value: Consider using a **Functor Class**.
-- For nestable or chainable computations, especially when dealing with context (e.g., potential absence of value, side effects) where basic Array/Object structures are insufficient: Consider using a **Monad Class**.
+- For nestable or chainable computations, especially when dealing with context (e.g., potential absence of value, 액션) where basic Array/Object structures are insufficient: Consider using a **Monad Class**.
 - For combining or aggregating values of the same type, particularly when a neutral "empty" value exists and basic Array/Object combination is insufficient: Consider using a **Monoid Class**.
 
 ### Examples
@@ -281,17 +283,17 @@ class List {
 
 ```javascript
 // Before (mutation)
-function addItem_impure(cart, item) {
-	// Assume calculateTotal exists and is pure
+function addItem_action(cart, item) {
+	// Assume calculateTotal exists and is 계산
 	cart.items.push(item) // Side effect: modifies original array
 	cart.total = calculateTotal(cart.items) // Side effect: modifies original object
 	return cart
 }
 
-// After (immutability + pure function)
+// After (immutability + 계산)
 import { R } from '@library/helpers/R' // Example using Ramda
 
-// Assume calculateTotal exists and is pure, e.g.:
+// Assume calculateTotal exists and is 계산, e.g.:
 const calculateTotal = (items) => R.sum(R.pluck('price', items || []))
 
 const addItem = (cart, item) => {
@@ -301,7 +303,7 @@ const addItem = (cart, item) => {
 		// Creates a new object
 		...cart, // Copy existing properties
 		items: newItems,
-		total: calculateTotal(newItems), // Uses pure function
+		total: calculateTotal(newItems), // Uses 계산
 	}
 }
 
@@ -317,15 +319,15 @@ const addItem = (cart, item) => {
 
 ```javascript
 // Before (imperative)
-// Assume fetchUser_impure(userId) performs a side effect (e.g., API call)
-// Assume formatName(name) is a pure function
-function processUserData_impure(userId) {
+// Assume fetchUser_action(userId) performs a side effect (e.g., API call)
+// Assume formatName(name) is a 계산
+function processUserData_action(userId) {
 	try {
-		const user = fetchUser_impure(userId) // Side effect
+		const user = fetchUser_action(userId) // Side effect
 		if (user && user.isActive) {
-			const formattedName = formatName(user.name) // Pure function call
+			const formattedName = formatName(user.name) // 계산 call
 			console.log(`Active user: ${formattedName}`) // Side effect
-			return formattedName // Returns data but also had side effects
+			return formattedName // Returns data but also had 액션
 		}
 		return null
 	} catch (error) {
@@ -337,13 +339,13 @@ function processUserData_impure(userId) {
 // After (function composition + Maybe concept)
 import { R } from '@library/helpers/R'
 
-// Assume fetchUser_impure exists
+// Assume fetchUser_action exists
 // Assume formatName exists, e.g., const formatName = (name) => String(name).toUpperCase()
 
 // Function returning a Maybe-like result (conceptual example using simple object)
 const fetchActiveUser = (userId) => {
 	try {
-		const user = fetchUser_impure(userId) // Side effect is isolated here
+		const user = fetchUser_action(userId) // Side effect is isolated here
 		// Return a consistent structure indicating success/failure or value presence
 		return user && user.isActive ? { type: 'Just', value: user } : { type: 'Nothing' }
 	} catch (error) {
@@ -376,5 +378,5 @@ const logUserInfo = R.pipe(
 ## Style Guide
 
 - **Function Composition:** Use `R.pipe` (left-to-right) to break down complex logic into smaller, reusable functions.
-- **Naming:** Use clear names that reveal the function's role. Pure functions should indicate the relationship between input and output (e.g., `calculateTotal`, `formatUserName`). Functions with side effects should indicate what effect they cause (e.g., `saveUser_impure`, `logMessage_impure`), especially if not immediately obvious from context.
+- **Naming:** Use clear names that reveal the function's role. 계산 should indicate the relationship between input and output (e.g., `calculateTotal`, `formatUserName`). Functions with 액션 should indicate what effect they cause (e.g., `saveUser_action`, `logMessage_action`), especially if not immediately obvious from context.
 - **Conciseness:** Avoid unnecessary abstractions or overly complex functional techniques where simpler imperative or object-oriented approaches are more readable and maintainable. Functional programming is a tool, not a dogma. Prioritize clarity.
