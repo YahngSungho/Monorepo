@@ -38,7 +38,7 @@ function writeCache(state, cacheFilePath) {
 			fs.mkdirSync(dir, { recursive: true })
 		}
 		fs.writeFileSync(cacheFilePath, state, 'utf8')
-		console.log(`페이지 상태 캐시 저장 완료: ${cacheFilePath}`)
+		// console.log(`페이지 상태 캐시 저장 완료: ${cacheFilePath}`)
 	} catch (error) {
 		console.error(`캐시 쓰기 오류 (${cacheFilePath}):`, error)
 	}

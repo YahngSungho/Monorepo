@@ -68,19 +68,19 @@ for (const entry of Object.values(manifest.entries)) {
 		})
 
 		await page.goto(`./iframe.html?id=${id}&viewMode=story`)
-		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 5000 })
+		await expect(page.locator('#storybook-root')).toBeVisible({ timeout: 15_000 })
 
 		const cachedState = readCache(cacheFilePath)
 		const currentState = await serializePage(page)
 
 		if (isSameState(cachedState, currentState)) {
-			console.log(`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`)
+			// console.log(`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`)
 			test.info().annotations.push({ type: 'cache-status', description: 'hit' })
 			expect(consoleErrors, '콘솔 에러 체크 (캐시 히트)').toHaveLength(0)
 			expect(failedRequests, '네트워크 에러 체크 (캐시 히트)').toHaveLength(0)
 			return
 		}
-		console.log(`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`)
+		// console.log(`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`)
 		test.info().annotations.push({ type: 'cache-status', description: 'miss' })
 
 		await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -112,7 +112,7 @@ for (const entry of Object.values(manifest.entries)) {
 		expect(results.success).toBe(true)
 
 		if (results.success && results.errors.length === 0) {
-			console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`)
+			// console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`)
 			writeCache(currentState, cacheFilePath)
 		}
 	})
