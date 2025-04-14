@@ -26,7 +26,7 @@ async function unleashGremlins(page) {
 					canClick: (element) => {
 						const anchor = element.closest('a')
 						if (anchor && anchor.href && anchor.href !== '#') {
-							console.log(`Gremlins: 링크 클릭 시도 (차단됨): ${anchor.href}`)
+							// console.log(`Gremlins: 링크 클릭 시도 (차단됨): ${anchor.href}`)
 							return false // 링크 클릭 방지
 						}
 						if (
@@ -34,7 +34,7 @@ async function unleashGremlins(page) {
 							element.closest('button[type="submit"]') ||
 							(element.tagName === 'BUTTON' && element.closest('form'))
 						) {
-							console.log(`Gremlins: 양식 제출 관련 클릭 시도 (차단됨): ${element.tagName}`)
+							// console.log(`Gremlins: 양식 제출 관련 클릭 시도 (차단됨): ${element.tagName}`)
 							return false // 폼 제출 방지
 						}
 						return true
@@ -138,7 +138,7 @@ for (const entry of Object.values(manifest.entries)) {
 				err.message.includes('net::ERR_ABORTED') ||
 				err.message.includes('Navigation failed because page was closed')
 			) {
-				console.log(`예상된 네비게이션 중단 관련 오류 무시: ${err.message}`)
+				// console.log(`예상된 네비게이션 중단 관련 오류 무시: ${err.message}`)
 				return
 			}
 			pageErrors.push(err.message)
