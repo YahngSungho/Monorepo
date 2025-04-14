@@ -1,14 +1,10 @@
-/* eslint-disable unicorn/no-anonymous-default-export */
-// @ts-nocheck
-export default function (wallaby) {
+export default function wallabyConfig (wallaby) {
 	return {
 		// ... 기존 설정 ...
 		autoDetect: true,
 		debug: true,
 		trace: true,
 
-		  testFramework: {
-    configFile: './libraries/base/vite.config.js'
-  }
+		tests: ['**/src/**/*.test.*', '!**/e2e/**', '!**/node_modules/**'],
 	}
 }
