@@ -19,7 +19,6 @@
 		"random-js": "^2.1.0"
 	},
 	"devDependencies": {
-		"@library/base": "workspace:*"
 	},
 	"keywords": [],
 	"exports": {

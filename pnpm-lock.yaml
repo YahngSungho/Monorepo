@@ -512,10 +512,6 @@ importers:
       random-js:
         specifier: ^2.1.0
         version: 2.1.0
-    devDependencies:
-      '@library/base':
-        specifier: workspace:*
-        version: link:../base
 
   libraries/paraglide: {}
 

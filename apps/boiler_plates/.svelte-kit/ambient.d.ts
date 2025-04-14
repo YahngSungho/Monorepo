@@ -29,7 +29,6 @@ declare module '$env/static/private' {
 	export const ACLOCAL_PATH: string;
 	export const ALLUSERSPROFILE: string;
 	export const APPDATA: string;
-	export const BASE_URL: string;
 	export const ChocolateyInstall: string;
 	export const ChocolateyLastPathUpdate: string;
 	export const CHROME_CRASHPAD_PIPE_NAME: string;
@@ -41,7 +40,6 @@ declare module '$env/static/private' {
 	export const COMSPEC: string;
 	export const CONFIG_SITE: string;
 	export const CURSOR_TRACE_ID: string;
-	export const DEV: string;
 	export const DISPLAY: string;
 	export const DriverData: string;
 	export const EXEPATH: string;
@@ -63,7 +61,6 @@ declare module '$env/static/private' {
 	export const MINGW_CHOST: string;
 	export const MINGW_PACKAGE_PREFIX: string;
 	export const MINGW_PREFIX: string;
-	export const MODE: string;
 	export const MSYS: string;
 	export const MSYSTEM: string;
 	export const MSYSTEM_CARCH: string;
@@ -94,6 +91,7 @@ declare module '$env/static/private' {
 	export const NVM_HOME: string;
 	export const NVM_INC: string;
 	export const NVM_SYMLINK: string;
+	export const OLDPWD: string;
 	export const OneDrive: string;
 	export const ORIGINAL_PATH: string;
 	export const ORIGINAL_TEMP: string;
@@ -115,7 +113,6 @@ declare module '$env/static/private' {
 	export const PROCESSOR_IDENTIFIER: string;
 	export const PROCESSOR_LEVEL: string;
 	export const PROCESSOR_REVISION: string;
-	export const PROD: string;
 	export const ProgramData: string;
 	export const PROGRAMFILES: string;
 	export const ProgramW6432: string;
@@ -134,14 +131,12 @@ declare module '$env/static/private' {
 	export const TERM: string;
 	export const TERM_PROGRAM: string;
 	export const TERM_PROGRAM_VERSION: string;
-	export const TEST: string;
 	export const TMP: string;
 	export const TMPDIR: string;
 	export const USERDOMAIN: string;
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
-	export const VITEST: string;
 	export const VS140COMNTOOLS: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
@@ -184,7 +179,6 @@ declare module '$env/dynamic/private' {
 		ACLOCAL_PATH: string;
 		ALLUSERSPROFILE: string;
 		APPDATA: string;
-		BASE_URL: string;
 		ChocolateyInstall: string;
 		ChocolateyLastPathUpdate: string;
 		CHROME_CRASHPAD_PIPE_NAME: string;
@@ -196,7 +190,6 @@ declare module '$env/dynamic/private' {
 		COMSPEC: string;
 		CONFIG_SITE: string;
 		CURSOR_TRACE_ID: string;
-		DEV: string;
 		DISPLAY: string;
 		DriverData: string;
 		EXEPATH: string;
@@ -218,7 +211,6 @@ declare module '$env/dynamic/private' {
 		MINGW_CHOST: string;
 		MINGW_PACKAGE_PREFIX: string;
 		MINGW_PREFIX: string;
-		MODE: string;
 		MSYS: string;
 		MSYSTEM: string;
 		MSYSTEM_CARCH: string;
@@ -249,6 +241,7 @@ declare module '$env/dynamic/private' {
 		NVM_HOME: string;
 		NVM_INC: string;
 		NVM_SYMLINK: string;
+		OLDPWD: string;
 		OneDrive: string;
 		ORIGINAL_PATH: string;
 		ORIGINAL_TEMP: string;
@@ -270,7 +263,6 @@ declare module '$env/dynamic/private' {
 		PROCESSOR_IDENTIFIER: string;
 		PROCESSOR_LEVEL: string;
 		PROCESSOR_REVISION: string;
-		PROD: string;
 		ProgramData: string;
 		PROGRAMFILES: string;
 		ProgramW6432: string;
@@ -289,14 +281,12 @@ declare module '$env/dynamic/private' {
 		TERM: string;
 		TERM_PROGRAM: string;
 		TERM_PROGRAM_VERSION: string;
-		TEST: string;
 		TMP: string;
 		TMPDIR: string;
 		USERDOMAIN: string;
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
-		VITEST: string;
 		VS140COMNTOOLS: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
