@@ -61,7 +61,7 @@ async function unleashGremlins(page) {
 			strategies: [
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.distribution({
-					nb: 20
+					nb: 20,
 				}),
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.allTogether({
