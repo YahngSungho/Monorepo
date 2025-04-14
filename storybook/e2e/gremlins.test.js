@@ -60,16 +60,22 @@ async function unleashGremlins(page) {
 			],
 			strategies: [
 				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.strategies.distribution(),
+				globalThis.gremlins.strategies.distribution({
+					nb: 20
+				}),
 				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.strategies.allTogether(),
+				globalThis.gremlins.strategies.allTogether({
+					nb: 5,
+				}),
 				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.strategies.bySpecies(),
+				globalThis.gremlins.strategies.bySpecies({
+					nb: 5,
+				}),
 			],
 		})
 
 		try {
-			await horde.unleash({ nb: 10 })
+			await horde.unleash()
 			console.log('Gremlins 공격 완료')
 		} catch (error) {
 			console.error('Gremlins horde.unleash() 실행 중 오류:', error)
