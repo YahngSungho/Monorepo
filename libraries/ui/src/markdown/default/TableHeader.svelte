@@ -19,7 +19,6 @@ const alignClass = $derived(() => {
 		}
 	}
 })
-
 </script>
 
 <TableHeader class={alignClass}>{@render children()}</TableHeader>
