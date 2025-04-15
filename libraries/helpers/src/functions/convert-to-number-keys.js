@@ -1,30 +1,30 @@
 import { R } from '../library-wrappers/R.js'
 
 const convertToNumberKeys = R.curry((keyNumberDictionary, object) => {
-	const result = {};
+	const result = {}
 	for (const key of Object.keys(object)) {
-		result[keyNumberDictionary[key]] = object[key];
+		result[keyNumberDictionary[key]] = object[key]
 	}
-	return result;
-});
+	return result
+})
 
 const restoreFromNumberKeys = R.curry((keyNumberDictionary, object) => {
-	const result = {};
+	const result = {}
 	for (const [key, number] of Object.entries(keyNumberDictionary)) {
-		result[key] = object[number];
+		result[key] = object[number]
 	}
-	return result;
-});
+	return result
+})
 
-export function generateKeyNumberFunctions (objectWithTotalKeys) {
-	let counter = 0;
-	const keyNumberDictionary = {};
+export function generateKeyNumberFunctions(objectWithTotalKeys) {
+	let counter = 0
+	const keyNumberDictionary = {}
 	for (const key of Object.keys(objectWithTotalKeys)) {
-		keyNumberDictionary[key] = counter;
-		counter += 1;
+		keyNumberDictionary[key] = counter
+		counter += 1
 	}
 	return {
 		convertToNumberKeys: convertToNumberKeys(keyNumberDictionary),
 		restoreFromNumberKeys: restoreFromNumberKeys(keyNumberDictionary),
-	};
+	}
 }
