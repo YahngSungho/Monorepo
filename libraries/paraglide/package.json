@@ -8,12 +8,12 @@
 	"main": "index.js",
 	"scripts": {
 		"paraglide-compile": "npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./paraglide-output",
-		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
-		"test:unit": "vitest run"
+		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
 	},
 	"keywords": [],
 	"dependencies": {
-		"@library/helpers": "workspace:*"
+		"@library/helpers": "workspace:*",
+		"@library/library-base": "workspace:*"
 	},
 	"exports": {
 		"./messages.js": "./paraglide-output/messages.js",

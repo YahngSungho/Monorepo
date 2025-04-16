@@ -1,5 +1,16 @@
 {
 	"name": "@library/scripts",
 	"version": "0.0.1",
-	"type": "module"
+	"type": "module",
+	"scripts": {
+		"depCheck": "npx depcheck",
+		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
+		"eslint-fix": "eslint --fix . || true",
+		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
+		"test:unit": "vitest run"
+	},
+	"dependencies": {
+		"@library/helpers": "workspace:*",
+		"@library/library-base": "workspace:*"
+	}
 }
