@@ -8,7 +8,8 @@
 	"main": "index.js",
 	"scripts": {
 		"paraglide-compile": "npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./paraglide-output",
-		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
+		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
+		"test:unit": "vitest run"
 	},
 	"keywords": [],
 	"dependencies": {
