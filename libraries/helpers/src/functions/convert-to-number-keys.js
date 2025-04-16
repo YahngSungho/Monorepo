@@ -11,6 +11,9 @@ const convertToNumberKeys = R.curry((keyNumberDictionary, object) => {
 const restoreFromNumberKeys = R.curry((keyNumberDictionary, object) => {
 	const result = {}
 	for (const [key, number] of Object.entries(keyNumberDictionary)) {
+		if (object[number] === undefined) {
+			continue
+		}
 		result[key] = object[number]
 	}
 	return result
