@@ -10,9 +10,13 @@
   You MUST adhere to the following principles when writing tests. These principles are derived from established best practices to ensure tests are valuable, reliable, and maintainable:
 
   1.  **Test Behavior, NOT Implementation Details (CRITICAL PRINCIPLE)**:
-      *   **Focus**: Test the public API and observable outcomes of the code (WHAT it does). Verify that the component behaves as expected from an external perspective (e.g., given certain inputs, it produces specific outputs or side effects).
-      *   **Avoid**: DO NOT test private methods, internal state structures, or the specific way logic is implemented internally (HOW it does it). Tests coupled to implementation details are brittle; they break during refactoring even if the observable behavior remains correct, leading to high maintenance costs and discouraging refactoring.
-      *   **Goal**: Tests should pass even if the internal implementation is completely refactored, as long as the public contract (API and behavior) remains unchanged.
+      *   **Focus**: Test the public API and observable outcomes of the code (WHAT it does). Verify that the component behaves as expected from an external perspective (e.g., given certain inputs, it produces specific outputs or side effects). **Favor testing with real dependencies** to ensure integrated behavior works correctly, unless there's a specific reason to mock.
+      *   **Avoid**: DO NOT test private methods, internal state structures, or the specific way logic is implemented internally (HOW it does it). Tests coupled to implementation details are brittle.
+      *   **Strategic Mocking**: Use mocks (`vi.fn()`, `vi.spyOn()`) **minimally and purposefully**. Mocking is necessary ONLY for:
+          *   **External Systems**: Network requests, databases, file systems, or other components outside the immediate scope of the test that are slow, unreliable, or have side effects.
+          *   **Non-Deterministic Behavior**: Things like `Date.now()`, `Math.random()`, or timers, where consistent results are needed for assertions.
+          *   **Difficult-to-Setup Dependencies**: If a real dependency requires complex or slow setup irrelevant to the specific behavior being tested.
+      *   **Goal**: Tests should verify the contract and behavior, ideally using real collaborators where feasible, while remaining fast and reliable. Tests should pass even if the internal implementation is refactored, as long as the public contract remains unchanged.
 
   2.  **Clarity and Simplicity**:
       *   **Focus**: Tests MUST be easy to read and understand in isolation. Prioritize OBVIOUSNESS over cleverness or complex abstractions within tests.
@@ -36,11 +40,12 @@
   7.  **Helper Functions**:
       *   **Use Sparingly**: If used, helper functions MUST NOT obscure the core logic or critical values of the test. Interactions with the code under test (the 'Act' phase) should generally happen directly within the main test function. Helpers are best for complex, shared *setup* (Arrange) that doesn't hide essential test parameters.
 
-  8.  **Vitest Syntax**:
-      *   **Use Correctly**: Employ correct Vitest imports (`describe`, `it`, `test`, `expect`, `vi`) and assertion matchers (`.toBe`, `.toEqual`, `.toThrow`, `.resolves`, `.rejects`, etc.).
+  8.  **Vitest Syntax & Minimal Mocking**:
+      *   **Use Correctly**: Employ correct Vitest imports (`describe`, `it`, `test`, `expect`, `vi`) and assertion matchers.
+      *   **Minimize Mocks**: **Strongly prefer testing with real dependencies**. Only use `vi.fn()` or `vi.spyOn()` when mocking is *truly necessary* according to Principle #1 (External Systems, Non-Determinism, Difficult Setup). Mock only at the boundary of the unit under test. Avoid mocking internal implementation details. If mocking, ensure mocks are properly cleaned up (e.g., `vi.restoreAllMocks()` in `afterEach`).
 
   9.  **Principle Justification Comments**:
-      *   **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 *이유*를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 공개 API를 통한 동작 테스트`, `// 원칙: 명확성을 위한 인라인 설정`, `// 원칙: 엣지 케이스를 위한 fast-check 사용`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
+      *   **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 *이유*를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 공개 API를 통한 동작 테스트`, `// 원칙: 명확성을 위한 인라인 설정`, `// 원칙: 모의 최소화 - 실제 의존성 사용`, `// 원칙: 외부 시스템 격리를 위한 모의 사용`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
 
   10. **Property-Based Testing (PBT) with fast-check**:
       *   **Leverage Power**: Where applicable (e.g., functions processing diverse inputs, complex logical conditions, algorithms, state machines, potential edge cases), proactively use property-based testing via `@fast-check/vitest`. PBT automatically generates a wide range of inputs, often finding edge cases missed by traditional example-based tests.
@@ -64,7 +69,7 @@
   5.  **Generate Vitest Tests**: Write the test suite using Vitest syntax (`describe`, `it`/`test`, `expect`, `vi`).
   6.  **Apply Principles RIGOROUSLY**: For each test case, consciously apply ALL the `Core_Testing_Principles`. Pay EXTREME attention to Principle #1 (Test Behavior, NOT Implementation). Include justification comments (Principle #9) **in Korean**.
   7.  **Structure (AAA)**: Ensure every *example-based* test clearly follows the Arrange-Act-Assert structure.
-  8.  **Mocking**: If dependencies need mocking to isolate the unit under test, use `vi.fn()` or `vi.spyOn()`. Configure mocks specifically for the behavior needed in each test case. Ensure mocks are properly cleaned up if necessary (e.g., using `vi.restoreAllMocks()` in `afterEach`). CRITICALLY, mock dependencies at the boundary, do NOT mock internal implementation details of the code under test.
+  8.  **Mocking (Minimize Use)**: **Avoid unnecessary mocking**. Prefer testing with real dependencies whenever practical. If mocking IS necessary (see Principle #1: external services, non-determinism, difficult setup), use `vi.fn()` or `vi.spyOn()` strategically. Mock dependencies at the boundary, NOT internal implementation details. Ensure mocks are properly cleaned up if needed (e.g., `vi.restoreAllMocks()` in `afterEach`). Justify mocking decisions in comments.
   9.  **Async Handling**: Correctly handle asynchronous code using `async/await` and appropriate Vitest matchers (e.g., `expect(promise).resolves.toBe(...)`, `expect(asyncFn).rejects.toThrow(...)`). Remember `test.prop` also supports async properties.
   10. **Completeness**: Aim for comprehensive test coverage of the identified scenarios, strategically using both example-based tests (for clarity on specific cases) and property-based tests (for broad correctness and edge cases) where appropriate.
   11. **fast-check Usage**: When using PBT, import `test` (or `it`) and `fc` from `@fast-check/vitest`. Use `test.prop([arbitrary1, arbitrary2, ...])` or `test.prop({ key1: arbitrary1, ... })` to define properties. Select appropriate `fc` arbitraries (e.g., `fc.integer()`, `fc.string()`, `fc.record()`, `fc.array()`, `fc.constantFrom()`, `fc.oneof()`, `fc.option()`) to generate relevant and diverse test data. Use `fc.pre(...)` for preconditions if necessary.
@@ -76,480 +81,208 @@
  </Output_Format>
 
  <Examples>
-  **Example 1: Simple Function Test (with Fast-Check)**
+  **Example 1: Pure Function Test (No Mocks Needed)**
   ```javascript
-  // sum.test.js
+  // stringUtils.test.js
   import { describe, expect, it } from 'vitest';
-  // Import test.prop and fc from @fast-check/vitest when using PBT
-  import { fc, test } from '@fast-check/vitest';
-  import { sum } from './sum'; // Assuming sum function is in ./sum.js
+  import { capitalize } from './stringUtils'; // Assume capitalize function exists
 
-  describe('sum 함수', () => {
-   // --- 예제 기반 테스트 ---
-
-   // 원칙: 동작 테스트 (정상 경로)
-   // 원칙: 명확성을 위해 리터럴 값 사용
-   it('특정 양수 두 개를 올바르게 더해야 한다', () => {
-    // 준비(Arrange) - 원칙: 명확성을 위한 인라인 설정
-    const num1 = 5;
-    const num2 = 10;
-    const expectedResult = 15;
+  describe('capitalize 함수', () => {
+   // 원칙: 동작 테스트 (공개 API)
+   // 원칙: 모의 최소화 (의존성 없으므로 모의 불필요)
+   it('문자열의 첫 글자를 대문자로 만들어야 한다', () => {
+    // 준비(Arrange)
+    const input = 'hello world';
+    const expectedOutput = 'Hello world';
 
     // 실행(Act)
-    const result = sum(num1, num2);
+    const result = capitalize(input);
 
     // 검증(Assert)
-    expect(result).toBe(expectedResult);
+    expect(result).toBe(expectedOutput);
    });
 
-   // 원칙: 동작 테스트 (오류 처리 / 부정 경로)
-   it('입력이 숫자가 아니면 오류를 발생시켜야 한다', () => {
+   // 원칙: 엣지 케이스 테스트
+   it('빈 문자열을 그대로 반환해야 한다', () => {
     // 준비(Arrange)
-    const invalidInput1 = '5';
-    const invalidInput2 = null;
-    const validInput = 10;
-
-    // 실행(Act) & 검증(Assert)
-    // 원칙: 동작 테스트 (오류 발생은 관찰 가능한 동작임)
-    expect(() => sum(invalidInput1, validInput)).toThrow('입력값은 숫자여야 합니다'); // 에러 메시지도 번역 또는 한국어로 명시
-    expect(() => sum(validInput, invalidInput2)).toThrow('입력값은 숫자여야 합니다');
-    expect(() => sum(undefined, validInput)).toThrow('입력값은 숫자여야 합니다');
-   });
-
-   // --- fast-check를 사용한 속성 기반 테스트 ---
-
-   // 원칙: 속성 기반 테스트 (교환 법칙)
-   // 설명: fc.double()로 생성된 임의의 두 숫자 a, b에 대해 sum(a, b) === sum(b, a)임을 테스트합니다.
-   test.prop([fc.double(), fc.double()])
-   ('교환 법칙(a + b === b + a)을 만족해야 한다', (a, b) => {
-    // 준비(Arrange): fast-check가 숫자 입력 a와 b를 생성합니다.
-    // 참고: fc.double()은 정수, 부동소수점, +/- 무한대, NaN을 포함합니다.
-    // NaN 입력 시 오류를 발생시키지 않고 NaN을 반환해야 한다면 fc.pre(!Number.isNaN(a) && !Number.isNaN(b))를 추가할 수 있습니다.
-    // 하지만 현재 'sum'은 숫자가 아닌 경우 오류를 발생시키므로, 타입 검사를 통해 간접적으로 NaN을 처리합니다.
-    // 만약 sum이 NaN을 특별히 처리한다면 다른 접근 방식이 필요할 수 있습니다.
+    const input = '';
+    const expectedOutput = '';
 
     // 실행(Act)
-    const result1 = sum(a, b);
-    const result2 = sum(b, a);
+    const result = capitalize(input);
 
-    // 검증(Assert): 불변 속성(동작 속성)을 확인합니다.
-    expect(result1).toBe(result2);
+    // 검증(Assert)
+    expect(result).toBe(expectedOutput);
    });
 
-   // 원칙: 속성 기반 테스트 (항등원 속성)
-   // 설명: 임의의 숫자 'a'에 대해 sum(a, 0) === a임을 테스트합니다.
-   test.prop([fc.double()])
-   ('항등원 속성(a + 0 === a)을 만족해야 한다', (a) => {
-    // 준비(Arrange): fast-check가 숫자 입력 a를 생성합니다.
+   // 원칙: 엣지 케이스 테스트 (이미 대문자)
+   it('이미 대문자로 시작하는 문자열을 그대로 반환해야 한다', () => {
+    // 준비(Arrange)
+    const input = 'Hello world';
+    const expectedOutput = 'Hello world';
 
     // 실행(Act)
-    const result = sum(a, 0);
+    const result = capitalize(input);
 
-    // 검증(Assert): 불변 속성(동작 속성)을 확인합니다.
-    expect(result).toBe(a);
+    // 검증(Assert)
+    expect(result).toBe(expectedOutput);
    });
-
-   // 원칙: 속성 기반 테스트 (숫자가 아닌 입력에 대한 오류)
-   // 설명: 입력 중 하나라도 숫자가 아니면 sum 함수가 오류를 발생시키는지 테스트합니다 (동작 속성).
-   test.prop([
-    // 숫자가 아닌 값을 하나 생성
-    fc.anything().filter(v => typeof v !== 'number'),
-    // 다른 값은 임의의 타입으로 생성 (숫자일 수도 아닐 수도 있음)
-    fc.anything(),
-    // 순서를 결정하기 위한 boolean 값 생성
-    fc.boolean()
-   ])
-   ('입력 중 하나라도 숫자가 아니면 오류를 발생시켜야 한다', (notNum, otherVal, swapOrder) => {
-    // 준비(Arrange)
-    const arg1 = swapOrder ? otherVal : notNum;
-    const arg2 = swapOrder ? notNum : otherVal;
-
-    // 실행(Act) & 검증(Assert): 오류 발생 동작 검증
-    expect(() => sum(arg1, arg2)).toThrow('입력값은 숫자여야 합니다');
-   });
-
   });
   ```
 
-  **Example 2: Testing a Class/Method (Focus on Behavior)**
+  **Example 2: Testing with a Simple Real Collaborator**
   ```javascript
-  // counter.test.js
-  import { describe, it, expect, beforeEach } from 'vitest';
-  import { Counter } from './counter'; // Assuming Counter class is in counter.js
+  // userService.test.js
+  import { describe, expect, it } from 'vitest';
 
-  describe('Counter 클래스', () => {
-   let counter;
+  // Collaborator (Simple, real object - no need to mock)
+  class PermissionsService {
+   canEdit(userId) {
+    // Simple, deterministic logic
+    return userId === 'admin';
+   }
+  }
 
-   // 원칙: 필요한 경우 반복적이고 중요하지 않은 설정에 beforeEach 사용,
-   // 단, 테스트가 독립적으로 이해 가능하도록 유지. 여기서는 각 테스트마다
-   // 새 counter를 만드는 것이 표준 관행임.
+  // System Under Test (Uses the collaborator)
+  class UserService {
+   constructor(permissionsService) {
+    this.permissionsService = permissionsService;
+   }
+
+   getUserEditUrl(userId) {
+    if (this.permissionsService.canEdit(userId)) {
+     return `/users/${userId}/edit`;
+    }
+    return null;
+   }
+  }
+
+  describe('UserService', () => {
+   // 원칙: 동작 테스트 (공개 API)
+   // 원칙: 모의 최소화 - 실제, 간단한 협력 객체 사용
+   it('편집 권한이 있는 사용자의 편집 URL을 반환해야 한다', () => {
+    // 준비(Arrange)
+    const realPermissions = new PermissionsService(); // 실제 협력 객체
+    const userService = new UserService(realPermissions);
+    const adminUserId = 'admin';
+    const expectedUrl = '/users/admin/edit';
+
+    // 실행(Act)
+    const url = userService.getUserEditUrl(adminUserId);
+
+    // 검증(Assert)
+    expect(url).toBe(expectedUrl);
+   });
+
+   // 원칙: 동작 테스트 (다른 경로)
+   it('편집 권한이 없는 사용자의 경우 null을 반환해야 한다', () => {
+    // 준비(Arrange)
+    const realPermissions = new PermissionsService();
+    const userService = new UserService(realPermissions);
+    const regularUserId = 'user123';
+
+    // 실행(Act)
+    const url = userService.getUserEditUrl(regularUserId);
+
+    // 검증(Assert)
+    expect(url).toBeNull();
+   });
+  });
+  ```
+
+  **Example 3: Necessary Mocking for Non-Determinism (Date)**
+  ```javascript
+  // reportGenerator.test.js
+  import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+
+  // System Under Test (depends on current date)
+  function generateReportTitle() {
+   const today = new Date();
+   const dateString = today.toISOString().split('T')[0]; // YYYY-MM-DD
+   return `Daily Report - ${dateString}`;
+  }
+
+  describe('generateReportTitle', () => {
    beforeEach(() => {
-    counter = new Counter(); // 기본값은 0에서 시작
+    // 원칙: 테스트 제어를 위해 비결정적 요소(Date) 모의
+    vi.useFakeTimers();
    });
 
-   // 원칙: 설명적인 테스트 이름 & 공개 API를 통한 동작 테스트
-   it('increment 호출 시 카운트가 올바르게 증가해야 한다', () => {
-    // 준비(Arrange) - 원칙: 필요시 특정 초기 상태에 대한 인라인 설정
-    const counterWithInitial = new Counter(5); // 이 테스트는 5에서 시작
-    const expectedCount = 6;
-
-    // 실행(Act)
-    counterWithInitial.increment();
-    // 원칙: 동작 테스트 (공개 getCount 메서드를 통해 상태 확인)
-    const actualCount = counterWithInitial.getCount();
-
-    // 검증(Assert)
-    expect(actualCount).toBe(expectedCount);
-    // AVOID: expect(counterWithInitial._count).toBe(6); // VIOLATION: Testing implementation detail (_count)
+   afterEach(() => {
+    vi.useRealTimers(); // 모의 복원
    });
 
-   // 원칙: 공개 API를 통한 초기 상태 동작 테스트
-   it('시작 값이 제공되지 않으면 0으로 초기화해야 한다', () => {
-    // 준비(Arrange): beforeEach에서 카운터 초기화됨
-
-    // 실행(Act)
-    // 원칙: 동작 테스트 (공개 getCount 메서드를 통해 상태 확인)
-    const actualInitialValue = counter.getCount();
-
-    // 검증(Assert)
-    expect(actualInitialValue).toBe(0);
-   });
-
-   // 원칙: 제공된 초기 값으로 동작 테스트
-   it('제공된 시작 값으로 초기화해야 한다', () => {
+   // 원칙: 동작 테스트 (예측 가능한 출력 확인)
+   it('특정 날짜에 대해 올바른 형식의 리포트 제목을 생성해야 한다', () => {
     // 준비(Arrange)
-    const initialValue = 10;
-    // 원칙: 리터럴 값 사용
-    const expectedInitialValue = 10;
+    const specificDate = new Date(2024, 5, 15); // 2024년 6월 15일 (월은 0부터 시작)
+    vi.setSystemTime(specificDate);
+    const expectedTitle = 'Daily Report - 2024-06-15';
 
     // 실행(Act)
-    const specificCounter = new Counter(initialValue);
-    // 원칙: 동작 테스트 (공개 getCount 메서드를 통해 상태 확인)
-    const actualInitialValue = specificCounter.getCount();
+    const title = generateReportTitle();
 
     // 검증(Assert)
-    expect(actualInitialValue).toBe(expectedInitialValue);
+    expect(title).toBe(expectedTitle);
    });
+  });
+  ```
 
-   // 원칙: 여러 상호작용 테스트 (동작 순서)
-   it('여러 번의 increment가 올바르게 반영되어야 한다', () => {
-    // 준비(Arrange): 카운터가 0에서 시작 (beforeEach로부터)
-    const expectedCount = 3;
+  **Example 4: Property-Based Testing (Minimal Mocking)**
+  ```javascript
+  // arrayUtils.test.js
+  import { describe, expect } from 'vitest';
+  import { fc, test } from '@fast-check/vitest';
+
+  // Function under test
+  function sumArray(numbers) {
+   if (!Array.isArray(numbers)) {
+    throw new Error('Input must be an array');
+   }
+   return numbers.reduce((sum, num) => {
+    if (typeof num !== 'number' || !Number.isFinite(num)) {
+     // For simplicity in this example, non-finite numbers are skipped
+     return sum;
+    }
+    return sum + num;
+   }, 0);
+  }
+
+  describe('sumArray 함수', () => {
+   // 원칙: 속성 기반 테스트 (다양한 입력에 대한 불변 속성)
+   // 원칙: 모의 최소화 (모의 필요 없음)
+   test.prop([fc.array(fc.double({ noNaN: true }))])
+   ('배열의 합은 각 요소의 합과 같아야 한다 (유한한 숫자만)', (finiteNums) => {
+    // 준비(Arrange): fast-check가 유한한 숫자 배열 생성
 
     // 실행(Act)
-    counter.increment();
-    counter.increment();
-    counter.increment();
-    const actualCount = counter.getCount(); // Test via public API
+    const result = sumArray(finiteNums);
+
+    // 검증(Assert): 직접 계산한 합계와 비교 (동작 검증)
+    const expectedSum = finiteNums.reduce((acc, val) => acc + val, 0);
+    // 부동 소수점 비교를 위해 toBeCloseTo 사용
+    expect(result).toBeCloseTo(expectedSum);
+   });
+
+   // 원칙: PBT (엣지 케이스: 빈 배열)
+   test('빈 배열의 합은 0이어야 한다', () => {
+    expect(sumArray([])).toBe(0);
+   });
+
+   // 원칙: PBT (속성: 숫자 아닌 요소는 무시)
+   test.prop([
+    fc.array(fc.oneof(fc.double({ noNaN: true }), fc.string(), fc.boolean(), fc.constant(null), fc.constant(undefined)))
+   ])
+   ('숫자가 아닌 요소는 합계 계산 시 무시해야 한다', (mixedArray) => {
+    // 준비(Arrange)
+    const numbersOnly = mixedArray.filter(item => typeof item === 'number' && Number.isFinite(item));
+    const expectedSum = numbersOnly.reduce((acc, val) => acc + val, 0);
+
+    // 실행(Act)
+    const result = sumArray(mixedArray);
 
     // 검증(Assert)
-    expect(actualCount).toBe(expectedCount);
-   });
-  });
-  ```
-
-  **Example 3: One-Time Random Mode with `g`**
-  ```javascript
-  // userDisplay.test.js
-  import { test, fc } from '@fast-check/vitest';
-  import { expect, describe } from 'vitest';
-
-  // Function under test (Example)
-  function computeDisplayName(user: { firstName: string, lastName: string }): string {
-   return `${user.firstName} ${user.lastName}`;
-  }
-
-  describe('computeDisplayName', () => {
-   // 원칙: 간단한 무작위 입력을 위해 'g'를 사용하는 일회성 랜덤 모드.
-   // 완전한 PBT 설정 없이 기본 속성을 테스트하는 데 유용함.
-   // 출력에 생성된 입력 부분이 포함되는 동작을 테스트함.
-   test('성(last name)과 이름(first name)을 포함해야 한다 (g 사용)', ({ g }) => {
-    // 준비(Arrange): 'g'와 fc 아비트러리를 사용하여 무작위 사용자 데이터 생성
-    // 'g'는 단일 테스트 실행 내에서 결정론적 무작위성을 제공함.
-    const user = {
-     firstName: g(fc.string({ minLength: 1 })), // Random non-empty string
-     lastName: g(fc.string({ minLength: 1 })), // Random non-empty string
-    };
-    const expectedFirstName = user.firstName;
-    const expectedLastName = user.lastName;
-
-    // Act
-    const displayName = computeDisplayName(user);
-
-    // Assert: Check if the generated display name contains the random parts (behavioral check)
-    expect(displayName).toContain(expectedFirstName);
-    expect(displayName).toContain(expectedLastName);
-    expect(displayName).toBe(`${expectedFirstName} ${expectedLastName}`);
-   });
-
-   // 원칙: 집중된 테스트 (엣지 케이스: 빈 이름)
-   it('빈 이름을 정상적으로 처리해야 한다 (표준 테스트)', () => {
-    // Arrange
-    const user = { firstName: '', lastName: '' };
-    const expectedOutput = ' ';
-
-    // Act
-    const displayName = computeDisplayName(user);
-
-    // Assert
-    expect(displayName).toBe(expectedOutput);
-   });
-  });
-  ```
-
-  **Example 4: Property-Based Testing with Various Arbitraries**
-  ```javascript
-  // dataProcessing.test.js
-  import { describe, expect } from 'vitest';
-  import { fc, test } from '@fast-check/vitest';
-
-  // Example Function under test
-  function processUserData(users: Array<{ id: string, score: number, tags: string[] }>): number {
-   // Calculate sum of scores for users with more than 1 tag and non-negative score
-   let totalScore = 0;
-   for (const user of users) {
-    // Check behavior: only include if tags.length > 1 AND score >= 0
-    if (user.tags.length > 1 && user.score >= 0) {
-     totalScore += user.score;
-    }
-   }
-   return totalScore;
-  }
-
-  describe('processUserData', () => {
-   // 원칙: 속성 기반 테스트 (PBT) - 복잡한 데이터 구조 사용.
-   // 다양한 생성된 입력을 통해 핵심 동작 로직을 테스트함.
-   test.prop([
-    // Generate an array of user objects using fc.array and fc.record
-    fc.array(fc.record({
-     id: fc.uuid(),                           // Random UUID for id
-     score: fc.integer({ min: -10, max: 100 }), // Integer score (-10 to 100)
-     tags: fc.array(fc.string({ minLength: 1 })) // Array of non-empty strings for tags
-    }))
-   ])
-   ('should only sum scores of users with >1 tag and score >= 0 (Property Test)', (users) => {
-    // Arrange: users generated by fast-check based on defined arbitraries
-
-    // Act: Execute the function whose behavior is under test
-    const actualTotalScore = processUserData(users);
-
-    // Assert: Check invariant properties of the result based on the function's defined behavior.
-    expect(actualTotalScore).toBeGreaterThanOrEqual(0); // Total score should never be negative based on logic
-
-    // Assert: Manually calculate expected score based on the *defined behavior* and compare.
-    // This re-implements the logic to verify the SUT matches the expected behavior for the generated input.
-    let expectedScore = 0;
-    for (const user of users) {
-     if (user.tags.length > 1 && user.score >= 0) {
-      expectedScore += user.score;
-     }
-    }
-    expect(actualTotalScore).toBe(expectedScore);
-   });
-
-   // Example showcasing other arbitrary types
-   // Principle: PBT can test handling of specific data formats/types.
-   test.prop({ email: fc.emailAddress(), value: fc.float({ min: 0, noNaN: true }) })
-   ('should generate valid email strings and non-negative floats (Arbitrary Demo)', ({ email, value }) => {
-    // Arrange: fast-check generates email and float
-
-    // Act: (No specific function call here, just checking generated values)
-
-    // Assert: Check basic properties of generated values
-    expect(typeof email).toBe('string');
-    expect(email).toContain('@'); // Basic behavioral check for email format
-    expect(typeof value).toBe('number');
-    expect(value).toBeGreaterThanOrEqual(0);
-    expect(Number.isNaN(value)).toBe(false);
-   });
-  });
-  ```
-
-  **Example 5: Async Properties and Preconditions**
-  ```javascript
-  // asyncOperations.test.js
-  import { describe, expect } from 'vitest';
-  import { fc, test } from '@fast-check/vitest';
-
-  // Mock async function (Example SUT)
-  async function divideAsync(a: number, b: number): Promise<number> {
-   // Behavior: Throws error if b is 0
-   if (b === 0) {
-    throw new Error('Division by zero');
-   }
-   // Behavior: Returns a / b after a delay otherwise
-   await new Promise(resolve => setTimeout(resolve, 1)); // Simulate async delay
-   return a / b;
-  }
-
-  describe('divideAsync', () => {
-   // 원칙: 비동기 코드 동작에 대한 속성 기반 테스트.
-   // test.prop은 속성 함수에서 반환된 프로미스를 자동으로 처리함.
-   test.prop([fc.integer(), fc.integer()])
-   ('should return the correct division result for non-zero divisor (Async Property)', async (a, b) => {
-    // Principle: Using preconditions (fc.pre) to filter inputs for specific behavior test.
-    // Only run the test if 'b' is not zero, focusing on the success path behavior.
-    fc.pre(b !== 0);
-
-    // Arrange: a and b generated by fast-check, b != 0
-
-    // Act: Call the async function (behavior under test)
-    const result = await divideAsync(a, b);
-
-    // Assert: Check the expected outcome/behavior for this condition
-    // Use toBeCloseTo for floating point comparisons due to potential precision issues.
-    expect(result).toBeCloseTo(a / b);
-    expect(Number.isFinite(result)).toBe(true); // Behavior: result should be finite
-   });
-
-   // Principle: Testing asynchronous error throwing behavior (Negative Path Property)
-   test.prop([fc.integer()])
-   ('should throw error when dividing by zero (Async Error Property)', async (a) => {
-    // Arrange: a generated by fast-check, divisor is fixed to 0 to test specific error case
-
-    // Act & Assert: Use Vitest's rejects matcher for async errors.
-    // Verifies the expected error throwing behavior.
-    await expect(divideAsync(a, 0)).rejects.toThrow('Division by zero');
-   });
-  });
-  ```
-
-  **Example 6: Model-Based Testing (Conceptual Example)**
-  ```javascript
-  // counterModel.test.js
-  import { describe, expect } from 'vitest';
-  import { fc, test } from '@fast-check/vitest';
-
-  // --- System Under Test (SUT) ---
-  // Represents the actual code whose behavior we want to test.
-  class CounterSUT {
-   private value = 0;
-   increment() { this.value++; }
-   // SUT has a potential bug: decrement might allow going below zero if not checked.
-   // decrement() { if (this.value > 0) this.value--; } // Correct version implies behavior constraint
-   decrement() { this.value--; } // Buggy version - allows negative count, violating potential expected behavior
-   getCount() { return this.value; } // Public API to observe state
-  }
-
-  // --- Model ---
-  // Represents the *expected* state and behavior simply. It defines the rules.
-  interface CounterModel { count: number; }
-  const initialModel: CounterModel = { count: 0 };
-
-  // --- Commands ---
-  // Define actions (behaviors) that can be performed on both the SUT and the model.
-  // Each command checks preconditions based on the *model* state and updates both model and SUT.
-
-  class IncrementCommand implements fc.Command<CounterModel, CounterSUT> {
-   // Check: Conditions under which the command *should* be valid according to the model (always true here)
-   check = (_model: Readonly<CounterModel>) => true;
-
-   // Run: Executes the command on both model and SUT, then asserts behavioral consistency.
-   run(model: CounterModel, real: CounterSUT): void {
-    // Principle: Testing Behavior - Does the SUT behave like the model after this action?
-    model.count++; // Update model state based on expected behavior
-    real.increment(); // Run action on real system
-    // Assert: Model state MUST match observed SUT state (via public API) after the action.
-    expect(real.getCount()).toBe(model.count);
-   }
-   toString = () => 'increment';
-  }
-
-  class DecrementCommand implements fc.Command<CounterModel, CounterSUT> {
-   // Check: Model dictates that decrement is only valid if count > 0 (Expected Behavior Rule)
-   check = (model: Readonly<CounterModel>) => model.count > 0;
-
-   // Run: Executes the command only if the 'check' passed.
-   run(model: CounterModel, real: CounterSUT): void {
-    // Principle: Testing Behavior - Compare SUT's state to model's state after valid decrement.
-    model.count--; // Update model state based on expected behavior (only if check passed)
-    real.decrement(); // Run action on real system
-    // Assert: Model and real system state must match via public API.
-    expect(real.getCount()).toBe(model.count);
-    // If the SUT's decrement is buggy (allows count < 0), this assertion will fail
-    // when fast-check generates a sequence like: decrement() when count is 0.
-   }
-   toString = () => 'decrement';
-  }
-
-  // --- Test Execution ---
-  describe('Counter (Model-Based Testing Example)', () => {
-   // Principle: Model-Based Testing (PBT variant) to find behavioral inconsistencies over sequences of actions.
-   // Generates sequences of commands and checks if the SUT consistently behaves like the simpler model.
-   test.prop([fc.commands([ // Generate sequences of Increment and Decrement commands
-    fc.constant(new IncrementCommand()),
-    fc.constant(new DecrementCommand()),
-    // Add more commands here for more complex systems (e.g., reset, setValue)
-   ])])
-   ('should maintain behavioral consistency between model and real counter across command sequences', (cmds) => {
-    // Arrange: Define how to create the SUT instance for each test run
-    const setup = () => ({ model: initialModel, real: new CounterSUT() });
-
-    // Act & Assert: Run the generated command sequence using fc.modelBased.
-    // fc.modelBased executes the sequence, respecting 'check' preconditions from the model's perspective,
-    // and running 'run' methods, which contain the crucial behavior assertions comparing model and SUT state.
-    fc.modelBased(setup, initialModel)(cmds);
-    // No explicit expect(...) here; fc.modelBased handles running the checks and assertions within the commands.
-    // It will report a failure if any assertion inside a command's 'run' method fails during the sequence execution.
-   });
-  });
-  ```
-
-  **Example 7: Advanced Arbitraries (fc.chain, fc.scheduler)**
-  ```javascript
-  // advancedArbitraries.test.js
-  import { describe, expect } from 'vitest';
-  import { fc, test } from '@fast-check/vitest';
-
-  describe('Advanced fast-check Arbitraries', () => {
-   // Principle: Using fc.chain for dependent arbitraries.
-   // Useful when the generation of one value depends on another randomly generated value.
-   // Example: Generate an array whose length is also randomly generated.
-   test.prop([
-    // 1. Generate a length `n` (e.g., between 0 and 10)
-    fc.nat(10).chain(n =>
-     // 2. Use `n` to generate a tuple: the length itself, and an array of exactly `n` booleans.
-     fc.tuple(fc.constant(n), fc.array(fc.boolean(), { minLength: n, maxLength: n }))
-    )
-   ])
-   ('fc.chain should generate an array matching the dynamically generated length', ([expectedLength, arr]) => {
-    // Arrange: expectedLength and arr generated by the chained arbitrary.
-
-    // Act: (No specific function to test here, verifying the arbitrary's behavior)
-
-    // Assert: Check if the generated array's length matches the generated length value.
-    expect(arr.length).toBe(expectedLength);
-    // Check if elements have the expected type
-    arr.forEach(item => expect(typeof item).toBe('boolean'));
-   });
-
-   // Principle: Using fc.scheduler for testing async operations order/concurrency (Conceptual).
-   // fc.scheduler allows controlling the interleaving of promises, useful for finding race conditions.
-   test.prop([fc.scheduler()])
-   ('fc.scheduler should execute scheduled async tasks correctly regardless of interleaving', async (scheduler) => {
-    // Arrange: Setup shared state and an async task that modifies it.
-    let counter = 0;
-    const asyncTask = async () => {
-     // Simulate async work (e.g., reading data, API call)
-     await Promise.resolve(); // Microtask checkpoint
-     // Simulate modifying shared state
-     counter++;
-    };
-
-    // Act: Schedule the same task multiple times using the scheduler.
-    // The scheduler will decide the order in which these promises resolve.
-    const promise1 = scheduler.schedule(asyncTask());
-    const promise2 = scheduler.schedule(asyncTask());
-
-    // Wait for the scheduler to run all scheduled tasks to completion in some order.
-    await scheduler.waitAll();
-
-    // Assert: Check the final state. Regardless of the execution order determined by the scheduler,
-    // the counter should reflect that both tasks completed. This tests the overall outcome behavior.
-    expect(counter).toBe(2);
-    // We can also assert on the results of the promises if they return values
-    await expect(promise1).resolves.toBeUndefined();
-    await expect(promise2).resolves.toBeUndefined();
+    expect(result).toBeCloseTo(expectedSum);
    });
   });
   ```

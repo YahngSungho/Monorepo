@@ -33,11 +33,16 @@
 <Testing_Principles_To_Follow>
     You MUST adhere STRICTLY to the following principles:
 
-    1.  **Test Behavior, NOT Implementation Details**:
+    1.  **Test Behavior, NOT Implementation Details & MINIMIZE MOCKING**:
         *   FOCUS on testing the public API and observable outcomes: state transitions (`snapshot.value`), context changes (`snapshot.context`), final state/output (`snapshot.status`, `snapshot.output`), invoked/spawned actor interactions.
-        *   MUST MOCK implementations of actions, invoked/spawned actors (e.g., logic from `fromPromise`, `fromCallback`), and complex guards (those depending on external factors or complex logic) using `machine.provide({ actions: {...}, actors: {...}, guards: {...} })`.
-        *   DO NOT test the internal logic within action or guard functions directly. Instead, verify that the mocked functions were CALLED with expected arguments (`expect(mockFn).toHaveBeenCalledWith(...)`) or that they led to the correct state/context change.
-        *   Simple, pure guards based *only* on context/event data can be tested by asserting the resulting transition for different context/event inputs.
+        *   **MINIMIZE MOCKING**: **Strongly prefer testing with real implementations** of actions, actors (including those from `fromPromise`, `fromCallback`), and guards whenever feasible. Use the actual machine logic to ensure integrated behavior is correct.
+        *   **WHEN TO MOCK**: Use `machine.provide({ actions: {...}, actors: {...}, guards: {...} })` with `vi.fn()` **only when necessary**:
+            *   **External Systems**: Real actors/actions interacting with external APIs, databases, file systems (slow, unreliable, side-effects).
+            *   **Non-Deterministic Behavior**: Real actors/actions involving `Date.now()`, `Math.random()`, or timers requiring control.
+            *   **Complex/Slow Setup**: If a real dependency is significantly complex or slow to set up for the test's scope.
+            *   **Focusing on Specific Logic**: To isolate the machine's core transition logic from complex side-effect logic *if* that side-effect logic is tested separately.
+        *   If mocking, DO NOT test the internal logic of the mocked function. Verify that the mock was CALLED (`expect(mockFn).toHaveBeenCalled...`) or led to the expected state/context change.
+        *   Test simple, pure guards (based only on context/event) by asserting transitions for different inputs without mocking.
 
     2.  **Clarity and Simplicity**:
         *   Tests MUST be easy to read and understand in isolation. PRIORITIZE OBVIOUSNESS.
@@ -47,9 +52,9 @@
     3.  **Readability and Structure (AAA for XState)**:
         *   Use Vitest structure: `describe`, `it`/`test`, `expect`, `vi`.
         *   Strictly follow the **Arrange-Act-Assert (AAA)** pattern for example-based tests:
-            *   **Arrange**: `setup` the machine. Use `machine.provide({...})` to inject MOCKED implementations (`vi.fn()`). Create the actor using `createActor(machineUnderTest, { input: {...} })` potentially with initial `input`. Setup fake timers (`vi.useFakeTimers()`) if testing `after` or delays.
-            *   **Act**: Start the actor (`actor.start()`). Send events (`actor.send({ type: '...', ... })`). Advance time (`vi.advanceTimersByTime(...)`) if using fake timers. Use `async/await` and potentially `vi.waitUntil()` for asynchronous operations (like invoked promises).
-            *   **Assert**: Use `expect(actor.getSnapshot()...)` to check `.value`, `.context`, `.status`, `.output`, `.matches()`, `.can()`. Check mock calls (`expect(mockAction).toHaveBeenCalled...`). Check spawned actors via `snapshot.children`.
+            *   **Arrange**: `setup` the machine. **Prefer using the original machine definition**. Use `machine.provide({...})` **only when mocking is necessary** (see Principle #1) and inject minimal mocked implementations (`vi.fn()`). Create the actor using `createActor(machineUnderTest, { input: {...} })` potentially with initial `input`. Setup fake timers (`vi.useFakeTimers()`) ONLY if testing `after` or delays that need control.
+            *   **Act**: Start the actor (`actor.start()`). Send events (`actor.send({ type: '...', ... })`). Advance time (`vi.advanceTimersByTime(...)`) if using fake timers. Use `async/await` and potentially `vi.waitUntil()` for asynchronous operations, ideally interacting with the *real* actor logic if not mocked.
+            *   **Assert**: Use `expect(actor.getSnapshot()...)` to check `.value`, `.context`, `.status`, `.output`, `.matches()`, `.can()`. If mocks were *necessary*, check mock calls (`expect(mockAction).toHaveBeenCalled...`). Check spawned actors via `snapshot.children`.
 
     4.  **Keep Relevant Setup Visible**:
         *   Inline necessary setup (mock function definitions using `vi.fn()`, specific context variations) directly within the `test` or `it` function where it enhances clarity.
@@ -66,7 +71,7 @@
 
     8.  **API Version**: MUST use XState v5 API (`setup`, `createMachine`, `createActor`, `provide`, `getSnapshot`, `assign`, `spawn`, `fromPromise`, etc.). DO NOT use deprecated v4 APIs (`Machine`, `interpret`, `withConfig`, `withContext`, `state.meta`, `cond`, etc.). Refer to provided `@XState.md` documentation if unsure.
 
-    9.  **Principle Justification Comments**: Add brief comments **in KOREAN** within the generated test code to explain *why* a certain structure was chosen or mock applied, referencing these principles (e.g., `// 원칙: 동작 테스트 - 액션 모의 처리`, `// 원칙: AAA 준비 - 모의 액터 제공`).
+    9.  **Principle Justification Comments**: Add brief comments **in KOREAN** within the generated test code to explain *why* a certain structure was chosen or mock applied, referencing these principles (e.g., `// 원칙: 동작 테스트 - 실제 액터 사용`, `// 원칙: AAA 준비 - 외부 시스템 격리를 위한 모의 액터 제공`, `// 원칙: 모의 최소화`).
 
     10. **Property-Based Testing (PBT) with `@fast-check/vitest`**:
         *   MUST evaluate and implement Property-Based Tests (PBT) using `@fast-check/vitest` (`test.prop`, `fc`) for suitable scenarios.
@@ -88,324 +93,179 @@
 </Testing_Principles_To_Follow>
 
 <Example_Test_Snippets>
+    <!-- Examples require significant overhaul to reflect minimal mocking. -->
+    <!-- Placeholder for revised examples demonstrating minimal mocking with XState. -->
+    <!-- New examples should show testing with real actions/actors first, -->
+    <!-- then show necessary mocking for external systems or non-determinism. -->
+
+    **Example 1: Testing Basic Transitions and Context (No Mocks)**
     ```javascript
-    // --- 예시 Vitest / XState v5 테스팅 스니펫 ---
-    // @fast-check/vitest에서 test/it 및 fc 임포트, 나머지는 vitest에서 임포트
-    import { describe, expect, vi, beforeEach, afterEach } from 'vitest';
-    import { test, it, fc } from '@fast-check/vitest';
-    import { createActor, assign, setup, fromPromise, sendTo, spawn } from 'xstate';
-    // 머신 정의(예: toggleMachine, counterMachine, fetchMachine)가 임포트되었다고 가정
+    // counterMachine.test.js
+    import { describe, expect, it } from 'vitest';
+    import { createActor, setup, assign } from 'xstate';
 
-    // --- 기본 전환 ---
-    describe('toggleMachine', () => {
-      it('TOGGLE 시 inactive에서 active로 전환되어야 한다', () => {
-        // 준비 (원칙: AAA 준비)
-        const actor = createActor(toggleMachine); // 'inactive'가 초기 상태라고 가정
-        actor.start();
-        expect(actor.getSnapshot().value).toBe('inactive'); // 초기 상태 확인
-
-        // 실행 (원칙: AAA 실행)
-        actor.send({ type: 'TOGGLE' });
-
-        // 검증 (원칙: AAA 검증)
-        expect(actor.getSnapshot().value).toBe('active');
-        actor.stop();
-      });
-    });
-
-    // --- 컨텍스트 업데이트 (assign) ---
-    describe('counterMachine', () => {
-        it('INCREMENT 시 count 컨텍스트를 증가시켜야 한다', () => {
-            // 준비
-            const actor = createActor(counterMachine); // 초기 컨텍스트 { count: 0 } 가정
-            actor.start();
-            const initialCount = actor.getSnapshot().context.count;
-
-            // 실행
-            actor.send({ type: 'INCREMENT' });
-
-            // 검증
-            expect(actor.getSnapshot().context.count).toBe(initialCount + 1);
-            actor.stop();
-        });
-    });
-
-    // --- 모의 처리된 액션 ---
-    describe('모의 액션이 있는 toggleMachine', () => {
-        const mockNotifyActive = vi.fn();
-        // 원칙: 동작 테스트 - 모의 액션 제공
-        const machineWithMock = toggleMachine.provide({
-            actions: { notifyActive: mockNotifyActive },
-        });
-
-        let actor;
-        beforeEach(() => {
-             // 원칙: AAA 준비 - 각 테스트 전에 액터 생성
-            actor = createActor(machineWithMock);
-            actor.start();
-        });
-        afterEach(() => {
-            // 원칙: AAA 준비 - 액터 및 모의 정리
-            actor.stop();
-            vi.clearAllMocks(); // 테스트 간 모의 초기화
-        });
-
-        it('active 상태 진입 시 notifyActive 액션을 호출해야 한다', () => {
-            // 준비 - beforeEach에서 액터 시작됨
-
-            // 실행
-            actor.send({ type: 'TOGGLE' }); // active 진입
-
-            // 검증
-            expect(actor.getSnapshot().value).toBe('active');
-            // 원칙: 동작 테스트 - 모의 함수 호출 확인
-            expect(mockNotifyActive).toHaveBeenCalledTimes(1);
-        });
-
-         it('inactive 상태 유지 시 notifyActive 액션을 호출하지 않아야 한다', () => {
-            // 준비 - beforeEach에서 액터 시작됨, 초기 상태는 inactive
-
-            // 실행
-            actor.send({ type: 'SOME_OTHER_EVENT' }); // 이벤트 무시됨
-
-            // 검증
-            expect(actor.getSnapshot().value).toBe('inactive');
-            expect(mockNotifyActive).not.toHaveBeenCalled();
-        });
-    });
-
-    // --- 모의 처리된 호출된 프로미스 ---
-    describe('모의 액터가 있는 fetchMachine', () => {
-        const mockFetchData = vi.fn();
-        // 원칙: 동작 테스트 - 모의 액터 로직 제공
-        const machineWithMock = fetchMachine.provide({
-            actors: { fetchData: fromPromise(mockFetchData) },
-            // 원치 않는 부수 효과가 있는 경우 액션도 모의 처리
-            actions: { logError: vi.fn() }
-        });
-
-        let actor;
-        beforeEach(() => {
-            actor = createActor(machineWithMock);
-            actor.start();
-            vi.resetAllMocks(); // 모의 및 구현 세부 정보 초기화
-        });
-         afterEach(() => {
-            actor.stop();
-        });
-
-        it('fetchData가 resolve될 때 success로 전환되어야 한다', async () => {
-            // 준비
-            const mockData = { data: '모의 성공 데이터' };
-            mockFetchData.mockResolvedValue(mockData); // 모의 resolve 설정
-            expect(actor.getSnapshot().value).toBe('idle');
-
-            // 실행
-            actor.send({ type: 'FETCH' });
-            // 검증: 중간 loading 상태 확인
-            expect(actor.getSnapshot().value).toBe('loading');
-            expect(mockFetchData).toHaveBeenCalledTimes(1);
-            expect(mockFetchData).toHaveBeenCalledWith(expect.objectContaining({ input: { attempt: 1 } })); // 액터 입력 확인
-
-            // 검증: 최종 상태 대기 (원칙: 비동기 처리)
-            await vi.waitUntil(() => actor.getSnapshot().matches('success'));
-
-            expect(actor.getSnapshot().status).toBe('done'); // 최종 상태 확인
-            expect(actor.getSnapshot().context.data).toEqual(mockData.data); // 컨텍스트 업데이트 확인
-            expect(actor.getSnapshot().output).toEqual({ result: mockData.data }); // 최종 출력 확인
-        });
-
-        it('fetchData가 reject될 때 failure로 전환되어야 한다', async () => {
-            // 준비
-            const mockError = new Error('모의 fetch 실패');
-            mockFetchData.mockRejectedValue(mockError); // 모의 reject 설정
-            const mockLogError = machineWithMock.options.actions.logError; // 모의 액션 참조 가져오기
-
-            // 실행
-            actor.send({ type: 'FETCH' });
-            await vi.waitUntil(() => actor.getSnapshot().matches('failure'));
-
-            // 검증
-            expect(actor.getSnapshot().value).toBe('failure');
-            expect(actor.getSnapshot().context.error).toBe(mockError); // 컨텍스트의 오류 확인
-             // 원칙: 부수 효과 액션 호출 확인
-            expect(mockLogError).toHaveBeenCalledTimes(1);
-            expect(mockLogError).toHaveBeenCalledWith(expect.anything(), { error: mockError }); // 액션에 전달된 파라미터 확인
-
-             // 기본 머신이 재시도하므로 loading으로 다시 전환되는지 확인
-            await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
-            expect(actor.getSnapshot().context.retries).toBe(1);
-            expect(mockFetchData).toHaveBeenCalledTimes(2); // 재시도 시 다시 호출됨
-            expect(mockFetchData).toHaveBeenLastCalledWith(expect.objectContaining({ input: { attempt: 2 } }));
-        });
-    });
-
-     // --- 가드 테스트 (예제 기반) ---
-    describe('fetchMachine 가드 테스트 (예제 기반)', () => {
-        const mockFetchData = vi.fn();
-        // 결과를 쉽게 제어하기 위해 액터 모의 처리
-        const machineWithMock = fetchMachine.provide({
-             actors: { fetchData: fromPromise(mockFetchData) },
-             actions: { logError: vi.fn(), incrementRetries: fetchMachine.options.actions.incrementRetries } // 원본 assign 유지
-        });
-
-         it('retries < 3 이면 failure에서 재시도해야 한다', async () => {
-            // 준비
-            const actor = createActor(machineWithMock, {
-                // 재시도 시나리오를 위해 이미 준비된 컨텍스트로 시작
-                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 1, error: '이전 오류' }})
-            });
-            mockFetchData.mockResolvedValue({ data: '재시도 성공' }); // 이번에는 성공 예상
-            actor.start(); // 저장된 스냅샷에서 시작
-
-            // 실행: 'always' 전환은 진입/재시작 시 자동으로 발생
-
-            // 검증: 가드 통과로 인해 loading으로 다시 전환될 때까지 대기
-            await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
-            expect(actor.getSnapshot().context.retries).toBe(1); // 재시도는 가드 확인 *후* loading 진입 전에 증가하는가? 머신 로직 확인. 재시도는 loading으로의 전환 *에서* 증가함. 따라서 가드가 확인하는 컨텍스트는 retries=1.
-            expect(mockFetchData).toHaveBeenCalledTimes(1); // loading 진입 시 fetch 호출됨
-            expect(mockFetchData).toHaveBeenCalledWith(expect.objectContaining({ input: { attempt: 2 } }));
-
-             // success로 resolve되도록 함
-             await vi.waitUntil(() => actor.getSnapshot().matches('success'));
-             expect(actor.getSnapshot().context.data).toBe('재시도 성공');
-             actor.stop();
-         });
-
-         it('retries >= 3 이면 permanentFailure로 전환되어야 한다', async () => {
-             // 준비
-            const actor = createActor(machineWithMock, {
-                snapshot: machineWithMock.resolveState({ value: 'failure', context: { retries: 3, error: '최종 오류' }})
-            });
-             const mockLogError = machineWithMock.options.actions.logError;
-             actor.start();
-
-             // 실행: 'always' 전환 발생
-
-             // 검증: 가드 실패로 permanentFailure로 직접 전환되어야 함
-            await vi.waitUntil(() => actor.getSnapshot().matches('permanentFailure'));
-             expect(actor.getSnapshot().status).toBe('done'); // permanentFailure는 최종 상태
-             expect(mockLogError).not.toHaveBeenCalled(); // logError는 시작한 failure 상태 진입 시 호출됨.
-             expect(mockFetchData).not.toHaveBeenCalled(); // 재시도해서는 안 됨
-             actor.stop();
-         });
-    });
-
-    // --- 가드 테스트 (속성 기반) ---
-    // 원칙: 가드에 대한 속성 기반 테스트
-    describe('fetchMachine 가드 테스트 (PBT)', () => {
-        // 이전 describe 블록의 설정을 재사용하거나 재정의
-        const machineWithMock = fetchMachine.provide({
-             actors: { fetchData: vi.fn().mockResolvedValue({ data: '...' }) }, // 액터 간단히 모의 처리
-             actions: { logError: vi.fn(), incrementRetries: fetchMachine.options.actions.incrementRetries }
-        });
-
-        // @fast-check/vitest의 'test.prop' 사용
-        test.prop([fc.integer({ min: 0, max: 5 })]) // 다양한 재시도 횟수 생성
-        ('재시도 횟수에 따라 failure에서 올바르게 전환되어야 한다', async (retriesCount) => {
-            // 준비
-             const initialSnapshot = machineWithMock.resolveState({
-                 value: 'failure',
-                 context: { retries: retriesCount, error: '어떤 오류' }
-             });
-            const actor = createActor(machineWithMock, { snapshot: initialSnapshot });
-            actor.start();
-
-            // 실행: 'always' 전환 자동 발생
-
-            // 검증 (가드 로직 기반 불변 속성)
-            if (retriesCount < 3) {
-                await vi.waitUntil(() => actor.getSnapshot().matches('loading'));
-                expect(actor.getSnapshot().value).toBe('loading');
-            } else {
-                 await vi.waitUntil(() => actor.getSnapshot().matches('permanentFailure'));
-                expect(actor.getSnapshot().value).toBe('permanentFailure');
-                expect(actor.getSnapshot().status).toBe('done');
-            }
-            actor.stop();
-        });
-    });
-
-     // --- 지연 테스트 (`after`) ---
-    describe('notificationMachine 지연 테스트', () => {
-         // notificationMachine에 다음이 있다고 가정: states: { visible: { after: { 3000: 'idle' } } }
-         let actor;
-
-         beforeEach(() => {
-            vi.useFakeTimers(); // 원칙: 'after'에 가짜 타이머 사용
-            actor = createActor(notificationMachine);
-            actor.start();
-         });
-         afterEach(() => {
-             vi.useRealTimers(); // 원칙: 가짜 타이머 정리
-             actor.stop();
-         });
-
-        it('visible 상태에서 3000ms 후 idle로 전환되어야 한다', () => {
-            // 준비
-            actor.send({ type: 'SHOW' }); // 'visible' 상태 진입
-            expect(actor.getSnapshot().value).toBe('visible');
-
-            // 실행
-            vi.advanceTimersByTime(2999);
-            // 검증: 지연 만료 전에는 여전히 visible
-            expect(actor.getSnapshot().value).toBe('visible');
-
-            vi.advanceTimersByTime(1); // 임계점 넘기기
-
-            // 검증: 이제 idle로 전환됨
-            expect(actor.getSnapshot().value).toBe('idle');
-        });
-    });
-
-    // --- 모델 기반 테스팅 스니펫 (개념적 구조) ---
-    /*
-    import { createModel } from '@xstate/test';
-    // complexMachineWithMeta에 meta: { test: ... } 검증이 포함되어 있다고 가정
-
-    const complexModel = createModel(complexMachineWithMeta).withEvents({
-      EVENT_A: {
-        exec: async (page) => { // page는 testContext
-          // SUT에서 EVENT_A를 발생시키는 상호작용 시뮬레이션
-          // await page.click('#button-a');
-          console.log('MBT 실행: EVENT_A');
-        },
-        // cases: [{ type: 'EVENT_A', value: 1 }, { type: 'EVENT_A', value: 2 }] // 선택적 변형
+    const counterMachine = setup({
+      types: {
+        context: {} as { count: number },
+        events: {} as { type: 'INCREMENT' } | { type: 'RESET' }
       },
-      EVENT_B: {
-         exec: async (page, event) => { // cases 사용 시 이벤트 객체 전달됨
-           console.log(`MBT 실행: EVENT_B 값 ${event.value}`);
-           // await page.fill('#input-b', event.value);
-         },
-         cases: [{ type: 'EVENT_B', value: 'test' }]
+    }).createMachine({
+      context: { count: 0 },
+      initial: 'active',
+      states: {
+        active: {
+          on: {
+            INCREMENT: { actions: assign({ count: ({ context }) => context.count + 1 }) },
+            RESET: { actions: assign({ count: 0 }) }
+          }
+        }
       }
     });
 
-    describe('complexMachine 모델 기반 테스트', () => {
-      const testPlans = complexModel.getSimplePathPlans(); // 또는 getShortestPathPlans
+    describe('counterMachine (No Mocks)', () => {
+      // 원칙: 동작 테스트 - 실제 assign 액션 사용
+      it('INCREMENT 이벤트 발생 시 count 컨텍스트를 증가시켜야 한다', () => {
+        // 준비 (원칙: AAA 준비 - 모의 없음)
+        const actor = createActor(counterMachine);
+        actor.start();
+        const initialCount = actor.getSnapshot().context.count;
 
-      testPlans.forEach((plan) => {
-        describe(plan.description, () => {
-          plan.paths.forEach((path) => {
-            it(path.description, async () => {
-              // 필요시 SUT / testContext 설정 (예: 브라우저 페이지)
-              const testContext = { /* 예: 페이지 객체 * / };
-              console.log(`--- MBT 경로 시작: ${path.description} ---`);
-              // path.test는 이벤트를 실행하고 meta.test 검증을 확인
-              await path.test(testContext);
-              console.log(`--- MBT 경로 종료: ${path.description} ---`);
-              // 필요시 SUT / testContext 정리
-            });
-          });
-        });
+        // 실행 (원칙: AAA 실행)
+        actor.send({ type: 'INCREMENT' });
+
+        // 검증 (원칙: AAA 검증 - 상태/컨텍스트 확인)
+        expect(actor.getSnapshot().context.count).toBe(initialCount + 1);
+        actor.stop();
       });
 
-      it('전체 상태 커버리지를 가져야 한다', () => {
-        return complexModel.testCoverage();
+       // 원칙: 동작 테스트 - 실제 assign 액션 사용
+      it('RESET 이벤트 발생 시 count를 0으로 재설정해야 한다', () => {
+        // 준비
+        const actor = createActor(counterMachine);
+        actor.start();
+        actor.send({ type: 'INCREMENT' }); // count를 0이 아닌 값으로 만듦
+        expect(actor.getSnapshot().context.count).toBeGreaterThan(0);
+
+        // 실행
+        actor.send({ type: 'RESET' });
+
+        // 검증
+        expect(actor.getSnapshot().context.count).toBe(0);
+        actor.stop();
       });
     });
-    */
+    ```
 
+    **Example 2: Testing Invoked Promise (Necessary Mocking for External Call)**
+    ```javascript
+    // dataFetcherMachine.test.js
+    import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+    import { createActor, setup, assign, fromPromise } from 'xstate';
+
+    // 가정: api.fetchData는 실제 네트워크 요청을 수행하는 함수
+    const api = {
+      fetchData: async (query: string): Promise<{ result: string }> => {
+        // 실제 구현은 네트워크 호출 포함
+        console.log(`실제 API 호출 시도: ${query}`);
+        throw new Error("테스트에서는 실제 API 호출을 피해야 합니다!");
+      }
+    };
+
+    const dataFetcherMachine = setup({
+      types: {
+        context: {} as { data?: string; error?: string; query: string },
+        events: {} as { type: 'FETCH' } | { type: 'RESET' },
+        input: {} as { initialQuery: string }
+      },
+      actors: {
+        // 원칙: 외부 시스템(API) 격리를 위한 액터 정의.
+        // 실제 구현 대신 여기서 모의 처리될 수 있도록 정의.
+        fetchDataFromApi: fromPromise(
+          async ({ input }: { input: { query: string }}) => api.fetchData(input.query)
+        )
+      }
+    }).createMachine({
+      context: ({ input }) => ({ query: input.initialQuery }),
+      initial: 'idle',
+      states: {
+        idle: {
+          on: { FETCH: 'loading' }
+        },
+        loading: {
+          invoke: {
+            src: 'fetchDataFromApi',
+            input: ({ context }) => ({ query: context.query }),
+            onDone: { target: 'success', actions: assign({ data: ({ event }) => event.output.result }) },
+            onError: { target: 'failure', actions: assign({ error: ({ event }) => event.error.message })}
+          }
+        },
+        success: {
+          on: { RESET: 'idle' }
+        },
+        failure: {
+           on: { RESET: 'idle' }
+        }
+      }
+    });
+
+    describe('dataFetcherMachine (Mocking External API)', () => {
+      const mockFetchImplementation = vi.fn();
+
+      // 원칙: 모의 최소화 - 외부 API 호출만 모의 액터로 대체
+      const machineWithMockedApi = dataFetcherMachine.provide({
+        actors: {
+          // 실제 API 호출 대신 모의 구현을 사용하는 fromPromise 제공
+          fetchDataFromApi: fromPromise(mockFetchImplementation)
+        }
+      });
+
+      let actor;
+      beforeEach(() => {
+        vi.resetAllMocks();
+        // 각 테스트 전에 모의 액터가 주입된 머신으로 액터 생성
+        actor = createActor(machineWithMockedApi, { input: { initialQuery: 'test' } });
+        actor.start();
+      });
+      afterEach(() => {
+        actor.stop();
+      });
+
+      // 원칙: 동작 테스트 (성공 경로)
+      it('API 호출 성공 시 success 상태로 전환하고 데이터를 저장해야 한다', async () => {
+        // 준비 (모의 설정)
+        const mockResponse = { result: '성공 데이터' };
+        mockFetchImplementation.mockResolvedValue(mockResponse);
+        expect(actor.getSnapshot().value).toBe('idle');
+
+        // 실행
+        actor.send({ type: 'FETCH' });
+
+        // 검증 (중간 상태 및 모의 호출 확인)
+        expect(actor.getSnapshot().value).toBe('loading');
+        expect(mockFetchImplementation).toHaveBeenCalledTimes(1);
+        expect(mockFetchImplementation).toHaveBeenCalledWith(expect.objectContaining({ input: { query: 'test' } }));
+
+        // 검증 (최종 상태 및 컨텍스트 확인)
+        await vi.waitUntil(() => actor.getSnapshot().matches('success'));
+        expect(actor.getSnapshot().context.data).toBe(mockResponse.result);
+        expect(actor.getSnapshot().context.error).toBeUndefined();
+      });
+
+      // 원칙: 동작 테스트 (실패 경로)
+      it('API 호출 실패 시 failure 상태로 전환하고 오류를 저장해야 한다', async () => {
+        // 준비 (모의 설정)
+        const mockError = new Error('API 실패');
+        mockFetchImplementation.mockRejectedValue(mockError);
+
+        // 실행
+        actor.send({ type: 'FETCH' });
+
+        // 검증 (최종 상태 및 컨텍스트 확인)
+        await vi.waitUntil(() => actor.getSnapshot().matches('failure'));
+        expect(actor.getSnapshot().context.error).toBe(mockError.message);
+        expect(actor.getSnapshot().context.data).toBeUndefined();
+      });
+    });
     ```
 </Example_Test_Snippets>
 

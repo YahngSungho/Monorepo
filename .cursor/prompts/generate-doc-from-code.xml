@@ -75,7 +75,7 @@
 			- Integrate **MERMAID DIAGRAMS** where planned. Provide the ` ```mermaid ... ``` ` code block directly in the Markdown. Use appropriate types: `flowchart`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`, `componentDiagram`.
 			- **CRITICAL: MERMAID SYNTAX PRECAUTIONS (MUST FOLLOW):**
 					- To prevent parsing errors, PAY CLOSE ATTENTION TO THESE RULES:
-					- **ALWAYS** enclose node text containing special characters (like **parentheses `()`**, **periods `.`**, **question marks `?`**, hash `#`, colon `:`, etc.) in **DOUBLE QUOTES (`"`)**.
+					- **ALWAYS** enclose node text containing special characters (like **parentheses `()`**, **periods `.`**, **question marks `?`**, hash `#`, colon `:`, etc.), spaces, or non-ASCII characters (like Korean) in **DOUBLE QUOTES (`"`)**.
 								- *Error Example:* `B{Check function() call?}` -> Causes Error!
 								- *Fix:* `B{"Check function() call?"}`
 								- *Error Example:* `C[Next step(process)]` -> Causes Error!
@@ -83,7 +83,11 @@
 					- Use **DOUBLE QUOTES (`"`)** around subgraph titles containing spaces or special characters.
 					- Enclose complex text in sequence diagram messages in **QUOTES**.
 					- Keep node IDs simple (alphanumeric, e.g., `node1`, `processA`) and use special characters ONLY in the *displayed text* (inside quotes).
-					- When using HTML tags like `<br/>`, ensure the entire node text is **QUOTED**.
+					- **LINE BREAKS:** **MUST USE `<br/>`** for line breaks within node text. **DO NOT USE `\\n` or `\n`**. The **entire** node text containing `<br/>` **MUST** be enclosed in **DOUBLE QUOTES (`"`)**.
+								- *Error Example:* `A["Line 1 \\n Line 2"]` -> May not render correctly!
+								- *Fix:* `A["Line 1<br/>Line 2"]`
+					- **NO MARKDOWN LISTS:** **NEVER** use Markdown list syntax (`-`, `*`, `1.`, etc.) **INSIDE** Mermaid code blocks (` ```mermaid ... ``` `). This will cause `Unsupported markdown: list` errors. If you need list-like appearance in node text, use `<br/>` for line breaks and format manually within quotes, without list markers.
+					- **COMPATIBILITY:** The `componentDiagram` type might not be supported in all rendering environments, leading to `UnknownDiagramError`. If compatibility issues are suspected or encountered, consider using more widely supported alternatives like `graph TD` or `flowchart TD` to represent similar structures.
 					- **AVOID** parentheses `()` and special characters in node text if possible. Use **SIMPLE EXPRESSIONS**.
 					- **Simplify** technical terms if needed for node text (e.g., `page.evaluate()` -> `"evaluate function"`).
 			- Include other visuals as planned (e.g., Markdown tables to represent Types, diagrams/commentary near code blocks).
