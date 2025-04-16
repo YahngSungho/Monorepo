@@ -51,6 +51,11 @@
       *   **Leverage Power**: Where applicable (e.g., functions processing diverse inputs, complex logical conditions, algorithms, state machines, potential edge cases), proactively use property-based testing via `@fast-check/vitest`. PBT automatically generates a wide range of inputs, often finding edge cases missed by traditional example-based tests.
       *   **Focus on Invariants**: Define properties using `test.prop` or `it.prop` and `fc` arbitraries. Focus on defining the *invariant* (the property or rule that should always hold true for any valid input) rather than specific input/output pairs. (e.g., "for any two numbers a and b, sum(a, b) should equal sum(b, a)").
       *   **Integration**: Combine PBT with example-based tests for comprehensive coverage. Use examples for specific known edge cases or core happy paths, and PBT for broader correctness.
+
+  11.  **Mock Function Call Record Initialization**:
+			*   Ensure that mock function calls are reset before each test.
+			*   Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`).
+			*   PRIORITIZE CLARITY OVER STRICT DRY for test setup.
  </Core_Testing_Principles>
 
  <Instructions>

@@ -90,6 +90,11 @@
             *   Checking coverage: `model.testCoverage()`.
         *   Mention the suitability and decision regarding MBT in the **Test Plan**.
 
+    12. **Mock Function Call Record Initialization**:
+        *   Ensure that mock function calls are reset before each test.
+        *   Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`).
+        *   PRIORITIZE CLARITY OVER STRICT DRY for test setup.
+
 </Testing_Principles_To_Follow>
 
 <Example_Test_Snippets>

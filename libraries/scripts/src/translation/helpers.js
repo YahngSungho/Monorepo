@@ -2,26 +2,33 @@ import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
-export function calculateInitialTranslationStateByBaseLanguage(
-	baseLanguage,
+export function calculateInitialTranslationStateByBaseLanguages(
+	baseLanguages,
 	messageMap,
 	explanations,
 	combinedMessages_cached,
 ) {
-	const messages_baseLanguage = messageMap[baseLanguage] || {}
+	if (Object.keys(messageMap).length === 0) {
+		return { combinedMessages_latest: {}, targetLanguageMap: {} }
+	}
+	const messages_baseLanguages = R.pick(baseLanguages, messageMap)
 
 	// combinedMessages_latest 계산 (순수)
-	const combinedMessages_latest = R.mapObjIndexed(
-		(value, key) => ({
-			[baseLanguage]: value,
-			...(explanations[key] && { explanation: explanations[key] }),
-		}),
-		messages_baseLanguage,
-	)
+	const combinedMessages_latest = {}
+	for (const messageKey of Object.keys(messages_baseLanguages[baseLanguages[0]])) {
+		combinedMessages_latest[messageKey] = {}
+		for (const lang of baseLanguages) {
+			combinedMessages_latest[messageKey][lang] = messages_baseLanguages[lang][messageKey]
+		}
+		if (explanations[messageKey]) {
+			combinedMessages_latest[messageKey].explanation = explanations[messageKey]
+		}
+	}
+
 
 	// 초기 targetLanguageMap 계산 (순수) - ko 제외
 	const initialTargetLanguageMap = R.pipe(
-		R.omit([baseLanguage]),
+		R.omit(baseLanguages),
 		R.mapObjIndexed((value) => ({
 			value,
 			missingMessageKeys: [], // 초기화

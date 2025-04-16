@@ -3,7 +3,7 @@ import { generateKeyNumberFunctions } from '@library/helpers/helper-functions';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
-	calculateInitialTranslationStateByBaseLanguage,
+	calculateInitialTranslationStateByBaseLanguages,
 	combineEnglishTranslation,
 	integrateTranslatedMessages,
 	prepareTranslationPayload,
@@ -32,7 +32,7 @@ const mockConvertToNumberSimple = (data) => {
 };
 
 describe('Translation Helpers', () => {
-	describe('calculateInitialTranslationStateByBaseLanguage', () => {
+	describe('calculateInitialTranslationStateByBaseLanguages', () => {
 		// 원칙: 동작 테스트 (정상 케이스)
 		// 원칙: 모의 최소화 (순수 함수이므로 모의 불필요)
 		it('기본 언어와 메시지 맵을 기반으로 초기 상태를 올바르게 계산해야 한다', () => {
@@ -69,8 +69,8 @@ describe('Translation Helpers', () => {
 
 			// 실행(Act)
 			const { combinedMessages_latest, targetLanguageMap } =
-				calculateInitialTranslationStateByBaseLanguage(
-					baseLanguage,
+				calculateInitialTranslationStateByBaseLanguages(
+					[baseLanguage],
 					messageMap,
 					explanations,
 					combinedMessages_cached,
@@ -93,8 +93,8 @@ describe('Translation Helpers', () => {
 
 			// 실행(Act)
 			const { combinedMessages_latest, targetLanguageMap } =
-				calculateInitialTranslationStateByBaseLanguage(
-					baseLanguage,
+				calculateInitialTranslationStateByBaseLanguages(
+					[baseLanguage],
 					messageMap,
 					explanations,
 					combinedMessages_cached,
@@ -121,8 +121,8 @@ describe('Translation Helpers', () => {
 
 			// 실행(Act)
 			const { combinedMessages_latest, targetLanguageMap } =
-				calculateInitialTranslationStateByBaseLanguage(
-					baseLanguage,
+				calculateInitialTranslationStateByBaseLanguages(
+					[baseLanguage],
 					messageMap,
 					explanations,
 					combinedMessages_cached,
@@ -346,6 +346,7 @@ describe('Translation Helpers', () => {
 
 		beforeEach(() => {
 			// 원칙: 외부 시스템/비동기 액션 격리를 위한 모의 사용 (`getTranslatedMessages`)
+			vi.mocked(generateKeyNumberFunctions).mockClear(); // 각 테스트 전에 호출 기록 초기화
 			mockGetTranslatedMessages = vi.fn();
 			// restoreFromNumberKeys 모의 함수 정의 (이 테스트 스코프에서만 필요)
 			mockRestoreFromNumberKeys = vi.fn((numberedData) => {
@@ -407,6 +408,8 @@ describe('Translation Helpers', () => {
 
 			// getTranslatedMessages 모의 설정 (Promise를 반환하도록)
 			mockGetTranslatedMessages.mockResolvedValue(mockApiResponse);
+
+			expect(vi.mocked(generateKeyNumberFunctions)).toHaveBeenCalledTimes(0);
 
 			// 실행(Act)
 			const result = await translateOneLanguageMessages(
