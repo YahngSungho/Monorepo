@@ -160,3 +160,4 @@ releases/**
 paraglide-output/**
 *.patch
 **/*.patch
+.repomix-output
