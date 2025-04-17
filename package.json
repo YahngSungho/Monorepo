@@ -28,7 +28,7 @@
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
 	},
 	"dependencies": {
-		"@sentry/sveltekit": "^9.10.1",
+		"@sentry/sveltekit": "^9.13.0",
 		"gremlins.js": "^2.2.0",
 		"zod": "^3.24.3"
 	},
