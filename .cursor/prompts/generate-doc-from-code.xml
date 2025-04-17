@@ -87,6 +87,11 @@
 								- *Error Example:* `A["Line 1 \\n Line 2"]` -> May not render correctly!
 								- *Fix:* `A["Line 1<br/>Line 2"]`
 					- **NO MARKDOWN LISTS:** **NEVER** use Markdown list syntax (`-`, `*`, `1.`, etc.) **INSIDE** Mermaid code blocks (` ```mermaid ... ``` `). This will cause `Unsupported markdown: list` errors. If you need list-like appearance in node text, use `<br/>` for line breaks and format manually within quotes, without list markers.
+					- **NO MARKDOWN in Mermaid:** **ABSOLUTELY NEVER** use any other Markdown syntax (like backticks `` `...` `` for code emphasis) **INSIDE** Mermaid node labels or code blocks. This will break parsing. Keep node text purely descriptive.
+					- **NO COMMENTS in Mermaid:** **DO NOT** include comments (like `/* ... */` or `%% ...`) inside ` ```mermaid ... ``` ` blocks. Remove them entirely.
+					- **SUBGRAPH STRUCTURE for Clarity:** To avoid confusing layouts where subgraphs visually engulf unintended nodes, **structure your subgraph definitions carefully**:
+						- Define **only the nodes belonging to the subgraph** and their **internal connections** *inside* the `subgraph ... end` block.
+						- Define connections linking the main flow **to** the subgraph start node and **from** the subgraph end node *outside* the `subgraph ... end` block. This helps the layout engine render boundaries more accurately.
 					- **COMPATIBILITY:** The `componentDiagram` type might not be supported in all rendering environments, leading to `UnknownDiagramError`. If compatibility issues are suspected or encountered, consider using more widely supported alternatives like `graph TD` or `flowchart TD` to represent similar structures.
 					- **AVOID** parentheses `()` and special characters in node text if possible. Use **SIMPLE EXPRESSIONS**.
 					- **Simplify** technical terms if needed for node text (e.g., `page.evaluate()` -> `"evaluate function"`).
