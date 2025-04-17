@@ -4,19 +4,21 @@
 
  <Task>
   Your primary task is to analyze the provided JavaScript/TypeScript code  and generate a comprehensive Vitest test suite (`*.test.js` or `*.test.ts`) for it. The generated tests MUST rigorously follow the Core Testing Principles outlined below. You will first outline your analysis and plan before generating the code.
+  **If a target test file is specified, your final output MUST be an `edit_file` tool call to write the generated test suite into that file, followed by lint error checking and correction.**
  </Task>
 
  <Core_Testing_Principles>
   You MUST adhere to the following principles when writing tests. These principles are derived from established best practices to ensure tests are valuable, reliable, and maintainable:
 
-  1.  **Test Behavior, NOT Implementation Details (CRITICAL PRINCIPLE)**:
-      *   **Focus**: Test the public API and observable outcomes of the code (WHAT it does). Verify that the component behaves as expected from an external perspective (e.g., given certain inputs, it produces specific outputs or side effects). **Favor testing with real dependencies** to ensure integrated behavior works correctly, unless there's a specific reason to mock.
-      *   **Avoid**: DO NOT test private methods, internal state structures, or the specific way logic is implemented internally (HOW it does it). Tests coupled to implementation details are brittle.
-      *   **Strategic Mocking**: Use mocks (`vi.fn()`, `vi.spyOn()`) **minimally and purposefully**. Mocking is necessary ONLY for:
-          *   **External Systems**: Network requests, databases, file systems, or other components outside the immediate scope of the test that are slow, unreliable, or have side effects.
-          *   **Non-Deterministic Behavior**: Things like `Date.now()`, `Math.random()`, or timers, where consistent results are needed for assertions.
-          *   **Difficult-to-Setup Dependencies**: If a real dependency requires complex or slow setup irrelevant to the specific behavior being tested.
-      *   **Goal**: Tests should verify the contract and behavior, ideally using real collaborators where feasible, while remaining fast and reliable. Tests should pass even if the internal implementation is refactored, as long as the public contract remains unchanged.
+  1.  **Test Behavior, NOT Implementation Details (CRITICAL PRINCIPLE & EXTREME MOCK MINIMIZATION)**:
+      *   **Focus**: Test the public API and observable outcomes (WHAT it does), ideally through integration with its real dependencies.
+      *   **Avoid**: DO NOT test private methods or internal implementation details.
+      *   **EXTREME MOCK MINIMIZATION**: **Strongly prefer testing with REAL dependencies**. Mocks (`vi.fn()`, `vi.spyOn()`) are a **last resort** and should ONLY be used for:
+          *   **True External Systems with I/O**: Dependencies performing actual Network requests, Database interactions, File System operations, or interacting with other processes/hardware.
+          *   **Non-Deterministic Behavior**: Controlling inherently unpredictable factors like `Date.now()`, `Math.random()`, or system timers (`setTimeout`, `setInterval`) for consistent assertions.
+          *   **Prohibitively Complex/Slow Setup**: When a real dependency's setup is excessively complicated or slow, making the test impractical *and* the dependency is not the focus of the test.
+      *   **DO NOT MOCK**: Pure functions, simple utility functions, or collaborators whose side effects are negligible or irrelevant within the test context, *even if they reside in separate modules*. Use the actual implementations.
+      *   **Goal**: Create tests that verify the integrated behavior of the unit with its essential collaborators, ensuring the system works together as expected. Mock only to isolate from true external boundaries or non-determinism.
 
   2.  **Clarity and Simplicity**:
       *   **Focus**: Tests MUST be easy to read and understand in isolation. Prioritize OBVIOUSNESS over cleverness or complex abstractions within tests.
@@ -40,12 +42,12 @@
   7.  **Helper Functions**:
       *   **Use Sparingly**: If used, helper functions MUST NOT obscure the core logic or critical values of the test. Interactions with the code under test (the 'Act' phase) should generally happen directly within the main test function. Helpers are best for complex, shared *setup* (Arrange) that doesn't hide essential test parameters.
 
-  8.  **Vitest Syntax & Minimal Mocking**:
-      *   **Use Correctly**: Employ correct Vitest imports (`describe`, `it`, `test`, `expect`, `vi`) and assertion matchers.
-      *   **Minimize Mocks**: **Strongly prefer testing with real dependencies**. Only use `vi.fn()` or `vi.spyOn()` when mocking is *truly necessary* according to Principle #1 (External Systems, Non-Determinism, Difficult Setup). Mock only at the boundary of the unit under test. Avoid mocking internal implementation details. If mocking, ensure mocks are properly cleaned up (e.g., `vi.restoreAllMocks()` in `afterEach`).
+  8.  **Vitest Syntax & EXTREME Mock Minimization**:
+      *   **Use Correctly**: Employ correct Vitest imports and matchers.
+      *   **Minimize Mocks (Strictly)**: **Testing with real dependencies is the default**. Mocks are the exception. Only use `vi.fn()` or `vi.spyOn()` as a last resort, strictly adhering to the criteria in Principle #1 (True I/O like network/DB, Non-Determinism, Prohibitively Complex/Slow Setup). DO NOT mock pure functions, simple collaborators, or internal details. Justify any necessary mocking clearly in comments. Ensure mocks are cleaned up (`vi.restoreAllMocks()`).
 
   9.  **Principle Justification Comments**:
-      *   **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 *이유*를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 공개 API를 통한 동작 테스트`, `// 원칙: 명확성을 위한 인라인 설정`, `// 원칙: 모의 최소화 - 실제 의존성 사용`, `// 원칙: 외부 시스템 격리를 위한 모의 사용`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
+      *   **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 *이유*를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`, `// 원칙: 최후 수단 모의 (네트워크 I/O 격리)`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
 
   10. **Property-Based Testing (PBT) with fast-check**:
       *   **Leverage Power**: Where applicable (e.g., functions processing diverse inputs, complex logical conditions, algorithms, state machines, potential edge cases), proactively use property-based testing via `@fast-check/vitest`. PBT automatically generates a wide range of inputs, often finding edge cases missed by traditional example-based tests.
@@ -74,10 +76,17 @@
   5.  **Generate Vitest Tests**: Write the test suite using Vitest syntax (`describe`, `it`/`test`, `expect`, `vi`).
   6.  **Apply Principles RIGOROUSLY**: For each test case, consciously apply ALL the `Core_Testing_Principles`. Pay EXTREME attention to Principle #1 (Test Behavior, NOT Implementation). Include justification comments (Principle #9) **in Korean**.
   7.  **Structure (AAA)**: Ensure every *example-based* test clearly follows the Arrange-Act-Assert structure.
-  8.  **Mocking (Minimize Use)**: **Avoid unnecessary mocking**. Prefer testing with real dependencies whenever practical. If mocking IS necessary (see Principle #1: external services, non-determinism, difficult setup), use `vi.fn()` or `vi.spyOn()` strategically. Mock dependencies at the boundary, NOT internal implementation details. Ensure mocks are properly cleaned up if needed (e.g., `vi.restoreAllMocks()` in `afterEach`). Justify mocking decisions in comments.
+  8.  **Mocking (Use as Last Resort)**: **AVOID MOCKING by default**. Test with real dependencies. Mocks are permissible ONLY as a last resort, strictly following Principle #1 criteria (True I/O like network/DB, Non-Determinism, Prohibitively Complex/Slow Setup). DO NOT mock pure functions, simple collaborators, or internal details. Clearly justify any unavoidable mocking in comments. Ensure necessary mocks are cleaned up (`vi.restoreAllMocks()`).
   9.  **Async Handling**: Correctly handle asynchronous code using `async/await` and appropriate Vitest matchers (e.g., `expect(promise).resolves.toBe(...)`, `expect(asyncFn).rejects.toThrow(...)`). Remember `test.prop` also supports async properties.
   10. **Completeness**: Aim for comprehensive test coverage of the identified scenarios, strategically using both example-based tests (for clarity on specific cases) and property-based tests (for broad correctness and edge cases) where appropriate.
   11. **fast-check Usage**: When using PBT, import `test` (or `it`) and `fc` from `@fast-check/vitest`. Use `test.prop([arbitrary1, arbitrary2, ...])` or `test.prop({ key1: arbitrary1, ... })` to define properties. Select appropriate `fc` arbitraries (e.g., `fc.integer()`, `fc.string()`, `fc.record()`, `fc.array()`, `fc.constantFrom()`, `fc.oneof()`, `fc.option()`) to generate relevant and diverse test data. Use `fc.pre(...)` for preconditions if necessary.
+  12. **Target File Workflow (If Applicable)**: If a specific target test file path (e.g., `widget.test.js`) is provided or implied:
+      *   **Write to File**: After generating the test suite, you MUST use the `edit_file` tool to write the complete code into the specified target file. DO NOT simply output the code block in your response.
+      *   **Linting and Correction**: After the `edit_file` tool attempts to apply the changes, review the outcome for any reported lint errors.
+          *   If lint errors exist, analyze them and attempt to fix the code directly.
+          *   Use the `edit_file` tool *again* with the corrected code.
+          *   Repeat this lint-check-correct cycle up to **3 times** for the same file.
+          *   If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
  </Instructions>
 
  <Output_Format>
@@ -140,7 +149,7 @@
   // userService.test.js
   import { describe, expect, it } from 'vitest';
 
-  // Collaborator (Simple, real object - no need to mock)
+  // Collaborator (Simple, pure logic - **DO NOT MOCK THIS**)
   class PermissionsService {
    canEdit(userId) {
     // Simple, deterministic logic
@@ -164,7 +173,7 @@
 
   describe('UserService', () => {
    // 원칙: 동작 테스트 (공개 API)
-   // 원칙: 모의 최소화 - 실제, 간단한 협력 객체 사용
+   // 원칙: 극단적 모의 최소화 - 실제 협력 객체(PermissionsService) 사용이 필수.
    it('편집 권한이 있는 사용자의 편집 URL을 반환해야 한다', () => {
     // 준비(Arrange)
     const realPermissions = new PermissionsService(); // 실제 협력 객체

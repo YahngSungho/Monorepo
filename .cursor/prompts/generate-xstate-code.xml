@@ -27,6 +27,11 @@
     The primary input will be a single Markdown file containing the user's plan for an XState machine, typically structured using nested lists. This plan will describe the intended states, transitions, context, actions, guards, etc.
 </Input_Specification>
 
+<Task>
+    Your primary task is to analyze the provided XState v5 machine definition (JavaScript code) generate a comprehensive Vitest test suite (`*.test.js`) for it. The generated tests MUST rigorously follow the `<Testing_Principles_To_Follow>` outlined below. Your response MUST follow the structure specified in `<Output_Format>`.
+    **If a target test file is specified, your final output MUST be an `edit_file` tool call to write the generated test suite into that file, followed by lint error checking and correction.**
+</Task>
+
 <Output_Format>
     Your response MUST be structured EXACTLY as follows:
 
@@ -35,17 +40,17 @@
         *   State: "Let's first understand the plan and devise a plan to generate the code. Then, let's carry out the plan step by step."
         *   Provide your detailed step-by-step analysis (Chain of Thought) covering parsing the plan, mapping to XState v5 (with citations to `XState.mdc`), defining context/actions/guards (including placeholder strategy), and explicitly stating any assumptions made.
 
-    2.  **Generated Code**:
-        *   Provide a single, complete, and well-formatted JavaScript code block.
-        *   Prefix the code block with a filename comment, e.g., `# filename: stateMachine.js`.
-        *   The code block MUST contain the full XState v5 machine definition, including:
-            *   Necessary `import` statements from `xstate`.
-            *   The `setup` function wrapping `createMachine`.
-            *   The `createMachine` call with the machine configuration.
-            *   The `context` definition.
-            *   All states, transitions, actions, and guards derived from the plan.
-            *   Comprehensive JSDoc annotations for types.
-            *   Placeholder stubs/comments for any undefined actions or guards as specified in the instructions.
+    2.  **Code Generation and Application**:
+        *   Generate the complete JavaScript code for the XState machine based on the reasoning.
+        *   **Target File Workflow (If Applicable)**: If a specific target file path (e.g., `stateMachine.js`) is provided or implied:
+            *   Prefix the planned `edit_file` call with a filename comment, e.g., `# filename: stateMachine.js`.
+            *   Use the `edit_file` tool to write the complete generated code into the specified target file. DO NOT simply output the code block in your response before the tool call.
+            *   **Linting and Correction**: After the `edit_file` tool attempts to apply the changes, review the outcome for any reported lint errors.
+                *   If lint errors exist, analyze them and attempt to fix the code directly within the proposed edit.
+                *   Use the `edit_file` tool *again* with the corrected code.
+                *   Repeat this lint-check-correct cycle up to **3 times** for the same file.
+                *   If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
+        *   **If NO target file is specified**: Provide the generated code in a single, complete, and well-formatted JavaScript code block, prefixed with a filename comment (e.g., `# filename: stateMachine.js`). Ensure the code includes necessary imports, `setup`, `createMachine`, context, states, transitions, actions, guards, JSDoc, and placeholders as per the plan.
 </Output_Format>
 
 <Reference_Materials>

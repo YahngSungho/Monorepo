@@ -402,6 +402,7 @@ export default defineFlatConfig([
 		],
 
 		rules: {
+			'functional/functional-parameters': 'off',
 			'no-unused-vars': 'off',
 			'sonarjs/no-dead-store': 'off',
 			'unicorn/no-array-method-this-argument': 'off',

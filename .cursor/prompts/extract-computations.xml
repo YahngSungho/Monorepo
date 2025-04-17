@@ -8,6 +8,7 @@ You will be provided with the source code of a specific JavaScript/TypeScript fu
 
 <Core_Task>
 Your primary objective is to refactor the provided `target` function to rigorously separate its pure computational logic from its impure actions (side effects). The result should be new pure functions containing the computations and a modified original function acting as an orchestrator.
+**If the `target` function's file path is provided, your final output MUST be an `edit_file` tool call to apply these changes, followed by lint error checking and correction.**
 </Core_Task>
 
 <Instructions>
@@ -62,11 +63,20 @@ Your final output MUST be structured as follows:
     *   Explicit list of identified Actions (`액션`).
     *   Explicit identification of Pure Computation (`계산`) logic blocks and the names chosen for the new pure functions they will be extracted into (a table is good here).
 3.  **New Pure Function Definitions**: The complete code for all the NEW pure functions you created, including their JSDoc comments.
-4.  **Tool Call Plan (`edit_file`)**: State clearly that you will use the `edit_file` tool. Specify the `target_file`. Provide the EXACT code changes required:
-    *   Show the full code for the NEW pure functions.
-    *   Show the full code for the MODIFIED `target` (orchestrator) function.
-    *   Use a diff format or show the code snippets with enough surrounding context (e.g., 3 lines before and after) so the changes are unambiguous. Use `// ... existing code ...` markers for unchanged parts where appropriate.
-5.  **Final Confirmation**: A brief statement confirming the plan is ready for execution.
+4.  **Code Application (`edit_file`)**: If the target file path is known:
+    *   State clearly that you will use the `edit_file` tool and specify the `target_file`.
+    *   Provide the EXACT code changes required for the target file:
+        *   Show the full code for the NEW pure functions (to be added).
+        *   Show the full code for the MODIFIED `target` (orchestrator) function (replacing the original).
+        *   Use a diff format or show the code snippets with enough surrounding context (e.g., 3 lines before and after) so the changes are unambiguous. Use `// ... existing code ...` markers.
+    *   **Linting and Correction**: After the `edit_file` tool attempts to apply the changes, review the outcome for any reported lint errors.
+        *   If lint errors exist, analyze them and attempt to fix the code directly within the proposed changes.
+        *   Use the `edit_file` tool *again* with the corrected code changes.
+        *   Repeat this lint-check-correct cycle up to **3 times** for the same file.
+        *   If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
+5.  **Final Confirmation**: A brief statement confirming the plan is ready for execution (or reporting persistent lint errors).
+
+If the target file path is NOT known, output the New Pure Function Definitions and the Modified Orchestrator Function code directly in code blocks instead of planning an `edit_file` call.
 </Output_Format_Instructions>
 
 <Example>

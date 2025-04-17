@@ -4,6 +4,7 @@
 
 <Task>
     Your primary task is to analyze the provided XState v5 machine definition (JavaScript code) generate a comprehensive Vitest test suite (`*.test.js`) for it. The generated tests MUST rigorously follow the `<Testing_Principles_To_Follow>` outlined below. Your response MUST follow the structure specified in `<Output_Format>`.
+    **If a target test file is specified, your final output MUST be an `edit_file` tool call to write the generated test suite into that file, followed by lint error checking and correction.**
 </Task>
 
 <Instructions>
@@ -33,16 +34,16 @@
 <Testing_Principles_To_Follow>
     You MUST adhere STRICTLY to the following principles:
 
-    1.  **Test Behavior, NOT Implementation Details & MINIMIZE MOCKING**:
-        *   FOCUS on testing the public API and observable outcomes: state transitions (`snapshot.value`), context changes (`snapshot.context`), final state/output (`snapshot.status`, `snapshot.output`), invoked/spawned actor interactions.
-        *   **MINIMIZE MOCKING**: **Strongly prefer testing with real implementations** of actions, actors (including those from `fromPromise`, `fromCallback`), and guards whenever feasible. Use the actual machine logic to ensure integrated behavior is correct.
-        *   **WHEN TO MOCK**: Use `machine.provide({ actions: {...}, actors: {...}, guards: {...} })` with `vi.fn()` **only when necessary**:
-            *   **External Systems**: Real actors/actions interacting with external APIs, databases, file systems (slow, unreliable, side-effects).
-            *   **Non-Deterministic Behavior**: Real actors/actions involving `Date.now()`, `Math.random()`, or timers requiring control.
-            *   **Complex/Slow Setup**: If a real dependency is significantly complex or slow to set up for the test's scope.
-            *   **Focusing on Specific Logic**: To isolate the machine's core transition logic from complex side-effect logic *if* that side-effect logic is tested separately.
-        *   If mocking, DO NOT test the internal logic of the mocked function. Verify that the mock was CALLED (`expect(mockFn).toHaveBeenCalled...`) or led to the expected state/context change.
-        *   Test simple, pure guards (based only on context/event) by asserting transitions for different inputs without mocking.
+    1.  **Test Behavior, NOT Implementation Details & EXTREME MOCK MINIMIZATION**:
+        *   FOCUS on testing the public API and observable outcomes, integrating with real dependencies.
+        *   **EXTREME MOCK MINIMIZATION**: **Strongly prefer testing with REAL implementations** of actions, actors (including `fromPromise`, `fromCallback`), and guards. Use the actual machine logic by default.
+        *   **WHEN TO MOCK (LAST RESORT)**: Use `machine.provide({...})` with `vi.fn()` **only as a last resort** when dealing with:
+            *   **True External Systems with I/O**: Actors/actions performing actual Network requests, Database interactions, File System operations.
+            *   **Non-Deterministic Behavior**: Actors/actions involving `Date.now()`, `Math.random()`, or system timers needing control.
+            *   **Prohibitively Complex/Slow Setup**: Dependencies whose real setup is excessively impractical for the test.
+        *   **DO NOT MOCK**: Simple actions, guards, or actors (even if defined via `fromPromise`/`fromCallback`) that represent pure functions, deterministic logic, or have negligible/irrelevant side effects in the test context. Use their actual implementations defined in the machine.
+        *   If mocking was unavoidable, verify mock calls (`expect(mockFn).toHaveBeenCalled...`) or resulting state/context changes, not the mock's internal logic.
+        *   Test pure guards by asserting transitions for different inputs without mocking.
 
     2.  **Clarity and Simplicity**:
         *   Tests MUST be easy to read and understand in isolation. PRIORITIZE OBVIOUSNESS.
@@ -50,11 +51,11 @@
         *   Leverage descriptive names from MBT tools if used (these might remain in English depending on the tool's output).
 
     3.  **Readability and Structure (AAA for XState)**:
-        *   Use Vitest structure: `describe`, `it`/`test`, `expect`, `vi`.
-        *   Strictly follow the **Arrange-Act-Assert (AAA)** pattern for example-based tests:
-            *   **Arrange**: `setup` the machine. **Prefer using the original machine definition**. Use `machine.provide({...})` **only when mocking is necessary** (see Principle #1) and inject minimal mocked implementations (`vi.fn()`). Create the actor using `createActor(machineUnderTest, { input: {...} })` potentially with initial `input`. Setup fake timers (`vi.useFakeTimers()`) ONLY if testing `after` or delays that need control.
-            *   **Act**: Start the actor (`actor.start()`). Send events (`actor.send({ type: '...', ... })`). Advance time (`vi.advanceTimersByTime(...)`) if using fake timers. Use `async/await` and potentially `vi.waitUntil()` for asynchronous operations, ideally interacting with the *real* actor logic if not mocked.
-            *   **Assert**: Use `expect(actor.getSnapshot()...)` to check `.value`, `.context`, `.status`, `.output`, `.matches()`, `.can()`. If mocks were *necessary*, check mock calls (`expect(mockAction).toHaveBeenCalled...`). Check spawned actors via `snapshot.children`.
+        *   Use Vitest structure.
+        *   Strictly follow AAA:
+            *   **Arrange**: `setup` the machine. **USE THE ORIGINAL MACHINE DEFINITION BY DEFAULT**. Use `machine.provide({...})` **only as a last resort** based on the strict criteria in Principle #1, injecting minimal mocks (`vi.fn()`). Create the actor: `createActor(machineUnderTest, { input: {...} })`. Use fake timers ONLY for controllable `after`/delays.
+            *   **Act**: Start actor (`actor.start()`). Send events (`actor.send(...)`). Use `async/await` / `vi.waitUntil()` for async ops, interacting with REAL actor logic unless necessarily mocked. Advance fake timers if used.
+            *   **Assert**: Check snapshot (`.value`, `.context`, etc.). If mocking was *unavoidable*, check mock calls. Check spawned actors.
 
     4.  **Keep Relevant Setup Visible**:
         *   Inline necessary setup (mock function definitions using `vi.fn()`, specific context variations) directly within the `test` or `it` function where it enhances clarity.
@@ -71,7 +72,7 @@
 
     8.  **API Version**: MUST use XState v5 API (`setup`, `createMachine`, `createActor`, `provide`, `getSnapshot`, `assign`, `spawn`, `fromPromise`, etc.). DO NOT use deprecated v4 APIs (`Machine`, `interpret`, `withConfig`, `withContext`, `state.meta`, `cond`, etc.). Refer to provided `@XState.md` documentation if unsure.
 
-    9.  **Principle Justification Comments**: Add brief comments **in KOREAN** within the generated test code to explain *why* a certain structure was chosen or mock applied, referencing these principles (e.g., `// 원칙: 동작 테스트 - 실제 액터 사용`, `// 원칙: AAA 준비 - 외부 시스템 격리를 위한 모의 액터 제공`, `// 원칙: 모의 최소화`).
+    9.  **Principle Justification Comments**: Add brief comments **in KOREAN**, referencing principles (e.g., `// 원칙: 동작 테스트 (실제 액터 사용)`, `// 원칙: 모의 최소화 (순수 함수 액션)`, `// 원칙: 최후 수단 모의 (네트워크 I/O 격리)`).
 
     10. **Property-Based Testing (PBT) with `@fast-check/vitest`**:
         *   MUST evaluate and implement Property-Based Tests (PBT) using `@fast-check/vitest` (`test.prop`, `fc`) for suitable scenarios.
@@ -216,7 +217,7 @@
     describe('dataFetcherMachine (Mocking External API)', () => {
       const mockFetchImplementation = vi.fn();
 
-      // 원칙: 모의 최소화 - 외부 API 호출만 모의 액터로 대체
+      // 원칙: 최후 수단 모의 - 실제 네트워크 I/O를 수행하는 외부 API 호출 격리
       const machineWithMockedApi = dataFetcherMachine.provide({
         actors: {
           // 실제 API 호출 대신 모의 구현을 사용하는 fromPromise 제공
@@ -272,6 +273,81 @@
       });
     });
     ```
+
+    **Example 3: Testing with Real, Simple Actor (No Mocking Needed)**
+    ```javascript
+    // nameFormatterMachine.test.js
+    import { describe, expect, it } from 'vitest';
+    import { createActor, setup, assign, fromCallback } from 'xstate';
+
+    // 가정: formatName은 동기적이고 순수한 포맷팅 함수
+    const formatName = (firstName: string, lastName: string): string => {
+      if (!firstName && !lastName) return '-';
+      return `${lastName || ''}, ${firstName || ''}`.trim().replace(/^,|,$/g, '');
+    };
+
+    const nameFormatterMachine = setup({
+      types: {
+        context: {} as { firstName?: string; lastName?: string; formattedName?: string },
+        events: {} as { type: 'SET_FIRST'; value: string } | { type: 'SET_LAST'; value: string }
+      },
+      actors: {
+        // 원칙: 모의 불필요 - 간단하고 순수한 로직을 가진 액터
+        formatterActor: fromCallback<any, { first?: string; last?: string }>(({ input, sendBack }) => {
+          const fullName = formatName(input.first, input.last);
+          sendBack({ type: 'FORMATTED', name: fullName });
+        })
+      }
+    }).createMachine({
+      context: { formattedName: '-' },
+      initial: 'idle',
+      states: {
+        idle: {
+          on: {
+            SET_FIRST: { actions: assign({ firstName: ({ event }) => event.value }), target: 'formatting' },
+            SET_LAST: { actions: assign({ lastName: ({ event }) => event.value }), target: 'formatting' }
+          }
+        },
+        formatting: {
+          invoke: {
+            id: 'formatter',
+            src: 'formatterActor',
+            input: ({ context }) => ({ first: context.firstName, last: context.lastName }),
+            onSnapshot: {
+              target: 'idle',
+              actions: assign({ formattedName: ({ event }) => event.snapshot.output?.name })
+            }
+          }
+        }
+      }
+    });
+
+    describe('nameFormatterMachine (Using Real Actor)', () => {
+      // 원칙: 동작 테스트 - 실제 액터(formatterActor) 사용
+      it('이름 설정 시 실제 포맷터 액터를 호출하고 결과를 반영해야 한다', async () => {
+        // 준비 (원칙: AAA 준비 - 모의 없음)
+        const actor = createActor(nameFormatterMachine);
+        actor.start();
+        expect(actor.getSnapshot().context.formattedName).toBe('-');
+
+        // 실행
+        actor.send({ type: 'SET_FIRST', value: 'John' });
+        // 포맷팅 상태를 거쳐 idle로 돌아올 때까지 기다림
+        await vi.waitUntil(() => actor.getSnapshot().matches('idle'));
+
+        // 검증
+        expect(actor.getSnapshot().context.formattedName).toBe('John');
+
+        // 실행 2
+        actor.send({ type: 'SET_LAST', value: 'Doe' });
+        await vi.waitUntil(() => actor.getSnapshot().matches('idle'));
+
+        // 검증 2
+        expect(actor.getSnapshot().context.formattedName).toBe('Doe, John');
+        actor.stop();
+      });
+    });
+    ```
 </Example_Test_Snippets>
 
 <Output_Format>
@@ -286,11 +362,17 @@
         *   Each planned test should mention what it tests **in KOREAN** and the principle(s) applied.
         *   MUST include justification **in KOREAN** for using (or not using) PBT and MBT.
 
-    3.  **Vitest Test Suite**:
-        *   Provide the complete `*.test.js` code as a single JavaScript code block.
-        *   The code MUST include all necessary imports.
-        *   The code MUST implement the test plan and strictly follow the `<Testing_Principles_To_Follow>`.
-        *   Include comments **in KOREAN** referencing principles as demonstrated in `<Example_Test_Snippets>`.
-        *   The code MUST be runnable.
+    3.  **Vitest Test Suite Generation & Application**:
+        *   Generate the complete `*.test.js` code implementing the plan and principles.
+        *   Include comments **in KOREAN** referencing principles.
+        *   The generated code MUST be runnable.
+        *   **Target File Workflow (If Applicable)**: If a specific target test file path is provided or implied:
+            *   **Write to File**: Use the `edit_file` tool to write the complete generated test suite into the specified target file. DO NOT simply output the code block in your response.
+            *   **Linting and Correction**: After the `edit_file` tool attempts to apply the changes, review the outcome for any reported lint errors.
+                *   If lint errors exist, analyze them and attempt to fix the code directly.
+                *   Use the `edit_file` tool *again* with the corrected code.
+                *   Repeat this lint-check-correct cycle up to **3 times** for the same file.
+                *   If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
+            *   If no target file is specified, output the generated code block directly.
 
 </Output_Format>

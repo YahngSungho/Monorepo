@@ -4,6 +4,7 @@
 
 <Task>
 		Generate a complete Storybook story file (`*.stories.svelte`) for the Svelte component found in the provided `.svelte` file. The stories MUST cover a wide range of scenarios to thoroughly demonstrate the component's behavior under various conditions.
+		**If a target story file path is provided, your final output MUST be an `edit_file` tool call to write the generated story into that file, followed by lint error checking and correction.**
 </Task>
 
 <Input>
@@ -112,5 +113,13 @@
 </Example>
 
 <Output_Format>
-		Your final output MUST be the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with the target filename (e.g., `// ComponentName.stories.svelte`). This code block should be preceded by your detailed step-by-step analysis (Component Analysis, Scenario Brainstorming, Implementation Strategy) **written in KOREAN**.
+		Your final output MUST be structured as follows:
+		1. Your detailed step-by-step analysis (Component Analysis, Scenario Brainstorming, Implementation Strategy) **written in KOREAN**.
+		2. **If a target file path (e.g., `MyComponent.stories.svelte`) is provided**:
+		   * Plan and execute the `edit_file` tool call to write the complete story file content.
+		   * **Linting and Correction**: After `edit_file` attempts to apply the changes, check for lint errors.
+			   * If errors exist, attempt to fix them in the code and use `edit_file` again.
+			   * Repeat lint-check-correct up to **3 times**.
+			   * If errors persist, report them and stop.
+		3. **If NO target file path is provided**: Output the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with a suggested filename comment (e.g., `// ComponentName.stories.svelte`).
 </Output_Format>
