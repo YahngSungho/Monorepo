@@ -4,7 +4,7 @@ import { inspect } from 'node:util'
 import { create } from '../library-wrappers/mutative.js'
 import { R } from '../library-wrappers/R.js'
 
-const createCompose = R.curry(
+export const createCompose = R.curry(
 	(F, G) =>
 		class Compose {
 			constructor(x) {
@@ -39,7 +39,7 @@ export class ObjectMonad {
 	}
 
 	static empty() {
-		return ObjectMonad.of()
+		return ObjectMonad.of({})
 	}
 
 	// ----- Pointed ObjectMonad
@@ -49,6 +49,11 @@ export class ObjectMonad {
 
 	concat(...anotherObjects) {
 		return ObjectMonad.of(Object.assign(this.$object, ...anotherObjects))
+	}
+
+	// ----- Functor ObjectMonad
+	create(callback) {
+		return ObjectMonad.of(create(this.$object, callback))
 	}
 
 	[inspect.custom]() {
@@ -79,12 +84,7 @@ export class ObjectMonad {
 		return ObjectMonad.of(deepUnwrap(this.$object));
 	}
 
-	// ----- Functor ObjectMonad
-	map(callback) {
-		return ObjectMonad.of(create(this.$object, callback))
-	}
-
-	mapKeyValues(valueCallback = R.identity, keyCallback = R.identity) {
+	map(valueCallback = R.identity, keyCallback = R.identity) {
 		const newObject = {}
 		for (const [key, value] of Object.entries(this.$object)) {
 			newObject[keyCallback(key)] = valueCallback(value)
@@ -94,7 +94,55 @@ export class ObjectMonad {
 	}
 }
 
-class Identity {
+export class ListMonad {
+	constructor(xs) {
+		this.$value = xs
+	}
+
+	static empty() {
+		return ListMonad.of([])
+	}
+
+	// ----- Pointed List
+	static of(x) {
+		return new ListMonad([x])
+	}
+
+	concat(x) {
+		return ListMonad.of(this.$value.concat(x))
+	}
+
+	create(callback) {
+		return ListMonad.of(create(this.$value, callback))
+	}
+
+	[inspect.custom]() {
+		return `ListMonad(${inspect(this.$value)})`
+	}
+
+	// ----- Functor List
+	map(function_) {
+		return ListMonad.of(this.$value.map(function_))
+	}
+
+	// ----- Traversable List
+	sequence(of) {
+		return this.traverse(of, R.identity)
+	}
+
+	traverse(of, function_) {
+		return this.$value.reduce(
+			(f, a) =>
+				function_(a)
+					.map((b) => (bs) => bs.concat(b))
+					.ap(f),
+			ListMonad.of([]),
+		)
+	}
+}
+
+
+export class Identity {
 	constructor(x) {
 		this.$value = x
 	}
@@ -129,7 +177,7 @@ class Identity {
 
 	// ----- Traversable Identity
 	sequence(of) {
-		return this.traverse(of, identity)
+		return this.traverse(of, R.identity)
 	}
 
 	traverse(of, function_) {
@@ -137,7 +185,7 @@ class Identity {
 	}
 }
 
-class IO {
+export class IO {
 	constructor(function_) {
 		this.unsafePerformIO = function_
 	}
@@ -171,55 +219,12 @@ class IO {
 	}
 }
 
-class List {
-	constructor(xs) {
-		this.$value = xs
-	}
-
-	static empty() {
-		return List.of()
-	}
-
-	// ----- Pointed List
-	static of(x) {
-		return new List([x])
-	}
-
-	concat(x) {
-		return new List(this.$value.concat(x))
-	}
-
-	[inspect.custom]() {
-		return `List(${inspect(this.$value)})`
-	}
-
-	// ----- Functor List
-	map(function_) {
-		return new List(this.$value.map(function_))
-	}
-
-	// ----- Traversable List
-	sequence(of) {
-		return this.traverse(of, identity)
-	}
-
-	traverse(of, function_) {
-		return this.$value.reduce(
-			(f, a) =>
-				function_(a)
-					.map((b) => (bs) => bs.concat(b))
-					.ap(f),
-			of(new List([])),
-		)
-	}
-}
-
 /**
  * Maybe monad represents an optional value that either holds a value of type T or nothing.
  *
  * @template T - The type of the inner value that Maybe holds.
  */
-class Maybe {
+export class Maybe {
 	get isJust() {
 		return !this.isNothing
 	}
@@ -277,7 +282,7 @@ class Maybe {
 
 	// ----- Traversable Maybe
 	sequence(of) {
-		return this.traverse(of, identity)
+		return this.traverse(of, R.identity)
 	}
 
 	traverse(of, function_) {
@@ -285,7 +290,7 @@ class Maybe {
 	}
 }
 
-class Task {
+export class Task {
 	constructor(fork) {
 		this.fork = fork
 	}
@@ -316,7 +321,7 @@ class Task {
 	}
 
 	join() {
-		return this.chain(identity)
+		return this.chain(R.identity)
 	}
 
 	// ----- Functor (Task a)
@@ -324,7 +329,5 @@ class Task {
 		return new Task((reject, resolve) => this.fork(reject, R.compose(resolve, function_)))
 	}
 }
-
-export { createCompose, Identity, IO, List, Map, Maybe, Task }
 
 export { default as Validator } from './validator.js'
