@@ -1,9 +1,10 @@
 // @ts-nocheck
 import { inspect } from 'node:util'
 
-import { compose, curry, identity } from '../library-wrappers/R'
+import { create } from '../library-wrappers/mutative.js'
+import { R } from '../library-wrappers/R.js'
 
-const createCompose = curry(
+const createCompose = R.curry(
 	(F, G) =>
 		class Compose {
 			constructor(x) {
@@ -30,6 +31,68 @@ const createCompose = curry(
 			}
 		},
 )
+
+
+export class ObjectMonad {
+	constructor(object) {
+		this.$object = object
+	}
+
+	static empty() {
+		return ObjectMonad.of()
+	}
+
+	// ----- Pointed ObjectMonad
+	static of(obj) {
+		return new ObjectMonad(obj)
+	}
+
+	concat(...anotherObjects) {
+		return ObjectMonad.of(Object.assign(this.$object, ...anotherObjects))
+	}
+
+	[inspect.custom]() {
+		return `ObjectMonad(${inspect(this.$object)})`
+	}
+
+	join() {
+		// 재귀적으로 객체를 탐색하며 ObjectMonad를 푸는 내부 함수
+		const deepUnwrap = (obj) => {
+			const newObject = {};
+			for (const [key, value] of Object.entries(obj)) {
+				if (value instanceof ObjectMonad) {
+					// ObjectMonad 인스턴스면 내부 객체($object)에 대해 재귀적으로 호출하여 값을 얻음
+					newObject[key] = deepUnwrap(value.$object);
+				} else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+					// 일반 객체(ObjectMonad가 아니고, null/배열이 아닌)면 재귀적으로 호출
+					newObject[key] = deepUnwrap(value);
+				} else {
+					// 그 외의 경우 (primitive 값, 배열 등)는 그대로 유지
+					newObject[key] = value;
+				}
+			}
+			return newObject;
+		};
+
+		// 현재 ObjectMonad의 내부 객체($object)에 대해 deepUnwrap을 호출하고
+		// 결과를 새 ObjectMonad로 감싸서 반환
+		return ObjectMonad.of(deepUnwrap(this.$object));
+	}
+
+	// ----- Functor ObjectMonad
+	map(callback) {
+		return ObjectMonad.of(create(this.$object, callback))
+	}
+
+	mapKeyValues(valueCallback = R.identity, keyCallback = R.identity) {
+		const newObject = {}
+		for (const [key, value] of Object.entries(this.$object)) {
+			newObject[keyCallback(key)] = valueCallback(value)
+		}
+
+		return ObjectMonad.of(newObject)
+	}
+}
 
 class Identity {
 	constructor(x) {
@@ -104,7 +167,7 @@ class IO {
 
 	// ----- Functor IO
 	map(function_) {
-		return new IO(compose(function_, this.unsafePerformIO))
+		return new IO(R.compose(function_, this.unsafePerformIO))
 	}
 }
 
@@ -258,7 +321,7 @@ class Task {
 
 	// ----- Functor (Task a)
 	map(function_) {
-		return new Task((reject, resolve) => this.fork(reject, compose(resolve, function_)))
+		return new Task((reject, resolve) => this.fork(reject, R.compose(resolve, function_)))
 	}
 }
 
