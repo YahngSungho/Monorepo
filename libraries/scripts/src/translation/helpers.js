@@ -147,6 +147,7 @@ export function integrateTranslatedMessages(
  * @param {string} language - 대상 언어 코드
  * @param {object} languageMessageObject - 해당 언어의 메시지 정보 객체
  * @param {object} combinedMessages_latest - 최신 결합 메시지 객체
+ * @param {object} dictionary - 번역 사전 객체
  * @param {function} getTranslatedMessages - 메시지 번역을 수행하는 비동기 함수
  * @returns {Promise<object>} - 번역 결과가 포함된 업데이트된 언어 메시지 정보 객체
  */

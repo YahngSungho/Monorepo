@@ -88,7 +88,7 @@ describe('getTranslatedLanguageMap 함수 (비동기 오케스트레이터, 통�
         expect(mockGetTranslatedMessages).toHaveBeenCalledTimes(2);
 
         // 2. Verify arguments for the English call (uses actual helpers internally)
-        const initialState = Helpers.calculateInitialTranslationStateByBaseLanguage('ko', messageMap, explanations, combinedMessages_cached);
+        const initialState = Helpers.calculateInitialTranslationStateByBaseLanguages(['ko'], messageMap, explanations, combinedMessages_cached);
         // initialState.targetLanguageMap.en = { value: { key1: 'One' }, missingMessageKeys: ['key1', 'key2'] }
         // initialState.combinedMessages_latest = { key1: { ko:'하나', exp:'Number 1' }, key2: { ko:'둘', exp:'Number 2' } }
         const expectedEnTargetPayload = { key1: initialState.combinedMessages_latest.key1, key2: initialState.combinedMessages_latest.key2 };

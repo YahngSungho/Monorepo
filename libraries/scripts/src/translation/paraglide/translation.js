@@ -1,53 +1,59 @@
+/*
+파일 구조:
+messages에 ko, en을 포함한 언어들의 JSON 파일들
+message-helpers에 cache / 용어 사전 / explanations 다 JSON 파일들
+*/
+
 import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslation, translateOneLanguageMessages } from '../helpers.js'
 
 
 // dummy function for test
-export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
-	const translatedMessages = {}
-	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지'
-	}
-	return translatedMessages
-}
+// export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
+// 	const translatedMessages = {}
+// 	for (const messageKey of Object.keys(combinedMessages)) {
+// 		translatedMessages[messageKey] = '번역된 메시지'
+// 	}
+// 	return translatedMessages
+// }
 
-const dictPerLanguage_forTest = {
-	en: {
-		open: 'Open',
-	}
-}
-const messageMap_forTest = {
-	en: {
-	open: 'Open',
-	},
-	ko: {
-		hello_world: '안녕하세요',
-		open: '열기',
-		close: '닫기',
-	},
-	fr: {
-		hello_world: 'Bonjour, le monde!',
-	},
-	de: {
-		open: 'Öffnen',
-	},
-}
+// const dictPerLanguage_forTest = {
+// 	en: {
+// 		open: 'Open',
+// 	}
+// }
+// const messageMap_forTest = {
+// 	en: {
+// 	open: 'Open',
+// 	},
+// 	ko: {
+// 		hello_world: '안녕하세요',
+// 		open: '열기',
+// 		close: '닫기',
+// 	},
+// 	fr: {
+// 		hello_world: 'Bonjour, le monde!',
+// 	},
+// 	de: {
+// 		open: 'Öffnen',
+// 	},
+// }
 
-const explanations_forTest = {
-		hello_world: 'This is a test message',
-		open: 'This is a test message',
-		close: 'This is a test message',
-	}
+// const explanations_forTest = {
+// 		hello_world: 'This is a test message',
+// 		open: 'This is a test message',
+// 		close: 'This is a test message',
+// 	}
 
-const combinedMessages_cached_forTest = {
-		hello_world: {
-			ko: '안녕하세요',
-			explanation: 'This is a test message',
-		},
-		open: {
-			ko: '열기',
-			explanation: 'This is a test message',
-		},
-	}
+// const combinedMessages_cached_forTest = {
+// 		hello_world: {
+// 			ko: '안녕하세요',
+// 			explanation: 'This is a test message',
+// 		},
+// 		open: {
+// 			ko: '열기',
+// 			explanation: 'This is a test message',
+// 		},
+// 	}
 
 /**
  * 초기 번역 상태(대상 언어 맵, 최신 결합 메시지, 누락 키 목록)를 계산하는 순수 함수입니다.
@@ -99,7 +105,7 @@ export async function getTranslatedLanguageMap (messageMap, explanations, dictPe
 	return translatedLanguageMap
 }
 
-const result = await getTranslatedLanguageMap(messageMap_forTest, explanations_forTest, dictPerLanguage_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)
+// const result = await getTranslatedLanguageMap(messageMap_forTest, explanations_forTest, dictPerLanguage_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)
 // [
 //   '💬 result:', {
 //     en: {
