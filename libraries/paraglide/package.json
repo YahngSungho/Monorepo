@@ -16,10 +16,11 @@
 		"@library/library-base": "workspace:*"
 	},
 	"exports": {
-		"./messages.js": "./paraglide-output/messages.js",
+		"./messages": "./paraglide-output/messages.js",
 		"./paraglide_outdir": "./paraglide-output",
 		"./paraglide_project": "./project.inlang",
 		"./runtime.js": "./paraglide-output/runtime.js",
-		"./server.js": "./paraglide-output/server.js"
+		"./server.js": "./paraglide-output/server.js",
+		"./helpers": "./index.js"
 	}
 }
