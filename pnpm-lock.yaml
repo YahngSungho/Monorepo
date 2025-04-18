@@ -437,8 +437,8 @@ importers:
         version: 3.24.3
     devDependencies:
       daisyui:
-        specifier: 5.0.23
-        version: 5.0.23
+        specifier: 5.0.27
+        version: 5.0.27
       tailwindcss:
         specifier: 4.1.3
         version: 4.1.3
@@ -471,8 +471,8 @@ importers:
         specifier: 4.1.4
         version: 4.1.4(vite@6.3.1(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1))
       daisyui:
-        specifier: 5.0.23
-        version: 5.0.23
+        specifier: 5.0.27
+        version: 5.0.27
       fontaine:
         specifier: ^0.5.0
         version: 0.5.0
@@ -689,8 +689,8 @@ importers:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.3)
       daisyui:
-        specifier: 5.0.23
-        version: 5.0.23
+        specifier: 5.0.27
+        version: 5.0.27
       open-props:
         specifier: ^1.7.15
         version: 1.7.15
@@ -837,8 +837,8 @@ packages:
   '@browserbasehq/sdk@2.5.0':
     resolution: {integrity: sha512-bcnbYZvm5Ht1nrHUfWDK4crspiTy1ESJYMApsMiOTUnlKOan0ocRD6m7hZH34iSC2c2XWsoryR80cwsYgCBWzQ==}
 
-  '@browserbasehq/stagehand@2.2.0-alpha-8814af9ece99fddc3dd9fb32671d0513a3a00c67':
-    resolution: {integrity: sha512-xQqBl+G6n8WtVoQBEFJgexVzZQ+axoMlPAUQ7YploZW4YN/gNT0dZXm9ENa13h9OIgMaRHWp8JACbXmn5sczeQ==}
+  '@browserbasehq/stagehand@2.2.0-alpha-35c55ebf6c2867801a0a6f6988a883c8cb90cf9a':
+    resolution: {integrity: sha512-6fWuU4Nrw025DCq2ZE9Qv/Xhs1qjyP/+PuvhLRzqCNMeIRP0b69kYlBw2UJ6ZXZUaS8LMGF71Ypi7AUt08uAFg==}
     peerDependencies:
       '@playwright/test': ^1.42.1
       deepmerge: ^4.3.1
@@ -4099,8 +4099,8 @@ packages:
   dagre-d3-es@7.0.11:
     resolution: {integrity: sha512-tvlJLyQf834SylNKax8Wkzco/1ias1OPw8DcUMDE7oUIoSEW25riQVuiu/0OWEFqT0cxHT3Pa9/D82Jr47IONw==}
 
-  daisyui@5.0.23:
-    resolution: {integrity: sha512-SIR8yAneeNxvrpaR5kREG1DrPK8XFyfmyvqyZEUTJ2e6tv4Pp56/w+52Vdv34hmSmtAyDldTCEPWx+GvPyp0Yg==}
+  daisyui@5.0.27:
+    resolution: {integrity: sha512-XrpqgfpGaZJvTPg9pS9Rq6xbYpmMnR0a7AKqyVPZceJzjAs5HH3rfkRkiuGin0+KC2Adnu+WLHU7UDxAtCMyAw==}
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -10027,7 +10027,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@browserbasehq/stagehand@2.2.0-alpha-8814af9ece99fddc3dd9fb32671d0513a3a00c67(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)':
+  '@browserbasehq/stagehand@2.2.0-alpha-35c55ebf6c2867801a0a6f6988a883c8cb90cf9a(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)':
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
       '@browserbasehq/sdk': 2.5.0
@@ -13375,7 +13375,7 @@ snapshots:
   cursor-tools@0.60.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(ws@8.18.1):
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
-      '@browserbasehq/stagehand': 2.2.0-alpha-8814af9ece99fddc3dd9fb32671d0513a3a00c67(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)
+      '@browserbasehq/stagehand': 2.2.0-alpha-35c55ebf6c2867801a0a6f6988a883c8cb90cf9a(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)
       '@modelcontextprotocol/sdk': 1.9.0
       '@types/glob': 8.1.0
       dotenv: 16.4.7
@@ -13583,7 +13583,7 @@ snapshots:
       d3: 7.9.0
       lodash-es: 4.17.21
 
-  daisyui@5.0.23: {}
+  daisyui@5.0.27: {}
 
   damerau-levenshtein@1.0.8: {}
 
