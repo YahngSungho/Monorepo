@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { FontaineTransform } from 'fontaine'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
-
+// import { paraglideVitePlugin } from '@inlang/paraglide-js'
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -43,6 +43,13 @@ const baseConfig = defineConfig({
 				return absolutePath
 			},
 		}),
+		// paraglideVitePlugin({
+		// 		// @ts-ignore
+		// 		outdir: '../../libraries/paraglide/paraglide-output',
+		// 		project: '../../libraries/paraglide/project.inlang',
+		// 		strategy: ['url', 'cookie', 'baseLocale'],
+		// 		disableAsyncLocalStorage: true,
+		// 	})
 	],
 	server: {
 		fs: {

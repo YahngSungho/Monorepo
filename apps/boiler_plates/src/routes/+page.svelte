@@ -24,7 +24,7 @@ const eewre = Promise.resolve('test 122')
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<Icon style="font-size: 2em;" icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
+<Icon icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
 <Button2 variant="wrong">
 	<Icon icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
 </Button2>

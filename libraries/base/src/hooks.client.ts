@@ -1,7 +1,10 @@
 import * as Sentry from '@sentry/sveltekit'
 
-const isDeployEnv =
-	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'
+// @ts-ignore
+import { env } from '$env/dynamic/public'
+
+const branch = env.CF_PAGES_BRANCH
+const isDeployEnv = branch === 'main' || branch === 'production'
 
 Sentry.init({
 	dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',
