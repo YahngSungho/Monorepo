@@ -1,3 +1,4 @@
+import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -31,6 +32,13 @@ const baseConfig = defineConfig({
 	plugins: [
 		// @ts-ignore
 		tsconfigPaths(),
+		paraglideVitePlugin({
+			// @ts-ignore
+			outdir: '../../libraries/paraglide/paraglide-output',
+			project: '../../libraries/paraglide/project.inlang',
+			strategy: ['url', 'cookie', 'baseLocale'],
+			disableAsyncLocalStorage: true,
+		}),
 		// @ts-ignore
 		tailwindcss(),
 		partytownVite({}),
@@ -43,13 +51,6 @@ const baseConfig = defineConfig({
 				return absolutePath
 			},
 		}),
-		// paraglideVitePlugin({
-		// 		// @ts-ignore
-		// 		outdir: '../../libraries/paraglide/paraglide-output',
-		// 		project: '../../libraries/paraglide/project.inlang',
-		// 		strategy: ['url', 'cookie', 'baseLocale'],
-		// 		disableAsyncLocalStorage: true,
-		// 	})
 	],
 	server: {
 		fs: {
