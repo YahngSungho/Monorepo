@@ -38,7 +38,7 @@
 		"@tailwindcss/postcss": "4.1.4",
 		"@tailwindcss/vite": "4.1.4",
 		"autoprefixer": "^10.4.21",
-		"daisyui": "5.0.23",
+		"daisyui": "5.0.27",
 		"open-props": "^1.7.15",
 		"postcss": "^8.5.3",
 		"postcss-import": "^16.1.0",
