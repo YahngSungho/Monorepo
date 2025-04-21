@@ -358,8 +358,8 @@ importers:
         specifier: 6.3.2
         version: 6.3.2(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1)
       vite-node:
-        specifier: 3.1.1
-        version: 3.1.1(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1)
+        specifier: 3.1.2
+        version: 3.1.2(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.8.3)(vite@6.3.2(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1))
@@ -837,8 +837,8 @@ packages:
   '@browserbasehq/sdk@2.5.0':
     resolution: {integrity: sha512-bcnbYZvm5Ht1nrHUfWDK4crspiTy1ESJYMApsMiOTUnlKOan0ocRD6m7hZH34iSC2c2XWsoryR80cwsYgCBWzQ==}
 
-  '@browserbasehq/stagehand@2.2.0-alpha-35c55ebf6c2867801a0a6f6988a883c8cb90cf9a':
-    resolution: {integrity: sha512-6fWuU4Nrw025DCq2ZE9Qv/Xhs1qjyP/+PuvhLRzqCNMeIRP0b69kYlBw2UJ6ZXZUaS8LMGF71Ypi7AUt08uAFg==}
+  '@browserbasehq/stagehand@2.2.0-alpha-edd6d3feb47aac9f312a5edad78bf850ae1541db':
+    resolution: {integrity: sha512-3M0KJlNn6vbpr+JDoFKS+Q/LTfotcaPukbDQ/5FrQx+Bhba6T38jv1aOKymmOh3wAfbHctSxuPApMWbsxxhFpA==}
     peerDependencies:
       '@playwright/test': ^1.42.1
       deepmerge: ^4.3.1
@@ -6847,6 +6847,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
@@ -9483,8 +9484,8 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
-  vite-node@3.1.1:
-    resolution: {integrity: sha512-V+IxPAE2FvXpTCHXyNem0M+gWm6J7eRyWPR6vYoG/Gl+IscNOjXzztUhimQgTxaAoUoj40Qqimaa0NLIOOAH4w==}
+  vite-node@3.1.2:
+    resolution: {integrity: sha512-/8iMryv46J3aK13iUXsei5G/A3CUlW4665THCPS+K8xAaqrVWiGB4RfXMQXCLjpK9P2eK//BczrVkn5JLAk6DA==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
@@ -10027,7 +10028,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@browserbasehq/stagehand@2.2.0-alpha-35c55ebf6c2867801a0a6f6988a883c8cb90cf9a(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)':
+  '@browserbasehq/stagehand@2.2.0-alpha-edd6d3feb47aac9f312a5edad78bf850ae1541db(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)':
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
       '@browserbasehq/sdk': 2.5.0
@@ -13375,7 +13376,7 @@ snapshots:
   cursor-tools@0.60.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(ws@8.18.1):
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
-      '@browserbasehq/stagehand': 2.2.0-alpha-35c55ebf6c2867801a0a6f6988a883c8cb90cf9a(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)
+      '@browserbasehq/stagehand': 2.2.0-alpha-edd6d3feb47aac9f312a5edad78bf850ae1541db(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(zod@3.24.2)
       '@modelcontextprotocol/sdk': 1.9.0
       '@types/glob': 8.1.0
       dotenv: 16.4.7
@@ -20114,7 +20115,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-node@3.1.1(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1):
+  vite-node@3.1.2(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
