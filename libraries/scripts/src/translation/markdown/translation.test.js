@@ -4,7 +4,6 @@ import {
 	translateOneLanguageMessages,
 } from '../helpers.js';
 import {
-	calculateInitialTranslationState,
 	convertMarkdownFiles,
 	getTranslatedLanguageMap,
 } from './translation.js';
@@ -89,73 +88,6 @@ describe('convertMarkdownFiles 함수', () => {
 		expect(result.explanations).toEqual(expectedExplanations);
 		// 초기 맵에 없는 언어는 languageMessageMap에 추가되지 않음을 확인
 		expect(result.languageMessageMap.de).toBeUndefined();
-	});
-});
-
-describe('calculateInitialTranslationState 함수', () => {
-	// 원칙: 동작 테스트 (공개 API), 모의 최소화 (실제 calculateInitialTranslationStateByBaseLanguages 사용)
-	it('주어진 데이터를 기반으로 올바른 초기 번역 상태를 계산해야 한다', () => {
-		// 준비 (Arrange)
-		const messageMap = {
-			ko: { key1: '안녕', key2: '세상' },
-			en: { key1: 'Hello', key2: 'World' },
-			fr: { key1: 'Bonjour' }, // key2 누락
-			de: {}, // key1, key2 누락
-		};
-		const explanations = {
-			key1: '인사',
-			key2: '대상',
-		};
-		const combinedMessages_cached = {
-			key1: { ko: '안녕', en: 'Hello', explanation: '인사' },
-			key2: { ko: 'No 세상', en: 'No World', explanation: 'No 대상' }, // 이전 캐시
-			key3: { ko: '캐시된 키', en: 'Cached Key', explanation: '설명3' }, // 이전 캐시
-		};
-		const expectedCombinedLatest = {
-			key1: { ko: '안녕', en: 'Hello', explanation: '인사' },
-			key2: { ko: '세상', en: 'World', explanation: '대상' },
-			// key3는 ko, en 중 하나 이상 없으므로 포함되지 않음
-		};
-		const expectedTargetMap = {
-			fr: { value: { key1: 'Bonjour' }, missingMessageKeys: ['key2'] },
-			de: { value: {}, missingMessageKeys: ['key1', 'key2'] },
-		};
-
-		// 실행 (Act)
-		const result = calculateInitialTranslationState(
-			messageMap,
-			explanations,
-			combinedMessages_cached,
-		);
-
-		// 검증 (Assert)
-		expect(result.combinedMessages_latest).toEqual(expectedCombinedLatest);
-		// targetLanguageMap의 missingMessageKeys는 순서가 중요하지 않으므로 Set으로 비교
-		expect(result.targetLanguageMap.fr.value).toEqual(expectedTargetMap.fr.value);
-		expect(new Set(result.targetLanguageMap.fr.missingMessageKeys)).toEqual(new Set(expectedTargetMap.fr.missingMessageKeys));
-		expect(result.targetLanguageMap.de.value).toEqual(expectedTargetMap.de.value);
-		expect(new Set(result.targetLanguageMap.de.missingMessageKeys)).toEqual(new Set(expectedTargetMap.de.missingMessageKeys));
-	});
-
-	// 원칙: 엣지 케이스 테스트
-	it('입력 데이터가 비어있을 경우 적절히 처리해야 한다', () => {
-		// 준비 (Arrange)
-		const messageMap = { ko: {}, en: {}, fr: {} };
-		const explanations = {};
-		const combinedMessages_cached = {};
-		const expectedCombinedLatest = {};
-		const expectedTargetMap = { fr: { value: {}, missingMessageKeys: [] } };
-
-		// 실행 (Act)
-		const result = calculateInitialTranslationState(
-			messageMap,
-			explanations,
-			combinedMessages_cached,
-		);
-
-		// 검증 (Assert)
-		expect(result.combinedMessages_latest).toEqual(expectedCombinedLatest);
-		expect(result.targetLanguageMap).toEqual(expectedTargetMap);
 	});
 });
 

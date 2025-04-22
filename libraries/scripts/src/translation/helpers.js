@@ -1,11 +1,12 @@
+import fs from 'node:fs'
+
+import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
-import { getAbsolutePath } from '@library/helpers/fs-sync'
-import fs from 'node:fs'
 
 export function getInitialLanguageMap () {
-	const settingPath = getAbsolutePath('../../../paraglide/project.inlang/settings.json')
+	const settingPath = getAbsolutePath('../../../paraglide/project.inlang/settings.json', import.meta.url)
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
 	const result = {}
@@ -172,8 +173,7 @@ export async function translateOneLanguageMessages(
 ) {
 	// 순수 함수: 번역 요청 페이로드 준비
 	const { combinedMessages_target_numbers, restoreFromNumberKeys, olderMessages } =
-		prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
-
+	prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 	// 비동기 호출: 번역 실행
 	const {translatedMessages: translatedMessages_numbers, newDictionary} = await getTranslatedMessages(
 		language,
@@ -181,7 +181,6 @@ export async function translateOneLanguageMessages(
 		olderMessages,
 		dictionary,
 	)
-
 	// 순수 함수: 번역된 메시지를 기존 객체와 통합 (결과 매핑 포함)
 	return {
 		...(integrateTranslatedMessages(
@@ -196,15 +195,25 @@ export async function translateOneLanguageMessages(
 	}
 }
 
-export function getNewCache (languageMessageMap_ko, explanations) {
+export function getNewCache (languageMessageMaps, explanations) {
 	const newCache = {}
-	for (const [ messageKey, messageValue ] of Object.entries(languageMessageMap_ko)) {
-		newCache[messageKey] = {
-			ko: messageValue,
-		}
+	for (const [ language, languageMessageMap ] of Object.entries(languageMessageMaps)) {
+		for (const [ messageKey, messageValue ] of Object.entries(languageMessageMap)) {
+			if (newCache[messageKey]) {
+				newCache[messageKey][language] = messageValue
+			} else {
+				newCache[messageKey] = {
+					[language]: messageValue,
+				}
+			}
+	}
+}
+
+	for (const messageKey of Object.keys(newCache)) {
 		if (explanations[messageKey]) {
 			newCache[messageKey].explanation = explanations[messageKey]
 		}
 	}
+
 	return newCache
 }

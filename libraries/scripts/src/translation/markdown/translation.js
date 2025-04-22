@@ -1,40 +1,57 @@
 /*
 파일 구조:
-각 프로젝트별 src/translation 폴더에 스크립트 파일(js), 용어사전, Cache 저장
+각 프로젝트별 src/translation 폴더에 스크립트 파일(js), Cache 저장
 각 text들은 src의 하위 폴더들 중에 적절한 곳에 폴더 단위로 존재
 하나의 폴더에 ko, en을 포함한 언어별 + explanation까지 마크다운 파일
+dicts는 각 프로젝트별이 아니라 paraglide/messages-helpers/dicts 폴더에 저장
 */
 
+import path from 'node:path'
+
+import { readFilesToObjects, readFilesToStrings_recursive, writeFile_async } from '@library/helpers/fs-async'
+import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
 import {
 	calculateInitialTranslationStateByBaseLanguages,
+	getInitialLanguageMap,
+	getNewCache,
 	translateOneLanguageMessages,
 } from '../helpers.js'
 
-export function convertMarkdownFiles(initialMarkdownFiles, initialLanguageMessageMap) {
-	const languageMessageMap = { ...initialLanguageMessageMap }
 
-const explanations = {}
-for (const fileObject of initialMarkdownFiles) {
-	const { path, value } = fileObject
-	const pathArray = path.split('/')
-	const fileName = R.last(pathArray)
-	if (!fileName.endsWith('.md')) {
-		continue
-	}
-	const lang = fileName.match(/^(.*)\.md$/)[1]
-	const fileKey = R.init(pathArray).join('/')
+// dummy function for test
+// export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
+// 	const translatedMessages = {}
+// 	for (const messageKey of Object.keys(combinedMessages)) {
+// 		translatedMessages[messageKey] = '번역된 메시지'
+// 	}
+// 	return {
+// 		translatedMessages,
+// 		newDictionary: {},
+// 	}
+// }
 
-	if (languageMessageMap[lang]) {
-		languageMessageMap[lang][fileKey] = value
+const dictFolderPath = getAbsolutePath('../../../../paraglide/messages-helpers/dicts/', import.meta.url)
+
+export async function getFiles (rootAbsolutePath, helperFolderPath) {
+	const languageMessageMap = getInitialLanguageMap()
+
+	const markdownFiles = await readFilesToStrings_recursive(rootAbsolutePath, '**/*.md')
+	const helperFiles = await readFilesToObjects(helperFolderPath)
+	const dictFiles = await  readFilesToObjects(dictFolderPath)
+
+	const cache = helperFiles['cache.json'] || {}
+
+	const dictPerLanguage = {}
+	for (const language of Object.keys(languageMessageMap)) {
+		dictPerLanguage[language] = dictFiles[`${language}.json`] || {}
 	}
-	if (lang === 'explanation') {
-		explanations[fileKey] = value
-	}
+
+	return { initialMarkdownFiles: markdownFiles, dictPerLanguage, cache }
 }
-	return { languageMessageMap, explanations }
-}
+
+
 
 // const initialMarkdownFiles_forTest = [
 // 	{
@@ -75,14 +92,58 @@ for (const fileObject of initialMarkdownFiles) {
 // 	},
 // ]
 
-// const initialLanguageMessageMap_forTest = {
-// 	en: {},
-// 	ko: {},
-// 	fr: {},
-// 	de: {},
+// const dictPerLanguage_forTest = {
+// 		en: {
+// 			open: 'Open',
+// 		},
+// 		fr: {}
 // }
 
-// const { languageMessageMap: languageMessageMap_forTest, explanations: explanations_forTest } = convertMarkdownFiles(initialMarkdownFiles_forTest, initialLanguageMessageMap_forTest)
+// const combinedMessages_cached_forTest = {
+// 		'src/myFolder/myText': {
+// 			ko: '안녕하세요',
+// 			en: 'Hello, world!',
+// 			explanation: 'This is a test message',
+// 		},
+// 		hello_world: {
+// 			ko: '안녕하세요',
+// 			en: 'Hello, world!',
+// 			explanation: 'This is a test message',
+// 		},
+// 		open: {
+// 			ko: '열기',
+// 			en: 'Open',
+// 			explanation: 'This is a test message',
+// 		},
+// 	}
+
+export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
+	const initialLanguageMessageMap = getInitialLanguageMap()
+	const languageMessageMap = { ...initialLanguageMessageMap }
+
+	const explanations = {}
+	for (const fileObject of initialMarkdownFiles) {
+		const relativePath = path.relative(rootAbsolutePath, fileObject.path)
+		const pathSegments = relativePath.split(path.sep)
+		const fileNameWithExt = R.last(pathSegments)
+		if (!fileNameWithExt || !fileNameWithExt.endsWith('.md')) {
+			continue
+		}
+		const lang = path.basename(fileNameWithExt, '.md')
+
+		const fileKey = R.init(pathSegments).join('/')
+
+		if (languageMessageMap[lang]) {
+			languageMessageMap[lang][fileKey] = fileObject.value
+		}
+		if (lang === 'explanation') {
+			explanations[fileKey] = fileObject.value
+		}
+	}
+	return { languageMessageMap, explanations }
+}
+
+// const { languageMessageMap: languageMessageMap_forTest, explanations: explanations_forTest } = convertMarkdownFiles(initialMarkdownFiles_forTest, 'src')
 // Return:
 // {
 //   languageMessageMap: {
@@ -103,31 +164,6 @@ for (const fileObject of initialMarkdownFiles) {
 //   }
 // }
 
-/**
- * 초기 번역 상태(대상 언어 맵, 최신 결합 메시지, 누락 키 목록)를 계산하는 순수 함수입니다.
- *
- * @param {object} messageMap - 언어별 메시지 맵
- * @param {object} explanations - 메시지 설명 객체
- * @param {object} combinedMessages_cached - 캐시된 결합 메시지 객체
- * @returns {{ combinedMessages_latest: object; targetLanguageMap: object }} - 계산된 최신 결합 메시지와 대상 언어
- *   맵(누락 키 포함)
- */
-export function calculateInitialTranslationState(
-	messageMap,
-	explanations,
-	combinedMessages_cached,
-) {
-	const { combinedMessages_latest, targetLanguageMap } =
-		calculateInitialTranslationStateByBaseLanguages(
-			['ko', 'en'],
-			messageMap,
-			explanations,
-			combinedMessages_cached,
-		)
-
-	return { combinedMessages_latest, targetLanguageMap }
-}
-
 export async function getTranslatedLanguageMap(
 	messageMap,
 	explanations,
@@ -136,17 +172,17 @@ export async function getTranslatedLanguageMap(
 	getTranslatedMessages,
 ) {
 	// 순수 함수: 초기 상태 계산
-	const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslationState(
-		messageMap,
-		explanations,
-		combinedMessages_cached,
-	)
+	const { combinedMessages_latest, targetLanguageMap } =
+		calculateInitialTranslationStateByBaseLanguages(
+			['ko', 'en'],
+			messageMap,
+			explanations,
+			combinedMessages_cached,
+		)
 
 	// 다른 언어들 번역 실행 (액션)
 	const translatedLanguageMap = {}
 	for (const [language, languageMessage] of Object.entries(targetLanguageMap)) {
-		// 이미 영어 번역 결과를 가지고 있다면, 다시 번역할 필요 없음
-
 		translatedLanguageMap[language] = await translateOneLanguageMessages(
 			language,
 			languageMessage,
@@ -156,43 +192,8 @@ export async function getTranslatedLanguageMap(
 		)
 	}
 
-	// 영어 번역이 실패했거나 없었을 경우, 결과 맵에 포함되지 않으므로 추가 확인/처리 필요 시 여기에 로직 추가
-
 	return translatedLanguageMap
 }
-
-// dummy function for test
-export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
-	const translatedMessages = {}
-	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지'
-	}
-	return translatedMessages
-}
-
-// const dictPerLanguage_forTest = {
-// 		en: {
-// 			open: 'Open',
-// 		}
-// }
-
-// const combinedMessages_cached_forTest = {
-// 		'src/myFolder/myText': {
-// 			ko: '안녕하세요',
-// 			en: 'Hello, world!',
-// 			explanation: 'This is a test message',
-// 		},
-// 		hello_world: {
-// 			ko: '안녕하세요',
-// 			en: 'Hello, world!',
-// 			explanation: 'This is a test message',
-// 		},
-// 		open: {
-// 			ko: '열기',
-// 			en: 'Open',
-// 			explanation: 'This is a test message',
-// 		},
-// 	}
 
 // const result = await getTranslatedLanguageMap(languageMessageMap_forTest, explanations_forTest, dictPerLanguage_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)
 // Return:
@@ -216,3 +217,18 @@ export async function getTranslatedMessages_forTest (language, combinedMessages,
 //     }
 //   }
 // }
+
+export async function saveFiles (rootAbsolutePath, helperFolderPath, translatedLanguageMap, explanations, languageMessageMap_ko, languageMessageMap_en) {
+	for await (const [language, messageMap] of Object.entries(translatedLanguageMap)) {
+		for await (const [ messageKey, messageValue ] of Object.entries(messageMap.newMessages)) {
+			const filePath = path.join(rootAbsolutePath, messageKey, `${language}.md`)
+			await writeFile_async(filePath, messageValue)
+		}
+
+		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify(messageMap.newDictionary, undefined, 2))
+	}
+
+	const newCache = getNewCache({ ko: languageMessageMap_ko, en: languageMessageMap_en }, explanations)
+
+	await writeFile_async(path.join(helperFolderPath, 'cache.json'), JSON.stringify(newCache, undefined, 2))
+}

@@ -7,7 +7,7 @@ import * as Helpers from '../helpers.js';
 // Import functions being tested
 import {
 	getTranslatedLanguageMap,
-} from './translation';
+} from './translation.js';
 
 
 describe('getTranslatedLanguageMap 함수 (비동기 오케스트레이터, 통합 테스트)', () => {

@@ -5,6 +5,8 @@ message-helpers에 cache / explanations 다 JSON 파일들
 message-helpers/dict에 언어별 용어 사전 JSON 파일들
 */
 
+import path from 'node:path'
+
 import { readFilesToObjects, writeFile_async } from '@library/helpers/fs-async'
 import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
@@ -12,20 +14,20 @@ import { R } from '@library/helpers/R'
 import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslation, getInitialLanguageMap,getNewCache,translateOneLanguageMessages } from '../helpers.js'
 
 // dummy function for test
-export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
-	const translatedMessages = {}
-	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지'
-	}
-	return {
-		translatedMessages,
-		newDictionary: {},
-	}
-}
+// export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
+// 	const translatedMessages = {}
+// 	for (const messageKey of Object.keys(combinedMessages)) {
+// 		translatedMessages[messageKey] = '번역된 메시지'
+// 	}
+// 	return {
+// 		translatedMessages,
+// 		newDictionary: {},
+// 	}
+// }
 
-const messageFolderPath = getAbsolutePath('../../../paraglide/messages')
-const helperFolderPath = getAbsolutePath('../../../paraglide/messages-helpers')
-const dictFolderPath = getAbsolutePath('../../../paraglide/messages-helpers/dicts')
+const messageFolderPath = getAbsolutePath('../../../../paraglide/messages/', import.meta.url)
+const helperFolderPath = getAbsolutePath('../../../../paraglide/messages-helpers/', import.meta.url)
+const dictFolderPath = getAbsolutePath('../../../../paraglide/messages-helpers/dicts/', import.meta.url)
 
 export async function getFiles() {
 	const languageMessageMap = getInitialLanguageMap()
@@ -163,14 +165,14 @@ const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslati
 
 export async function saveFiles (translatedLanguageMap, explanations, languageMessageMap_ko) {
 	for await (const [language, languageMessage] of Object.entries(translatedLanguageMap)) {
-		await writeFile_async(`${messageFolderPath}/${language}.json`, JSON.stringify(languageMessage.newMessages, undefined, 2))
+		await writeFile_async(path.join(messageFolderPath, `${language}.json`), JSON.stringify(languageMessage.newMessages, undefined, 2))
 
-		await writeFile_async(`${dictFolderPath}/${language}.json`, JSON.stringify(languageMessage.newDictionary, undefined, 2))
+		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify(languageMessage.newDictionary, undefined, 2))
 	}
 
-	const newCache = getNewCache(languageMessageMap_ko, explanations)
+	const newCache = getNewCache({ ko: languageMessageMap_ko }, explanations)
 
-	await writeFile_async(`${helperFolderPath}/cache.json`, JSON.stringify(newCache, undefined, 2))
+	await writeFile_async(path.join(helperFolderPath, 'cache.json'), JSON.stringify(newCache, undefined, 2))
 }
 
 // const { languageMessageMap, dictPerLanguage, explanations, cache } = await getFiles()
