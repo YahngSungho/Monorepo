@@ -1,20 +1,53 @@
 /*
 파일 구조:
 messages에 ko, en을 포함한 언어들의 JSON 파일들
-message-helpers에 cache / 용어 사전 / explanations 다 JSON 파일들
+message-helpers에 cache / explanations 다 JSON 파일들
+message-helpers/dict에 언어별 용어 사전 JSON 파일들
 */
 
-import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslation, translateOneLanguageMessages } from '../helpers.js'
+import { readFilesToObjects, writeFile_async } from '@library/helpers/fs-async'
+import { getAbsolutePath } from '@library/helpers/fs-sync'
+import { R } from '@library/helpers/R'
 
+import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslation, getInitialLanguageMap,getNewCache,translateOneLanguageMessages } from '../helpers.js'
 
 // dummy function for test
-// export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
-// 	const translatedMessages = {}
-// 	for (const messageKey of Object.keys(combinedMessages)) {
-// 		translatedMessages[messageKey] = '번역된 메시지'
-// 	}
-// 	return translatedMessages
-// }
+export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
+	const translatedMessages = {}
+	for (const messageKey of Object.keys(combinedMessages)) {
+		translatedMessages[messageKey] = '번역된 메시지'
+	}
+	return {
+		translatedMessages,
+		newDictionary: {},
+	}
+}
+
+const messageFolderPath = getAbsolutePath('../../../paraglide/messages')
+const helperFolderPath = getAbsolutePath('../../../paraglide/messages-helpers')
+const dictFolderPath = getAbsolutePath('../../../paraglide/messages-helpers/dicts')
+
+export async function getFiles() {
+	const languageMessageMap = getInitialLanguageMap()
+
+	const messageFiles = await readFilesToObjects(messageFolderPath)
+	const helperFiles = await readFilesToObjects(helperFolderPath)
+	const dictFiles = await readFilesToObjects(dictFolderPath)
+
+	for (const language of Object.keys(languageMessageMap)) {
+		languageMessageMap[language] = messageFiles[`${language}.json`] ? R.omit(['$schema'], messageFiles[`${language}.json`]) : {}
+	}
+
+	const explanations = R.omit(['$schema'], helperFiles['explanations.json']) || {}
+	const cache = helperFiles['cache.json'] || {}
+
+	const dictPerLanguage = {}
+	for (const language of Object.keys(languageMessageMap)) {
+		dictPerLanguage[language] = dictFiles[`${language}.json`] || {}
+	}
+
+	return { languageMessageMap, dictPerLanguage, explanations, cache }
+}
 
 // const dictPerLanguage_forTest = {
 // 	en: {
@@ -55,28 +88,10 @@ import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslat
 // 		},
 // 	}
 
-/**
- * 초기 번역 상태(대상 언어 맵, 최신 결합 메시지, 누락 키 목록)를 계산하는 순수 함수입니다.
- * @param {object} messageMap - 언어별 메시지 맵
- * @param {object} explanations - 메시지 설명 객체
- * @param {object} combinedMessages_cached - 캐시된 결합 메시지 객체
- * @returns {{combinedMessages_latest: object, targetLanguageMap: object}} - 계산된 최신 결합 메시지와 대상 언어 맵(누락 키 포함)
- */
-export function calculateInitialTranslationState(messageMap, explanations, combinedMessages_cached) {
-
-	const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslationStateByBaseLanguages(['ko'], messageMap, explanations, combinedMessages_cached)
-
-	return { combinedMessages_latest, targetLanguageMap }
-}
-
-export async function getTranslatedLanguageMap (messageMap, explanations, dictPerLanguage, combinedMessages_cached, getTranslatedMessages) {
+export async function getTranslatedLanguageMap (languageMessageMap, explanations, dictPerLanguage, combinedMessages_cached, getTranslatedMessages) {
 
 	// 순수 함수: 초기 상태 계산
-	const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslationState(
-		messageMap,
-		explanations,
-		combinedMessages_cached,
-	);
+const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslationStateByBaseLanguages(['ko'], languageMessageMap, explanations, combinedMessages_cached)
 
 	// 영어 번역 실행 (액션)
 	const englishMessageObject = targetLanguageMap.en;
@@ -114,6 +129,11 @@ export async function getTranslatedLanguageMap (messageMap, explanations, dictPe
 //       translatedMessages: { hello_world: '번역된 메시지', close: '번역된 메시지' },
 //       newMessages: { open: 'Open', hello_world: '번역된 메시지', close: '번역된 메시지' }
 //     },
+// 			newDictionary: {
+// 				en: {
+// 					open: 'Open',
+// 				}
+// 			},
 //     fr: {
 //       value: { hello_world: 'Bonjour, le monde!' },
 //       missingMessageKeys: [ 'open', 'close' ],
@@ -123,12 +143,40 @@ export async function getTranslatedLanguageMap (messageMap, explanations, dictPe
 //         open: '번역된 메시지',
 //         close: '번역된 메시지'
 //       }
+// 			newDictionary: {
+// 				fr: {
+// 				}
+// 			},
 //     },
 //     de: {
 //       value: { open: 'Öffnen' },
 //       missingMessageKeys: [ 'hello_world', 'close' ],
 //       translatedMessages: { hello_world: '번역된 메시지', close: '번역된 메시지' },
 //       newMessages: { open: 'Öffnen', hello_world: '번역된 메시지', close: '번역된 메시지' }
+//       newDictionary: {
+// 				de: {
+// 				}
+// 			},
 //     }
 //   }
 // ]
+
+export async function saveFiles (translatedLanguageMap, explanations, languageMessageMap_ko) {
+	for await (const [language, languageMessage] of Object.entries(translatedLanguageMap)) {
+		await writeFile_async(`${messageFolderPath}/${language}.json`, JSON.stringify(languageMessage.newMessages, undefined, 2))
+
+		await writeFile_async(`${dictFolderPath}/${language}.json`, JSON.stringify(languageMessage.newDictionary, undefined, 2))
+	}
+
+	const newCache = getNewCache(languageMessageMap_ko, explanations)
+
+	await writeFile_async(`${helperFolderPath}/cache.json`, JSON.stringify(newCache, undefined, 2))
+}
+
+// const { languageMessageMap, dictPerLanguage, explanations, cache } = await getFiles()
+// const result = await getTranslatedLanguageMap(languageMessageMap, explanations, dictPerLanguage, {
+// 	deft_east_mouse_hope: {
+// 		ko: '안녕하세요',
+// 		explanation: 'Hello', }
+// }, getTranslatedMessages_forTest)
+// await saveFiles(result, explanations, languageMessageMap.ko)

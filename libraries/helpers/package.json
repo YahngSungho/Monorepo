@@ -17,9 +17,9 @@
 		"@library/library-base": "workspace:*",
 		"mutative": "^1.1.0",
 		"ramda": "^0.30.1",
-		"random-js": "^2.1.0"
+		"random-js": "^2.1.0",
+		"tinyglobby": "^0.2.13"
 	},
-	"devDependencies": {},
 	"keywords": [],
 	"exports": {
 		"./monads": "./src/data-structures/monads.js",

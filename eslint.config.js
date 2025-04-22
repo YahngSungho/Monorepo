@@ -55,6 +55,7 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'perfectionist/sort-named-imports': 'warn',
 	'functional/functional-parameters': 'off',
 	'perfectionist/sort-named-exports': 'warn',
 	'unicorn/import-style': 'off',

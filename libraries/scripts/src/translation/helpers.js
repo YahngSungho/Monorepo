@@ -1,6 +1,19 @@
 import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
+import { getAbsolutePath } from '@library/helpers/fs-sync'
+import fs from 'node:fs'
+
+export function getInitialLanguageMap () {
+	const settingPath = getAbsolutePath('../../../paraglide/project.inlang/settings.json')
+	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
+
+	const result = {}
+	for (const language of settings.locales) {
+		result[language] = {}
+	}
+	return result
+}
 
 export function calculateInitialTranslationStateByBaseLanguages(
 	baseLanguages,
@@ -38,8 +51,7 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	// missingMessageKeys 계산 (순수, 불변성 유지)
 	const finalTargetLanguageMap = create(initialTargetLanguageMap, (draft) => {
 		for (const [messageKey, combinedMessage] of Object.entries(combinedMessages_latest)) {
-			const isMessageChanged =
-				JSON.stringify(combinedMessage) !== JSON.stringify(combinedMessages_cached[messageKey])
+			const isMessageChanged = !(R.equals(combinedMessage, combinedMessages_cached[messageKey]))
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
@@ -163,7 +175,7 @@ export async function translateOneLanguageMessages(
 		prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 
 	// 비동기 호출: 번역 실행
-	const translatedMessages_numbers = await getTranslatedMessages(
+	const {translatedMessages: translatedMessages_numbers, newDictionary} = await getTranslatedMessages(
 		language,
 		combinedMessages_target_numbers,
 		olderMessages,
@@ -171,9 +183,28 @@ export async function translateOneLanguageMessages(
 	)
 
 	// 순수 함수: 번역된 메시지를 기존 객체와 통합 (결과 매핑 포함)
-	return integrateTranslatedMessages(
+	return {
+		...(integrateTranslatedMessages(
 		languageMessageObject,
 		translatedMessages_numbers,
 		restoreFromNumberKeys,
-	)
+	)),
+		newDictionary: {
+			...dictionary,
+			...newDictionary,
+		}
+	}
+}
+
+export function getNewCache (languageMessageMap_ko, explanations) {
+	const newCache = {}
+	for (const [ messageKey, messageValue ] of Object.entries(languageMessageMap_ko)) {
+		newCache[messageKey] = {
+			ko: messageValue,
+		}
+		if (explanations[messageKey]) {
+			newCache[messageKey].explanation = explanations[messageKey]
+		}
+	}
+	return newCache
 }

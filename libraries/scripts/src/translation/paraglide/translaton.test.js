@@ -6,44 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as Helpers from '../helpers.js';
 // Import functions being tested
 import {
-	calculateInitialTranslationState,
 	getTranslatedLanguageMap,
 } from './translation';
-
-
-describe('calculateInitialTranslationState 함수 (래퍼 함수, 통합 테스트)', () => {
-	it('실제 calculateInitialTranslationStateByBaseLanguage를 사용하여 올바른 초기 상태를 반환해야 한다', () => {
-		// 준비 (Arrange)
-		const messageMap = {
-            ko: { key1: '안녕', key2: '세계' },
-            en: { key1: 'Hello' }, // key2 is missing in en
-            fr: { key1: 'Bonjour', key2: 'Monde' }
-        };
-		const explanations = { key1: 'Greeting', key2: 'Noun' };
-        // Cache: key1 is unchanged, key2 is new compared to cache
-		const combinedMessages_cached = { key1: { ko: '안녕', explanation: 'Greeting' } };
-
-        // 예상 결과 (실제 calculateInitialTranslationStateByBaseLanguage 로직 기반)
-        const expectedCombinedLatest = {
-			key1: { ko: '안녕', explanation: 'Greeting' },
-			key2: { ko: '세계', explanation: 'Noun' },
-		};
-        const expectedTargetMap = {
-            en: { value: { key1: 'Hello' }, missingMessageKeys: ['key2'] }, // key2 changed (new) + missing in en
-            fr: { value: { key1: 'Bonjour', key2: 'Monde' }, missingMessageKeys: ['key2'] } // key2 changed (new)
-		};
-
-		// 실행 (Act)
-		const result = calculateInitialTranslationState(messageMap, explanations, combinedMessages_cached);
-
-		// 검증 (Assert)
-        // Check the final output structure and content
-		expect(result.combinedMessages_latest).toEqual(expectedCombinedLatest);
-        expect(result.targetLanguageMap.en).toEqual(expectedTargetMap.en);
-        expect(result.targetLanguageMap.fr).toEqual(expectedTargetMap.fr);
-        expect(result.targetLanguageMap.ko).toBeUndefined();
-	});
-});
 
 
 describe('getTranslatedLanguageMap 함수 (비동기 오케스트레이터, 통합 테스트)', () => {

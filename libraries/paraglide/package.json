@@ -13,6 +13,7 @@
 	"keywords": [],
 	"dependencies": {
 		"@library/helpers": "workspace:*",
+		"@library/scripts": "workspace:*",
 		"@library/library-base": "workspace:*"
 	},
 	"exports": {

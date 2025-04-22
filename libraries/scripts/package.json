@@ -12,5 +12,8 @@
 	"dependencies": {
 		"@library/helpers": "workspace:*",
 		"@library/library-base": "workspace:*"
+	},
+	"exports": {
+		"./translation-paraglide": "./src/translation/paraglide/translation.js"
 	}
 }

@@ -518,6 +518,9 @@ importers:
       random-js:
         specifier: ^2.1.0
         version: 2.1.0
+      tinyglobby:
+        specifier: ^0.2.13
+        version: 0.2.13
 
   libraries/library-base: {}
 
@@ -529,6 +532,9 @@ importers:
       '@library/library-base':
         specifier: workspace:*
         version: link:../library-base
+      '@library/scripts':
+        specifier: workspace:*
+        version: link:../scripts
 
   libraries/scripts:
     dependencies:
@@ -544,9 +550,6 @@ importers:
       '@formkit/auto-animate':
         specifier: ^0.8.2
         version: 0.8.2
-      '@iconify/svelte':
-        specifier: ^4.2.0
-        version: 4.2.0(svelte@5.28.1)
       '@internationalized/date':
         specifier: ^3.7.0
         version: 3.8.0
@@ -10874,11 +10877,6 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.2': {}
-
-  '@iconify/svelte@4.2.0(svelte@5.28.1)':
-    dependencies:
-      '@iconify/types': 2.0.0
-      svelte: 5.28.1
 
   '@iconify/types@2.0.0': {}
 
