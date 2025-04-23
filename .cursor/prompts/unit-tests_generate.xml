@@ -18,6 +18,7 @@
           *   **Non-Deterministic Behavior**: Controlling inherently unpredictable factors like `Date.now()`, `Math.random()`, or system timers (`setTimeout`, `setInterval`) for consistent assertions.
           *   **Prohibitively Complex/Slow Setup**: When a real dependency's setup is excessively complicated or slow, making the test impractical *and* the dependency is not the focus of the test.
       *   **DO NOT MOCK**: Pure functions, simple utility functions, or collaborators whose side effects are negligible or irrelevant within the test context, *even if they reside in separate modules*. Use the actual implementations.
+      *   **Mocking Built-ins (e.g., `fs`, `path`)**: When mocking built-in modules is necessary (due to I/O), carefully replicate the *specific exports* (default, named functions like `readFileSync`, `join`) and the *expected return data structure* that the code under test actually uses. Check the module's API if unsure.
       *   **Goal**: Create tests that verify the integrated behavior of the unit with its essential collaborators, ensuring the system works together as expected. Mock only to isolate from true external boundaries or non-determinism.
 
   2.  **Clarity and Simplicity**:
@@ -44,7 +45,8 @@
 
   8.  **Vitest Syntax & EXTREME Mock Minimization**:
       *   **Use Correctly**: Employ correct Vitest imports and matchers.
-      *   **Minimize Mocks (Strictly)**: **Testing with real dependencies is the default**. Mocks are the exception. Only use `vi.fn()` or `vi.spyOn()` as a last resort, strictly adhering to the criteria in Principle #1 (True I/O like network/DB, Non-Determinism, Prohibitively Complex/Slow Setup). DO NOT mock pure functions, simple collaborators, or internal details. Justify any necessary mocking clearly in comments. Ensure mocks are cleaned up (`vi.restoreAllMocks()`).
+      *   **Minimize Mocks (Strictly)**: **Testing with real dependencies is the default**. Mocks are the exception. Only use `vi.fn()` or `vi.spyOn()` as a last resort, strictly adhering to the criteria in Principle #1 (True I/O like network/DB, Non-Determinism, Prohibitively Complex/Slow Setup). DO NOT mock pure functions, simple collaborators, or internal details. Justify any necessary mocking clearly in comments. Ensure necessary mocks are cleaned up (`vi.restoreAllMocks()`).
+      *   **`vi.mock` Usage**: If `vi.mock('module', () => { ... })` factory provides a mock implementation (e.g., using `vi.fn()`), **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` for the same function in `beforeEach` or tests. The factory already sets the implementation.
 
   9.  **Principle Justification Comments**:
       *   **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 *이유*를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`, `// 원칙: 최후 수단 모의 (네트워크 I/O 격리)`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
@@ -56,7 +58,7 @@
 
   11.  **Mock Function Call Record Initialization**:
 			*   Ensure that mock function calls are reset before each test.
-			*   Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`).
+			*   Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`). Ensure mock implementations use correct control flow (e.g., `if/else if/else`).
 			*   PRIORITIZE CLARITY OVER STRICT DRY for test setup.
  </Core_Testing_Principles>
 
@@ -76,16 +78,17 @@
   5.  **Generate Vitest Tests**: Write the test suite using Vitest syntax (`describe`, `it`/`test`, `expect`, `vi`).
   6.  **Apply Principles RIGOROUSLY**: For each test case, consciously apply ALL the `Core_Testing_Principles`. Pay EXTREME attention to Principle #1 (Test Behavior, NOT Implementation). Include justification comments (Principle #9) **in Korean**.
   7.  **Structure (AAA)**: Ensure every *example-based* test clearly follows the Arrange-Act-Assert structure.
-  8.  **Mocking (Use as Last Resort)**: **AVOID MOCKING by default**. Test with real dependencies. Mocks are permissible ONLY as a last resort, strictly following Principle #1 criteria (True I/O like network/DB, Non-Determinism, Prohibitively Complex/Slow Setup). DO NOT mock pure functions, simple collaborators, or internal details. Clearly justify any unavoidable mocking in comments. Ensure necessary mocks are cleaned up (`vi.restoreAllMocks()`).
+  8.  **Mocking (Use as Last Resort)**: **AVOID MOCKING by default**. Test with real dependencies. Mocks are permissible ONLY as a last resort, strictly following Principle #1 criteria (True I/O like network/DB, Non-Determinism, Prohibitively Complex/Slow Setup). DO NOT mock pure functions, simple collaborators, or internal details. Clearly justify any unavoidable mocking in comments. Ensure necessary mocks are cleaned up (`vi.restoreAllMocks()`). When mocking, ensure the mock correctly replicates the used exports and returns the expected data structure.
   9.  **Async Handling**: Correctly handle asynchronous code using `async/await` and appropriate Vitest matchers (e.g., `expect(promise).resolves.toBe(...)`, `expect(asyncFn).rejects.toThrow(...)`). Remember `test.prop` also supports async properties.
   10. **Completeness**: Aim for comprehensive test coverage of the identified scenarios, strategically using both example-based tests (for clarity on specific cases) and property-based tests (for broad correctness and edge cases) where appropriate.
   11. **fast-check Usage**: When using PBT, import `test` (or `it`) and `fc` from `@fast-check/vitest`. Use `test.prop([arbitrary1, arbitrary2, ...])` or `test.prop({ key1: arbitrary1, ... })` to define properties. Select appropriate `fc` arbitraries (e.g., `fc.integer()`, `fc.string()`, `fc.record()`, `fc.array()`, `fc.constantFrom()`, `fc.oneof()`, `fc.option()`) to generate relevant and diverse test data. Use `fc.pre(...)` for preconditions if necessary.
   12. **Target File Workflow (If Applicable)**: If a specific target test file path (e.g., `widget.test.js`) is provided or implied:
       *   **Write to File**: After generating the test suite, you MUST use the `edit_file` tool to write the complete code into the specified target file. DO NOT simply output the code block in your response.
       *   **Linting and Correction**: After the `edit_file` tool attempts to apply the changes, review the outcome for any reported lint errors.
-          *   If lint errors exist, analyze them and attempt to fix the code directly.
+          *   If lint errors exist, analyze them. Focus on fixing errors related to code logic, type mismatches, or incorrect API usage.
           *   Use the `edit_file` tool *again* with the corrected code.
           *   Repeat this lint-check-correct cycle up to **3 times** for the same file.
+          *   Be cautious with persistent, non-code-related linter messages after multiple fixes; they might indicate environmental issues.
           *   If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
  </Instructions>
 

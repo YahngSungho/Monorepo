@@ -42,6 +42,7 @@
             *   **Non-Deterministic Behavior**: Actors/actions involving `Date.now()`, `Math.random()`, or system timers needing control.
             *   **Prohibitively Complex/Slow Setup**: Dependencies whose real setup is excessively impractical for the test.
         *   **DO NOT MOCK**: Simple actions, guards, or actors (even if defined via `fromPromise`/`fromCallback`) that represent pure functions, deterministic logic, or have negligible/irrelevant side effects in the test context. Use their actual implementations defined in the machine.
+        *   **Mocking Built-ins**: When unavoidable mocking involves interacting with built-in modules (like `fs` via a custom actor), ensure the mock correctly replicates the module's API (e.g., `readFileSync`) and the expected data structure used by the actor.
         *   If mocking was unavoidable, verify mock calls (`expect(mockFn).toHaveBeenCalled...`) or resulting state/context changes, not the mock's internal logic.
         *   Test pure guards by asserting transitions for different inputs without mocking.
 
@@ -53,7 +54,7 @@
     3.  **Readability and Structure (AAA for XState)**:
         *   Use Vitest structure.
         *   Strictly follow AAA:
-            *   **Arrange**: `setup` the machine. **USE THE ORIGINAL MACHINE DEFINITION BY DEFAULT**. Use `machine.provide({...})` **only as a last resort** based on the strict criteria in Principle #1, injecting minimal mocks (`vi.fn()`). Create the actor: `createActor(machineUnderTest, { input: {...} })`. Use fake timers ONLY for controllable `after`/delays.
+            *   **Arrange**: `setup` the machine. **USE THE ORIGINAL MACHINE DEFINITION BY DEFAULT**. Use `machine.provide({...})` **only as a last resort** based on the strict criteria in Principle #1, injecting minimal mocks (`vi.fn()`). Create the actor: `createActor(machineUnderTest, { input: {...} })`. Use fake timers ONLY for controllable `after`/delays. When providing mocks, ensure they return data in the expected structure.
             *   **Act**: Start actor (`actor.start()`). Send events (`actor.send(...)`). Use `async/await` / `vi.waitUntil()` for async ops, interacting with REAL actor logic unless necessarily mocked. Advance fake timers if used.
             *   **Assert**: Check snapshot (`.value`, `.context`, etc.). If mocking was *unavoidable*, check mock calls. Check spawned actors.
 
@@ -93,7 +94,7 @@
 
     12. **Mock Function Call Record Initialization**:
         *   Ensure that mock function calls are reset before each test.
-        *   Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`).
+        *   Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`). Ensure mock implementations use correct control flow (e.g., `if/else if/else`).
         *   PRIORITIZE CLARITY OVER STRICT DRY for test setup.
 
 </Testing_Principles_To_Follow>
@@ -369,9 +370,10 @@
         *   **Target File Workflow (If Applicable)**: If a specific target test file path is provided or implied:
             *   **Write to File**: Use the `edit_file` tool to write the complete generated test suite into the specified target file. DO NOT simply output the code block in your response.
             *   **Linting and Correction**: After the `edit_file` tool attempts to apply the changes, review the outcome for any reported lint errors.
-                *   If lint errors exist, analyze them and attempt to fix the code directly.
+                *   If lint errors exist, analyze them. Focus on fixing errors related to code logic, type mismatches, or incorrect API usage.
                 *   Use the `edit_file` tool *again* with the corrected code.
                 *   Repeat this lint-check-correct cycle up to **3 times** for the same file.
+                *   Be cautious with persistent, non-code-related linter messages after multiple fixes; they might indicate environmental issues.
                 *   If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
             *   If no target file is specified, output the generated code block directly.
 

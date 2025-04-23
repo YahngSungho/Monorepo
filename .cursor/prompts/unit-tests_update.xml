@@ -29,6 +29,7 @@ You MUST strictly adhere to the following principles when updating or writing te
         *   **Non-Deterministic Behavior**: Controlling inherently unpredictable factors like `Date.now()`, `Math.random()`, or system timers (`setTimeout`, `setInterval`) for consistent assertions.
         *   **Prohibitively Complex/Slow Setup**: When a real dependency's setup is excessively complicated or slow, making the test impractical *and* the dependency is not the focus of the test.
     *   **DO NOT MOCK**: Pure functions, simple utility functions, or collaborators whose side effects are negligible or irrelevant within the test context, *even if they reside in separate modules*. Use the actual implementations.
+    *   **Mocking Built-ins (e.g., `fs`, `path`)**: When mocking built-in modules is necessary (due to I/O), carefully replicate the *specific exports* (default, named functions like `readFileSync`, `join`) and the *expected return data structure* that the code under test actually uses. Check the module's API if unsure.
     *   **Goal**: Create tests that verify the integrated behavior of the unit with its essential collaborators, ensuring the system works together as expected. Mock only to isolate from true external boundaries or non-determinism.
 
 2.  **Clarity and Simplicity**:
@@ -56,6 +57,7 @@ You MUST strictly adhere to the following principles when updating or writing te
 8.  **Vitest Syntax & EXTREME Mock Minimization**:
     *   **Use Correctly**: Employ correct Vitest imports and matchers.
     *   **Minimize Mocks (Strictly)**: **Testing with real dependencies is the default**. Mocks are the EXCEPTION. Adhere strictly to Principle #1 criteria. Justify any necessary mocking clearly in comments. Ensure mocks are cleaned up (`vi.restoreAllMocks()`).
+    *   **`vi.mock` Usage**: If `vi.mock('module', () => { ... })` factory provides a mock implementation (e.g., using `vi.fn()`), **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` for the same function in `beforeEach` or tests. The factory already sets the implementation.
 
 9.  **Principle Justification Comments**:
     *   **Explain WHY (in Korean)**: Add concise **Korean** comments explaining *why* a specific approach was chosen, referencing these principles (e.g., `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`).
@@ -65,7 +67,7 @@ You MUST strictly adhere to the following principles when updating or writing te
     *   **Integration**: Combine PBT with example-based tests for comprehensive coverage.
 
 11. **Mock Function Call Record Initialization**:
-    *   **Reset**: Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`).
+    *   **Reset**: Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`). Ensure mock implementations use correct control flow (e.g., `if/else if/else`).
 </Core_Testing_Principles>
 
 <Instructions>
@@ -86,11 +88,12 @@ Follow these steps meticulously:
 7.  **Linting and Correction Workflow (CRITICAL)**:
     *   After the `edit_file` tool runs, CAREFULLY examine its output for any reported linting errors.
     *   **If lint errors exist**:
-        *   Analyze the errors.
+        *   Analyze the errors. Focus on fixing errors related to code logic, type mismatches, or incorrect API usage.
         *   Generate the corrected code addressing ONLY the lint errors.
         *   Describe the *next* `edit_file` tool call, specifying the `target_file` and the *corrected* code for the `code_edit` parameter.
         *   Execute the `edit_file` tool again with the corrected code.
         *   **Repeat this check-fix-edit cycle up to a MAXIMUM of 3 attempts for this file.**
+        *   Be cautious with persistent, non-code-related linter messages (e.g., test descriptions repeatedly flagged) after multiple fixes; they might indicate environmental issues.
     *   **If lint errors persist after 3 attempts**: STOP the process for this file, clearly report the remaining lint errors, and state that you cannot proceed further with fixing them.
     *   **If no lint errors are reported (or after successful correction)**: State that the update is complete and no lint errors were found (or were successfully resolved).
 </Instructions>
