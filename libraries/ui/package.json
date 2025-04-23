@@ -50,7 +50,7 @@
 		"remark-cjk-friendly-gfm-strikethrough": "^1.1.0",
 		"remark-math": "^6.0.0",
 		"remark-smartypants": "^3.0.2",
-		"shiki": "^3.2.2",
+		"shiki": "^3.3.0",
 		"svelte-exmarkdown": "^5.0.0",
 		"svelte-sonner": "^0.3.28",
 		"sveltekit-superforms": "^2.24.1",
