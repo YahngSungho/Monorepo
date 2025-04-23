@@ -15,6 +15,7 @@
 	},
 	"exports": {
 		"./translation-paraglide": "./src/translation/paraglide/translation.js",
-		"./translation-markdown": "./src/translation/markdown/translation.js"
+		"./translation-markdown": "./src/translation/markdown/translation.js",
+		"./explanation-ready": "./src/translation/paraglide/explanation-ready.js"
 	}
 }

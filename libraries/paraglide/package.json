@@ -8,7 +8,8 @@
 	"main": "index.js",
 	"scripts": {
 		"paraglide-compile": "npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./paraglide-output",
-		"translate": "npx @inlang/cli machine translate --project ./project.inlang"
+		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
+		"explanation-ready": "node ./src/get-missing-explanations.js"
 	},
 	"keywords": [],
 	"dependencies": {
@@ -17,11 +18,6 @@
 		"@library/library-base": "workspace:*"
 	},
 	"exports": {
-		"./messages": "./paraglide-output/messages.js",
-		"./paraglide_outdir": "./paraglide-output",
-		"./paraglide_project": "./project.inlang",
-		"./runtime.js": "./paraglide-output/runtime.js",
-		"./server.js": "./paraglide-output/server.js",
-		"./helpers": "./index.js"
+		"./helpers": "./src/index.js"
 	}
 }

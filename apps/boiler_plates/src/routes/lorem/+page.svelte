@@ -6,7 +6,7 @@ import { Button as Button1 } from '@library/ui/button_shadcn'
 import Icon from '@library/ui/icon'
 
 import * as m from '@library/paraglide/messages'
-import { localizeHref, setLocale } from '@library/paraglide/helpers'
+import { localizeHref, setLocale } from '../../../../../libraries/paraglide/src'
 
 const fo = 'bigCommandKEnabled'
 

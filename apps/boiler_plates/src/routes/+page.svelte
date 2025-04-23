@@ -6,7 +6,7 @@ import Icon from '@library/ui/icon'
 
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
-import { localizeHref, setLocale } from '@library/paraglide/helpers'
+import { localizeHref, setLocale } from '../../../../libraries/paraglide/src'
 
 const fo = 'bigCommandKEnabled'
 
