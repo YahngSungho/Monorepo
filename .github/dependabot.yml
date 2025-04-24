@@ -12,4 +12,7 @@ updates:
     labels:
       - dependabot
     ignore:
+    # 돈 새로 안내고 Wallaby 사용을 위해 업데이트 금지
       - dependency-name: vitest
+      - dependency-name: vite
+      - dependency-name: vite-node
