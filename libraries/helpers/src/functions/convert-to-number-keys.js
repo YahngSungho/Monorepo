@@ -9,12 +9,14 @@ const convertToNumberKeys = R.curry((keyNumberDictionary, object) => {
 })
 
 const restoreFromNumberKeys = R.curry((keyNumberDictionary, object) => {
+	console.log('💬 restoreFromNumberKeys object:', object)
+	console.log('💬 restoreFromNumberKeys keyNumberDictionary:', keyNumberDictionary)
 	const result = {}
 	for (const [key, number] of Object.entries(keyNumberDictionary)) {
-		if (object[number] === undefined) {
+		if (object[String(number)] === undefined) {
 			continue
 		}
-		result[key] = object[number]
+		result[key] = object[String(number)]
 	}
 	return result
 })
@@ -23,7 +25,7 @@ export function generateKeyNumberFunctions(objectWithTotalKeys) {
 	let counter = 0
 	const keyNumberDictionary = {}
 	for (const key of Object.keys(objectWithTotalKeys)) {
-		keyNumberDictionary[key] = counter
+		keyNumberDictionary[key] = String(counter)
 		counter += 1
 	}
 	return {

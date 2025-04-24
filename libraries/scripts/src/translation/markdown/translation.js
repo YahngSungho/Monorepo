@@ -32,7 +32,7 @@ import {
 // 	}
 // }
 
-const dictFolderPath = getAbsolutePath('../../../../paraglide/messages-helpers/dicts/', import.meta.url)
+const dictFolderPath = getAbsolutePath('../../../../paraglide/messages-helpers/dicts', import.meta.url)
 
 export async function getFiles (rootAbsolutePath, helperFolderPath) {
 	const languageMessageMap = getInitialLanguageMap()
