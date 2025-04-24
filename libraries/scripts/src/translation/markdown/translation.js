@@ -4,6 +4,17 @@
 각 text들은 src의 하위 폴더들 중에 적절한 곳에 폴더 단위로 존재
 하나의 폴더에 ko, en을 포함한 언어별 + explanation까지 마크다운 파일
 dicts는 각 프로젝트별이 아니라 paraglide/messages-helpers/dicts 폴더에 저장
+
+Blog의 경우 article에 대한 폴더에 title, tags 폴더도 추가
+- article
+  - ko.md
+  - en.md
+  - title
+    - ko.md
+    - en.md
+	- tags
+    - ko.md
+    - en.md
 */
 
 import path from 'node:path'
