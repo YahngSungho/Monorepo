@@ -6,7 +6,7 @@ import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
 export function getInitialLanguageMap () {
-	const settingPath = getAbsolutePath('../../../paraglide/project.inlang/settings.json', import.meta.url)
+	const settingPath = getAbsolutePath(import.meta.url, '../../../paraglide/project.inlang/settings.json')
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
 	const result = {}
@@ -25,7 +25,7 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	if (Object.keys(messageMap).length === 0) {
 		return { combinedMessages_latest: {}, targetLanguageMap: {} }
 	}
-	const messages_baseLanguages = R.pick(baseLanguages, messageMap)
+	const messages_baseLanguages = R.pick(baseLanguages)(messageMap)
 
 	// combinedMessages_latest 계산 (순수)
 	const combinedMessages_latest = {}
@@ -42,17 +42,18 @@ export function calculateInitialTranslationStateByBaseLanguages(
 
 	// 초기 targetLanguageMap 계산 (순수) - ko 제외
 	const initialTargetLanguageMap = R.pipe(
+		messageMap,
 		R.omit(baseLanguages),
 		R.mapObjIndexed((value) => ({
 			value,
 			missingMessageKeys: [], // 초기화
 		})),
-	)(messageMap)
+	)
 
 	// missingMessageKeys 계산 (순수, 불변성 유지)
 	const finalTargetLanguageMap = create(initialTargetLanguageMap, (draft) => {
 		for (const [messageKey, combinedMessage] of Object.entries(combinedMessages_latest)) {
-			const isMessageChanged = !(R.equals(combinedMessage, combinedMessages_cached[messageKey]))
+			const isMessageChanged = !(R.equals(combinedMessage)(combinedMessages_cached[messageKey]))
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
@@ -83,9 +84,7 @@ export function combineEnglishTranslation(combinedMessages_latest, englishMessag
 			// 영어 번역 결과에서 newMessages 사용
 			en: englishMessageObject_translated.newMessages[messageKey],
 			...value, // 기존 'ko', 'explanation' 등 포함
-		}),
-		combinedMessages_latest,
-	)
+		}))(combinedMessages_latest)
 }
 
 
@@ -112,7 +111,7 @@ export function prepareTranslationPayload(languageMessageObject, combinedMessage
 
 	const olderMessages = []
 	for (const olderMessage of Object.values(
-		R.omit(languageMessageObject.missingMessageKeys, languageMessageObject.value),
+		R.omit(languageMessageObject.missingMessageKeys)(languageMessageObject.value),
 	)) {
 		olderMessages.push(olderMessage)
 	}

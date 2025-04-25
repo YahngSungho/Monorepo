@@ -85,8 +85,8 @@ describe('Translation Helpers', () => {
 
 			// 검증(Assert)
 			expect(vi.mocked(getAbsolutePath)).toHaveBeenCalledWith(
-				'../../../paraglide/project.inlang/settings.json',
 				expect.any(String), // import.meta.url 부분은 정확히 일치시키기 어려움
+				'../../../paraglide/project.inlang/settings.json',
 			);
 			expect(vi.mocked(fs.readFileSync)).toHaveBeenCalledWith(
 				'mock/path/to/settings.json',

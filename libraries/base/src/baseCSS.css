@@ -181,9 +181,17 @@ blockquote {
 			block-size: 1ex;
 		}
 
+
 		::-webkit-scrollbar-thumb {
 			background-color: color-mix(in oklch, currentcolor 35%, transparent);
+
 		}
+
+		/* stylelint-disable-next-line csstools/use-nesting */
+		::-webkit-scrollbar-thumb:hover {
+			background-color: color-mix(in oklch, currentcolor 80%, transparent);
+		}
+
 
 		::-webkit-scrollbar-track {
 			background-color: transparent;

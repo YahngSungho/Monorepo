@@ -16,6 +16,7 @@
 	"dependencies": {
 		"@library/library-base": "workspace:*",
 		"mutative": "^1.1.0",
+		"rambda": "^10.0.1",
 		"ramda": "^0.30.1",
 		"random-js": "^2.1.0",
 		"tinyglobby": "^0.2.13"

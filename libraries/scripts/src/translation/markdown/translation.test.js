@@ -15,7 +15,7 @@ vi.mock('@library/helpers/fs-sync', async () => {
 	const pathNormalize = path.normalize; // 실제 path.normalize 사용
 
 	return {
-		getAbsolutePath: vi.fn((relativePath, metaUrl) => {
+		getAbsolutePath: vi.fn((metaUrl, relativePath) => {
 			 const dictRelativePath = '../../../../paraglide/messages-helpers/dicts/';
 			 if (relativePath === dictRelativePath) {
 				 return pathNormalize('/abs/paraglide/messages-helpers/dicts');
@@ -88,7 +88,7 @@ describe('getFiles 함수', () => {
 		// 모의 함수 기본 반환값 설정
 		vi.mocked(readFilesToStrings_recursive).mockResolvedValue([]);
 		vi.mocked(readFilesToObjects).mockResolvedValue({});
-		vi.mocked(getAbsolutePath).mockImplementation((relativePath) => `/abs/path/${relativePath}`); // 각 테스트별로 구체화 가능
+		vi.mocked(getAbsolutePath).mockImplementation((metaUrl, relativePath) => `/abs/path/${relativePath}`); // 각 테스트별로 구체화 가능
 	});
 
 	// 원칙: 동작 테스트 (파일 읽기 오케스트레이션), 모의 사용 (파일 시스템 I/O)
@@ -118,7 +118,7 @@ describe('getFiles 함수', () => {
 			return {};
 		});
         // getAbsolutePath가 dict 경로를 올바르게 반환하도록 모의
-        vi.mocked(getAbsolutePath).mockImplementation((relativePath, metaUrl) => {
+        vi.mocked(getAbsolutePath).mockImplementation((metaUrl, relativePath) => {
             if (relativePath === expectedDictFolderPath) {
                  // 실제 import.meta.url 대신 고정된 값을 사용하거나, 테스트 환경에 맞게 조정
                 return '/abs/path/to/dicts'; // 예시 절대 경로
@@ -153,7 +153,7 @@ describe('getFiles 함수', () => {
 		vi.mocked(readFilesToStrings_recursive).mockResolvedValue([]);
 		// helper, dict 파일 없도록 설정
 		vi.mocked(readFilesToObjects).mockResolvedValue({});
-        vi.mocked(getAbsolutePath).mockImplementation((relativePath, metaUrl) => {
+        vi.mocked(getAbsolutePath).mockImplementation((metaUrl, relativePath) => {
             if (relativePath === expectedDictFolderPath) {
                 return '/abs/path/to/dict';
             }
@@ -362,7 +362,7 @@ describe('saveFiles 함수', () => {
         vi.mocked(getNewCache).mockReturnValue(mockNewCache); // 항상 mockNewCache 반환
 
         // getAbsolutePath 모의 설정으로 절대 경로 반환
-        vi.mocked(getAbsolutePath).mockImplementation((relativePath, metaUrl) => {
+        vi.mocked(getAbsolutePath).mockImplementation((metaUrl, relativePath) => {
             const dictRelativePath = '../../../../paraglide/messages-helpers/dicts';
             if (relativePath === dictRelativePath) {
                 return expectedDictFolderPath;

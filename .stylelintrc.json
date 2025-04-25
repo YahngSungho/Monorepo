@@ -32,6 +32,7 @@
 		"stylelint-declaration-block-no-ignored-properties",
 		"stylelint-gamut"
 	],
+	"reportNeedlessDisables": false,
 	"rules": {
 		"selector-id-pattern": null,
 		"custom-media-pattern": null,

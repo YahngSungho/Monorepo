@@ -2,9 +2,9 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 import { getAbsolutePath } from '@library/helpers/fs-sync'
 
-const missingExplanationsPath = getAbsolutePath('../../../../paraglide/messages-helpers/missing-explanations.json', import.meta.url)
-const explanationPath = getAbsolutePath('../../../../paraglide/messages-helpers/explanations.json', import.meta.url)
-const koPath = getAbsolutePath('../../../../paraglide/messages/ko.json', import.meta.url)
+const missingExplanationsPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/missing-explanations.json')
+const explanationPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/explanations.json')
+const koPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages/ko.json')
 
 export async function getMissingExplanations() {
 	const explanations = JSON.parse(await readFile(explanationPath, 'utf8'))

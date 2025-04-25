@@ -25,9 +25,9 @@ import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslat
 // 	}
 // }
 
-const messageFolderPath = getAbsolutePath('../../../../paraglide/messages/', import.meta.url)
-const helperFolderPath = getAbsolutePath('../../../../paraglide/messages-helpers/', import.meta.url)
-const dictFolderPath = getAbsolutePath('../../../../paraglide/messages-helpers/dicts/', import.meta.url)
+const messageFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages/')
+const helperFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/')
+const dictFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/dicts/')
 
 export async function getFiles() {
 	const languageMessageMap = getInitialLanguageMap()
@@ -37,11 +37,11 @@ export async function getFiles() {
 	const dictFiles = await readFilesToObjects(dictFolderPath)
 
 	for (const language of Object.keys(languageMessageMap)) {
-		languageMessageMap[language] = messageFiles[`${language}.json`] ? R.omit(['$schema'], messageFiles[`${language}.json`]) : {}
+		languageMessageMap[language] = messageFiles[`${language}.json`] ? R.omit(['$schema'])(messageFiles[`${language}.json`]) : {}
 	}
 
-	const explanations = R.omit(['$schema'], helperFiles['explanations.json']) || {}
-	const cache = helperFiles['cache.json'] || {}
+	const explanations = R.omit(['$schema'])(helperFiles['explanations.json']) || {}
+	const cache = R.omit(['$schema'])(helperFiles['cache.json']) || {}
 
 	const dictPerLanguage = {}
 	for (const language of Object.keys(languageMessageMap)) {

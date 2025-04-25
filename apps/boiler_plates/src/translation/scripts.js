@@ -13,8 +13,8 @@ export async function getTranslatedMessages_forTest (language, combinedMessages,
 	}
 }
 
-const rootPath = getAbsolutePath('../', import.meta.url)
-const helperPath = getAbsolutePath('./', import.meta.url)
+const rootPath = getAbsolutePath(import.meta.url, '../')
+const helperPath = getAbsolutePath(import.meta.url, './')
 const { initialMarkdownFiles, dictPerLanguage, cache  } = await getFiles(rootPath, helperPath)
 const { languageMessageMap, explanations } = convertMarkdownFiles(initialMarkdownFiles, rootPath)
 const translatedLanguageMap = await getTranslatedLanguageMap(languageMessageMap, explanations, dictPerLanguage, cache, getTranslatedMessages_forTest)
