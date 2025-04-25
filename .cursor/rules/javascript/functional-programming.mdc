@@ -16,7 +16,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
    2. 계산 (= Pure Functions )
    3. 액션 (= Impure Functions, Side Effects)
 
-	 Keep in mind that in this codebase, we call pure code “계산(computation or calculation)” and impure code “액션(action)”.
+	 Keep in mind that in this codebase, we call pure code "계산(computation or calculation)" and impure code "액션(action)".
 
 2. **Preference Order:** **Data > 계산  > 액션**
 
@@ -36,11 +36,22 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
 ## Library Usage
 
-- **Ramda:** A utility library for functional programming.
+- **Rambda / Ramda (via `@library/helpers/R`):** Utility library for functional programming.
 
-  - **Preferred Use:** Prioritize using Ramda for implementing 계산, function composition, and currying.
+  - **Primary Use:** Utilize the `R` object imported from `@library/helpers/R` for functional programming tasks. This export is the primary source for utility functions in this project.
   - **Import:** `import { R } from '@library/helpers/R'`
-  - **Example:** Consider `R.concat(myArray1, myArray2)` instead of `myArray1.concat(myArray2)`. Use `R.pipe` for composition and `R.curry` for currying.
+  - **Features & Philosophy:** This `R` object provides functions inspired by Rambda/Ramda, focusing on TypeScript compatibility and clarity. Key utilities like `pipe` (for composition) and `curry` (for partial application) are available. The guiding philosophy, aligned with Rambda, is to:
+    - **Prioritize `R.pipe`:** Structure data transformations as a clear sequence of functions within `pipe`.
+    - **Favor Simple, Obvious Functions:** Prefer functions whose behavior is clear from their name and signature. Avoid overly generic or "magic" functions that require significant context or documentation lookup (e.g., complex conditional logic handlers like `cond`/`ifElse`, or ambiguous functions like `where`/`update` if they exist in `R`). Complex logic or branching is often clearer handled outside the main pipe.
+    - **Avoid Input Order Dependency:** Be mindful of functions where the order of arguments significantly changes behavior and requires memorization (like Ramda's `difference`). Prefer functions with clearer argument roles.
+    - **Specific Notations (Rambda Influence):** The `R` object may offer convenient notations for certain functions, inspired by Rambda:
+      - `R.path`: Allows **dot notation** (e.g., `R.path('a.b.c')`) as an alternative to array paths (`R.path(['a', 'b', 'c'])`) for accessing nested properties. Note: Use array notation for keys that are purely numeric (e.g., `['a', '1', 'b']` not `'a.1.b'`).
+      - `R.pick` / `R.omit`: Allows **comma notation** (e.g., `R.pick('a,b,c', obj)`) as an alternative to array of keys (`R.pick(['a', 'b', 'c'], obj)`). Ensure there are no spaces within the comma-separated string.
+  - **Usage Pattern:** Functions within `R` often follow a curried style consistent with Rambda's approach, promoting use within `R.pipe`:
+    - Functions expecting 2 arguments are typically called like: `R.someFunction(arg1)(arg2)`
+    - Functions expecting 3 arguments are typically called like: `R.someFunction(arg1, arg2)(arg3)`
+    - This pattern facilitates partial application and composition.
+  - **Example:** Use `R.pipe` for composition and `R.curry` for currying. Employ clear, single-purpose functions like `R.map`, `R.filter`, `R.prop`, `R.concat` from the `R` object within pipes. Handle complex conditional logic or side effects primarily before or after the pipe for better readability.
 
 - **Mutative:** A library to help modify objects or arrays while maintaining immutability.
 
@@ -58,224 +69,6 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
     })
     // baseState remains unchanged
     ```
-
-## Functional Data Structure Concepts
-
-In this codebase, 'Functor', 'Monad', 'Monoid' are simulated using class structures, sometimes referred to as 'Functor Class', 'Monad Class', or 'Monoid Class'.
-
-### Guidelines for choosing the appropriate structure
-
-- For Class-like data structures encapsulating a value: Consider using a **Functor Class**.
-- For nestable or chainable computations, especially when dealing with context (e.g., potential absence of value, 액션) where basic Array/Object structures are insufficient: Consider using a **Monad Class**.
-- For combining or aggregating values of the same type, particularly when a neutral "empty" value exists and basic Array/Object combination is insufficient: Consider using a **Monoid Class**.
-
-### Examples
-
-The code examples provided below illustrate how such classes could be structured to simulate these concepts. They are generic examples intended solely to illustrate these ideas.
-
-#### Functor Class Concept Example
-
-"Functor Class" implements immutability and a static constructor (`of`), using regular methods to operate on the internal value instead of strictly requiring a `map` method as in the formal definition.
-
-```javascript
-// Example: A simple Functor implementation concept (as per rule's description)
-class MyFunctor {
-	constructor(value) {
-		this._value = value // Use underscore for internal value convention
-	}
-
-	// 'of' is a common way to put a value into the Functor context
-	static of(value) {
-		return new MyFunctor(value)
-	}
-
-	// Instead of map, we use regular methods that return new instances
-	// This method operates on the internal value and returns a new MyFunctor
-	add(newValue) {
-		// Returns a new MyFunctor instance, doesn't modify the original
-		return MyFunctor.of(this._value + newValue)
-	}
-
-	// A way to extract the value if needed
-	getValue() {
-		return this._value
-	}
-
-	// Another example immutable method
-	multiply(factor) {
-		return MyFunctor.of(this._value * factor)
-	}
-}
-```
-
-#### Monad Class Concept Examples
-
-Monads typically provide a way to `chain` computations within a context or `join` nested contexts.
-
-```javascript
-// Example: Maybe Monad concept
-class Maybe {
-	get isJust() {
-		return !this.isNothing
-	}
-	get isNothing() {
-		return this.$value === null || this.$value === undefined
-	}
-
-	constructor(x) {
-		this.$value = x
-	}
-	static of(x) {
-		return new Maybe(x)
-	} // Pointed
-
-	// Example for Applicative Functor (optional concept)
-	ap(f) {
-		// f should be a Maybe containing a function
-		return this.isNothing || !(f instanceof Maybe) || f.isNothing ?
-				Maybe.of(null)
-			:	this.map(f.$value)
-	}
-
-	chain(fn) {
-		// Monad part - map then join
-		// The function 'fn' should return a Maybe
-		return this.map(fn).join()
-	}
-
-	getOrElse(defaultValue) {
-		return this.isNothing ? defaultValue : this.$value
-	}
-
-	join() {
-		// Monad part - removes one level of nesting
-		return this.isNothing ? this : this.$value
-	}
-
-	map(fn) {
-		// Functor part
-		return this.isNothing ? this : Maybe.of(fn(this.$value))
-	}
-
-	// Example for logging/inspection
-	[Symbol.for('nodejs.util.inspect.custom')]() {
-		// For Node.js inspect
-		return this.isNothing ? 'Nothing' : (
-				`Just(${typeof this.$value === 'function' ? this.$value : JSON.stringify(this.$value)})`
-			)
-	}
-	toString() {
-		// Fallback toString
-		return this.isNothing ? 'Nothing' : `Just(${this.$value})`
-	}
-}
-
-// Example: IO Monad concept
-class IO {
-	constructor(fn) {
-		if (typeof fn !== 'function') {
-			throw new TypeError('IO requires a function')
-		}
-		// The function fn represents the effectful computation
-		this.unsafePerformIO = fn
-	}
-	static of(x) {
-		return new IO(() => x)
-	} // Pointed
-
-	// Example for Applicative Functor (optional concept)
-	ap(f) {
-		// f should be an IO containing a function
-		return this.chain((value) => f.map((fn) => fn(value)))
-	}
-
-	chain(fn) {
-		// Monad part
-		// fn must return an IO instance
-		// Equivalent to map(fn).join()
-		return IO.of(() => {
-			const value = this.unsafePerformIO()
-			const nextIO = fn(value)
-			if (!(nextIO instanceof IO)) {
-				throw new TypeError('Cannot chain: Function did not return an IO instance.')
-			}
-			return nextIO.unsafePerformIO()
-		})
-		// Or conceptually: return this.map(fn).join()
-	}
-
-	join() {
-		// Monad part
-		// Returns a IO.of that performs the outer IO to get the inner IO, then performs the inner IO
-		// Requires the result of the outer IO to be another IO instance
-		return IO.of(() => {
-			const innerIO = this.unsafePerformIO()
-			if (!(innerIO instanceof IO)) {
-				throw new TypeError('Cannot join: Outer IO did not return an IO instance.')
-			}
-			return innerIO.unsafePerformIO()
-		})
-	}
-
-	map(fn) {
-		// Functor part
-		// Creates a new IO where the effect is composed: perform original IO, then apply fn
-		return IO.of(compose(fn, this.unsafePerformIO))
-	}
-
-	// Example for logging/inspection
-	[Symbol.for('nodejs.util.inspect.custom')]() {
-		return 'IO(?)'
-	}
-	toString() {
-		return 'IO(?)'
-	}
-
-	// Execution is separate and explicitly marked as "unsafe"
-	// const result = ioInstance.unsafePerformIO()
-}
-```
-
-#### Monoid Class Concept Example
-
-A Monoid provides a way to `concat` two values of the same type and has an `empty` value (identity element).
-
-```javascript
-// Example: List Monoid concept
-class List {
-	constructor(xs) {
-		this.$value = Array.isArray(xs) ? xs : []
-	}
-	// Monoid part:
-	static empty() {
-		return List.of([])
-	} // Identity element
-
-	static of(x) {
-		return new List(x === undefined || x === null ? [] : [x])
-	} // Pointed
-	concat(otherList) {
-		// Binary operation
-		// Ensure the argument is a List instance for safety and extract its value
-		const otherValue = otherList instanceof List ? otherList.$value : []
-		return List.of(this.$value.concat(otherValue))
-	}
-
-	// Functor part:
-	map(fn) {
-		return List.of(this.$value.map(fn))
-	}
-
-	// Example for logging/inspection
-	[Symbol.for('nodejs.util.inspect.custom')]() {
-		return `List(${this.$value.map((v) => (typeof v === 'function' ? v : JSON.stringify(v))).join(', ')})`
-	}
-	toString() {
-		return `List(${this.$value})`
-	}
-	// ... other potential methods like sequence, traverse (more advanced concepts) ...
-}
-```
 
 ## Practical Examples
 
@@ -298,12 +91,12 @@ const calculateTotal = (items) => R.sum(R.pluck('price', items || []))
 
 const addItem = (cart, item) => {
 	const currentItems = cart.items || []
-	const newItems = R.append(item, currentItems) // Creates a new array
+	const newItems = R.append(item, currentItems) // Creates a new array using R from @library/helpers/R
 	return {
 		// Creates a new object
 		...cart, // Copy existing properties
 		items: newItems,
-		total: calculateTotal(newItems), // Uses 계산
+		total: calculateTotal(newItems), // Uses 계산 with R functions
 	}
 }
 
@@ -315,7 +108,7 @@ const addItem = (cart, item) => {
 // console.log(cart2) // { items: [{ name: 'apple', price: 1 }, { name: 'banana', price: 2 }], total: 3 }
 ```
 
-### Example 2: Data Processing with Function Composition\*\*
+### Example 2: Data Processing with Function Composition
 
 ```javascript
 // Before (imperative)
@@ -361,14 +154,15 @@ const mapMaybe = R.curry((fn, maybe) =>
 
 const logUserInfo = R.pipe(
 	fetchActiveUser, // userId => Maybe<User>
-	mapMaybe(R.prop('name')), // Maybe<User> => Maybe<string>
-	mapMaybe(formatName), // Maybe<string> => Maybe<string>
-	R.ifElse(
-		// Maybe<string> => void (due to side effect)
-		R.propEq('type', 'Just'),
-		(maybeName) => console.log(`Active user: ${maybeName.value}`), // Side effect kept at the end
-		R.always(undefined), // Do nothing if Nothing. R.always(null) or R.identity could also be used.
-	),
+	mapMaybe(R.prop('name')), // Maybe<User> => Maybe<string> (Clear purpose: get 'name')
+	mapMaybe(formatName), // Maybe<string> => Maybe<string> (Clear purpose: format)
+	// Final step: Handle the outcome. Conditional logic/side effect outside the main transformation pipe.
+	(maybeFormattedName) => {
+		if (maybeFormattedName.type === 'Just') {
+			console.log(`Active user: ${maybeFormattedName.value}`);
+		}
+		return maybeFormattedName;
+	}
 )
 
 // Example Usage:
@@ -377,6 +171,22 @@ const logUserInfo = R.pipe(
 
 ## Style Guide
 
-- **Function Composition:** Use `R.pipe` (left-to-right) to break down complex logic into smaller, reusable functions.
+- **Function Composition:** Use `R.pipe` (left-to-right) from `@library/helpers/R` to build clear, sequential data transformations. Pass the initial data first, followed by focused, single-purpose functions. Avoid embedding complex conditional logic (e.g., `ifElse`, `cond`) or functions with unclear side effects directly within pipes. Handle conditions and side effects primarily before or after the pipe, or by refactoring the flow into separate, clear steps.
+
+  ```javascript
+  import { R } from '@library/helpers/R';
+
+  const numbers = [1, 2, 3, 4, 5];
+
+  // Example: Filter numbers greater than 2, then multiply each by 10
+  const processNumbers = R.pipe(
+  	numbers, // Initial data
+  	R.filter((x) => x > 2), // Function 1 (assuming Rambda-style currying: R.filter(predicate)(data))
+  	R.map((x) => x * 10)     // Function 2 (assuming Rambda-style currying: R.map(fn)(data))
+  );
+  // processNumbers will be [30, 40, 50]
+  console.log(processNumbers);
+  ```
+
 - **Naming:** Use clear names that reveal the function's role. 계산 should indicate the relationship between input and output (e.g., `calculateTotal`, `formatUserName`). Functions with 액션 should indicate what effect they cause (e.g., `saveUser_action`, `logMessage_action`), especially if not immediately obvious from context.
-- **Conciseness:** Avoid unnecessary abstractions or overly complex functional techniques where simpler imperative or object-oriented approaches are more readable and maintainable. Functional programming is a tool, not a dogma. Prioritize clarity.
+- **Conciseness:** Avoid unnecessary abstractions or overly complex functional techniques where simpler imperative or object-oriented approaches are more readable and maintainable. Functional programming is a tool, not a dogma. Prioritize clarity using the utilities provided by `R` from `@library/helpers/R`. Favor simple, obvious functions over complex or ambiguous ones, especially within `pipe`.

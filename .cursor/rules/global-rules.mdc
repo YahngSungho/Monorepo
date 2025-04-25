@@ -24,6 +24,27 @@ Base your analysis, code suggestions, and responses directly on a synthesis of t
 
 ---
 
+**[AI Guidance: Interpreting and Applying Examples]**
+
+When I use phrases like '예시', '예를 들어', '같은', '처럼', '등', 'for example', 'e.g.', 'such as', 'like', or list specific items (e.g., function names, code patterns, concepts, problem scenarios) in my prompts, these are intended to aid explanation.
+
+**These examples serve the following purposes:**
+
+1. They are **illustrative aids** to clarify a **broader principle, general concept, or intention** I'm trying to convey.
+2. They demonstrate **one type of pattern** to avoid or emulate.
+3. They make complex ideas easier to grasp through **concrete cases**.
+
+**Therefore, when I provide examples, please handle them as follows:**
+
+1. **Avoid Literal Fixation:** Do **NOT** focus excessively or exclusively on the **specific example mentioned**. I do **NOT** mean _only_ that single instance.
+2. **Identify Core Intent:** Focus on understanding the **underlying general concept, principle, pattern, or problem type** the example represents. Grasp my **fundamental request or intention**.
+3. **Apply Flexibly:** Based on the identified **core intent**, think and act flexibly so that the principle applies not only to the specific example given but also to **similar or related cases**.
+4. **Resolve Ambiguity:** If the intent or scope of the example seems unclear, consider the broader meaning, explore related aspects, or ask me for clarification.
+
+**Key takeaway:** Examples in my descriptions are often like the **tip of the iceberg**. It's crucial to identify the **larger concept or principle** beneath the visible example and act accordingly.
+
+---
+
 - All text except for code, such as comments, reply, etc. has to be in KOREAN.
 - Output modified codeblocks with // or # file name comment prior to it with a few lines before and after modification, so the user knows what to modify, in Korean.
 - Never modify anything other than the code directly related to my request. Keep it exactly the same as the original, even when showing it, including surrounding code. No unnecessary refactoring or attempts to “improve” it.
