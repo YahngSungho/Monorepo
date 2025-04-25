@@ -25,7 +25,6 @@ import github from 'eslint-plugin-github'
 import importX from 'eslint-plugin-import-x'
 // import jsonSchema from 'eslint-plugin-json-schema-validator'
 import jsonc from 'eslint-plugin-jsonc'
-import lodash from 'eslint-plugin-lodash'
 import * as mdx from 'eslint-plugin-mdx'
 import noSecrets from 'eslint-plugin-no-secrets'
 import nounsanitized from 'eslint-plugin-no-unsanitized'
@@ -100,19 +99,6 @@ const baseRules = {
 	'import/no-namespace': 'off',
 	'import/no-nodejs-modules': 'off',
 	'import/no-unresolved': 'off',
-	'lodash/prefer-constant': 'off',
-	'lodash/prefer-get': 'off',
-	'lodash/prefer-includes': 'off',
-	'lodash/prefer-is-nil': 'off',
-	'lodash/prefer-lodash-chain': 'off',
-	'lodash/prefer-lodash-method': 'off',
-	'lodash/prefer-lodash-typecheck': 'off',
-	'lodash/prefer-matches': 'off',
-	'lodash/prefer-noop': 'off',
-	'lodash/prefer-over-quantifier': 'off',
-	'lodash/prefer-some': 'off',
-	'lodash/prefer-startswith': 'off',
-	'lodash/prefer-times': 'off',
 	'n/no-extraneous-import': 'off',
 	'n/no-missing-import': 'off',
 	'n/prefer-global/process': 'off',
@@ -285,7 +271,6 @@ export default defineFlatConfig([
 
 	...flatCompat.extends(
 		'plugin:xstate/all',
-		'plugin:lodash/recommended',
 		'plugin:redos/recommended',
 	),
 
@@ -312,7 +297,6 @@ export default defineFlatConfig([
 
 		plugins: {
 			ex: exceptionHandling,
-			lodash,
 			'no-secrets': noSecrets,
 			'optimize-regex': optimizeRegex,
 			redos,

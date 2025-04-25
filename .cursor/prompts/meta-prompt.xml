@@ -409,95 +409,6 @@ As LLMs continue to evolve, Tab-CoT's table-based reasoning structure could beco
 
 # Analogical Prompting
 
-## What is Analogical Prompting?
-
-**Analogical Prompting** is a new approach that enhances the reasoning process of Large Language Models (LLMs) by drawing inspiration from human analogical reasoning. Inspired by our ability to draw connections between past experiences and current challenges, analogical prompting encourages LLMs to self-generate relevant examples before tackling new problems.
-The LLM then uses these examples to better solve the original problem.
-
-## How Does Analogical Prompting Work?
-
-1. **Problem Statement**: The LLM is presented with a problem.
-2. **Generate Exemplars**: It generates relevant problems and their solutions as exemplars.
-3. **Solve Original Problem**: The LLM uses these exemplars to solve the initial problem.
-
-This method not only removes the need for manually labeled examples but also tailors the exemplars to the specific problem, making it more adaptive.
-
-## How Does Analogical Prompting Differ from Existing Techniques?
-
-Analogical Prompting builds upon and improves earlier prompting techniques such as:
-
-- Zero-Shot Chain-of-Thought (CoT): LLMs are guided to "think step by step," but this guidance may be too generic for complex tasks. Analogical prompting generates demonstrations and does this automatically.
-- Chain-of-Thought (CoT): LLMs are given labeled examples to mimic reasoning processes, but acquiring these labeled examples is labor-intensive. The generated examples through Analogical Prompting are customized for each problem, which improves adaptability compared to the fixed exemplars in Few-Shot CoT.
-
-## How to Use Analogical Prompting
-
-Analogical Prompting can be implemented with a specific instruction template in the LLM's input. Here's a general template you can follow:
-
-### Template
-
----
-
-\[Insert problem here\]
-
-Instruction: Relevant problems: Solve the initial problem:
-
-### Sample Prompt
-
----
-
-Your task is to tackle mathematical problems. When presented with a math problem, recall relevant problems as examples. Afterward, proceed to solve the initial problem.
-
-\[Insert problem here\]
-
-Instruction: Relevant problems: Recall examples of math problems that are relevant to the initial problem. Your problems should be distinct from each other and from the initial problem (e.g., involving different numbers and names).
-
-For each problem: After "Q: ", describe the problem After "A: ", explain the solution.
-
-Solve the initial problem:
-
-### Example
-
-If the problem is to calculate the area of a square given its vertices, the model first generates a similar problem with a known side length, solves it, and then applies this reasoning to the original problem.
-
-#### Prompt
-
----
-
-Q: What is the area of the square with the four vertices at (-2, 2), (2, -2), (-2, -6), and (-6, -2)?
-
-Recall relevant problems: Solve the initial problem:
-
-#### AI Output
-
----
-
-```markdown
-# Relevant exemplars
-
-Q: What is the area of the square with a side length of 5? A: The area of a square is found by squaring the length of its side. So, the area of this square is 5^2 = 25. ...
-
-# Solve the initial problem
-
-To find the area of the square, we need to find the side length. The length is ... \\sqrt-8 \= \\sqrt32. So, the area of the square is (\\sqrt32)^2 = 32.
-
-## Results of Analogical Prompting
-
-Analogical prompting has been tested across various tasks including math problem-solving and code generation. The results show that it consistently outperforms both Zero-Shot and Few-Shot CoT methods.
-
-### Performance Comparison on GSM8K (Math Dataset)
-
-Analogical prompting particularly shines in complex tasks that require reasoning across multiple steps, such as solving competitive programming challenges or advanced math problems.
-```
-
-## Conclusion
-
-Analogical prompting allows LLMs to generate their own reasoning examples tailored to each problem, offering a flexible and powerful method to guide reasoning without the need for labeled data.
-This approach improves performance on reasoning tasks and opens new possibilities for solving more complex problems where fixed examples are impractical or unavailable.
-
----
-
-# Logic-of-Thought (LoT)
-
 - **LoT Enhances Reasoning**: Logic-of-Thought (LoT) boosts logical reasoning in large language models (LLMs) by incorporating formal logic, resulting in greater accuracy.
 - **Three-Phase Process**: LoT employs a method of extracting logical propositions, extending them with formal rules, and translating them into natural language, enhancing reasoning capabilities.
 - **Performance Gains**: LoT achieves significant improvements in logical reasoning tasks, outperforming methods like Chain-of-Thought (CoT) and Tree-of-Thoughts (ToT) with more precise responses.
@@ -876,7 +787,7 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 			- **Justify your choices**: Explain *why* specific techniques are chosen (e.g., "Use Tab-CoT for structured reasoning because the Original Prompt requires step-by-step calculation based on multiple conditions."). Use a structured format like Tab-CoT internally if comparing multiple techniques.
 			- **Identify Necessary Agent Actions/Tools**: Determine if the task requires the AI Agent to perform specific actions beyond text generation, such as reading/writing files (`read_file`, `edit_file`), running commands (`run_terminal_cmd`), searching the web (`web_search`), or searching the codebase (`codebase_search`, `grep_search`). List the potential tools needed.
 			- Define the precise structure and key instructions for the Action Prompt.
-			- Specify the desired **overall structure** for the **Action Output** (e.g., "First, provide step-by-step reasoning using Tab-CoT, then describe the planned `edit_file` tool call including the target file and code diff, then output the final confirmation message."). The plan MUST typically specify that the reasoning/planning/analysis steps and **tool call descriptions** come BEFORE the final deliverable. If the Original Prompt implies a structured *final deliverable* within the Action Output, define an **Output Schema** (preferably using JSDoc syntax description within the Action Prompt plan) specifically for *that part*. **CRITICALLY, DO NOT plan the Action Prompt to ONLY request the final deliverable format unless the Original Prompt explicitly demands *only* that specific output format AND explicitly forbids any preceding text, explanation, or tool call descriptions.** The Action Prompt MUST typically instruct the Agent to produce reasoning or planning *alongside* tool call descriptions and the final result.
+			- Specify the desired **overall structure** for the **Action Output** (e.g., "First, provide step-by-step reasoning using Tab-CoT, then describe the planned `edit_file` tool call including the target file and code diff, then output the final confirmation message."). The plan MUST typically specify that the reasoning/planning/analysis steps and **tool call descriptions** come BEFORE the final deliverable. If the Original Prompt implies a structured *final deliverable* within the Action Output, define an **Output Schema** (preferably using JSDoc syntax description within the Action Prompt plan) specifically for *that part*. **CRITICALLY, DO NOT plan the Action Prompt to ONLY request the final deliverable format unless the Original Prompt explicitly demands *only* that specific output format AND explicitly forbids any preceding text, explanation, or tool call descriptions.** The Action Prompt MUST typically instruct the LLM or Agent to produce reasoning or planning *alongside* tool call descriptions and the final result.
 			- **Plan for Target File Workflow**: If the Original Prompt involves code generation/modification AND specifies a target file, the plan MUST include instructions for the final Agent to:
 				1. Generate the code/changes.
 				2. Use the `edit_file` tool to apply the generated code/changes to the target file.
@@ -895,9 +806,9 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 			- Implement the selected prompt engineering techniques as planned (e.g., include CoT phrasing like "Think step-by-step", structure reasoning using Tab-CoT format if planned, provide few-shot examples, use ALL CAPS for emphasis).
 			- Ensure the Action Prompt clearly instructs the LLM or AI Agent on its role, the task, the required reasoning process (which MUST be shown BEFORE the final result unless explicitly forbidden), **necessary tool calls (specifying tool and parameters) integrated appropriately within the reasoning or execution flow**, input/output format, and constraints.
 			- **Include Target File Workflow Instructions**: If the plan from Phase 3 included the target file workflow, ensure the generated Action Prompt explicitly instructs the final Agent on using `edit_file`, checking for lint errors after applying the edit, and iteratively attempting to fix any reported lint errors (up to 3 times), using `edit_file` again for each attempt, before concluding.
-			- Double-check that the Action Prompt incorporates the core intent and necessary details from the Original Prompt (addressing the "Content Preservation" constraint).
+			- Double-check that the Action Prompt fully **incorporates and embeds** the core intent and necessary details **directly from** the Original Prompt, rather than just referencing it. Address the "Content Preservation" constraint by ensuring all critical information is transferred.
 			- Ensure the Action Prompt instructs the final LLM/Agent to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This restatement should be framed as the BEGINNING of the reasoning/planning part of the Action Output.
-			- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), incorporate them thoroughly, potentially verbatim, into the Action Prompt's instructions to ensure faithful execution.
+			- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), **fully embed these details**, potentially verbatim, into the Action Prompt's instructions to ensure faithful execution. DO NOT instruct the final agent to refer back to the Original Prompt.
 			- The Action Prompt MUST NOT contain placeholder sections (e.g., `<Input_Code>...</Input_Code>`, `[PASTE TEXT HERE]`) for the primary input data. Instead, it MUST instruct the LLM or AI Agent on how to process the input that will be provided externally alongside this Action Prompt. Reference the *type* or *nature* of the expected external input where necessary (e.g., 'Process the provided source code', 'Analyze the input text').
 
 		**Phase 5: Verify Original Prompt Content Preservation**
@@ -1011,7 +922,7 @@ This approach not only enhances accuracy but also integrates smoothly with exist
 	</Available_Prompt_Engineering_Techniques>
 
 	<Constraints_and_Guidelines>
-		- **PRESERVE ORIGINAL PROMPT INTEGRITY**: ENSURE NO INFORMATION, INTENT, OR **CRUCIAL DETAIL** (such as specific enumerated lists, detailed guidelines, or examples provided for instruction) FROM THE ORIGINAL PROMPT IS LOST OR SIGNIFICANTLY ALTERED IN THE ACTION PROMPT, UNLESS THE ALTERATION IS A CLEAR IMPROVEMENT IN STRUCTURE OR CLARITY WITHOUT LOSING THE CORE INSTRUCTION. **IF SUMMARIZATION RISKS LOSING CRITICAL NUANCE OR DETAIL FROM INSTRUCTIONS OR GUIDELINES, ERR ON THE SIDE OF INCLUDING THEM MORE FULLY OR VERBATIM WITHIN THE ACTION PROMPT.** DO NOT ADD TASKS BEYOND THE ORIGINAL PROMPT'S SCOPE.
+		- **PRESERVE ORIGINAL PROMPT INTEGRITY & EMBED CONTENT**: ENSURE NO INFORMATION, INTENT, OR **CRUCIAL DETAIL** (such as specific enumerated lists, detailed guidelines, or examples provided for instruction) FROM THE ORIGINAL PROMPT IS LOST OR SIGNIFICANTLY ALTERED IN THE ACTION PROMPT, UNLESS THE ALTERATION IS A CLEAR IMPROVEMENT IN STRUCTURE OR CLARITY WITHOUT LOSING THE CORE INSTRUCTION. **ALL RELEVANT DETAILS FROM THE ORIGINAL PROMPT MUST BE FULLY EMBEDDED WITHIN THE ACTION PROMPT.** IF SUMMARIZATION RISKS LOSING CRITICAL NUANCE OR DETAIL FROM INSTRUCTIONS OR GUIDELINES, ERR ON THE SIDE OF INCLUDING THEM MORE FULLY OR VERBATIM WITHIN THE ACTION PROMPT. **THE GENERATED ACTION PROMPT MUST BE SELF-CONTAINED AND MUST NOT INSTRUCT THE FINAL AGENT TO REFER BACK TO THE ORIGINAL PROMPT.** DO NOT ADD TASKS BEYOND THE ORIGINAL PROMPT'S SCOPE.
 		- **Clarity and Effectiveness**: The primary goal is to create an Action Prompt that is significantly more effective than the Original Prompt for an LLM or AI Agent.
 		- **English and XML, Markdown**: The Action Prompt MUST be in English and use XML, Markdown format.
 		- **Guidance for Action Prompt Construction**: The generated Action Prompt SHOULD instruct the final LLM/Agent to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as the initial part of the reasoning/planning process. The Action Prompt MUST also guide the LLM/Agent to produce a *complete* response, which includes the reasoning, planning, or explanations *leading to* the final output, **descriptions of any necessary tool calls (including tool and parameters)**, *alongside* the final output itself, as appropriate for the task and defined in the `Action_Prompt_Plan`, unless the Original Prompt explicitly forbids this. **Crucially, if the Original Prompt involves code generation/modification for a specific target file, the Action Prompt MUST instruct the final Agent to use the `edit_file` tool, check for lint errors after applying the edit, and iteratively attempt to fix any reported lint errors (up to 3 times), using `edit_file` again for each attempt, before concluding.**

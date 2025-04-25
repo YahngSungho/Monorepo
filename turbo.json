@@ -12,6 +12,7 @@
 		"**/.env.*"
 	],
 	"tasks": {
+		"translate": {},
 		"build": {
 			"dependsOn": ["^build"],
 			"env": [],

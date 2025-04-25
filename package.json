@@ -25,12 +25,12 @@
 		"test": "turbo run test:unit test:e2e --affected",
 		"test:e2e": "turbo run test:e2e --affected",
 		"test:unit": "turbo run test:unit --affected",
+		"translate": "turbo run translate --affected --concurrency=1",
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
 	},
 	"dependencies": {
 		"@sentry/sveltekit": "^9.13.0",
 		"gremlins.js": "^2.2.0",
-		"lodash": "^4.17.21",
 		"zod": "^3.24.3"
 	},
 	"devDependencies": {

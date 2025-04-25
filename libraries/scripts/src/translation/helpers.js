@@ -110,9 +110,9 @@ export function prepareTranslationPayload(languageMessageObject, combinedMessage
 		generateKeyNumberFunctions(combinedMessages_target)
 
 	const olderMessages = []
-	for (const olderMessage of Object.values(
+	for (const olderMessage of R.take(20)(Object.values(
 		R.omit(languageMessageObject.missingMessageKeys)(languageMessageObject.value),
-	)) {
+	))) {
 		olderMessages.push(olderMessage)
 	}
 
