@@ -108,7 +108,6 @@
 
 		<!-- 스트레스 테스트 케이스 예시 (긴 텍스트) -->
 		<Story name="스트레스_테스트_긴_레이블" args={{ labelText: '이 레이블은 스트레스 조건 하에서 컴포넌트가 오버플로우나 줄 바꿈을 어떻게 처리하는지 테스트하기 위해 매우 깁니다. '.repeat(10), isDisabled: false }} children={template} />
-
 		```
 </Example>
 
