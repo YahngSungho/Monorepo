@@ -29,6 +29,7 @@ import {
 	getNewCache,
 	translateOneLanguageMessages,
 } from '../helpers.js'
+import { generateTranslation_markdown } from '../llm.js'
 
 
 // dummy function for test
@@ -174,6 +175,12 @@ export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
 //     'src/myFolder2/myText': 'This is a test message'
 //   }
 // }
+
+export const getTranslatedMessages = async (language, targetMessages, olderMessages, dictionary) => {
+	const result = await generateTranslation_markdown(language, targetMessages, olderMessages, dictionary)
+
+	return R.pick('translatedMessages, newDictionary')(result)
+}
 
 export async function getTranslatedLanguageMap(
 	messageMap,

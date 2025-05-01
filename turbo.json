@@ -3,6 +3,8 @@
 	"globalDependencies": [],
 	"globalEnv": ["NODE_ENV", "CF_PAGES_BRANCH"],
 	"globalPassThroughEnv": [
+		"GEMINI_API_KEY",
+		"GOOGLE_GENERATIVE_AI_API_KEY",
 		"CI",
 		"WATCH",
 		"SENTRY_AUTH_TOKEN",

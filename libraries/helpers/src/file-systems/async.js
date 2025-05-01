@@ -3,6 +3,9 @@ import { basename, dirname, join } from 'node:path';
 
 import { glob  } from 'tinyglobby'
 
+import { R } from '../library-wrappers/R.js'
+import { getAbsolutePath } from './sync.js'
+
 /**
  * 지정된 상대 경로 폴더 및 그 하위 폴더에서 glob 패턴과 일치하는 모든 파일의
  * 이름, 내용, 상대 경로를 재귀적으로 찾아 객체로 반환합니다. (내장 glob 사용)
@@ -166,7 +169,7 @@ export async function readFilesToObjects(absoluteFolderPath) {
 	}
 }
 
-export async function writeFile_async(absolutePath, content) {
+export const writeFile_async = R.curry(async (absolutePath, content) => {
 	try {
 		const fullPath = absolutePath;
 
@@ -177,4 +180,15 @@ export async function writeFile_async(absolutePath, content) {
 		console.error(` ! 파일 쓰기 오류 [${absolutePath}]:`, error);
 		throw error;
 	}
-}
+})
+
+export const readFileFromRelativePath = R.curry(async (importMetaUrl, relativePath) => {
+	const absolutePath = getAbsolutePath(importMetaUrl, relativePath)
+	try {
+		const content = await readFile(absolutePath, 'utf8');
+		return content;
+	} catch (error) {
+		console.error(` ! 파일 읽기 오류 [${absolutePath}]:`, error);
+		throw error;
+	}
+})

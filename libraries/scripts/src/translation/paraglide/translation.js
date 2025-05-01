@@ -12,6 +12,7 @@ import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
 import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslation, getInitialLanguageMap,getNewCache,translateOneLanguageMessages } from '../helpers.js'
+import { generateTranslation_paraglide } from '../llm.js'
 
 // dummy function for test
 // export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
@@ -89,6 +90,12 @@ export async function getFiles() {
 // 			explanation: 'This is a test message',
 // 		},
 // 	}
+
+export const getTranslatedMessages = async (language, targetMessages, olderMessages, dictionary) => {
+	const result = await generateTranslation_paraglide(language, targetMessages, olderMessages, dictionary)
+
+	return R.pick('translatedMessages, newDictionary')(result)
+}
 
 export async function getTranslatedLanguageMap (languageMessageMap, explanations, dictPerLanguage, combinedMessages_cached, getTranslatedMessages) {
 

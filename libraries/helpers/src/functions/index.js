@@ -1,1 +1,2 @@
-export * from './convert-to-number-keys.js'
+export * from './convertToNumberKeys.js'
+export * from './validateNumbers.js'
