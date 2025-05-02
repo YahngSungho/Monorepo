@@ -12,7 +12,6 @@ import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
 import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslation, getInitialLanguageMap,getNewCache,translateOneLanguageMessages } from '../helpers.js'
-import { generateTranslation_paraglide } from '../llm.js'
 
 // dummy function for test
 // export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
@@ -91,12 +90,6 @@ export async function getFiles() {
 // 		},
 // 	}
 
-export const getTranslatedMessages = async (language, targetMessages, olderMessages, dictionary) => {
-	const result = await generateTranslation_paraglide(language, targetMessages, olderMessages, dictionary)
-
-	return R.pick('translatedMessages, newDictionary')(result)
-}
-
 export async function getTranslatedLanguageMap (languageMessageMap, explanations, dictPerLanguage, combinedMessages_cached, getTranslatedMessages) {
 
 	// 순수 함수: 초기 상태 계산
@@ -113,20 +106,19 @@ const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslati
 	// englishMessageObject_translated가 null일 경우 combinedMessages_latest를 그대로 사용
 	const combinedMessages_latest_withEn = combineEnglishTranslation(combinedMessages_latest, englishMessageObject_translated)
 
-	// 다른 언어들 번역 실행 (액션)
-	const translatedLanguageMap = {}
-	for (const [language, languageMessage] of Object.entries(targetLanguageMap)) {
-		// 이미 영어 번역 결과를 가지고 있다면, 다시 번역할 필요 없음
-		if (language === 'en' && englishMessageObject_translated) {
-			translatedLanguageMap[language] = englishMessageObject_translated;
-			continue;
-		}
-		translatedLanguageMap[language] = await translateOneLanguageMessages(language, languageMessage, dictPerLanguage[language], combinedMessages_latest_withEn, getTranslatedMessages)
-	}
+	return await R.mapObjectParallel(async (languageMessage, language) => {
+				if (language === 'en') {
+					return englishMessageObject_translated
+				}
 
-	// 영어 번역이 실패했거나 없었을 경우, 결과 맵에 포함되지 않으므로 추가 확인/처리 필요 시 여기에 로직 추가
-
-	return translatedLanguageMap
+				return await translateOneLanguageMessages(
+					language,
+					languageMessage,
+					dictPerLanguage[language],
+					combinedMessages_latest_withEn,
+					getTranslatedMessages,
+				)
+			})(targetLanguageMap)
 }
 
 // const result = await getTranslatedLanguageMap(messageMap_forTest, explanations_forTest, dictPerLanguage_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)

@@ -1,6 +1,7 @@
 // import { google } from '@ai-sdk/google'
 import { readFileFromRelativePath } from '@library/helpers/fs-async'
 import { validateNumbers } from '@library/helpers/helper-functions'
+import { R } from '@library/helpers/R'
 import { generateObjectWithRetry } from '@library/llms/gemini/generate'
 import { getCachedModel } from '@library/llms/gemini/getModel'
 import { config } from 'dotenv'
@@ -181,3 +182,17 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 // }
 // const result_paraglide = await generateTranslation_paraglide(testObject_paraglide.language, testObject_paraglide.targetMessages, testObject_paraglide.olderMessages, testObject_paraglide.dictionary)
 // console.log('💬 result_paraglide:', JSON.stringify(result_paraglide))
+
+
+
+export const getTranslatedMessages_paraglide = async (language, targetMessages, olderMessages, dictionary) => {
+	const result = await generateTranslation_paraglide(language, targetMessages, olderMessages, dictionary)
+
+	return R.pick('translatedMessages, newDictionary')(result)
+}
+
+export const getTranslatedMessages_markdown = async (language, targetMessages, olderMessages, dictionary) => {
+	const result = await generateTranslation_markdown(language, targetMessages, olderMessages, dictionary)
+
+	return R.pick('translatedMessages, newDictionary')(result)
+}

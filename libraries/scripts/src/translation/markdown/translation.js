@@ -29,7 +29,6 @@ import {
 	getNewCache,
 	translateOneLanguageMessages,
 } from '../helpers.js'
-import { generateTranslation_markdown } from '../llm.js'
 
 
 // dummy function for test
@@ -176,12 +175,6 @@ export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
 //   }
 // }
 
-export const getTranslatedMessages = async (language, targetMessages, olderMessages, dictionary) => {
-	const result = await generateTranslation_markdown(language, targetMessages, olderMessages, dictionary)
-
-	return R.pick('translatedMessages, newDictionary')(result)
-}
-
 export async function getTranslatedLanguageMap(
 	messageMap,
 	explanations,
@@ -198,19 +191,13 @@ export async function getTranslatedLanguageMap(
 			combinedMessages_cached,
 		)
 
-	// 다른 언어들 번역 실행 (액션)
-	const translatedLanguageMap = {}
-	for (const [language, languageMessage] of Object.entries(targetLanguageMap)) {
-		translatedLanguageMap[language] = await translateOneLanguageMessages(
-			language,
-			languageMessage,
-			dictPerLanguage[language],
-			combinedMessages_latest,
-			getTranslatedMessages,
-		)
-	}
-
-	return translatedLanguageMap
+		return await R.mapObjectParallel(async (languageMessage, language) => (await translateOneLanguageMessages(
+					language,
+					languageMessage,
+					dictPerLanguage[language],
+					combinedMessages_latest,
+					getTranslatedMessages,
+				)))(targetLanguageMap)
 }
 
 // const result = await getTranslatedLanguageMap(languageMessageMap_forTest, explanations_forTest, dictPerLanguage_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)

@@ -1,9 +1,9 @@
 import { getAbsolutePath } from '@library/helpers/fs-sync'
+import { getTranslatedMessages_markdown } from '@library/scripts/translation-llm'
 import {
 	convertMarkdownFiles,
 	getFiles,
 	getTranslatedLanguageMap,
-	getTranslatedMessages,
 	saveFiles,
 } from '@library/scripts/translation-markdown'
 
@@ -16,7 +16,7 @@ const translatedLanguageMap = await getTranslatedLanguageMap(
 	explanations,
 	dictPerLanguage,
 	cache,
-	getTranslatedMessages,
+	getTranslatedMessages_markdown,
 )
 // @ts-ignore
 await saveFiles(
