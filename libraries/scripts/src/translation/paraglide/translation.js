@@ -111,6 +111,10 @@ const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslati
 					return englishMessageObject_translated
 				}
 
+				if (languageMessage.missingMessageKeys.length === 0) {
+					return languageMessage
+				}
+
 				return await translateOneLanguageMessages(
 					language,
 					languageMessage,
@@ -164,13 +168,16 @@ const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslati
 
 export async function saveFiles (translatedLanguageMap, explanations, languageMessageMap_ko) {
 	for await (const [language, languageMessage] of Object.entries(translatedLanguageMap)) {
+		if (languageMessage.missingMessageKeys.length === 0) {
+			continue
+		}
+
 		await writeFile_async(path.join(messageFolderPath, `${language}.json`), JSON.stringify(languageMessage.newMessages, undefined, 2))
 
 		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify(languageMessage.newDictionary, undefined, 2))
 	}
 
 	const newCache = getNewCache({ ko: languageMessageMap_ko }, explanations)
-
 	await writeFile_async(path.join(helperFolderPath, 'cache.json'), JSON.stringify(newCache, undefined, 2))
 }
 

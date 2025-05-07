@@ -170,6 +170,10 @@ export async function translateOneLanguageMessages(
 	combinedMessages_latest,
 	getTranslatedMessages,
 ) {
+	if (languageMessageObject.missingMessageKeys.length === 0) {
+		return languageMessageObject
+	}
+
 	// 순수 함수: 번역 요청 페이로드 준비
 	const { combinedMessages_target_numbers, restoreFromNumberKeys, olderMessages } =
 	prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
