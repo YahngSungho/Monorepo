@@ -4,5 +4,6 @@
 	"deft_east_mouse_hope": "안녕하세요",
 	"hello_world": "Hello, {name} from ko!",
 	"tangy_late_wallaby_grip": "Welcome to SvelteKit",
-	"welcome": "SvelteKit에 오신 것을 환영합니다"
+	"welcome": "SvelteKit에 오신 것을 환영합니다",
+	"region": "지역"
 }

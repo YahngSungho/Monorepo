@@ -6,16 +6,12 @@ import { generateWithRetry_atQuotaLimit } from '../heleprs.js'
 export const generateObjectWithRetry = async ({model, schema, prompt}) => {
 	const addedPrompt = `${prompt}
 
---- IMPORTANT RULES FOR YOUR RESPONSE ---
+--- FORMAT FOR YOUR RESPONSE ---
 1. Your *entire* response MUST start *exactly* with the line \`\`\`json on the very first line. No characters or spaces before it.
 2. Your *entire* response MUST end *exactly* with the line \`\`\` on the very last line. No characters or spaces after it.
 3. The content *between* the first (\`\`\`json) and last (\`\`\`) lines MUST be a single, valid JSON object string.
 4. This JSON object MUST strictly adhere to the schema described earlier in the prompt.
 5. Do NOT include *any* other text, explanations, apologies, or conversational elements outside the \`\`\`json and \`\`\` markers. Only the JSON object wrapped in the markdown code block.
-
-<Your_Response>
-The first line of your output must be '\`\`\`json'. The last line must be '\`\`\`'. This means the actual JSON object string content is from the second line to the second-to-last line. The text remaining after removing the first and last lines from your response must be directly parsable by \`JSON.parse\`.
-</Your_Response>
 `;
 
 	const { text } =  await generateWithRetry_atQuotaLimit(generateText, 3, 60, { model, prompt: addedPrompt })

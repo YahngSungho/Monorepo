@@ -5,6 +5,8 @@ import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
+import { getLanguageName } from './getLanguageName.js'
+
 export function getInitialLanguageMap () {
 	const settingPath = getAbsolutePath(import.meta.url, '../../../paraglide/project.inlang/settings.json')
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
@@ -179,7 +181,7 @@ export async function translateOneLanguageMessages(
 	prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 	// 비동기 호출: 번역 실행
 	const {translatedMessages: translatedMessages_numbers, newDictionary} = await getTranslatedMessages(
-		language,
+		getLanguageName(language),
 		combinedMessages_target_numbers,
 		olderMessages,
 		dictionary,

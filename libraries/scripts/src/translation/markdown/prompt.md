@@ -76,6 +76,10 @@
 				- Example: tl;dr, if you can hack something together by EOD, that would be great.
 				- Revision: Can you deliver a prototype by the end of today?
 				- The original sentence has incomprehensible acronyms and tech slang, and doesn't even sound like a request. The second one is straightforward, and asks for what the writer needs and by when.
+		- **REGIONAL LANGUAGE VARIATIONS**:
+				- If the `TARGET LANGUAGE` includes a specific `Region` (e.g., 'en-US', 'es-MX', 'fr-CA'), the translation MUST be tailored to the linguistic nuances and conventions of that specific region. Pay close attention to regional vocabulary, spelling, grammar, and cultural references to ensure the translation is natural and appropriate for the intended audience in that region.
+		- **NEUTRAL LANGUAGE FOR UNSPECIFIED REGION**:
+				- If the `TARGET LANGUAGE` does not specify a `Region` (e.g., 'en' instead of 'en-US'), the translation should aim for the most globally understood and neutral form of the language. Avoid region-specific idioms, slang, or cultural references unless they are widely understood internationally or are essential to the meaning of the source text and cannot be conveyed otherwise.
 		- **FORMATTING**:
 				- **PRESERVE MARKDOWN METICULOUSLY**: You MUST EXACTLY replicate ALL original Markdown formatting elements and their structure in the translated text. This includes, but is not limited to:
 						- **Inline styles**: `**bold**`, `*italic*`, `_italic_`, `***bold italic***`, `~~strikethrough~~`, `\`inline code\``. Translate the text *within* these styles, keeping the markdown syntax identical.

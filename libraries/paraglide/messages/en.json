@@ -4,5 +4,6 @@
 	"deft_east_mouse_hope": "Hello",
 	"hello_world": "Hello, {name} from en! 123",
 	"tangy_late_wallaby_grip": "Welcome to SvelteKit",
-	"welcome": "Welcome to SvelteKit"
+	"welcome": "Welcome to SvelteKit",
+	"region": "Region"
 }
