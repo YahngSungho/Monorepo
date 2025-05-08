@@ -119,6 +119,7 @@ declare module '$env/static/private' {
 	export const PSModulePath: string;
 	export const PUBLIC: string;
 	export const PWD: string;
+	export const SENTRY_PIPELINE: string;
 	export const SESSIONNAME: string;
 	export const SHELL: string;
 	export const SHLVL: string;
@@ -143,7 +144,6 @@ declare module '$env/static/private' {
 	export const WDK: string;
 	export const WebStorm: string;
 	export const WINDIR: string;
-	export const __COMPAT_LAYER: string;
 }
 
 /**
@@ -268,6 +268,7 @@ declare module '$env/dynamic/private' {
 		PSModulePath: string;
 		PUBLIC: string;
 		PWD: string;
+		SENTRY_PIPELINE: string;
 		SESSIONNAME: string;
 		SHELL: string;
 		SHLVL: string;
@@ -292,7 +293,6 @@ declare module '$env/dynamic/private' {
 		WDK: string;
 		WebStorm: string;
 		WINDIR: string;
-		__COMPAT_LAYER: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

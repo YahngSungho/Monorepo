@@ -14,12 +14,18 @@
 		"**/.env.*"
 	],
 	"tasks": {
-		"translate": {},
 		"build": {
 			"dependsOn": ["^build"],
 			"env": [],
 			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**"]
 		},
+		"build:en": {
+			"dependsOn": ["^build"],
+			"env": [],
+			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**"]
+		},
+		"change-base-locale:en": {},
+		"change-base-locale:ko": {},
 		"check": {
 			"dependsOn": ["transit"]
 		},
@@ -49,6 +55,7 @@
 		},
 		"transit": {
 			"dependsOn": ["^transit"]
-		}
+		},
+		"translate": {}
 	}
 }

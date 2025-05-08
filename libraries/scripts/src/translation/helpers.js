@@ -173,7 +173,11 @@ export async function translateOneLanguageMessages(
 	getTranslatedMessages,
 ) {
 	if (languageMessageObject.missingMessageKeys.length === 0) {
-		return languageMessageObject
+		return {
+			...languageMessageObject,
+			newMessages: languageMessageObject.value,
+			newDictionary: dictionary,
+		}
 	}
 
 	// 순수 함수: 번역 요청 페이로드 준비
