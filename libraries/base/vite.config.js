@@ -1,5 +1,3 @@
-// @ts-ignore
-
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -67,8 +65,8 @@ const baseConfig = defineConfig({
 	},
 })
 
+// @ts-ignore
 const defaultConfig = mergeConfig(configDefaults, baseConfig)
 
-// @ts-ignore
 export { currentEnv, defaultConfig }
 export default defaultConfig
