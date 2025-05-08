@@ -78,7 +78,6 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 		// model,
 		schema,
 		// prompt: promptForParaglide + target,
-		// Todo: Cached Model 사용 가능시에 사용
 		model: modelForParaglide,
 		prompt: target,
 	})
@@ -130,7 +129,6 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 		// model,
 		schema,
 		// prompt: promptForMarkdown + target,
-		// Todo: Cached Model 사용 가능시에 사용
 		model: modelForMarkdown,
 		prompt: target,
 	})
