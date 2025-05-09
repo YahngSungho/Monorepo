@@ -14,7 +14,6 @@ export const generateObjectWithRetry = R.curry(async (model, cache, schema, prom
 
 	try {
 		const parsedObject = JSON.parse(result)
-
 		try {
 			schema.parse(parsedObject)
 			return parsedObject // 성공적인 파싱 및 유효성 검사 시에만 반환

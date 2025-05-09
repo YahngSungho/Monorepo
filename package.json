@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"all-packages-update": "pnpm up --recursive",
-		"build": " turbo run build --affected",
+		"build": "turbo run build --affected",
 		"clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f package-lock.json + && pnpm store prune && pnpm install",
 		"dev": "turbo run dev --affected",
 		"dev:boiler_plates": "turbo run dev --filter=boiler_plates --filter=storybook --affected",

@@ -4,9 +4,11 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
+		"translate": "node ./src/translation/scripts.js",
+		"translate:dotenv": "dotenv -e ../../.env node ./src/translation/scripts.js",
 		"build": "vite build",
 		"build:en": "turbo run change-base-locale:en --filter=* --force && vite build",
-		"buildWithDotenv": "dotenv -e ../../.env vite build",
+		"build:dotenv": "dotenv -e ../../.env vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
