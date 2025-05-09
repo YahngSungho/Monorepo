@@ -1,16 +1,26 @@
-import { generateText } from 'ai'
+import { R } from '@library/helpers/R'
 
-export const generateText_default = async (options) => {
-	return await generateText({
-		topP: 0.2,
-		providerOptions: {
-			google: {
-				responseMimeType: 'application/json',
-				thinkingConfig: {
-					includeThoughts: false, thinkingBudget: 5000
-				}
-			}
-		},
-		...options,
-	})
-}
+import { ai } from './ai.js'
+import { latestModel } from './modelNames.js'
+
+export const generateText = R.curry(async (model, config, cache, contents) => {
+	const config0 = config || {}
+
+	const result =  await ai.models.generateContent({
+		model,
+		contents,
+		config: {
+			cachedContent: cache,
+			topP: 0.2,
+			responseMimeType: 'application/json',
+			thinkingConfig: {
+				...config0,
+				includeThoughts: true, thinkingBudget: 50_000
+			},
+		}
+		})
+
+	return result.text
+})
+
+export const generateText_latestModel = generateText(latestModel)

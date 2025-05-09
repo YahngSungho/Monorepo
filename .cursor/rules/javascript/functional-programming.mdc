@@ -3,7 +3,6 @@ description:
 globs: *.js,*.ts,*.mjs,*.cjs,*.mts,*.cts,*.svelte,*.svx
 alwaysApply: false
 ---
-
 # Functional Programming Principles & Guidelines
 
 FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES WHENEVER POSSIBLE.
@@ -33,6 +32,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 5. **Function Composition:** Build complex functionality by combining smaller, reusable functions. This enhances code reuse and helps separate logic clearly (e.g., using `R.pipe`).
 
 6. **Currying:** A technique of transforming a function that takes multiple arguments into a sequence of functions that each take a single argument. It can improve function reusability and composition (e.g., using `R.curry`).
+   - **Caution:** When using `R.curry` (or functions that behave like Ramda's `curry`), if the target function has default parameter values, the `curry` function might not correctly determine the function's arity (the number of arguments it expects). This is because a function's `length` property in JavaScript only counts parameters up to the first one with a default value. Consequently, `curry` might execute the function prematurely with fewer arguments than expected (e.g., returning a Promise immediately for an `async` function) or return something other than a partially applied function. To prevent this, it's advisable to remove default parameter values from the signature of the function being curried and handle defaults explicitly within the function body.
 
 ## Library Usage
 

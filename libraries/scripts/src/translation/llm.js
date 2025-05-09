@@ -2,9 +2,8 @@
 import { readFileFromRelativePath } from '@library/helpers/fs-async'
 import { validateNumbers } from '@library/helpers/helper-functions'
 import { R } from '@library/helpers/R'
-import { generateObjectWithRetry } from '@library/llms/gemini/generate'
-import { getCachedModel } from '@library/llms/gemini/getModel'
-import { config } from 'dotenv'
+import { generateObjectWithRetry_latestModel } from '@library/llms/gemini/generate'
+import { getCacheBySystemInstructions_latestModel } from 	'@library/llms/gemini/getCache'
 import { z } from 'zod'
 
 
@@ -13,25 +12,15 @@ const readPrompt = readFileFromRelativePath(import.meta.url)
 const promptForParaglide = await readPrompt('./paraglide/prompt.md')
 const promptForMarkdown = await readPrompt('./markdown/prompt.md')
 
-config({ path: '../../.env' })
-
-// const model = google('gemini-2.5-pro-exp-03-25', {
-// structuredOutputs: false,
-// })
-const getTheModel = getCachedModel('gemini-2.5-pro-exp-03-25', {
-structuredOutputs: false,
-})
-const modelForParaglide = await getTheModel(promptForParaglide)
-console.log('💬 modelForParaglide:', modelForParaglide)
-const modelForMarkdown = await getTheModel(promptForMarkdown)
-console.log('💬 modelForMarkdown:', modelForMarkdown)
+const cacheForParaglide = await getCacheBySystemInstructions_latestModel(undefined, promptForParaglide)
+const cacheForMarkdown = await getCacheBySystemInstructions_latestModel(undefined, promptForMarkdown)
 
 export const generateTranslation_paraglide = async (language, targetMessages, olderMessages, dictionary) => {
 	const target = `
-
-	---
-
 	<REQUEST>
+		<TARGET MESSAGES>
+			${JSON.stringify(targetMessages)}
+		</TARGET MESSAGES>
 		<TARGET LANGUAGE>
 			${JSON.stringify(language)}
 		</TARGET LANGUAGE>
@@ -41,9 +30,6 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 		<DICTIONARY>
 			${JSON.stringify(dictionary)}
 		</DICTIONARY>
-		<TARGET MESSAGES>
-			${JSON.stringify(targetMessages)}
-		</TARGET MESSAGES>
 	</REQUEST>
 	`
 
@@ -69,23 +55,17 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
-	const object = await generateObjectWithRetry({
-		// model,
-		schema,
-		// prompt: promptForParaglide + target,
-		model: modelForParaglide,
-		prompt: target,
-	})
+	const object = await generateObjectWithRetry_latestModel(cacheForParaglide, schema, target)
 
 	return object
 }
 
 export const generateTranslation_markdown = async (language, targetMessages, olderMessages, dictionary) => {
 	const target = `
-
-	---
-
 	<REQUEST>
+		<TARGET MESSAGES>
+			${JSON.stringify(targetMessages)}
+		</TARGET MESSAGES>
 		<TARGET LANGUAGE>
 			${JSON.stringify(language)}
 		</TARGET LANGUAGE>
@@ -95,9 +75,6 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 		<DICTIONARY>
 			${JSON.stringify(dictionary)}
 		</DICTIONARY>
-		<TARGET MESSAGES>
-			${JSON.stringify(targetMessages)}
-		</TARGET MESSAGES>
 	</REQUEST>
 	`
 
@@ -113,13 +90,7 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
-	const object = await generateObjectWithRetry({
-		// model,
-		schema,
-		// prompt: promptForMarkdown + target,
-		model: modelForMarkdown,
-		prompt: target,
-	})
+	const object = await generateObjectWithRetry_latestModel(cacheForMarkdown, schema, target)
 
 	return object
 }

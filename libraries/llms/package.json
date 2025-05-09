@@ -21,7 +21,7 @@
 	},
 	"exports": {
 		"./heleprs": "./src/heleprs.js",
-		"./gemini/getModel": "./src/gemini/getModel.js",
+		"./gemini/getCache": "./src/gemini/getCache.js",
 		"./gemini/generate": "./src/gemini/generate.js"
 	}
 }

@@ -19,7 +19,7 @@ export const generateWithRetry_atQuotaLimit = R.curry(async (
 	let attempts = 0
 	while (attempts < maxRetries) {
 		try {
-			const result = await generateFunc(options)
+			const result = await generateFunc(options.model, options.config, options.cache, options.contents)
 			return result // 성공 시 결과 반환
 		} catch (error) {
 			attempts++
