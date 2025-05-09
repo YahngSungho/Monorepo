@@ -3,20 +3,31 @@
 </Role>
 
 <Instructions>
-		**Overall Task:** Translate the provided `TARGET MESSAGES` into the specified `TARGET LANGUAGE`, ensuring consistency with `OLDER MESSAGES` and the `DICTIONARY`. The `TARGET MESSAGES` object uses sequential integer strings starting from "1" as keys (e.g., "1", "2", "3", ...). You MUST perform the analysis and translation steps internally as described below. The **FINAL OUTPUT MUST BE ONLY** the JSON object containing `planForSubtleParts`, `translatedMessages`, and `newDictionary`, conforming EXACTLY to the `Output_Schema`. The keys in the `translatedMessages` object MUST correspond to the original sequential keys from `TARGET MESSAGES`.
+		**Overall Task:** Translate the provided `TARGET MESSAGES` into the specified `TARGET LANGUAGE`, ensuring consistency with `OLDER MESSAGES` and the `DICTIONARY`. The `TARGET MESSAGES` object uses sequential integer strings starting from "1" as keys (e.g., "1", "2", "3", ...). You MUST perform the analysis and translation steps internally as described below. The **FINAL OUTPUT MUST BE ONLY** the JSON object containing `translatedMessages` and `newDictionary`, conforming EXACTLY to the `Output_Schema`. The keys in the `translatedMessages` object MUST correspond to the original sequential keys from `TARGET MESSAGES`.
 
-		**Internal Process (Think Step-by-Step, but DO NOT include this reasoning in the final output):**
+		**Internal Process (You MUST explicitly show your thinking process step-by-step for sections 1 and 2 below. This thinking process is NOT part of the final JSON output but is crucial for transparency and verification):**
 
 		1.  **Understand Task and Inputs:**
+				*   **(Thinking Step 1 Start) Now I will articulate my understanding of the task and inputs.**
 				*   Confirm your understanding of the core task, inputs (`TARGET LANGUAGE`, `OLDER MESSAGES`, `DICTIONARY`, `TARGET MESSAGES` with keys "1", "2", ...), and constraints (Paraglide Rules including proactive pluralization, Style Guide, Final Output Format with sequential keys in `translatedMessages`).
+				*   **(Thinking Step 1 End)**
 
-		2.  **Analyze Subtle Parts (`planForSubtleParts`):**
-				*   Carefully review the `TARGET MESSAGES` corresponding to keys "1", "2", etc.
-				*   Identify tricky parts considering the `TARGET LANGUAGE` and style guide, **including potential needs for proactive pluralization based on parameters when translating to English or similar languages.**
-				*   Internally generate the plan for each part (`part`, `why`, `plan`). **Consult the `Paraglide Rules`, `Translation_Style_Guide`, `Input` definitions, and `Examples` as needed when formulating this plan.** This will form the `planForSubtleParts` array in the final JSON.
+		2.  **Analyze Subtle Parts (CRITICAL Internal Thinking Step - `planForSubtleParts`):**
+				*   **(Thinking Step 2 Start) Now I will analyze subtle parts and formulate a plan.**
+				*   **You MUST meticulously perform this internal analysis step.**
+				*   Carefully review ALL `TARGET MESSAGES` corresponding to keys "1", "2", etc.
+				*   Identify any parts (words, phrases, parameters, message structures) that are particularly subtle, tricky, or require careful handling for the `TARGET LANGUAGE` and style guide. This **MUST include identifying potential needs for proactive pluralization based on parameters** when translating to English or similar languages.
+				*   For EACH identified part, you MUST internally formulate a detailed plan covering:
+						*   `part`: The specific part identified.
+						*   `why`: The reason it's challenging or needs special attention (e.g., nuance, Paraglide rule application, pluralization).
+						*   `plan`: Your specific strategy for translating it according to all rules and guides.
+				*   **As part of your internal thinking process, before proceeding to Step 3 (Translate Messages), you MUST explicitly list each identified subtle part and its corresponding `part`, `why`, and `plan` that you have formulated. This explicit listing is for a clear articulation of your internal reasoning process and will NOT be part of the final JSON output.**
+				*   **Consult the `Paraglide Rules`, `Translation_Style_Guide`, `Input` definitions, and `Examples` extensively when formulating this internal plan.**
+				*   This detailed internal plan is ESSENTIAL for guiding your translation in Step 3. **It WILL NOT and MUST NOT be part of the final JSON output**, but its thorough execution is mandatory for high-quality translation.
+				*   **(Thinking Step 2 End)**
 
 		3.  **Translate Messages (`translatedMessages`):**
-				*   Execute the internal translation plan from Step 2.
+				*   Execute the internal translation plan meticulously formulated in Step 2.
 				*   Translate each message for keys "1", "2", ... **using the provided `ko`, `en`, and `explanation` fields for full context and meaning.**
 				*   **Actively consult `OLDER MESSAGES` and `DICTIONARY` for consistency.**
 				*   **CRITICAL: Adhere STRICTLY to the Paraglide Rules (provided below).**
@@ -38,7 +49,8 @@
 				*   Internally create the `newDictionary` object (`{ "source term": "translated term" }`). This will be the `newDictionary` part of the final JSON.
 
 		5.  **Format and Output Final JSON:**
-				*   Combine the results from the internal Steps 2, 3, and 4 (`planForSubtleParts` array, `translatedMessages` object, `newDictionary` object) into a single JSON object.
+				*   Combine `translatedMessages` (from Step 3) and `newDictionary` (from Step 4) into a single JSON object.
+				*   Ensure this JSON object conforms EXACTLY to the `Output_Schema` (which no longer includes `planForSubtleParts`).
 				*   Ensure the keys in the `translatedMessages` object are the sequential integer strings "1", "2", "3", ... corresponding to the input.
 				*   **OUTPUT ONLY THIS FINAL JSON OBJECT.** NO other text, explanation, reasoning, or introductory phrases should precede or follow the JSON output.
 
@@ -237,16 +249,6 @@
 			* THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
 			_/
 		interface TranslationOutput {
-			/__
-				*Analysis of tricky parts and the plan to translate them.
-				*@items {{ part: string, why: string, plan: string }}
-				*/
-			planForSubtleParts: Array<{
-				part: string;
-				why: string;
-				plan: string;
-			}>;
-
 			/**
 				* The translated messages, keyed by the original message number.
 				* Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).
@@ -268,14 +270,10 @@
 <Example_Final_Output>
 		```json
 		{
-			"planForSubtleParts": [
-				{ "part": "{itemCount}", "why": "Potential need for pluralization in English based on parameter name, even if Korean source is simple.", "plan": "Proactively apply Paraglide pluralization using 'itemCount' as input." }
-				// ... other planned parts
-			],
 			"translatedMessages": {
 				"1": "Translated message for 1.",
 				"2": "Simple translation for 2.",
-				"3": { // Example of proactive pluralization for a message like "{itemCount}개의 항목"
+				"3": {
 						"declarations": ["input itemCount", "local countPlural = itemCount: plural"],
 						"selectors": ["countPlural"],
 						"match": {

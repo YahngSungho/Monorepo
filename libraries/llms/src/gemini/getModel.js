@@ -64,10 +64,20 @@ export const getCachedModel = R.curry(async (modelName, options, willBeCachedDat
 	// 		}]
 	// 	}],
 	// 	ttlSeconds: 60 * 30
+
 	// })
 
 	return createCleanModel(modelName, {
 		...options,
 		cachedContent: cacheName,
+				topP: 0.2,
+						providerOptions: {
+			google: {
+				responseMimeType: 'application/json',
+				thinkingConfig: {
+					includeThoughts: false, thinkingBudget: 5000
+				}
+			}
+		},
 	})
 })

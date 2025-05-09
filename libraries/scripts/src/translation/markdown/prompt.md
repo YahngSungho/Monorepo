@@ -15,13 +15,19 @@
 
 <Process>
 		1.  **Understand**: Briefly restate your understanding of the task, the target language, and the inputs you will use (`OLDER MESSAGES`, `DICTIONARY`, `TARGET MESSAGES`).
-		2.  **Analyze Subtle Parts**: Carefully review ALL `TARGET MESSAGES`. Identify any parts (words, phrases, sentences, metaphors, complex formatting interactions, custom elements) that are particularly subtle, tricky, weird, harsh, controversial, or require careful handling to maintain fidelity according to the style guide. For EACH identified part:
-				*   Determine *why* it's challenging (e.g., unique metaphor, potential for normalization, culturally specific, complex markdown requiring careful text placement, custom element content translation).
-				*   Formulate a specific *plan* for how you will translate it to preserve its original meaning, nuance, AND formatting/structure while adhering to the style guide. **Consult the `Translation_Style_Guide`, `Input` definitions, and `Examples` as needed when formulating this plan.**
-				*   Compile these findings into the `planForSubtleParts` array as defined in the `Output_Schema`. If no parts are deemed subtle, output an empty array.
-		3.  **Translate**: Translate each message in `TARGET MESSAGES` into the `TARGET LANGUAGE`. Apply the `Translation_Style_Guide` METICULOUSLY to every sentence AND formatting element. Use your `planForSubtleParts` to guide the translation of tricky sections. Refer to `OLDER MESSAGES` and `DICTIONARY` for consistency where appropriate, but ALWAYS prioritize the Style Guide's fidelity rules. Preserve ALL original Markdown formatting and custom elements precisely. Compile translations into the `translatedMessages` object, ensuring the keys match the input message numbers (consecutive integers starting from 1).
-		4.  **Update Dictionary**: Identify key terms or phrases translated during this process that should be recorded for future consistency. **Add only proper nouns, technical terms, or specialized vocabulary** as key-value pairs (`source_term`: `translation`) to the `newDictionary` object. **Do not add common or ordinary words.** Include terms where a specific translation choice was made based on the style guide or context, especially if they fall into the specified categories (proper nouns, technical terms, specialized vocabulary).
-		5.  **Format Output**: Combine `planForSubtleParts`, `translatedMessages`, and `newDictionary` into a single JSON object conforming EXACTLY to the `Output_Schema`. Output ONLY this JSON object.
+		2.  **Analyze Subtle Parts (CRITICAL Internal Thinking Step)**:
+				*   **You MUST meticulously perform this internal analysis step.**
+				*   Carefully review ALL `TARGET MESSAGES`. Identify any parts (words, phrases, sentences, metaphors, complex formatting interactions, custom elements) that are particularly subtle, tricky, weird, harsh, controversial, or require careful handling to maintain fidelity according to the style guide.
+				*   For EACH identified part, you MUST internally formulate a detailed plan covering:
+						*   `part`: The specific word, phrase, sentence, or formatting structure identified.
+						*   `why`: The reason why this part is considered subtle or requires careful handling (e.g., linguistic nuance, complex formatting, custom element content, potential for misinterpretation, deviation from standard phrasing).
+						*   `plan`: Your specific strategy for translating this part to preserve its original meaning, nuance, AND formatting/structure while strictly adhering to the `Translation_Style_Guide`.
+				*   **As part of your internal thinking process, before proceeding to Step 3 (Translate), you MUST explicitly list each identified subtle part and its corresponding `part`, `why`, and `plan` that you have formulated. This explicit listing is for a clear articulation of your internal reasoning process and will NOT be part of the final JSON output.**
+				*   **Consult the `Translation_Style_Guide`, `Input` definitions, and `Examples` extensively when formulating this internal plan.**
+				*   This detailed internal plan is ESSENTIAL for guiding your translation in Step 3. **It WILL NOT and MUST NOT be part of the final JSON output**, but its thorough execution is mandatory for high-quality translation.
+		3.  **Translate**: Translate each message in `TARGET MESSAGES` into the `TARGET LANGUAGE`. Apply the `Translation_Style_Guide` METICULOUSLY to every sentence AND formatting element. Use the internal plan meticulously formulated in "Analyze Subtle Parts" (Step 2) to guide the translation of tricky sections. Refer to `OLDER MESSAGES` and `DICTIONARY` for consistency where appropriate, but ALWAYS prioritize the Style Guide's fidelity rules. Preserve ALL original Markdown formatting and custom elements precisely. Compile translations into the `translatedMessages` object, ensuring the keys match the input message numbers (consecutive integers starting from 1).
+		4.  **Update Dictionary**: Identify key terms or phrases translated during this process that should be recorded for future consistency. **Focus on adding ONLY unique, proper, or specialized terms that require a specific, consistent translation across messages.** This includes proper nouns, technical jargon, or specific vocabulary where a deliberate translation choice was made due to style guide requirements or contextual nuance. Avoid adding common, everyday words or phrases. The purpose of `newDictionary` is to ensure consistent translation of these distinctive terms, not to build a general lexicon. Add these selected terms as key-value pairs (`source_term`: `translation`) to the `newDictionary` object.
+		5.  **Format Output**: Combine `translatedMessages` and `newDictionary` into a single JSON object conforming EXACTLY to the `Output_Schema` (which no longer includes `planForSubtleParts`). Output ONLY this JSON object.
 </Process>
 
 <Translation_Style_Guide>
@@ -113,22 +119,14 @@
 
 <Output_Schema>
 		/**
-			*@typedef {object} PlanEntry
-			* @property {string} part - The specific word, phrase, sentence, or formatting structure identified as subtle/tricky.
-			*@property {string} why - The reason why this part is considered subtle or requires careful handling (e.g., linguistic nuance, complex formatting, custom element content).
-			* @property {string} plan - The specific plan for translating this part according to the style guide, including how to handle associated formatting or element structure.
-			*/
-
-		/**
-			* Represents the translated messages.
+			*Represents the translated messages.
 			* Keys are consecutive integers starting from 1, corresponding to the input message numbers.
-			* Values are the translated strings (maintaining original Markdown) in the target language.
+			*Values are the translated strings (maintaining original Markdown) in the target language.
 			* @typedef {{ [key: number]: string }} TranslatedMessages
 			*/
 
 		/**
 			* @typedef {object} TranslationOutput
-			* @property {PlanEntry[]} planForSubtleParts - An array analyzing subtle parts. Empty if none identified.
 			* @property {TranslatedMessages} translatedMessages - Object mapping message numbers (consecutive integers starting from 1) to their translations in the target language.
 			* @property {{ [key: string]: string }} newDictionary - Object containing newly established term translations for future consistency.
 			*/
@@ -164,13 +162,6 @@
 				<Output>
 						```json
 						{
-							"planForSubtleParts": [
-								{
-									"part": "발목을 잡는 족쇄 (shackles holding the user back)",
-									"why": "This is a strong, negative metaphor. It must be preserved according to the 'FIDELITY' rule and the 'MUST NOT NORMALIZE' rule, avoiding softer alternatives.",
-									"plan": "Translate directly using a strong equivalent metaphor like 'shackles' or 'fetters' in English, ensuring the negative and restrictive connotation is fully conveyed, avoiding normalization to something like 'hindrance' or 'limitation'."
-								}
-							],
 							"translatedMessages": {
 								"1": "This feature is like shackles holding the user back.",
 								"2": "Press the next button."
@@ -203,13 +194,6 @@
 				<Output>
 						```json
 						{
-							"planForSubtleParts": [
-								{
-									"part": "Nested list structure with mixed formatting (bold, inline code, link)",
-									"why": "Requires careful translation of text content while precisely preserving the multi-level list structure (`1.`, `*`), indentation, bold (`**`), inline code (`` ` ``), and link (`[text](url)`) syntax.",
-									"plan": "Translate the text content for each list item and sub-item ('파일', '환경 설정', '여기서 ... 수정해야 합니다', '자세한 내용은 ... 참조하세요', '설정을 저장합니다', '공식 문서'). Ensure the translated text replaces the original text *within* the existing Markdown structure. Keep `**File**` bold, `user.config` within backticks, and translate only the link text '공식 문서' -> 'official documentation' while keeping the URL `(https://docs.example.com/config)` identical. Maintain exact list markers and indentation."
-								}
-							],
 							"translatedMessages": {
 								"3": "## Setup Steps\n\nFollow these steps:\n\n1.  Navigate to the **File** menu.\n2.  Select 'Preferences'.\n    *   Here you need to modify the `user.config` file.\n    *   For details, see the [official documentation](https://docs.example.com/config).\n3.  Save the settings."
 							},
@@ -229,8 +213,8 @@
 							"TARGET LANGUAGE": "en",
 							"TARGET MESSAGES": {
 								"4": {
-									"ko": "### 코드 예시\n\n다음 Python 코드를 사용하세요:\n\n```python\ndef greet(name):\n    # 간단한 인사 함수\n    print(f\"Hello, {name}!\")\n\ngreet(\"World\")\n```\n\n이 코드는 'World'에게 인사합니다.",
-									"en": "### Code Example\n\nUse the following Python code:\n\n```python\ndef greet(name):\n    # Simple greeting function\n    print(f\"Hello, {name}!\")\n\ngreet(\"World\")\n```\n\nThis code greets 'World'.",
+									"ko": "### 코드 예시\n\n다음 Python 코드를 사용하세요:\n\n```python\ndef greet(name):\n    # 간단한 인사 함수\n    print(f"Hello, {name}!")\n\ngreet(\"World\")\n```\n\n이 코드는 'World'에게 인사합니다.",
+									"en": "### Code Example\n\nUse the following Python code:\n\n```python\ndef greet(name):\n    # Simple greeting function\n    print(f"Hello, {name}!")\n\ngreet(\"World\")\n```\n\nThis code greets 'World'.",
 									"explanation": "Text surrounding a Python code block."
 								}
 							},
@@ -242,15 +226,8 @@
 				<Output>
 						```json
 						{
-							"planForSubtleParts": [
-									{
-									"part": "Text surrounding a code block",
-									"why": "The text before and after the code block needs translation, but the code block itself (including the language identifier `python`, content, comments within the code, and indentation) MUST remain completely untouched.",
-									"plan": "Translate '### 코드 예시', '다음 Python 코드를 사용하세요:', and '이 코드는 'World'에게 인사합니다.'. Keep the entire ```python ... ``` block exactly as it is in the original, including the `python` identifier and all internal content and indentation."
-								}
-							],
 							"translatedMessages": {
-								"4": "### Code Example\n\nUse the following Python code:\n\n```python\ndef greet(name):\n    # Simple greeting function\n    print(f\"Hello, {name}!\")\n\ngreet(\"World\")\n```\n\nThis code greets 'World'."
+								"4": "### Code Example\n\nUse the following Python code:\n\n```python\ndef greet(name):\n    # Simple greeting function\n    print(f"Hello, {name}!")\n\ngreet(\"World\")\n```\n\nThis code greets 'World'."
 							},
 							"newDictionary": {
 								"코드 예시": "Code Example"
@@ -267,8 +244,8 @@
 							"TARGET LANGUAGE": "en",
 							"TARGET MESSAGES": {
 								"5": {
-									"ko": "#### 프로세스 흐름\n\n<Mermaid>\ngraph TD\n    A[\"testUIComponent 시작\"] --> B{\"테스트 반복 (iterationCount 만큼)\"};\n    B -- \"반복\" --> C[\"runSingleIteration 실행\"];\n    C --> D(\"컴포넌트 상태 초기화 - resetComponentState\");\n    D --> E(\"상호작용 요소 탐색 - discoverInteractions\");\n    E --> F{\"인터랙션 존재?\"};\n    F -- \"Yes\" --> G(\"인터랙션 시퀀스 Arbitrary 생성 - createInteractionSequenceArbitrary\");\n    F -- \"No\" --> H(\"기본 렌더링 상태 확인 - verifyComponentState\");\n    H --> I[\"반복 종료\"];\n    G --> J(\"fast-check 실행 - fc.check\");\n    J -- \"asyncProperty\" --> K{\"인터랙션 시퀀스 생성\"};\n    K -- \"각 인터랙션\" --> L(\"인터랙션 실행 - executeInteraction\");\n    L -- \"성공\" --> M{\"모든 인터랙션 성공?\"};\n    M -- \"Yes\" --> N(\"최종 상태 검증 - verifyComponentState\");\n    N --> O{\"Property 만족?\"};\n    O -- \"Yes\" --> P(\"테스트 성공\");\n    P --> K;\n    M -- \"No\" --> Q(\"실패: 인터랙션 오류\");\n    L -- \"실패\" --> Q;\n    O -- \"No\" --> R(\"실패: 최종 상태 검증 실패\");\n    Q --> S{\"Shrinking 시도\"};\n    R --> S;\n    S -- \"축소된 반례 발견\" --> T(\"디버깅 실행 - debugWithShrunkExample\");\n    T --> U(\"실패 정보 기록\");\n    U --> I;\n    J -- \"fast-check 종료\" --> V{\"테스트 실패?\"};\n    V -- \"Yes\" --> W(\"디버그 정보 저장 - saveDebugInfo\");\n    W --> I;\n    V -- \"No\" --> I;\n    B -- \"모든 반복 완료\" --> X(\"최종 결과 반환 및 Playwright 단언\");\n    X --> Y[\"testUIComponent 종료\"];\n\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style Y fill:#f9f,stroke:#333,stroke-width:2px\n    style C fill:#ccf,stroke:#333,stroke-width:2px\n    style J fill:#ccf,stroke:#333,stroke-width:2px\n    style L fill:#ccf,stroke:#333,stroke-width:2px\n    style T fill:#ccf,stroke:#333,stroke-width:2px\n    style W fill:#fcc,stroke:#333,stroke-width:1px\n</Mermaid>\n\n위 다이어그램은 테스트 흐름을 보여줍니다.",
-									"en": "#### Process Flow\n\n<Mermaid>\ngraph TD\n    A[\"Start testUIComponent\"] --> B{\"Test Loop (iterationCount times)\"};\n    B -- \"Loop\" --> C[\"Execute runSingleIteration\"];\n    C --> D(\"Initialize component state - resetComponentState\");\n    D --> E(\"Discover interactions - discoverInteractions\");\n    E --> F{\"Interaction exists?\"};\n    F -- \"Yes\" --> G(\"Generate interaction sequence Arbitrary - createInteractionSequenceArbitrary\");\n    F -- \"No\" --> H(\"Verify base rendering state - verifyComponentState\");\n    H --> I[\"End Loop\"];\n    G --> J(\"Run fast-check - fc.check\");\n    J -- \"asyncProperty\" --> K{\"Generate interaction sequence\"};\n    K -- \"Each interaction\" --> L(\"Execute interaction - executeInteraction\");\n    L -- \"Success\" --> M{\"All interactions successful?\"};\n    M -- \"Yes\" --> N(\"Verify final state - verifyComponentState\");\n    N --> O{\"Property satisfied?\"};\n    O -- \"Yes\" --> P(\"Test Success\");\n    P --> K;\n    M -- \"No\" --> Q(\"Failure: Interaction error\");\n    L -- \"Failure\" --> Q;\n    O -- \"No\" --> R(\"Failure: Final state verification failed\");\n    Q --> S{\"Attempt Shrinking\"};\n    R --> S;\n    S -- \"Shrunk counterexample found\" --> T(\"Run debugging - debugWithShrunkExample\");\n    T --> U(\"Record failure info\");\n    U --> I;\n    J -- \"fast-check finished\" --> V{\"Test failed?\"};\n    V -- \"Yes\" --> W(\"Save debug info - saveDebugInfo\");\n    W --> I;\n    V -- \"No\" --> I;\n    B -- \"All loops completed\" --> X(\"Return final result and Playwright assertion\");\n    X --> Y[\"End testUIComponent\"];\n\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style Y fill:#f9f,stroke:#333,stroke-width:2px\n    style C fill:#ccf,stroke:#333,stroke-width:2px\n    style J fill:#ccf,stroke:#333,stroke-width:2px\n    style L fill:#ccf,stroke:#333,stroke-width:2px\n    style T fill:#ccf,stroke:#333,stroke-width:2px\n    style W fill:#fcc,stroke:#333,stroke-width:1px\n</Mermaid>\n\nThe diagram above shows the test flow.",
+									"ko": "#### 프로세스 흐름\n\n<Mermaid>\ngraph TD\n    A[\"testUIComponent 시작\"] --> B{\"테스트 반복 (iterationCount 만큼)\"};\n    B -- \"반복\" --> C[\"runSingleIteration 실행\"];\n    C --> D(\"컴포넌트 상태 초기화 - resetComponentState\");\n    D --> E(\"상호작용 요소 탐색 - discoverInteractions\");\n    E --> F{\"인터랙션 존재?\";\n    F -- \"Yes\" --> G(\"인터랙션 시퀀스 Arbitrary 생성 - createInteractionSequenceArbitrary\");\n    F -- \"No\" --> H(\"기본 렌더링 상태 확인 - verifyComponentState\");\n    H --> I[\"반복 종료\"];\n    G --> J(\"fast-check 실행 - fc.check\");\n    J -- \"asyncProperty\" --> K{\"인터랙션 시퀀스 생성\";\n    K -- \"각 인터랙션\" --> L(\"인터랙션 실행 - executeInteraction\");\n    L -- \"성공\" --> M{\"모든 인터랙션 성공?\";\n    M -- \"Yes\" --> N(\"최종 상태 검증 - verifyComponentState\");\n    N --> O{\"Property 만족?\";\n    O -- \"Yes\" --> P(\"테스트 성공\");\n    P --> K;\n    M -- \"No\" --> Q(\"실패: 인터랙션 오류\");\n    L -- \"실패\" --> Q;\n    O -- \"No\" --> R(\"실패: 최종 상태 검증 실패\");\n    Q --> S{\"Shrinking 시도\";\n    R --> S;\n    S -- \"축소된 반례 발견\" --> T(\"디버깅 실행 - debugWithShrunkExample\");\n    T --> U(\"실패 정보 기록\");\n    U --> I;\n    J -- \"fast-check 종료\" --> V{\"테스트 실패?\";\n    V -- \"Yes\" --> W(\"디버그 정보 저장 - saveDebugInfo\");\n    W --> I;\n    V -- \"No\" --> I;\n    B -- \"모든 반복 완료\" --> X(\"최종 결과 반환 및 Playwright 단언\");\n    X --> Y[\"testUIComponent 종료\"];\n\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style Y fill:#f9f,stroke:#333,stroke-width:2px\n    style C fill:#ccf,stroke:#333,stroke-width:2px\n    style J fill:#ccf,stroke:#333,stroke-width:2px\n    style L fill:#ccf,stroke:#333,stroke-width:2px\n    style T fill:#ccf,stroke:#333,stroke-width:2px\n    style W fill:#fcc,stroke:#333,stroke-width:1px\n</Mermaid>\n\n위 다이어그램은 테스트 흐름을 보여줍니다.",
+									"en": "#### Process Flow\n\n<Mermaid>\ngraph TD\n    A[\"Start testUIComponent\"] --> B{\"Test Loop (iterationCount times)\"};\n    B -- \"Loop\" --> C[\"Execute runSingleIteration\"];\n    C --> D(\"Initialize component state - resetComponentState\");\n    D --> E(\"Discover interactions - discoverInteractions\");\n    E --> F{\"Interaction exists?\";\n    F -- \"Yes\" --> G(\"Generate interaction sequence Arbitrary - createInteractionSequenceArbitrary\");\n    F -- \"No\" --> H(\"Verify base rendering state - verifyComponentState\");\n    H --> I[\"End Loop\"];\n    G --> J(\"Run fast-check - fc.check\");\n    J -- \"asyncProperty\" --> K{\"Generate interaction sequence\";\n    K -- \"Each interaction\" --> L(\"Execute interaction - executeInteraction\");\n    L -- \"Success\" --> M{\"All interactions successful?\";\n    M -- \"Yes\" --> N(\"Verify final state - verifyComponentState\");\n    N --> O{\"Property satisfied?\";\n    O -- \"Yes\" --> P(\"Test Success\");\n    P --> K;\n    M -- \"No\" --> Q(\"Failure: Interaction error\");\n    L -- \"Failure\" --> Q;\n    O -- \"No\" --> R(\"Failure: Final state verification failed\");\n    Q --> S{\"Attempt Shrinking\";\n    R --> S;\n    S -- \"Shrunk counterexample found\" --> T(\"Run debugging - debugWithShrunkExample\");\n    T --> U(\"Record failure info\");\n    U --> I;\n    J -- \"fast-check finished\" --> V{\"Test failed?\";\n    V -- \"Yes\" --> W(\"Save debug info - saveDebugInfo\");\n    W --> I;\n    V -- \"No\" --> I;\n    B -- \"All loops completed\" --> X(\"Return final result and Playwright assertion\");\n    X --> Y[\"End testUIComponent\"];\n\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style Y fill:#f9f,stroke:#333,stroke-width:2px\n    style C fill:#ccf,stroke:#333,stroke-width:2px\n    style J fill:#ccf,stroke:#333,stroke-width:2px\n    style L fill:#ccf,stroke:#333,stroke-width:2px\n    style T fill:#ccf,stroke:#333,stroke-width:2px\n    style W fill:#fcc,stroke:#333,stroke-width:1px\n</Mermaid>\n\nThe diagram above shows the test flow.",
 									"explanation": "Text with a Mermaid diagram where internal labels need translation."
 								}
 							},
@@ -280,15 +257,8 @@
 				<Output>
 						```json
 						{
-							"planForSubtleParts": [
-								{
-									"part": "Mermaid graph within <Mermaid> tags",
-									"why": "Requires translating the textual labels within the Mermaid syntax (text in quotes like \"testUIComponent 시작\", edge labels like \"반복\") while preserving the overall graph structure, node identifiers (A, B, C...), arrow syntax (`-->`, `-- ... -->`), and style definitions.",
-									"plan": "Identify all text labels within quotes (`\"...\"`) and edge labels. Translate these labels into English (e.g., \"testUIComponent 시작\" -> \"Start testUIComponent\", \"반복\" -> \"Loop\", \"인터랙션 존재?\" -> \"Interaction exists?\"). Keep the `<Mermaid>` tags, `graph TD` identifier, node IDs (A, B, ...), arrow syntax, parentheses/brackets/braces around labels, and `style` definitions completely unchanged. Carefully replace only the Korean text labels with their English translations within the quotes/syntax."
-								}
-							],
 							"translatedMessages": {
-								"5": "#### Process Flow\n\n<Mermaid>\ngraph TD\n    A[\"Start testUIComponent\"] --> B{\"Test Loop (iterationCount times)\"};\n    B -- \"Loop\" --> C[\"Execute runSingleIteration\"];\n    C --> D(\"Initialize component state - resetComponentState\");\n    D --> E(\"Discover interactions - discoverInteractions\");\n    E --> F{\"Interaction exists?\"};\n    F -- \"Yes\" --> G(\"Generate interaction sequence Arbitrary - createInteractionSequenceArbitrary\");\n    F -- \"No\" --> H(\"Verify base rendering state - verifyComponentState\");\n    H --> I[\"End Loop\"];\n    G --> J(\"Run fast-check - fc.check\");\n    J -- \"asyncProperty\" --> K{\"Generate interaction sequence\"};\n    K -- \"Each interaction\" --> L(\"Execute interaction - executeInteraction\");\n    L -- \"Success\" --> M{\"All interactions successful?\"};\n    M -- \"Yes\" --> N(\"Verify final state - verifyComponentState\");\n    N --> O{\"Property satisfied?\"};\n    O -- \"Yes\" --> P(\"Test Success\");\n    P --> K;\n    M -- \"No\" --> Q(\"Failure: Interaction error\");\n    L -- \"Failure\" --> Q;\n    O -- \"No\" --> R(\"Failure: Final state verification failed\");\n    Q --> S{\"Attempt Shrinking\"};\n    R --> S;\n    S -- \"Shrunk counterexample found\" --> T(\"Run debugging - debugWithShrunkExample\");\n    T --> U(\"Record failure info\");\n    U --> I;\n    J -- \"fast-check finished\" --> V{\"Test failed?\"};\n    V -- \"Yes\" --> W(\"Save debug info - saveDebugInfo\");\n    W --> I;\n    V -- \"No\" --> I;\n    B -- \"All loops completed\" --> X(\"Return final result and Playwright assertion\");\n    X --> Y[\"End testUIComponent\"];\n\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style Y fill:#f9f,stroke:#333,stroke-width:2px\n    style C fill:#ccf,stroke:#333,stroke-width:2px\n    style J fill:#ccf,stroke:#333,stroke-width:2px\n    style L fill:#ccf,stroke:#333,stroke-width:2px\n    style T fill:#ccf,stroke:#333,stroke-width:2px\n    style W fill:#fcc,stroke:#333,stroke-width:1px\n</Mermaid>\n\nThe diagram above shows the test flow."
+								"5": "#### Process Flow\n\n<Mermaid>\ngraph TD\n    A[\"Start testUIComponent\"] --> B{\"Test Loop (iterationCount times)\"};\n    B -- \"Loop\" --> C[\"Execute runSingleIteration\"];\n    C --> D(\"Initialize component state - resetComponentState\");\n    D --> E(\"Discover interactions - discoverInteractions\");\n    E --> F{\"Interaction exists?\";\n    F -- \"Yes\" --> G(\"Generate interaction sequence Arbitrary - createInteractionSequenceArbitrary\");\n    F -- \"No\" --> H(\"Verify base rendering state - verifyComponentState\");\n    H --> I[\"End Loop\"];\n    G --> J(\"Run fast-check - fc.check\");\n    J -- \"asyncProperty\" --> K{\"Generate interaction sequence\";\n    K -- \"Each interaction\" --> L(\"Execute interaction - executeInteraction\");\n    L -- \"Success\" --> M{\"All interactions successful?\";\n    M -- \"Yes\" --> N(\"Verify final state - verifyComponentState\");\n    N --> O{\"Property satisfied?\";\n    O -- \"Yes\" --> P(\"Test Success\");\n    P --> K;\n    M -- \"No\" --> Q(\"Failure: Interaction error\");\n    L -- \"Failure\" --> Q;\n    O -- \"No\" --> R(\"Failure: Final state verification failed\");\n    Q --> S{\"Attempt Shrinking\";\n    R --> S;\n    S -- \"Shrunk counterexample found\" --> T(\"Run debugging - debugWithShrunkExample\");\n    T --> U(\"Record failure info\");\n    U --> I;\n    J -- \"fast-check finished\" --> V{\"Test failed?\";\n    V -- \"Yes\" --> W(\"Save debug info - saveDebugInfo\");\n    W --> I;\n    V -- \"No\" --> I;\n    B -- \"All loops completed\" --> X(\"Return final result and Playwright assertion\");\n    X --> Y[\"End testUIComponent\"];\n\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style Y fill:#f9f,stroke:#333,stroke-width:2px\n    style C fill:#ccf,stroke:#333,stroke-width:2px\n    style J fill:#ccf,stroke:#333,stroke-width:2px\n    style L fill:#ccf,stroke:#333,stroke-width:2px\n    style T fill:#ccf,stroke:#333,stroke-width:2px\n    style W fill:#fcc,stroke:#333,stroke-width:1px\n</Mermaid>\n\nThe diagram above shows the test flow."
 							},
 							"newDictionary": {
 								"프로세스 흐름": "Process Flow",

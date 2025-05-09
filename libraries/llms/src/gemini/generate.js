@@ -1,57 +1,42 @@
-import { generateText } from 'ai'
-
 import { generateWithRetry_atQuotaLimit } from '../heleprs.js'
+import { generateText_default } from './generateText.js'
 
 // 어떻게든 Cache를 사용할 수 있게 만들기 위해서 object 검증은 여기서 수동으로 한다
 export const generateObjectWithRetry = async ({model, schema, prompt}) => {
-	const addedPrompt = `${prompt}
-
---- FORMAT FOR YOUR RESPONSE ---
-1. Your *entire* response MUST start *exactly* with the line \`\`\`json on the very first line. No characters or spaces before it.
-2. Your *entire* response MUST end *exactly* with the line \`\`\` on the very last line. No characters or spaces after it.
-3. The content *between* the first (\`\`\`json) and last (\`\`\`) lines MUST be a single, valid JSON object string.
-4. This JSON object MUST strictly adhere to the schema described earlier in the prompt.
-5. Do NOT include *any* other text, explanations, apologies, or conversational elements outside the \`\`\`json and \`\`\` markers. Only the JSON object wrapped in the markdown code block.
-`;
-
-	const { text } =  await generateWithRetry_atQuotaLimit(generateText, 3, 60, { model, prompt: addedPrompt })
+	const result = await generateWithRetry_atQuotaLimit(generateText_default, 3, 60, {
+		model,
+		prompt
+	})
+	console.log('💬 generateObjectWithRetry 결과:', result)
+	const { text } =  result
 
 	try {
 		let jsonContent = '';
-		const startIndex = text.indexOf('```json\n');
+		const startIndex = text.lastIndexOf('```json\n');
 		const endIndex = text.lastIndexOf('\n```');
 
 		if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
 			jsonContent = text.slice(startIndex + '```json\n'.length, endIndex).trim();
 		} else {
-			console.warn(
-				'Could not find ```json ... ``` block as expected, attempting fallback extraction by slicing lines. Raw text:',
-				text
-			);
-			const lines = text.split('\n');
-			jsonContent = lines.slice(1, -1).join('\n').trim();
-		}
-
-		if (!jsonContent) {
-			console.error('Failed to extract JSON content from LLM response. Raw text:', text);
-			throw new Error('LLM response did not contain extractable JSON content.');
+			console.error('LLM 응답에서 JSON 콘텐츠를 추출하지 못했습니다. 원본 텍스트:', text);
+			throw new Error('LLM 응답에 추출 가능한 JSON 콘텐츠가 포함되어 있지 않습니다.');
 		}
 
 		const parsedObject = JSON.parse(jsonContent)
 
 		try {
 			schema.parse(parsedObject)
-			return parsedObject // Return only on successful parsing and validation
+			return parsedObject // 성공적인 파싱 및 유효성 검사 시에만 반환
 		} catch (validationError) {
-			console.error('Schema validation failed:', validationError);
-			console.error('Invalid object received:', parsedObject);
-			// Handle validation error (e.g., throw, return null, retry with feedback)
-			throw new Error('LLM output failed schema validation');
+			console.error('스키마 유효성 검사에 실패했습니다:', validationError);
+			console.error('잘못된 객체를 수신했습니다:', parsedObject);
+			// 유효성 검사 오류 처리 (예: throw, null 반환, 피드백과 함께 재시도)
+			throw new Error('LLM 출력이 스키마 유효성 검사에 실패했습니다.');
 		}
 	} catch (parseError) {
-		console.error('JSON parsing failed:', parseError);
-		console.error('Raw text received:', text);
-		// Handle parsing error (e.g., throw, return null, retry)
-		throw new Error('LLM output was not valid JSON or could not be extracted.');
+		console.error('JSON 파싱에 실패했습니다:', parseError);
+		console.error('수신된 원본 텍스트:', text);
+		// 파싱 오류 처리 (예: throw, null 반환, 재시도)
+		throw new Error('LLM 출력이 유효한 JSON이 아니거나 추출할 수 없습니다.');
 	}
 }

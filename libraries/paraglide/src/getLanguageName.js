@@ -39,14 +39,14 @@ export const getLanguageName = R.curry((displayLanguage, localeCode) => {
 	}
 })
 
-const getLanguageNameBy = getLanguageName('en')
+// const getLanguageNameBy = getLanguageName('en')
 
-console.log(getLanguageNameBy('ko-KR')) // "한국어 (대한민국)" 출력
-console.log(getLanguageNameBy('en-US')) // "영어 (미국)" 출력
-console.log(getLanguageNameBy('en-GB')) // "영어 (영국)" 출력
-console.log(getLanguageNameBy('es-ES')) // "스페인어 (스페인)" 출력
-console.log(getLanguageNameBy('fr')) // "프랑스어" 출력 (지역 정보 없음)
-console.log(getLanguageNameBy('sr-ME'))
-console.log(getLanguageNameBy('sr-Latn'))
-console.log(getLanguageNameBy('zh-Hans'))
-console.log(getLanguageNameBy('zh-Hant'))
+// console.log(getLanguageNameBy('ko-KR')) // "한국어 (대한민국)" 출력
+// console.log(getLanguageNameBy('en-US')) // "영어 (미국)" 출력
+// console.log(getLanguageNameBy('en-GB')) // "영어 (영국)" 출력
+// console.log(getLanguageNameBy('es-ES')) // "스페인어 (스페인)" 출력
+// console.log(getLanguageNameBy('fr')) // "프랑스어" 출력 (지역 정보 없음)
+// console.log(getLanguageNameBy('sr-ME'))
+// console.log(getLanguageNameBy('sr-Latn'))
+// console.log(getLanguageNameBy('zh-Hans'))
+// console.log(getLanguageNameBy('zh-Hant'))

@@ -35,12 +35,12 @@ export const getLanguageName = (localeCode) => {
 	}
 }
 
-console.log(getLanguageName('ko-KR')) // "한국어 (대한민국)" 출력
-console.log(getLanguageName('en-US')) // "영어 (미국)" 출력
-console.log(getLanguageName('en-GB')) // "영어 (영국)" 출력
-console.log(getLanguageName('es-ES')) // "스페인어 (스페인)" 출력
-console.log(getLanguageName('fr')) // "프랑스어" 출력 (지역 정보 없음)
-console.log(getLanguageName('sr-ME'))
-console.log(getLanguageName('sr-Latn'))
-console.log(getLanguageName('zh-Hans'))
-console.log(getLanguageName('zh-Hant'))
+// console.log(getLanguageName('ko-KR')) // "한국어 (대한민국)" 출력
+// console.log(getLanguageName('en-US')) // "영어 (미국)" 출력
+// console.log(getLanguageName('en-GB')) // "영어 (영국)" 출력
+// console.log(getLanguageName('es-ES')) // "스페인어 (스페인)" 출력
+// console.log(getLanguageName('fr')) // "프랑스어" 출력 (지역 정보 없음)
+// console.log(getLanguageName('sr-ME'))
+// console.log(getLanguageName('sr-Latn'))
+// console.log(getLanguageName('zh-Hans'))
+// console.log(getLanguageName('zh-Hant'))

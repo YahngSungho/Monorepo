@@ -26,20 +26,20 @@ export const generateWithRetry_atQuotaLimit = R.curry(async (
 			// 에러 메시지에 'quota'가 포함되고 재시도 횟수가 남았는지 확인 (대소문자 무시)
 			if (attempts < maxRetries && error?.message?.toLowerCase().includes('quota')) {
 				console.log(
-					`Quota error detected. Retrying attempt ${attempts + 1}/${maxRetries} after ${delaySeconds} seconds...`,
+					`Quota 오류 감지됨. ${delaySeconds}초 후 ${attempts + 1}/${maxRetries}번째 재시도를 실행합니다...`,
 				)
 				await new Promise((resolve) => {
 					setTimeout(resolve, delaySeconds * 1000)
 				})
 			} else {
 				// 'quota' 에러가 아니거나 재시도 횟수를 모두 소진한 경우
-				console.error(`Failed after ${attempts} attempts. Error:`, error)
+				console.error(`${attempts}번 시도 후 실패했습니다. 오류:`, error)
 				throw error // 마지막 에러를 다시 throw
 			}
 		}
 	}
 	// 이론적으로는 여기까지 도달하지 않아야 하지만, 만약을 대비한 에러 처리
 	throw new Error(
-		`generateObject failed after ${maxRetries} attempts due to unexpected control flow.`,
+		`예기치 않은 제어 흐름으로 인해 ${maxRetries}번의 시도 후 generateObject가 실패했습니다.`,
 	)
 })
