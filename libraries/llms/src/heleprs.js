@@ -23,8 +23,9 @@ export const generateWithRetry_atQuotaLimit = R.curry(async (
 			return result // 성공 시 결과 반환
 		} catch (error) {
 			attempts++
+			const errorMessage = error?.message?.toLowerCase()
 			// 에러 메시지에 'quota'가 포함되고 재시도 횟수가 남았는지 확인 (대소문자 무시)
-			if (attempts < maxRetries && error?.message?.toLowerCase().includes('quota')) {
+			if (attempts < maxRetries && (errorMessage?.includes('quota') || errorMessage?.includes('later'))) {
 				console.log(
 					`Quota 오류 감지됨. ${delaySeconds}초 후 ${attempts + 1}/${maxRetries}번째 재시도를 실행합니다...`,
 				)
