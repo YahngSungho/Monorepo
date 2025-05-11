@@ -27,12 +27,15 @@
  */
 declare module '$env/static/private' {
 	export const APPDATA: string;
+	export const BASE_URL: string;
 	export const COLORTERM: string;
 	export const COMSPEC: string;
+	export const DEV: string;
 	export const DISPLAY: string;
 	export const HOME: string;
 	export const INIT_CWD: string;
 	export const LANG: string;
+	export const MODE: string;
 	export const NODE: string;
 	export const NODE_ENV: string;
 	export const NODE_OPTIONS: string;
@@ -54,6 +57,7 @@ declare module '$env/static/private' {
 	export const PATH: string;
 	export const PATHEXT: string;
 	export const PNPM_SCRIPT_SRC_DIR: string;
+	export const PROD: string;
 	export const ProgramData: string;
 	export const PROMPT: string;
 	export const PWD: string;
@@ -64,8 +68,10 @@ declare module '$env/static/private' {
 	export const TEMP: string;
 	export const TERM: string;
 	export const TERM_PROGRAM: string;
+	export const TEST: string;
 	export const TMP: string;
 	export const TURBO_HASH: string;
+	export const VITEST: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
@@ -102,12 +108,15 @@ declare module '$env/static/public' {
 declare module '$env/dynamic/private' {
 	export const env: {
 		APPDATA: string;
+		BASE_URL: string;
 		COLORTERM: string;
 		COMSPEC: string;
+		DEV: string;
 		DISPLAY: string;
 		HOME: string;
 		INIT_CWD: string;
 		LANG: string;
+		MODE: string;
 		NODE: string;
 		NODE_ENV: string;
 		NODE_OPTIONS: string;
@@ -129,6 +138,7 @@ declare module '$env/dynamic/private' {
 		PATH: string;
 		PATHEXT: string;
 		PNPM_SCRIPT_SRC_DIR: string;
+		PROD: string;
 		ProgramData: string;
 		PROMPT: string;
 		PWD: string;
@@ -139,8 +149,10 @@ declare module '$env/dynamic/private' {
 		TEMP: string;
 		TERM: string;
 		TERM_PROGRAM: string;
+		TEST: string;
 		TMP: string;
 		TURBO_HASH: string;
+		VITEST: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;

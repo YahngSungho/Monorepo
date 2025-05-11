@@ -90,9 +90,7 @@ export async function getFiles() {
 // 		},
 // 	}
 
-export async function getTranslatedLanguageMap (languageMessageMap, explanations, dictPerLanguage, combinedMessages_cached, getTranslatedMessages) {
-
-	// 순수 함수: 초기 상태 계산
+export async function getTranslatedLanguageMap (languageMessageMap, explanations, dictPerLanguage, combinedMessages_cached, getTranslatedMessages) { // 순수 함수: 초기 상태 계산
 const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslationStateByBaseLanguages(['ko'], languageMessageMap, explanations, combinedMessages_cached)
 
 	// 영어 번역 실행 (액션)
@@ -109,10 +107,6 @@ const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslati
 	return await R.mapObjectParallel(async (languageMessage, language) => {
 				if (language === 'en') {
 					return englishMessageObject_translated
-				}
-
-				if (languageMessage.missingMessageKeys.length === 0) {
-					return languageMessage
 				}
 
 				return await translateOneLanguageMessages(

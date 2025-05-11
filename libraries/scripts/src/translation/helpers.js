@@ -185,7 +185,7 @@ export async function translateOneLanguageMessages(
 	prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 	// 비동기 호출: 번역 실행
 	const {translatedMessages: translatedMessages_numbers, newDictionary} = await getTranslatedMessages(
-		getLanguageName(language),
+		language,
 		combinedMessages_target_numbers,
 		olderMessages,
 		dictionary,
