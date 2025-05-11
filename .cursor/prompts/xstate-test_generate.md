@@ -9,7 +9,10 @@
 
 <Instructions>
     1.  **Understand and Rephrase (MANDATORY FIRST STEP)**: BEFORE generating any plan or tests, BEGIN your response by briefly restating your understanding of the provided XState machine's primary function, its main states, events, initial context, and any complex interactions (like guards, actions, invoked/spawned actors). **This understanding MUST be written in KOREAN.** Base this analysis ONLY on the provided code.
-    2.  **Plan Tests (Chain of Thought)**: AFTER restating understanding, devise a detailed test plan.
+    2.  **Analyze Related External Files (If Any)**: AFTER understanding the machine itself, consider if the machine's actions, actors (`fromPromise`, `fromCallback`, etc.), or guards interact with or depend on logic residing in other modules/files external to the machine definition.
+        *   If such external dependencies exist and their behavior is crucial for testing the machine's interactions correctly, identify these related files.
+        *   Use `read_file` to understand the relevant parts of these external files (e.g., the implementation of a function called by an action, the logic within a promise used by `fromPromise`). This ensures that tests (and any necessary mocks for these external parts) are well-informed. **This step is crucial for adhering to Principle #1 (Test Behavior, NOT Implementation Details & EXTREME MOCK MINIMIZATION) by first understanding the real behavior of dependencies.**
+    3.  **Plan Tests (Chain of Thought)**: AFTER restating understanding AND analyzing any related external files, devise a detailed test plan.
         *   Use the trigger phrase **in KOREAN**: "좋습니다, 이 머신을 철저히 테스트하기 위한 계획을 세워 보겠습니다."
         *   The plan MUST outline the specific test cases you will write. The descriptions in the plan MUST **be in KOREAN**.
         *   CRITICALLY, ensure the plan covers the following categories:
@@ -23,12 +26,12 @@
             *   **State Transition Cases:** 상태 간의 주요 전환 명시적 검증.
         *   For each planned test case, briefly state WHAT it tests **in KOREAN** and reference the primary `<Testing_Principles_To_Follow>` it demonstrates (e.g., "테스트 3: fetch 실패 시 `logError` 액션 호출 확인 (원칙: 모의 액션)").
         *   **PBT/MBT Justification**: The plan MUST explicitly evaluate and justify **in KOREAN** where Property-Based Testing (PBT) with `@fast-check/vitest` will be used (especially for guards, assigns, event payloads). State *why* PBT is suitable for those cases. Also, briefly mention **in KOREAN** if Model-Based Testing (MBT) with `@xstate/test` is appropriate given the machine's complexity and justify why or why not.
-    3.  **Generate Vitest Tests**: Implement the test plan by writing the complete Vitest test suite (`*.test.js`).
+    4.  **Generate Vitest Tests**: Implement the test plan by writing the complete Vitest test suite (`*.test.js`).
         *   The code MUST be a single block, including necessary imports (`vitest`, `xstate`, `@fast-check/vitest` if used).
         *   Strictly apply ALL `<Testing_Principles_To_Follow>`.
         *   The generated code MUST be runnable.
         *   Include comments **in KOREAN** within the code briefly justifying test structures or mocking strategies, referencing the principles (e.g., `// 원칙: AAA 준비 - 모의 액터 제공`).
-    4.  **Final Review**: Before concluding the code generation, perform a quick internal check: Does the generated test suite accurately reflect the plan? Does it fully test the machine defined in the provided code according to the specified principles? Ensure non-code text is in Korean.
+    5.  **Final Review**: Before concluding the code generation, perform a quick internal check: Does the generated test suite accurately reflect the plan? Does it fully test the machine defined in the provided code according to the specified principles? Ensure non-code text is in Korean.
 </Instructions>
 
 <Testing_Principles_To_Follow>
@@ -96,6 +99,19 @@
         *   Ensure that mock function calls are reset before each test.
         *   Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`). Ensure mock implementations use correct control flow (e.g., `if/else if/else`).
         *   PRIORITIZE CLARITY OVER STRICT DRY for test setup.
+
+    13. **Vitest `vi.mock` Usage (For Non-XState Module Dependencies)**:
+        *   While XState actors/actions are typically replaced via `machine.provide`, sometimes an XState machine (or its actions/actors) might import and use utility functions or modules from other parts of your codebase that are not XState entities themselves. If these external, non-XState modules need mocking (e.g., they perform I/O or have non-deterministic behavior, and are not directly injectable via `machine.provide`), use standard Vitest `vi.mock` techniques.
+        *   **`vi.mock` Hoisting & Scope (CRITICAL - Use `vi.hoisted`)**:
+            *   **Hoisting Awareness**: `vi.mock(path, factory)` calls are hoisted, executing before `import` statements and module-level variable initializations in the test file.
+            *   **No External Vars in Factory**: The `vi.mock` factory `() => { ... }` **CANNOT directly reference variables defined outside its own immediate scope** (e.g., module-scoped `const myMockFn = vi.fn();`). This causes `ReferenceError: Cannot access 'variable' before initialization`.
+            *   **MANDATORY `vi.hoisted` for External/Dynamic Mock Dependencies**: If the mock factory needs to use externally defined values or dynamically created mock functions (e.g., `vi.fn()`), these **MUST** be defined within `vi.hoisted(() => { return { mockFn: vi.fn() }; });`. The `vi.mock` factory must then access these via the object returned by `vi.hoisted`. (Refer to `unit-tests_generate.md`, Core Principle #8, for a detailed `vi.hoisted` example.)
+            *   **Partial Mocking with `vi.importActual`**: When using a `vi.mock` factory for a non-XState module, you can use `await vi.importActual('./path/to/module')` inside the factory to get the original module. This is key for partial mocking: spread `...actualModule` in your factory's return object, then override only specific exports with mocks, keeping other parts original.
+        *   **Path Alias Resolution (CRITICAL Check)**: If path aliases (e.g., `@library/module`) are used in `vi.mock('alias/module', ...)`, `vi.importActual('alias/module')`, **CRITICALLY VERIFY** these aliases are correctly configured in your Vitest/Vite setup (`resolve.alias`). Unresolved aliases are a common cause of mocking errors.
+        *   **Module Export Structure (Default vs. Named - CRITICAL for Mock Application)**:
+            *   The object returned by the `vi.mock` factory **MUST EXACTLY MATCH** the export structure of the module being mocked (default, named, mixed). A mismatch means the SUT gets `undefined` instead of your mock.
+            *   **Verification**: If mocks aren't working, `console.log(await import('./yourModule'))` in your test (after mocks) to see what the SUT receives.
+        *   **Justification**: Clearly justify in comments (Principle 9) why `vi.mock` was used for a non-XState dependency, aligning with Principle 1 criteria (e.g., `// 원칙: 최후 수단 모의 (외부 유틸리티 모듈의 파일 시스템 접근 격리 - vi.mock 사용)`).
 
 </Testing_Principles_To_Follow>
 
@@ -356,14 +372,14 @@
 
     1.  **Machine Understanding**:
         *   Start with your restatement of the input machine's functionality, states, events, context, and actors/invokes **in KOREAN**.
-
-    2.  **Test Plan**:
+    2.  **Analysis of Related External Files (If Applicable)**:
+        *   Briefly describe any external files identified and read, and what was learned that might impact testing.
+    3.  **Test Plan**:
         *   Begin with the trigger **in KOREAN**: "좋습니다, 이 머신을 철저히 테스트하기 위한 계획을 세워 보겠습니다."
         *   Provide the detailed test plan **in KOREAN** covering the specified categories (Happy Path, Negative, Boundary, Edge, Data, State Transition).
         *   Each planned test should mention what it tests **in KOREAN** and the principle(s) applied.
         *   MUST include justification **in KOREAN** for using (or not using) PBT and MBT.
-
-    3.  **Vitest Test Suite Generation & Application**:
+    4.  **Vitest Test Suite Generation & Application**:
         *   Generate the complete `*.test.js` code implementing the plan and principles.
         *   Include comments **in KOREAN** referencing principles.
         *   The generated code MUST be runnable.
