@@ -13,5 +13,5 @@ export const R = {
 			}),
 			Object.fromEntries,
 		)
-	})
+	}),
 }

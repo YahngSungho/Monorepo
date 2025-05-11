@@ -32,7 +32,6 @@ export const createCompose = R.curry(
 		},
 )
 
-
 export class ObjectMonad {
 	constructor(object) {
 		this.$object = object
@@ -63,25 +62,25 @@ export class ObjectMonad {
 	join() {
 		// 재귀적으로 객체를 탐색하며 ObjectMonad를 푸는 내부 함수
 		const deepUnwrap = (obj) => {
-			const newObject = {};
+			const newObject = {}
 			for (const [key, value] of Object.entries(obj)) {
 				if (value instanceof ObjectMonad) {
 					// ObjectMonad 인스턴스면 내부 객체($object)에 대해 재귀적으로 호출하여 값을 얻음
-					newObject[key] = deepUnwrap(value.$object);
+					newObject[key] = deepUnwrap(value.$object)
 				} else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
 					// 일반 객체(ObjectMonad가 아니고, null/배열이 아닌)면 재귀적으로 호출
-					newObject[key] = deepUnwrap(value);
+					newObject[key] = deepUnwrap(value)
 				} else {
 					// 그 외의 경우 (primitive 값, 배열 등)는 그대로 유지
-					newObject[key] = value;
+					newObject[key] = value
 				}
 			}
-			return newObject;
-		};
+			return newObject
+		}
 
 		// 현재 ObjectMonad의 내부 객체($object)에 대해 deepUnwrap을 호출하고
 		// 결과를 새 ObjectMonad로 감싸서 반환
-		return ObjectMonad.of(deepUnwrap(this.$object));
+		return ObjectMonad.of(deepUnwrap(this.$object))
 	}
 
 	map(valueCallback = R.identity, keyCallback = R.identity) {
@@ -140,7 +139,6 @@ export class ListMonad {
 		)
 	}
 }
-
 
 export class Identity {
 	constructor(x) {

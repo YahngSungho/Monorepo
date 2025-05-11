@@ -7,13 +7,20 @@ import { R } from '../library-wrappers/R.js'
 import { getAbsolutePath } from './sync.js'
 
 /**
+ * @typedef {object} FileDetail
+ * @property {string} fileName - 파일 이름
+ * @property {string} value - 파일 내용
+ * @property {string} path - 파일의 전체 경로
+ */
+
+/**
  * 지정된 상대 경로 폴더 및 그 하위 폴더에서 glob 패턴과 일치하는 모든 파일의
  * 이름, 내용, 상대 경로를 재귀적으로 찾아 객체로 반환합니다. (내장 glob 사용)
  *
  * @param {string} absoluteFolderPath - 검색을 시작할 기준 폴더의 절대 경로.
  * @param {string} globPattern - 검색할 파일 패턴. \*\*\/ 로 시작해야 재귀적으로 탐색함
- * @returns {Promise<Array<{ fileName: string, value: string, path: string }>>}
- *          각 요소가 { fileName: 파일 이름, value: 파일 내용, path: 파일의 전체 경로 } 객체인 배열을 담은 Promise.
+ * @returns {Promise<Array<FileDetail>>}
+ *          각 요소가 FileDetail 객체인 배열을 담은 Promise.
  *          오류 발생 시 에러를 던집니다.
  * @throws {Error} glob 검색 또는 파일 읽기 중 오류 발생 시 에러를 던집니다.
  *
@@ -140,13 +147,18 @@ export async function readFilesToStrings(absoluteFolderPath, globPattern = '*') 
 }
 
 /**
+ * @typedef {{[filename: string]: any}} ParsedJsonObjectMap
+ *          파일 이름을 키로, 파싱된 JSON 객체 (any 타입)를 값으로 갖는 객체
+ */
+
+/**
  * 지정된 폴더 내의 모든 JSON 파일('.json')을 읽어
  * 파일 이름을 키로, 파싱된 JSON 객체를 값으로 하는 객체를 반환합니다.
  * 하위 폴더는 탐색하지 않습니다.
  *
  * @param {string} absoluteFolderPath - JSON 파일들을 읽어올 대상 폴더의 절대 경로.
- * @returns {Promise<{[filename: string]: any}>}
- *          파일 이름을 키로, 파싱된 JSON 객체를 값으로 갖는 객체를 담은 Promise.
+ * @returns {Promise<ParsedJsonObjectMap>}
+ *          ParsedJsonObjectMap 객체를 담은 Promise.
  * @throws {Error} 파일 읽기 또는 JSON 파싱 중 오류 발생 시 에러를 던집니다.
  */
 export async function readFilesToObjects(absoluteFolderPath) {
