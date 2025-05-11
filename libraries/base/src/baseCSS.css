@@ -214,3 +214,8 @@ blockquote {
 		}
 	}
 }
+
+
+a:visited .iconify-icon {
+	color: var(--purple-6);
+}

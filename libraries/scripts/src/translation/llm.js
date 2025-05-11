@@ -5,6 +5,7 @@ import { R } from '@library/helpers/R'
 import { generateObjectWithRetry_latestModel } from '@library/llms/gemini/generate'
 import { getCacheBySystemInstructions_latestModel } from 	'@library/llms/gemini/getCache'
 import { z } from 'zod'
+import { getLanguageName } from './getLanguageName.js'
 
 
 const readPrompt = readFileFromRelativePath(import.meta.url)
@@ -22,7 +23,7 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 			${JSON.stringify(targetMessages)}
 		</TARGET MESSAGES>
 		<TARGET LANGUAGE>
-			${JSON.stringify(language)}
+			${JSON.stringify(getLanguageName(language))}
 		</TARGET LANGUAGE>
 		<OLDER MESSAGES>
 			${JSON.stringify(olderMessages)}
@@ -66,7 +67,7 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 			${JSON.stringify(targetMessages)}
 		</TARGET MESSAGES>
 		<TARGET LANGUAGE>
-			${JSON.stringify(language)}
+			${JSON.stringify(getLanguageName(language))}
 		</TARGET LANGUAGE>
 		<OLDER MESSAGES>
 			${JSON.stringify(olderMessages)}

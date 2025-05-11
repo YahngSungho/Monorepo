@@ -6,23 +6,17 @@
 
 {#snippet iconElement(iconName)}
 	<span class="icon-container" class:noMargin class:right class:small>
-		<iconify-icon icon={iconName}></iconify-icon>
-	</span>
-{/snippet}
-
-{#snippet childrenElement()}
-	<span class="children-container">
-		{@render children?.()}
+		<iconify-icon class="iconify-icon" icon={iconName}></iconify-icon>
 	</span>
 {/snippet}
 
 <span class="with-icon" {...restProps}>
 	{#if right}
-		{@render childrenElement()}
+		{@render children?.()}
 		{@render iconElement(icon)}
 	{:else}
 		{@render iconElement(icon)}
-		{@render childrenElement()}
+		{@render children?.()}
 	{/if}
 </span>
 
@@ -60,4 +54,5 @@
 		}
 	}
 }
+
 </style>

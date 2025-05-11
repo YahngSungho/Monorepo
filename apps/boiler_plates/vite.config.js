@@ -1,3 +1,4 @@
+// @ts-ignore
 import { currentEnv, defaultConfig } from '@library/base/vite.config.js'
 import { sentrySvelteKit } from '@sentry/sveltekit'
 import { sveltekit } from '@sveltejs/kit/vite'
@@ -13,8 +14,10 @@ const projectName = packageJson.name
 
 export default mergeConfig(
 	defaultConfig,
+	// @ts-ignore
 	defineConfig({
 		plugins: [
+			// @ts-ignore
 			sentrySvelteKit({
 				adapter: 'cloudflare',
 				sourceMapsUploadOptions: {
@@ -29,6 +32,7 @@ export default mergeConfig(
 					},
 				},
 			}),
+			// @ts-ignore
 			sveltekit()
 		],
 	}),

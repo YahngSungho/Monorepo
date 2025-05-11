@@ -47,6 +47,7 @@
 				*   Review the translations produced in Step 3.
 				*   Identify new or significant translated terms.
 				*   Internally create the `newDictionary` object (`{ "source term": "translated term" }`). This will be the `newDictionary` part of the final JSON.
+				*   **CRITICAL: Only add terms that are essential for maintaining translation consistency across future messages. This can include menu names that are referenced in multiple UI texts and require consistent naming. If no such terms are identified, return an empty object (`{}`).**
 
 		5.  **Format and Output Final JSON:**
 				*   Combine `translatedMessages` (from Step 3) and `newDictionary` (from Step 4) into a single JSON object.
@@ -246,14 +247,14 @@
 		```typescript
 		/**
 			_Represents the structured output for the translation task.
-			* THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
+			*THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
 			_/
 		interface TranslationOutput {
 			/**
 				* The translated messages, keyed by the original message number.
-				* Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).
+				*Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).
 				* Values MUST be strings or valid Paraglide variant objects (matching/pluralization).
-				* Example (proactive pluralization applied): "4": { "declarations": ["input itemCount", ...], "match": { "countPlural=one": "1 item", "countPlural=other": "{itemCount} items" } }
+				*Example (proactive pluralization applied): "4": { "declarations": ["input itemCount", ...], "match": { "countPlural=one": "1 item", "countPlural=other": "{itemCount} items" } }
 				*/
 			translatedMessages: { [messageNumber: string]: string | object };
 

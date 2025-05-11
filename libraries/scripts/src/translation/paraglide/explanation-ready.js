@@ -18,6 +18,9 @@ export async function getMissingExplanations() {
 		}
 	}
 
-	await writeFile(missingExplanationsPath, JSON.stringify(missingExplanations, undefined, 2))
+	return missingExplanations
+}
 
+export async function writeMissingExplanations_action(missingExplanations) {
+	await writeFile(missingExplanationsPath, JSON.stringify(missingExplanations, undefined, 2))
 }

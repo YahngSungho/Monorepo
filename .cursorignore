@@ -148,3 +148,16 @@ pnpm-lock.yaml
 **/generated/**
 **/output/**
 **/.svelte-kit/**
+
+**/messsages/**
+!**/messsages/en.json
+!**/messsages/ko.json
+**/messsages-helpers/dicts/**
+apps/**/*.md
+apps/**/*.md
+!apps/**/*prompt.md
+!apps/**/en.md
+!apps/**/ko.md
+apps/**/*.mdx
+!apps/**/en.mdx
+!apps/**/ko.mdx
