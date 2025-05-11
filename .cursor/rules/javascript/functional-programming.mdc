@@ -3,6 +3,7 @@ description:
 globs: *.js,*.ts,*.mjs,*.cjs,*.mts,*.cts,*.svelte,*.svx
 alwaysApply: false
 ---
+
 # Functional Programming Principles & Guidelines
 
 FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES WHENEVER POSSIBLE.
@@ -15,9 +16,9 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
    2. 계산 (= Pure Functions )
    3. 액션 (= Impure Functions, Side Effects)
 
-	 Keep in mind that in this codebase, we call pure code "계산(computation or calculation)" and impure code "액션(action)".
+   Keep in mind that in this codebase, we call pure code "계산(computation or calculation)" and impure code "액션(action)".
 
-2. **Preference Order:** **Data > 계산  > 액션**
+2. **Preference Order:** **Data > 계산 > 액션**
 
    - Whenever possible, implement logic as 계산. Consider if 계산 can be represented as data.
    - Use 액션 only when necessary. Isolate 액션 by extracting as much logic as possible into 계산, minimizing and isolating the code sections with 액션.
@@ -61,7 +62,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
     ```javascript
     import { create } from '@library/helpers/mutative' // Path verification needed
-
+    
     const baseState = { count: 0, items: [] }
     const nextState = create(baseState, (draft) => {
     	draft.count++
@@ -159,10 +160,10 @@ const logUserInfo = R.pipe(
 	// Final step: Handle the outcome. Conditional logic/side effect outside the main transformation pipe.
 	(maybeFormattedName) => {
 		if (maybeFormattedName.type === 'Just') {
-			console.log(`Active user: ${maybeFormattedName.value}`);
+			console.log(`Active user: ${maybeFormattedName.value}`)
 		}
-		return maybeFormattedName;
-	}
+		return maybeFormattedName
+	},
 )
 
 // Example Usage:
@@ -174,18 +175,18 @@ const logUserInfo = R.pipe(
 - **Function Composition:** Use `R.pipe` (left-to-right) from `@library/helpers/R` to build clear, sequential data transformations. Pass the initial data first, followed by focused, single-purpose functions. Avoid embedding complex conditional logic (e.g., `ifElse`, `cond`) or functions with unclear side effects directly within pipes. Handle conditions and side effects primarily before or after the pipe, or by refactoring the flow into separate, clear steps.
 
   ```javascript
-  import { R } from '@library/helpers/R';
-
-  const numbers = [1, 2, 3, 4, 5];
-
+  import { R } from '@library/helpers/R'
+  
+  const numbers = [1, 2, 3, 4, 5]
+  
   // Example: Filter numbers greater than 2, then multiply each by 10
   const processNumbers = R.pipe(
   	numbers, // Initial data
   	R.filter((x) => x > 2), // Function 1 (assuming Rambda-style currying: R.filter(predicate)(data))
-  	R.map((x) => x * 10)     // Function 2 (assuming Rambda-style currying: R.map(fn)(data))
-  );
+  	R.map((x) => x * 10), // Function 2 (assuming Rambda-style currying: R.map(fn)(data))
+  )
   // processNumbers will be [30, 40, 50]
-  console.log(processNumbers);
+  console.log(processNumbers)
   ```
 
 - **Naming:** Use clear names that reveal the function's role. 계산 should indicate the relationship between input and output (e.g., `calculateTotal`, `formatUserName`). Functions with 액션 should indicate what effect they cause (e.g., `saveUser_action`, `logMessage_action`), especially if not immediately obvious from context.

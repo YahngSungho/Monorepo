@@ -10,7 +10,7 @@ export const generateObjectWithRetry = R.curry(async (model, cache, schema, prom
 		model,
 		contents: prompt,
 		cache,
-		})
+	})
 
 	try {
 		const parsedObject = JSON.parse(result)
@@ -18,16 +18,16 @@ export const generateObjectWithRetry = R.curry(async (model, cache, schema, prom
 			schema.parse(parsedObject)
 			return parsedObject // 성공적인 파싱 및 유효성 검사 시에만 반환
 		} catch (validationError) {
-			console.error('스키마 유효성 검사에 실패했습니다:', validationError);
-			console.error('잘못된 객체를 수신했습니다:', parsedObject);
+			console.error('스키마 유효성 검사에 실패했습니다:', validationError)
+			console.error('잘못된 객체를 수신했습니다:', parsedObject)
 			// 유효성 검사 오류 처리 (예: throw, null 반환, 피드백과 함께 재시도)
-			throw new Error('LLM 출력이 스키마 유효성 검사에 실패했습니다.');
+			throw new Error('LLM 출력이 스키마 유효성 검사에 실패했습니다.')
 		}
 	} catch (parseError) {
-		console.error('JSON 파싱에 실패했습니다:', parseError);
-		console.error('수신된 원본 텍스트:', result);
+		console.error('JSON 파싱에 실패했습니다:', parseError)
+		console.error('수신된 원본 텍스트:', result)
 		// 파싱 오류 처리 (예: throw, null 반환, 재시도)
-		throw new Error('LLM 출력이 유효한 JSON이 아니거나 추출할 수 없습니다.');
+		throw new Error('LLM 출력이 유효한 JSON이 아니거나 추출할 수 없습니다.')
 	}
 })
 

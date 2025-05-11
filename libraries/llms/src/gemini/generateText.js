@@ -6,7 +6,7 @@ import { latestModel } from './modelNames.js'
 export const generateText = R.curry(async (model, config, cache, contents) => {
 	const config0 = config || {}
 
-	const result =  await ai.models.generateContent({
+	const result = await ai.models.generateContent({
 		model,
 		contents,
 		config: {
@@ -15,10 +15,11 @@ export const generateText = R.curry(async (model, config, cache, contents) => {
 			responseMimeType: 'application/json',
 			thinkingConfig: {
 				...config0,
-				includeThoughts: true, thinkingBudget: 50_000
+				includeThoughts: true,
+				thinkingBudget: 50_000,
 			},
-		}
-		})
+		},
+	})
 
 	return result.text
 })

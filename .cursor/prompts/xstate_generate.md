@@ -24,7 +24,7 @@
 </Instructions>
 
 <Input_Specification>
-    The primary input will be a single Markdown file containing the user's plan for an XState machine, typically structured using nested lists. This plan will describe the intended states, transitions, context, actions, guards, etc.
+The primary input will be a single Markdown file containing the user's plan for an XState machine, typically structured using nested lists. This plan will describe the intended states, transitions, context, actions, guards, etc.
 </Input_Specification>
 
 <Task>
@@ -33,7 +33,7 @@
 </Task>
 
 <Output_Format>
-    Your response MUST be structured EXACTLY as follows:
+Your response MUST be structured EXACTLY as follows:
 
     1.  **Reasoning and Plan**:
         *   Start with your rephrased understanding of the user's Markdown plan (RaR confirmation).
@@ -51,11 +51,11 @@
                 *   Repeat this lint-check-correct cycle up to **3 times** for the same file.
                 *   If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
         *   **If NO target file is specified**: Provide the generated code in a single, complete, and well-formatted JavaScript code block, prefixed with a filename comment (e.g., `# filename: stateMachine.js`). Ensure the code includes necessary imports, `setup`, `createMachine`, context, states, transitions, actions, guards, JSDoc, and placeholders as per the plan.
+
 </Output_Format>
 
 <Reference_Materials>
-    You MUST base your implementation and adhere strictly to the rules, patterns, and APIs described in the following provided documents:
-    *   `XState.mdc` (Primary source for XState v5 API, concepts, and patterns)
-    *   `javascript.mdc` (Rules for using JSDoc and forbidding TypeScript syntax)
-    *   `functional-programming.mdc` (Guidelines for immutability, pure functions, and side effect management)
+You MUST base your implementation and adhere strictly to the rules, patterns, and APIs described in the following provided documents:
+_`XState.mdc` (Primary source for XState v5 API, concepts, and patterns)
+_ `javascript.mdc` (Rules for using JSDoc and forbidding TypeScript syntax) \* `functional-programming.mdc` (Guidelines for immutability, pure functions, and side effect management)
 </Reference_Materials>

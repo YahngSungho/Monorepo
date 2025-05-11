@@ -35,7 +35,7 @@
 </Instructions>
 
 <Testing_Principles_To_Follow>
-    You MUST adhere STRICTLY to the following principles:
+You MUST adhere STRICTLY to the following principles:
 
     1.  **Test Behavior, NOT Implementation Details & EXTREME MOCK MINIMIZATION**:
         *   FOCUS on testing the public API and observable outcomes, integrating with real dependencies.
@@ -116,10 +116,10 @@
 </Testing_Principles_To_Follow>
 
 <Example_Test_Snippets>
-    <!-- Examples require significant overhaul to reflect minimal mocking. -->
-    <!-- Placeholder for revised examples demonstrating minimal mocking with XState. -->
-    <!-- New examples should show testing with real actions/actors first, -->
-    <!-- then show necessary mocking for external systems or non-determinism. -->
+<!-- Examples require significant overhaul to reflect minimal mocking. -->
+<!-- Placeholder for revised examples demonstrating minimal mocking with XState. -->
+<!-- New examples should show testing with real actions/actors first, -->
+<!-- then show necessary mocking for external systems or non-determinism. -->
 
     **Example 1: Testing Basic Transitions and Context (No Mocks)**
     ```javascript
@@ -365,10 +365,11 @@
       });
     });
     ```
+
 </Example_Test_Snippets>
 
 <Output_Format>
-    Your response MUST be structured as follows:
+Your response MUST be structured as follows:
 
     1.  **Machine Understanding**:
         *   Start with your restatement of the input machine's functionality, states, events, context, and actors/invokes **in KOREAN**.

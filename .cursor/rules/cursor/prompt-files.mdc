@@ -4,4 +4,4 @@ globs: .cursor/**,*prompt*
 alwaysApply: false
 ---
 
-The prompts for LLMs should all be written in English, because  English is the most effective language for LLM. **This requirement overrides any general instructions requesting non-code text (like comments or replies) in Korean.**
+The prompts for LLMs should all be written in English, because English is the most effective language for LLM. **This requirement overrides any general instructions requesting non-code text (like comments or replies) in Korean.**

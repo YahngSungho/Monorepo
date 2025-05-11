@@ -6,7 +6,7 @@
 	"compilerOptions": {
 		"paths": {
 			"$shadcn": ["../../libraries/ui/src/shadcn"]
-		},
+		}
 	},
 	"exclude": [
 		".turbo/**",
