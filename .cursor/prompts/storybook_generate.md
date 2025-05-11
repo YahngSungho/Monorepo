@@ -23,6 +23,7 @@
 				- ERROR HANDLING CASES (if the component has explicit error states or handling logic)
 				- STRESS TEST CASES (interpret this as stories using large amounts of data, deeply nested structures, or very long strings for props where applicable)
 		- **Framework:** Use the Svelte CSF format provided by `@storybook/addon-svelte-csf`. This involves using `defineMeta` in `<script module>` and the `<Story>` component for each story definition.
+		- **Interaction Tests:** DO NOT write any interaction tests using the `play` function. Stories should focus on rendering the component in different states via `args`.
 		- **Clarity:** Story names MUST **be in KOREAN** and clearly indicate the scenario they represent (e.g., `name="비활성화_상태"`). **All** other non-code text (comments, analysis steps, etc.) MUST also **be in KOREAN**.
 </Constraints>
 
@@ -115,7 +116,7 @@
 <Output_Format>
 Your final output MUST be structured as follows: 1. Your detailed step-by-step analysis (Component Analysis, Scenario Brainstorming, Implementation Strategy) **written in KOREAN**. 2. **If a target file path (e.g., `MyComponent.stories.svelte`) is provided**:
 _Plan and execute the `edit_file` tool call to write the complete story file content.
-_ **Linting and Correction**: After `edit_file` attempts to apply the changes, check for lint errors.
+_**Linting and Correction**: After `edit_file` attempts to apply the changes, check for lint errors.
 _If errors exist, attempt to fix them in the code and use `edit_file` again.
-_ Repeat lint-check-correct up to **3 times**. \* If errors persist, report them and stop. 3. **If NO target file path is provided**: Output the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with a suggested filename comment (e.g., `// ComponentName.stories.svelte`).
+_Repeat lint-check-correct up to **3 times**. \* If errors persist, report them and stop. 3. **If NO target file path is provided**: Output the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with a suggested filename comment (e.g., `// ComponentName.stories.svelte`).
 </Output_Format>
