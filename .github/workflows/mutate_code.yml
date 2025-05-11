@@ -260,6 +260,8 @@ jobs:
       # 5. 번역 실행
       - name: Run Translation
         run: pnpm run translate
+        env:
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
       # 6. 번역 변경사항 패치 생성 (임시 커밋 기준)
       - name: Check for Translation changes and create patch
