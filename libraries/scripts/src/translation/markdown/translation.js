@@ -181,7 +181,6 @@ export async function getTranslatedLanguageMap(
 	combinedMessages_cached,
 	getTranslatedMessages,
 ) {
-	console.log('💬 messageMap:', messageMap)
 	// 순수 함수: 초기 상태 계산
 	const { combinedMessages_latest, targetLanguageMap } =
 		calculateInitialTranslationStateByBaseLanguages(
@@ -192,6 +191,7 @@ export async function getTranslatedLanguageMap(
 		)
 
 		return await R.mapObjectParallel(async (languageMessage, language) => {
+			console.log('💬 R.mapObjectParallel language:', language)
 			if (languageMessage.missingMessageKeys.length === 0) {
 				return languageMessage
 			}
