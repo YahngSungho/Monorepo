@@ -5,10 +5,8 @@ import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
-import { getLanguageName } from './getLanguageName.js'
-
+const settingPath = getAbsolutePath(import.meta.url, '../../../paraglide/project.inlang/settings.json')
 export function getInitialLanguageMap () {
-	const settingPath = getAbsolutePath(import.meta.url, '../../../paraglide/project.inlang/settings.json')
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
 	const result = {}
@@ -112,7 +110,7 @@ export function prepareTranslationPayload(languageMessageObject, combinedMessage
 		generateKeyNumberFunctions(combinedMessages_target)
 
 	const olderMessages = []
-	for (const olderMessage of R.take(20)(Object.values(
+	for (const olderMessage of R.take(10)(Object.values(
 		R.omit(languageMessageObject.missingMessageKeys)(languageMessageObject.value),
 	))) {
 		olderMessages.push(olderMessage)

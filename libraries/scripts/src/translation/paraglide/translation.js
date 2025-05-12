@@ -37,6 +37,7 @@ export async function getFiles() {
 	const dictFiles = await readFilesToObjects(dictFolderPath)
 
 	for (const language of Object.keys(languageMessageMap)) {
+		console.log('💬 getFiles language:', language)
 		languageMessageMap[language] = messageFiles[`${language}.json`] ? R.omit(['$schema'])(messageFiles[`${language}.json`]) : {}
 	}
 
@@ -166,7 +167,10 @@ export async function saveFiles (translatedLanguageMap, explanations, languageMe
 			continue
 		}
 
-		await writeFile_async(path.join(messageFolderPath, `${language}.json`), JSON.stringify(languageMessage.newMessages, undefined, 2))
+		await writeFile_async(path.join(messageFolderPath, `${language}.json`), JSON.stringify({
+			"$schema": "https://inlang.com/schema/inlang-message-format",
+			...languageMessage.newMessages,
+		}, undefined, 2))
 
 		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify(languageMessage.newDictionary, undefined, 2))
 	}
