@@ -191,7 +191,6 @@ export async function getTranslatedLanguageMap(
 		)
 
 		return await R.mapObjectParallel(async (languageMessage, language) => {
-			console.log('💬 R.mapObjectParallel language:', language)
 			if (languageMessage.missingMessageKeys.length === 0) {
 				return languageMessage
 			}

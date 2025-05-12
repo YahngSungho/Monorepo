@@ -106,7 +106,6 @@ const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslati
 	const combinedMessages_latest_withEn = combineEnglishTranslation(combinedMessages_latest, englishMessageObject_translated)
 
 	return await R.mapObjectParallel(async (languageMessage, language) => {
-				console.log('💬 R.mapObjectParallel language:', language)
 				if (language === 'en') {
 					return englishMessageObject_translated
 				}
