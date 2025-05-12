@@ -60,8 +60,9 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 
 	count1++
 	console.log('💬 count:', count1)
-	console.log('💬 constgenerateTranslation_paraglide= target:', target)
+	console.log('💬 language:', getLanguageName(language))
 	const object = await generateObjectWithRetry_latestModel(cacheForParaglide, schema, target)
+	console.log('💬 Done:', count1)
 	return object
 }
 
@@ -98,8 +99,9 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 
 	count2++
 	console.log('💬 count:', count2)
-	console.log('💬 constgenerateTranslation_markdown= target:', target)
+	console.log('💬 language:', getLanguageName(language))
 	const object = await generateObjectWithRetry_latestModel(cacheForMarkdown, schema, target)
+	console.log('💬 Done:', count2)
 
 
 	return object
