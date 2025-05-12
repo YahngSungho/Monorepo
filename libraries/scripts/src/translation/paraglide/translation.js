@@ -30,13 +30,14 @@ const helperFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide
 const dictFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/dicts/')
 
 export async function getFiles() {
-	const languageMessageMap = getInitialLanguageMap()
+	const initialLanguageMessageMap = getInitialLanguageMap()
 
 	const messageFiles = await readFilesToObjects(messageFolderPath)
 	const helperFiles = await readFilesToObjects(helperFolderPath)
 	const dictFiles = await readFilesToObjects(dictFolderPath)
 
-	for (const language of Object.keys(languageMessageMap)) {
+	const languageMessageMap = {}
+	for (const language of Object.keys(initialLanguageMessageMap)) {
 		console.log('💬 getFiles language:', language)
 		languageMessageMap[language] = messageFiles[`${language}.json`] ? R.omit(['$schema'])(messageFiles[`${language}.json`]) : {}
 	}
@@ -46,7 +47,7 @@ export async function getFiles() {
 
 	const dictPerLanguage = {}
 	for (const language of Object.keys(languageMessageMap)) {
-		dictPerLanguage[language] = dictFiles[`${language}.json`] || {}
+		dictPerLanguage[language] = dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
 	}
 
 	return { languageMessageMap, dictPerLanguage, explanations, cache }
@@ -172,7 +173,10 @@ export async function saveFiles (translatedLanguageMap, explanations, languageMe
 			...languageMessage.newMessages,
 		}, undefined, 2))
 
-		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify(languageMessage.newDictionary, undefined, 2))
+		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify({
+			"$schema": "https://inlang.com/schema/inlang-message-format",
+			...languageMessage.newDictionary,
+		}, undefined, 2))
 	}
 
 	const newCache = getNewCache({ ko: languageMessageMap_ko }, explanations)

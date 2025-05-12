@@ -56,7 +56,7 @@ export async function getFiles (rootAbsolutePath, helperFolderPath) {
 
 	const dictPerLanguage = {}
 	for (const language of Object.keys(languageMessageMap)) {
-		dictPerLanguage[language] = dictFiles[`${language}.json`] || {}
+		dictPerLanguage[language] = dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
 	}
 
 	return { initialMarkdownFiles: markdownFiles, dictPerLanguage, cache }
@@ -129,8 +129,7 @@ export async function getFiles (rootAbsolutePath, helperFolderPath) {
 // 	}
 
 export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
-	const initialLanguageMessageMap = getInitialLanguageMap()
-	const languageMessageMap = { ...initialLanguageMessageMap }
+	const languageMessageMap = { ...(getInitialLanguageMap()) }
 
 	const explanations = {}
 	for (const fileObject of initialMarkdownFiles) {
@@ -182,6 +181,7 @@ export async function getTranslatedLanguageMap(
 	combinedMessages_cached,
 	getTranslatedMessages,
 ) {
+	console.log('💬 messageMap:', messageMap)
 	// 순수 함수: 초기 상태 계산
 	const { combinedMessages_latest, targetLanguageMap } =
 		calculateInitialTranslationStateByBaseLanguages(
@@ -240,7 +240,10 @@ export async function saveFiles (rootAbsolutePath, helperFolderPath, translatedL
 			await writeFile_async(filePath, messageValue)
 		}
 
-		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify(messageMap.newDictionary, undefined, 2))
+		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify({
+			"$schema": "https://inlang.com/schema/inlang-message-format",
+			...messageMap.newDictionary,
+		}, undefined, 2))
 	}
 
 	const newCache = getNewCache({ ko: languageMessageMap_ko, en: languageMessageMap_en }, explanations)
