@@ -623,7 +623,7 @@ jobs:
           path: changes.patch
 
   push-and-labeled:
-    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown, update-translation]
+    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown-json, update-translation]
     if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
 
