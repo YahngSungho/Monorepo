@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.filter.outputs.images }}
-      markdown: ${{ steps.filter.outputs.markdown }}
+      markdown-json: ${{ steps.filter.outputs.markdown-json }}
       package-json: ${{ steps.filter.outputs.package-json }}
       projects: ${{ steps.filter.outputs.projects }}
       translation-targets: ${{ steps.filter.outputs.translation-targets }}
@@ -106,9 +106,22 @@ jobs:
               - '**.jpeg'
               - '**.png'
               - '**.webp'
-            markdown:
+              - '**.tiff'
+              - '**.magick'
+              - '**.openslide'
+              - '**.dz'
+              - '**.ppm'
+              - '**.fits'
+              - '**.gif'
+              - '**.svg'
+              - '**.heif'
+              - '**.pdf'
+              - '**.vips'
+              - '**.raw'
+            markdown-json:
               - '**/*.md'
               - '**/*.mdx'
+              - '**/*.json'
             translation-targets:
               - 'apps/**/*.md'
               - 'apps/**/*.mdx'
@@ -286,11 +299,11 @@ jobs:
           name: translation-changes-patch
           path: translation-changes.patch
 
-  fix-markdown:
+  fix-markdown-json:
     runs-on: ubuntu-latest
     needs: [path-filter, fix-package-json, update-translation]
     if: |
-      needs.path-filter.outputs.markdown == 'true' && !failure() && !cancelled()
+      needs.path-filter.outputs.markdown-json == 'true' && !failure() && !cancelled()
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -428,16 +441,16 @@ jobs:
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치) - 중복 제거
       # 의존성 설치 최적화 - 중복 제거
 
-      - name: Lint Fix Markdown Files (eslint-md)
-        run: pnpm run eslint-md
+      - name: Lint Fix Markdown Files (eslint-md-json)
+        run: pnpm run eslint-md-json
         continue-on-error: true # ESLint 오류 시 워크플로우 중단 방지 (선택 사항)
 
-      - name: Stylelint Fix Markdown Files (stylelint-md)
-        run: pnpm run stylelint-md
+      - name: Stylelint Fix Markdown Files (stylelint-md-json)
+        run: pnpm run stylelint-md-json
         continue-on-error: true # Stylelint 오류 시 워크플로우 중단 방지 (선택 사항)
 
       - name: Format Markdown (prettier)
-        run: pnpm run format-md
+        run: pnpm run format-md-json
 
       # 8. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
       - name: Check for Markdown changes and create patch
