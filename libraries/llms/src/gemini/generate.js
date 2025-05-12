@@ -6,7 +6,7 @@ import { latestModel } from './modelNames.js'
 
 // 어떻게든 Cache를 사용할 수 있게 만들기 위해서 object 검증은 여기서 수동으로 한다
 export const generateObjectWithRetry = R.curry(async (model, cache, schema, prompt) => {
-	const result = await generateWithRetry_atQuotaLimit(generateText, 4, 120, {
+	const result = await generateWithRetry_atQuotaLimit(generateText, 4, 60, {
 		model,
 		contents: prompt,
 		cache,

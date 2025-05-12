@@ -5,6 +5,7 @@ import { R } from '@library/helpers/R'
 import { generateObjectWithRetry_latestModel } from '@library/llms/gemini/generate'
 import { getCacheBySystemInstructions_latestModel } from 	'@library/llms/gemini/getCache'
 import { z } from 'zod'
+
 import { getLanguageName } from './getLanguageName.js'
 
 
@@ -16,6 +17,7 @@ const promptForMarkdown = await readPrompt('./markdown/prompt.md')
 const cacheForParaglide = await getCacheBySystemInstructions_latestModel(undefined, promptForParaglide)
 const cacheForMarkdown = await getCacheBySystemInstructions_latestModel(undefined, promptForMarkdown)
 
+let count1 = 0
 export const generateTranslation_paraglide = async (language, targetMessages, olderMessages, dictionary) => {
 	const target = `
 	<REQUEST>
@@ -56,10 +58,14 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
+	count1++
+	console.log('💬 count:', count1)
+	console.log('💬 constgenerateTranslation_paraglide= target:', target)
 	const object = await generateObjectWithRetry_latestModel(cacheForParaglide, schema, target)
 	return object
 }
 
+let count2 = 0
 export const generateTranslation_markdown = async (language, targetMessages, olderMessages, dictionary) => {
 	const target = `
 	<REQUEST>
@@ -90,7 +96,11 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
+	count2++
+	console.log('💬 count:', count2)
+	console.log('💬 constgenerateTranslation_markdown= target:', target)
 	const object = await generateObjectWithRetry_latestModel(cacheForMarkdown, schema, target)
+
 
 	return object
 }
