@@ -21,7 +21,7 @@ jobs:
         !contains(github.event.pull_request.labels.*.name, 'mutation-finished') &&
         !contains(github.event.head_commit.message, '[automated-mutation]'))
     steps:
-      - name: Attempt to Cancel Auto Merge if Enabled
+      - name: 자동 병합 활성화 시 취소 시도
         uses: actions/github-script@v7
         with:
           script: |
@@ -64,7 +64,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Remove Label
+      - name: 라벨 제거
         if: github.event.label.name == 'restart'
         uses: actions/github-script@v6
         with:
@@ -136,7 +136,7 @@ jobs:
     needs: path-filter
     if: needs.path-filter.outputs.package-json == 'true'
     steps:
-      - name: Checkout Repository
+      - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
@@ -144,26 +144,26 @@ jobs:
           fetch-depth: 0
 
       # pnpm 설치 (packageManager 버전과 일치)
-      - name: Setup pnpm
+      - name: pnpm 설정
         uses: pnpm/action-setup@v4
         with:
           run_install: false
 
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
-      - name: Setup Node.js
+      - name: Node.js 설정
         uses: actions/setup-node@v4
         with:
           node-version-file: package.json
           cache: pnpm
 
       # 의존성 설치 최적화
-      - name: Install dependencies 1
+      - name: 의존성 설치 1
         run: pnpm install --no-frozen-lockfile
 
-      - name: Fix Mismatches Versions
+      - name: 버전 불일치 수정
         run: pnpm run fix-mismatches
 
-      - name: Check for Package.json changes 1
+      - name: Package.json 변경사항 확인 1
         id: check_package_json_changes
         run: |
           if git diff --quiet; then
@@ -174,14 +174,14 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Install dependencies 2
+      - name: 의존성 설치 2
         if: steps.check_package_json_changes.outputs.has_changes == 'true'
         run: pnpm install --no-frozen-lockfile
 
-      - name: Check for Package.json changes 2 & Save .patch file
+      - name: Package.json 변경사항 확인 2 & .patch 파일 저장
         run: git diff > package-json-changes.patch
 
-      - name: Upload patch artifact
+      - name: 패치 아티팩트 업로드
         if: steps.check_package_json_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
@@ -194,7 +194,7 @@ jobs:
     if: |
       needs.path-filter.outputs.translation-targets == 'true' && !failure() && !cancelled()
     steps:
-      - name: Checkout Repository
+      - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
@@ -202,7 +202,7 @@ jobs:
           fetch-depth: 0
 
       # 1. package-json 패치 다운로드
-      - name: Check if package-json patch exists
+      - name: package-json 패치 존재 여부 확인
         id: check_package_json_patch
         uses: actions/github-script@v6
         with:
@@ -217,7 +217,7 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download package-json patch artifact
+      - name: package-json 패치 아티팩트 다운로드
         if: steps.check_package_json_patch.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
@@ -225,7 +225,7 @@ jobs:
           path: .
 
       # 2. package-json 패치 적용
-      - name: Apply package-json patch
+      - name: package-json 패치 적용
         if: steps.check_package_json_patch.outputs.result == 'true'
         run: |
           if [ -f package-json-changes.patch ]; then
@@ -245,79 +245,88 @@ jobs:
           fi
 
       # 3. pnpm 설치 및 의존성 설치 (패치 적용 후)
-      - name: Setup pnpm
+      - name: pnpm 설정
         uses: pnpm/action-setup@v4
         with:
           run_install: false
-      - name: Setup Node.js
+      - name: Node.js 설정
         uses: actions/setup-node@v4
         with:
           node-version-file: package.json
           cache: pnpm
-      - name: Install dependencies
+      - name: 의존성 설치
         run: pnpm install --prefer-offline # 패치 적용된 package.json/lock 기준
 
       # 4. 임시 커밋 생성 (패치 + 설치 후 상태 기준)
-      - name: Create temporary commit for diff base
+      - name: diff 비교를 위한 임시 커밋 생성
         run: |
-          echo "--- Creating temporary commit ---"
+          echo "--- 임시 커밋 생성 중 (번역 전) ---"
           git config user.name "GitHub Actions Temp"
           git config user.email "actions-temp@github.com"
-          echo "Status before temporary commit 'git add .':"
+          echo "임시 커밋 'git add .' 실행 전 상태:"
           git status --short
           git add . # 모든 변경사항 스테이징 (패치 적용 + install 결과 포함)
-          echo "Status after temporary commit 'git add .' and before 'git commit':"
+          echo "임시 커밋 'git add .' 실행 후, 'git commit' 실행 전 상태:"
           git status --short
-          echo "Diff of staged changes for temporary commit:"
+          echo "임시 커밋을 위한 스테이징된 변경사항 diff 통계:"
           git diff --staged --stat # 스테이징된 내용 확인
           if ! git diff --staged --quiet; then
             git commit -m "Temporary commit after applying package-json patch and install"
-            echo "Temporary commit created. HEAD is now at $(git rev-parse HEAD)"
+            echo "임시 커밋이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
-            echo "No changes to commit temporarily before translation."
+            echo "번역 전 임시로 커밋할 변경사항이 없습니다."
           fi
-          echo "--- Finished temporary commit ---"
+          echo "--- 임시 커밋 완료 ---"
 
       # 5. 번역 실행
-      - name: Run Translation
+      - name: 번역 실행
         run: |
-          echo "--- Running Translation (pnpm run translate) ---"
+          echo "--- 번역 실행 중 (pnpm run translate) ---"
           pnpm run translate
-          echo "--- Finished Translation ---"
-          echo "Status after 'pnpm run translate' (before creating patch):"
+          echo "--- 번역 완료 ---"
+          echo "'pnpm run translate' 실행 후 상태 (패치 생성 전):"
           git status --short # 번역 실행 직후 상태 확인 (새 파일이 untracked로 보여야 함)
-          echo "List all files (for debugging new file creation):"
+          echo "모든 파일 목록 (새 파일 생성 디버깅용):"
           find . -type f -ls # 모든 파일 목록과 상세 정보 출력 (특히 번역 결과물이 생성될 것으로 예상되는 경로 확인)
         env:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
       # 6. 번역 변경사항 패치 생성 (임시 커밋 기준)
-      - name: Check for Translation changes and create patch
+      - name: 번역 변경사항 확인 및 패치 생성
         id: check_translation_changes
         run: |
-          echo "--- Creating translation patch against HEAD ($(git rev-parse HEAD)) ---"
-          echo "Running 'git status --short' before diff to see current state:"
-          git status --short # diff 직전 상태 재확인
-          echo "Running 'git diff --stat HEAD' to see changes:"
-          git diff --stat HEAD # 어떤 파일이 변경으로 감지되는지 통계 보기
+          echo "--- HEAD ($(git rev-parse HEAD)) 기준으로 번역 패치 생성 중 ---"
+          echo "현재 상태 (번역으로 인한 untracked 파일 포함):"
+          git status --short
 
-          # '--exit-code'를 사용하여 스크립트에서 변경 유무를 더 안정적으로 확인
-          if ! git diff --quiet HEAD --exit-code; then
-            echo "Translation 변경사항이 있습니다."
+          # 새로 생성된 파일(untracked files)을 포함하여 모든 변경 사항을 스테이징합니다.
+          # 이것이 핵심 변경 사항입니다.
+          echo "모든 변경사항 (untracked 파일 포함) 스테이징 영역에 추가 중..."
+          git add -A # 또는 git add . (모든 변경사항 및 새 파일 추가)
+
+          echo "'git add -A' 실행 후 상태:"
+          git status --short # 스테이징 후 상태 확인
+
+          # 이제 스테이징된 변경사항을 기준으로 diff를 생성합니다.
+          # HEAD는 "Temporary commit after applying package-json patch and install" 커밋을 가리킵니다.
+          # 따라서 이 diff는 번역 작업으로 인해 발생한 변경사항(새 파일 추가 포함)만을 포함하게 됩니다.
+          echo "임시 커밋(HEAD) 대비 스테이징된 변경사항 diff 통계 실행 중:"
+          git diff --stat --staged HEAD # 스테이징된 변경사항과 임시 커밋(HEAD) 비교
+
+          if ! git diff --quiet --staged HEAD --exit-code; then # 스테이징된 변경사항과 임시 커밋(HEAD) 비교
+            echo "번역 변경사항이 있습니다 (새 파일 포함)."
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            # cache.json 파일의 변경이 너무 클 경우, 다음 라인의 주석을 해제하여 cache.json을 제외하고 패치를 생성해볼 수 있습니다.
-            # git diff HEAD -- . ':!*.cache.json' > translation-changes.patch
-            git diff HEAD > translation-changes.patch # 임시 커밋과의 차이 저장
-            echo "translation-changes.patch content:"
+            git diff --staged HEAD > translation-changes.patch # 스테이징된 변경사항을 패치로 저장
+            echo "translation-changes.patch 내용:"
             cat translation-changes.patch # 생성된 패치 내용 출력
           else
-            echo "Translation 변경사항이 없습니다."
+            echo "번역 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
-          echo "--- Finished creating translation patch ---"
+          echo "--- 번역 패치 생성 완료 ---"
 
       # 7. 번역 패치 업로드
-      - name: Upload translation patch artifact
+      - name: 번역 패치 아티팩트 업로드
         if: steps.check_translation_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
@@ -330,7 +339,7 @@ jobs:
     if: |
       needs.path-filter.outputs.markdown-json == 'true' && !failure() && !cancelled()
     steps:
-      - name: Checkout Repository
+      - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
@@ -338,8 +347,8 @@ jobs:
           fetch-depth: 0
 
       # 1. package-json 패치 다운로드
-      - name: Check if package-json patch exists
-        id: check_package_json_patch
+      - name: package-json 패치 존재 여부 확인
+        id: check_package_json_patch_fix_md
         uses: actions/github-script@v6
         with:
           script: |
@@ -353,26 +362,23 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download package-json patch artifact
-        if: steps.check_package_json_patch.outputs.result == 'true'
+      - name: package-json 패치 아티팩트 다운로드
+        if: steps.check_package_json_patch_fix_md.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: package-json-changes-patch
           path: .
 
       # 2. package-json 패치 적용
-      - name: Apply package-json patch
-        if: steps.check_package_json_patch.outputs.result == 'true'
+      - name: package-json 패치 적용
+        if: steps.check_package_json_patch_fix_md.outputs.result == 'true'
         run: |
           if [ -f package-json-changes.patch ]; then
             echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
-            # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check package-json-changes.patch; then
               echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
-              # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
-            # 실제 패치 적용
             git apply package-json-changes.patch
             echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
             rm package-json-changes.patch
@@ -380,10 +386,9 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-
       # 3. translation patch 다운로드
-      - name: Check if translation patch exists
-        id: check_translation_patch
+      - name: 번역 패치 존재 여부 확인
+        id: check_translation_patch_fix_md
         uses: actions/github-script@v6
         with:
           script: |
@@ -397,26 +402,23 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download translation patch artifact
-        if: steps.check_translation_patch.outputs.result == 'true'
+      - name: 번역 패치 아티팩트 다운로드
+        if: steps.check_translation_patch_fix_md.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: translation-changes-patch
           path: .
 
       # 4. translation patch 적용
-      - name: Apply translation patch
-        if: steps.check_translation_patch.outputs.result == 'true'
+      - name: 번역 패치 적용
+        if: steps.check_translation_patch_fix_md.outputs.result == 'true'
         run: |
           if [ -f translation-changes.patch ]; then
             echo "번역 변경사항 패치를 적용합니다..."
-            # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check translation-changes.patch; then
               echo "::error::translation-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
-              # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
-            # 실제 패치 적용
             git apply translation-changes.patch
             echo "번역 패치가 성공적으로 적용되었습니다."
             rm translation-changes.patch
@@ -425,32 +427,35 @@ jobs:
           fi
 
       # 5. pnpm 설치 및 의존성 설치 (패치 적용 후)
-      - name: Setup pnpm
+      - name: pnpm 설정
         uses: pnpm/action-setup@v4
         with:
           run_install: false
-      - name: Setup Node.js
+      - name: Node.js 설정
         uses: actions/setup-node@v4
         with:
           node-version-file: package.json
           cache: pnpm
-      - name: Install dependencies
+      - name: 의존성 설치
         run: pnpm install --prefer-offline # 패치 적용된 package.json/lock 기준
 
       # 6. 임시 커밋 생성 (패치 + 설치 후 상태 기준)
-      - name: Create temporary commit for diff base
+      - name: diff 비교를 위한 임시 커밋 생성
         run: |
+          echo "--- 임시 커밋 생성 중 (마크다운 수정 전) ---"
           git config user.name "GitHub Actions Temp"
           git config user.email "actions-temp@github.com"
           git add . # 모든 변경사항 스테이징 (패치 적용 + install 결과 포함)
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json patch and install"
+            git commit -m "Temporary commit after applying package-json, translation patches and install"
+            echo "임시 커밋 (마크다운 수정 전)이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
             echo "마크다운 수정 전 임시로 커밋할 변경사항이 없습니다."
           fi
+          echo "--- 임시 커밋 (마크다운 수정 전) 완료 ---"
 
       # 7. 마크다운 수정 도구 실행
-      - name: Fix Markdown (markdownlint)
+      - name: 마크다운 수정 (markdownlint)
         uses: DavidAnson/markdownlint-cli2-action@v19
         with:
           globs: |
@@ -462,38 +467,43 @@ jobs:
           fix: true
         continue-on-error: true
 
-      # pnpm 설치 (packageManager 버전과 일치) - 중복 제거
-      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치) - 중복 제거
-      # 의존성 설치 최적화 - 중복 제거
-
-      - name: Lint Fix Markdown Files (eslint-md-json)
+      - name: 마크다운 파일 Lint 수정 (eslint-md-json)
         run: pnpm run eslint-md-json
         continue-on-error: true # ESLint 오류 시 워크플로우 중단 방지 (선택 사항)
 
-      - name: Stylelint Fix Markdown Files (stylelint-md-json)
+      - name: 마크다운 파일 Stylelint 수정 (stylelint-md-json)
         run: pnpm run stylelint-md-json
         continue-on-error: true # Stylelint 오류 시 워크플로우 중단 방지 (선택 사항)
 
-      - name: Format Markdown (prettier)
+      - name: 마크다운 포맷팅 (prettier)
         run: pnpm run format-md-json
 
       # 8. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
-      - name: Check for Markdown-json changes and create patch
+      - name: 마크다운-json 변경사항 확인 및 패치 생성
         id: check_markdown_json_changes
         run: |
-          # --> 수정: git diff HEAD 사용하여 패치 생성
-          if ! git diff --quiet HEAD; then # HEAD (임시 커밋)와 비교
+          echo "--- HEAD ($(git rev-parse HEAD)) 기준으로 마크다운-json 패치 생성 중 ---"
+          echo "현재 상태 (마크다운 수정 후):"
+          git status --short
+          echo "스테이징 전, 모든 변경사항 (untracked 파일 포함) 추가 중..."
+          git add -A # 마크다운 수정 도구가 새 파일을 만들 수도 있으므로 추가
+          echo "'git add -A' 실행 후 상태:"
+          git status --short
+
+          if ! git diff --quiet --staged HEAD --exit-code; then # 임시 커밋과 비교
             echo "Markdown-json 변경사항이 있습니다."
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            git diff HEAD > markdown-changes.patch # 임시 커밋과의 차이 저장
+            git diff --staged HEAD > markdown-changes.patch # 임시 커밋과의 스테이징된 차이 저장
+            echo "markdown-changes.patch 내용:"
+            cat markdown-changes.patch
           else
             echo "Markdown-json 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            # touch markdown-changes.patch # --> 삭제: 변경사항 없을 시 빈 파일 생성 안 함
           fi
+          echo "--- 마크다운-json 패치 생성 완료 ---"
 
       # 9. 마크다운 패치 업로드
-      - name: Upload markdown patch artifact
+      - name: 마크다운 패치 아티팩트 업로드
         if: steps.check_markdown_json_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
@@ -502,9 +512,7 @@ jobs:
 
   lint-format:
     runs-on: ubuntu-latest
-    # fix-package-json 잡이 완료된 후 실행되도록 명시적 의존성 추가
     needs: [path-filter, fix-package-json, update-translation, fix-markdown-json]
-    # --> 수정: fix-package-json이 성공하거나 스킵되었을 때 실행하도록 조건 변경
     if: |
       needs.path-filter.outputs.projects == 'true' && !failure() && !cancelled()
     env:
@@ -512,7 +520,7 @@ jobs:
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       HUSKY: 0
     steps:
-      - name: Checkout Repository
+      - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
@@ -520,8 +528,8 @@ jobs:
           fetch-depth: 0 # diff를 위해
 
       # 1. package-json 패치 다운로드
-      - name: Check if package-json patch exists
-        id: check_package_json_patch
+      - name: package-json 패치 존재 여부 확인
+        id: check_package_json_patch_lint_format
         uses: actions/github-script@v6
         with:
           script: |
@@ -535,26 +543,23 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download package-json patch artifact
-        if: steps.check_package_json_patch.outputs.result == 'true'
+      - name: package-json 패치 아티팩트 다운로드
+        if: steps.check_package_json_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: package-json-changes-patch
           path: .
 
       # 2. package-json 패치 적용
-      - name: Apply package-json patch
-        if: steps.check_package_json_patch.outputs.result == 'true'
+      - name: package-json 패치 적용
+        if: steps.check_package_json_patch_lint_format.outputs.result == 'true'
         run: |
           if [ -f package-json-changes.patch ]; then
             echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
-            # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check package-json-changes.patch; then
               echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
-              # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
-            # 실제 패치 적용
             git apply package-json-changes.patch
             echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
             rm package-json-changes.patch
@@ -562,10 +567,9 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-
       # 3. translation patch 다운로드
-      - name: Check if translation patch exists
-        id: check_translation_patch
+      - name: 번역 패치 존재 여부 확인
+        id: check_translation_patch_lint_format
         uses: actions/github-script@v6
         with:
           script: |
@@ -579,26 +583,23 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download translation patch artifact
-        if: steps.check_translation_patch.outputs.result == 'true'
+      - name: 번역 패치 아티팩트 다운로드
+        if: steps.check_translation_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: translation-changes-patch
           path: .
 
       # 4. translation patch 적용
-      - name: Apply translation patch
-        if: steps.check_translation_patch.outputs.result == 'true'
+      - name: 번역 패치 적용
+        if: steps.check_translation_patch_lint_format.outputs.result == 'true'
         run: |
           if [ -f translation-changes.patch ]; then
             echo "번역 변경사항 패치를 적용합니다..."
-            # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check translation-changes.patch; then
               echo "::error::translation-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
-              # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
-            # 실제 패치 적용
             git apply translation-changes.patch
             echo "번역 패치가 성공적으로 적용되었습니다."
             rm translation-changes.patch
@@ -607,8 +608,8 @@ jobs:
           fi
 
       # 5. markdown-json patch 다운로드
-      - name: Check if markdown-json patch exists
-        id: check_markdown_json_patch
+      - name: 마크다운-json 패치 존재 여부 확인
+        id: check_markdown_json_patch_lint_format
         uses: actions/github-script@v6
         with:
           script: |
@@ -622,26 +623,23 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download markdown-json patch artifact
-        if: steps.check_markdown_json_patch.outputs.result == 'true'
+      - name: 마크다운-json 패치 아티팩트 다운로드
+        if: steps.check_markdown_json_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: markdown-json-changes-patch
           path: .
 
       # 6. markdown-json patch 적용
-      - name: Apply markdown-json patch
-        if: steps.check_markdown_json_patch.outputs.result == 'true'
+      - name: 마크다운-json 패치 적용
+        if: steps.check_markdown_json_patch_lint_format.outputs.result == 'true'
         run: |
           if [ -f markdown-json-changes.patch ]; then
             echo "markdown-json 변경사항 패치를 적용합니다..."
-            # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check markdown-json-changes.patch; then
               echo "::error::markdown-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
-              # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
-            # 실제 패치 적용
             git apply markdown-json-changes.patch
             echo "markdown-json 패치가 성공적으로 적용되었습니다."
             rm markdown-json-changes.patch
@@ -650,57 +648,68 @@ jobs:
           fi
 
       # Node.js 및 pnpm 설정
-      - name: Setup pnpm
+      - name: pnpm 설정
         uses: pnpm/action-setup@v4
         with:
           run_install: false
-      - name: Setup Node.js
+      - name: Node.js 설정
         uses: actions/setup-node@v4
         with:
           node-version-file: package.json
           cache: pnpm
 
       # 패치 적용 후 의존성 설치 (lint-fix 실행 위해)
-      - name: Install dependencies after patch
-        # 패치가 적용되었거나, 원래 package.json 변경 감지 시 실행 (필요 따라 조건 조정)
+      - name: 패치 적용 후 의존성 설치
         run: pnpm install --prefer-offline
 
       # 임시 커밋 생성 (git diff 기준점 마련)
-      - name: Create temporary commit for diff base
+      - name: diff 비교를 위한 임시 커밋 생성
         run: |
+          echo "--- 임시 커밋 생성 중 (린트/포맷 실행 전) ---"
           git config user.name "GitHub Actions Temp"
           git config user.email "actions-temp@github.com"
           git add . # 모든 변경사항 스테이징
           # 변경사항이 있을 때만 커밋 시도
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json patch"
+            git commit -m "Temporary commit after applying all patches and install (before lint-fix)"
+            echo "임시 커밋 (린트/포맷 실행 전)이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
-            echo "임시로 커밋할 변경사항이 없습니다."
+            echo "임시로 커밋할 변경사항이 없습니다 (린트/포맷 실행 전)."
           fi
+          echo "--- 임시 커밋 (린트/포맷 실행 전) 완료 ---"
 
       # 린트 실행
-      - name: Run Lint & Format
+      - name: 린트 및 포맷 실행
         run: pnpm run lint-fix
 
       # changes.patch 생성 (임시 커밋 기준) 및 변경 유무 출력
-      - name: Create changes.patch based on temporary commit
+      - name: 린트/포맷 변경사항 확인 및 changes.patch 생성
         id: create_changes_patch
         run: |
-          # lint-fix로 변경사항이 생겼는지 확인
-          if ! git diff --quiet HEAD; then # --> 수정: --quiet 뒤에 HEAD 추가 (임시 커밋과 비교)
-            echo "린트 및 포맷팅 후 변경사항 감지됨. Creating changes.patch..."
-            # HEAD (임시 커밋) 와 현재 작업 디렉토리의 차이를 패치 파일로 저장
-            git diff HEAD > changes.patch
-            echo "has_changes=true" >> $GITHUB_OUTPUT # --> 추가: 변경 있음 출력
+          echo "--- HEAD ($(git rev-parse HEAD)) 기준으로 린트/포맷 변경사항 패치 생성 중 ---"
+          echo "현재 상태 (린트/포맷 실행 후):"
+          git status --short
+          echo "스테이징 전, 모든 변경사항 (untracked 파일 포함) 추가 중..."
+          git add -A # 린트/포맷 도구가 새 파일을 만들 수도 있으므로 추가
+          echo "'git add -A' 실행 후 상태:"
+          git status --short
+
+          if ! git diff --quiet --staged HEAD --exit-code; then # 임시 커밋과 비교
+            echo "린트 및 포맷팅 후 변경사항 감지됨. changes.patch 생성 중..."
+            git diff --staged HEAD > changes.patch
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "changes.patch 내용:"
+            cat changes.patch
           else
             echo "린트 및 포맷팅 후 추가 변경사항 없음."
-            # touch changes.patch # --> 삭제: 빈 파일 생성 안 함
-            echo "has_changes=false" >> $GITHUB_OUTPUT # --> 추가: 변경 없음 출력
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
+          echo "--- 린트/포맷 변경사항 패치 생성 완료 ---"
+
       # patch 파일을 artifact로 업로드 (변경사항 있을 때만)
-      - name: Upload changes.patch artifact
+      - name: changes.patch 아티팩트 업로드
         uses: actions/upload-artifact@v4
-        if: steps.create_changes_patch.outputs.has_changes == 'true' # --> 추가: 조건부 실행
+        if: steps.create_changes_patch.outputs.has_changes == 'true'
         with:
           name: changes-patch
           path: changes.patch
@@ -710,21 +719,21 @@ jobs:
     needs: path-filter
     if: needs.path-filter.outputs.images == 'true'
     steps:
-      - name: Checkout Repository
+      - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
-      - name: Compress Images
+      - name: 이미지 압축
         uses: calibreapp/image-actions@main
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
 
       # 추가: 이미지 압축 후 수정사항을 patch 파일로 생성
-      - name: Check for image changes
+      - name: 이미지 변경사항 확인
         id: check_image_changes
         run: |
           if git diff --quiet; then
@@ -737,7 +746,7 @@ jobs:
           fi
 
       # 추가: patch 파일을 artifact로 업로드
-      - name: Upload patch artifact
+      - name: 이미지 패치 아티팩트 업로드
         if: steps.check_image_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
@@ -751,17 +760,15 @@ jobs:
 
     steps:
       # 저장소 체크아웃 단계
-      - name: Checkout Repository
+      - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0 # diff를 위해 전체 히스토리 가져오기
 
-      # 추가: 이전 job에서 생성한 patch artifact를 다운로드
-
-      - name: Check if package-json patch exists
-        id: check_package_json_patch
+      - name: package-json 패치 존재 여부 확인
+        id: check_package_json_patch_push
         uses: actions/github-script@v6
         with:
           script: |
@@ -772,15 +779,15 @@ jobs:
             });
             return !!artifacts.data.artifacts.find(artifact => artifact.name === "package-json-changes-patch");
 
-      - name: Download package-json patch artifact
-        if: steps.check_package_json_patch.outputs.result == 'true'
+      - name: package-json 패치 아티팩트 다운로드
+        if: steps.check_package_json_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: package-json-changes-patch
           path: .
 
-      - name: Check if translation patch exists
-        id: check_translation_patch
+      - name: 번역 패치 존재 여부 확인
+        id: check_translation_patch_push
         uses: actions/github-script@v6
         with:
           script: |
@@ -794,15 +801,15 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download translation patch artifact
-        if: steps.check_translation_patch.outputs.result == 'true'
+      - name: 번역 패치 아티팩트 다운로드
+        if: steps.check_translation_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: translation-changes-patch
           path: .
 
-      - name: Check if markdown-json patch exists
-        id: check_markdown_json_patch
+      - name: 마크다운-json 패치 존재 여부 확인
+        id: check_markdown_json_patch_push
         uses: actions/github-script@v6
         with:
           script: |
@@ -816,15 +823,15 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download markdown-json patch artifact
-        if: steps.check_markdown_json_patch.outputs.result == 'true'
+      - name: 마크다운-json 패치 아티팩트 다운로드
+        if: steps.check_markdown_json_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: markdown-json-changes-patch
           path: .
 
-      - name: Check if changes patch exists
-        id: check_changes_patch
+      - name: changes.patch (린트/포맷) 존재 여부 확인
+        id: check_changes_patch_push
         uses: actions/github-script@v6
         with:
           script: |
@@ -838,15 +845,15 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download patch artifact
-        if: steps.check_changes_patch.outputs.result == 'true'
+      - name: changes.patch (린트/포맷) 아티팩트 다운로드
+        if: steps.check_changes_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: changes-patch
           path: .
 
-      - name: Check if images patch exists
-        id: check_images_patch
+      - name: 이미지 패치 존재 여부 확인
+        id: check_images_patch_push
         uses: actions/github-script@v6
         with:
           script: |
@@ -860,76 +867,71 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: Download images patch artifact
-        if: steps.check_images_patch.outputs.result == 'true'
+      - name: 이미지 패치 아티팩트 다운로드
+        if: steps.check_images_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: images-changes-patch
           path: .
 
       # 추가: 다운로드한 patch 적용
-      - name: Apply patches
+      - name: 패치 적용
         run: |
-          echo "--- Applying Patches ---"
+          echo "--- 패치 적용 시작 ---"
           apply_patch() {
             local patch_file="$1"
             local patch_name="$2"
             if [ -f "$patch_file" ]; then
-              echo "Applying $patch_name patch ($patch_file)..."
-              # 3-way merge 시도, 실패 시 일반 apply 시도
+              echo "$patch_name 패치 ($patch_file) 적용 중..."
               if git apply --3way "$patch_file"; then
-                 echo "$patch_name patch applied successfully with 3-way merge."
+                 echo "$patch_name 패치가 3-way 병합으로 성공적으로 적용되었습니다."
               elif git apply --check "$patch_file"; then
                 git apply "$patch_file"
                 if [ $? -eq 0 ]; then
-                  echo "$patch_name patch applied successfully."
+                  echo "$patch_name 패치가 성공적으로 적용되었습니다."
                 else
-                  echo "::error::Failed to apply $patch_name patch ($patch_file) even after check. Manual conflict resolution might be needed."
-                  # exit 1 # 필요하다면 여기서 워크플로우 중단
+                  echo "::error::$patch_name 패치 ($patch_file) 적용 실패 (확인 후에도). 수동 충돌 해결이 필요할 수 있습니다."
                 fi
               else
-                echo "::warning::$patch_name patch ($patch_file) check failed. There might be conflicts."
-                # git apply --reject "$patch_file" # 충돌 부분 .rej 파일로 남기고 적용 시도
-                # echo "Attempted to apply $patch_name patch with --reject. Check for .rej files."
-                # exit 1 # 필요하다면 여기서 워크플로우 중단
+                echo "::warning::$patch_name 패치 ($patch_file) 확인 실패. 충돌이 있을 수 있습니다."
               fi
-              rm "$patch_file" || echo "Could not remove $patch_file"
-              echo "Current status after applying $patch_name patch:"
-              git status --short # 각 패치 적용 후 상태 확인
+              rm "$patch_file" || echo "$patch_file 삭제 불가"
+              echo "$patch_name 패치 적용 후 현재 상태:"
+              git status --short
             else
-              echo "No $patch_name patch ($patch_file) to apply."
+              echo "적용할 $patch_name 패치 ($patch_file) 없음."
             fi
             echo "------------------------"
           }
 
-          apply_patch "images-changes.patch" "Image compression"
-          apply_patch "package-json-changes.patch" "Package.json formatting"
-          apply_patch "translation-changes.patch" "Translation"
-          apply_patch "markdown-json-changes.patch" "Markdown formatting"
-          apply_patch "changes.patch" "Code formatting"
+          apply_patch "images-changes.patch" "이미지 압축"
+          apply_patch "package-json-changes.patch" "Package.json 포맷팅"
+          apply_patch "translation-changes.patch" "번역"
+          apply_patch "markdown-json-changes.patch" "마크다운 포맷팅"
+          apply_patch "changes.patch" "코드 포맷팅 (린트/스타일)"
 
-          echo "--- Finished Applying Patches ---"
-          echo "Final status after all patches applied (before staging):"
+          echo "--- 모든 패치 적용 완료 ---"
+          echo "모든 패치 적용 후 최종 상태 (스테이징 전):"
           git status --short
-          echo "Detailed diff stat after all patches applied (before staging):"
-          git diff --stat # 실제 변경된 파일 통계 보기
+          echo "모든 패치 적용 후 상세 diff 통계 (스테이징 전):"
+          git diff --stat
 
-      - name: Stage all changes after applying patches
+      - name: 모든 패치 적용 후 변경사항 스테이징
         run: |
-          echo "--- Staging all changes ---"
-          echo "Status before 'git add -A':"
-          git status --short # git add -A 실행 전 상태
+          echo "--- 모든 변경사항 스테이징 중 ---"
+          echo "'git add -A' 실행 전 상태:"
+          git status --short
 
           git add -A
-          echo "Status after 'git add -A':"
-          git status --short # git add -A 실행 후 상태 (이것이 매우 중요!)
+          echo "'git add -A' 실행 후 상태:"
+          git status --short
 
-          echo "Diff of staged changes:"
-          git diff --staged --stat # 스테이징된 변경사항 통계 보기
-          echo "--- Finished Staging ---"
+          echo "스테이징된 변경사항 diff 통계:"
+          git diff --staged --stat
+          echo "--- 스테이징 완료 ---"
 
       # 커밋 시도
-      - name: Commit Changes
+      - name: 변경사항 커밋
         id: auto-commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
@@ -941,17 +943,17 @@ jobs:
           # file_pattern: . # 명시적으로 모든 파일을 대상으로 지정
 
       # 커밋 결과 출력
-      - name: Print Commit Result
+      - name: 커밋 결과 출력
         run: |
           if [ "${{ steps.auto-commit.outputs.changes_detected }}" == "true" ]; then
             echo "변경사항이 감지되어 자동으로 커밋되었습니다."
-            echo "Commit ID: ${{ steps.auto-commit.outputs.commit_hash }}"
+            echo "커밋 ID: ${{ steps.auto-commit.outputs.commit_hash }}"
           else
             echo "커밋할 변경사항이 없습니다. 모든 코드가 이미 정상적으로 포맷팅되어 있거나 이미지가 이미 최적화되어 있습니다."
           fi
 
       # Add a Label to PR 1
-      - name: Add a Label to PR 1
+      - name: PR에 라벨 추가 1 (mutated)
         if: steps.auto-commit.outputs.changes_detected == 'true'
         uses: actions/github-script@v6
         with:
@@ -965,7 +967,7 @@ jobs:
             })
 
       # 라벨 추가
-      - name: Add a Label to PR 2
+      - name: PR에 라벨 추가 2 (mutation-finished)
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN1 }}
