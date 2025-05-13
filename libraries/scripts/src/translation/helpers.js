@@ -5,7 +5,6 @@ import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 export function getInitialLanguageMap() {
-
 	const settingPath = getAbsolutePath(
 		import.meta.url,
 		'../../../paraglide/project.inlang/settings.json',
