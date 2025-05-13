@@ -286,8 +286,6 @@ jobs:
           echo "--- 번역 완료 ---"
           echo "'pnpm run translate' 실행 후 상태 (패치 생성 전):"
           git status --short # 번역 실행 직후 상태 확인 (새 파일이 untracked로 보여야 함)
-          echo "모든 파일 목록 (새 파일 생성 디버깅용):"
-          find . -type f -ls # 모든 파일 목록과 상세 정보 출력 (특히 번역 결과물이 생성될 것으로 예상되는 경로 확인)
         env:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
