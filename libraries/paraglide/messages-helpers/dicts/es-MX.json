@@ -1,0 +1,8 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "Icon": "Icono",
+  "Hello": "Hola",
+  "Welcome to": "Bienvenido a",
+  "Region": "Región",
+  "SvelteKit": "SvelteKit"
+}

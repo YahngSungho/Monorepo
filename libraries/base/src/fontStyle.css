@@ -91,78 +91,6 @@
 }
 
 @font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 700; /* Bold */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-Bold.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 200; /* ExtraLight */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-ExtraLight.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 300; /* Light */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-Light.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 500; /* Medium */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-Medium.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 400; /* Regular */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-Regular.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 600; /* SemiBold */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-SemiBold.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 400; /* Text */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-Text.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 100; /* Thin */
-	font-style: normal;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansThaiLooped-Thin.woff2') format('woff2');
-}
-
-@font-face {
-	font-family: 'IBM Plex Sans Thai Looped';
-	font-weight: 100 700;
-	font-style: italic;
-	font-display: swap;
-	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
-}
-
-@font-face {
 	font-family: 'IBM Plex Math';
 	font-weight: 400; /* Regular */
 	font-style: normal;
@@ -796,60 +724,159 @@
 	src: url('@library/base/IBMPlexSansVar-Italic.woff2') format('woff2-variations');
 }
 
-html,
-.english {
-	font-family: 'IBM Plex Sans';
-	font-feature-settings: 'ss02';
+html {
 	font-variant-numeric: slashed-zero;
 }
 
-/* Arabic */
-html[lang^='ar'] {
+/* Default and Latin/Greek/Cyrillic script languages */
+html[lang^='en'], /* English */
+html[lang^='af'], /* Afrikaans */
+html[lang^='bg'], /* Bulgarian (Cyrillic) */
+html[lang^='cs'], /* Czech (Latin) */
+html[lang^='da'], /* Danish (Latin) */
+html[lang^='de'], /* German (Latin) */
+html[lang^='el'], /* Greek (Greek) */
+html[lang^='es'], /* Spanish (Latin) */
+html[lang^='et'], /* Estonian (Latin) */
+html[lang^='fi'], /* Finnish (Latin) */
+html[lang^='fr'], /* French (Latin) */
+html[lang^='fil'],/* Filipino (Latin) */
+html[lang^='ha'], /* Hausa (Latin default) */
+html[lang^='hr'], /* Croatian (Latin) */
+html[lang^='hu'], /* Hungarian (Latin) */
+html[lang^='id'], /* Indonesian (Latin) */
+html[lang^='ig'], /* Igbo (Latin) */
+html[lang^='it'], /* Italian (Latin) */
+html[lang^='jv'], /* Javanese (Latin assumed) */
+html[lang^='kk'], /* Kazakh (Cyrillic/Latin default) */
+html[lang='kk-Latn'], /* Kazakh (Latin) */
+html[lang='kk-Cyrl'], /* Kazakh (Cyrillic) */
+html[lang^='ku'], /* Kurdish (Latin - Kurmanji default) */
+html[lang='ku-Latn'], /* Kurdish (Latin) */
+html[lang^='lt'], /* Lithuanian (Latin) */
+html[lang^='lv'], /* Latvian (Latin) */
+html[lang^='ms'], /* Malay (Latin) */
+html[lang^='nl'], /* Dutch (Latin) */
+html[lang^='no'], /* Norwegian (Latin) */
+html[lang^='om'], /* Oromo (Latin) */
+html[lang^='pl'], /* Polish (Latin) */
+html[lang^='pt'], /* Portuguese (Latin) */
+html[lang^='ro'], /* Romanian (Latin) */
+html[lang^='ru'], /* Russian (Cyrillic) */
+html[lang^='sk'], /* Slovak (Latin) */
+html[lang^='sl'], /* Slovenian (Latin) */
+html[lang^='so'], /* Somali (Latin) */
+html[lang^='sr'], /* Serbian (Covers Latin & Cyrillic) */
+html[lang='sr-Latn'], /* Serbian (Latin) */
+html[lang^='sv'], /* Swedish (Latin) */
+html[lang^='sw'], /* Swahili (Latin) */
+html[lang^='tg'], /* Tajik (Cyrillic default) */
+html[lang^='tl'], /* Tagalog (Latin) */
+html[lang^='tr'], /* Turkish (Latin) */
+html[lang^='uk'], /* Ukrainian (Cyrillic) */
+html[lang^='uz'], /* Uzbek (Latin default) */
+html[lang='uz-Latn'], /* Uzbek (Latin) */
+html[lang='uz-Cyrl'], /* Uzbek (Cyrillic) */
+html[lang^='vi'], /* Vietnamese (Latin) */
+html[lang^='yo']  /* Yoruba (Latin) */
+{
+	font-family: 'IBM Plex Sans';
+	font-feature-settings: 'ss02';
+}
+
+/* Arabic script languages */
+html[lang^='ar'], /* Arabic */
+html[lang='az-Arab'], /* Azerbaijani (Arabic script) */
+html[lang^='fa'], /* Persian */
+html[lang='kk-Arab'], /* Kazakh (Arabic script) */
+html[lang='ku-Arab'], /* Kurdish (Arabic script - Sorani) */
+html[lang^='prs'],/* Dari */
+html[lang^='ps'], /* Pashto */
+html[lang^='sd'], /* Sindhi (Arabic script default) */
+html[lang='sd-Arab'], /* Sindhi (Arabic script explicit) */
+html[lang^='ur']  /* Urdu */
+{
 	font-family: 'IBM Plex Sans Arabic';
+	font-feature-settings: 'ss02';
 }
 
 /* Chinese Simplified */
-html[lang^='zh'] {
+html[lang^='zh'], /* General Chinese, defaults to Simplified */
+html[lang^='zh-Hans'],
+html[lang='zh-CN'],
+html[lang='zh-SG'] {
 	font-family: 'IBM Plex Sans SC';
+	font-feature-settings: 'ss02';
 }
+
 /* Chinese Traditional */
-html[lang='zh-tw'],
-html[lang='zh-hk'],
-html[lang='zh-Hant'],
+html[lang^='zh-Hant'], /* Generic Traditional script tag */
 html[lang='zh-TW'],
 html[lang='zh-HK'],
-html[lang='zh-tTW'] {
+html[lang='zh-MO'],
+html[lang='zh-tw'], /* (lowercase variant from original) */
+html[lang='zh-hk'], /* (lowercase variant from original) */
+html[lang='zh-tTW'] /* (non-standard, from original) */
+{
 	font-family: 'IBM Plex Sans TC';
+	font-feature-settings: 'ss02';
 }
 
 /* Hebrew */
-html[lang='he'] {
+html[lang^='he'] {
 	font-family: 'IBM Plex Sans Hebrew';
+	font-feature-settings: 'ss02';
 }
 
-/* Hindi and other Devanagari-based languages */
-html[lang='hi'],
-html[lang='sa'],
-html[lang='ne'] {
+/* Devanagari script languages */
+html[lang^='hi'], /* Hindi */
+html[lang^='mr'], /* Marathi */
+html[lang^='ne'], /* Nepali */
+html[lang^='sa'], /* Sanskrit (from original CSS example) */
+html[lang='sd-Deva'] /* Sindhi (Devanagari script) */
+{
 	font-family: 'IBM Plex Sans Devanagari';
+	font-feature-settings: 'ss02';
 }
 
 /* Japanese */
-html[lang='ja'] {
+html[lang^='ja'] {
 	font-family: 'IBM Plex Sans JP';
+	font-feature-settings: 'ss02';
 }
 
 /* Korean */
-html[lang='ko'],
-html[lang='ko-kr'],
-html[lang='ko-kp'] {
+html[lang^='ko'] {
 	font-family: 'IBM Plex Sans KR';
+	font-feature-settings: 'ss02';
 }
 
 /* Thai */
-html[lang='th'] {
+html[lang^='th'] {
 	font-family: 'IBM Plex Sans Thai';
+	font-feature-settings: 'ss02';
 }
+
+html[lang$='Latn'],
+html[lang$='Cyrl']
+{
+	font-family: 'IBM Plex Sans';
+	font-feature-settings: 'ss02';
+}
+
+html[lang$='Arab']
+{
+	font-family: 'IBM Plex Sans Arabic';
+	font-feature-settings: 'ss02';
+}
+
+html[lang$='Deva']
+{
+	font-family: 'IBM Plex Sans Devanagari';
+	font-feature-settings: 'ss02';
+}
+
+
 
 code,
 kbd,

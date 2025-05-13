@@ -1,24 +1,12 @@
 {
+	"_comments": [
+		"exclude와 include는 extends 되지 않아서 따로 써줘야 함",
+		"compilerOptions.paths 쓸 거면 packajs.json의 import 부분에도 작성하기"
+	],
 	"compilerOptions": {
-		"allowJs": true,
-		"checkJs": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"isolatedModules": true,
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"noEmit": true,
-		"noImplicitAny": false,
 		"paths": {
 			"$shadcn": ["../../libraries/ui/src/shadcn"]
 		},
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strict": false,
-		"strictNullChecks": true,
-		"target": "esnext",
-		"verbatimModuleSyntax": true
 	},
 	"exclude": [
 		".turbo/**",
@@ -36,6 +24,7 @@
 		"src/service-worker/**",
 		"static/**"
 	],
+	"extends": ["@library/library-base/tsconfig.json"],
 	"include": [
 		"src/**/*",
 		"e2e/**/*",

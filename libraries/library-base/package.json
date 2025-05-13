@@ -1,0 +1,9 @@
+{
+	"name": "@library/library-base",
+	"version": "0.0.1",
+	"type": "module",
+	"exports": {
+		"./baseTest.js": "./src/baseTest.js",
+		"./tsconfig.json": "./tsconfig.json"
+	}
+}

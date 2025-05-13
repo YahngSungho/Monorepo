@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "ഐക്കൺ",
+  "deft_east_mouse_hope": "ഹലോ",
+  "hello_world": "ഹലോ, {name}!",
+  "tangy_late_wallaby_grip": "SvelteKit-ലേക്ക് സ്വാഗതം",
+  "welcome": "SvelteKit-ലേക്ക് സ്വാഗതം",
+  "region": "പ്രദേശം"
+}

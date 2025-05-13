@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "အိုင်ကွန်",
+  "deft_east_mouse_hope": "မင်္ဂလာပါ",
+  "hello_world": "မင်္ဂလာပါ {name} (en မှ)!",
+  "tangy_late_wallaby_grip": "SvelteKit မှ ကြိုဆိုပါတယ်။",
+  "welcome": "SvelteKit မှ ကြိုဆိုပါတယ်။",
+  "region": "ဒေသ"
+}

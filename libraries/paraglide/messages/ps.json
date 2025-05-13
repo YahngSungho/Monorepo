@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "آیکون",
+  "deft_east_mouse_hope": "سلام",
+  "hello_world": "سلام، {name}!",
+  "tangy_late_wallaby_grip": "SvelteKit ته ښه راغلاست",
+  "welcome": "SvelteKit ته ښه راغلاست",
+  "region": "سیمه"
+}

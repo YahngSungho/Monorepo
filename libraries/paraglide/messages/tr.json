@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "İkon",
+  "deft_east_mouse_hope": "Merhaba",
+  "hello_world": "Merhaba {name}, en'den!",
+  "tangy_late_wallaby_grip": "SvelteKit'e Hoş Geldiniz",
+  "welcome": "SvelteKit'e Hoş Geldiniz",
+  "region": "Bölge"
+}

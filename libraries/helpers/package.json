@@ -14,16 +14,21 @@
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
+		"@library/library-base": "workspace:*",
 		"mutative": "^1.1.0",
+		"rambda": "^10.0.1",
 		"ramda": "^0.30.1",
-		"random-js": "^2.1.0"
+		"random-js": "^2.1.0",
+		"tinyglobby": "^0.2.13"
 	},
-	"devDependencies": {},
 	"keywords": [],
 	"exports": {
-		"./monads": "./src/monads.js",
-		"./mutative": "./src/mutative.js",
-		"./random_engine": "./src/random_engine.js",
-		"./R": "./src/R.js"
+		"./monads": "./src/data-structures/monads.js",
+		"./mutative": "./src/library-wrappers/mutative.js",
+		"./random_engine": "./src/library-wrappers/random_engine.js",
+		"./R": "./src/library-wrappers/R.js",
+		"./fs-async": "./src/file-systems/async.js",
+		"./fs-sync": "./src/file-systems/sync.js",
+		"./helper-functions": "./src/functions/index.js"
 	}
 }

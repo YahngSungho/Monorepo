@@ -19,6 +19,7 @@
 	},
 	"dependencies": {
 		"@library/paraglide": "workspace:*",
+		"@library/library-base": "workspace:*",
 		"@qwik.dev/partytown": "^0.11.0",
 		"open-props": "^1.7.15",
 		"sanitize.css": "^13.0.0"

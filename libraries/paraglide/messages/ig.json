@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Akara ngosi",
+  "deft_east_mouse_hope": "Ndewo",
+  "hello_world": "Ndewo, {name} si en!",
+  "tangy_late_wallaby_grip": "Nnọọ na SvelteKit",
+  "welcome": "Nnọọ na SvelteKit",
+  "region": "Mpaghara"
+}

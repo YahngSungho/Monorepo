@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "アイコン",
+  "deft_east_mouse_hope": "こんにちは",
+  "hello_world": "こんにちは、{name}さん！enより",
+  "tangy_late_wallaby_grip": "SvelteKitへようこそ",
+  "welcome": "SvelteKitへようこそ",
+  "region": "地域"
+}

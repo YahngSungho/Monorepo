@@ -25,7 +25,6 @@ import github from 'eslint-plugin-github'
 import importX from 'eslint-plugin-import-x'
 // import jsonSchema from 'eslint-plugin-json-schema-validator'
 import jsonc from 'eslint-plugin-jsonc'
-import lodash from 'eslint-plugin-lodash'
 import * as mdx from 'eslint-plugin-mdx'
 import noSecrets from 'eslint-plugin-no-secrets'
 import nounsanitized from 'eslint-plugin-no-unsanitized'
@@ -55,6 +54,11 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'perfectionist/sort-named-imports': 'warn',
+	'functional/functional-parameters': 'off',
+	'perfectionist/sort-named-exports': 'warn',
+	'unicorn/import-style': 'off',
+	'functional/immutable-data': 'off',
 	'unicorn/no-useless-undefined': 'off',
 	'unicorn/prefer-dom-node-dataset': 'off',
 	'sonarjs/no-invariant-returns': 'warn',
@@ -83,8 +87,6 @@ const baseRules = {
 	],
 	'eslint-comments/no-unlimited-disable': 'off',
 	'eslint-comments/no-use': 'off',
-	'functional/functional-parameters': 'warn',
-	'functional/immutable-data': 'warn',
 	'functional/no-expression-statements': ['off', { ignoreSelfReturning: true, ignoreVoid: true }],
 	'functional/no-let': 'off',
 	'functional/no-loop-statements': 'off',
@@ -97,19 +99,6 @@ const baseRules = {
 	'import/no-namespace': 'off',
 	'import/no-nodejs-modules': 'off',
 	'import/no-unresolved': 'off',
-	'lodash/prefer-constant': 'off',
-	'lodash/prefer-get': 'off',
-	'lodash/prefer-includes': 'off',
-	'lodash/prefer-is-nil': 'off',
-	'lodash/prefer-lodash-chain': 'off',
-	'lodash/prefer-lodash-method': 'off',
-	'lodash/prefer-lodash-typecheck': 'off',
-	'lodash/prefer-matches': 'off',
-	'lodash/prefer-noop': 'off',
-	'lodash/prefer-over-quantifier': 'off',
-	'lodash/prefer-some': 'off',
-	'lodash/prefer-startswith': 'off',
-	'lodash/prefer-times': 'off',
 	'n/no-extraneous-import': 'off',
 	'n/no-missing-import': 'off',
 	'n/prefer-global/process': 'off',
@@ -282,7 +271,6 @@ export default defineFlatConfig([
 
 	...flatCompat.extends(
 		'plugin:xstate/all',
-		'plugin:lodash/recommended',
 		'plugin:redos/recommended',
 	),
 
@@ -309,7 +297,6 @@ export default defineFlatConfig([
 
 		plugins: {
 			ex: exceptionHandling,
-			lodash,
 			'no-secrets': noSecrets,
 			'optimize-regex': optimizeRegex,
 			redos,
@@ -400,10 +387,12 @@ export default defineFlatConfig([
 		],
 
 		rules: {
+			'functional/prefer-tacit': 'off',
+			'no-unused-vars': 'off',
+			'sonarjs/no-dead-store': 'off',
 			'unicorn/no-array-method-this-argument': 'off',
 			'array-func/no-unnecessary-this-arg': 'off',
 			'@intlify/svelte/no-raw-text': 'off',
-			'functional/immutable-data': 'off',
 			'redos/no-vulnerable': 'off',
 			'sonarjs/pseudo-random': 'off',
 			'sonarjs/slow-regex': 'off',

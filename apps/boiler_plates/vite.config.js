@@ -1,4 +1,4 @@
-import { paraglideVitePlugin } from '@inlang/paraglide-js'
+// @ts-ignore
 import { currentEnv, defaultConfig } from '@library/base/vite.config.js'
 import { sentrySvelteKit } from '@sentry/sveltekit'
 import { sveltekit } from '@sveltejs/kit/vite'
@@ -14,8 +14,10 @@ const projectName = packageJson.name
 
 export default mergeConfig(
 	defaultConfig,
+	// @ts-ignore
 	defineConfig({
 		plugins: [
+			// @ts-ignore
 			sentrySvelteKit({
 				adapter: 'cloudflare',
 				sourceMapsUploadOptions: {
@@ -30,14 +32,8 @@ export default mergeConfig(
 					},
 				},
 			}),
+			// @ts-ignore
 			sveltekit(),
-			paraglideVitePlugin({
-				// @ts-ignore
-				outdir: '../../libraries/paraglide/paraglide-output',
-				project: '../../libraries/paraglide/project.inlang',
-				strategy: ['url', 'cookie', 'baseLocale'],
-				disableAsyncLocalStorage: true,
-			}),
 		],
 	}),
 )

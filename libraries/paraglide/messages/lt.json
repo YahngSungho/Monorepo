@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Piktograma",
+  "deft_east_mouse_hope": "Sveiki",
+  "hello_world": "Sveiki, {name}!",
+  "tangy_late_wallaby_grip": "Sveiki atvykę į SvelteKit",
+  "welcome": "Sveiki atvykę į SvelteKit",
+  "region": "Regionas"
+}

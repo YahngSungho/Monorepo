@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "Hello": "Kumusta",
+  "Welcome": "Maligayang pagdating",
+  "Region": "Rehiyon",
+  "Icon": "Icon"
+}

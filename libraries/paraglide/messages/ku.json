@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Îkon",
+  "deft_east_mouse_hope": "Silav",
+  "hello_world": "Silav, {name}, ji Îngilîzî!",
+  "tangy_late_wallaby_grip": "Bi xêr hatî SvelteKit",
+  "welcome": "Bi xêr hatî SvelteKit",
+  "region": "Herêm"
+}

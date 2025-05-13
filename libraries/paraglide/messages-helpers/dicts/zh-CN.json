@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "Icon": "图标",
+  "Hello": "你好",
+  "Region": "地区",
+  "Welcome to": "欢迎来到"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "אייקון",
+  "deft_east_mouse_hope": "שלום",
+  "hello_world": "שלום, {name} מאנגלית!",
+  "tangy_late_wallaby_grip": "ברוכים הבאים ל-SvelteKit",
+  "welcome": "ברוכים הבאים ל-SvelteKit",
+  "region": "אזור"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Icoon",
+  "deft_east_mouse_hope": "Hallo",
+  "hello_world": "Hallo, {name}!",
+  "tangy_late_wallaby_grip": "Welkom bij SvelteKit",
+  "welcome": "Welkom bij SvelteKit",
+  "region": "Regio"
+}

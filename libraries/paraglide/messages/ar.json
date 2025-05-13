@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "أيقونة",
+  "deft_east_mouse_hope": "مرحباً",
+  "hello_world": "مرحباً، {name} من الإنجليزية!",
+  "tangy_late_wallaby_grip": "أهلاً بك في SvelteKit",
+  "welcome": "أهلاً بك في SvelteKit",
+  "region": "المنطقة"
+}

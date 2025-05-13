@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "आइकन",
+  "deft_east_mouse_hope": "नमस्ते",
+  "hello_world": "नमस्ते, {name}!",
+  "tangy_late_wallaby_grip": "SvelteKit मा स्वागत छ",
+  "welcome": "SvelteKit मा स्वागत छ",
+  "region": "क्षेत्र"
+}
