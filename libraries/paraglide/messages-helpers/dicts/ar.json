@@ -1,0 +1,8 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "Hello": "مرحباً",
+  "Icon": "أيقونة",
+  "Region": "المنطقة",
+  "Welcome to": "أهلاً بك في",
+  "en": "الإنجليزية"
+}
