@@ -22,7 +22,6 @@ const cacheForMarkdown = await getCacheBySystemInstructions_latestModel(
 	promptForMarkdown,
 )
 
-let count1 = 0
 export const generateTranslation_paraglide = async (
 	language,
 	targetMessages,
@@ -67,15 +66,10 @@ export const generateTranslation_paraglide = async (
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
-	count1++
-	console.log('💬 count:', count1)
-	console.log('💬 language:', getLanguageName(language))
 	const object = await generateObjectWithRetry_latestModel(cacheForParaglide, schema, target)
-	console.log('💬 Done:', count1)
 	return object
 }
 
-let count2 = 0
 export const generateTranslation_markdown = async (
 	language,
 	targetMessages,
@@ -109,12 +103,7 @@ export const generateTranslation_markdown = async (
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
-	count2++
-	console.log('💬 count:', count2)
-	console.log('💬 language:', getLanguageName(language))
 	const object = await generateObjectWithRetry_latestModel(cacheForMarkdown, schema, target)
-	console.log('💬 Done:', count2)
-
 	return object
 }
 

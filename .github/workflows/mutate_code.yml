@@ -8,8 +8,8 @@ env:
   HUSKY: 0
 
 permissions:
-  pull-requests: write # Necessary to comment on PRs
-  issues: read # Necessary to read issue comments
+  pull-requests: write # PR에 댓글을 작성하는 데 필요
+  issues: read # 이슈 댓글을 읽는 데 필요
   contents: write
 
 jobs:
@@ -31,14 +31,14 @@ jobs:
             const repo = context.repo.repo; // 필요시 로그 출력용
 
             if (!prNodeId) {
-              console.log(`Could not get Pull Request Node ID from context for PR #${prNumber}.`);
+              console.log(`PR #${prNumber}에 대한 컨텍스트에서 Pull Request Node ID를 가져올 수 없습니다.`);
               // 만약 context에 node_id가 없다면, API로 다시 조회해야 할 수 있지만,
               // pull_request 이벤트에서는 보통 포함되어 있습니다.
-              core.setFailed("Could not determine Pull Request Node ID.");
+              core.setFailed("Pull Request Node ID를 결정할 수 없습니다.");
               return;
             }
 
-            console.log(`Attempting to disable auto-merge for PR #${prNumber} (Node ID: ${prNodeId}) via GraphQL`);
+            console.log(`GraphQL을 통해 PR #${prNumber} (Node ID: ${prNodeId})에 대한 자동 병합 비활성화를 시도합니다.`);
 
             try {
               // github.graphql을 사용하여 disablePullRequestAutoMerge 뮤테이션 실행
@@ -49,16 +49,16 @@ jobs:
                   }
                 }
               `, { prId: prNodeId });
-              console.log(`✅ Auto-merge successfully disabled for PR #${prNumber} via GraphQL.`);
+              console.log(`✅ GraphQL을 통해 PR #${prNumber}에 대한 자동 병합이 성공적으로 비활성화되었습니다.`);
             } catch (error) {
               // GraphQL 오류 메시지를 확인하여 자동 병합이 활성화되지 않았는지 판단합니다.
               // 실제 오류 메시지에 따라 이 조건은 조정될 수 있습니다.
               if (error.message.includes("Pull request auto-merge cannot be disabled") || error.message.includes("Could not resolve to a PullRequest") || error.message.includes("already disabled")) {
-                 console.log(`ℹ️ Auto-merge was not enabled or already disabled for PR #${prNumber}. (GraphQL Error: ${error.message})`);
+                 console.log(`ℹ️ PR #${prNumber}에 대해 자동 병합이 활성화되지 않았거나 이미 비활성화되었습니다. (GraphQL 오류: ${error.message})`);
               } else {
-                console.error(`❌ Failed to disable auto-merge for PR #${prNumber} via GraphQL. Error: ${error.message}`);
+                console.error(`❌ GraphQL을 통해 PR #${prNumber}에 대한 자동 병합 비활성화에 실패했습니다. 오류: ${error.message}`);
                 // 필요시 오류를 다시 던져서 워크플로우 스텝을 실패시킬 수 있습니다.
-                // core.setFailed(`Failed to disable auto-merge via GraphQL: ${error.message}`);
+                // core.setFailed(`GraphQL을 통한 자동 병합 비활성화 실패: ${error.message}`);
               }
             }
         env:
@@ -77,9 +77,9 @@ jobs:
                 repo: context.repo.repo,
                 name: 'restart'
               });
-              console.log('Label restart removed successfully');
+              console.log('restart 라벨이 성공적으로 제거되었습니다.');
             } catch (error) {
-              console.log('Error removing label or label not found:', error);
+              console.log('라벨 제거 중 오류가 발생했거나 라벨을 찾을 수 없습니다:', error);
             }
 
   # 공통 경로 필터링 job
@@ -230,19 +230,19 @@ jobs:
         if: steps.check_package_json_patch.outputs.result == 'true'
         run: |
           if [ -f package-json-changes.patch ]; then
-            echo "Applying package.json formatting changes patch..."
+            echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
             # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch check failed. Cannot apply cleanly."
+              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
             # 실제 패치 적용
             git apply package-json-changes.patch
-            echo "package.json formatting patch applied successfully."
+            echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
             rm package-json-changes.patch
           else
-            echo "No package.json formatting changes to apply."
+            echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
       # 3. pnpm 설치 및 의존성 설치 (패치 적용 후)
@@ -267,7 +267,7 @@ jobs:
           if ! git diff --staged --quiet; then
             git commit -m "Temporary commit after applying package-json patch and install"
           else
-            echo "No changes to commit temporarily before fixing markdown."
+            echo "마크다운 수정 전 임시로 커밋할 변경사항이 없습니다."
           fi
 
       # 5. 번역 실행
@@ -340,19 +340,19 @@ jobs:
         if: steps.check_package_json_patch.outputs.result == 'true'
         run: |
           if [ -f package-json-changes.patch ]; then
-            echo "Applying package.json formatting changes patch..."
+            echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
             # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch check failed. Cannot apply cleanly."
+              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
             # 실제 패치 적용
             git apply package-json-changes.patch
-            echo "package.json formatting patch applied successfully."
+            echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
             rm package-json-changes.patch
           else
-            echo "No package.json formatting changes to apply."
+            echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
 
@@ -384,19 +384,19 @@ jobs:
         if: steps.check_translation_patch.outputs.result == 'true'
         run: |
           if [ -f translation-changes.patch ]; then
-            echo "Applying translation changes patch..."
+            echo "번역 변경사항 패치를 적용합니다..."
             # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check translation-changes.patch; then
-              echo "::error::translation-changes.patch check failed. Cannot apply cleanly."
+              echo "::error::translation-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
             # 실제 패치 적용
             git apply translation-changes.patch
-            echo "translation patch applied successfully."
+            echo "번역 패치가 성공적으로 적용되었습니다."
             rm translation-changes.patch
           else
-            echo "No translation changes to apply."
+            echo "적용할 번역 변경사항이 없습니다."
           fi
 
       # 5. pnpm 설치 및 의존성 설치 (패치 적용 후)
@@ -421,7 +421,7 @@ jobs:
           if ! git diff --staged --quiet; then
             git commit -m "Temporary commit after applying package-json, translation patches and install"
           else
-            echo "No changes to commit temporarily before fixing markdown."
+            echo "마크다운 수정 전 임시로 커밋할 변경사항이 없습니다."
           fi
 
       # 7. 마크다운 수정 도구 실행
@@ -522,19 +522,19 @@ jobs:
         if: steps.check_package_json_patch.outputs.result == 'true'
         run: |
           if [ -f package-json-changes.patch ]; then
-            echo "Applying package.json formatting changes patch..."
+            echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
             # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch check failed. Cannot apply cleanly."
+              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
             # 실제 패치 적용
             git apply package-json-changes.patch
-            echo "package.json formatting patch applied successfully."
+            echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
             rm package-json-changes.patch
           else
-            echo "No package.json formatting changes to apply."
+            echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
 
@@ -566,19 +566,19 @@ jobs:
         if: steps.check_translation_patch.outputs.result == 'true'
         run: |
           if [ -f translation-changes.patch ]; then
-            echo "Applying translation changes patch..."
+            echo "번역 변경사항 패치를 적용합니다..."
             # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check translation-changes.patch; then
-              echo "::error::translation-changes.patch check failed. Cannot apply cleanly."
+              echo "::error::translation-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
             # 실제 패치 적용
             git apply translation-changes.patch
-            echo "translation patch applied successfully."
+            echo "번역 패치가 성공적으로 적용되었습니다."
             rm translation-changes.patch
           else
-            echo "No translation changes to apply."
+            echo "적용할 번역 변경사항이 없습니다."
           fi
 
       # 5. markdown-json patch 다운로드
@@ -609,19 +609,19 @@ jobs:
         if: steps.check_markdown_json_patch.outputs.result == 'true'
         run: |
           if [ -f markdown-json-changes.patch ]; then
-            echo "Applying markdown-json changes patch..."
+            echo "markdown-json 변경사항 패치를 적용합니다..."
             # --check 옵션으로 적용 가능 여부 확인
             if ! git apply --check markdown-json-changes.patch; then
-              echo "::error::markdown-json-changes.patch check failed. Cannot apply cleanly."
+              echo "::error::markdown-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
             # 실제 패치 적용
             git apply markdown-json-changes.patch
-            echo "markdown-json patch applied successfully."
+            echo "markdown-json 패치가 성공적으로 적용되었습니다."
             rm markdown-json-changes.patch
           else
-            echo "No markdown-json changes to apply."
+            echo "적용할 markdown-json 변경사항이 없습니다."
           fi
 
       # Node.js 및 pnpm 설정
@@ -650,7 +650,7 @@ jobs:
           if ! git diff --staged --quiet; then
             git commit -m "Temporary commit after applying package-json patch"
           else
-            echo "No changes to commit temporarily."
+            echo "임시로 커밋할 변경사항이 없습니다."
           fi
 
       # 린트 실행
@@ -847,88 +847,94 @@ jobs:
         run: |
           # 이미지 압축 패치 적용
           if [ -f images-changes.patch ]; then
-            echo "Applying image compression changes patch..."
+            echo "이미지 압축 변경사항 패치를 적용합니다..."
             if ! git apply --check images-changes.patch; then
-              echo "::warning::images-changes.patch check failed. Attempting to apply anyway."
+              echo "::warning::images-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
             fi
             if ! git apply images-changes.patch; then
-              echo "::error::Failed to apply image compression patch. The patch may have conflicts or could not be applied."
+              echo "::error::이미지 압축 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
               exit 1
             else
-              echo "Image compression patch applied successfully."
+              echo "이미지 압축 패치가 성공적으로 적용되었습니다."
             fi
             rm images-changes.patch
           else
-            echo "No image compression changes to apply."
+            echo "적용할 이미지 압축 변경사항이 없습니다."
           fi
 
           # package.json 패치 적용
           if [ -f package-json-changes.patch ]; then
-            echo "Applying package.json formatting changes patch..."
+            echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
             if ! git apply --check package-json-changes.patch; then
-              echo "::warning::package-json-changes.patch check failed. Attempting to apply anyway."
+              echo "::warning::package-json-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
             fi
             if ! git apply package-json-changes.patch; then
-              echo "::error::Failed to apply package.json formatting patch. The patch may have conflicts or could not be applied."
+              echo "::error::package.json 포맷팅 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
               exit 1
             else
-              echo "package.json formatting patch applied successfully."
+              echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
             fi
             rm package-json-changes.patch
           else
-            echo "No package.json formatting changes to apply."
+            echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
           # 번역 패치 적용
           if [ -f translation-changes.patch ]; then
-            echo "Applying translation changes patch..."
+            echo "번역 변경사항 패치를 적용합니다..."
             if ! git apply --check translation-changes.patch; then
-              echo "::warning::translation-changes.patch check failed. Attempting to apply anyway."
+              echo "::warning::translation-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
             fi
             if ! git apply translation-changes.patch; then
-              echo "::error::Failed to apply translation patch. The patch may have conflicts or could not be applied."
+              echo "::error::번역 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
               exit 1
             else
-              echo "Translation patch applied successfully."
+              echo "번역 패치가 성공적으로 적용되었습니다."
             fi
             rm translation-changes.patch
           else
-            echo "No translation changes to apply."
+            echo "적용할 번역 변경사항이 없습니다."
           fi
 
           # 마크다운 패치 적용
           if [ -f markdown-json-changes.patch ]; then
-            echo "Applying markdown formatting changes patch..."
+            echo "마크다운 포맷팅 변경사항 패치를 적용합니다..."
             if ! git apply --check markdown-json-changes.patch; then
-              echo "::warning::markdown-json-changes.patch check failed. Attempting to apply anyway."
+              echo "::warning::markdown-json-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
             fi
             if ! git apply markdown-json-changes.patch; then
-              echo "::error::Failed to apply markdown formatting patch. The patch may have conflicts or could not be applied."
+              echo "::error::마크다운 포맷팅 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
               exit 1
             else
-              echo "Markdown formatting patch applied successfully."
+              echo "마크다운 포맷팅 패치가 성공적으로 적용되었습니다."
             fi
             rm markdown-json-changes.patch
           else
-            echo "No markdown formatting changes to apply."
+            echo "적용할 마크다운 포맷팅 변경사항이 없습니다."
           fi
 
           # 코드 포맷팅 패치 적용
           if [ -f changes.patch ]; then
-            echo "Applying code formatting changes patch..."
+            echo "코드 포맷팅 변경사항 패치를 적용합니다..."
             if ! git apply --check changes.patch; then
-              echo "::warning::changes.patch check failed. Attempting to apply anyway."
+              echo "::warning::changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
             fi
             if ! git apply changes.patch; then
-              echo "::error::Failed to apply code formatting patch. The patch may have conflicts or could not be applied."
+              echo "::error::코드 포맷팅 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
               exit 1
             else
-              echo "Code formatting patch applied successfully."
+              echo "코드 포맷팅 패치가 성공적으로 적용되었습니다."
             fi
             rm changes.patch
           else
-            echo "No code formatting changes to apply."
+            echo "적용할 코드 포맷팅 변경사항이 없습니다."
           fi
+
+      - name: Stage all changes after applying patches
+        run: |
+          git add -A
+          echo "모든 패치 적용 후 스테이징된 파일들:"
+          git status --short
 
       # 커밋 시도
       - name: Commit Changes
