@@ -778,8 +778,7 @@ html[lang^='uz'], /* Uzbek (Latin default) */
 html[lang='uz-Latn'], /* Uzbek (Latin) */
 html[lang='uz-Cyrl'], /* Uzbek (Cyrillic) */
 html[lang^='vi'], /* Vietnamese (Latin) */
-html[lang^='yo']  /* Yoruba (Latin) */
-{
+html[lang^='yo']  /* Yoruba (Latin) */ {
 	font-family: 'IBM Plex Sans';
 	font-feature-settings: 'ss02';
 }
@@ -794,8 +793,7 @@ html[lang^='prs'],/* Dari */
 html[lang^='ps'], /* Pashto */
 html[lang^='sd'], /* Sindhi (Arabic script default) */
 html[lang='sd-Arab'], /* Sindhi (Arabic script explicit) */
-html[lang^='ur']  /* Urdu */
-{
+html[lang^='ur']  /* Urdu */ {
 	font-family: 'IBM Plex Sans Arabic';
 	font-feature-settings: 'ss02';
 }
@@ -816,8 +814,7 @@ html[lang='zh-HK'],
 html[lang='zh-MO'],
 html[lang='zh-tw'], /* (lowercase variant from original) */
 html[lang='zh-hk'], /* (lowercase variant from original) */
-html[lang='zh-tTW'] /* (non-standard, from original) */
-{
+html[lang='zh-tTW'] /* (non-standard, from original) */ {
 	font-family: 'IBM Plex Sans TC';
 	font-feature-settings: 'ss02';
 }
@@ -833,8 +830,7 @@ html[lang^='hi'], /* Hindi */
 html[lang^='mr'], /* Marathi */
 html[lang^='ne'], /* Nepali */
 html[lang^='sa'], /* Sanskrit (from original CSS example) */
-html[lang='sd-Deva'] /* Sindhi (Devanagari script) */
-{
+html[lang='sd-Deva'] /* Sindhi (Devanagari script) */ {
 	font-family: 'IBM Plex Sans Devanagari';
 	font-feature-settings: 'ss02';
 }
@@ -858,25 +854,20 @@ html[lang^='th'] {
 }
 
 html[lang$='Latn'],
-html[lang$='Cyrl']
-{
+html[lang$='Cyrl'] {
 	font-family: 'IBM Plex Sans';
 	font-feature-settings: 'ss02';
 }
 
-html[lang$='Arab']
-{
+html[lang$='Arab'] {
 	font-family: 'IBM Plex Sans Arabic';
 	font-feature-settings: 'ss02';
 }
 
-html[lang$='Deva']
-{
+html[lang$='Deva'] {
 	font-family: 'IBM Plex Sans Devanagari';
 	font-feature-settings: 'ss02';
 }
-
-
 
 code,
 kbd,

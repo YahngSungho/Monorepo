@@ -1,7 +1,7 @@
 <script>
-	import 'iconify-icon'
+import 'iconify-icon'
 
-	let { children, icon, right = false, noMargin = false, small = false, ...restProps } = $props()
+let { children, icon, right = false, noMargin = false, small = false, ...restProps } = $props()
 </script>
 
 {#snippet iconElement(iconName)}
@@ -54,5 +54,4 @@
 		}
 	}
 }
-
 </style>
