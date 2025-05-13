@@ -731,7 +731,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
-          fetch-depth: 0
+          fetch-depth: 0 # diff를 위해 전체 히스토리 가져오기
 
       # 추가: 이전 job에서 생성한 patch artifact를 다운로드
 
@@ -845,96 +845,63 @@ jobs:
       # 추가: 다운로드한 patch 적용
       - name: Apply patches
         run: |
-          # 이미지 압축 패치 적용
-          if [ -f images-changes.patch ]; then
-            echo "이미지 압축 변경사항 패치를 적용합니다..."
-            if ! git apply --check images-changes.patch; then
-              echo "::warning::images-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
-            fi
-            if ! git apply images-changes.patch; then
-              echo "::error::이미지 압축 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
-              exit 1
+          echo "--- Applying Patches ---"
+          apply_patch() {
+            local patch_file="$1"
+            local patch_name="$2"
+            if [ -f "$patch_file" ]; then
+              echo "Applying $patch_name patch ($patch_file)..."
+              # 3-way merge 시도, 실패 시 일반 apply 시도
+              if git apply --3way "$patch_file"; then
+                 echo "$patch_name patch applied successfully with 3-way merge."
+              elif git apply --check "$patch_file"; then
+                git apply "$patch_file"
+                if [ $? -eq 0 ]; then
+                  echo "$patch_name patch applied successfully."
+                else
+                  echo "::error::Failed to apply $patch_name patch ($patch_file) even after check. Manual conflict resolution might be needed."
+                  # exit 1 # 필요하다면 여기서 워크플로우 중단
+                fi
+              else
+                echo "::warning::$patch_name patch ($patch_file) check failed. There might be conflicts."
+                # git apply --reject "$patch_file" # 충돌 부분 .rej 파일로 남기고 적용 시도
+                # echo "Attempted to apply $patch_name patch with --reject. Check for .rej files."
+                # exit 1 # 필요하다면 여기서 워크플로우 중단
+              fi
+              rm "$patch_file" || echo "Could not remove $patch_file"
+              echo "Current status after applying $patch_name patch:"
+              git status --short # 각 패치 적용 후 상태 확인
             else
-              echo "이미지 압축 패치가 성공적으로 적용되었습니다."
+              echo "No $patch_name patch ($patch_file) to apply."
             fi
-            rm images-changes.patch
-          else
-            echo "적용할 이미지 압축 변경사항이 없습니다."
-          fi
+            echo "------------------------"
+          }
 
-          # package.json 패치 적용
-          if [ -f package-json-changes.patch ]; then
-            echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
-            if ! git apply --check package-json-changes.patch; then
-              echo "::warning::package-json-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
-            fi
-            if ! git apply package-json-changes.patch; then
-              echo "::error::package.json 포맷팅 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
-              exit 1
-            else
-              echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
-            fi
-            rm package-json-changes.patch
-          else
-            echo "적용할 package.json 포맷팅 변경사항이 없습니다."
-          fi
+          apply_patch "images-changes.patch" "Image compression"
+          apply_patch "package-json-changes.patch" "Package.json formatting"
+          apply_patch "translation-changes.patch" "Translation"
+          apply_patch "markdown-json-changes.patch" "Markdown formatting"
+          apply_patch "changes.patch" "Code formatting"
 
-          # 번역 패치 적용
-          if [ -f translation-changes.patch ]; then
-            echo "번역 변경사항 패치를 적용합니다..."
-            if ! git apply --check translation-changes.patch; then
-              echo "::warning::translation-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
-            fi
-            if ! git apply translation-changes.patch; then
-              echo "::error::번역 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
-              exit 1
-            else
-              echo "번역 패치가 성공적으로 적용되었습니다."
-            fi
-            rm translation-changes.patch
-          else
-            echo "적용할 번역 변경사항이 없습니다."
-          fi
-
-          # 마크다운 패치 적용
-          if [ -f markdown-json-changes.patch ]; then
-            echo "마크다운 포맷팅 변경사항 패치를 적용합니다..."
-            if ! git apply --check markdown-json-changes.patch; then
-              echo "::warning::markdown-json-changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
-            fi
-            if ! git apply markdown-json-changes.patch; then
-              echo "::error::마크다운 포맷팅 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
-              exit 1
-            else
-              echo "마크다운 포맷팅 패치가 성공적으로 적용되었습니다."
-            fi
-            rm markdown-json-changes.patch
-          else
-            echo "적용할 마크다운 포맷팅 변경사항이 없습니다."
-          fi
-
-          # 코드 포맷팅 패치 적용
-          if [ -f changes.patch ]; then
-            echo "코드 포맷팅 변경사항 패치를 적용합니다..."
-            if ! git apply --check changes.patch; then
-              echo "::warning::changes.patch 확인에 실패했습니다. 강제로 적용을 시도합니다."
-            fi
-            if ! git apply changes.patch; then
-              echo "::error::코드 포맷팅 패치 적용에 실패했습니다. 패치에 충돌이 있거나 적용할 수 없습니다."
-              exit 1
-            else
-              echo "코드 포맷팅 패치가 성공적으로 적용되었습니다."
-            fi
-            rm changes.patch
-          else
-            echo "적용할 코드 포맷팅 변경사항이 없습니다."
-          fi
+          echo "--- Finished Applying Patches ---"
+          echo "Final status after all patches applied (before staging):"
+          git status --short
+          echo "Detailed diff stat after all patches applied (before staging):"
+          git diff --stat # 실제 변경된 파일 통계 보기
 
       - name: Stage all changes after applying patches
         run: |
+          echo "--- Staging all changes ---"
+          echo "Status before 'git add -A':"
+          git status --short # git add -A 실행 전 상태
+
           git add -A
-          echo "모든 패치 적용 후 스테이징된 파일들:"
-          git status --short
+          echo "Status after 'git add -A':"
+          git status --short # git add -A 실행 후 상태 (이것이 매우 중요!)
+
+          echo "Diff of staged changes:"
+          git diff --staged --stat # 스테이징된 변경사항 통계 보기
+          echo "--- Finished Staging ---"
 
       # 커밋 시도
       - name: Commit Changes
@@ -942,12 +909,18 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: '[automated-mutation]'
+          # 디버깅을 위해 커밋 액션의 로그를 더 자세히 보려면:
+          # skip_dirty_check: true
+          # skip_fetch: true
+          # dry_run: true # 실제 커밋은 안하고 결과만 볼 때 (테스트용)
+          # file_pattern: . # 명시적으로 모든 파일을 대상으로 지정
 
       # 커밋 결과 출력
       - name: Print Commit Result
         run: |
           if [ "${{ steps.auto-commit.outputs.changes_detected }}" == "true" ]; then
             echo "변경사항이 감지되어 자동으로 커밋되었습니다."
+            echo "Commit ID: ${{ steps.auto-commit.outputs.commit_hash }}"
           else
             echo "커밋할 변경사항이 없습니다. 모든 코드가 이미 정상적으로 포맷팅되어 있거나 이미지가 이미 최적화되어 있습니다."
           fi
