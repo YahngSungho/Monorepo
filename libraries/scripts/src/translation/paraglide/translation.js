@@ -11,7 +11,13 @@ import { readFilesToObjects, writeFile_async } from '@library/helpers/fs-async'
 import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
-import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslation, getInitialLanguageMap,getNewCache,translateOneLanguageMessages } from '../helpers.js'
+import {
+	calculateInitialTranslationStateByBaseLanguages,
+	combineEnglishTranslation,
+	getInitialLanguageMap,
+	getNewCache,
+	translateOneLanguageMessages,
+} from '../helpers.js'
 
 // dummy function for test
 // export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
@@ -27,7 +33,10 @@ import { calculateInitialTranslationStateByBaseLanguages, combineEnglishTranslat
 
 const messageFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages/')
 const helperFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/')
-const dictFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/dicts/')
+const dictFolderPath = getAbsolutePath(
+	import.meta.url,
+	'../../../../paraglide/messages-helpers/dicts/',
+)
 
 export async function getFiles() {
 	const initialLanguageMessageMap = getInitialLanguageMap()
@@ -38,7 +47,8 @@ export async function getFiles() {
 
 	const languageMessageMap = {}
 	for (const language of Object.keys(initialLanguageMessageMap)) {
-		languageMessageMap[language] = messageFiles[`${language}.json`] ? R.omit(['$schema'])(messageFiles[`${language}.json`]) : {}
+		languageMessageMap[language] =
+			messageFiles[`${language}.json`] ? R.omit(['$schema'])(messageFiles[`${language}.json`]) : {}
 	}
 
 	const explanations = R.omit(['$schema'])(helperFiles['explanations.json']) || {}
@@ -46,7 +56,8 @@ export async function getFiles() {
 
 	const dictPerLanguage = {}
 	for (const language of Object.keys(languageMessageMap)) {
-		dictPerLanguage[language] = dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
+		dictPerLanguage[language] =
+			dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
 	}
 
 	return { languageMessageMap, dictPerLanguage, explanations, cache }
@@ -91,33 +102,57 @@ export async function getFiles() {
 // 		},
 // 	}
 
-export async function getTranslatedLanguageMap (languageMessageMap, explanations, dictPerLanguage, combinedMessages_cached, getTranslatedMessages) { // 순수 함수: 초기 상태 계산
-const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslationStateByBaseLanguages(['ko'], languageMessageMap, explanations, combinedMessages_cached)
+export async function getTranslatedLanguageMap(
+	languageMessageMap,
+	explanations,
+	dictPerLanguage,
+	combinedMessages_cached,
+	getTranslatedMessages,
+) {
+	// 순수 함수: 초기 상태 계산
+	const { combinedMessages_latest, targetLanguageMap } =
+		calculateInitialTranslationStateByBaseLanguages(
+			['ko'],
+			languageMessageMap,
+			explanations,
+			combinedMessages_cached,
+		)
 
 	// 영어 번역 실행 (액션)
-	const englishMessageObject = targetLanguageMap.en;
+	const englishMessageObject = targetLanguageMap.en
 	if (!englishMessageObject) {
-		throw new Error("English ('en') messages not found in messageMap. Skipping English pre-translation.");
+		throw new Error(
+			"English ('en') messages not found in messageMap. Skipping English pre-translation.",
+		)
 	}
 
-	const englishMessageObject_translated = await translateOneLanguageMessages('en', englishMessageObject, dictPerLanguage.en, combinedMessages_latest, getTranslatedMessages)
+	const englishMessageObject_translated = await translateOneLanguageMessages(
+		'en',
+		englishMessageObject,
+		dictPerLanguage.en,
+		combinedMessages_latest,
+		getTranslatedMessages,
+	)
 	// 순수 함수: 영어 번역 결과를 combinedMessages에 통합
 	// englishMessageObject_translated가 null일 경우 combinedMessages_latest를 그대로 사용
-	const combinedMessages_latest_withEn = combineEnglishTranslation(combinedMessages_latest, englishMessageObject_translated)
+	const combinedMessages_latest_withEn = combineEnglishTranslation(
+		combinedMessages_latest,
+		englishMessageObject_translated,
+	)
 
 	return await R.mapObjectParallel(async (languageMessage, language) => {
-				if (language === 'en') {
-					return englishMessageObject_translated
-				}
+		if (language === 'en') {
+			return englishMessageObject_translated
+		}
 
-				return await translateOneLanguageMessages(
-					language,
-					languageMessage,
-					dictPerLanguage[language],
-					combinedMessages_latest_withEn,
-					getTranslatedMessages,
-				)
-			})(targetLanguageMap)
+		return await translateOneLanguageMessages(
+			language,
+			languageMessage,
+			dictPerLanguage[language],
+			combinedMessages_latest_withEn,
+			getTranslatedMessages,
+		)
+	})(targetLanguageMap)
 }
 
 // const result = await getTranslatedLanguageMap(messageMap_forTest, explanations_forTest, dictPerLanguage_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)
@@ -161,25 +196,42 @@ const { combinedMessages_latest, targetLanguageMap } = calculateInitialTranslati
 //   }
 // ]
 
-export async function saveFiles (translatedLanguageMap, explanations, languageMessageMap_ko) {
+export async function saveFiles(translatedLanguageMap, explanations, languageMessageMap_ko) {
 	for await (const [language, languageMessage] of Object.entries(translatedLanguageMap)) {
 		if (languageMessage.missingMessageKeys.length === 0) {
 			continue
 		}
 
-		await writeFile_async(path.join(messageFolderPath, `${language}.json`), JSON.stringify({
-			"$schema": "https://inlang.com/schema/inlang-message-format",
-			...languageMessage.newMessages,
-		}, undefined, 2))
+		await writeFile_async(
+			path.join(messageFolderPath, `${language}.json`),
+			JSON.stringify(
+				{
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					...languageMessage.newMessages,
+				},
+				undefined,
+				2,
+			),
+		)
 
-		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify({
-			"$schema": "https://inlang.com/schema/inlang-message-format",
-			...languageMessage.newDictionary,
-		}, undefined, 2))
+		await writeFile_async(
+			path.join(dictFolderPath, `${language}.json`),
+			JSON.stringify(
+				{
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					...languageMessage.newDictionary,
+				},
+				undefined,
+				2,
+			),
+		)
 	}
 
 	const newCache = getNewCache({ ko: languageMessageMap_ko }, explanations)
-	await writeFile_async(path.join(helperFolderPath, 'cache.json'), JSON.stringify(newCache, undefined, 2))
+	await writeFile_async(
+		path.join(helperFolderPath, 'cache.json'),
+		JSON.stringify(newCache, undefined, 2),
+	)
 }
 
 // const { languageMessageMap, dictPerLanguage, explanations, cache } = await getFiles()

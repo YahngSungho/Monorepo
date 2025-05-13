@@ -5,8 +5,11 @@ import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
-const settingPath = getAbsolutePath(import.meta.url, '../../../paraglide/project.inlang/settings.json')
-export function getInitialLanguageMap () {
+const settingPath = getAbsolutePath(
+	import.meta.url,
+	'../../../paraglide/project.inlang/settings.json',
+)
+export function getInitialLanguageMap() {
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
 	const result = {}
@@ -39,7 +42,6 @@ export function calculateInitialTranslationStateByBaseLanguages(
 		}
 	}
 
-
 	// 초기 targetLanguageMap 계산 (순수) - ko 제외
 	const initialTargetLanguageMap = R.pipe(
 		messageMap,
@@ -53,7 +55,7 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	// missingMessageKeys 계산 (순수, 불변성 유지)
 	const finalTargetLanguageMap = create(initialTargetLanguageMap, (draft) => {
 		for (const [messageKey, combinedMessage] of Object.entries(combinedMessages_latest)) {
-			const isMessageChanged = !(R.equals(combinedMessage)(combinedMessages_cached[messageKey]))
+			const isMessageChanged = !R.equals(combinedMessage)(combinedMessages_cached[messageKey])
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
@@ -78,15 +80,16 @@ export function calculateInitialTranslationStateByBaseLanguages(
  * @param {object} englishMessageObject_translated - 번역된 영어 메시지 객체 ('translateOneLanguageMessages'의 결과)
  * @returns {object} - 영어 번역이 통합된 새로운 결합 메시지 객체
  */
-export function combineEnglishTranslation(combinedMessages_latest, englishMessageObject_translated) {
-	return R.mapObjIndexed(
-		(value, messageKey) => ({
-			// 영어 번역 결과에서 newMessages 사용
-			en: englishMessageObject_translated.newMessages[messageKey],
-			...value, // 기존 'ko', 'explanation' 등 포함
-		}))(combinedMessages_latest)
+export function combineEnglishTranslation(
+	combinedMessages_latest,
+	englishMessageObject_translated,
+) {
+	return R.mapObjIndexed((value, messageKey) => ({
+		// 영어 번역 결과에서 newMessages 사용
+		en: englishMessageObject_translated.newMessages[messageKey],
+		...value, // 기존 'ko', 'explanation' 등 포함
+	}))(combinedMessages_latest)
 }
-
 
 /**
  * 번역 요청에 필요한 페이로드와 키 매핑을 준비하는 순수 함수입니다.
@@ -110,9 +113,9 @@ export function prepareTranslationPayload(languageMessageObject, combinedMessage
 		generateKeyNumberFunctions(combinedMessages_target)
 
 	const olderMessages = []
-	for (const olderMessage of R.take(10)(Object.values(
-		R.omit(languageMessageObject.missingMessageKeys)(languageMessageObject.value),
-	))) {
+	for (const olderMessage of R.take(10)(
+		Object.values(R.omit(languageMessageObject.missingMessageKeys)(languageMessageObject.value)),
+	)) {
 		olderMessages.push(olderMessage)
 	}
 
@@ -180,32 +183,33 @@ export async function translateOneLanguageMessages(
 
 	// 순수 함수: 번역 요청 페이로드 준비
 	const { combinedMessages_target_numbers, restoreFromNumberKeys, olderMessages } =
-	prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
+		prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 	// 비동기 호출: 번역 실행
-	const {translatedMessages: translatedMessages_numbers, newDictionary} = await getTranslatedMessages(
-		language,
-		combinedMessages_target_numbers,
-		olderMessages,
-		dictionary,
-	)
+	const { translatedMessages: translatedMessages_numbers, newDictionary } =
+		await getTranslatedMessages(
+			language,
+			combinedMessages_target_numbers,
+			olderMessages,
+			dictionary,
+		)
 	// 순수 함수: 번역된 메시지를 기존 객체와 통합 (결과 매핑 포함)
 	return {
-		...(integrateTranslatedMessages(
-		languageMessageObject,
-		translatedMessages_numbers,
-		restoreFromNumberKeys,
-	)),
+		...integrateTranslatedMessages(
+			languageMessageObject,
+			translatedMessages_numbers,
+			restoreFromNumberKeys,
+		),
 		newDictionary: {
 			...dictionary,
 			...newDictionary,
-		}
+		},
 	}
 }
 
-export function getNewCache (languageMessageMaps, explanations) {
+export function getNewCache(languageMessageMaps, explanations) {
 	const newCache = {}
-	for (const [ language, languageMessageMap ] of Object.entries(languageMessageMaps)) {
-		for (const [ messageKey, messageValue ] of Object.entries(languageMessageMap)) {
+	for (const [language, languageMessageMap] of Object.entries(languageMessageMaps)) {
+		for (const [messageKey, messageValue] of Object.entries(languageMessageMap)) {
 			if (newCache[messageKey]) {
 				newCache[messageKey][language] = messageValue
 			} else {
@@ -213,8 +217,8 @@ export function getNewCache (languageMessageMaps, explanations) {
 					[language]: messageValue,
 				}
 			}
+		}
 	}
-}
 
 	for (const messageKey of Object.keys(newCache)) {
 		if (explanations[messageKey]) {

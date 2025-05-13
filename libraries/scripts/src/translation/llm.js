@@ -3,22 +3,32 @@ import { readFileFromRelativePath } from '@library/helpers/fs-async'
 import { validateNumbers } from '@library/helpers/helper-functions'
 import { R } from '@library/helpers/R'
 import { generateObjectWithRetry_latestModel } from '@library/llms/gemini/generate'
-import { getCacheBySystemInstructions_latestModel } from 	'@library/llms/gemini/getCache'
+import { getCacheBySystemInstructions_latestModel } from '@library/llms/gemini/getCache'
 import { z } from 'zod'
 
 import { getLanguageName } from './getLanguageName.js'
-
 
 const readPrompt = readFileFromRelativePath(import.meta.url)
 
 const promptForParaglide = await readPrompt('./paraglide/prompt.md')
 const promptForMarkdown = await readPrompt('./markdown/prompt.md')
 
-const cacheForParaglide = await getCacheBySystemInstructions_latestModel(undefined, promptForParaglide)
-const cacheForMarkdown = await getCacheBySystemInstructions_latestModel(undefined, promptForMarkdown)
+const cacheForParaglide = await getCacheBySystemInstructions_latestModel(
+	undefined,
+	promptForParaglide,
+)
+const cacheForMarkdown = await getCacheBySystemInstructions_latestModel(
+	undefined,
+	promptForMarkdown,
+)
 
 let count1 = 0
-export const generateTranslation_paraglide = async (language, targetMessages, olderMessages, dictionary) => {
+export const generateTranslation_paraglide = async (
+	language,
+	targetMessages,
+	olderMessages,
+	dictionary,
+) => {
 	const target = `
 	<REQUEST>
 		<TARGET MESSAGES>
@@ -36,25 +46,24 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 	</REQUEST>
 	`
 
-		// Paraglide 변형 객체 (매칭 또는 복수형)에 대한 기본 스키마
-	const ParaglideVariantSchema = z.object({
-		match: z.record(z.string(), z.string()), // match는 필수
-		declarations: z.array(z.string()).optional(), // declarations는 선택적
-		selectors: z.array(z.string()).optional(), // selectors는 선택적
-	}).passthrough() // 다른 잠재적 키 허용 (유연성 위해)
+	// Paraglide 변형 객체 (매칭 또는 복수형)에 대한 기본 스키마
+	const ParaglideVariantSchema = z
+		.object({
+			match: z.record(z.string(), z.string()), // match는 필수
+			declarations: z.array(z.string()).optional(), // declarations는 선택적
+			selectors: z.array(z.string()).optional(), // selectors는 선택적
+		})
+		.passthrough() // 다른 잠재적 키 허용 (유연성 위해)
 
 	// 스키마 정의
 	const schema = z.object({
-		translatedMessages: z.record(
-			z.string(),
-			z.union([
-				z.string(),
-				ParaglideVariantSchema,
-			]),
-		).refine(validateNumbers(targetMessages), {
-			message: "TranslatedMessages keys must be sequential positive integer strings starting from '1'",
-			// path: ['translatedMessages'] // 필요시 에러 경로 지정
-		}),
+		translatedMessages: z
+			.record(z.string(), z.union([z.string(), ParaglideVariantSchema]))
+			.refine(validateNumbers(targetMessages), {
+				message:
+					"TranslatedMessages keys must be sequential positive integer strings starting from '1'",
+				// path: ['translatedMessages'] // 필요시 에러 경로 지정
+			}),
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
@@ -67,7 +76,12 @@ export const generateTranslation_paraglide = async (language, targetMessages, ol
 }
 
 let count2 = 0
-export const generateTranslation_markdown = async (language, targetMessages, olderMessages, dictionary) => {
+export const generateTranslation_markdown = async (
+	language,
+	targetMessages,
+	olderMessages,
+	dictionary,
+) => {
 	const target = `
 	<REQUEST>
 		<TARGET MESSAGES>
@@ -87,11 +101,9 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 
 	// 스키마 정의
 	const schema = z.object({
-		translatedMessages: z.record(
-			z.string(),
-			z.string(),
-		).refine(validateNumbers(targetMessages), {
-			message: "TranslatedMessages keys must be sequential positive integer strings starting from '1'",
+		translatedMessages: z.record(z.string(), z.string()).refine(validateNumbers(targetMessages), {
+			message:
+				"TranslatedMessages keys must be sequential positive integer strings starting from '1'",
 			// path: ['translatedMessages'] // 필요시 에러 경로 지정
 		}),
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
@@ -103,10 +115,8 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 	const object = await generateObjectWithRetry_latestModel(cacheForMarkdown, schema, target)
 	console.log('💬 Done:', count2)
 
-
 	return object
 }
-
 
 // const testObject_markdown = {
 // 	language: 'en',
@@ -183,15 +193,34 @@ export const generateTranslation_markdown = async (language, targetMessages, old
 // }
 // const result_paraglide = await generateTranslation_paraglide(testObject_paraglide.language, testObject_paraglide.targetMessages, testObject_paraglide.olderMessages, testObject_paraglide.dictionary)
 
-
-export const getTranslatedMessages_paraglide = async (language, targetMessages, olderMessages, dictionary) => {
-	const result = await generateTranslation_paraglide(language, targetMessages, olderMessages, dictionary)
+export const getTranslatedMessages_paraglide = async (
+	language,
+	targetMessages,
+	olderMessages,
+	dictionary,
+) => {
+	const result = await generateTranslation_paraglide(
+		language,
+		targetMessages,
+		olderMessages,
+		dictionary,
+	)
 
 	return R.pick(['translatedMessages', 'newDictionary'])(result)
 }
 
-export const getTranslatedMessages_markdown = async (language, targetMessages, olderMessages, dictionary) => {
-	const result = await generateTranslation_markdown(language, targetMessages, olderMessages, dictionary)
+export const getTranslatedMessages_markdown = async (
+	language,
+	targetMessages,
+	olderMessages,
+	dictionary,
+) => {
+	const result = await generateTranslation_markdown(
+		language,
+		targetMessages,
+		olderMessages,
+		dictionary,
+	)
 
 	return R.pick(['translatedMessages', 'newDictionary'])(result)
 }

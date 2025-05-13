@@ -1,4 +1,4 @@
-import { describe, expect,it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { getMetaDataObject } from './getMetadata.js'
 
@@ -196,24 +196,30 @@ title: 제목
 	it('번역된 맵 구조가 비정상적인 경우에도 안전하게 처리해야 한다', () => {
 		// 준비 (Arrange)
 		const originalLanguageMap = {
-			ko: { 'post.md': `---
+			ko: {
+				'post.md': `---
 title: 원본
 ---
-` },
+`,
+			},
 		}
 		const translatedLanguageMap = {
 			fr: undefined, // 언어 자체가 undefined
 			de: { newMessages: undefined }, // newMessages가 undefined
 			es: { newMessages: { 'post.md': undefined } }, // 메시지 값이 undefined
-			pt: { newMessages: { 'post.md': `---
+			pt: {
+				newMessages: {
+					'post.md': `---
 title: Traduzido
 ---
-` } }, // 정상
+`,
+				},
+			}, // 정상
 		}
 		const expected = {
 			de: {},
-  es: { 'post.md': {} },
-  fr: {},
+			es: { 'post.md': {} },
+			fr: {},
 			ko: { 'post.md': { title: '원본' } },
 			pt: { 'post.md': { title: 'Traduzido' } },
 			// fr, de, es는 유효한 newMessages가 없으므로 결과에 포함되지 않음

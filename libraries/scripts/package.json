@@ -13,8 +13,8 @@
 		"@ai-sdk/google": "^1.2.14",
 		"@ai-sdk/openai": "^1.3.18",
 		"@library/helpers": "workspace:*",
-		"@library/llms": "workspace:*",
 		"@library/library-base": "workspace:*",
+		"@library/llms": "workspace:*",
 		"ai": "^4.3.9",
 		"zod": "^3.24.3"
 	},

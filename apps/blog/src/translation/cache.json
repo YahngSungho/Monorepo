@@ -1,7 +1,1 @@
-{
-  "routes/lorem/articles/test-article": {
-    "ko": "안녕",
-    "en": "Hello",
-    "explanation": "This is a test message"
-  }
-}
+{}

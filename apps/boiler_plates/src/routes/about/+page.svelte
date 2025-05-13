@@ -1,12 +1,12 @@
 <script>
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
+import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import Icon from '@library/ui/icon'
 
-import * as m from '@library/paraglide/messages'
-import {localizeHref, setLocale } from '../../../../../libraries/paraglide/src'
+import { localizeHref, setLocale } from '../../../../../libraries/paraglide/src'
 
 const fo = 'bigCommandKEnabled'
 
@@ -23,9 +23,9 @@ foo += ' bar133322222223'
 <h6>Welcome to SvelteKit 000</h6>
 
 <Icon style="font-size: 2em;" icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
-<Button2 href={localizeHref("/")} variant="info">home</Button2>
-<Button2 href={localizeHref("/about")} variant="warning">{m.deft_east_mouse_hope()}</Button2>
-<Button1 href={localizeHref("/lorem")} variant="default">{m.welcome()}</Button1>
+<Button2 href={localizeHref('/')} variant="info">home</Button2>
+<Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
+<Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>
 
 <div class="p1 boxed long-text gutter">
 	<h1>Aute aliquip laborum tempor</h1>

@@ -19,7 +19,11 @@ Blog의 경우 article에 대한 폴더에 title, tags 폴더도 추가
 
 import path from 'node:path'
 
-import { readFilesToObjects, readFilesToStrings_recursive, writeFile_async } from '@library/helpers/fs-async'
+import {
+	readFilesToObjects,
+	readFilesToStrings_recursive,
+	writeFile_async,
+} from '@library/helpers/fs-async'
 import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
@@ -29,7 +33,6 @@ import {
 	getNewCache,
 	translateOneLanguageMessages,
 } from '../helpers.js'
-
 
 // dummy function for test
 // export async function getTranslatedMessages_forTest (language, combinedMessages, olderMessages, dictionary) {
@@ -43,26 +46,28 @@ import {
 // 	}
 // }
 
-const dictFolderPath = getAbsolutePath(import.meta.url, '../../../../paraglide/messages-helpers/dicts')
+const dictFolderPath = getAbsolutePath(
+	import.meta.url,
+	'../../../../paraglide/messages-helpers/dicts',
+)
 
-export async function getFiles (rootAbsolutePath, helperFolderPath) {
+export async function getFiles(rootAbsolutePath, helperFolderPath) {
 	const languageMessageMap = getInitialLanguageMap()
 
 	const markdownFiles = await readFilesToStrings_recursive(rootAbsolutePath, '**/*.md')
 	const helperFiles = await readFilesToObjects(helperFolderPath)
-	const dictFiles = await  readFilesToObjects(dictFolderPath)
+	const dictFiles = await readFilesToObjects(dictFolderPath)
 
 	const cache = helperFiles['cache.json'] || {}
 
 	const dictPerLanguage = {}
 	for (const language of Object.keys(languageMessageMap)) {
-		dictPerLanguage[language] = dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
+		dictPerLanguage[language] =
+			dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
 	}
 
 	return { initialMarkdownFiles: markdownFiles, dictPerLanguage, cache }
 }
-
-
 
 // const initialMarkdownFiles_forTest = [
 // 	{
@@ -129,7 +134,7 @@ export async function getFiles (rootAbsolutePath, helperFolderPath) {
 // 	}
 
 export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
-	const languageMessageMap = { ...(getInitialLanguageMap()) }
+	const languageMessageMap = { ...getInitialLanguageMap() }
 
 	const explanations = {}
 	for (const fileObject of initialMarkdownFiles) {
@@ -190,19 +195,19 @@ export async function getTranslatedLanguageMap(
 			combinedMessages_cached,
 		)
 
-		return await R.mapObjectParallel(async (languageMessage, language) => {
-			if (languageMessage.missingMessageKeys.length === 0) {
-				return languageMessage
-			}
+	return await R.mapObjectParallel(async (languageMessage, language) => {
+		if (languageMessage.missingMessageKeys.length === 0) {
+			return languageMessage
+		}
 
-			return await translateOneLanguageMessages(
-					language,
-					languageMessage,
-					dictPerLanguage[language],
-					combinedMessages_latest,
-					getTranslatedMessages,
-				)
-			})(targetLanguageMap)
+		return await translateOneLanguageMessages(
+			language,
+			languageMessage,
+			dictPerLanguage[language],
+			combinedMessages_latest,
+			getTranslatedMessages,
+		)
+	})(targetLanguageMap)
 }
 
 // const result = await getTranslatedLanguageMap(languageMessageMap_forTest, explanations_forTest, dictPerLanguage_forTest, combinedMessages_cached_forTest, getTranslatedMessages_forTest)
@@ -228,23 +233,43 @@ export async function getTranslatedLanguageMap(
 //   }
 // }
 
-export async function saveFiles (rootAbsolutePath, helperFolderPath, translatedLanguageMap, explanations, languageMessageMap_ko, languageMessageMap_en) {
+export async function saveFiles(
+	rootAbsolutePath,
+	helperFolderPath,
+	translatedLanguageMap,
+	explanations,
+	languageMessageMap_ko,
+	languageMessageMap_en,
+) {
 	for await (const [language, messageMap] of Object.entries(translatedLanguageMap)) {
 		if (messageMap.missingMessageKeys.length === 0) {
 			continue
 		}
 
-		for await (const [ messageKey, messageValue ] of Object.entries(messageMap.newMessages)) {
+		for await (const [messageKey, messageValue] of Object.entries(messageMap.newMessages)) {
 			const filePath = path.join(rootAbsolutePath, messageKey, `${language}.md`)
 			await writeFile_async(filePath, messageValue)
 		}
 
-		await writeFile_async(path.join(dictFolderPath, `${language}.json`), JSON.stringify({
-			"$schema": "https://inlang.com/schema/inlang-message-format",
-			...messageMap.newDictionary,
-		}, undefined, 2))
+		await writeFile_async(
+			path.join(dictFolderPath, `${language}.json`),
+			JSON.stringify(
+				{
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					...messageMap.newDictionary,
+				},
+				undefined,
+				2,
+			),
+		)
 	}
 
-	const newCache = getNewCache({ ko: languageMessageMap_ko, en: languageMessageMap_en }, explanations)
-	await writeFile_async(path.join(helperFolderPath, 'cache.json'), JSON.stringify(newCache, undefined, 2))
+	const newCache = getNewCache(
+		{ ko: languageMessageMap_ko, en: languageMessageMap_en },
+		explanations,
+	)
+	await writeFile_async(
+		path.join(helperFolderPath, 'cache.json'),
+		JSON.stringify(newCache, undefined, 2),
+	)
 }

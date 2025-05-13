@@ -9,24 +9,24 @@ export const getLanguageName = (localeCode) => {
 
 		if (parts.length > 1) {
 			const region = parts[1].toUpperCase() // 지역 코드는 대문자로
-				try {
-					const regionDisplay = regionNamer.of(region)
+			try {
+				const regionDisplay = regionNamer.of(region)
 				if (regionDisplay) {
 					return `${localeCode}: ${languageDisplay} (Region: ${regionDisplay})`
 				}
 				return `${localeCode}: ${languageDisplay}`
-				} catch {
-					const language0 = languageNamer.of(localeCode)
-					if (language0 && language0.includes('(') && language0.endsWith(')')) {
-						const openParenIndex = language0.lastIndexOf('(');
-						if (openParenIndex > 0 && language0[openParenIndex - 1] !== ' ') {
-							const part1 = language0.slice(0, Math.max(0, openParenIndex));
-							const part2 = language0.slice(Math.max(0, openParenIndex));
-							return `${localeCode}: ${part1} ${part2}`;
-						}
+			} catch {
+				const language0 = languageNamer.of(localeCode)
+				if (language0 && language0.includes('(') && language0.endsWith(')')) {
+					const openParenIndex = language0.lastIndexOf('(')
+					if (openParenIndex > 0 && language0[openParenIndex - 1] !== ' ') {
+						const part1 = language0.slice(0, Math.max(0, openParenIndex))
+						const part2 = language0.slice(Math.max(0, openParenIndex))
+						return `${localeCode}: ${part1} ${part2}`
 					}
-					return `${localeCode}: ${language0}`
 				}
+				return `${localeCode}: ${language0}`
+			}
 		}
 		return `${localeCode}: ${languageDisplay}`
 	} catch (error) {

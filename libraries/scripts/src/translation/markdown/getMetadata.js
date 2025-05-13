@@ -83,11 +83,7 @@ export const getMetaDataObject = (originalLanguageMap, translatedLanguageMap) =>
 		{},
 		R.merge(R.pick('ko')(originalLanguageMap || {})),
 		R.merge(R.pick('en')(originalLanguageMap || {})),
-		R.merge(
-			R.mapObject(
-				(value) => value?.newMessages || {},
-			)(translatedLanguageMap || {}),
-		),
+		R.merge(R.mapObject((value) => value?.newMessages || {})(translatedLanguageMap || {})),
 	)
 
 	const metaDataObject = R.mapObject((messageObject) =>
