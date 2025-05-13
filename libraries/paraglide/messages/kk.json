@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Белгіше (Icon)",
+  "deft_east_mouse_hope": "Сәлем",
+  "hello_world": "Сәлем, {name}, en-нен!",
+  "tangy_late_wallaby_grip": "SvelteKit-ке қош келдіңіз!",
+  "welcome": "SvelteKit-ке қош келдіңіз!",
+  "region": "Аймақ"
+}

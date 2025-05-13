@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "آئیکن",
+  "deft_east_mouse_hope": "ہیلو",
+  "hello_world": "ہیلو، {name}، انگریزی سے!",
+  "tangy_late_wallaby_grip": "SvelteKit میں خوش آمدید",
+  "welcome": "SvelteKit میں خوش آمدید",
+  "region": "علاقہ"
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "Icon": "ਆਈਕਨ",
+  "Hello": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ",
+  "Region": "ਖੇਤਰ",
+  "SvelteKit": "ਸਵੇਲਟਕਿੱਟ",
+  "Welcome": "ਜੀ ਆਇਆਂ ਨੂੰ"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "አዶ",
+  "deft_east_mouse_hope": "ሰላም",
+  "hello_world": "ሰላም፣ {name} ከ እንግሊዝኛ!",
+  "tangy_late_wallaby_grip": "ወደ SvelteKit (SvelteKit) እንኳን ደህና መጡ",
+  "welcome": "ወደ SvelteKit (SvelteKit) እንኳን ደህና መጡ",
+  "region": "ክልል"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Àmì",
+  "deft_east_mouse_hope": "Ẹ n lẹ",
+  "hello_world": "Ẹ n lẹ, {name} láti Gẹ̀ẹ́sì!",
+  "tangy_late_wallaby_grip": "Ẹ káàbọ̀ sí SvelteKit",
+  "welcome": "Ẹ káàbọ̀ sí SvelteKit",
+  "region": "Agbègbè"
+}

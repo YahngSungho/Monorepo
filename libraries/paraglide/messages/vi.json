@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Biểu tượng",
+  "deft_east_mouse_hope": "Xin chào",
+  "hello_world": "Xin chào, {name} từ en!",
+  "tangy_late_wallaby_grip": "Chào mừng đến với SvelteKit",
+  "welcome": "Chào mừng đến với SvelteKit",
+  "region": "Khu vực"
+}

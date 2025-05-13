@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "ଆଇକନ୍",
+  "deft_east_mouse_hope": "ନମସ୍କାର",
+  "hello_world": "ନମସ୍କାର, {name}!",
+  "tangy_late_wallaby_grip": "SvelteKitକୁ ସ୍ଵାଗତ",
+  "welcome": "SvelteKitକୁ ସ୍ଵାଗତ",
+  "region": "ଅଞ୍ଚଳ"
+}

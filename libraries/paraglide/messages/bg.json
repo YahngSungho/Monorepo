@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Икона",
+  "deft_east_mouse_hope": "Здравейте",
+  "hello_world": "Здравей, {name} от en!",
+  "tangy_late_wallaby_grip": "Добре дошли в SvelteKit",
+  "welcome": "Добре дошли в SvelteKit",
+  "region": "Регион"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Aikoni",
+  "deft_east_mouse_hope": "Habari",
+  "hello_world": "Habari, {name} kutoka en!",
+  "tangy_late_wallaby_grip": "Karibu kwenye SvelteKit",
+  "welcome": "Karibu kwenye SvelteKit",
+  "region": "Mkoa"
+}

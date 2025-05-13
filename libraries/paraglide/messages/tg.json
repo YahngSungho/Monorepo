@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Нишона",
+  "deft_east_mouse_hope": "Салом",
+  "hello_world": "Салом, {name}!",
+  "tangy_late_wallaby_grip": "Ба SvelteKit хуш омадед!",
+  "welcome": "Ба SvelteKit хуш омадед!",
+  "region": "Минтақа"
+}

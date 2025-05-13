@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "சின்னம்",
+  "deft_east_mouse_hope": "வணக்கம்",
+  "hello_world": "வணக்கம், {name} ஆங்கிலத்திலிருந்து!",
+  "tangy_late_wallaby_grip": "SvelteKit-க்கு வரவேற்கிறோம்",
+  "welcome": "SvelteKit-க்கு வரவேற்கிறோம்",
+  "region": "பிராந்தியம்"
+}

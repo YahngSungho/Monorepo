@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "আইকন",
+  "deft_east_mouse_hope": "হ্যালো",
+  "hello_world": "হ্যালো, {name}!",
+  "tangy_late_wallaby_grip": "SvelteKit-এ স্বাগতম",
+  "welcome": "SvelteKit-এ স্বাগতম",
+  "region": "অঞ্চল"
+}

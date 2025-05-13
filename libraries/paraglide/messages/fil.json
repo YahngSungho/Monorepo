@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Icon",
+  "deft_east_mouse_hope": "Kumusta",
+  "hello_world": "Kumusta, {name} mula sa en!",
+  "tangy_late_wallaby_grip": "Maligayang pagdating sa SvelteKit",
+  "welcome": "Maligayang pagdating sa SvelteKit",
+  "region": "Rehiyon"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Εικονίδιο",
+  "deft_east_mouse_hope": "Γεια σας",
+  "hello_world": "Γεια σου, {name} από τα Αγγλικά!",
+  "tangy_late_wallaby_grip": "Καλώς ήρθατε στο SvelteKit",
+  "welcome": "Καλώς ήρθατε στο SvelteKit",
+  "region": "Περιοχή"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "antsy_aloof_barbel_read": "Astaam",
+  "deft_east_mouse_hope": "Salaam",
+  "hello_world": "Salaam, {name}!",
+  "tangy_late_wallaby_grip": "Ku soo dhawoow SvelteKit",
+  "welcome": "Ku soo dhawoow SvelteKit",
+  "region": "Gobol"
+}
