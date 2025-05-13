@@ -1,7 +1,7 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { basename, dirname, join } from 'node:path';
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { basename, dirname, join } from 'node:path'
 
-import { glob  } from 'tinyglobby'
+import { glob } from 'tinyglobby'
 
 import { R } from '../library-wrappers/R.js'
 import { getAbsolutePath } from './sync.js'
@@ -27,51 +27,53 @@ import { getAbsolutePath } from './sync.js'
  * // ]
  */
 export async function readFilesToStrings_recursive(absoluteFolderPath, globPattern) {
-
 	const results = []
 	// 내장 glob은 cwd 옵션을 사용하므로, 패턴은 cwd 기준 상대 경로여야 합니다.
 	const options = {
 		cwd: absoluteFolderPath, // 검색 시작 디렉토리를 지정합니다.
 		// nodir: true는 내장 glob의 기본 동작과 유사 (파일만 반환)
-	};
+	}
 
-	console.log(`내장 Glob 패턴 검색 시작: 패턴 [${globPattern}], 경로 [${absoluteFolderPath}]`);
+	console.log(`내장 Glob 패턴 검색 시작: 패턴 [${globPattern}], 경로 [${absoluteFolderPath}]`)
 
 	try {
 		// 1. glob 패턴과 일치하는 파일 경로 배열 가져오기 (await 추가)
-		const matchedFilePaths = await glob(globPattern, options); // glob의 Promise를 await으로 처리
+		const matchedFilePaths = await glob(globPattern, options) // glob의 Promise를 await으로 처리
 
-		console.log(`   - 총 ${matchedFilePaths.length}개 파일 경로 발견.`);
+		console.log(`   - 총 ${matchedFilePaths.length}개 파일 경로 발견.`)
 
-		let count = 0;
+		let count = 0
 		// 2. 배열을 순회하며 각 파일 처리 (for await...of -> for...of 변경)
 		for (const relativeFilePath of matchedFilePaths) {
 			// relativeFilePath는 cwd 기준 상대 경로 (예: 'user.json', 'configs/config.json')
-			const fullFilePath = join(absoluteFolderPath, relativeFilePath); // 실제 파일 시스템 접근을 위한 전체 경로
-			const finalPath = fullFilePath; // 저장할 경로는 호출자 기준 상대 경로 (원래 의도대로)
+			const fullFilePath = join(absoluteFolderPath, relativeFilePath) // 실제 파일 시스템 접근을 위한 전체 경로
+			const finalPath = fullFilePath // 저장할 경로는 호출자 기준 상대 경로 (원래 의도대로)
 
 			try {
-				console.log(`   - 파일 내용 읽기 시도: ${fullFilePath}`);
-				const value = await readFile(fullFilePath, 'utf8');
-				const fileName = basename(fullFilePath); // 전체 경로에서 파일 이름 추출
+				console.log(`   - 파일 내용 읽기 시도: ${fullFilePath}`)
+				const value = await readFile(fullFilePath, 'utf8')
+				const fileName = basename(fullFilePath) // 전체 경로에서 파일 이름 추출
 
 				// 파일 이름, 내용, 최종 경로를 객체에 추가
-				results.push({ fileName, value, path: finalPath });
-				count++;
+				results.push({ fileName, value, path: finalPath })
+				count++
 			} catch (readError) {
 				// 개별 파일 읽기 오류 처리
-				console.error(`   ! 파일 읽기 오류 [${fullFilePath}]:`, readError.message);
+				console.error(`   ! 파일 읽기 오류 [${fullFilePath}]:`, readError.message)
 				// 오류 발생 시 해당 파일은 결과에 포함되지 않음
 			}
 		}
 
-		console.log(` - 총 ${count}개 파일 처리 완료.`);
-		console.log(`성공적으로 파일 ${results.length}개의 정보를 객체에 담았습니다.`);
-		return results; // 최종 결과 객체 반환
+		console.log(` - 총 ${count}개 파일 처리 완료.`)
+		console.log(`성공적으로 파일 ${results.length}개의 정보를 객체에 담았습니다.`)
+		return results // 최종 결과 객체 반환
 	} catch (error) {
 		// glob 실행 중 오류 또는 예기치 않은 오류 처리
-		console.error(` ! 내장 Glob 검색 중 오류 발생 (패턴: ${globPattern}, 경로: ${absoluteFolderPath}):`, error);
-		throw error; // 에러를 다시 던져 호출 측에서 처리하도록 함
+		console.error(
+			` ! 내장 Glob 검색 중 오류 발생 (패턴: ${globPattern}, 경로: ${absoluteFolderPath}):`,
+			error,
+		)
+		throw error // 에러를 다시 던져 호출 측에서 처리하도록 함
 	}
 }
 
@@ -87,36 +89,37 @@ export async function readFilesToStrings_recursive(absoluteFolderPath, globPatte
  * @throws {Error} 폴더 읽기나 주요 파일 읽기 중 오류 발생 시 에러를 던집니다. 개별 파일 오류는 콘솔에 기록될 수 있습니다.
  */
 export async function readFilesToStrings(absoluteFolderPath, globPattern = '*') {
-
-  try {
-    // 1. glob 패턴과 일치하는 파일 목록 가져오기 (하위 폴더 제외)
-    const matchedFiles = await glob(globPattern, {
+	try {
+		// 1. glob 패턴과 일치하는 파일 목록 가져오기 (하위 폴더 제외)
+		const matchedFiles = await glob(globPattern, {
 			cwd: absoluteFolderPath,
 			deep: 1, // 현재 폴더만 탐색 (재귀 X)
-		});
-    console.log(`폴더 [${absoluteFolderPath}] 에서 패턴 [${globPattern}]과(와) 일치하는 파일 ${matchedFiles.length}개 발견.`);
+		})
+		console.log(
+			`폴더 [${absoluteFolderPath}] 에서 패턴 [${globPattern}]과(와) 일치하는 파일 ${matchedFiles.length}개 발견.`,
+		)
 
-    // 2. 각 파일에 대해 내용 읽기 Promise 생성
-    const processingPromises = matchedFiles.map(async (filename) => {
-      const fullPath = join(absoluteFolderPath, filename); // 파일의 전체 경로 생성
+		// 2. 각 파일에 대해 내용 읽기 Promise 생성
+		const processingPromises = matchedFiles.map(async (filename) => {
+			const fullPath = join(absoluteFolderPath, filename) // 파일의 전체 경로 생성
 
-      try {
+			try {
 				// 파일 내용을 UTF-8 텍스트로 읽어옵니다.
-				console.log(` - 파일 읽기 시도: ${fullPath}`);
-				const value = await readFile(fullPath, 'utf8');
+				console.log(` - 파일 읽기 시도: ${fullPath}`)
+				const value = await readFile(fullPath, 'utf8')
 				// 성공적으로 읽었으면 파일 이름과 내용을 객체로 반환
-				return { filename, value, path: fullPath };
-      } catch (readError) {
-        // 개별 파일 처리 중 오류 발생 시 (예: 권한 문제)
-        console.error(` ! 파일 읽기 오류 [${fullPath}]:`, readError.message);
+				return { filename, value, path: fullPath }
+			} catch (readError) {
+				// 개별 파일 처리 중 오류 발생 시 (예: 권한 문제)
+				console.error(` ! 파일 읽기 오류 [${fullPath}]:`, readError.message)
 				// 오류 발생 시 null 반환하여 이 파일은 결과에 포함되지 않도록 함
 				return undefined
 			}
 		})
 
-    // 3. 모든 파일 처리 작업(읽기)이 완료될 때까지 병렬로 기다리기
-    console.log(`총 ${processingPromises.length}개의 파일 처리 시작...`);
-    const results = await Promise.all(processingPromises);
+		// 3. 모든 파일 처리 작업(읽기)이 완료될 때까지 병렬로 기다리기
+		console.log(`총 ${processingPromises.length}개의 파일 처리 시작...`)
+		const results = await Promise.all(processingPromises)
 
 		/** @type {{[filename: string]: string}} */
 		const fileMap = {}
@@ -127,16 +130,18 @@ export async function readFilesToStrings(absoluteFolderPath, globPattern = '*') 
 			fileMap[fileObject.filename] = fileObject.value
 		}
 
-
-		console.log(`성공적으로 파일 ${Object.keys(fileMap).length}개의 내용을 객체에 담았습니다.`);
+		console.log(`성공적으로 파일 ${Object.keys(fileMap).length}개의 내용을 객체에 담았습니다.`)
 
 		return fileMap
-  } catch (error) {
-    // glob 실행 오류 또는 폴더 자체를 읽을 수 없는 경우 등의 오류 처리
-    console.error(` ! 폴더 [${absoluteFolderPath}] 처리 중 (패턴: ${globPattern}) 심각한 오류 발생:`, error);
-    // 에러를 다시 던져서 호출 측에서 처리하도록 함
-    throw error;
-  }
+	} catch (error) {
+		// glob 실행 오류 또는 폴더 자체를 읽을 수 없는 경우 등의 오류 처리
+		console.error(
+			` ! 폴더 [${absoluteFolderPath}] 처리 중 (패턴: ${globPattern}) 심각한 오류 발생:`,
+			error,
+		)
+		// 에러를 다시 던져서 호출 측에서 처리하도록 함
+		throw error
+	}
 }
 
 /**
@@ -164,31 +169,31 @@ export async function readFilesToObjects(absoluteFolderPath) {
 		return objectMap
 	} catch (error) {
 		// readFilesToStrings 또는 JSON.parse 또는 그 외의 예외 처리
-		console.error(` ! JSON 파일들을 객체로 읽는 중 오류 발생 [${absoluteFolderPath}]:`, error);
-		throw error;
+		console.error(` ! JSON 파일들을 객체로 읽는 중 오류 발생 [${absoluteFolderPath}]:`, error)
+		throw error
 	}
 }
 
 export const writeFile_async = R.curry(async (absolutePath, content) => {
 	try {
-		const fullPath = absolutePath;
+		const fullPath = absolutePath
 
 		// 폴더가 없다면 생성 (Node.js v10.12.0 이상)
-		await mkdir(dirname(fullPath), { recursive: true });
-		await writeFile(fullPath, content, 'utf8');
+		await mkdir(dirname(fullPath), { recursive: true })
+		await writeFile(fullPath, content, 'utf8')
 	} catch (error) {
-		console.error(` ! 파일 쓰기 오류 [${absolutePath}]:`, error);
-		throw error;
+		console.error(` ! 파일 쓰기 오류 [${absolutePath}]:`, error)
+		throw error
 	}
 })
 
 export const readFileFromRelativePath = R.curry(async (importMetaUrl, relativePath) => {
 	const absolutePath = getAbsolutePath(importMetaUrl, relativePath)
 	try {
-		const content = await readFile(absolutePath, 'utf8');
-		return content;
+		const content = await readFile(absolutePath, 'utf8')
+		return content
 	} catch (error) {
-		console.error(` ! 파일 읽기 오류 [${absolutePath}]:`, error);
-		throw error;
+		console.error(` ! 파일 읽기 오류 [${absolutePath}]:`, error)
+		throw error
 	}
 })
