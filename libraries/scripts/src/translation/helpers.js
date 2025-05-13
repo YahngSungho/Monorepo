@@ -4,12 +4,12 @@ import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
-
-const settingPath = getAbsolutePath(
-	import.meta.url,
-	'../../../paraglide/project.inlang/settings.json',
-)
 export function getInitialLanguageMap() {
+
+	const settingPath = getAbsolutePath(
+		import.meta.url,
+		'../../../paraglide/project.inlang/settings.json',
+	)
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
 	const result = {}

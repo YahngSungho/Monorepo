@@ -386,22 +386,34 @@ describe('Paraglide 번역 스크립트', () => {
 				value: { msg1: 'English1' },
 				missingMessageKeys: ['msg2'], // 저장 대상
 				translatedMessages: { msg2: 'Translated_English_msg2' },
-				newMessages: { msg1: 'English1', msg2: 'Translated_English_msg2' },
-				newDictionary: { term_en: 'TermEN' },
+				newMessages: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					msg1: 'English1', msg2: 'Translated_English_msg2' },
+				newDictionary: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					term_en: 'TermEN' },
 			},
 			ja: {
 				value: { msg1: '日本語1' },
 				missingMessageKeys: [], // 저장 안 함
 				translatedMessages: {},
-				newMessages: { msg1: '日本語1' },
-				newDictionary: { term_ja: 'TermJA' },
+				newMessages: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					msg1: '日本語1' },
+				newDictionary: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					term_ja: 'TermJA' },
 			},
 			ko: {
 				value: { msg1: '한글1', msg2: '한글2' },
 				missingMessageKeys: ['msg3'], // 저장 대상
 				translatedMessages: { msg3: '번역된_한글3' },
-				newMessages: { msg1: '한글1', msg2: '한글2', msg3: '번역된_한글3' },
-				newDictionary: { term_ko: 'TermKO' },
+				newMessages: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					msg1: '한글1', msg2: '한글2', msg3: '번역된_한글3' },
+				newDictionary: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					term_ko: 'TermKO' },
 			},
 		}
 		const mockExplanations = { msg1: 'Expl1', msg2: 'Expl2', msg3: 'Expl3' }

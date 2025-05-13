@@ -403,12 +403,19 @@ describe('saveFiles 함수', () => {
 			fr: {
 				missingMessageKeys: ['comp/text', 'comp/other'],
 				newMessages: { 'comp/text': 'Bonjour', 'comp/other': 'Monde' },
-				newDictionary: { hello: 'salut' },
+				newDictionary: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					hello: 'salut',
+				},
 			},
 			de: {
 				missingMessageKeys: ['comp/text', 'comp/extra'],
 				newMessages: { 'comp/text': 'Hallo', 'comp/extra': 'Extra' },
-				newDictionary: { hello: 'hallo', world: 'Welt' },
+				newDictionary: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					hello: 'hallo',
+					world: 'Welt',
+				},
 			},
 		}
 		const explanations = {
@@ -427,8 +434,16 @@ describe('saveFiles 함수', () => {
 			'comp/extra': 'Extra',
 		}
 
-		const expectedJsonFr = JSON.stringify({ hello: 'salut' }, undefined, 2)
-		const expectedJsonDe = JSON.stringify({ hello: 'hallo', world: 'Welt' }, undefined, 2)
+		const expectedJsonFr = JSON.stringify(
+			{ $schema: 'https://inlang.com/schema/inlang-message-format', hello: 'salut' },
+			undefined,
+			2,
+		)
+		const expectedJsonDe = JSON.stringify(
+			{ $schema: 'https://inlang.com/schema/inlang-message-format', hello: 'hallo', world: 'Welt' },
+			undefined,
+			2,
+		)
 		const expectedJsonCache = JSON.stringify(mockNewCache, undefined, 2)
 
 		// 실행 전에 명시적으로 초기화
@@ -467,8 +482,16 @@ describe('saveFiles 함수', () => {
 		)
 
 		// JSON.stringify 호출 검증 - 정확한 호출 횟수 대신 최소 호출 검증으로 변경
-		expect(JSON_stringify_spy).toHaveBeenCalledWith({ hello: 'salut' }, undefined, 2)
-		expect(JSON_stringify_spy).toHaveBeenCalledWith({ hello: 'hallo', world: 'Welt' }, undefined, 2)
+		expect(JSON_stringify_spy).toHaveBeenCalledWith(
+			translatedLanguageMap.fr.newDictionary, // $schema 포함된 객체
+			undefined,
+			2,
+		)
+		expect(JSON_stringify_spy).toHaveBeenCalledWith(
+			translatedLanguageMap.de.newDictionary, // $schema 포함된 객체
+			undefined,
+			2,
+		)
 		expect(JSON_stringify_spy).toHaveBeenCalledWith(mockNewCache, undefined, 2)
 	})
 
