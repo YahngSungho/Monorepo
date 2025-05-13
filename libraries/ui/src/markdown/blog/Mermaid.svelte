@@ -50,7 +50,7 @@ function initializeMermaidHover(svgElement) {
 		const match = fullId.match(/^flowchart-([^-]+)-\d+$/)
 		if (match && match[1]) {
 			const nodeId = match[1]
-			// eslint-disable-next-line functional/immutable-data
+
 			connections[nodeId] = {
 				element: nodeEl,
 				connectedNodes: new Set(),
