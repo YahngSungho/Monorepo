@@ -189,7 +189,6 @@ jobs:
           path: package-json-changes.patch
 
   update-translation:
-
     runs-on: ubuntu-latest
     needs: [path-filter, fix-package-json]
     if: |
@@ -261,18 +260,34 @@ jobs:
       # 4. 임시 커밋 생성 (패치 + 설치 후 상태 기준)
       - name: Create temporary commit for diff base
         run: |
+          echo "--- Creating temporary commit ---"
           git config user.name "GitHub Actions Temp"
           git config user.email "actions-temp@github.com"
+          echo "Status before temporary commit 'git add .':"
+          git status --short
           git add . # 모든 변경사항 스테이징 (패치 적용 + install 결과 포함)
+          echo "Status after temporary commit 'git add .' and before 'git commit':"
+          git status --short
+          echo "Diff of staged changes for temporary commit:"
+          git diff --staged --stat # 스테이징된 내용 확인
           if ! git diff --staged --quiet; then
             git commit -m "Temporary commit after applying package-json patch and install"
+            echo "Temporary commit created. HEAD is now at $(git rev-parse HEAD)"
           else
-            echo "마크다운 수정 전 임시로 커밋할 변경사항이 없습니다."
+            echo "No changes to commit temporarily before translation."
           fi
+          echo "--- Finished temporary commit ---"
 
       # 5. 번역 실행
       - name: Run Translation
-        run: pnpm run translate
+        run: |
+          echo "--- Running Translation (pnpm run translate) ---"
+          pnpm run translate
+          echo "--- Finished Translation ---"
+          echo "Status after 'pnpm run translate' (before creating patch):"
+          git status --short # 번역 실행 직후 상태 확인 (새 파일이 untracked로 보여야 함)
+          echo "List all files (for debugging new file creation):"
+          find . -type f -ls # 모든 파일 목록과 상세 정보 출력 (특히 번역 결과물이 생성될 것으로 예상되는 경로 확인)
         env:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
@@ -280,16 +295,26 @@ jobs:
       - name: Check for Translation changes and create patch
         id: check_translation_changes
         run: |
-          # --> 수정: git diff HEAD 사용하여 패치 생성
-          if ! git diff --quiet HEAD; then # HEAD (임시 커밋)와 비교
+          echo "--- Creating translation patch against HEAD ($(git rev-parse HEAD)) ---"
+          echo "Running 'git status --short' before diff to see current state:"
+          git status --short # diff 직전 상태 재확인
+          echo "Running 'git diff --stat HEAD' to see changes:"
+          git diff --stat HEAD # 어떤 파일이 변경으로 감지되는지 통계 보기
+
+          # '--exit-code'를 사용하여 스크립트에서 변경 유무를 더 안정적으로 확인
+          if ! git diff --quiet HEAD --exit-code; then
             echo "Translation 변경사항이 있습니다."
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            # cache.json 파일의 변경이 너무 클 경우, 다음 라인의 주석을 해제하여 cache.json을 제외하고 패치를 생성해볼 수 있습니다.
+            # git diff HEAD -- . ':!*.cache.json' > translation-changes.patch
             git diff HEAD > translation-changes.patch # 임시 커밋과의 차이 저장
+            echo "translation-changes.patch content:"
+            cat translation-changes.patch # 생성된 패치 내용 출력
           else
             echo "Translation 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            # touch markdown-changes.patch # --> 삭제: 변경사항 없을 시 빈 파일 생성 안 함
           fi
+          echo "--- Finished creating translation patch ---"
 
       # 7. 번역 패치 업로드
       - name: Upload translation patch artifact
@@ -419,7 +444,7 @@ jobs:
           git config user.email "actions-temp@github.com"
           git add . # 모든 변경사항 스테이징 (패치 적용 + install 결과 포함)
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json, translation patches and install"
+            git commit -m "Temporary commit after applying package-json patch and install"
           else
             echo "마크다운 수정 전 임시로 커밋할 변경사항이 없습니다."
           fi
