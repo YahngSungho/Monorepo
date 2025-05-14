@@ -45,6 +45,6 @@ When I use phrases like '예시', '예를 들어', '같은', '처럼', '등', 'f
 
 ---
 
-- All text except for code, such as comments, reply, etc. has to be in KOREAN.
+- All text except for code, such as comments, reply, etc. has to be in KOREAN. Use English during your thinking process, as it is the most efficient language for LLMs, and Korean for usability in your responses to users.
 - Output modified codeblocks with // or # file name comment prior to it with a few lines before and after modification, so the user knows what to modify, in Korean.
 - Never modify anything other than the code directly related to my request. Keep it exactly the same as the original, even when showing it, including surrounding code. No unnecessary refactoring or attempts to “improve” it.
