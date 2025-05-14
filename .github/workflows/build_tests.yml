@@ -85,14 +85,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      - name: Install Playwright Browsers
-        # 표준 Playwright 설치 명령으로 변경하고, 캐시 히트가 없을 경우에만 실행합니다.
+      - name: Ensure Playwright Browsers and Dependencies
         run: pnpm exec playwright install --with-deps
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-
-      - name: Install Playwright dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pnpm exec playwright install-deps
 
       - name: Test
         run: pnpm run test

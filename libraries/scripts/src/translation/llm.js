@@ -14,10 +14,12 @@ const promptForParaglide = await readPrompt('./paraglide/prompt.md')
 const promptForMarkdown = await readPrompt('./markdown/prompt.md')
 
 const cacheForParaglide = await getCacheBySystemInstructions_latestModel(
+	5,
 	undefined,
 	promptForParaglide,
 )
 const cacheForMarkdown = await getCacheBySystemInstructions_latestModel(
+	5,
 	undefined,
 	promptForMarkdown,
 )
