@@ -47,8 +47,6 @@
 
 ## 5. 이미지
 
-![마크다운 로고](https://markdown-here.com/img/icon256.png)
-
 ## 6. 코드
 
 인라인 `코드`를 사용할 수 있습니다.
