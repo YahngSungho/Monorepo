@@ -805,8 +805,8 @@ importers:
         specifier: 4.1.4
         version: 4.1.4
       '@tailwindcss/vite':
-        specifier: 4.1.4
-        version: 4.1.4(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1))
+        specifier: 4.1.6
+        version: 4.1.6(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1))
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.3)
@@ -3128,11 +3128,6 @@ packages:
 
   '@tailwindcss/postcss@4.1.4':
     resolution: {integrity: sha512-bjV6sqycCEa+AQSt2Kr7wpGF1bOZJ5wsqnLEkqSbM/JEHxx/yhMH8wHmdkPyApF9xhHeMSwnnkDUUMMM/hYnXw==}
-
-  '@tailwindcss/vite@4.1.4':
-    resolution: {integrity: sha512-4UQeMrONbvrsXKXXp/uxmdEN5JIJ9RkH7YVzs6AMxC/KC1+Np7WZBaNIco7TEjlkthqxZbt8pU/ipD+hKjm80A==}
-    peerDependencies:
-      vite: ^5.2.0 || ^6
 
   '@tailwindcss/vite@4.1.6':
     resolution: {integrity: sha512-zjtqjDeY1w3g2beYQtrMAf51n5G7o+UwmyOjtsDMP7t6XyoRMOidcoKP32ps7AkNOHIXEOK0bhIC05dj8oJp4w==}
@@ -12366,13 +12361,6 @@ snapshots:
       '@tailwindcss/oxide': 4.1.4
       postcss: 8.5.3
       tailwindcss: 4.1.4
-
-  '@tailwindcss/vite@4.1.4(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1))':
-    dependencies:
-      '@tailwindcss/node': 4.1.4
-      '@tailwindcss/oxide': 4.1.4
-      tailwindcss: 4.1.4
-      vite: 6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1)
 
   '@tailwindcss/vite@4.1.6(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.0)(yaml@2.7.1))':
     dependencies:
