@@ -12,6 +12,7 @@ import { getAbsolutePath } from './sync.js'
  *
  * @param {string} absoluteFolderPath - 검색을 시작할 기준 폴더의 절대 경로.
  * @param {string} globPattern - 검색할 파일 패턴. \*\*\/ 로 시작해야 재귀적으로 탐색함
+ * @param {string} [ignorePattern] - 제외할 파일 패턴. 이 패턴과 일치하는 파일은 검색에서 제외됨
  * @returns {Promise<Array<{ fileName: string, value: string, path: string }>>}
  *          각 요소가 { fileName: 파일 이름, value: 파일 내용, path: 파일의 전체 경로 } 객체인 배열을 담은 Promise.
  *          오류 발생 시 에러를 던집니다.
@@ -26,7 +27,7 @@ import { getAbsolutePath } from './sync.js'
  * //   { fileName: "config.json", value: "{...}", path: "/path/to/project/src/data/configs/config.json" }
  * // ]
  */
-export async function readFilesToStrings_recursive(absoluteFolderPath, globPattern) {
+export async function readFilesToStrings_recursive(absoluteFolderPath, globPattern, ignorePattern) {
 	const results = []
 	// 내장 glob은 cwd 옵션을 사용하므로, 패턴은 cwd 기준 상대 경로여야 합니다.
 	const options = {
@@ -34,7 +35,14 @@ export async function readFilesToStrings_recursive(absoluteFolderPath, globPatte
 		// nodir: true는 내장 glob의 기본 동작과 유사 (파일만 반환)
 	}
 
-	console.log(`내장 Glob 패턴 검색 시작: 패턴 [${globPattern}], 경로 [${absoluteFolderPath}]`)
+	if (ignorePattern) {
+		// ignorePattern이 제공되면 options 객체에 추가
+		options.ignore = ignorePattern
+	}
+
+	console.log(
+		`내장 Glob 패턴 검색 시작: 패턴 [${globPattern}], 경로 [${absoluteFolderPath}]${ignorePattern ? `, 제외 패턴 [${JSON.stringify(ignorePattern)}]` : ''}`,
+	)
 
 	try {
 		// 1. glob 패턴과 일치하는 파일 경로 배열 가져오기 (await 추가)

@@ -70,5 +70,5 @@ export default {
 		trace: 'on-first-retry',
 	},
 
-	workers: process.env.CI ? 2 : '50%',
+	workers: process.env.CI ? 2 : 1,
 }

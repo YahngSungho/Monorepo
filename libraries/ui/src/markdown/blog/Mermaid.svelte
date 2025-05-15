@@ -1,7 +1,7 @@
 <script module>
-import { initMermaidTheme } from './mermaid-theme'
+import { initMermaidTheme_action } from './mermaid-theme'
 
-initMermaidTheme()
+const initMermaidThemePromise = initMermaidTheme_action()
 </script>
 
 <script>
@@ -16,7 +16,7 @@ import { getAstNode } from 'svelte-exmarkdown'
  * Mermaid 플로우차트 SVG 요소에 노드 hover 시 연결 요소 하이라이트 기능을 초기화합니다.
  * @param {SVGSVGElement} svgElement 대상 Mermaid SVG 요소
  */
-function initializeMermaidHover(svgElement) {
+function initializeMermaidHover_action(svgElement) {
 	if (!svgElement) {
 		console.error('SVG element not provided for Mermaid hover initialization.')
 		return
@@ -191,6 +191,9 @@ onMount(async () => {
 	// errorMessage = ''; // onMount에서는 초기 상태가 ''이므로 필요 없을 수 있음
 
 	try {
+		await initMermaidThemePromise
+
+		await tick()
 		// 비동기적으로 Mermaid 렌더링 실행 (onMount 콜백 자체가 async)
 		const { svg, bindFunctions } = await mermaid.render(id, definition)
 		svgContent = svg // 성공 시 SVG 콘텐츠 업데이트
@@ -203,7 +206,7 @@ onMount(async () => {
 		}
 		const svgElement = element?.querySelector('svg') // 렌더링된 SVG 찾기 (element가 있을 때만)
 		if (svgElement) {
-			initializeMermaidHover(svgElement) // 커스텀 hover 초기화
+			initializeMermaidHover_action(svgElement) // 커스텀 hover 초기화
 		} else {
 			// console.warn('SVG element not found after rendering for hover init.');
 		}
