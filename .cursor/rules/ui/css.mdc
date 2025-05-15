@@ -9,4 +9,4 @@ Use predefined CSS variables(Read these files by `read_file` tool, whenever need
 [baseVariables.css](mdc:libraries/base/src/baseVariables.css)
 
 Use predefined classes(Read this file by `read_file` tool, whenever needed):
-[baseVariables.css](mdc:libraries/base/src/baseClasses.css)
+[baseClasses.css](mdc:libraries/base/src/baseClasses.css)
