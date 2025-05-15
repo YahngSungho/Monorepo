@@ -192,9 +192,11 @@
 
 
 
-/\*\*\_Represents the structured output for the translation task.\_THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
-*/
-interface TranslationOutput {
+
+
+
+
+/\*\*\_Represents the structured output for the translation task.\_THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.*/interface TranslationOutput {
 /\_\*
 * The translated messages, keyed by the original message number.
 *Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).
