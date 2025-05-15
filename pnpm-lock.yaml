@@ -100,8 +100,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0(eslint@9.25.0(jiti@2.4.2))
       eslint-config-turbo:
-        specifier: ^2.5.0
-        version: 2.5.0(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0)
+        specifier: ^2.5.3
+        version: 2.5.3(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0)
       eslint-define-config:
         specifier: ^2.1.0
         version: 2.1.0
@@ -4929,8 +4929,8 @@ packages:
     peerDependencies:
       eslint: ^9.19.0
 
-  eslint-config-turbo@2.5.0:
-    resolution: {integrity: sha512-QJvZBEWDWQx1JyQCr0uwf4aQYhDSAGoHBdx+cPtpPzNEjZw16Ig8BglXxHZBh3I8/fI1U53cLgXwvb28BUZhPA==}
+  eslint-config-turbo@2.5.3:
+    resolution: {integrity: sha512-KuW20TUDfLooS38gSquL6Gi+ZjaMlno0N3hBe8c+F8+nRYUhbF2fNhuyzl9ScNHx6aJT2eVhLBfGELg7N5+sog==}
     peerDependencies:
       eslint: '>6.6.0'
       turbo: '>2.0.0'
@@ -5233,6 +5233,12 @@ packages:
 
   eslint-plugin-turbo@2.5.0:
     resolution: {integrity: sha512-qQk54MrUZv0gnpxV23sccTc+FL3UJ8q7vG7HmXuS2RP8gdjWDwI1CCJTJD8EdRIDjsMxF0xi0AKcMY0CwIlXVg==}
+    peerDependencies:
+      eslint: '>6.6.0'
+      turbo: '>2.0.0'
+
+  eslint-plugin-turbo@2.5.3:
+    resolution: {integrity: sha512-DlXZd+LgpDlxH/6IsiAXLhy82x0jeJDm0XBEqP6Le08uy0HBQkjCUt7SmXNp8esAtX9RYe6oDClbNbmI1jtK5g==}
     peerDependencies:
       eslint: '>6.6.0'
       turbo: '>2.0.0'
@@ -14366,10 +14372,10 @@ snapshots:
       '@eslint/js': 9.25.1
       eslint: 9.25.0(jiti@2.4.2)
 
-  eslint-config-turbo@2.5.0(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0):
+  eslint-config-turbo@2.5.3(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0):
     dependencies:
       eslint: 9.25.0(jiti@2.4.2)
-      eslint-plugin-turbo: 2.5.0(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0)
+      eslint-plugin-turbo: 2.5.3(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0)
       turbo: 2.5.0
 
   eslint-define-config@2.1.0: {}
@@ -14847,6 +14853,12 @@ snapshots:
       - supports-color
 
   eslint-plugin-turbo@2.5.0(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0):
+    dependencies:
+      dotenv: 16.0.3
+      eslint: 9.25.0(jiti@2.4.2)
+      turbo: 2.5.0
+
+  eslint-plugin-turbo@2.5.3(eslint@9.25.0(jiti@2.4.2))(turbo@2.5.0):
     dependencies:
       dotenv: 16.0.3
       eslint: 9.25.0(jiti@2.4.2)
