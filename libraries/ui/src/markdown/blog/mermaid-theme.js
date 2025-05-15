@@ -20,17 +20,14 @@ const configs = {
 		fontFamily: 'inherit', // 상위 요소 폰트 상속
 		fontSize: 'inherit', // 기본 폰트 크기 (필요시 조정)
 
-
 		// Primary elements (Nodes, etc.)
 		primaryColor: white, // 노드 배경
 		primaryBorderColor: gray12, // 노드 테두리
 		primaryTextColor: gray12, // 노드 텍스트
 
-
 		// Lines and Edges
 		lineColor: gray12, // 연결선 색상
 		textColor: gray12, // 라벨 등 일반 텍스트 색상
-
 
 		// Secondary (less used in simple diagrams, but set for consistency)
 		secondaryColor: gray3,
@@ -75,7 +72,6 @@ const configs = {
 		pie1: white, // Keep pie1 as the base background color
 		pie2: gray3, // Use gray-3 for the second slice
 		pie3: gray6, // Use gray-6 for the third slice
-
 
 		// pie4 and onwards will likely be derived or use defaults.
 		// If more explicit control is needed, define pie4: gray9, etc.

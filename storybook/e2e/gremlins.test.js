@@ -14,9 +14,12 @@ import { CACHE_DIR, isSameState, readCache, serializePage, writeCache } from './
  * @returns {Promise<void>} - Promise 객체
  */
 async function unleashGremlins(page) {
-	await page.evaluate(() => new Promise(resolve => {
-			setTimeout(resolve, 100)
-		}))
+	await page.evaluate(
+		() =>
+			new Promise((resolve) => {
+				setTimeout(resolve, 100)
+			}),
+	)
 	// Horde 생성 및 실행
 	await page.evaluate(async () => {
 		// @ts-ignore - window.gremlins는 addScriptTag/addInitScript에 의해 로드됨

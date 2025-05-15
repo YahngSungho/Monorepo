@@ -133,9 +133,12 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 	// 측정을 시작하기 전에 브라우저가 다음 프레임을 그릴 때까지 기다립니다.
 	try {
 		await page.evaluate(() => new Promise(requestAnimationFrame))
-		await page.evaluate(() => new Promise(resolve => {
-			setTimeout(resolve, 100)
-		}))
+		await page.evaluate(
+			() =>
+				new Promise((resolve) => {
+					setTimeout(resolve, 100)
+				}),
+		)
 	} catch (error) {
 		console.error('Error during requestAnimationFrame wait:', error)
 	}
@@ -452,88 +455,99 @@ function getInteractionsFromElementInfo(elementInfo) {
  */
 async function resetComponentState(page) {
 	if (page.isClosed()) {
-		console.warn('[resetComponentState] 페이지가 이미 닫혀있어 초기화를 건너뜁니다.');
-		throw new Error('[resetComponentState] 페이지가 닫힌 상태에서 초기화 시도');
+		console.warn('[resetComponentState] 페이지가 이미 닫혀있어 초기화를 건너뜁니다.')
+		throw new Error('[resetComponentState] 페이지가 닫힌 상태에서 초기화 시도')
 	}
 
 	// console.log('[resetComponentState] 컴포넌트 상태 초기화 시도...');
 
-	let resetFunctionUsedAndSuccessful = false;
+	let resetFunctionUsedAndSuccessful = false
 	try {
 		const hasResetFunction = await page.evaluate(
 			() => {
 				if (typeof globalThis.resetComponentState === 'function') {
 					try {
-						globalThis.resetComponentState(); // Storybook 자체 리셋 함수 사용
-						return true;
+						globalThis.resetComponentState() // Storybook 자체 리셋 함수 사용
+						return true
 					} catch (error) {
-						console.warn('[resetComponentState-evaluate] globalThis.resetComponentState() 실행 중 오류:', error.message);
-						return false;
+						console.warn(
+							'[resetComponentState-evaluate] globalThis.resetComponentState() 실행 중 오류:',
+							error.message,
+						)
+						return false
 					}
 				}
-				return false;
+				return false
 			},
-			{ timeout: 7000 }
-		);
+			{ timeout: 7000 },
+		)
 
 		if (hasResetFunction) {
 			// console.log('[resetComponentState] globalThis.resetComponentState 호출됨. #storybook-root 대기 중...');
 			if (page.isClosed()) {
-				throw new Error('[resetComponentState] globalThis.resetComponentState 후 페이지 닫힘');
+				throw new Error('[resetComponentState] globalThis.resetComponentState 후 페이지 닫힘')
 			}
-			await page.locator('#storybook-root').waitFor({ state: 'visible', timeout: 30_000 }); // 시간 증가
+			await page.locator('#storybook-root').waitFor({ state: 'visible', timeout: 30_000 }) // 시간 증가
 			// console.log('[resetComponentState] globalThis.resetComponentState 통해 리셋 성공.');
-			resetFunctionUsedAndSuccessful = true;
+			resetFunctionUsedAndSuccessful = true
 		}
 	} catch (error) {
-		console.warn(`[resetComponentState] globalThis.resetComponentState 경로 또는 그 후 waitFor에서 오류: ${error.message}`);
+		console.warn(
+			`[resetComponentState] globalThis.resetComponentState 경로 또는 그 후 waitFor에서 오류: ${error.message}`,
+		)
 		if (page.isClosed()) {
-			throw new Error(`[resetComponentState] globalThis.resetComponentState 시도 중 페이지 닫힘: ${error.message}`);
+			throw new Error(
+				`[resetComponentState] globalThis.resetComponentState 시도 중 페이지 닫힘: ${error.message}`,
+			)
 		}
 		// 이 경우 resetFunctionUsedAndSuccessful는 false로 유지되어 아래의 goto 로직 실행
 	}
 
 	if (resetFunctionUsedAndSuccessful) {
-		return; // globalThis.resetComponentState로 성공했으면 종료
+		return // globalThis.resetComponentState로 성공했으면 종료
 	}
 
 	// console.log('[resetComponentState] globalThis.resetComponentState가 없거나 실패하여 page.goto 전략 사용.');
-	const targetUrl = page.url().split('#')[0];
+	const targetUrl = page.url().split('#')[0]
 
 	try {
 		// console.log('[resetComponentState] about:blank 로 이동 시도...');
-		await page.goto('about:blank', { timeout: 15_000 });
+		await page.goto('about:blank', { timeout: 15_000 })
 		if (page.isClosed()) {
-			throw new Error('[resetComponentState] about:blank 이동 후 페이지 닫힘');
+			throw new Error('[resetComponentState] about:blank 이동 후 페이지 닫힘')
 		}
 
 		// console.log(`[resetComponentState] 목표 URL(${targetUrl})로 이동 시도...`);
-		await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 35_000 });
+		await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 35_000 })
 		if (page.isClosed()) {
-			throw new Error(`[resetComponentState] 목표 URL(${targetUrl}) 이동 후 페이지 닫힘`);
+			throw new Error(`[resetComponentState] 목표 URL(${targetUrl}) 이동 후 페이지 닫힘`)
 		}
 
 		// Storybook 스크립트가 실행되고 렌더링할 시간을 충분히 주기 위해 'load' 상태까지 기다림
 		try {
 			// console.log(`[resetComponentState] ${targetUrl}에 대해 'load' 상태 대기 중...`);
-			await page.waitForLoadState('load', { timeout: 20_000 });
+			await page.waitForLoadState('load', { timeout: 20_000 })
 		} catch (loadError) {
-			console.warn(`[resetComponentState] ${targetUrl}에서 'load' 상태 대기 중 오류 (계속 진행): ${loadError.message}`);
+			console.warn(
+				`[resetComponentState] ${targetUrl}에서 'load' 상태 대기 중 오류 (계속 진행): ${loadError.message}`,
+			)
 			// 'load'가 실패해도 #storybook-root 확인은 시도
 		}
 
 		if (page.isClosed()) {
-			throw new Error(`[resetComponentState] waitForLoadState('load') 후 페이지 닫힘`);
+			throw new Error(`[resetComponentState] waitForLoadState('load') 후 페이지 닫힘`)
 		}
 
-		await page.locator('#storybook-root').waitFor({ state: 'visible', timeout: 30_000 }); // 시간 증가
+		await page.locator('#storybook-root').waitFor({ state: 'visible', timeout: 30_000 }) // 시간 증가
 		// console.log('[resetComponentState] page.goto 전략 통해 리셋 성공.');
 	} catch (error) {
-		console.error(`[resetComponentState] page.goto 리셋 전략 실패: ${error.message}`);
+		console.error(`[resetComponentState] page.goto 리셋 전략 실패: ${error.message}`)
 		if (page.isClosed()) {
-			console.error('[resetComponentState] page.goto 리셋 전략 실행 중 페이지 닫힘.');
+			console.error('[resetComponentState] page.goto 리셋 전략 실행 중 페이지 닫힘.')
 		}
-		throw new Error(`[resetComponentState] 컴포넌트 상태 초기화 최종 실패 (goto 전략): ${error.message}`);
+		throw new Error(
+			`[resetComponentState] 컴포넌트 상태 초기화 최종 실패 (goto 전략): ${error.message}`,
+		)
 	}
 }
 
@@ -879,9 +893,9 @@ async function executeInteractionByType(page, interaction, result) {
 				break
 			}
 			case 'hover': {
-				const locator = page.locator(interaction.selector);
-				await locator.waitFor({ state: 'visible', timeout: 7000 }); // 요소가 확실히 보일 때까지 대기 시간 늘림
-				await locator.hover({ timeout: 7000 }); // hover 자체의 타임아웃도 늘림
+				const locator = page.locator(interaction.selector)
+				await locator.waitFor({ state: 'visible', timeout: 7000 }) // 요소가 확실히 보일 때까지 대기 시간 늘림
+				await locator.hover({ timeout: 7000 }) // hover 자체의 타임아웃도 늘림
 				result.message = '호버'
 				break
 			}
@@ -890,7 +904,7 @@ async function executeInteractionByType(page, interaction, result) {
 				break
 			}
 			case 'select': {
-					await executeSelectInteraction(page, interaction, result)
+				await executeSelectInteraction(page, interaction, result)
 				break
 			}
 			case 'setRange': {

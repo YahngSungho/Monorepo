@@ -50,7 +50,11 @@ const dictFolderPath = getAbsolutePath(
 export async function getFiles(rootAbsolutePath, helperFolderPath) {
 	const languageMessageMap = getInitialLanguageMap()
 
-	const markdownFiles = await readFilesToStrings_recursive(rootAbsolutePath, '**/*.md', '**/*prompt.md')
+	const markdownFiles = await readFilesToStrings_recursive(
+		rootAbsolutePath,
+		'**/*.md',
+		'**/*prompt.md',
+	)
 	const helperFiles = await readFilesToObjects(helperFolderPath)
 	const dictFiles = await readFilesToObjects(dictFolderPath)
 
