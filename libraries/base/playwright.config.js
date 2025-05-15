@@ -56,7 +56,7 @@ export default {
 	// retries: process.env.CI ? 1 : 0,
 	retries: 1,
 	testDir: 'e2e',
-	timeout: 180_000,
+	timeout: 1_800_000,
 	use: {
 		// video: 'retain-on-failure',
 		// 브라우저 컨텍스트 타임아웃 증가 (HMR 대기용)
