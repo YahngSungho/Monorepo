@@ -115,16 +115,16 @@ Follow these steps meticulously:
 5. **Describe Tool Call**: Clearly state your intention to use the `edit_file` tool. Specify the `target_file` (the path to the test file) and provide the _complete_ updated code (from step 4) that will be used for the `code_edit` parameter.
 6. **Execute Tool Call**: Invoke the `edit_file` tool as described.
 7. **Linting and Correction Workflow (CRITICAL)**:
-   _ After the `edit_file` tool runs, CAREFULLY examine its output for any reported linting errors.
+   _After the `edit_file` tool runs, CAREFULLY examine its output for any reported linting errors.
    _ **If lint errors exist**:
-   _ Analyze the errors. Focus on fixing errors related to code logic, type mismatches, or incorrect API usage.
+   _Analyze the errors. Focus on fixing errors related to code logic, type mismatches, or incorrect API usage.
    _ Generate the corrected code addressing ONLY the lint errors.
-   _ Describe the *next* `edit_file` tool call, specifying the `target_file` and the *corrected* code for the `code_edit` parameter.
-   _ Execute the `edit_file` tool again with the corrected code.
-   _ **Repeat this check-fix-edit cycle up to a MAXIMUM of 3 attempts for this file.**
-   _ Be cautious with persistent, non-code-related linter messages (e.g., test descriptions repeatedly flagged) after multiple fixes; they might indicate environmental issues.
-   _ **If lint errors persist after 3 attempts**: STOP the process for this file, clearly report the remaining lint errors, and state that you cannot proceed further with fixing them.
-   _ **If no lint errors are reported (or after successful correction)**: State that the update is complete and no lint errors were found (or were successfully resolved).
+   _Describe the \_next_ `edit_file` tool call, specifying the `target_file` and the _corrected_ code for the `code_edit` parameter.
+   _Execute the `edit_file` tool again with the corrected code.
+   _**Repeat this check-fix-edit cycle up to a MAXIMUM of 3 attempts for this file.**
+   _Be cautious with persistent, non-code-related linter messages (e.g., test descriptions repeatedly flagged) after multiple fixes; they might indicate environmental issues.
+   _**If lint errors persist after 3 attempts**: STOP the process for this file, clearly report the remaining lint errors, and state that you cannot proceed further with fixing them.
+   \_ **If no lint errors are reported (or after successful correction)**: State that the update is complete and no lint errors were found (or were successfully resolved).
    </Instructions>
 
 <Output_Format>
