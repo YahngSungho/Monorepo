@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.filter.outputs.images }}
-      markdown-json: ${{ steps.filter.outputs.markdown-json }}
+      markdown: ${{ steps.filter.outputs.markdown }}
       package-json: ${{ steps.filter.outputs.package-json }}
       projects: ${{ steps.filter.outputs.projects }}
       translation-targets: ${{ steps.filter.outputs.translation-targets }}
@@ -118,7 +118,7 @@ jobs:
               - '**.heif'
               - '**.vips'
               - '**.raw'
-            markdown-json:
+            markdown:
               - '**/*.md'
               - '**/*.mdx'
               - '**/*.json'
@@ -331,11 +331,11 @@ jobs:
           name: translation-changes-patch
           path: translation-changes.patch
 
-  fix-markdown-json:
+  fix-markdown:
     runs-on: ubuntu-latest
     needs: [path-filter, fix-package-json, update-translation]
     if: |
-      needs.path-filter.outputs.markdown-json == 'true' && !failure() && !cancelled()
+      needs.path-filter.outputs.markdown == 'true' && !failure() && !cancelled()
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
@@ -459,28 +459,27 @@ jobs:
           globs: |
             **/*.md
             **/*.mdx
-            **/*.mdc
             !**/node_modules/**
           config: .markdownlint.json
           fix: true
         continue-on-error: true
 
-      - name: 마크다운 파일 Lint 수정 (eslint-md-json)
-        run: pnpm run eslint-md-json
+      - name: 마크다운 파일 Lint 수정 (eslint-md)
+        run: pnpm run eslint-md
         continue-on-error: true # ESLint 오류 시 워크플로우 중단 방지 (선택 사항)
 
-      - name: 마크다운 파일 Stylelint 수정 (stylelint-md-json)
-        run: pnpm run stylelint-md-json
+      - name: 마크다운 파일 Stylelint 수정 (stylelint-md)
+        run: pnpm run stylelint-md
         continue-on-error: true # Stylelint 오류 시 워크플로우 중단 방지 (선택 사항)
 
       - name: 마크다운 포맷팅 (prettier)
-        run: pnpm run format-md-json
+        run: pnpm run format-md
 
       # 8. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
-      - name: 마크다운-json 변경사항 확인 및 패치 생성
-        id: check_markdown_json_changes
+      - name: 마크다운 변경사항 확인 및 패치 생성
+        id: check_markdown_changes
         run: |
-          echo "--- HEAD ($(git rev-parse HEAD)) 기준으로 마크다운-json 패치 생성 중 ---"
+          echo "--- HEAD ($(git rev-parse HEAD)) 기준으로 마크다운 패치 생성 중 ---"
           echo "현재 상태 (마크다운 수정 후):"
           git status --short
           echo "스테이징 전, 모든 변경사항 (untracked 파일 포함) 추가 중..."
@@ -489,28 +488,28 @@ jobs:
           git status --short
 
           if ! git diff --quiet --staged HEAD --exit-code; then # 임시 커밋과 비교
-            echo "Markdown-json 변경사항이 있습니다."
+            echo "markdown 변경사항이 있습니다."
             echo "has_changes=true" >> $GITHUB_OUTPUT
             git diff --staged HEAD > markdown-changes.patch # 임시 커밋과의 스테이징된 차이 저장
             echo "markdown-changes.patch 내용:"
             cat markdown-changes.patch
           else
-            echo "Markdown-json 변경사항이 없습니다."
+            echo "markdown 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
-          echo "--- 마크다운-json 패치 생성 완료 ---"
+          echo "--- 마크다운 패치 생성 완료 ---"
 
       # 9. 마크다운 패치 업로드
       - name: 마크다운 패치 아티팩트 업로드
-        if: steps.check_markdown_json_changes.outputs.has_changes == 'true'
+        if: steps.check_markdown_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: markdown-json-changes-patch
-          path: markdown-json-changes.patch
+          name: markdown-changes-patch
+          path: markdown-changes.patch
 
   lint-format:
     runs-on: ubuntu-latest
-    needs: [path-filter, fix-package-json, update-translation, fix-markdown-json]
+    needs: [path-filter, fix-package-json, update-translation, fix-markdown]
     if: |
       needs.path-filter.outputs.projects == 'true' && !failure() && !cancelled()
     env:
@@ -605,9 +604,9 @@ jobs:
             echo "적용할 번역 변경사항이 없습니다."
           fi
 
-      # 5. markdown-json patch 다운로드
-      - name: 마크다운-json 패치 존재 여부 확인
-        id: check_markdown_json_patch_lint_format
+      # 5. markdown patch 다운로드
+      - name: 마크다운 패치 존재 여부 확인
+        id: check_markdown_patch_lint_format
         uses: actions/github-script@v6
         with:
           script: |
@@ -617,32 +616,32 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "markdown-json-changes-patch"
+              artifact => artifact.name === "markdown-changes-patch"
             );
             return !!matchArtifact;
 
-      - name: 마크다운-json 패치 아티팩트 다운로드
-        if: steps.check_markdown_json_patch_lint_format.outputs.result == 'true'
+      - name: 마크다운 패치 아티팩트 다운로드
+        if: steps.check_markdown_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: markdown-json-changes-patch
+          name: markdown-changes-patch
           path: .
 
-      # 6. markdown-json patch 적용
-      - name: 마크다운-json 패치 적용
-        if: steps.check_markdown_json_patch_lint_format.outputs.result == 'true'
+      # 6. markdown patch 적용
+      - name: 마크다운 패치 적용
+        if: steps.check_markdown_patch_lint_format.outputs.result == 'true'
         run: |
-          if [ -f markdown-json-changes.patch ]; then
-            echo "markdown-json 변경사항 패치를 적용합니다..."
-            if ! git apply --check markdown-json-changes.patch; then
-              echo "::error::markdown-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+          if [ -f markdown-changes.patch ]; then
+            echo "markdown 변경사항 패치를 적용합니다..."
+            if ! git apply --check markdown-changes.patch; then
+              echo "::error::markdown-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply markdown-json-changes.patch
-            echo "markdown-json 패치가 성공적으로 적용되었습니다."
-            rm markdown-json-changes.patch
+            git apply markdown-changes.patch
+            echo "markdown 패치가 성공적으로 적용되었습니다."
+            rm markdown-changes.patch
           else
-            echo "적용할 markdown-json 변경사항이 없습니다."
+            echo "적용할 markdown 변경사항이 없습니다."
           fi
 
       # Node.js 및 pnpm 설정
@@ -752,7 +751,7 @@ jobs:
           path: images-changes.patch
 
   push-and-labeled:
-    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown-json, update-translation]
+    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown, update-translation]
     if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
 
@@ -806,8 +805,8 @@ jobs:
           name: translation-changes-patch
           path: .
 
-      - name: 마크다운-json 패치 존재 여부 확인
-        id: check_markdown_json_patch_push
+      - name: 마크다운 패치 존재 여부 확인
+        id: check_markdown_patch_push
         uses: actions/github-script@v6
         with:
           script: |
@@ -817,15 +816,15 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "markdown-json-changes-patch"
+              artifact => artifact.name === "markdown-changes-patch"
             );
             return !!matchArtifact;
 
-      - name: 마크다운-json 패치 아티팩트 다운로드
-        if: steps.check_markdown_json_patch_push.outputs.result == 'true'
+      - name: 마크다운 패치 아티팩트 다운로드
+        if: steps.check_markdown_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: markdown-json-changes-patch
+          name: markdown-changes-patch
           path: .
 
       - name: changes.patch (린트/포맷) 존재 여부 확인
@@ -905,7 +904,7 @@ jobs:
           apply_patch "images-changes.patch" "이미지 압축"
           apply_patch "package-json-changes.patch" "Package.json 포맷팅"
           apply_patch "translation-changes.patch" "번역"
-          apply_patch "markdown-json-changes.patch" "마크다운 포맷팅"
+          apply_patch "markdown-changes.patch" "마크다운 포맷팅"
           apply_patch "changes.patch" "코드 포맷팅 (린트/스타일)"
 
           echo "--- 모든 패치 적용 완료 ---"
