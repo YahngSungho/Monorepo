@@ -185,11 +185,14 @@
 		4.  `TARGET MESSAGES` (JSON string: `{ "number": { "ko": "...", "en": "...", "explanation": "..." } }`): The messages requiring translation. **Keys (`"number"`) are sequential integer strings starting from "1" (e.g., "1", "2", "3", ...).**
 </Input>
 
-<Output*Schema>
-```typescript
-/\*\*
-\_Represents the structured output for the translation task.
-\_THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
+<Output\*Schema>
+
+````typescript
+
+
+
+
+/\*\*\_Represents the structured output for the translation task.\_THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
 */
 interface TranslationOutput {
 /\_\*
@@ -236,3 +239,4 @@ translatedMessages: { [messageNumber: string]: string | object };
 		}
 		`
 </Example_Final_Output>
+````

@@ -116,6 +116,7 @@ You MUST adhere STRICTLY to the following principles:
 </Testing_Principles_To_Follow>
 
 <Example_Test_Snippets>
+
 <!-- Examples require significant overhaul to reflect minimal mocking. -->
 <!-- Placeholder for revised examples demonstrating minimal mocking with XState. -->
 <!-- New examples should show testing with real actions/actors first, -->

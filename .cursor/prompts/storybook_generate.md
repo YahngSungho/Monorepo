@@ -113,10 +113,10 @@
 
 </Example>
 
-<Output_Format>
+<Output*Format>
 Your final output MUST be structured as follows: 1. Your detailed step-by-step analysis (Component Analysis, Scenario Brainstorming, Implementation Strategy) **written in KOREAN**. 2. **If a target file path (e.g., `MyComponent.stories.svelte`) is provided**:
-_Plan and execute the `edit_file` tool call to write the complete story file content.
-_**Linting and Correction**: After `edit_file` attempts to apply the changes, check for lint errors.
-_If errors exist, attempt to fix them in the code and use `edit_file` again.
-_Repeat lint-check-correct up to **3 times**. \* If errors persist, report them and stop. 3. **If NO target file path is provided**: Output the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with a suggested filename comment (e.g., `// ComponentName.stories.svelte`).
+\_Plan and execute the `edit_file` tool call to write the complete story file content.
+***Linting and Correction**: After `edit_file` attempts to apply the changes, check for lint errors.
+\_If errors exist, attempt to fix them in the code and use `edit_file` again.
+\_Repeat lint-check-correct up to **3 times**. \* If errors persist, report them and stop. 3. **If NO target file path is provided**: Output the complete, valid content for the `.stories.svelte` file, enclosed in a single Markdown code block prefixed with a suggested filename comment (e.g., `// ComponentName.stories.svelte`).
 </Output_Format>

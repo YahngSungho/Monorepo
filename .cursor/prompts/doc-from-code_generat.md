@@ -117,8 +117,9 @@ The documentation's core purpose is to help readers CLEARLY understand the code'
 <Example_Section_Demonstration>
 <Instruction>Here is a small example demonstrating the desired style for documenting a single function:</Instruction>
 <Example>
-```markdown
-	### `calculateTotal(items)` 함수
+
+````markdown
+    ### `calculateTotal(items)` 함수
 
     이 함수는 장바구니 아이템 목록을 받아서 총 가격을 계산해주는 함수야.
 
@@ -151,3 +152,4 @@ Your final output MUST be a single response containing the following sections IN
     The core deliverable is the Markdown document generated in Step 3. Ensure it is well-formatted and complete.
 
 </Output_Format_Specification>
+````

@@ -54,8 +54,8 @@ Your response MUST be structured EXACTLY as follows:
 
 </Output_Format>
 
-<Reference_Materials>
+<Reference*Materials>
 You MUST base your implementation and adhere strictly to the rules, patterns, and APIs described in the following provided documents:
-_`XState.mdc` (Primary source for XState v5 API, concepts, and patterns)
-_ `javascript.mdc` (Rules for using JSDoc and forbidding TypeScript syntax) \* `functional-programming.mdc` (Guidelines for immutability, pure functions, and side effect management)
+*`XState.mdc` (Primary source for XState v5 API, concepts, and patterns)
+\_`javascript.mdc` (Rules for using JSDoc and forbidding TypeScript syntax) \* `functional-programming.mdc` (Guidelines for immutability, pure functions, and side effect management)
 </Reference_Materials>

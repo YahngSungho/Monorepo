@@ -155,7 +155,7 @@ You MUST adhere to the following principles when writing tests. These principles
     - PRIORITIZE CLARITY OVER STRICT DRY for test setup.
 
 12. **Consider `vi.spyOn` for Partial Mocks on Real Objects/Modules**:
-    _ If you need to spy on or minimally alter a real object or parts of a real module without fully replacing it, `vi.spyOn(object, 'methodName')` can be more appropriate than `vi.mock`. This is especially true for testing interactions with objects or modules that are mostly real dependencies.
+    _If you need to spy on or minimally alter a real object or parts of a real module without fully replacing it, `vi.spyOn(object, 'methodName')` can be more appropriate than `vi.mock`. This is especially true for testing interactions with objects or modules that are mostly real dependencies.
     _ Ensure spies are restored using `vi.restoreAllMocks()` or `spy.mockRestore()`.
     </Core_Testing_Principles>
 
