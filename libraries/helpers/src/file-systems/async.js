@@ -40,9 +40,7 @@ export async function readFilesToStrings_recursive(absoluteFolderPath, globPatte
 		options.ignore = ignorePattern
 	}
 
-	const ignoreMessagePart = ignorePattern
-		? `, 제외 패턴 [${JSON.stringify(ignorePattern)}]`
-		: '';
+	const ignoreMessagePart = ignorePattern ? `, 제외 패턴 [${JSON.stringify(ignorePattern)}]` : ''
 	console.log(
 		`내장 Glob 패턴 검색 시작: 패턴 [${globPattern}], 경로 [${absoluteFolderPath}]${ignoreMessagePart}`,
 	)
