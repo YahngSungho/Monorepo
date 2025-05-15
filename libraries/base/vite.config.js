@@ -1,13 +1,11 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 import tailwindcss from '@tailwindcss/vite'
 import { FontaineTransform } from 'fontaine'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
-// import { paraglideVitePlugin } from '@inlang/paraglide-js'
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -32,13 +30,6 @@ const baseConfig = defineConfig({
 	plugins: [
 		// @ts-ignore
 		tsconfigPaths(),
-		// @ts-ignore
-		paraglideVitePlugin({
-			outdir: '../../libraries/paraglide/paraglide-output',
-			project: '../../libraries/paraglide/project.inlang',
-			strategy: ['url', 'cookie', 'localStorage', 'preferredLanguage', 'baseLocale'],
-			disableAsyncLocalStorage: true,
-		}),
 		// @ts-ignore
 		tailwindcss(),
 		partytownVite({}),
