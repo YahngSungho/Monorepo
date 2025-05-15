@@ -65,6 +65,7 @@ jobs:
           github-token: ${{ secrets.TOKEN1 }}
           script: |
             try {
+              await new Promise(resolve => setTimeout(resolve, 30000)); // 30초 대기
               await github.rest.issues.removeLabel({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
