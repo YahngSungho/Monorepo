@@ -140,7 +140,7 @@ describe('getFiles 함수', () => {
 		const result = await getFiles(rootAbsolutePath, helperFolderPath)
 
 		// 검증 (Assert)
-		expect(readFilesToStrings_recursive).toHaveBeenCalledWith(rootAbsolutePath, '**/*.md')
+		expect(readFilesToStrings_recursive).toHaveBeenCalledWith(rootAbsolutePath, '**/*.md', '**/*prompt.md')
 		expect(readFilesToObjects).toHaveBeenCalledWith(helperFolderPath)
 
 		expect(result.initialMarkdownFiles).toEqual(mockMarkdownFiles)

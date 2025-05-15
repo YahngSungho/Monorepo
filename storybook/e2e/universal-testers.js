@@ -133,6 +133,9 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 	// 측정을 시작하기 전에 브라우저가 다음 프레임을 그릴 때까지 기다립니다.
 	try {
 		await page.evaluate(() => new Promise(requestAnimationFrame))
+		await page.evaluate(() => new Promise(resolve => {
+			setTimeout(resolve, 100)
+		}))
 	} catch (error) {
 		console.error('Error during requestAnimationFrame wait:', error)
 	}

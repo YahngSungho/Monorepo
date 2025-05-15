@@ -5,16 +5,12 @@
 하나의 폴더에 ko, en을 포함한 언어별 + explanation까지 마크다운 파일
 dicts는 각 프로젝트별이 아니라 paraglide/messages-helpers/dicts 폴더에 저장
 
-Blog의 경우 article에 대한 폴더에 title, tags 폴더도 추가
 - article
   - ko.md
   - en.md
-  - title
-    - ko.md
-    - en.md
-	- tags
-    - ko.md
-    - en.md
+	- ...
+
+title, tags 등은 각 md 파일에 frontmatter로 작성
 */
 
 import path from 'node:path'
@@ -54,7 +50,7 @@ const dictFolderPath = getAbsolutePath(
 export async function getFiles(rootAbsolutePath, helperFolderPath) {
 	const languageMessageMap = getInitialLanguageMap()
 
-	const markdownFiles = await readFilesToStrings_recursive(rootAbsolutePath, '**/*.md')
+	const markdownFiles = await readFilesToStrings_recursive(rootAbsolutePath, '**/*.md', '**/*prompt.md')
 	const helperFiles = await readFilesToObjects(helperFolderPath)
 	const dictFiles = await readFilesToObjects(dictFolderPath)
 
