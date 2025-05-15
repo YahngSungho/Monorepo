@@ -803,14 +803,14 @@ async function executeInteractionByType(page, interaction, result) {
 	try {
 		switch (interaction.type) {
 			case 'click': {
-				const locator = page.locator(interaction.selector);
-				await locator.click({ timeout: 7000 }); // 타임아웃 늘리고 locator 사용
+				const locator = page.locator(interaction.selector)
+				await locator.click({ timeout: 7000 }) // 타임아웃 늘리고 locator 사용
 				result.message = '클릭'
 				break
 			}
 			case 'doubleClick': {
 				const locator = page.locator(interaction.selector)
-				await locator.dblclick({ timeout: 7000 }); // 타임아웃 늘림
+				await locator.dblclick({ timeout: 7000 }) // 타임아웃 늘림
 				result.message = '더블 클릭'
 				break
 			}
