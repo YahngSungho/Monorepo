@@ -803,26 +803,27 @@ async function executeInteractionByType(page, interaction, result) {
 	try {
 		switch (interaction.type) {
 			case 'click': {
-				const locator = page.locator(interaction.selector);
-				await locator.waitFor({ state: 'visible', timeout: 7000 }); // 요소가 확실히 보일 때까지 대기
-				await locator.click({ timeout: 7000 }); // 타임아웃 늘리고 locator 사용
+				const locator = page.locator(interaction.selector)
+				await locator.waitFor({ state: 'visible', timeout: 7000 }) // 요소가 확실히 보일 때까지 대기
+				await locator.click({ timeout: 7000 }) // 타임아웃 늘리고 locator 사용
 				result.message = '클릭'
 				break
 			}
 			case 'doubleClick': {
 				const locator = page.locator(interaction.selector)
-				await locator.waitFor({ state: 'visible', timeout: 7000 }); // 요소가 확실히 보일 때까지 대기
-				await locator.dblclick({ timeout: 7000 }); // 타임아웃 늘림
+				await locator.waitFor({ state: 'visible', timeout: 7000 }) // 요소가 확실히 보일 때까지 대기
+				await locator.dblclick({ timeout: 7000 }) // 타임아웃 늘림
 				result.message = '더블 클릭'
 				break
 			}
 			case 'drag': {
-				const locator = page.locator(interaction.selector); // locator 가져오기
-				await locator.hover({ timeout: 7000 }); // locator.hover 사용 및 타임아웃 통일
-				await locator.dragTo(locator, { // locator.dragTo 사용
+				const locator = page.locator(interaction.selector) // locator 가져오기
+				await locator.hover({ timeout: 7000 }) // locator.hover 사용 및 타임아웃 통일
+				await locator.dragTo(locator, {
+					// locator.dragTo 사용
 					targetPosition: { x: 10, y: 10 },
 					timeout: 7000, // 타임아웃 통일
-				});
+				})
 				result.message = '드래그'
 				break
 			}
