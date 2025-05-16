@@ -966,13 +966,11 @@ jobs:
 
       # 라벨 추가
       - name: PR에 라벨 추가 2 (mutation-finished)
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.TOKEN1 }}
-          script: |
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['mutation-finished']
-            })
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN1 }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Adding label mutation-finished to PR #$PR_NUMBER in repo $REPO"
+          gh issue edit $PR_NUMBER --add-label "mutation-finished" --repo $REPO
+          echo "Label addition command executed."
