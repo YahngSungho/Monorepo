@@ -178,8 +178,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(eslint@9.25.0(jiti@2.4.2))
       eslint-plugin-sql:
-        specifier: ^3.2.1
-        version: 3.2.1(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3)
+        specifier: ^3.2.2
+        version: 3.2.2(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3)
       eslint-plugin-storybook:
         specifier: ^0.12.0
         version: 0.12.0(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3)
@@ -1863,6 +1863,12 @@ packages:
 
   '@eslint-community/eslint-utils@4.6.1':
     resolution: {integrity: sha512-KTsJMmobmbrFLe3LDh0PC2FXpcSYJt/MLjlkh/9LEnmKYLSYmT/0EW9JWANjeoemiuZrmogti0tW5Ch+qNUYDw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+
+  '@eslint-community/eslint-utils@4.7.0':
+    resolution: {integrity: sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
@@ -3647,6 +3653,13 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <5.9.0'
 
+  '@typescript-eslint/utils@8.32.1':
+    resolution: {integrity: sha512-DsSFNIgLSrc89gpq1LJB7Hm1YpuhK086DRDJSNrewcGvYloWW1vZLHBTIvarKZDcAORIy/uWNx8Gad+4oMpkSA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
+      typescript: '>=4.8.4 <5.9.0'
+
   '@typescript-eslint/visitor-keys@8.29.1':
     resolution: {integrity: sha512-RGLh5CRaUEf02viP5c1Vh1cMGffQscyHe7HPAzGpfmfflFg1wUz2rYxd+OZqwpeypYvZ8UxSxuIpF++fmOzEcg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -5366,8 +5379,8 @@ packages:
     peerDependencies:
       eslint: ^8.0.0 || ^9.0.0
 
-  eslint-plugin-sql@3.2.1:
-    resolution: {integrity: sha512-T8uE/UoTKU2ER6m/DrAm2FuH9ox8K+VY3rRqs6K/G1w1ajKL5BY/s1MUh9IyQm0p79Sea76nBHLeRqfVAuUH8A==}
+  eslint-plugin-sql@3.2.2:
+    resolution: {integrity: sha512-J4S2dnM6g14mKIO1pWVJti/jLROdmeUmgEYfGe6052kczLlquO//QYIxDXAPbkxw8sjZak5QZfG5ku8570HLLQ==}
     engines: {node: '>=12'}
     peerDependencies:
       eslint: '>=8.1.0'
@@ -8757,6 +8770,10 @@ packages:
     resolution: {integrity: sha512-+9xZgiv1DP/c7GxkkBUHRZOf4j35gquVdwEm0rg16qKRYeFkv1+/vEeO13fsUbbz06KUotIyASJ+hyau8LM8Kg==}
     hasBin: true
 
+  sql-formatter@15.6.1:
+    resolution: {integrity: sha512-uoKbRLVbjzwa8ouY4lI9YM387zRxDv9Gg5kZBzu2iNls2wVBlDLshhudCstczddRvj7J+xOpHTTWX6Z0lRgYGA==}
+    hasBin: true
+
   sql-parse@0.1.5:
     resolution: {integrity: sha512-e2ExBX6iDHoCDC1zN2NvZV49UMhKVLvvwrDjzSVHFS3TKHKtIpl2nMDQkdlbTjDVvf2bxRYBq9iXAAMZvZpGVA==}
     engines: {node: '>=0.10'}
@@ -9981,6 +9998,7 @@ packages:
   wrangler@4.15.1:
     resolution: {integrity: sha512-dzCdGWJUqjZAeR6kmAF28iD19VyDfD9nP1JiAw9NNlG1pEVzaY4Pr6egYyQcGj98N7WTv/tXoCk1R/L3eU3iwg==}
     engines: {node: '>=18.0.0'}
+    deprecated: '⚠️ Deprecated: 4.15.1 has a regression with R2 bucket validation with wrangler pages dev. Please downgrade to 4.14.4 or upgrade to 4.15.2 when it is published.'
     hasBin: true
     peerDependencies:
       '@cloudflare/workers-types': ^4.20250508.0
@@ -10987,6 +11005,11 @@ snapshots:
       eslint: 9.25.0(jiti@2.4.2)
       eslint-visitor-keys: 3.4.3
 
+  '@eslint-community/eslint-utils@4.7.0(eslint@9.25.0(jiti@2.4.2))':
+    dependencies:
+      eslint: 9.25.0(jiti@2.4.2)
+      eslint-visitor-keys: 3.4.3
+
   '@eslint-community/regexpp@4.12.1': {}
 
   '@eslint/compat@1.2.8(eslint@9.25.0(jiti@2.4.2))':
@@ -10996,7 +11019,7 @@ snapshots:
   '@eslint/config-array@0.20.0':
     dependencies:
       '@eslint/object-schema': 2.1.6
-      debug: 4.4.1
+      debug: 4.4.0
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -13059,6 +13082,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@typescript-eslint/utils@8.32.1(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3)':
+    dependencies:
+      '@eslint-community/eslint-utils': 4.7.0(eslint@9.25.0(jiti@2.4.2))
+      '@typescript-eslint/scope-manager': 8.32.1
+      '@typescript-eslint/types': 8.32.1
+      '@typescript-eslint/typescript-estree': 8.32.1(typescript@5.8.3)
+      eslint: 9.25.0(jiti@2.4.2)
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@typescript-eslint/visitor-keys@8.29.1':
     dependencies:
       '@typescript-eslint/types': 8.29.1
@@ -15060,14 +15094,14 @@ snapshots:
       semver: 7.7.1
       typescript: 5.8.3
 
-  eslint-plugin-sql@3.2.1(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3):
+  eslint-plugin-sql@3.2.2(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3):
     dependencies:
-      '@typescript-eslint/utils': 8.29.1(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3)
-      debug: 4.4.0
+      '@typescript-eslint/utils': 8.32.1(eslint@9.25.0(jiti@2.4.2))(typescript@5.8.3)
+      debug: 4.4.1
       eslint: 9.25.0(jiti@2.4.2)
       lodash: 4.17.21
       multiline-ts: 4.0.1
-      sql-formatter: 15.5.2
+      sql-formatter: 15.6.1
       sql-parse: 0.1.5
     transitivePeerDependencies:
       - supports-color
@@ -19130,6 +19164,11 @@ snapshots:
   spdx-license-ids@3.0.21: {}
 
   sql-formatter@15.5.2:
+    dependencies:
+      argparse: 2.0.1
+      nearley: 2.20.1
+
+  sql-formatter@15.6.1:
     dependencies:
       argparse: 2.0.1
       nearley: 2.20.1
