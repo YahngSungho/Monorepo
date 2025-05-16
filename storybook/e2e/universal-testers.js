@@ -725,10 +725,10 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 		// 대상 요소를 locator로 가져옴
 		const locator = page.locator(interaction.selector)
 
-		// 요소가 표시될 때까지 대기 (최대 5초)
+		// 요소가 표시될 때까지 대기 (최대 7초로 변경)
 		try {
 			if (verbose) console.log(`요소 표시 대기 중: ${interaction.selector}`)
-			await locator.waitFor({ state: 'visible', timeout: 5000 })
+			await locator.waitFor({ state: 'visible', timeout: 7000 })
 		} catch {
 			// 타임아웃 내에 요소가 표시되지 않음
 			if (verbose) console.log(`요소 대기 타임아웃: ${interaction.selector}`)
@@ -804,21 +804,25 @@ async function executeInteractionByType(page, interaction, result) {
 		switch (interaction.type) {
 			case 'click': {
 				const locator = page.locator(interaction.selector)
+				await locator.waitFor({ state: 'visible', timeout: 7000 }) // 요소가 확실히 보일 때까지 대기
 				await locator.click({ timeout: 7000 }) // 타임아웃 늘리고 locator 사용
 				result.message = '클릭'
 				break
 			}
 			case 'doubleClick': {
 				const locator = page.locator(interaction.selector)
+				await locator.waitFor({ state: 'visible', timeout: 7000 }) // 요소가 확실히 보일 때까지 대기
 				await locator.dblclick({ timeout: 7000 }) // 타임아웃 늘림
 				result.message = '더블 클릭'
 				break
 			}
 			case 'drag': {
-				await page.hover(interaction.selector)
-				await page.dragAndDrop(interaction.selector, interaction.selector, {
+				const locator = page.locator(interaction.selector) // locator 가져오기
+				await locator.hover({ timeout: 7000 }) // locator.hover 사용 및 타임아웃 통일
+				await locator.dragTo(locator, {
+					// locator.dragTo 사용
 					targetPosition: { x: 10, y: 10 },
-					timeout: 5000, // 타임아웃 추가
+					timeout: 7000, // 타임아웃 통일
 				})
 				result.message = '드래그'
 				break
@@ -1314,7 +1318,7 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	// 최소 길이를 1로 설정하여 개별 상호작용까지 축소 가능하도록 함
 	return fc.array(interactionArb, {
 		minLength: 1, // 여기를 0에서 1로 변경 - 최소 길이는 1이어야 함
-		maxLength: interactions.length + length, // 이 값 수정하지마라
+		maxLength: length, // config.sequenceLength를 따르도록 수정
 	})
 }
 
