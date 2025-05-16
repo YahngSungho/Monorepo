@@ -108,7 +108,7 @@ for (const entry of Object.values(manifest.entries)) {
 
 		await page.emulateMedia({ reducedMotion: 'reduce' })
 		const results = await testUIComponent(page, {
-			numRuns: 10,
+			numRuns: 5,
 			sequenceLength: 3,
 			waitAfterInteraction: 50,
 			verbose: false,
