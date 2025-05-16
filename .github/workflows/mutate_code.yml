@@ -460,6 +460,7 @@ jobs:
           globs: |
             **/*.md
             **/*.mdx
+            **/*.mdc
             !**/node_modules/**
           config: .markdownlint.json
           fix: true
