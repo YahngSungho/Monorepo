@@ -138,13 +138,9 @@ Carefully execute the following 5 steps IN ORDER. The primary goal is to build a
      - **Language**: All content in this document MUST be in English, as this is optimal for the LLM's processing.
      - **Clarity and Directness**: Use unambiguous language that the LLM can parse easily. Avoid metaphors or colloquialisms.
      - **Code Blocks and Examples**: Provide actual code snippets (using Markdown triple backticks with language identifiers) that the LLM can directly use as templates or to understand syntax/patterns. These are critical for code generation tasks. - **CODE BLOCK FORMATTING:** When including Markdown code blocks (e.g., ` ``` ` or `~~~`) in the `.cursor/rules/project-overview.mdc` document, **ALWAYS** ensure there is a blank newline BEFORE and AFTER each code block. - _Incorrect Example:_
-       `
-			Some descriptive text.
-			`typescript
+       `Some descriptive text.`typescript
        const x = 10;
-       `
-			Further text.
-			` - _Correct Example:_
+       `Further text.` - _Correct Example:_
 
        ````
        Some descriptive text.
