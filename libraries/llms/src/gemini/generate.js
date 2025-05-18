@@ -2,7 +2,7 @@ import { R } from '@library/helpers/R'
 
 import { generateWithRetry_atQuotaLimit } from '../heleprs.js'
 import { generateText } from './generateText.js'
-import { latestModel } from './modelNames.js'
+import { flashModel, latestModel } from './modelNames.js'
 
 // 어떻게든 Cache를 사용할 수 있게 만들기 위해서 object 검증은 여기서 수동으로 한다
 export const generateObjectWithRetry = R.curry(async (model, cache, schema, prompt) => {
@@ -34,3 +34,4 @@ export const generateObjectWithRetry = R.curry(async (model, cache, schema, prom
 })
 
 export const generateObjectWithRetry_latestModel = generateObjectWithRetry(latestModel)
+export const generateObjectWithRetry_flashModel = generateObjectWithRetry(flashModel)
