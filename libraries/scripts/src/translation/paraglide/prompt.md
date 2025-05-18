@@ -185,42 +185,25 @@
 		4.  `TARGET MESSAGES` (JSON string: `{ "number": { "ko": "...", "en": "...", "explanation": "..." } }`): The messages requiring translation. **Keys (`"number"`) are sequential integer strings starting from "1" (e.g., "1", "2", "3", ...).**
 </Input>
 
-<Output\*Schema>
+<Output*Schema>
+```typescript
+/\*\*
+\_Represents the structured output for the translation task.
+\_THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
+*/
+interface TranslationOutput {
+/\_\*
+* The translated messages, keyed by the original message number.
+*Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).
+* Values MUST be strings or valid Paraglide variant objects (matching/pluralization).
+*Example (proactive pluralization applied): "4": { "declarations": ["input itemCount", ...], "match": { "countPlural=one": "1 item", "countPlural=other": "{itemCount} items" } }
+\*/
+translatedMessages: { [messageNumber: string]: string | object };
 
-````typescript
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/\*\*\_Represents the structured output for the translation task.\_THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.*/interface TranslationOutput {/\_\** The translated messages, keyed by the original message number.*Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).* Values MUST be strings or valid Paraglide variant objects (matching/pluralization).*Example (proactive pluralization applied): "4": { "declarations": ["input itemCount", ...], "match": { "countPlural=one": "1 item", "countPlural=other": "{itemCount} items" } }\*/translatedMessages: { [messageNumber: string]: string | object };    		/**    			* Newly identified terms and their translations for future consistency.    			* @additionalProperties {string}    			* @example { "SourceTerm1": "TranslatedTerm1", "SourceTerm2": "TranslatedTerm2" }
+    		/**
+    			* Newly identified terms and their translations for future consistency.
+    			* @additionalProperties {string}
+    			* @example { "SourceTerm1": "TranslatedTerm1", "SourceTerm2": "TranslatedTerm2" }
     			*/
     		newDictionary: { [sourceTerm: string]: string };
     	}
@@ -253,4 +236,3 @@
 		}
 		`
 </Example_Final_Output>
-````
