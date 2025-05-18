@@ -13,10 +13,8 @@ jobs:
       contents: write
       pull-requests: write
     if: |
-      !contains(github.event.pull_request.labels.*.name, 'dependabot') && (
-      (github.event.action == 'labeled' && github.event.label.name == 'mutation-finished') ||
-      (github.event.action == 'synchronize' && contains(github.event.head_commit.message, '[automated-mutation]'))
-      )
+      !contains(github.event.pull_request.labels.*.name, 'dependabot') &&
+      github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
 
     steps:
       - uses: reitermarkus/automerge@v2
@@ -31,10 +29,8 @@ jobs:
       contents: write
       pull-requests: write
     if: |
-      contains(github.event.pull_request.labels.*.name, 'dependabot') && (
-      (github.event.action == 'labeled' && github.event.label.name == 'mutation-finished') ||
-      (github.event.action == 'synchronize' && contains(github.event.head_commit.message, '[automated-mutation]'))
-      )
+      contains(github.event.pull_request.labels.*.name, 'dependabot') &&
+      github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
 
     steps:
       - name: Dependabot metadata
