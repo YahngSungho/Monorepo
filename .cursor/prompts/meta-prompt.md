@@ -127,7 +127,7 @@ It's a concise and effective technique that can be combined with other technique
 
 ### Example
 
-Let's take an example question where we ask a model to answer whether a known person is born in an even/odd month. The ambiguity for the model here lies in the definition of the "even" and "odd" month:
+Let's take an example question where we ask a model to answer whether a known person is born in an even/odd month. The ambiguity for the model here lies in the definition of the "even" and "odd" month:
 
 - Does "odd" mean "strange"? Then, February can be considered odd because of an irregular number of days.
 - Does "even/odd" month refer to a month with an even/odd number of days?
@@ -303,7 +303,7 @@ Concatenate these last letters to get the final result. The answer is "enla".
 
 ## Limitations of Rephrase and Respond (RaR)
 
-Rephrase and Respond (RaR) is a compelling prompt engineering technique, but it does come with some limitations.
+Rephrase and Respond (RaR) is a compelling prompt engineering technique, but it does come with some limitations.
 
 Here are a few potential drawbacks:
 
@@ -321,20 +321,20 @@ RaR is a valuable tool for improving LLM outputs for question-answering tasks, e
 
 ## What is Tabular Chain-of-Thought Prompting (Tab-CoT)?
 
-**Tabular Chain-of-Thought Prompting (Tab-CoT)** is a novel approach to Chain-of-Thought (CoT) prompting. Tab-CoT suggest to structure the reasoning process in CoT in the form of a table.
+**Tabular Chain-of-Thought Prompting (Tab-CoT)** is a novel approach to Chain-of-Thought (CoT) prompting. Tab-CoT suggest to structure the reasoning process in CoT in the form of a table.
 
-Unlike traditional CoT methods that rely on verbose natural language prompts, Tab-CoT leverages the power of tables. This allows Large Language Models (LLMs) to reason in a two-dimensional format, ensuring consistency and facilitating a more organized thought process.
+Unlike traditional CoT methods that rely on verbose natural language prompts, Tab-CoT leverages the power of tables. This allows Large Language Models (LLMs) to reason in a two-dimensional format, ensuring consistency and facilitating a more organized thought process.
 
 ## How Tab-CoT Differs from Existing Techniques
 
-1. **Zero-Shot CoT vs. Tab-CoT**: Zero-Shot CoT uses "Let's think step by step" to guide the LLM through reasoning. However, these methods tend to be verbose and often result in less organized outputs. In contrast, **Tab-CoT** generates concise, structured reasoning steps in a table format. It allows for **2-dimensional reasoning**, enabling the model to check for consistency across both rows and columns.
+1. **Zero-Shot CoT vs. Tab-CoT**: Zero-Shot CoT uses "Let's think step by step" to guide the LLM through reasoning. However, these methods tend to be verbose and often result in less organized outputs. In contrast, Tab-CoT generates concise, structured reasoning steps in a table format. It allows for 2-dimensional reasoning, enabling the model to check for consistency across both rows and columns.
 
-2. **CoT vs. Tab-CoT**: In CoT, human-engineered reasoning demonstrations are used to guide the model. While this method can yield high performance, it requires significant effort to manually create task-specific examples.
+2. **CoT vs. Tab-CoT**: In CoT, human-engineered reasoning demonstrations are used to guide the model. While this method can yield high performance, it requires significant effort to manually create task-specific examples.
    Tab-CoT removes this need by automatically generating the reasoning structure in a table, making it more scalable across various tasks without manual intervention.
 
 ## How Tab-CoT Works
 
-**Tab-CoT** encourages the LLM to captured its reasoning as a series of steps in a table format.
+**Tab-CoT** encourages the LLM to captured its reasoning as a series of steps in a table format.
 
 The table typically has the following columns:
 
@@ -363,9 +363,9 @@ This table allows LLMs to provide a more organized and efficient reasoning proce
 
 ## How to Use Tab-CoT
 
-To use **Tab-CoT**, follow these steps:
+To use Tab-CoT, follow these steps:
 
-### Step 1. **Formulating the Table**
+### Step 1. Formulating the Table
 
 The reasoning is structured in a table format with predefined columns that reflect the step-by-step thinking process.
 
@@ -379,7 +379,7 @@ Here's the prompt template:
 
 |step|subquestion|procedure|result|
 
-### Step 2. **Answer Extraction**
+### Step 2. Answer Extraction
 
 Once the table is generated, a final prompt like "The answer is" can be used to extract the result from the completed table. This ensures that the model provides the final answer after performing all reasoning steps.
 
@@ -391,20 +391,19 @@ Therefore, the answer is
 
 Tip
 
-The code for Tab-CoT is open-sourced by researchers from StatNLP Research Group, Singapore University of Technology and Design, and available for further research and implementation at Xalp/Tab-CoT.
+The code for Tab-CoT is open-sourced by researchers from StatNLP Research Group, Singapore University of Technology and Design, and available for further research and implementation at Xalp/Tab-CoT.
 
 ## Results of Tab-CoT
 
-**Tab-CoT** has been evaluated on multiple reasoning tasks, including arithmetic, symbolic, and commonsense reasoning tasks. Below are some key results from experiments comparing **Zero-Shot CoT** and **Tab-CoT**:
+**Tab-CoT** has been evaluated on multiple reasoning tasks, including arithmetic, symbolic, and commonsense reasoning tasks. Below are some key results from experiments comparing Zero-Shot CoT and Tab-CoT:
 
 - **Efficiency**: Tab-CoT reduces the number of tokens generated while maintaining or improving performance across most tasks.
-- **Scalability**: It works well in **Zero-Shot** and **Few-Shot** settings without needing manual design of task-specific examples.
+- **Scalability**: It works well in Zero-Shot and Few-Shot settings without needing manual design of task-specific examples.
 - **Improved Reasoning**: Tab-CoT's structured table approach captures both vertical (step-wise) and horizontal (cross-step) reasoning, which can result in more accurate final answers.
 
 ## Conclusion
 
-**Tab-CoT** presents a significant advancement in CoT prompting methods by introducing a highly structured, tabular approach to reasoning. It offers a concise, scalable, and effective solution for reasoning tasks, outperforming traditional CoT methods in several cases.
-As LLMs continue to evolve, Tab-CoT's table-based reasoning structure could become a standard for promoting structured reasoning in language modelsㅁ
+**Tab-CoT** presents a significant advancement in CoT prompting methods by introducing a highly structured, tabular approach to reasoning. It offers a concise, scalable, and effective solution for reasoning tasks, outperforming traditional CoT methods in several cases. As LLMs continue to evolve, Tab-CoT's table-based reasoning structure could become a standard for promoting structured reasoning in language models.
 
 ---
 
@@ -416,7 +415,7 @@ As LLMs continue to evolve, Tab-CoT's table-based reasoning structure could beco
 
 ## What is Logic-of-Thought (LoT)?
 
-**Logic-of-Thought (LoT)** is a novel technique designed to improve the logical reasoning abilities of Large Language Models (LLMs). While LLMs are highly effective across many tasks, they struggle with complex logical reasoning, especially when using traditional methods like Chain-of-Thought (CoT).
+**Logic-of-Thought (LoT)** is a novel technique designed to improve the logical reasoning abilities of Large Language Models (LLMs). While LLMs are highly effective across many tasks, they struggle with complex logical reasoning, especially when using traditional methods like Chain-of-Thought (CoT).
 
 LoT addresses these challenges by injecting formal propositional logic into prompts, guiding LLMs through more accurate reasoning processes. It adds logical information to input prompts, avoiding the information loss that often occurs when LLMs attempt symbolic reasoning.
 
@@ -434,18 +433,17 @@ For example, if the input contains statements about a person reading a book, LoT
 
 ## How LoT differs from existing techniques
 
-LoT improves on existing methods like **Chain-of-Thought (CoT)**, **Self-Consistency (SC)**, and **Tree-of-Thoughts (ToT)** by ensuring that logical information is systematically extracted and applied. Here's how it compares:
+LoT improves on existing methods like **Chain-of-Thought (CoT)**, **Self-Consistency (SC)**, and **Tree-of-Thoughts (ToT)** by ensuring that logical information is systematically extracted and applied. Here's how it compares:
 
 - **Chain-of-Thought (CoT)**: CoT adds intermediate reasoning steps but sometimes generates unfaithful conclusions. LoT addresses this by grounding reasoning steps in formal logic, reducing errors.
 
-- **Neuro-symbolic approaches**: Methods like **LINC** or **SatLM** combine LLMs with symbolic reasoning tools. However, these methods can lose information when converting problems into logical expressions. LoT avoids this by directly augmenting prompts without relying on external tools.
+- **Neuro-symbolic approaches**: Methods like **LINC** or **SatLM** combine LLMs with symbolic reasoning tools. However, these methods can lose information when converting problems into logical expressions. LoT avoids this by directly augmenting prompts without relying on external tools.
 
 - **Tree-of-Thoughts (ToT)**: ToT explores multiple branches of reasoning, but LoT can further enhance this process by ensuring logical coherence within those branches.
 
 ## Benefits and Applications
 
-LoT is particularly useful for tasks requiring robust logical reasoning, such as solving puzzles, legal reasoning, or question-answering on standardized tests.
-It can be applied in scenarios where logical consistency is crucial, and it performs well even in tasks with complex reasoning layers.
+LoT is particularly useful for tasks requiring robust logical reasoning, such as solving puzzles, legal reasoning, or question-answering on standardized tests. It can be applied in scenarios where logical consistency is crucial, and it performs well even in tasks with complex reasoning layers.
 
 ## How to use LoT
 
@@ -488,9 +486,7 @@ Only output the sentences in a paragraph!
 
 ## Conclusion
 
-Logic-of-Thought (LoT) is a powerful approach for injecting formal logic into large language models, enhancing their ability to handle complex reasoning tasks.
-By systematically extracting, extending, and translating logical information into natural language, LoT augments existing methods like CoT and ToT, improving accuracy and reducing errors in logical reasoning tasks.
-This technique is particularly valuable for applications requiring precise logical deductions, such as legal reasoning or standardized test question-answering.
+Logic-of-Thought (LoT) is a powerful approach for injecting formal logic into large language models, enhancing their ability to handle complex reasoning tasks. By systematically extracting, extending, and translating logical information into natural language, LoT augments existing methods like CoT and ToT, improving accuracy and reducing errors in logical reasoning tasks. This technique is particularly valuable for applications requiring precise logical deductions, such as legal reasoning or standardized test question-answering.
 
 ---
 
@@ -501,13 +497,13 @@ This technique is particularly valuable for applications requiring precise logic
 
 ## What is Code Prompting?
 
-**Code prompting** is a novel technique that enhances reasoning abilities in **text+code** Large Language Models (LLMs) by transforming **natural language (NL) tasks** into **code representations**. Instead of executing the code, the model uses it as a structured input format to reason and generate answers.
+**Code prompting** is a novel technique that enhances reasoning abilities in **text+code** Large Language Models (LLMs) by transforming **natural language (NL) tasks** into **code representations**. Instead of executing the code, the model uses it as a structured input format to reason and generate answers.
 This approach aims to improve conditional reasoning, where conclusions depend on specific conditions or logical steps like determining eligibility for a visa or loan based on given rules.
 
 ## How Code Prompting Works
 
 1. **Problem Conversion**: Natural language problems are transformed into a code-like structure, with conditional logic and variables, while preserving the original text as comments.
-2. **Prompting**: The LLM receives the generated code, interprets the structure, and produces answers in **natural language**.
+2. **Prompting**: The LLM receives the generated code, interprets the structure, and produces answers in **natural language**.
 
 ### Example
 
@@ -537,7 +533,7 @@ Let's think step by step:
 
 ## Conclusion
 
-Code prompting is an effective strategy for eliciting **conditional reasoning abilities** in text+code LLMs, enhancing their performance on logical tasks by providing structured inputs. This method not only improves accuracy but also **reduces the need for extensive demonstrations**, making it a valuable tool for improving reasoning in AI applications.
+Code prompting is an effective strategy for eliciting **conditional reasoning abilities** in text+code LLMs, enhancing their performance on logical tasks by providing structured inputs. This method not only improves accuracy but also **reduces the need for extensive demonstrations**, making it a valuable tool for improving reasoning in AI applications.
 
 ---
 
@@ -545,31 +541,31 @@ Code prompting is an effective strategy for eliciting **conditional reasoning a
 
 ## Introduction
 
-Large Language Models (LLMs) have achieved a remarkable performance in natural language understanding and generation. They are used for a variety of tasks such as translation, summarization, question answering, etc. As LLMs become more capable, their applications grow increasingly diverse and complex.
+Large Language Models (LLMs) have achieved a remarkable performance in natural language understanding and generation. They are used for a variety of tasks such as translation, summarization, question answering, etc. As LLMs become more capable, their applications grow increasingly diverse and complex.
 
-In advanced applications like Retrieval-Augmented Generation (RAG), users often input vast texts containing tens of thousands of tokens. This data may vary widely in relevance and connectivity, with some details critical to the query and others irrelevant. Such scenarios exemplify **"Chaotic Contexts"**---more challenging than mere "long contexts," which involve a large token count but lack the same degree of informational disarray.
+In advanced applications like Retrieval-Augmented Generation (RAG), users often input vast texts containing tens of thousands of tokens. This data may vary widely in relevance and connectivity, with some details critical to the query and others irrelevant. Such scenarios exemplify **"Chaotic Contexts"**---more challenging than mere "long contexts," which involve a large token count but lack the same degree of informational disarray.
 
 ## Challenges in Handling Chaotic Contexts
 
 Current techniques for managing chaotic contexts include:
 
-- **Retrieval-Augmentation with Long Context Extensions:** Combining extended model contexts with retrieval mechanisms.
-- **Prompt Streamlining:** Reducing irrelevant or redundant information within the input.
+- **Retrieval-Augmentation with Long Context Extensions:** Combining extended model contexts with retrieval mechanisms.
+- **Prompt Streamlining:** Reducing irrelevant or redundant information within the input.
 
 However, both approaches often require fine-tuning or retraining, demanding labeled data and substantial computational resources.
 
 ## Introducing Thread of Thought Prompting
 
-Thread of Thought (ThoT) prompting offers an alternative that eliminates the need for fine-tuning. Instead, it methodically segments and analyzes extended contexts, extracting relevant details to address specific queries.
+Thread of Thought (ThoT) prompting offers an alternative that eliminates the need for fine-tuning. Instead, it methodically segments and analyzes extended contexts, extracting relevant details to address specific queries.
 Much like how humans sift through large volumes of information by isolating key points, ThoT helps LLMs handle complex inputs efficiently.
 
 In short, ThoT prompting helps LLMs to methodically process, summarize, and analyze extended contexts in manageable parts, resulting in more accurate responses in tasks such as multi-turn conversations and complex question answering.
 
 ## Key Features of ThoT Prompting
 
-1. **Guided Step-by-Step Processing:** ThoT prompts the model to "walk through" chaotic contexts, analyzing and summarizing each part progressively.
-2. **Selective Attention:** By breaking down information into smaller segments, ThoT helps the model ignore irrelevant details and focus on pertinent information.
-3. **Two-Tiered Prompting System:** This system involves a first pass for analysis and a second pass for summarizing and deriving conclusions, enhancing the model's ability to synthesize complex information.
+1. **Guided Step-by-Step Processing:** ThoT prompts the model to "walk through" chaotic contexts, analyzing and summarizing each part progressively.
+2. **Selective Attention:** By breaking down information into smaller segments, ThoT helps the model ignore irrelevant details and focus on pertinent information.
+3. **Two-Tiered Prompting System:** This system involves a first pass for analysis and a second pass for summarizing and deriving conclusions, enhancing the model's ability to synthesize complex information.
 
 For example, if the model is asked about the founding place of "Reclam" from multiple retrieved passages, ThoT helps the model sift through each passage in stages, retaining only the relevant details about "Reclam" and its founding location.
 
@@ -660,14 +656,13 @@ ThoT stands apart from traditional approaches:
 
 ThoT is useful in scenarios where complex or unrelated information must be processed for relevant insights:
 
-- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
-- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
-- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
+- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
+- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
+- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
 
 ## Conclusion
 
-Thread of Thought (ThoT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights.
-This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
+Thread of Thought (ThoT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights. This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
 
 ---
 
@@ -698,14 +693,13 @@ ThoT stands apart from traditional approaches:
 
 ThoT is useful in scenarios where complex or unrelated information must be processed for relevant insights:
 
-- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
-- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
-- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
+- **Question Answering with Distractors:** Handling retrieval-augmented generation tasks with distracting passages.
+- **Multi-Turn Dialogues:** Supporting coherent responses by tracking conversation history.
+- **Chaotic Data Summarization:** Summarizing unstructured, long-form content like legal or research documents.
 
 ## Conclusion
 
-Tree of Thoughts (ToT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights.
-This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
+Tree of Thoughts (ToT) prompting introduces a new way for language models to tackle complex, chaotic contexts by breaking down information into segments, analyzing each, and synthesizing relevant insights. This approach not only enhances accuracy but also integrates smoothly with existing models, making it an efficient and versatile tool for applications in retrieval-augmented generation and other challenging tasks requiring nuanced comprehension.
 
 </Prompt_Engineering_Technique_documentation>
 
@@ -816,8 +810,34 @@ You are an expert prompt engineer. Your primary task is to receive an "Original 
     		- **Include Target File Workflow Instructions**: If the plan from Phase 3 included the target file workflow, ensure the generated Action Prompt explicitly instructs the final Agent on using `edit_file`, checking for lint errors after applying the edit, and iteratively attempting to fix any reported lint errors (up to 3 times), using `edit_file` again for each attempt, before concluding.
     		- Double-check that the Action Prompt fully **incorporates and embeds** the core intent and necessary details **directly from** the Original Prompt, rather than just referencing it. Address the "Content Preservation" constraint by ensuring all critical information is transferred.
     		- Ensure the Action Prompt instructs the final LLM/Agent to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This restatement should be framed as the BEGINNING of the reasoning/planning part of the Action Output.
-    		- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), **fully embed these details**, potentially verbatim, into the Action Prompt's instructions to ensure faithful execution. DO NOT instruct the final agent to refer back to the Original Prompt.
-    		- The Action Prompt MUST NOT contain placeholder sections (e.g., `<Input_Code>...</Input_Code>`, `[PASTE TEXT HERE]`) for the primary input data. Instead, it MUST instruct the LLM or AI Agent on how to process the input that will be provided externally alongside this Action Prompt. Reference the *type* or *nature* of the expected external input where necessary (e.g., 'Process the provided source code', 'Analyze the input text').
+    		- **Prioritize Detail for Critical Instructions:** When incorporating elements from the Original Prompt, especially procedural steps, specific constraints (like formatting rules or syntax guidelines), or detailed lists, lean towards including sufficient detail. If the Original Prompt provides specific wording or examples for guidelines (like the Mermaid syntax rules in the example), **fully embed these details**, potentially verbatim, into the Action Prompt\'s instructions to ensure faithful execution. DO NOT instruct the final agent to refer back to the Original Prompt.
+    		- The Action Prompt MUST NOT contain placeholder sections (e.g., `<Input_Code>...</Input_Code>`, `[PASTE TEXT HERE]`) for the primary input data. Instead, it MUST instruct the LLM or AI Agent on how to process the input that will be provided externally alongside this Action Prompt. Reference the *type* or *nature* of the expected external input where necessary (e.g., \'Process the provided source code\', \'Analyze the input text\').
+    			- **Markdown Output Formatting**: If the `Generated_Action_Prompt` is intended to instruct an LLM/Agent to produce Markdown output (e.g., documentation, reports), then the `Generated_Action_Prompt` MUST itself include an **UNAMBIGUOUS AND EMPHATIC** instruction for *its* target LLM/Agent to **ALWAYS AND WITHOUT EXCEPTION** ensure there is a blank newline BEFORE and AFTER any Markdown code block it generates. This ensures the final Markdown output adheres to the correct formatting. The example of this rule (shown below) provided within the `Generated_Action_Prompt` MUST ITSELF METICULOUSLY follow this newline convention for its outer fences. For example, the `Generated_Action_Prompt` should contain a rule like:
+
+    				```markdown
+    				- **CODE BLOCK FORMATTING (Strict Requirement):** When generating Markdown, you **MUST ALWAYS AND WITHOUT EXCEPTION** ensure there is a blank newline both BEFORE and AFTER any Markdown code block (e.g., ` ``` ` or ` ~~~ `).
+    				  - *Incorrect Example (this will break parsing or display):*
+
+    				    ```
+    				    Some text
+    				    ```json
+    				    {"key": "value"}
+    				    ```
+    				    More text
+    				    ```
+
+    				  - *Correct Example (follow this strictly):*
+
+    				    ```
+    				    Some text
+
+    				    ```json
+    				    {"key": "value"}
+    				    ```
+
+    				    More text
+    				    ```
+    				```
 
     	**Phase 5: Verify Original Prompt Content Preservation**
     </Core_Task>
@@ -930,9 +950,33 @@ You are an expert prompt engineer. Your primary task is to receive an "Original 
     </Available_Prompt_Engineering_Techniques>
 
     <Constraints_and_Guidelines>
-    	- **PRESERVE ORIGINAL PROMPT INTEGRITY & EMBED CONTENT**: ENSURE NO INFORMATION, INTENT, OR **CRUCIAL DETAIL** (such as specific enumerated lists, detailed guidelines, or examples provided for instruction) FROM THE ORIGINAL PROMPT IS LOST OR SIGNIFICANTLY ALTERED IN THE ACTION PROMPT, UNLESS THE ALTERATION IS A CLEAR IMPROVEMENT IN STRUCTURE OR CLARITY WITHOUT LOSING THE CORE INSTRUCTION. **ALL RELEVANT DETAILS FROM THE ORIGINAL PROMPT MUST BE FULLY EMBEDDED WITHIN THE ACTION PROMPT.** IF SUMMARIZATION RISKS LOSING CRITICAL NUANCE OR DETAIL FROM INSTRUCTIONS OR GUIDELINES, ERR ON THE SIDE OF INCLUDING THEM MORE FULLY OR VERBATIM WITHIN THE ACTION PROMPT. **THE GENERATED ACTION PROMPT MUST BE SELF-CONTAINED AND MUST NOT INSTRUCT THE FINAL AGENT TO REFER BACK TO THE ORIGINAL PROMPT.** DO NOT ADD TASKS BEYOND THE ORIGINAL PROMPT'S SCOPE.
+    	- **PRESERVE ORIGINAL PROMPT INTEGRITY & EMBED CONTENT**: ENSURE NO INFORMATION, INTENT, OR **CRUCIAL DETAIL** (such as specific enumerated lists, detailed guidelines, or examples provided for instruction) FROM THE ORIGINAL PROMPT IS LOST OR SIGNIFICANTLY ALTERED IN THE ACTION PROMPT, UNLESS THE ALTERATION IS A CLEAR IMPROVEMENT IN STRUCTURE OR CLARITY WITHOUT LOSING THE CORE INSTRUCTION. **ALL RELEVANT DETAILS FROM THE ORIGINAL PROMPT MUST BE FULLY EMBEDDED WITHIN THE ACTION PROMPT.** IF SUMMARIZATION RISKS LOSING CRITICAL NUANCE OR DETAIL FROM INSTRUCTIONS OR GUIDELINES, ERR ON THE SIDE OF INCLUDING THEM MORE FULLY OR VERBATIM WITHIN THE ACTION PROMPT. **THE GENERATED ACTION PROMPT MUST BE SELF-CONTAINED AND MUST NOT INSTRUCT THE FINAL AGENT TO REFER BACK TO THE ORIGINAL PROMPT.** DO NOT ADD TASKS BEYOND THE ORIGINAL PROMPT\'S SCOPE.
     	- **Clarity and Effectiveness**: The primary goal is to create an Action Prompt that is significantly more effective than the Original Prompt for an LLM or AI Agent.
     	- **English and XML, Markdown**: The Action Prompt MUST be in English and use XML, Markdown format.
+    		- **CRITICAL: Code Block Formatting in Action Prompt**: When you, the prompt engineer AI, are generating the Action Prompt, if you include any Markdown code blocks (e.g., ` ``` ` or ` ~~~ `) within the Action Prompt's own content (e.g., for examples that illustrate rules, or any other structured content), you MUST METICULOUSLY ensure there is a blank newline BEFORE and AFTER each such code block. **THIS RULE APPLIES EVEN TO THE EXAMPLES YOU GENERATE TO ILLUSTRATE THIS VERY RULE. FAILURE TO ADHERE TO THIS FOR EXAMPLES WILL CAUSE CONFUSION.**
+    						- *Incorrect Example (within the Action Prompt you are generating):*
+
+    								```
+    								<SomeXmlElement>
+    								```json
+    								{"key": "value"}
+    								```
+    								</SomeXmlElement>
+    								```
+
+    						- *Correct Example (within the Action Prompt you are generating):*
+
+    								```
+    								<SomeXmlElement>
+
+    								```json
+    								{"key": "value"}
+    								```
+
+    								</SomeXmlElement>
+    								```
+
+    						- This rule also applies when code blocks are nested within other Markdown elements like lists or blockquotes, or within XML-like tags that form the structure of the Action Prompt.
     	- **Guidance for Action Prompt Construction**: The generated Action Prompt SHOULD instruct the final LLM/Agent to briefly restate its understanding of the core task and list the key inputs or data sources it will use BEFORE proceeding with the main execution. This serves as the initial part of the reasoning/planning process. The Action Prompt MUST also guide the LLM/Agent to produce a *complete* response, which includes the reasoning, planning, or explanations *leading to* the final output, **descriptions of any necessary tool calls (including tool and parameters)**, *alongside* the final output itself, as appropriate for the task and defined in the `Action_Prompt_Plan`, unless the Original Prompt explicitly forbids this. **Crucially, if the Original Prompt involves code generation/modification for a specific target file, the Action Prompt MUST instruct the final Agent to use the `edit_file` tool, check for lint errors after applying the edit, and iteratively attempt to fix any reported lint errors (up to 3 times), using `edit_file` again for each attempt, before concluding.**
     	- No Input Placeholders in Action Prompt: The generated Action Prompt should not include dedicated sections or placeholders intended for the user to paste their primary input data. It must assume input is provided externally.
     </Constraints_and_Guidelines>

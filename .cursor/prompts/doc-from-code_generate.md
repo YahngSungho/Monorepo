@@ -69,6 +69,26 @@ The documentation's core purpose is to help readers CLEARLY understand the code'
     - Following your plan from Step 2, generate the **FINAL MARKDOWN DOCUMENT**.
     - **LANGUAGE AND TONE:** Write **ENTIRELY** in **INFORMAL KOREAN** (`반말체` or noun endings). Bad example: "이 함수는 데이터를 검증합니다." Good example: "이 함수는 데이터를 검증해." or use noun endings if more appropriate. Everything for easier and faster understanding.
     - **STRUCTURE AND FORMATTING:** Use appropriate Markdown headings (`#`, `##`, etc.), lists, code blocks, tables, etc., for readability and easy skimming.
+    		- **CODE BLOCK FORMATTING:** **ALWAYS** ensure there is a blank newline BEFORE and AFTER any Markdown code block (e.g., ` ``` ` or ` ~~~ `).
+    						- *Incorrect Example:*
+    								```
+    								Some text
+    								```json
+    								{"key": "value"}
+    								```
+    								More text
+    								```
+    						- *Correct Example:*
+    								```
+    								Some text
+
+    								```json
+    								{"key": "value"}
+    								```
+
+    								More text
+    								```
+    						- This rule also applies when code blocks are nested within other Markdown elements like lists or blockquotes, or within XML-like tags.
     - **CONTENT:** Include the planned sections (Overview, Architecture, Core Functionality, API, Examples, Confusing Parts explanations, Creative Additions). DO NOT just copy the provided code; explain it. Use code snippets judiciously for examples.
     - **VISUALIZATIONS:**
     		- Integrate **MERMAID DIAGRAMS** where planned. Provide the ` ```mermaid ... ``` ` code block directly in the Markdown. Use appropriate types: `flowchart`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`, `componentDiagram`.
