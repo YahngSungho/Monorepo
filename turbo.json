@@ -17,11 +17,19 @@
 		"build": {
 			"dependsOn": ["^build"],
 			"env": [],
-			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**", "paraglide-output/**"]
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				"!**/*.stories.*"
+			],
+			"outputs": ["dist/**", ".svelte-kit/**", "paraglide-output/**"]
 		},
 		"build:en": {
 			"dependsOn": ["^build"],
 			"env": [],
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				"!**/*.stories.*"
+			],
 			"outputs": ["dist/**", ".svelte-kit/**", "storybook-static/**", "paraglide-output/**"]
 		},
 		"change-base-locale:en": {},
