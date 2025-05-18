@@ -8,7 +8,6 @@ on:
 
 jobs:
   remove-mutation-finished-label:
-    needs: [automerge, automerge-dependabot]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -40,6 +39,7 @@ jobs:
             }
 
   automerge:
+    needs: [remove-mutation-finished-label]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -56,6 +56,7 @@ jobs:
           do-not-merge-labels: never-merge
 
   automerge-dependabot:
+    needs: [remove-mutation-finished-label]
     runs-on: ubuntu-latest
     permissions:
       contents: write
