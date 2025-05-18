@@ -108,6 +108,7 @@ Carefully execute the following 5 steps IN ORDER. The primary goal is to build a
 
 - **Objective**: To synthesize all _verified_ knowledge gathered and analyzed into the `.cursor/rules/project-overview.mdc` file, structuring it for **maximum utility, parsability, and actionability by the LLM assistant itself, based solely on facts.** This is about creating the LLM's "brain" for this project, ensuring it is a source of truth.
 - **Plan of Action**:
+
   1. Take the existing structure of `project-overview.mdc` (if any, from Step 2 analysis) as a baseline for the LLM's knowledge.
   2. Integrate all new _verified_ knowledge gathered in Step 4 and address all discrepancies and requirements identified in Steps 2 and 3. This involves the LLM updating its own knowledge sections, adding new ones, and ensuring all topics from Step 3's "LLM information needs" list are covered comprehensively _from the perspective of an LLM user of this document, strictly adhering to verifiable facts_. **During this integration, the LLM MUST continuously cross-reference with codebase evidence to prevent introduction of any unverified statements.**
   3. Create/Update a dedicated section in `.cursor/rules/project-overview.mdc` titled **"LLM Operational Guide: Common Development Scenarios & Self-Correction Procedures Based on Verifiable Knowledge"**. This section is CRITICAL and tells the LLM _how to use this document (which contains only verifiable facts) and assist developers_. It MUST include:
@@ -132,15 +133,37 @@ Carefully execute the following 5 steps IN ORDER. The primary goal is to build a
        - _Example 2: Developer asks "Generate a UI component to display a list of users."_
          LLM Action: "1. Consult 'Shared Libraries (`libraries/*`) API and Usage' specifically for `@library/ui` components (_verified_ APIs). 2. Consult 'State Management & Data Fetching Patterns' (_verified_ patterns). 3. Generate Svelte code using appropriate list/table components from `@library/ui`, demonstrating data fetching as per _verified_ project patterns..."
   4. **Adhere strictly to "Content Composition for LLM Utility Maximization" principles (from LLM's perspective)**:
+
      - **Strict Factual Accuracy and Verifiability**: The LLM MUST ensure that ALL information recorded in `.cursor/rules/project-overview.mdc` is derived _directly and exclusively_ from the codebase through tool use (`read_file`, `codebase_search`, etc.). There is ZERO tolerance for speculation, assumption, or hallucination. If information cannot be definitively verified from the codebase, it MUST NOT be included. This is a CRITICAL directive to maintain the integrity and reliability of the LLM's knowledge base. Violations will severely degrade the LLM's utility. **This principle underpins all other principles.**
      - **Language**: All content in this document MUST be in English, as this is optimal for the LLM's processing.
      - **Clarity and Directness**: Use unambiguous language that the LLM can parse easily. Avoid metaphors or colloquialisms.
-     - **Code Blocks and Examples**: Provide actual code snippets (using Markdown triple backticks with language identifiers) that the LLM can directly use as templates or to understand syntax/patterns. These are critical for code generation tasks.
+     - **Code Blocks and Examples**: Provide actual code snippets (using Markdown triple backticks with language identifiers) that the LLM can directly use as templates or to understand syntax/patterns. These are critical for code generation tasks. - **CODE BLOCK FORMATTING:** When including Markdown code blocks (e.g., ` ``` ` or `~~~`) in the `.cursor/rules/project-overview.mdc` document, **ALWAYS** ensure there is a blank newline BEFORE and AFTER each code block. - _Incorrect Example:_
+       `
+			Some descriptive text.
+			`typescript
+       const x = 10;
+       `
+			Further text.
+			` - _Correct Example:_
+
+       ````
+       Some descriptive text.
+
+           					```typescript
+           					const x = 10;
+           					```
+
+           					Further text.
+           					```
+           			- This ensures proper rendering and parsing for the LLM when it consumes its knowledge base.
+
+       ````
+
      - **Keyword and Term Emphasis**: Use **bold** or `backticks` for important keywords, library names, file names, or configuration keys that the LLM should pay special attention to or use as search keys within this document.
-     - **Tables for Comparison/Summaries**: Use Markdown tables for lists of configuration options, API endpoints, etc., as this structured format is easier for the LLM to parse and extract specific data points from.
-     - **"Do" and "Don't" Lists (for LLM actions)**: Provide explicit guidance on recommended practices or patterns the LLM should follow or avoid when generating code or providing explanations.
+
   5. Review and refine the entire document ensuring it is a coherent, accurate (because it is _fact-based_), and highly actionable internal knowledge base for the LLM.
   6. The output of this step is the FINAL, complete Markdown text for `.cursor/rules/project-overview.mdc` – the LLM's brain, **built on verifiable facts.**
+
 - **Execution Process**: Describe how the LLM's knowledge base is constructed section by section, emphasizing how each part is designed for LLM consumption and actionability, **and crucially, how verifiability is maintained at each stage.**
 - **Conclusion for Step 5**: State that the LLM's internal knowledge base (`project-overview.mdc`) is now complete and ready to be loaded/used, **and that its contents are strictly based on verifiable codebase facts.** Output the full Markdown content.
 

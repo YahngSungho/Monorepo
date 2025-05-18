@@ -56,7 +56,7 @@
     			*   **OUTPUT ONLY THIS FINAL JSON OBJECT.** NO other text, explanation, reasoning, or introductory phrases should precede or follow the JSON output.
 
     	**Paraglide Rules (MUST FOLLOW):**
-    	```text
+
     	- The translations you produce MUST follow the inlang message format for the Paraglide Web App translation library.
     	- If a word is enclosed in `{` and `}`, it signifies a parameter receiving a value from outside. This part MUST NOT be translated and MUST be left as is, so it can receive an argument with a matching name externally.
     	- Regarding Variants:
@@ -170,7 +170,6 @@
     		- `match`: Specifies different messages based on the value of the `countPlural` variable. For English, this is typically distinguished as 'one' and 'other'.
 
     							**Important Note on Proactive Pluralization:** When translating *into* languages like English from languages that may not explicitly mark plurals in the source text (e.g., Korean), you MUST proactively analyze parameters (`{paramName}`). If context (parameter name, explanation) suggests `paramName` represents a countable quantity, apply the pluralization structure (`declarations`, `selectors`, `match`) using `paramName` as the input, even if the source text doesn't vary.
-    	```
 
 </Instructions>
 
@@ -185,20 +184,21 @@
 		4.  `TARGET MESSAGES` (JSON string: `{ "number": { "ko": "...", "en": "...", "explanation": "..." } }`): The messages requiring translation. **Keys (`"number"`) are sequential integer strings starting from "1" (e.g., "1", "2", "3", ...).**
 </Input>
 
-<Output*Schema>
-```typescript
-/\*\*
-\_Represents the structured output for the translation task.
-\_THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
-*/
-interface TranslationOutput {
-/\_\*
-* The translated messages, keyed by the original message number.
-*Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).
-* Values MUST be strings or valid Paraglide variant objects (matching/pluralization).
-*Example (proactive pluralization applied): "4": { "declarations": ["input itemCount", ...], "match": { "countPlural=one": "1 item", "countPlural=other": "{itemCount} items" } }
-\*/
-translatedMessages: { [messageNumber: string]: string | object };
+<Output_Schema>
+
+    	```typescript
+    	/**
+    		* Represents the structured output for the translation task.
+    		* THE FINAL OUTPUT MUST BE ONLY THIS JSON OBJECT.
+    		*/
+    	interface TranslationOutput {
+    		/**
+    			* The translated messages, keyed by the original message number.
+    			*Keys MUST be the sequential integer strings from the input TARGET MESSAGES (e.g., "1", "2", "3", ...).
+    			* Values MUST be strings or valid Paraglide variant objects (matching/pluralization).
+    			*Example (proactive pluralization applied): "4": { "declarations": ["input itemCount", ...], "match": { "countPlural=one": "1 item", "countPlural=other": "{itemCount} items" } }
+    			*/
+    		translatedMessages: { [messageNumber: string]: string | object };
 
     		/**
     			* Newly identified terms and their translations for future consistency.
@@ -212,27 +212,29 @@ translatedMessages: { [messageNumber: string]: string | object };
 </Output_Schema>
 
 <Example_Final_Output>
-`json
-		{
-			"translatedMessages": {
-				"1": "Translated message for 1.",
-				"2": "Simple translation for 2.",
-				"3": {
-						"declarations": ["input itemCount", "local countPlural = itemCount: plural"],
-						"selectors": ["countPlural"],
-						"match": {
-								"countPlural=one": "There is {itemCount} item.",
-								"countPlural=other": "There are {itemCount} items."
-						}
-				},
-				"4": "Another translated message for 4."
-				// ... messages for "5", etc. following the sequence
-			},
-			"newDictionary": {
-				"항목": "item", // Example term identified
-				"원본 용어2": "Translated Term 2"
-				// ... other new dictionary entries
-			}
-		}
-		`
+
+    	```json
+    	{
+    		"translatedMessages": {
+    			"1": "Translated message for 1.",
+    			"2": "Simple translation for 2.",
+    			"3": {
+    					"declarations": ["input itemCount", "local countPlural = itemCount: plural"],
+    					"selectors": ["countPlural"],
+    					"match": {
+    							"countPlural=one": "There is {itemCount} item.",
+    							"countPlural=other": "There are {itemCount} items."
+    					}
+    			},
+    			"4": "Another translated message for 4."
+    			// ... messages for "5", etc. following the sequence
+    		},
+    		"newDictionary": {
+    			"항목": "item", // Example term identified
+    			"원본 용어2": "Translated Term 2"
+    			// ... other new dictionary entries
+    		}
+    	}
+    	```
+
 </Example_Final_Output>
