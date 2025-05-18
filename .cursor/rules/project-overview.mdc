@@ -146,9 +146,9 @@ This section describes the main applications and libraries within the monorepo.
 ### 2.3. Storybook (`storybook/`)
 
 * **Description**: UI component development and testing environment.
-* **Key Files & Config**: `package.json` (`@repo/storybook`), Vite-based (`vite.config.js`). Main Storybook config in `.storybook/main.js` (framework `@storybook/sveltekit`, stories in `src/**/*.stories.svelte`, addons). `.storybook/preview.js` for global parameters/decorators.
+* **Key Files & Config**: `package.json` (`@repo/storybook`), Vite-based (`vite.config.js`). Main Storybook config in `.storybook/main.js` (framework `@storybook/sveltekit`, addons). Story files are co-located with their respective components in various library packages (e.g., `libraries/ui/src/**/*.stories.svelte`, `libraries/some-other-lib/src/**/*.stories.svelte`). The `.storybook/main.js` (or `.storybook/main.ts`) `stories` field is configured to find these distributed story files. `.storybook/preview.js` for global parameters/decorators.
 * **Dependencies**: `@library/base`, `@library/ui`.
-* **Purpose**: Develop, visualize, and test UI components from `@library/ui` in isolation.
+* **Purpose**: Develop, visualize, and test UI components (e.g., from `@library/ui`) in isolation. Story files are located alongside the components they document and test.
 
 ---
 
@@ -213,6 +213,8 @@ This section guides the LLM assistant on using this knowledge base effectively. 
 * This document is your primary source of truth for project-specific details.
 * When answering queries or generating code, explicitly state if your information comes from this document (e.g., "According to the project overview, the Paraglide message files are located at...").
 * If information is missing (e.g., full `eslint.config.js`), research this codebase by using `list_dir`, `codebase_search`, `grep_search`, `read_file`.
+* **Crucially, if you (the LLM assistant) or any developer discovers that the information in this document is outdated or no longer accurately reflects the current state of the codebase (e.g., due to structural changes, dependency updates, or configuration modifications), it is imperative to update this `project-overview.mdc` file immediately. Keeping this document synchronized with the codebase is essential for maintaining its reliability as a single source of truth and ensuring effective AI-assisted development.**
+* **Note on this document itself**: When referring to or needing to modify this project overview document, always use its full and correct path: `.cursor/rules/project-overview.mdc`. This will prevent errors related to incorrect file paths or names.
 
 ### 5.2. Common Development Scenarios & Procedures
 
