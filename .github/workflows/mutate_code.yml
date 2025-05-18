@@ -70,7 +70,6 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN1 }}
           script: |
-            await new Promise(resolve => setTimeout(resolve, 30000)); // 30초 대기
             try {
               await github.rest.issues.removeLabel({
                 issue_number: context.issue.number,
