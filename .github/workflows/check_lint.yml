@@ -56,7 +56,7 @@ jobs:
         run: pnpm install --prefer-offline
 
       - name: paraglide-compile
-        run: pnpm exec turbo run build --filter=@library/paraglide
+        run: pnpm --filter=@library/paraglide exec node ./src/compile.js
 
       # 린트 실행
       - name: Run Lint
