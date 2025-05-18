@@ -45,14 +45,12 @@ jobs:
       contents: write
       pull-requests: write
     if: |
-      !contains(github.event.pull_request.labels.*.name, 'dependabot') &&
-      github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
+      !contains(github.event.pull_request.labels.*.name, 'dependabot')
 
     steps:
       - uses: reitermarkus/automerge@v2
         with:
           token: ${{ secrets.TOKEN1 }}
-          required-labels: mutation-finished
           do-not-merge-labels: never-merge
 
   automerge-dependabot:
@@ -62,8 +60,7 @@ jobs:
       contents: write
       pull-requests: write
     if: |
-      contains(github.event.pull_request.labels.*.name, 'dependabot') &&
-      github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
+      contains(github.event.pull_request.labels.*.name, 'dependabot')
 
     steps:
       - name: Dependabot metadata
