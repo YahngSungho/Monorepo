@@ -7,6 +7,38 @@ on:
       - synchronize
 
 jobs:
+  remove-mutation-finished-label:
+    needs: [automerge, automerge-dependabot]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-finished')
+
+    steps:
+      - name: Remove mutation-finished Label
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN1 }}
+          script: |
+            try {
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              await github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'mutation-finished'
+              });
+              core.info('Label "mutation-finished" removed successfully.');
+            } catch (error) {
+              if (error.status === 404) {
+                core.info('Label "mutation-finished" not found or already removed.');
+              } else {
+                core.setFailed(`Error removing label: ${error.message}`);
+              }
+            }
+
   automerge:
     runs-on: ubuntu-latest
     permissions:
@@ -44,35 +76,3 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GH_TOKEN: ${{secrets.TOKEN1}}
-
-  remove-mutation-finished-label:
-    needs: [automerge, automerge-dependabot]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    if: always() && contains(github.event.pull_request.labels.*.name, 'mutation-finished')
-
-    steps:
-      - name: Remove mutation-finished Label
-        if: always()
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.TOKEN1 }}
-          script: |
-            try {
-              await new Promise(resolve => setTimeout(resolve, 1000));
-              await github.rest.issues.removeLabel({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'mutation-finished'
-              });
-              core.info('Label "mutation-finished" removed successfully.');
-            } catch (error) {
-              if (error.status === 404) {
-                core.info('Label "mutation-finished" not found or already removed.');
-              } else {
-                core.setFailed(`Error removing label: ${error.message}`);
-              }
-            }
