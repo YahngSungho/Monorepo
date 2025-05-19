@@ -29,7 +29,7 @@
 		"@storybook/addon-mdx-gfm": "^8.6.12",
 		"@storybook/addon-svelte-csf": "5.0.0-next.28",
 		"@storybook/blocks": "^8.6.12",
-		"@storybook/core": "^8.6.12",
+		"@storybook/core": "^8.6.14",
 		"@storybook/svelte": "^8.6.12",
 		"@storybook/svelte-vite": "^8.6.12",
 		"@storybook/sveltekit": "^8.6.14",
