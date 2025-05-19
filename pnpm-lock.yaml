@@ -559,8 +559,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       rambda:
-        specifier: ^10.0.1
-        version: 10.1.0
+        specifier: ^10.2.0
+        version: 10.2.0
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -8182,8 +8182,8 @@ packages:
   railroad-diagrams@1.0.0:
     resolution: {integrity: sha512-cz93DjNeLY0idrCNOH6PviZGRN9GJhsdm9hpn1YCS879fj4W+x5IFJhhkRZcwVgMmFF7R82UA/7Oh+R8lLZg6A==}
 
-  rambda@10.1.0:
-    resolution: {integrity: sha512-TrgYIJs56C/qI4KTjDLqJeyP+zBUy3L6rg3GOm6QMhtBsr7+dPbs/MhV2PTwRmkMxN42dohOpWcbdXXcEoY0Bg==}
+  rambda@10.2.0:
+    resolution: {integrity: sha512-+ucs+OgkatwV3MNfV7GO55xVQ8xTHRN1sca7qp6+6lZYmNXw3h+IW9aIjzb4cpoT4dJVHxoJqzEbLCOS3i6CJQ==}
 
   ramda@0.25.0:
     resolution: {integrity: sha512-GXpfrYVPwx3K7RQ6aYT8KPS8XViSXUVJT1ONhoKPE9VAleW42YE+U+8VEyGWt41EnEQW7gwecYJriTI0pKoecQ==}
@@ -18350,7 +18350,7 @@ snapshots:
 
   railroad-diagrams@1.0.0: {}
 
-  rambda@10.1.0: {}
+  rambda@10.2.0: {}
 
   ramda@0.25.0: {}
 
