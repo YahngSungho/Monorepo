@@ -113,7 +113,7 @@
 		"prettier-plugin-package-perfection": "^1.1.0",
 		"prettier-plugin-sh": "^0.17.2",
 		"prettier-plugin-sort-json": "^4.1.1",
-		"prettier-plugin-sql": "^0.19.0",
+		"prettier-plugin-sql": "^0.19.1",
 		"prettier-plugin-svelte": "^3.4.0",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"simple-git-hooks": "^2.12.1",
