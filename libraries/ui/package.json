@@ -24,7 +24,7 @@
 	"types": "./dist/index.d.ts",
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
-		"@internationalized/date": "^3.7.0",
+		"@internationalized/date": "^3.8.1",
 		"@library/base": "workspace:*",
 		"@library/library-base": "workspace:*",
 		"@shikijs/rehype": "^3.4.1",

@@ -642,8 +642,8 @@ importers:
         specifier: ^0.8.2
         version: 0.8.2
       '@internationalized/date':
-        specifier: ^3.7.0
-        version: 3.8.0
+        specifier: ^3.8.1
+        version: 3.8.1
       '@library/base':
         specifier: workspace:*
         version: link:../base
@@ -2003,8 +2003,8 @@ packages:
     resolution: {integrity: sha512-tyXNe/5+1Vn/eDt3mVklVjZh5qxFwqdF9+hdB6wRUCexVRw6w/w854TIRFrHuaAwFq/0N/ij/yXzll9oScAB+Q==}
     engines: {node: '>=18.0.0'}
 
-  '@internationalized/date@3.8.0':
-    resolution: {integrity: sha512-J51AJ0fEL68hE4CwGPa6E0PO6JDaVLd8aln48xFCSy7CZkZc96dGEGmLs2OEEbBxcsVZtfrqkXJwI2/MSG8yKw==}
+  '@internationalized/date@3.8.1':
+    resolution: {integrity: sha512-PgVE6B6eIZtzf9Gu5HvJxRK3ufUFz9DhspELuhW/N0GuMGMTLvPQNRkHP2hTuP9lblOk+f+1xi96sPiPXANXAA==}
 
   '@intlify/eslint-plugin-svelte@1.0.0':
     resolution: {integrity: sha512-n0D9Ok/h3Aa1Ne1OJe9UfpOlXIY7nhW1sqW8ggAXGWqDUR3V3jQgFArPy+XqaPzrBYAkEHRh9d3zPa6rqqPddQ==}
@@ -11162,7 +11162,7 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
-  '@internationalized/date@3.8.0':
+  '@internationalized/date@3.8.1':
     dependencies:
       '@swc/helpers': 0.5.17
 
@@ -13476,7 +13476,7 @@ snapshots:
     dependencies:
       '@floating-ui/core': 1.6.9
       '@floating-ui/dom': 1.6.13
-      '@internationalized/date': 3.8.0
+      '@internationalized/date': 3.8.1
       esm-env: 1.2.2
       runed: 0.23.4(svelte@5.28.1)
       svelte: 5.28.1
