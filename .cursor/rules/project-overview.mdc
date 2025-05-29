@@ -3,10 +3,11 @@ description: Provides a comprehensive overview of this codebase. Consult this ru
 globs: *.json,*.yml,*.yaml,*.toml,turbo.json,pnpm-workspace.yaml,vite.config.js,.**/svelte.config.js,package.json,index.ts,index.js
 alwaysApply: false
 ---
+# ✨ Project Overview & LLM Knowledge Base
 
-# Project Overview: Monorepo
+This document serves as the **primary source of truth and comprehensive internal reference guide** for the LLM assistant embedded in this IDE. It is dynamically generated and updated based **solely on verifiable facts extracted directly from the codebase**. The LLM MUST rely on this document to understand project structure, build processes, key libraries, coding patterns, and operational configurations.
 
-**Purpose**: This document provides a comprehensive, verifiable overview of the Monorepo project. It serves as a primary knowledge base for an LLM assistant, enabling it to provide accurate, context-aware, and efficient development support. All information herein is derived directly from the codebase and project configuration files.
+**Accuracy and Verifiability are Paramount:** All information herein is derived from and links back to specific files or configurations within the repository. The LLM should treat this as its internal "long-term memory" and trusted knowledge base.
 
 ---
 
@@ -16,44 +17,45 @@ This section details the monorepo's overall setup, primary technologies, and glo
 
 ### 1.1. Monorepo Management & Tooling
 
-- **Package Manager**: `pnpm@10.8.0` (specified in root `package.json`). Workspaces are defined in `pnpm-workspace.yaml`, including paths like `apps/*`, `libraries/*`, `storybook`, etc.
-- **Build System**: Turborepo (`turbo@^2.5.0`) orchestrates tasks across the monorepo. Configuration is in the root `turbo.json`.
-  - **Global Environment**: `NODE_ENV`, `CF_PAGES_BRANCH`.
-  - **Passed-Through Env Vars**: `GEMINI_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`, `SENTRY_AUTH_TOKEN`, `CI`, etc. (see `globalPassThroughEnv`).
-  - **Key Tasks**: `build`, `dev`, `test`, `lint`, `format`, `translate`. Task dependencies and outputs (e.g., `build` outputs to `dist/**`, `.svelte-kit/**`) are defined.
+- **Package Manager**: `pnpm@10.8.0` (specified in root `package.json`). Workspaces are defined in `pnpm-workspace.yaml`.
+- **Build System**: Turborepo (`turbo@^2.5.0` as per root `package.json`) orchestrates tasks across the monorepo. Configuration is in the root `turbo.json`.
+    - **Global Environment**: `NODE_ENV`, `CF_PAGES_BRANCH`.
+    - **Passed-Through Env Vars**: `GEMINI_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`, `SENTRY_AUTH_TOKEN`, `CI`, etc. (see `globalPassThroughEnv`).
+    - **Key Tasks**: `build`, `dev`, `test`, `lint`, `format`, `translate`. Task dependencies and outputs (e.g., `build` outputs to `dist/**`, `.svelte-kit/**`, `paraglide-output/**`) are defined.
 - **Node.js Version**: `23.5.0` (specified in root `.nvmrc` and `package.json#engines`).
-- **Version Control**: Git. `.gitignore` specifies untracked files. `.husky/` configures Git hooks (though `HUSKY:0` is used in some CI workflows to bypass them).
+- **Version Control**: Git. `.gitignore` specifies untracked files. `.husky/` (configures Git hooks) is present, though `HUSKY:0` might be used in some CI workflows to bypass hooks.
 
 ### 1.2. Core Development Technologies
 
 - **Frontend Framework**: SvelteKit with Svelte 5 (Runes syntax like `$props()` observed in `@library/ui`).
 - **Bundler**: Vite (used by SvelteKit and Storybook).
 - **UI Components & Styling**:
-  - ShadCN Svelte is the primary UI component system, managed via `@library/ui` and configured by `libraries/ui/components.json`.
-  - TailwindCSS for utility-first styling. Configuration is referenced in `libraries/ui/components.json` (points to `tailwind.config.ts`, likely in `@library/base` or `@library/ui`).
-  - `tailwind-variants` (`tv` function) and `clsx`/`tailwind-merge` (via a `cn` utility in `@library/ui`) are used for component styling.
-  - DaisyUI is also a dependency, with components like `button_daisy.svelte` available.
-- **TypeScript**: `tsconfig.json` files are used throughout the project. Though this codebase usually use only javascript code. Root `tsconfig.json` extends `libraries/base/tsconfig.json`. Individual packages have their own `tsconfig.json` often extending these. Path aliases (`$lib`, `$shadcn`, etc.) are common.
+    - ShadCN Svelte is the primary UI component system, managed via `@library/ui` and configured by `libraries/ui/components.json`.
+    - **Styling Guidance**: Primarily use predefined CSS variables like **Open Props** (available via `@library/base` which imports `open-props`) for styling. TailwindCSS is available (and used by ShadCN components internally) but direct application of Tailwind utility classes for new custom styling should be minimized. Favor Open Props or other explicitly defined CSS variables for consistency and maintainability, especially when not working within the ShadCN component system. When extending ShadCN components or creating new custom components, if not using Tailwind Variants, prioritize these CSS variables over adding many one-off Tailwind utility classes.
+    - DaisyUI is also a dependency, with components like `button_daisy.svelte` available.
+- **TypeScript & JavaScript**:
+    - `tsconfig.json` files are present for TypeScript support where used.
+    - **Language Guidance**: The general guidance is to **prefer JavaScript (JS) for new code, including Svelte files (using `<script>` without `lang="ts"`) and server modules (`.js`).** Only use TypeScript (TS) if you are working within an existing TypeScript file or a package/module that is already predominantly TS (e.g., specific core parts of libraries might be in TS). The aim is to maintain consistency within specific contexts. Existing JavaScript code should generally not be converted to TypeScript without a strong reason and explicit instruction. New SvelteKit routes and pages, for instance, should default to JavaScript.
+    - Path aliases (`$lib`, `$shadcn`, etc.) are common.
 - **Internationalization (i18n)**: ParaglideJS, managed via `@library/paraglide`. Configured in `libraries/paraglide/project.inlang/settings.json`.
 - **Testing**:
-  - Vitest for unit tests.
-  - Playwright for End-to-End (E2E) tests.
+    - Vitest for unit tests.
+    - Playwright for End-to-End (E2E) tests.
 - **Linting & Formatting**:
-  - ESLint: Root `eslint.config.js` (flat config) with numerous plugins. (Note: Full content of this 626-line file was not read, only the first 250 lines. Specific rule details might be missing.)
-  - Prettier: Root `.prettierrc`.
-  - Stylelint: Root `.stylelintrc.json`.
+    - ESLint: Root `eslint.config.js` (flat config) with numerous plugins. (Note: Full content of this 626-line file was not read, only the first 250 lines. Specific rule details might be missing.)
+    - Prettier: Root `.prettierrc`.
+    - Stylelint: Root `.stylelintrc.json`.
 - **Error Monitoring**: Sentry, integrated via `@library/base` for SvelteKit apps.
 
 ### 1.3. Key Global Configuration Files
 
-- **`package.json` (Root)**: Defines monorepo name (`@repo/root`), core scripts (e.g., `dev`, `build`, `lint`, `test`, `format`, `translate`, `generate:app`), and key devDependencies (see versions above).
+- **`package.json` (Root)**: Defines monorepo name (`@repo/root`), core scripts (e.g., `dev`, `build`, `lint`, `test`, `format`, `translate`, `generate:app`), and key devDependencies.
 - **`pnpm-workspace.yaml`**: Defines package locations: `apps/*`, `libraries/*`, `playground/*`, `scripts/*`, `prompts/*`, `storybook`.
 - **`turbo.json` (Root)**: Configures Turborepo pipelines, task dependencies, outputs, and environment variable propagation.
 - **`tsconfig.json` (Root)**: Base TypeScript configuration, extends `libraries/base/tsconfig.json`.
 - **`eslint.config.js` (Root)**: Project-wide ESLint settings (partially analyzed).
 - **`.github/workflows/documentation.md`**: Contains detailed explanations of all CI/CD workflows in Korean. This is a CRITICAL reference for understanding automation.
-
-_(Note: `deno.json` is present in the root but its contents were not analyzed during this overview generation.)_
+- **`deno.json`**: Present in the root, but its contents and purpose were not analyzed during this overview generation.
 
 ---
 
@@ -61,237 +63,238 @@ _(Note: `deno.json` is present in the root but its contents were not analyzed du
 
 This section describes the main applications and libraries within the monorepo.
 
+### 📁 Top-Level Directory Structure Overview
+
+```
+Monorepo/
+├── .github/workflows/  # CI/CD pipelines (GitHub Actions), includes documentation.md
+├── apps/                # Runnable applications
+│   ├── blog/
+│   ├── boiler_plates/   # Template for new SvelteKit apps
+│   └── Swift_Linker/
+├── libraries/           # Shared code, UI components, utilities
+│   ├── base/            # Core SvelteKit setup, configs, fonts, server/client hooks (includes Open Props)
+│   ├── helpers/         # General utility functions, FS wrappers, data structures
+│   ├── library-base/    # Foundational types/interfaces, test setups
+│   ├── llms/            # LLM interaction logic (Gemini, AI SDK)
+│   ├── paraglide/       # Internationalization (i18n) with Inlang/ParaglideJS
+│   ├── scripts/         # Standalone scripts, esp. for LLM-based translation
+│   └── ui/              # Central UI component library (ShadCN Svelte, DaisyUI)
+├── storybook/           # Storybook setup for UI component development and testing
+├── .cursor/             # IDE-specific settings and LLM knowledge
+│   └── rules/
+│       └── project-overview.mdc # This file
+├── package.json         # Root project configuration, scripts, global dependencies
+├── pnpm-workspace.yaml  # Defines pnpm workspace globs
+├── turbo.json           # Turborepo pipeline configuration
+├── tsconfig.json        # Root TypeScript configuration
+├── eslint.config.js     # Root ESLint flat configuration
+└── README.md
+```
+
 ### 2.1. Applications (`apps/*`)
 
-#### 2.1.1. `apps/blog`
+#### 2.1.1. `apps/blog` (`@app/blog`)
 
-- **Description**: Main SvelteKit application for the blog.
-- **Key Files & Config**: Standard SvelteKit structure. `vite.config.js` merges with `@library/base/vite.config.js` and includes Sentry. `package.json` specifies dependencies on `@library/base`, `@library/ui`, `@library/paraglide`, `@library/helpers`, and `@library/scripts` (dev). Uses `$shadcn` import alias.
+- **Description**: Main SvelteKit application for the blog. (Adheres to JS preference as per new guidance).
+- **Key Files & Config**: Standard SvelteKit structure. Its `vite.config.js` likely merges with `@library/base/vite.config.js`. `package.json` specifies dependencies on `@library/base`, `@library/ui`, `@library/paraglide`, `@library/helpers`, and `@library/scripts` (dev). Uses `$shadcn` import alias.
 - **Purpose**: Serves as the primary blog interface.
 
-#### 2.1.2. `apps/boiler_plates`
+#### 2.1.2. `apps/boiler_plates` (`@app/boiler_plates`)
 
-- **Description**: A SvelteKit application serving as a template for new apps. Referenced by the root `generate:app` script.
-- **Key Files & Config**: Structure and `package.json` (dependencies, scripts) are identical to `apps/blog`, confirming its template role.
+- **Description**: A SvelteKit application serving as a template for new apps. (Adheres to JS preference). Referenced by the root `generate:app` script.
+- **Key Files & Config**: Structure and `package.json` (dependencies, scripts) are nearly identical to `apps/blog`. Includes `@lucide/svelte`.
 - **Purpose**: Provides a starting point for new SvelteKit applications within the monorepo.
 
 #### 2.1.3. `apps/Swift_Linker`
 
-- **Description**: A non-SvelteKit application. Possibly a backend service or specialized utility.
+- **Description**: A non-SvelteKit application. Possibly a backend service or specialized utility. (Adheres to JS preference).
 - **Key Files & Config**: Simpler structure with `package.json` and `src/`. Depends on `@library/base` and `@library/helpers`.
-- **Purpose**: Unclear from file names alone, but does not follow frontend SvelteKit patterns.
+- **Purpose**: Does not follow frontend SvelteKit patterns.
 
 ### 2.2. Shared Libraries (`libraries/*`)
 
 #### 2.2.1. `@library/base`
 
-- **Description**: Foundational library for SvelteKit applications. Provides shared configurations, SvelteKit hooks, base styles, static assets (especially fonts), and the default Vite config used by apps.
+- **Description**: Foundational library for SvelteKit applications. Provides shared configurations, SvelteKit hooks, base styles (including **Open Props**), static assets (especially fonts), and the default Vite config used by apps.
 - **Key Exports & Functionality**:
-  - **SvelteKit Hooks**: `src/hooks.server.ts` (Sentry, Paraglide middleware) and `src/hooks.client.ts` (Sentry init). Sentry DSN is hardcoded here.
-  - **Base Layout**: `src/routes/layout.svelte` (exported as `./baseLayout`) includes global CSS (`src/base.css`), Partytown integration, and Sentry app tagging.
-  - **Vite Config**: `vite.config.js` (exported as `defaultConfig`) provides shared Vite settings including `fontaine` plugin and Partytown.
-  - **Svelte Config**: `svelte.config.js` configures `@sveltejs/adapter-cloudflare` and the Paraglide SvelteKit preprocessor.
-  - **Styling**: `src/base.css` defines CSS layers and imports `sanitize.css`, `openPrps-normalize.css`, project base styles, and Tailwind CSS. `postcss.config.js` and `tailwind.config.ts` (likely here) define styling pipeline.
-  - **Fonts**: Exports numerous `IBMPlex` font files (WOFF2).
-  - **Dependencies**: `@library/library-base`, `@library/paraglide`.
+    - **SvelteKit Hooks**: `src/hooks.server.ts` (Sentry, Paraglide middleware) and `src/hooks.client.ts` (Sentry init). Sentry DSN (`https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152`) is hardcoded. (These hook files are TS due to existing patterns in this specific library).
+    - **Base Layout**: `src/routes/layout.svelte` (exported as `./baseLayout`) includes global CSS (`src/base.css`), Partytown integration, and Sentry app tagging.
+    - **Vite Config**: `vite.config.js` (exported as `defaultConfig`) provides shared Vite settings including `fontaine` plugin (for font fallbacks) and Partytown.
+    - **Svelte Config**: `svelte.config.js` configures `@sveltejs/adapter-cloudflare` and the Paraglide SvelteKit preprocessor (`@inlang/paraglide-js/adapter-sveltekit/preprocess`).
+    - **Styling**: `src/base.css` defines CSS layers and imports `sanitize.css`, `open-props/normalize` and `open-props/style` (making Open Props variables globally available), project base styles, and Tailwind CSS (for ShadCN compatibility and utility needs). `postcss.config.js` and `tailwind.config.ts` define the styling pipeline.
+    - **Fonts**: Exports numerous `IBMPlex` font files (WOFF2 format) from `static/fonts/`.
+    - **Dependencies**: `@library/library-base`, `@library/paraglide`, `@qwik.dev/partytown`, `open-props`.
 
 #### 2.2.2. `@library/ui`
 
-- **Description**: Central UI component library, heavily based on ShadCN Svelte. Also includes DaisyUI elements and custom components.
+- **Description**: Central UI component library, heavily based on ShadCN Svelte. Also includes DaisyUI elements and custom components. Uses Svelte 5 Runes (`$props()`, `$bindable()`). **When extending or creating new custom components within or alongside `@library/ui`, prioritize styling with predefined CSS variables (e.g., Open Props from `@library/base`) over direct Tailwind utility class application where possible, adhering to the new styling guidance (Section 1.2).** New components should use JS (`<script>` tags in Svelte files) unless the surrounding module is already TS.
 - **Key Exports & Functionality**:
-  - **ShadCN Svelte Components**: Numerous components (Button, Card, Dialog, etc.) exported from `src/shadcn/components/ui/`. Each component typically has an `index.ts` re-exporting from a `.svelte` file.
-  - **Component Structure**: Uses Svelte 5 Runes (`$props()`, `$bindable()`). Styling with `tailwind-variants` (`tv` function) and `cn()` utility (from `src/shadcn/utils.js` which uses `clsx` and `tailwind-merge`).
-  - **ShadCN Config**: `components.json` defines aliases (`$shadcn/components`, `$shadcn/utils`), Tailwind paths, etc.
-  - **Other Components**: Exports `./button_daisy.svelte`, `./icon.svelte` (custom).
-  - **Dependencies**: `@library/base`, `@library/library-base`, `bits-ui`, `tailwind-merge`, etc.
+    - **ShadCN Svelte Components**: Numerous components (Button, Card, Dialog, etc.) exported from `src/shadcn/components/ui/`. These components internally rely on Tailwind utilities via the `cn` function.
+    - **Component Structure**: Styling with `tailwind-variants` (`tv` function) and `cn()` utility (from `src/shadcn/utils.js` which uses `clsx` and `tailwind-merge`).
+    - **ShadCN Config**: `components.json` defines aliases (`$shadcn/components`, `$shadcn/utils`), Tailwind paths, etc.
+    - **Other Components**: Exports `./button_daisy.svelte` (from `src/daisyui/`), `./icon-text.svelte` (from `src/custom/`).
+    - **Dependencies**: `@library/base`, `@library/library-base`, `bits-ui`, `clsx`, `tailwind-merge`, `tailwind-variants`, etc.
 
 #### 2.2.3. `@library/paraglide`
 
-- **Description**: Manages internationalization (i18n) using ParaglideJS.
+- **Description**: Manages internationalization (i18n) using ParaglideJS and Inlang. (Source files primarily JS).
 - **Key Exports & Functionality**:
-  - **Runtime**: Exports Paraglide runtime functions (`getLocale`, `setLocale`, `localizeHref`, `isLocale`) and messages (`m`) via `src/index.js` (which re-exports from `paraglide-output/runtime.js` and `paraglide-output/messages.js`).
-  - **Custom Helpers**: `src/getLanguageName.js` provides a utility to get localized language names using `Intl.DisplayNames` and Paraglide messages.
-  - **Configuration**: `project.inlang/settings.json` defines `sourceLanguageTag: "en"`, `languageTags: ["en", "ko"]`, and `pathPattern: "./messages/{languageTag}.json"`.
-  - **Generated Code**: `paraglide-output/` contains compiled messages and runtime. Note: `runtime.js` lists many `locales`, likely all Paraglide-known locales, not just project-active ones (`en`, `ko`).
-  - **Dependencies**: `@library/helpers`, `@library/library-base`, `@library/scripts`.
+    - **Runtime & Messages**: Exports Paraglide runtime functions and messages (`m`).
+    - **Configuration**: `project.inlang/settings.json` defines `sourceLanguageTag: "en"`, `languageTags: ["en", "ko"]`.
+    - **Generated Code**: `paraglide-output/` contains compiled messages and runtime.
+    - **Dependencies**: `@library/helpers`, `@library/library-base`, `@library/scripts`.
 
 #### 2.2.4. `@library/helpers`
 
-- **Description**: Provides general-purpose utility functions, data structures, and library wrappers.
-- **Key Exports & Functionality**:
-  - `./R`: Wrapper for `ramda` and `rambda` libraries, including a custom `mapObjectParallel` async utility.
-  - `./monads`, `./mutative`, `./random_engine`, `./fs-async`, `./fs-sync`, `./helper-functions`.
-  - **Dependencies**: `@library/library-base`, `mutative`, `rambda`, `ramda`, `tinyglobby`.
+- **Description**: Provides general-purpose utility functions, data structures, and library wrappers. (Primarily JS).
+- **Key Exports & Functionality**: `./R` (Ramda/Rambda wrapper), `./monads`, `./mutative`, `./random_engine`, `./fs-async`, `./fs-sync`, `./helper-functions`.
+- **Dependencies**: `@library/library-base`, `mutative`, `rambda`, `ramda`, `tinyglobby`.
 
 #### 2.2.5. `@library/llms`
 
-- **Description**: Library for interacting with Large Language Models (LLMs) like Google Gemini and potentially OpenAI.
-- **Key Exports & Functionality**:
-  - `./gemini/generate`: Exports `generateObjectWithRetry` and `generateObjectWithRetry_latestModel`. These handle text generation, JSON parsing, and Zod schema validation of LLM outputs, with retry logic (`generateWithRetry_atQuotaLimit` imported from `../heleprs.js` - note typo).
-  - `./gemini/getCache`: (Details not inspected, but implies caching for LLM interactions).
-  - _(Note: The export and import path `heleprs.js` is a typo for `helpers.js` present in the codebase.)_
-  - **Dependencies**: `@ai-sdk/google`, `@google/generative-ai`, `@library/helpers`, `ai`, `zod`.
+- **Description**: Library for interacting with LLMs. (Primarily JS).
+- **Key Exports & Functionality**: `./gemini/generate` (text generation with retry), `./gemini/getCache`. Note potential typo `heleprs.js` in codebase for imports.
+- **Dependencies**: `@ai-sdk/google`, `@google/generative-ai`, `@library/helpers`, `ai`, `zod`.
 
 #### 2.2.6. `@library/scripts`
 
-- **Description**: Contains automation scripts, particularly for translation workflows leveraging LLMs.
-- **Key Exports & Functionality**:
-  - `./translation-paraglide`, `./translation-markdown`, `./translation-llm`, `./explanation-ready`, `./changeBaseLocaleInFile`.
-  - **Dependencies**: `@library/helpers`, `@library/llms`, `ai`, `zod`.
+- **Description**: Contains automation scripts, particularly for translation. (Primarily JS).
+- **Key Exports & Functionality**: `./translation-paraglide`, `./translation-markdown`, `./translation-llm`.
+- **Dependencies**: `@library/helpers`, `@library/llms`, `ai`, `zod`.
 
 #### 2.2.7. `@library/library-base`
 
-- **Description**: Minimal base library, likely for common test setups or core TypeScript configurations.
+- **Description**: Minimal base library for common test setups or core TS/JS configurations. (Likely JS).
 - **Key Exports**: `./baseTest.js`, `./tsconfig.json`.
 
 ### 2.3. Storybook (`storybook/`)
 
-- **Description**: UI component development and testing environment.
-- **Key Files & Config**: `package.json` (`@repo/storybook`), Vite-based (`vite.config.js`). Main Storybook config in `.storybook/main.js` (framework `@storybook/sveltekit`, addons). Story files are co-located with their respective components in various library packages (e.g., `libraries/ui/src/**/*.stories.svelte`, `libraries/some-other-lib/src/**/*.stories.svelte`). The `.storybook/main.js` (or `.storybook/main.ts`) `stories` field is configured to find these distributed story files. `.storybook/preview.js` for global parameters/decorators.
+- **Description**: UI component development and testing environment. (Setup files likely JS).
+- **Key Files & Config**: `package.json` (`@tool/storybook`), Vite-based. Storybook config in `.storybook/`.
 - **Dependencies**: `@library/base`, `@library/ui`.
-- **Purpose**: Develop, visualize, and test UI components (e.g., from `@library/ui`) in isolation. Story files are located alongside the components they document and test.
+- **Purpose**: Develop, visualize, and test UI components.
 
 ---
 
 ## 3. 🧩 Architectural Patterns & Conventions
 
-- **SvelteKit Usage**: File-system routing, `+page.svelte`, `+layout.svelte`, `+page.server.js` for load functions. Server/client hooks in `@library/base`.
-- **Configuration Cascade**: `tsconfig.json` files extend from `libraries/base` to root, then to individual packages. Vite configs in apps merge from `@library/base`.
-- **Dependency Injection (Conceptual)**: `@library/base` provides core SvelteKit functionalities (hooks, layout, Vite setup) that apps consume.
-- **Centralized UI**: `@library/ui` is the single source for UI components.
-- **Utility Library**: `@library/helpers` for common, reusable non-UI logic.
-- **Specialized Task Libraries**: `@library/llms` for AI, `@library/scripts` for automation, `@library/paraglide` for i18n.
-- **Automated CI/CD**: Heavy reliance on GitHub Actions, with `mutate_code.yml` performing auto-fixes and `mutation-finished` label triggering subsequent checks/tests. (See Section 4).
+- **SvelteKit Usage**: File-system routing, server/client hooks in `@library/base`. **New routes/pages and general Svelte components should prefer JavaScript (`.js` for server modules, `<script>` tags in Svelte files without `lang=\"ts\"`) unless part of an existing TS context.**
+- **Styling**: **Prioritize predefined CSS variables (e.g., Open Props from `@library/base`) for custom styling efforts.** Tailwind CSS is utilized by ShadCN components and available for specific utility purposes, but its direct widespread application for new custom styles should be limited in favor of CSS variables.
+- **Language Choice**: **Prefer JavaScript for new code unless working in an existing TypeScript file or a TS-dominant package/module.**
+- **Configuration Cascade**: `tsconfig.json` files extend from `libraries/base`. Vite configs merge from `@library/base`.
+- **Centralized UI**: `@library/ui` for UI components.
+- **Utility Library**: `@library/helpers` for non-UI logic.
+- **Specialized Task Libraries**: `@library/llms`, `@library/scripts`, `@library/paraglide`.
+- **Automated CI/CD**: GitHub Actions with `mutate_code.yml` as a key automation step.
 
 ---
 
 ## 4. 🔁 CI/CD Workflows (`.github/workflows/`)
 
+(This section remains largely unchanged as the JS/Styling guidelines primarily affect code generation and review, not the CI infrastructure itself, though CI linting rules might eventually reflect these preferences.)
 The project employs a comprehensive CI/CD pipeline managed by GitHub Actions. Detailed explanations (in Korean) are available in `.github/workflows/documentation.md`.
 
 ### 4.1. Core Workflow: `mutate_code.yml`
 
 - **Trigger**: PR opened, synchronized, or labeled `restart`.
 - **Functionality**:
-  1. Filters changed file paths (images, markdown, `package.json`).
-  2. Runs conditional jobs: `fix-package-json`, `fix-markdown`, `compress-images`, `lint-format` (runs `pnpm lint-fix`).
-  3. These jobs generate `.patch` file artifacts if changes are made.
-  4. A final `push-and-labeled` job applies all `.patch` files, commits with `[automated-mutation]` message if changes occurred, and labels the PR `mutated` or `mutation-finished`.
-- **Notes**: Uses `TOKEN1` (PAT) for pushing. `HUSKY:0` disables Git hooks.
+    1. Filters changed file paths (images, markdown, `package.json`).
+    2. Runs conditional jobs: `fix-package-json`, `fix-markdown`, `compress-images`, `lint-format` (runs `pnpm lint-fix`).
+    3. These jobs generate `.patch` file artifacts if changes are made.
+    4. A final `push-and-labeled` job applies all `.patch` files, commits with `[automated-mutation]` message if changes occurred, and labels the PR `mutated` or `mutation-finished`.
+- **Notes**: Uses `TOKEN1` (PAT) for pushing. `HUSKY:0` disables Git hooks during these operations.
 
 ### 4.2. Workflows Triggered by `mutation-finished` Label
 
-Once `mutate_code.yml` applies the `mutation-finished` label, the following workflows run:
-
 - **`check_lint.yml`**:
-  - Checks out PR head (`ref: ${{ github.event.pull_request.head.sha }}`).
-  - Sets up Node.js/pnpm, installs dependencies, caches Turbo.
-  - Runs `pnpm exec turbo run build --filter=@library/paraglide` (Paraglide compile).
-  - Runs `pnpm run lint`.
+    - Checks out PR head, sets up Node.js/pnpm, installs dependencies, caches Turbo.
+    - Runs `pnpm exec turbo run build --filter=@library/paraglide` (Paraglide compile).
+    - Runs `pnpm run lint`.
 - **`build_tests.yml`**:
-  - Similar setup to `check_lint.yml`.
-  - Installs Playwright browsers (`pnpm exec playwright install --with-deps`).
-  - Runs `pnpm run test` (executes Vitest unit tests and Playwright E2E tests).
-  - Reports test results to GitHub Checks using `dorny/test-reporter` (multiple times for different reports).
-  - Uploads Playwright reports as artifacts.
+    - Similar setup to `check_lint.yml`.
+    - Installs Playwright browsers (`pnpm exec playwright install --with-deps`).
+    - Runs `pnpm run test` (executes Vitest unit tests and Playwright E2E tests via Turborepo).
+    - Reports test results to GitHub Checks using `dorny/test-reporter`.
+    - Uploads Playwright reports as artifacts.
 - **`check-secrets.yml`**: Uses `trufflesecurity/trufflehog@main` to scan PR changes for exposed secrets.
 - **`auto_merge.yml`**:
-  - For normal PRs: Uses `reitermarkus/automerge@v2` if `mutation-finished` label is present and no `never-merge` label.
-  - For Dependabot PRs: Uses `dependabot/fetch-metadata` and `gh pr merge --auto` if not a major version update.
-  - Removes `mutation-finished` label after processing. Uses `TOKEN1`.
-- **`sentry.yml`**: Creates a Sentry release using `getsentry/action-release@v3`, associating commits. Uses `fetch-depth: 0`. Requires `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` secrets.
+    - For normal PRs: Uses `reitermarkus/automerge@v2` if `mutation-finished` label is present and no `never-merge` label.
+    - For Dependabot PRs: Uses `dependabot/fetch-metadata` and `gh pr merge --auto` if not a major version update.
+    - Removes `mutation-finished` label after processing. Uses `TOKEN1`.
+- **`sentry.yml`**: Creates a Sentry release using `getsentry/action-release@v3`, associating commits. Requires `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` secrets.
 - **`ninja_i18n.yml`**: Uses `opral/ninja-i18n-action@main` for i18n related checks.
-- **`link_check.yml`**: Uses `umbrelladocs/action-linkspector@v1` to check for broken links in the PR, reporting via PR review comments.
+- **`link_check.yml`**: Uses `umbrelladocs/action-linkspector@v1` to check for broken links in the PR.
 
 ---
 
 ## 5. 🧠 LLM Operational Guide: Assisting with Development
 
-This section guides the LLM assistant on using this knowledge base effectively. **All responses and actions must be based on the verifiable information.**
+This section guides the LLM assistant on using this knowledge base effectively. **All responses and actions must be based on the verifiable information and new guidelines.**
 
-### 5.1. Core Principle: Verifiable Truth
+### 5.1. Core Principle: Verifiable Truth & Document Maintenance
 
-- This document is your primary source of truth for project-specific details.
+- This document (`.cursor/rules/project-overview.mdc`) is your primary source of truth for project-specific details.
 - When answering queries or generating code, explicitly state if your information comes from this document (e.g., "According to the project overview, the Paraglide message files are located at...").
-- If information is missing (e.g., full `eslint.config.js`), research this codebase by using `list_dir`, `codebase_search`, `grep_search`, `read_file`.
-- **Crucially, if you (the LLM assistant) or any developer discovers that the information in this document is outdated or no longer accurately reflects the current state of the codebase (e.g., due to structural changes, dependency updates, or configuration modifications), it is imperative to update this `project-overview.mdc` file immediately. Keeping this document synchronized with the codebase is essential for maintaining its reliability as a single source of truth and ensuring effective AI-assisted development.**
-- **Note on this document itself**: When referring to or needing to modify this project overview document, always use its full and correct path: `.cursor/rules/project-overview.mdc`. This will prevent errors related to incorrect file paths or names.
+- If information is missing or seems outdated (e.g., details of the full `eslint.config.js`), use your tools (`list_dir`, `codebase_search`, `grep_search`, `read_file`) to investigate the current codebase.
+- **Crucially, if you (the LLM assistant) or any developer discovers that the information in this document is outdated or no longer accurately reflects the current state of the codebase (e.g., due to structural changes, dependency updates, or configuration modifications), it is imperative to update this `.cursor/rules/project-overview.mdc` file immediately. Keeping this document synchronized with the codebase is essential for maintaining its reliability as a single source of truth and ensuring effective AI-assisted development.**
+- **Note on this document itself**: When referring to or needing to modify this project overview document, always use its full and correct path: `.cursor/rules/project-overview.mdc`.
 
-### 5.2. Common Development Scenarios & Procedures
+### 5.2. LLM-Suitable Tasks & Procedures (Based on Verifiable Knowledge & New Guidelines)
 
-- **Adding a New UI Component**:
-  1. **Query**: Developer wants a new UI element.
-  2. **LLM Action**:
-     - "First, let's check if a similar component exists in `@library/ui`. This library uses ShadCN Svelte and some DaisyUI. Key exports are listed in its `package.json` (Section 2.2.2)."
-     - If asked to generate: "New Svelte components in `@library/ui` should use Svelte 5 Runes, `tailwind-variants` for styles, and the `cn()` utility. Refer to the Button component (Section 2.2.2) as an example pattern."
-     - "Ensure it's exported from `@library/ui/package.json` and consider adding a Storybook story in `storybook/src/stories/`."
-- **Adding a New SvelteKit Route (e.g., `/new-feature`)**:
-  1. **Query**: Developer needs a new page/route.
-  2. **LLM Action**:
-     - "New routes in SvelteKit apps (like `apps/blog`) follow file-system routing. You'll likely need `src/routes/new-feature/+page.svelte`."
-     - "If you need server-side logic or data loading, create `src/routes/new-feature/+page.server.js`. Refer to existing `+page.server.js` files in `apps/blog` or `apps/boiler_plates` for patterns."
-     - "Remember that base server hooks in `@library/base` (Section 2.2.1) handle Sentry and i18n setup."
-     - "Use `@library/ui` components for the UI."
-- **Translating Content / Adding i18n Keys**:
-  1. **Query**: How to add a new translated string.
-  2. **LLM Action**:
-     - "Internationalization is handled by ParaglideJS, configured in `@library/paraglide` (Section 2.2.3)."
-     - "Message files are `libraries/paraglide/messages/en.json` and `ko.json`. Add your new key-value pair there."
-     - "In your Svelte component, import `m` from `@library/paraglide/messages` and use `{m.yourNewKey()}`."
-     - "The `project.inlang/settings.json` defines active languages as 'en' and 'ko'."
-     - "Scripts for automated translation using LLMs are in `@library/scripts` (e.g., `translation-paraglide`)."
-- **Troubleshooting CI Failures**:
-  1. **Query**: PR build/lint/test is failing.
-  2. **LLM Action**:
-     - "First, check the GitHub Actions logs for the specific PR."
-     - "The CI process is documented in `.github/workflows/documentation.md` (Section 4)."
-     - "If it's a lint failure, `check_lint.yml` runs `pnpm run lint`. Check your code against `eslint.config.js`."
-     - "If it's a test failure, `build_tests.yml` runs `pnpm run test`. Look at Vitest or Playwright reports (artifacts are uploaded)."
-     - "Sometimes, `mutate_code.yml` might not have fixed everything, or a new issue was introduced. `mutation-finished` triggers most checks."
-- **Using Shared Helper Functions**:
-  1. **Query**: Need a utility for [specific task].
-  2. **LLM Action**:
-     - "Check `@library/helpers` (Section 2.2.4). It provides utilities like Ramda/Rambda wrappers (`R`), filesystem functions (`fs-async`, `fs-sync`), and more."
-     - "For example, `R.mapObjectParallel` can apply an async function to object values in parallel."
-- **Generating Code Consistent with Project Conventions**:
-  1. **LLM Action**:
-     - "Svelte components should be PascalCase, use Svelte 5 Runes if in `@library/ui`."
-     - "Code formatting is handled by Prettier (config: `.prettierrc`). ESLint (`eslint.config.js`) enforces further style."
-     - "For state management beyond simple Svelte stores, XState is available in apps (see dependencies of `apps/blog`)."
-     - "Use Zod for data validation, especially for API/LLM interactions (see `@library/llms`)."
+1. **Explaining Project Structure or Configuration**:
+    - **Reference**: Sections 1, 2.
+    - **Procedure**: Extract relevant file paths, configuration snippets, and purpose descriptions directly from this document.
+2. **Generating Basic Code for New SvelteKit Routes/Pages**:
+    - **Language**: "New SvelteKit routes and pages should be created using **JavaScript (`.js` for server modules, Svelte files with `<script>` tags without `lang=\"ts\"`)** unless the specific `apps/*` sub-directory is already heavily TypeScript. This aligns with the project's preference for JS in new code where not contradicting an existing TS context."
+    - **Styling**: "For styling elements within your new page, **utilize predefined CSS variables from Open Props first.** For example: `style=\"color: var(--text-1); font-size: var(--font-size-fluid-1);\"`. Avoid adding many Tailwind utility classes directly for custom styles; use them if they are part of a ShadCN component or for very specific, isolated utility needs."
+    - **Paraglide**: "Consult '@library/paraglide' (2.2.3) for i18n."
+    - **UI Components**: "Use UI components from `@library/ui` (2.2.2) as needed."
+3. **Explaining CI/CD Pipelines**:
+    - **Reference**: Section 4 and the crucial `.github/workflows/documentation.md`.
+    - **Procedure**: Describe workflow triggers, jobs, key steps from this document. For deep details, prompt to read `documentation.md`.
+4. **Guiding on i18n Tasks**:
+    - **Reference**: "@library/paraglide" (Section 2.2.3), "Getting Started" (Section 6).
+    - **Procedure**: Explain message file locations, build/translate commands, and `m()` function usage.
+5. **General Coding Guidelines (Incorporating New Directives)**:
+    - **Styling**: "When generating Svelte components or any styled elements, **the primary approach should be to use predefined CSS variables like Open Props (available globally via `@library/base`).** Direct use of Tailwind CSS utility classes for custom styling should be minimized. They are mainly for ShadCN component internals or very specific, one-off utility needs. For instance, instead of `class='text-lg font-semibold'`, consider if an Open Props variable achieves this: `style='font-size: var(--font-size-3); font-weight: var(--font-weight-6);'` or if general utility classes mapped to these variables are defined in `base.css`."
+    - **Language (JS/TS)**: "For new files, components, or modules, **default to JavaScript (JS).** This includes Svelte files (use `<script>` not `<script lang=\"ts\">`) and `.js` for other modules. Only use TypeScript (TS) if you are modifying an existing `.ts` file or contributing to a package/area that is already established as TypeScript-first (e.g., some core parts of `@library/base` might be in TS for specific reasons). The goal is consistency within a given context. Do not convert existing JS to TS without strong justification."
 
 ### 5.3. Tasks Requiring Developer Oversight (LLM as Guided Assistant)
 
-- **Modifying Core Configurations**: E.g., changes to root `turbo.json`, `eslint.config.js`, `tsconfig.json`, or critical files in `@library/base`.
-  - **LLM Role**: Explain the structure of the file and potential impact of changes based on this document. Generate the proposed change for developer review. _Do not directly apply changes to these files without explicit instruction and context that ensures full understanding._
-- **Debugging Complex Runtime Issues**:
-  - **LLM Role**: Provide pointers based on Sentry integration details (DSN, where hooks are), environment variables, and known patterns. Guide on where to add logs. Do not attempt to solve deep logical bugs without extensive code context provided by the user.
-- **Running `generate:app` or other destructive scripts**:
-  - **LLM Role**: Explain what the script does (e.g., `generate:app` copies `apps/boiler_plates`). Provide the command for the developer to review and run.
+1. **Complex Code Generation (new features, intricate components)**:
+    - **Reason**: Requires nuanced logic beyond documented patterns.
+    - **LLM Role**: Outline structure based on `boiler_plates`, suggest `@library/ui` components, remind about i18n.
+2. **Debugging Complex Issues**:
+    - **Reason**: Needs real-time inspection.
+    - **LLM Role**: Point to Sentry (DSN in `@library/base`), config files, local test commands.
+3. **Modifying Core Configurations (e.g., `turbo.json`, root `eslint.config.js`, `@library/base` configs)**:
+    - **Reason**: Wide-ranging impact.
+    - **LLM Role**: Explain file structure/impact from this doc. Generate changes for review.
+4. **Running Destructive Scripts (e.g., `generate:app`)**:
+    - **LLM Role**: Explain script's action. Provide command for developer to run.
 
 ### 5.4. LLM Self-Correction / Information Gap Identification
 
-- **SUGGESTING UPDATES TO THIS DOCUMENT**: IF YOU FIND ANY GAP, ANY DIFFERENCE IN BETWEEN THE CODEBASE AND THIS DOCUMENT, YOU MUST SUGGEST AN UPDATE REGARDING THAT GAP. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE_.
+- If you encounter a query where _verifiable_ information is missing or outdated in this document, state this: "I cannot find specific, verifiable information about [topic] in `.cursor/rules/project-overview.mdc`. This may require direct codebase investigation or an update to this overview."
+- **IF YOU FIND ANY GAP OR DISCREPANCY BETWEEN THE CODEBASE AND THIS DOCUMENT, YOU MUST SUGGEST AN UPDATE TO THIS `.cursor/rules/project-overview.mdc` FILE. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE_.**
 
-### 5.5. Interpreting Developer Requests & Seeking Clarification
+### 5.5. Interpreting Developer Requests & Seeking Clarification (Fact-Based & Guideline-Aware Responses)
 
-- **Prioritize Verifiable Facts**: Always try to map the developer's request to information contained in this document.
-- **Ask for Context**: If a request is vague (e.g., "It's broken"), ask for specifics: "Which part is broken? What were you trying to do? Are there any error messages? Which app/library are you working in?"
-- **Reference Conventions**: When generating code, refer to conventions outlined here (e.g., "Following the ShadCN Svelte pattern seen in `@library/ui`..."). If a convention isn't documented here as verified, do not assume it.
-
----
+- **Prioritize Verifiable Facts & Guidelines**: Map requests to information and guidelines in this document.
+- **Ask for Context**: If vague ("It's broken"), ask: "Which part? What were you doing? Error messages? Which app/library?"
+- **Reference Conventions & Guidelines**: "Following the project guideline to prefer JavaScript for new Svelte components..." or "As per styling guidelines, let's use Open Props variables for this..."
 
 ## 6. 📜 Document Conclusion & Future Maintenance
 
-This Project Overview (`.cursor/rules/project-overview.mdc`) has been compiled through a systematic, verifiable analysis of the Monorepo codebase. Its purpose is to serve as a reliable internal knowledge base for an LLM assistant, enhancing its ability to support development tasks with accuracy and context.
+This Project Overview (`.cursor/rules/project-overview.mdc`) has been compiled through a systematic, verifiable analysis of the Monorepo codebase and updated with current development guidelines. Its purpose is to serve as a reliable internal knowledge base for an LLM assistant, enhancing its ability to support development tasks with accuracy and context.
 
-**Key Architectural Pillars Identified**:
+**Key Architectural Pillars & Guidelines**:
 
 - **Structured Monorepo**: `pnpm` workspaces + Turborepo.
-- **SvelteKit Ecosystem**: Central for frontend, with Vite.
+- **SvelteKit Ecosystem**: Central for frontend, with Vite. **New code primarily in JavaScript.**
+- **Styling**: **Prioritize Open Props and predefined CSS variables.** Tailwind CSS for ShadCN internals and specific utilities.
 - **Centralized Libraries**: `@library/base` (core SvelteKit/app infra), `@library/ui` (ShadCN components), `@library/paraglide` (i18n), `@library/helpers` (utils), `@library/llms` (AI).
-- **Automated CI/CD**: GitHub Actions with comprehensive workflows, well-documented in-repo.
+- **Automated CI/CD**: GitHub Actions with comprehensive workflows, well-documented in-repo (`.github/workflows/documentation.md`).
 
----
-
-IF YOU FIND ANY GAP, ANY DIFFERENCE IN BETWEEN THE CODEBASE AND THIS DOCUMENT, YOU MUST SUGGEST AN UPDATE REGARDING THAT GAP. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE_.
+This document is a living entity. As the codebase evolves, this overview MUST be updated to reflect the current state accurately. **IF YOU (THE LLM) FIND ANY GAP OR DIFFERENCE BETWEEN THE CODEBASE AND THIS DOCUMENT, OR IF GUIDELINES NEED ADJUSTMENT, YOU MUST SUGGEST AN UPDATE TO THIS `.cursor/rules/project-overview.mdc` FILE. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE OR AGREED UPON AS A NEW GUIDELINE_.**

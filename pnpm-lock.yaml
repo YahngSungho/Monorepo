@@ -460,6 +460,9 @@ importers:
       '@library/ui':
         specifier: workspace:*
         version: link:../../libraries/ui
+      '@lucide/svelte':
+        specifier: ^0.511.0
+        version: 0.511.0(svelte@5.28.1)
       luxon:
         specifier: ^3.6.1
         version: 3.6.1
@@ -650,6 +653,9 @@ importers:
       '@library/library-base':
         specifier: workspace:*
         version: link:../library-base
+      '@lucide/svelte':
+        specifier: ^0.511.0
+        version: 0.511.0(svelte@5.28.1)
       '@shikijs/rehype':
         specifier: ^3.4.1
         version: 3.4.1
@@ -671,9 +677,6 @@ importers:
       hast-util-to-string:
         specifier: ^3.0.1
         version: 3.0.1
-      iconify-icon:
-        specifier: ^2.3.0
-        version: 2.3.0
       lucide-svelte:
         specifier: ^0.503.0
         version: 0.503.0(svelte@5.28.1)
@@ -2057,6 +2060,11 @@ packages:
 
   '@lix-js/server-protocol-schema@0.1.1':
     resolution: {integrity: sha512-jBeALB6prAbtr5q4vTuxnRZZv1M2rKe8iNqRQhFJ4Tv7150unEa0vKyz0hs8Gl3fUGsWaNJBh3J8++fpbrpRBQ==}
+
+  '@lucide/svelte@0.511.0':
+    resolution: {integrity: sha512-aLCSPMUJmHlCuLXzXENXa4Z1NV2mN1iAZAFKk4bEbey+/MdsNlu+/DqwVkgW3Yvj6p8y8Vn5xZ2v9CLmPlA6Vw==}
+    peerDependencies:
+      svelte: ^5
 
   '@mdn/browser-compat-data@5.7.6':
     resolution: {integrity: sha512-7xdrMX0Wk7grrTZQwAoy1GkvPMFoizStUoL+VmtUkAxegbCCec+3FKwOM6yc/uGU5+BEczQHXAlWiqvM8JeENg==}
@@ -5990,9 +5998,6 @@ packages:
   i@0.3.7:
     resolution: {integrity: sha512-FYz4wlXgkQwIPqhzC5TdNMLSE5+GS1IIDJZY/1ZiEPCT2S3COUVZeT5OW4BmW4r5LHLQuOosSwsvnroG9GR59Q==}
     engines: {node: '>=0.4'}
-
-  iconify-icon@2.3.0:
-    resolution: {integrity: sha512-C0beI9oTDxQz6voI5CKl7MiJf0Lw4UU8K4G4t6pcUDClLmCvuMOpcvd8MAztQ2SfoH0iv7WHdxBFjekKPFKH2Q==}
 
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
@@ -11316,6 +11321,10 @@ snapshots:
 
   '@lix-js/server-protocol-schema@0.1.1': {}
 
+  '@lucide/svelte@0.511.0(svelte@5.28.1)':
+    dependencies:
+      svelte: 5.28.1
+
   '@mdn/browser-compat-data@5.7.6': {}
 
   '@mdx-js/react@3.1.0(@types/react@19.1.1)(react@19.1.0)':
@@ -12551,8 +12560,16 @@ snapshots:
 
   '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0)))(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))':
     dependencies:
+<<<<<<< ours
+      '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))
+      debug: 4.4.1
+||||||| ancestor
+      '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))
+      debug: 4.4.0
+=======
       '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))
       debug: 4.4.0
+>>>>>>> theirs
       svelte: 5.28.1
       vite: 6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0)
     transitivePeerDependencies:
@@ -12560,8 +12577,16 @@ snapshots:
 
   '@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))':
     dependencies:
+<<<<<<< ours
+      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0)))(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))
+      debug: 4.4.1
+||||||| ancestor
+      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0)))(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.3)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))
+      debug: 4.4.0
+=======
       '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0)))(svelte@5.28.1)(vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0))
       debug: 4.4.0
+>>>>>>> theirs
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.17
@@ -14653,6 +14678,7 @@ snapshots:
       '@esbuild/win32-arm64': 0.25.3
       '@esbuild/win32-ia32': 0.25.3
       '@esbuild/win32-x64': 0.25.3
+    optional: true
 
   esbuild@0.25.4:
     optionalDependencies:
@@ -16097,10 +16123,6 @@ snapshots:
 
   i@0.3.7: {}
 
-  iconify-icon@2.3.0:
-    dependencies:
-      '@iconify/types': 2.0.0
-
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
@@ -16733,7 +16755,7 @@ snapshots:
 
   lightningcss@1.29.3:
     dependencies:
-      detect-libc: 2.0.3
+      detect-libc: 2.0.4
     optionalDependencies:
       lightningcss-darwin-arm64: 1.29.3
       lightningcss-darwin-x64: 1.29.3
@@ -20494,7 +20516,7 @@ snapshots:
 
   vite@6.3.4(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.30.1)(sugarss@2.0.0)(terser@5.39.2)(yaml@2.8.0):
     dependencies:
-      esbuild: 0.25.3
+      esbuild: 0.25.4
       fdir: 6.4.4(picomatch@4.0.2)
       picomatch: 4.0.2
       postcss: 8.5.3

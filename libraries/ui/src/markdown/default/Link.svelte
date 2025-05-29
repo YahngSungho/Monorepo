@@ -1,5 +1,7 @@
 <script>
-import Icon from '../../custom/icon.svelte'
+import { ExternalLink } from '@lucide/svelte';
+
+import IconText from '../../custom/icon-text.svelte'
 
 let { href = '', title = undefined, children } = $props()
 
@@ -13,9 +15,9 @@ const isHeadingLink = $derived(href.startsWith('#'))
 	</a>
 {:else}
 	<a {href} rel="noopener noreferrer" target="_blank" {title}>
-		<Icon icon="carbon:link" noMargin right small>
+		<IconText IconElement={ExternalLink} noMargin right small>
 			{@render children?.()}
-		</Icon>
+		</IconText>
 	</a>
 {/if}
 

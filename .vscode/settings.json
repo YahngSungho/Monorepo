@@ -40,6 +40,7 @@
 		"**/*.sass",
 		"**/*.less"
 	],
+	"deno.enable": false,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.inlineSuggest.enabled": true,
 	"editor.quickSuggestions": {
@@ -98,7 +99,7 @@
 		"javascriptsvelte"
 	],
 	"files.associations": {
-		"*.css": "css",
+		"*.css": "tailwindcss",
 		"*.svx": "markdown",
 		"*.mdc": "markdown",
 		"*.mdx": "markdown"
@@ -121,10 +122,12 @@
 	"tailwindCSS.experimental.configFile": "libraries/base/src/tailwind.css",
 	// Svelte 파일 내에서 Tailwind 클래스 자동 완성 활성화
 	"tailwindCSS.includeLanguages": {
+		"plaintext": "html",
 		"svelte": "html",
 		"javascript": "javascript",
 		"typescript": "typescript"
 	},
+	"tailwindCSS.validate": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"workbench.colorCustomizations": {
 		"activityBar.activeBackground": "#ab0326",
@@ -146,6 +149,5 @@
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#79021b99",
 		"titleBar.inactiveForeground": "#e7e7e799"
-	},
-	"deno.enable": false
+	}
 }

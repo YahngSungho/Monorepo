@@ -6,7 +6,9 @@
 	"compilerOptions": {
 		"paths": {
 			"$shadcn": ["./src/shadcn"],
-			"$shadcn/*": ["./src/shadcn/*"]
+			"$shadcn/*": ["./src/shadcn/*"],
+			"$lib": ["./src/shadcn"],
+			"$lib/*": ["./src/shadcn/*"]
 		}
 	},
 	"exclude": [

@@ -4,7 +4,8 @@ import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
-import Icon from '@library/ui/icon'
+import IconText from '@library/ui/icon-text'
+import { Home } from '@lucide/svelte'
 
 import { localizeHref, setLocale } from '../../../../libraries/paraglide/src'
 
@@ -23,9 +24,9 @@ const eewre = Promise.resolve('test 122')
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<Icon icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
+<IconText IconElement={Home} noMargin right small>{m.antsy_aloof_barbel_read()}</IconText>
 <Button2 variant="wrong">
-	<Icon icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
+	<IconText IconElement={Home} noMargin right small>{m.antsy_aloof_barbel_read()}</IconText>
 </Button2>
 <Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
 <Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>

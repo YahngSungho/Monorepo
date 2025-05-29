@@ -27,6 +27,7 @@
 		"@internationalized/date": "^3.8.1",
 		"@library/base": "workspace:*",
 		"@library/library-base": "workspace:*",
+		"@lucide/svelte": "^0.511.0",
 		"@shikijs/rehype": "^3.4.1",
 		"@tanstack/table-core": "^8.21.3",
 		"bits-ui": "1.3.19",
@@ -34,7 +35,6 @@
 		"embla-carousel-svelte": "^8.6.0",
 		"formsnap": "^2.0.1",
 		"hast-util-to-string": "^3.0.1",
-		"iconify-icon": "^2.3.0",
 		"lucide-svelte": "^0.503.0",
 		"mermaid": "^11.6.0",
 		"mode-watcher": "^0.5.1",
@@ -85,7 +85,7 @@
 		"./dropdown-menu": "./src/shadcn/components/ui/dropdown-menu/index.ts",
 		"./form": "./src/shadcn/components/ui/form/index.ts",
 		"./hover-card": "./src/shadcn/components/ui/hover-card/index.ts",
-		"./icon": "./src/custom/icon.svelte",
+		"./icon-text": "./src/custom/icon-text.svelte",
 		"./input": "./src/shadcn/components/ui/input/index.ts",
 		"./input-otp": "./src/shadcn/components/ui/input-otp/index.ts",
 		"./label": "./src/shadcn/components/ui/label/index.ts",
@@ -114,7 +114,9 @@
 	},
 	"import": {
 		"$shadcn": "./src/shadcn",
-		"$shadcn/*": "./src/shadcn/*"
+		"$shadcn/*": "./src/shadcn/*",
+		"$lib/components": "./src/shadcn/components",
+		"$lib/components/*": "./src/shadcn/components/*"
 	},
 	"svelte": "./dist/index.js"
 }

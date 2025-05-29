@@ -1,22 +1,28 @@
 <script>
-import 'iconify-icon'
-
-let { children, icon, right = false, noMargin = false, small = false, ...restProps } = $props()
+let { children, text = '', IconElement, iconProps = {}, right = false, noMargin = false, small = false, ...restProps } = $props()
 </script>
 
-{#snippet iconElement(iconName)}
+{#snippet iconElement()}
 	<span class="icon-container" class:noMargin class:right class:small>
-		<iconify-icon class="iconify-icon" icon={iconName}></iconify-icon>
+		<IconElement size={24} {...iconProps} />
 	</span>
 {/snippet}
 
 <span class="with-icon" {...restProps}>
 	{#if right}
-		{@render children?.()}
-		{@render iconElement(icon)}
+		{#if children}
+			{@render children()}
+		{:else if text}
+			{text}
+		{/if}
+		{@render iconElement()}
 	{:else}
-		{@render iconElement(icon)}
-		{@render children?.()}
+		{@render iconElement()}
+		{#if children}
+			{@render children()}
+		{:else if text}
+			{text}
+		{/if}
 	{/if}
 </span>
 
@@ -50,7 +56,6 @@ let { children, icon, right = false, noMargin = false, small = false, ...restPro
 			inset-block-start: -0.3ex;
 			inline-size: 0.75em;
 			block-size: 0.75em;
-			font-size: 0.75em;
 		}
 	}
 }
