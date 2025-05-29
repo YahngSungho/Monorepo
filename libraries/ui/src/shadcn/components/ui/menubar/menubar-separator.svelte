@@ -1,17 +1,17 @@
 <script lang="ts">
-import { Menubar as MenubarPrimitive } from 'bits-ui'
+	import { Menubar as MenubarPrimitive } from "bits-ui";
+	import { cn } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: MenubarPrimitive.SeparatorProps = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: MenubarPrimitive.SeparatorProps = $props();
 </script>
 
 <MenubarPrimitive.Separator
-	class={cn('bg-muted -mx-1 my-1 h-px', className)}
 	bind:ref
+	data-slot="menubar-separator"
+	class={cn("bg-border -mx-1 my-1 h-px", className)}
 	{...restProps}
 />

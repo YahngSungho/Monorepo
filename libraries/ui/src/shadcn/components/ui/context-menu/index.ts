@@ -1,49 +1,51 @@
-import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
+import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 
-const { Sub } = ContextMenuPrimitive
-const { Root } = ContextMenuPrimitive
-const { Trigger } = ContextMenuPrimitive
-const { Group } = ContextMenuPrimitive
-const { RadioGroup } = ContextMenuPrimitive
+import Trigger from "./context-menu-trigger.svelte";
+import Group from "./context-menu-group.svelte";
+import RadioGroup from "./context-menu-radio-group.svelte";
+import Item from "./context-menu-item.svelte";
+import GroupHeading from "./context-menu-group-heading.svelte";
+import Content from "./context-menu-content.svelte";
+import Shortcut from "./context-menu-shortcut.svelte";
+import RadioItem from "./context-menu-radio-item.svelte";
+import Separator from "./context-menu-separator.svelte";
+import SubContent from "./context-menu-sub-content.svelte";
+import SubTrigger from "./context-menu-sub-trigger.svelte";
+import CheckboxItem from "./context-menu-checkbox-item.svelte";
+import Label from "./context-menu-label.svelte";
+const Sub = ContextMenuPrimitive.Sub;
+const Root = ContextMenuPrimitive.Root;
 
 export {
+	Sub,
+	Root,
+	Item,
+	GroupHeading,
+	Label,
+	Group,
+	Trigger,
+	Content,
+	Shortcut,
+	Separator,
+	RadioItem,
+	SubContent,
+	SubTrigger,
+	RadioGroup,
+	CheckboxItem,
 	//
 	Root as ContextMenu,
-	Group as ContextMenuGroup,
-	RadioGroup as ContextMenuRadioGroup,
 	Sub as ContextMenuSub,
+	Item as ContextMenuItem,
+	GroupHeading as ContextMenuGroupHeading,
+	Group as ContextMenuGroup,
+	Content as ContextMenuContent,
 	Trigger as ContextMenuTrigger,
-	Group,
-	RadioGroup,
-	Root,
-	Sub,
-	Trigger,
-}
-
-export {
-	default as CheckboxItem,
-	default as ContextMenuCheckboxItem,
-} from './context-menu-checkbox-item.svelte'
-export { default as Content, default as ContextMenuContent } from './context-menu-content.svelte'
-export {
-	default as ContextMenuGroupHeading,
-	default as GroupHeading,
-} from './context-menu-group-heading.svelte'
-export { default as ContextMenuItem, default as Item } from './context-menu-item.svelte'
-export {
-	default as ContextMenuRadioItem,
-	default as RadioItem,
-} from './context-menu-radio-item.svelte'
-export {
-	default as ContextMenuSeparator,
-	default as Separator,
-} from './context-menu-separator.svelte'
-export { default as ContextMenuShortcut, default as Shortcut } from './context-menu-shortcut.svelte'
-export {
-	default as ContextMenuSubContent,
-	default as SubContent,
-} from './context-menu-sub-content.svelte'
-export {
-	default as ContextMenuSubTrigger,
-	default as SubTrigger,
-} from './context-menu-sub-trigger.svelte'
+	Shortcut as ContextMenuShortcut,
+	RadioItem as ContextMenuRadioItem,
+	Separator as ContextMenuSeparator,
+	RadioGroup as ContextMenuRadioGroup,
+	SubContent as ContextMenuSubContent,
+	SubTrigger as ContextMenuSubTrigger,
+	CheckboxItem as ContextMenuCheckboxItem,
+	Label as ContextMenuLabel,
+};

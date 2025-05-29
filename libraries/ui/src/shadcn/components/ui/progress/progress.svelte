@@ -1,26 +1,27 @@
 <script lang="ts">
-import { Progress as ProgressPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
+	import { Progress as ProgressPrimitive } from "bits-ui";
+	import { cn, type WithoutChildrenOrChild } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	class: className,
-	max = 100,
-	ref = $bindable(),
-	value,
-	...restProps
-}: WithoutChildrenOrChild<ProgressPrimitive.RootProps> = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		max = 100,
+		value,
+		...restProps
+	}: WithoutChildrenOrChild<ProgressPrimitive.RootProps> = $props();
 </script>
 
 <ProgressPrimitive.Root
-	class={cn('bg-secondary relative h-4 w-full overflow-hidden rounded-full', className)}
-	{max}
-	{value}
 	bind:ref
+	data-slot="progress"
+	class={cn("bg-primary/20 relative h-2 w-full overflow-hidden rounded-full", className)}
+	{value}
+	{max}
 	{...restProps}
 >
 	<div
-		style={`transform: translateX(-${100 - (100 * (value ?? 0)) / (max ?? 1)}%)`}
+		data-slot="progress-indicator"
 		class="bg-primary h-full w-full flex-1 transition-all"
+		style="transform: translateX(-{100 - (100 * (value ?? 0)) / (max ?? 1)}%)"
 	></div>
 </ProgressPrimitive.Root>

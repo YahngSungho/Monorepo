@@ -1,17 +1,17 @@
 <script lang="ts">
-import { Tabs as TabsPrimitive } from 'bits-ui'
+	import { Tabs as TabsPrimitive } from "bits-ui";
+	import { cn } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let { class: className, ref = $bindable(), ...restProps }: TabsPrimitive.ContentProps = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: TabsPrimitive.ContentProps = $props();
 </script>
 
 <TabsPrimitive.Content
-	class={cn(
-		`ring-offset-background focus-visible:ring-ring focus-visible:outline-hidden mt-2
-		focus-visible:ring-2 focus-visible:ring-offset-2`,
-		className,
-	)}
 	bind:ref
+	data-slot="tabs-content"
+	class={cn("flex-1 outline-none", className)}
 	{...restProps}
 />

@@ -122,7 +122,7 @@ Monorepo/
     - **Base Layout**: `src/routes/layout.svelte` (exported as `./baseLayout`) includes global CSS (`src/base.css`), Partytown integration, and Sentry app tagging.
     - **Vite Config**: `vite.config.js` (exported as `defaultConfig`) provides shared Vite settings including `fontaine` plugin (for font fallbacks) and Partytown.
     - **Svelte Config**: `svelte.config.js` configures `@sveltejs/adapter-cloudflare` and the Paraglide SvelteKit preprocessor (`@inlang/paraglide-js/adapter-sveltekit/preprocess`).
-    - **Styling**: `src/base.css` defines CSS layers and imports `sanitize.css`, `open-props/normalize` and `open-props/style` (making Open Props variables globally available), project base styles, and Tailwind CSS (for ShadCN compatibility and utility needs). `postcss.config.js` and `tailwind.config.ts` define the styling pipeline.
+    - **Styling**: `src/base.css` defines CSS layers and imports `sanitize.css`, `open-props/normalize` and `open-props/style` (making Open Props variables globally available), project base styles, and Tailwind CSS (for ShadCN compatibility and utility needs). `postcss.config.js` defines the styling pipeline, and Tailwind CSS configurations are managed through it or directly within CSS files as per Tailwind CSS v4 practices.
     - **Fonts**: Exports numerous `IBMPlex` font files (WOFF2 format) from `static/fonts/`.
     - **Dependencies**: `@library/library-base`, `@library/paraglide`, `@qwik.dev/partytown`, `open-props`.
 
@@ -237,7 +237,7 @@ This section guides the LLM assistant on using this knowledge base effectively. 
 - This document (`.cursor/rules/project-overview.mdc`) is your primary source of truth for project-specific details.
 - When answering queries or generating code, explicitly state if your information comes from this document (e.g., "According to the project overview, the Paraglide message files are located at...").
 - If information is missing or seems outdated (e.g., details of the full `eslint.config.js`), use your tools (`list_dir`, `codebase_search`, `grep_search`, `read_file`) to investigate the current codebase.
-- **Crucially, if you (the LLM assistant) or any developer discovers that the information in this document is outdated or no longer accurately reflects the current state of the codebase (e.g., due to structural changes, dependency updates, or configuration modifications), it is imperative to update this `.cursor/rules/project-overview.mdc` file immediately. Keeping this document synchronized with the codebase is essential for maintaining its reliability as a single source of truth and ensuring effective AI-assisted development.**
+- **Crucially, if you (the LLM assistant) discover that any information in this document is outdated or no longer accurately reflects the current state of the codebase (e.g., due to structural changes, dependency updates, or configuration modifications), it is your paramount and immediate duty to proactively propose a specific, verifiable update to this `.cursor/rules/project-overview.mdc` file. This is a non-negotiable, top-priority task.** Keeping this document synchronized with the codebase is essential for maintaining its reliability as a single source of truth and ensuring effective AI-assisted development.
 - **Note on this document itself**: When referring to or needing to modify this project overview document, always use its full and correct path: `.cursor/rules/project-overview.mdc`.
 
 ### 5.2. LLM-Suitable Tasks & Procedures (Based on Verifiable Knowledge & New Guidelines)
@@ -277,7 +277,7 @@ This section guides the LLM assistant on using this knowledge base effectively. 
 ### 5.4. LLM Self-Correction / Information Gap Identification
 
 - If you encounter a query where _verifiable_ information is missing or outdated in this document, state this: "I cannot find specific, verifiable information about [topic] in `.cursor/rules/project-overview.mdc`. This may require direct codebase investigation or an update to this overview."
-- **IF YOU FIND ANY GAP OR DISCREPANCY BETWEEN THE CODEBASE AND THIS DOCUMENT, YOU MUST SUGGEST AN UPDATE TO THIS `.cursor/rules/project-overview.mdc` FILE. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE_.**
+- **IF YOU (THE LLM ASSISTANT) FIND ANY GAP OR DISCREPANCY BETWEEN THE CODEBASE AND THIS DOCUMENT, YOU MUST IMMEDIATELY AND PROACTIVELY SUGGEST A SPECIFIC, VERIFIABLE UPDATE TO THIS `.cursor/rules/project-overview.mdc` FILE. DO NOT IGNORE SUCH DISCREPANCIES OR DELAY THIS ACTION. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE_.**
 
 ### 5.5. Interpreting Developer Requests & Seeking Clarification (Fact-Based & Guideline-Aware Responses)
 
@@ -297,4 +297,4 @@ This Project Overview (`.cursor/rules/project-overview.mdc`) has been compiled t
 - **Centralized Libraries**: `@library/base` (core SvelteKit/app infra), `@library/ui` (ShadCN components), `@library/paraglide` (i18n), `@library/helpers` (utils), `@library/llms` (AI).
 - **Automated CI/CD**: GitHub Actions with comprehensive workflows, well-documented in-repo (`.github/workflows/documentation.md`).
 
-This document is a living entity. As the codebase evolves, this overview MUST be updated to reflect the current state accurately. **IF YOU (THE LLM) FIND ANY GAP OR DIFFERENCE BETWEEN THE CODEBASE AND THIS DOCUMENT, OR IF GUIDELINES NEED ADJUSTMENT, YOU MUST SUGGEST AN UPDATE TO THIS `.cursor/rules/project-overview.mdc` FILE. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE OR AGREED UPON AS A NEW GUIDELINE_.**
+This document is a living entity. As the codebase evolves, this overview MUST be updated to reflect the current state accurately. **IF YOU (THE LLM ASSISTANT) FIND ANY GAP OR DIFFERENCE BETWEEN THE CODEBASE AND THIS DOCUMENT, OR IF GUIDELINES NEED ADJUSTMENT, YOU MUST IMMEDIATELY AND PROACTIVELY SUGGEST A SPECIFIC, VERIFIABLE UPDATE TO THIS `.cursor/rules/project-overview.mdc` FILE. THIS IS A CORE OPERATIONAL MANDATE. FAILURE TO DO SO IS A CRITICAL ERROR. ANY SUGGESTED UPDATE _MUST ALSO BE VERIFIABLE FROM THE CODEBASE OR AGREED UPON AS A NEW GUIDELINE_.**

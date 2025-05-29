@@ -1,21 +1,20 @@
 <script lang="ts">
-import { Pagination as PaginationPrimitive } from 'bits-ui'
+	import { Pagination as PaginationPrimitive } from "bits-ui";
+	import { cn } from "$shadcn/utils.js";
+	import { type Props, buttonVariants } from "$shadcn/components/ui/button/index.js";
 
-import { buttonVariants, type Props } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
-
-let {
-	children,
-	class: className,
-	isActive = false,
-	page,
-	ref = $bindable(),
-	size = 'icon',
-	...restProps
-}: PaginationPrimitive.PageProps &
-	Props & {
-		isActive: boolean
-	} = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		size = "icon",
+		isActive = false,
+		page,
+		children,
+		...restProps
+	}: PaginationPrimitive.PageProps &
+		Props & {
+			isActive: boolean;
+		} = $props();
 </script>
 
 {#snippet Fallback()}
@@ -23,15 +22,18 @@ let {
 {/snippet}
 
 <PaginationPrimitive.Page
+	bind:ref
+	{page}
+	aria-current={isActive ? "page" : undefined}
+	data-slot="pagination-link"
+	data-active={isActive}
 	class={cn(
 		buttonVariants({
+			variant: isActive ? "outline" : "ghost",
 			size,
-			variant: isActive ? 'outline' : 'ghost',
 		}),
-		className,
+		className
 	)}
 	children={children || Fallback}
-	{page}
-	bind:ref
 	{...restProps}
 />

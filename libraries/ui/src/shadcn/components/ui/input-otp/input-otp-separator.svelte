@@ -1,19 +1,19 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
-import Dot from 'lucide-svelte/icons/dot'
-import type { HTMLAttributes } from 'svelte/elements'
+	import type { HTMLAttributes } from "svelte/elements";
+	import type { WithElementRef } from "$shadcn/utils.js";
+	import DotIcon from "@lucide/svelte/icons/dot";
 
-let {
-	children,
-	ref = $bindable(),
-	...restProps
-}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
+	let {
+		ref = $bindable(null),
+		children,
+		...restProps
+	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
 </script>
 
-<div bind:this={ref} role="separator" {...restProps}>
+<div bind:this={ref} data-slot="input-otp-separator" role="separator" {...restProps}>
 	{#if children}
 		{@render children?.()}
 	{:else}
-		<Dot />
+		<DotIcon />
 	{/if}
 </div>

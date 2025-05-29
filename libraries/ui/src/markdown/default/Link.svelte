@@ -1,7 +1,7 @@
 <script>
 import { ExternalLink } from '@lucide/svelte';
 
-import IconText from '../../custom/icon-text.svelte'
+import IconText from '../../miscellaneous/icon-text/icon-text.svelte'
 
 let { href = '', title = undefined, children } = $props()
 

@@ -1,26 +1,25 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
-import type { Snippet } from 'svelte'
-import type { HTMLAnchorAttributes } from 'svelte/elements'
+	import type { HTMLAnchorAttributes } from "svelte/elements";
+	import type { Snippet } from "svelte";
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
+	let {
+		ref = $bindable(null),
+		class: className,
+		href = undefined,
+		child,
+		children,
+		...restProps
+	}: WithElementRef<HTMLAnchorAttributes> & {
+		child?: Snippet<[{ props: HTMLAnchorAttributes }]>;
+	} = $props();
 
-let {
-	child,
-	children,
-	class: className,
-	href,
-	ref = $bindable(),
-	...restProps
-}: WithElementRef<HTMLAnchorAttributes> & {
-	child?: Snippet<[{ props: HTMLAnchorAttributes }]>
-} = $props()
-
-const attrs = $derived({
-	class: cn('hover:text-foreground transition-colors', className),
-	href,
-	...restProps,
-})
+	const attrs = $derived({
+		"data-slot": "breadcrumb-link",
+		class: cn("hover:text-foreground transition-colors", className),
+		href,
+		...restProps,
+	});
 </script>
 
 {#if child}

@@ -1,21 +1,13 @@
 <script lang="ts">
-import { mode } from 'mode-watcher'
-import { Toaster as Sonner, type ToasterProps as SonnerProps } from 'svelte-sonner'
+	import { Toaster as Sonner, type ToasterProps as SonnerProps } from "svelte-sonner";
+	import { mode } from "mode-watcher";
 
-let restProps: SonnerProps = $props()
+	let { ...restProps }: SonnerProps = $props();
 </script>
 
 <Sonner
+	theme={mode.current}
 	class="toaster group"
-	theme={$mode}
-	toastOptions={{
-		classes: {
-			actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
-			cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
-			description: 'group-[.toast]:text-muted-foreground',
-			toast:
-				'group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg',
-		},
-	}}
+	style="--normal-bg: var(--popover); --normal-text: var(--popover-foreground); --normal-border: var(--border);"
 	{...restProps}
 />

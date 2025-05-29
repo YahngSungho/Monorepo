@@ -1,17 +1,15 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
-import type { HTMLAttributes } from 'svelte/elements'
+	import type { HTMLAttributes } from "svelte/elements";
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	children,
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		children,
+		...restProps
+	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
 </script>
 
-<div bind:this={ref} class={cn('p-6', className)} {...restProps}>
+<div bind:this={ref} data-slot="card-content" class={cn("px-6", className)} {...restProps}>
 	{@render children?.()}
 </div>

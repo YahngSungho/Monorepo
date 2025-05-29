@@ -1,13 +1,16 @@
 <script lang="ts">
-import { Calendar as CalendarPrimitive } from 'bits-ui'
+	import { Calendar as CalendarPrimitive } from "bits-ui";
+	import { cn } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let { class: className, ref = $bindable(), ...restProps }: CalendarPrimitive.HeaderProps = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: CalendarPrimitive.HeaderProps = $props();
 </script>
 
 <CalendarPrimitive.Header
-	class={cn('relative flex w-full items-center justify-between pt-1', className)}
 	bind:ref
+	class={cn("relative flex w-full items-center justify-between pt-1", className)}
 	{...restProps}
 />

@@ -1,5 +1,10 @@
-export { default as Root, default as ScrollArea } from './scroll-area.svelte'
+import Scrollbar from "./scroll-area-scrollbar.svelte";
+import Root from "./scroll-area.svelte";
+
 export {
-	default as ScrollAreaScrollbar,
-	default as Scrollbar,
-} from './scroll-area-scrollbar.svelte'
+	Root,
+	Scrollbar,
+	//,
+	Root as ScrollArea,
+	Scrollbar as ScrollAreaScrollbar,
+};

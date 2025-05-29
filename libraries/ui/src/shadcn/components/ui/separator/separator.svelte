@@ -1,23 +1,20 @@
 <script lang="ts">
-import { Separator as SeparatorPrimitive } from 'bits-ui'
+	import { Separator as SeparatorPrimitive } from "bits-ui";
+	import { cn } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	class: className,
-	orientation = 'horizontal',
-	ref = $bindable(),
-	...restProps
-}: SeparatorPrimitive.RootProps = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: SeparatorPrimitive.RootProps = $props();
 </script>
 
 <SeparatorPrimitive.Root
-	class={cn(
-		'bg-border shrink-0',
-		orientation === 'horizontal' ? 'h-[1px] w-full' : 'min-h-full w-[1px]',
-		className,
-	)}
-	{orientation}
 	bind:ref
+	data-slot="separator-root"
+	class={cn(
+		"bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=vertical]:h-full data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px",
+		className
+	)}
 	{...restProps}
 />

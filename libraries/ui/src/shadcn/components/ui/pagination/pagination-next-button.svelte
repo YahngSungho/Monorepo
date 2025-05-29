@@ -1,32 +1,33 @@
 <script lang="ts">
-import { Pagination as PaginationPrimitive } from 'bits-ui'
-import ChevronRight from 'lucide-svelte/icons/chevron-right'
+	import { Pagination as PaginationPrimitive } from "bits-ui";
+	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
+	import { buttonVariants } from "$shadcn/components/ui/button/index.js";
+	import { cn } from "$shadcn/utils.js";
 
-import { buttonVariants } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
-
-let {
-	children,
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: PaginationPrimitive.NextButtonProps = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		children,
+		...restProps
+	}: PaginationPrimitive.NextButtonProps = $props();
 </script>
 
 {#snippet Fallback()}
 	<span>Next</span>
-	<ChevronRight class="size-4" />
+	<ChevronRightIcon class="size-4" />
 {/snippet}
 
 <PaginationPrimitive.NextButton
+	bind:ref
+	aria-label="Go to next page"
 	class={cn(
 		buttonVariants({
-			class: 'gap-1 pr-2.5',
-			variant: 'ghost',
+			size: "default",
+			variant: "ghost",
+			class: "gap-1 px-2.5 sm:pr-2.5",
 		}),
-		className,
+		className
 	)}
 	children={children || Fallback}
-	bind:ref
 	{...restProps}
 />

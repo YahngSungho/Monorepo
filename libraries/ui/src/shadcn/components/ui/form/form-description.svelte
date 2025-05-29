@@ -1,18 +1,17 @@
 <script lang="ts">
-import type { WithoutChild } from 'bits-ui'
-import * as FormPrimitive from 'formsnap'
+	import * as FormPrimitive from "formsnap";
+	import { cn, type WithoutChild } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: WithoutChild<FormPrimitive.DescriptionProps> = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: WithoutChild<FormPrimitive.DescriptionProps> = $props();
 </script>
 
 <FormPrimitive.Description
-	class={cn('text-muted-foreground text-sm', className)}
 	bind:ref
+	data-slot="form-description"
+	class={cn("text-muted-foreground text-sm", className)}
 	{...restProps}
 />

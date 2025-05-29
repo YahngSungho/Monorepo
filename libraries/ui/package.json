@@ -25,22 +25,17 @@
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
 		"@internationalized/date": "^3.8.1",
-		"@library/base": "workspace:*",
 		"@library/library-base": "workspace:*",
-		"@lucide/svelte": "^0.511.0",
 		"@shikijs/rehype": "^3.4.1",
 		"@tanstack/table-core": "^8.21.3",
-		"bits-ui": "1.3.19",
 		"clsx": "^2.1.1",
 		"embla-carousel-svelte": "^8.6.0",
 		"formsnap": "^2.0.1",
 		"hast-util-to-string": "^3.0.1",
-		"lucide-svelte": "^0.503.0",
 		"mermaid": "^11.6.0",
-		"mode-watcher": "^0.5.1",
+		"mode-watcher": "^1.0.7",
 		"nanoid": "^5.1.5",
 		"open-props": "^1.7.15",
-		"paneforge": "1.0.0-next.5",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-callouts": "^2.1.0",
 		"rehype-katex": "^7.0.1",
@@ -52,13 +47,12 @@
 		"remark-math": "^6.0.0",
 		"remark-smartypants": "^3.0.2",
 		"shiki": "^3.4.2",
+		"svelte": "^5.33.7",
 		"svelte-exmarkdown": "^5.0.0",
-		"svelte-sonner": "^0.3.28",
+		"svelte-sonner": "^1.0.3",
 		"sveltekit-superforms": "^2.24.1",
 		"tailwind-merge": "^3.3.0",
-		"tailwind-variants": "^1.0.0",
-		"vaul-svelte": "1.0.0-next.7",
-		"zod": "^3.24.3"
+		"tailwindcss": "4.1.8"
 	},
 	"exports": {
 		"./accordion": "./src/shadcn/components/ui/accordion/index.ts",
@@ -85,7 +79,7 @@
 		"./dropdown-menu": "./src/shadcn/components/ui/dropdown-menu/index.ts",
 		"./form": "./src/shadcn/components/ui/form/index.ts",
 		"./hover-card": "./src/shadcn/components/ui/hover-card/index.ts",
-		"./icon-text": "./src/custom/icon-text.svelte",
+		"./icon-text": "./src/miscellaneous/icon-text/icon-text.svelte",
 		"./input": "./src/shadcn/components/ui/input/index.ts",
 		"./input-otp": "./src/shadcn/components/ui/input-otp/index.ts",
 		"./label": "./src/shadcn/components/ui/label/index.ts",
@@ -115,8 +109,28 @@
 	"import": {
 		"$shadcn": "./src/shadcn",
 		"$shadcn/*": "./src/shadcn/*",
-		"$lib/components": "./src/shadcn/components",
-		"$lib/components/*": "./src/shadcn/components/*"
+		"$lib": "./src/shadcn",
+		"$lib/*": "./src/shadcn/*"
 	},
-	"svelte": "./dist/index.js"
+	"svelte": "./dist/index.js",
+	"devDependencies": {
+		"@dnd-kit-svelte/core": "^0.0.8",
+		"@dnd-kit-svelte/modifiers": "^0.0.8",
+		"@dnd-kit-svelte/sortable": "^0.0.8",
+		"@dnd-kit-svelte/utilities": "^0.0.8",
+		"@library/base": "workspace:*",
+		"@lucide/svelte": "^0.511.0",
+		"@tabler/icons-svelte": "^3.33.0",
+		"@types/d3-scale": "^4.0.9",
+		"@types/d3-shape": "^3.1.7",
+		"bits-ui": "^2.3.0",
+		"d3-scale": "4.0.2",
+		"d3-shape": "^3.2.0",
+		"layerchart": "2.0.0-next.10",
+		"paneforge": "1.0.0-next.5",
+		"tailwind-variants": "^1.0.0",
+		"tw-animate-css": "^1.3.2",
+		"vaul-svelte": "1.0.0-next.7",
+		"zod": "^3.25.36"
+	}
 }

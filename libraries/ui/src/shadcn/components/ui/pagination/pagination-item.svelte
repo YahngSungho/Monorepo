@@ -1,10 +1,14 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
-import type { HTMLLiAttributes } from 'svelte/elements'
+	import type { HTMLLiAttributes } from "svelte/elements";
+	import type { WithElementRef } from "$shadcn/utils.js";
 
-let { children, ref = $bindable(), ...restProps }: WithElementRef<HTMLLiAttributes> = $props()
+	let {
+		ref = $bindable(null),
+		children,
+		...restProps
+	}: WithElementRef<HTMLLiAttributes> = $props();
 </script>
 
-<li bind:this={ref} {...restProps}>
+<li bind:this={ref} data-slot="pagination-item" {...restProps}>
 	{@render children?.()}
 </li>

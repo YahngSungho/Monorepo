@@ -1,13 +1,25 @@
-export { default as Pagination, default as Root } from './pagination.svelte'
-export { default as Content, default as PaginationContent } from './pagination-content.svelte'
-export { default as Ellipsis, default as PaginationEllipsis } from './pagination-ellipsis.svelte'
-export { default as Item, default as PaginationItem } from './pagination-item.svelte'
-export { default as Link, default as PaginationLink } from './pagination-link.svelte'
+import Root from "./pagination.svelte";
+import Content from "./pagination-content.svelte";
+import Item from "./pagination-item.svelte";
+import Link from "./pagination-link.svelte";
+import PrevButton from "./pagination-prev-button.svelte";
+import NextButton from "./pagination-next-button.svelte";
+import Ellipsis from "./pagination-ellipsis.svelte";
+
 export {
-	default as NextButton,
-	default as PaginationNextButton,
-} from './pagination-next-button.svelte'
-export {
-	default as PaginationPrevButton,
-	default as PrevButton,
-} from './pagination-prev-button.svelte'
+	Root,
+	Content,
+	Item,
+	Link,
+	PrevButton,
+	NextButton,
+	Ellipsis,
+	//
+	Root as Pagination,
+	Content as PaginationContent,
+	Item as PaginationItem,
+	Link as PaginationLink,
+	PrevButton as PaginationPrevButton,
+	NextButton as PaginationNextButton,
+	Ellipsis as PaginationEllipsis,
+};

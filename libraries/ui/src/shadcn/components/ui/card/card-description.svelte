@@ -1,17 +1,20 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
-import type { HTMLAttributes } from 'svelte/elements'
+	import type { HTMLAttributes } from "svelte/elements";
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	children,
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: WithElementRef<HTMLAttributes<HTMLParagraphElement>> = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		children,
+		...restProps
+	}: WithElementRef<HTMLAttributes<HTMLParagraphElement>> = $props();
 </script>
 
-<p bind:this={ref} class={cn('text-muted-foreground text-sm', className)} {...restProps}>
+<p
+	bind:this={ref}
+	data-slot="card-description"
+	class={cn("text-muted-foreground text-sm", className)}
+	{...restProps}
+>
 	{@render children?.()}
 </p>

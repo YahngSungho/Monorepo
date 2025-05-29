@@ -119,7 +119,18 @@
 	"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": true,
 	"tailwindCSS.classFunctions": ["tw", "clsx"],
 	"tailwindCSS.emmetCompletions": true,
-	"tailwindCSS.experimental.configFile": "libraries/base/src/tailwind.css",
+	"tailwindCSS.experimental.configFile": {
+		"libraries/base/src/tailwind.css": [
+			"**/*.svelte",
+			"**/*.css",
+			"**/*.html",
+			"**/*.js",
+			"**/*.ts",
+			"**/*.md",
+			"**/*.mdx",
+			"**/*.mdc",
+		]
+	},
 	// Svelte 파일 내에서 Tailwind 클래스 자동 완성 활성화
 	"tailwindCSS.includeLanguages": {
 		"plaintext": "html",

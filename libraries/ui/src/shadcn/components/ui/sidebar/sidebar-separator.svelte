@@ -1,19 +1,19 @@
 <script lang="ts">
-import type { ComponentProps } from 'svelte'
+	import { Separator } from "$shadcn/components/ui/separator/index.js";
+	import { cn } from "$shadcn/utils.js";
+	import type { ComponentProps } from "svelte";
 
-import { Separator } from '$shadcn/components/ui/separator/index.js'
-import { cn } from '$shadcn/utils.js'
-
-let {
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: ComponentProps<typeof Separator> = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: ComponentProps<typeof Separator> = $props();
 </script>
 
 <Separator
-	class={cn('bg-sidebar-border mx-2 w-auto', className)}
-	data-sidebar="separator"
 	bind:ref
+	data-slot="sidebar-separator"
+	data-sidebar="separator"
+	class={cn("bg-sidebar-border mx-2 w-auto", className)}
 	{...restProps}
 />

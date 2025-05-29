@@ -3,7 +3,8 @@
 		"stylelint-config-standard",
 		"stylelint-config-html",
 		"@double-great/stylelint-a11y",
-		"stylelint-config-clean-order"
+		"stylelint-config-clean-order",
+		"stylelint-config-tailwindcss"
 	],
 	"overrides": [
 		{

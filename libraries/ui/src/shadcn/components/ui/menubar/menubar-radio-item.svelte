@@ -1,31 +1,29 @@
 <script lang="ts">
-import { Menubar as MenubarPrimitive, type WithoutChild } from 'bits-ui'
-import Circle from 'lucide-svelte/icons/circle'
+	import { Menubar as MenubarPrimitive } from "bits-ui";
+	import CircleIcon from "@lucide/svelte/icons/circle";
+	import { cn, type WithoutChild } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	children: childrenProp,
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: WithoutChild<MenubarPrimitive.RadioItemProps> = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		children: childrenProp,
+		...restProps
+	}: WithoutChild<MenubarPrimitive.RadioItemProps> = $props();
 </script>
 
 <MenubarPrimitive.RadioItem
-	class={cn(
-		`data-highlighted:bg-accent data-highlighted:text-accent-foreground outline-hidden
-		data-disabled:pointer-events-none data-disabled:opacity-50 relative flex cursor-default select-none
-		items-center rounded-sm py-1.5 pl-8 pr-2 text-sm`,
-		className,
-	)}
 	bind:ref
+	data-slot="menubar-radio-item"
+	class={cn(
+		"focus:bg-accent focus:text-accent-foreground rounded-xs outline-hidden relative flex cursor-default select-none items-center gap-2 py-1.5 pl-8 pr-2 text-sm data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+		className
+	)}
 	{...restProps}
 >
 	{#snippet children({ checked })}
-		<span class="absolute left-2 flex size-3.5 items-center justify-center">
+		<span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
 			{#if checked}
-				<Circle class="size-2 fill-current" />
+				<CircleIcon class="size-2 fill-current" />
 			{/if}
 		</span>
 		{@render childrenProp?.({ checked })}

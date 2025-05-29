@@ -1,13 +1,16 @@
-import { Accordion as AccordionPrimitive } from 'bits-ui'
-
-const { Root } = AccordionPrimitive
+import Root from "./accordion-root.svelte";
+import Content from "./accordion-content.svelte";
+import Item from "./accordion-item.svelte";
+import Trigger from "./accordion-trigger.svelte";
 
 export {
+	Root,
+	Content,
+	Item,
+	Trigger,
 	//
 	Root as Accordion,
-	Root,
-}
-
-export { default as AccordionContent, default as Content } from './accordion-content.svelte'
-export { default as AccordionItem, default as Item } from './accordion-item.svelte'
-export { default as AccordionTrigger, default as Trigger } from './accordion-trigger.svelte'
+	Content as AccordionContent,
+	Item as AccordionItem,
+	Trigger as AccordionTrigger,
+};

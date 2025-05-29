@@ -1,42 +1,39 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
-import emblaCarouselSvelte from 'embla-carousel-svelte'
-import type { HTMLAttributes } from 'svelte/elements'
+	import emblaCarouselSvelte from "embla-carousel-svelte";
+	import type { HTMLAttributes } from "svelte/elements";
+	import { getEmblaContext } from "./context.js";
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
+	let {
+		ref = $bindable(null),
+		class: className,
+		children,
+		...restProps
+	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
 
-import { getEmblaContext } from './context.js'
-
-let {
-	children,
-	class: className,
-	ref = $bindable(),
-	...restProps
-}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
-
-const emblaCtx = getEmblaContext('<Carousel.Content/>')
+	const emblaCtx = getEmblaContext("<Carousel.Content/>");
 </script>
 
-<!-- svelte-ignore event_directive_deprecated -->
 <div
+	data-slot="carousel-content"
 	class="overflow-hidden"
-	on:emblaInit={emblaCtx.onInit}
 	use:emblaCarouselSvelte={{
 		options: {
-			container: '[data-embla-container]',
-			slides: '[data-embla-slide]',
+			container: "[data-embla-container]",
+			slides: "[data-embla-slide]",
 			...emblaCtx.options,
-			axis: emblaCtx.orientation === 'horizontal' ? 'x' : 'y',
+			axis: emblaCtx.orientation === "horizontal" ? "x" : "y",
 		},
 		plugins: emblaCtx.plugins,
 	}}
+	onemblaInit={emblaCtx.onInit}
 >
 	<div
 		bind:this={ref}
 		class={cn(
-			'flex',
-			emblaCtx.orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
-			className,
+			"flex",
+			emblaCtx.orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+			className
 		)}
 		data-embla-container=""
 		{...restProps}

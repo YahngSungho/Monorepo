@@ -1,9 +1,17 @@
 <script lang="ts">
-import { Accordion as AccordionPrimitive } from 'bits-ui'
+	import { Accordion as AccordionPrimitive } from "bits-ui";
+	import { cn } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let { class: className, ref = $bindable(), ...restProps }: AccordionPrimitive.ItemProps = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: AccordionPrimitive.ItemProps = $props();
 </script>
 
-<AccordionPrimitive.Item class={cn('border-b', className)} bind:ref {...restProps} />
+<AccordionPrimitive.Item
+	bind:ref
+	data-slot="accordion-item"
+	class={cn("border-b last:border-b-0", className)}
+	{...restProps}
+/>

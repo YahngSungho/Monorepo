@@ -1,10 +1,12 @@
 {
 	"$schema": "https://next.shadcn-svelte.com/schema.json",
 	"aliases": {
+		"$shadcn": "./src/shadcn",
 		"components": "$shadcn/components",
-		"utils": "$shadcn/utils",
+		"hooks": "$shadcn/hooks",
+		"lib": "$shadcn",
 		"ui": "$shadcn/components/ui",
-		"hooks": "$shadcn/hooks"
+		"utils": "$shadcn/utils"
 	},
 	"registry": "https://next.shadcn-svelte.com/registry",
 	"style": "default",

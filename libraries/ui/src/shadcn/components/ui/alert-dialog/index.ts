@@ -1,27 +1,39 @@
-import { AlertDialog as AlertDialogPrimitive } from 'bits-ui'
+import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
+import Trigger from "./alert-dialog-trigger.svelte";
+import Title from "./alert-dialog-title.svelte";
+import Action from "./alert-dialog-action.svelte";
+import Cancel from "./alert-dialog-cancel.svelte";
+import Footer from "./alert-dialog-footer.svelte";
+import Header from "./alert-dialog-header.svelte";
+import Overlay from "./alert-dialog-overlay.svelte";
+import Content from "./alert-dialog-content.svelte";
+import Description from "./alert-dialog-description.svelte";
 
-const { Root } = AlertDialogPrimitive
-const { Trigger } = AlertDialogPrimitive
-const { Portal } = AlertDialogPrimitive
+const Root = AlertDialogPrimitive.Root;
+const Portal = AlertDialogPrimitive.Portal;
 
 export {
+	Root,
+	Title,
+	Action,
+	Cancel,
+	Portal,
+	Footer,
+	Header,
+	Trigger,
+	Overlay,
+	Content,
+	Description,
 	//
 	Root as AlertDialog,
+	Title as AlertDialogTitle,
+	Action as AlertDialogAction,
+	Cancel as AlertDialogCancel,
 	Portal as AlertDialogPortal,
+	Footer as AlertDialogFooter,
+	Header as AlertDialogHeader,
 	Trigger as AlertDialogTrigger,
-	Portal,
-	Root,
-	Trigger,
-}
-
-export { default as Action, default as AlertDialogAction } from './alert-dialog-action.svelte'
-export { default as AlertDialogCancel, default as Cancel } from './alert-dialog-cancel.svelte'
-export { default as AlertDialogContent, default as Content } from './alert-dialog-content.svelte'
-export {
-	default as AlertDialogDescription,
-	default as Description,
-} from './alert-dialog-description.svelte'
-export { default as AlertDialogFooter, default as Footer } from './alert-dialog-footer.svelte'
-export { default as AlertDialogHeader, default as Header } from './alert-dialog-header.svelte'
-export { default as AlertDialogOverlay, default as Overlay } from './alert-dialog-overlay.svelte'
-export { default as AlertDialogTitle, default as Title } from './alert-dialog-title.svelte'
+	Overlay as AlertDialogOverlay,
+	Content as AlertDialogContent,
+	Description as AlertDialogDescription,
+};

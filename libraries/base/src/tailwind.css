@@ -1,7 +1,8 @@
 @import url('tailwindcss');
+@import "tw-animate-css";
+
 @import url('./daisyUI.css');
 
-@plugin 'tailwindcss-animate';
 
 @source '../../../apps/*/src/**/*.{html,js,ts,svelte,mdx}';
 @source '../../../libraries/*/src/**/*.{html,js,ts,svelte,mdx}';
@@ -85,80 +86,42 @@
 	--sidebar-ring: hsl(228deg 80.9% 59%); /* indigo-7 */
 }
 
-@theme {
-	--color-border: var(--border);
-	--color-input: var(--input);
-	--color-ring: var(--ring);
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--color-primary: var(--primary);
-	--color-primary-foreground: var(--primary-foreground);
-	--color-primary-content: var(--primary-content);
-	--color-secondary: var(--secondary);
-	--color-secondary-foreground: var(--secondary-foreground);
-	--color-secondary-content: var(--secondary-content);
-	--color-destructive: var(--destructive);
-	--color-destructive-foreground: var(--destructive-foreground);
-	--color-destructive-content: var(--destructive-content);
-	--color-muted: var(--muted);
-	--color-muted-foreground: var(--muted-foreground);
-	--color-accent: var(--accent);
-	--color-accent-foreground: var(--accent-foreground);
-	--color-accent-content: var(--accent-content);
-	--color-popover: var(--popover);
-	--color-popover-foreground: var(--popover-foreground);
-	--color-card: var(--card);
-	--color-card-foreground: var(--card-foreground) / <alpha-value>;
-	--color-sidebar-DEFAULT: var(--sidebar-background);
-	--color-sidebar-foreground: var(--sidebar-foreground);
-	--color-sidebar-primary: var(--sidebar-primary);
-	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-primary-content: var(--sidebar-primary-content);
-	--color-sidebar-accent: var(--sidebar-accent);
-	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-accent-content: var(--sidebar-accent-content);
-	--color-sidebar-border: var(--sidebar-border);
-	--color-sidebar-ring: var(--sidebar-ring);
-	--radius-xl: var(--radius-4);
-	--radius-lg: var(--radius-3);
-	--radius-md: var(--radius-2);
-	--radius-sm: var(--radius-1);
-	--animate-accordion-down: accordion-down 0.2s ease-out;
-	--animate-accordion-up: accordion-up 0.2s ease-out;
-	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
+@theme inline {
+  /* Radius (for rounded-*) */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 
-	@keyframes accordion-down {
-		from {
-			block-size: 0;
-		}
-
-		to {
-			block-size: var(--bits-accordion-content-height);
-		}
-	}
-
-	@keyframes accordion-up {
-		from {
-			block-size: var(--bits-accordion-content-height);
-		}
-
-		to {
-			block-size: 0;
-		}
-	}
-
-	@keyframes caret-blink {
-		0%,
-		70%,
-		100% {
-			opacity: 1;
-		}
-
-		20%,
-		50% {
-			opacity: 0;
-		}
-	}
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
+  --color-radius: var(--radius);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @utility container {

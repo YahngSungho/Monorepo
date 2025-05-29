@@ -1,30 +1,28 @@
 <script lang="ts">
-import type { WithoutChild } from 'bits-ui'
-import * as FormPrimitive from 'formsnap'
+	import * as FormPrimitive from "formsnap";
+	import { cn, type WithoutChild } from "$shadcn/utils.js";
 
-import { cn } from '$shadcn/utils.js'
-
-let {
-	children: childrenProp,
-	class: className,
-	errorClasses,
-	ref = $bindable(),
-	...restProps
-}: WithoutChild<FormPrimitive.FieldErrorsProps> & {
-	errorClasses?: string | undefined | undefined
-} = $props()
+	let {
+		ref = $bindable(null),
+		class: className,
+		errorClasses,
+		children: childrenProp,
+		...restProps
+	}: WithoutChild<FormPrimitive.FieldErrorsProps> & {
+		errorClasses?: string | undefined | null;
+	} = $props();
 </script>
 
 <FormPrimitive.FieldErrors
-	class={cn('text-destructive text-sm font-medium', className)}
 	bind:ref
+	class={cn("text-destructive text-sm font-medium", className)}
 	{...restProps}
 >
-	{#snippet children({ errorProps, errors })}
+	{#snippet children({ errors, errorProps })}
 		{#if childrenProp}
-			{@render childrenProp({ errorProps, errors })}
+			{@render childrenProp({ errors, errorProps })}
 		{:else}
-			{#each errors as error}
+			{#each errors as error (error)}
 				<div {...errorProps} class={cn(errorClasses)}>{error}</div>
 			{/each}
 		{/if}

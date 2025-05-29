@@ -1,20 +1,40 @@
-import { Command as CommandPrimitive } from 'bits-ui'
+import { Command as CommandPrimitive } from "bits-ui";
 
-const { Loading } = CommandPrimitive
+import Root from "./command.svelte";
+import Dialog from "./command-dialog.svelte";
+import Empty from "./command-empty.svelte";
+import Group from "./command-group.svelte";
+import Item from "./command-item.svelte";
+import Input from "./command-input.svelte";
+import List from "./command-list.svelte";
+import Separator from "./command-separator.svelte";
+import Shortcut from "./command-shortcut.svelte";
+import LinkItem from "./command-link-item.svelte";
+
+const Loading = CommandPrimitive.Loading;
 
 export {
-	//
-	Loading as CommandLoading,
+	Root,
+	Dialog,
+	Empty,
+	Group,
+	Item,
+	LinkItem,
+	Input,
+	List,
+	Separator,
+	Shortcut,
 	Loading,
-}
-
-export { default as Command, default as Root } from './command.svelte'
-export { default as CommandDialog, default as Dialog } from './command-dialog.svelte'
-export { default as CommandEmpty, default as Empty } from './command-empty.svelte'
-export { default as CommandGroup, default as Group } from './command-group.svelte'
-export { default as CommandInput, default as Input } from './command-input.svelte'
-export { default as CommandItem, default as Item } from './command-item.svelte'
-export { default as CommandLinkItem, default as LinkItem } from './command-link-item.svelte'
-export { default as CommandList, default as List } from './command-list.svelte'
-export { default as CommandSeparator, default as Separator } from './command-separator.svelte'
-export { default as CommandShortcut, default as Shortcut } from './command-shortcut.svelte'
+	//
+	Root as Command,
+	Dialog as CommandDialog,
+	Empty as CommandEmpty,
+	Group as CommandGroup,
+	Item as CommandItem,
+	LinkItem as CommandLinkItem,
+	Input as CommandInput,
+	List as CommandList,
+	Separator as CommandSeparator,
+	Shortcut as CommandShortcut,
+	Loading as CommandLoading,
+};
