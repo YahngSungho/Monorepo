@@ -131,13 +131,12 @@
 
 @layer base {
 	* {
-		/* stylelint-disable-next-line at-rule-no-deprecated */
-		@apply border-border;
+		border-color: var(--color-border);
 	}
 
 	body {
-		/* stylelint-disable-next-line at-rule-no-deprecated */
-		@apply bg-background text-foreground;
+		background-color: var(--color-background);
+		color: var(--color-foreground);
 	}
 }
 

@@ -30,21 +30,10 @@
 	"extends": ["../library-base/tsconfig.json"],
 	"include": [
 		"src/**/*",
-		"*.js",
-		"*.ts",
-		"*.svx",
-		"**/*.svx",
-		"*.svelte",
-
-		"*.cjs",
-
-		"*.mjs",
-		"**/*.js",
-		"**/*.ts",
-
-		"**/*.svelte",
-		"**/*.cjs",
-		"**/*.mjs",
-		"src/types/*.ts"
+		"./*.js",
+		"./*.ts",
+		"./*.svelte",
+		"./*.cjs",
+		"./*.mjs"
 	]
 }

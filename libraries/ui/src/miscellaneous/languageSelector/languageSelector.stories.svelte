@@ -17,9 +17,9 @@
   컴포넌트의 기본 렌더링을 보여주고, 사용자가 직접 상호작용하여 기능을 테스트할 수 있도록 합니다.
 -->
 {#snippet default_template_snippet()}
-  <div style:min-height="300px" style:padding="20px">
-    <LanguageSelector />
-  </div>
+<div style:min-height="300px" style:padding="20px">
+	<LanguageSelector />
+</div>
 {/snippet}
 
 

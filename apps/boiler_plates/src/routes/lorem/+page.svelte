@@ -6,7 +6,7 @@ import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import { Home } from '@lucide/svelte'
 import { localizeHref, setLocale } from '../../../../../libraries/paraglide/src'
-import IconText from '../../../../../libraries/ui/src/custom/icon-text.svelte'
+import IconText from '@library/ui/icon-text'
 
 const fo = 'bigCommandKEnabled'
 

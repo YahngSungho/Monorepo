@@ -118,26 +118,16 @@
 	"svelte.plugin.svelte.format.config.svelteAllowShorthand": true,
 	"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": true,
 	"tailwindCSS.classFunctions": ["tw", "clsx"],
-	"tailwindCSS.emmetCompletions": true,
-	"tailwindCSS.experimental.configFile": {
-		"libraries/base/src/tailwind.css": [
-			"**/*.svelte",
-			"**/*.css",
-			"**/*.html",
-			"**/*.js",
-			"**/*.ts",
-			"**/*.md",
-			"**/*.mdx",
-			"**/*.mdc",
-		]
-	},
-	// Svelte 파일 내에서 Tailwind 클래스 자동 완성 활성화
+	"tailwindCSS.codeActions": true,
+	"tailwindCSS.emmetCompletions": false,
+	"tailwindCSS.experimental.configFile": "libraries/base/src/base.css",
 	"tailwindCSS.includeLanguages": {
 		"plaintext": "html",
 		"svelte": "html",
 		"javascript": "javascript",
 		"typescript": "typescript"
 	},
+	"tailwindCSS.suggestions": false,
 	"tailwindCSS.validate": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"workbench.colorCustomizations": {

@@ -146,6 +146,7 @@ declare module '$env/static/private' {
 	export const WDK: string;
 	export const WebStorm: string;
 	export const WINDIR: string;
+	export const __COMPAT_LAYER: string;
 }
 
 /**
@@ -297,6 +298,7 @@ declare module '$env/dynamic/private' {
 		WDK: string;
 		WebStorm: string;
 		WINDIR: string;
+		__COMPAT_LAYER: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

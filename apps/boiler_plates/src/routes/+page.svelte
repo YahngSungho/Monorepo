@@ -1,5 +1,6 @@
 <script>
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
+import { css } from '@emotion/css'
 import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
@@ -24,9 +25,9 @@ const eewre = Promise.resolve('test 122')
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<IconText IconElement={Home} noMargin right small>{m.antsy_aloof_barbel_read()}</IconText>
+<IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
 <Button2 variant="wrong">
-	<IconText IconElement={Home} noMargin right small>{m.antsy_aloof_barbel_read()}</IconText>
+	<IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
 </Button2>
 <Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
 <Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>
@@ -36,6 +37,19 @@ const eewre = Promise.resolve('test 122')
 	}}
 	variant="default">occurs error</Button1
 >
+
+<div class="w-[200px] h-[3em] bg-red-500 p-1">
+	TailwindCSS 테스트
+</div>
+
+<div class={css`
+width: 200px;
+height: 3em;
+background-color: blue;
+padding: 1em;
+`}>
+Emotion 테스트
+</div>
 
 <div class="p1 boxed long-text gutter">
 	<h1>Aute aliquip laborum tempor</h1>

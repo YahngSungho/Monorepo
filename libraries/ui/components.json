@@ -11,7 +11,7 @@
 	"registry": "https://next.shadcn-svelte.com/registry",
 	"style": "default",
 	"tailwind": {
-		"config": "tailwind.config.ts",
+		"config": "src\\app.css",
 		"css": "src\\app.css",
 		"baseColor": "slate"
 	},

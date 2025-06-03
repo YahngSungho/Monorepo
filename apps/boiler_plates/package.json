@@ -17,7 +17,7 @@
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
 		"playwright-report": "pnpm exec playwright show-report",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
-		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore || true",
+		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"translate": "node ./src/translation/scripts.js",

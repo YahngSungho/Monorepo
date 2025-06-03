@@ -8,7 +8,7 @@ import IconText from './icon-text.svelte';
 
 // defineMeta는 컴포넌트 메타데이터를 정의합니다.
 const { Story } = defineMeta({
-	title: '커스텀 UI/IconText', // Storybook에서의 경로 및 이름
+	title: 'Miscellaneous/IconText', // Storybook에서의 경로 및 이름
 	component: IconText,
 	argTypes: {
 		text: { control: 'text', description: '표시될 텍스트' },

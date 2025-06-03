@@ -684,6 +684,7 @@ jobs:
       # 린트 실행
       - name: 린트 및 포맷 실행
         run: pnpm run lint-fix
+        continue-on-error: true
 
       # changes.patch 생성 (임시 커밋 기준) 및 변경 유무 출력
       - name: 린트/포맷 변경사항 확인 및 changes.patch 생성

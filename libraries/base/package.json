@@ -14,7 +14,7 @@
 		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"stylelint": "stylelint --allow-empty-input **/*.{css,svelte} \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
-		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore || true",
+		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
