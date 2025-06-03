@@ -28,6 +28,14 @@
 	--color-base-200: var(--gray-2);
 	--color-base-300: var(--gray-4);
 	--color-base-content: var(--gray-12);
+
+	--color-primary: var(--gray-10);
+	--color-primary-content: var(--gray-0);
+	--color-secondary: var(--gray-0);
+	--color-secondary-content: var(--gray-8);
+	--color-accent: var(--gray-4);
+	--color-accent-content: var(--gray-10);
+
 	--color-neutral: var(--gray-7);
 	--color-neutral-content: var(--gray-0);
 	--color-info: var(--cyan-3);

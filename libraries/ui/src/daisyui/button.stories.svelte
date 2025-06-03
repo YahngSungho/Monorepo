@@ -20,6 +20,7 @@ const { Story } = defineMeta({
 		<Button variant="secondary">Secondary Button</Button>
 		<Button variant="outline">Outline Button</Button>
 		<Button variant="text">Text Button</Button>
+		<Button variant="ghost">Ghost Button</Button>
 		<Button variant="accent">Accent Button</Button>
 		<Button variant="info">Info Button</Button>
 		<Button variant="success">Success Button</Button>

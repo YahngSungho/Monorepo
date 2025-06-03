@@ -1,7 +1,7 @@
 /* Tailwind CSS의 default layer는
 @layer theme, base, components, utilities;
 */
-@layer openPropsNormalize, base, sanitize, openProps, theme, components, utilities;
+@layer base, sanitize, openPropsNormalize, openProps, theme, components, utilities;
 
 @import url('sanitize.css') layer(sanitize);
 @import url('sanitize.css/forms.css') layer(sanitize);
@@ -11,7 +11,7 @@
 
 /* @import url('open-props/style') layer(openProps); */
 /* @import url('open-props/media') layer(openProps); */
-@import url('./openPrps-normalize.css') layer(openPropsNormalize);
+@import url('./openProps-normalize.css') layer(openPropsNormalize);
 /* @import url('open-props/postcss/buttons') layer(sanitize); */
 
 @import url('./tailwind.css');

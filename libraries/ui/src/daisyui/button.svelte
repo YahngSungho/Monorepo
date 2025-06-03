@@ -17,21 +17,30 @@ let { children, href, variant = 'primary', ...restProps } = $props()
 </script>
 
 {#if href}
-	<a class={`button-type btn btn-${variant}`} {href} role="button" type="button" {...restProps}>
+	<a class={`btn btn-${variant}`} {href} role="button" type="button" {...restProps}>
 		{@render children?.()}
 	</a>
 {:else}
-	<button class={`button-type btn btn-${variant}`} type="button" {...restProps}>
+	<button class={`btn btn-${variant}`} type="button" {...restProps}>
 		{@render children?.()}
 	</button>
 {/if}
 
-<style>
-.button-type {
-	font-size: var(--font-size-2);
-	font-weight: var(--font-weight-5);
-}
+<span class="btn-neutral
+	 btn-primary
+	 btn-secondary
+	 btn-accent
+	 btn-info
+	 btn-success
+	 btn-warning
+	 btn-error
+	 btn-ghost
+	 ">
+	</span>
 
+
+
+<style>
 .btn-outline {
 	border-width: var(--border-size-2);
 	background-color: transparent;

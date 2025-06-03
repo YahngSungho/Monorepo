@@ -38,6 +38,8 @@ const eewre = Promise.resolve('test 122')
 	variant="default">occurs error</Button1
 >
 
+<button class="btn btn-primary">DaisyUI Primary</button>
+
 <div class="w-[200px] h-[3em] bg-red-500 p-1">
 	TailwindCSS 테스트
 </div>
