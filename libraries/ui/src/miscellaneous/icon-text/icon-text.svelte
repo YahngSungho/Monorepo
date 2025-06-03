@@ -1,5 +1,5 @@
 <script>
-let { children, text = '', IconElement, iconProps = {}, right = false, noMargin = false, small = false, ...restProps } = $props()
+let { children = null, text = '', IconElement, iconProps = {}, right = false, noMargin = false, small = false, ...restProps } = $props()
 </script>
 
 {#snippet iconElement()}
@@ -43,6 +43,7 @@ let { children, text = '', IconElement, iconProps = {}, right = false, noMargin 
 		margin-inline-end: 0.5ch;
 
 		font-size: 1em;
+		color: color-mix(in srgb, currentcolor 60%, transparent);
 
 		&.right {
 			margin-inline: 0.5ch 0;

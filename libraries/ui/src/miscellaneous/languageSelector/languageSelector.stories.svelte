@@ -18,7 +18,7 @@
 -->
 {#snippet default_template_snippet()}
 <div style:min-height="300px" style:padding="20px">
-	<LanguageSelector />
+	<LanguageSelector getLocale={() => "언어"} setLocale={() => {}} />
 </div>
 {/snippet}
 

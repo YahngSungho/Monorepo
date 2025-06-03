@@ -1,6 +1,7 @@
 @plugin 'daisyui';
 
 :root {
+	--fontsize: 1rem;
 	/* --radius-selector: var(--radius-2-5); */
 	--radius-selector: var(--radius-1);
 	/* --radius-field: var(--radius-2); */

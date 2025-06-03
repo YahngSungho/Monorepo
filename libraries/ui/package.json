@@ -26,6 +26,8 @@
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
 		"@internationalized/date": "^3.8.1",
+		"@library/base": "workspace:*",
+		"@library/helpers": "workspace:*",
 		"@library/library-base": "workspace:*",
 		"@shikijs/rehype": "^3.4.1",
 		"@tanstack/table-core": "^8.21.3",
@@ -111,7 +113,11 @@
 		"$shadcn": "./src/shadcn",
 		"$shadcn/*": "./src/shadcn/*",
 		"$lib": "./src/shadcn",
-		"$lib/*": "./src/shadcn/*"
+		"$lib/*": "./src/shadcn/*",
+		"$daisy": "./src/daisyui",
+		"$daisy/*": "./src/daisyui/*",
+		"$miscellaneous": "./src/miscellaneous",
+		"$miscellaneous/*": "./src/miscellaneous/*"
 	},
 	"svelte": "./dist/index.js",
 	"devDependencies": {
@@ -119,7 +125,6 @@
 		"@dnd-kit-svelte/modifiers": "^0.0.8",
 		"@dnd-kit-svelte/sortable": "^0.0.8",
 		"@dnd-kit-svelte/utilities": "^0.0.8",
-		"@library/base": "workspace:*",
 		"@lucide/svelte": "^0.511.0",
 		"@tabler/icons-svelte": "^3.33.0",
 		"@types/d3-scale": "^4.0.9",

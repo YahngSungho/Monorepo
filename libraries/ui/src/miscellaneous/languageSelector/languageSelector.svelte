@@ -1,18 +1,22 @@
 <script lang="ts">
-import { css } from '@emotion/css'
+import { css,cx } from '@emotion/css'
+ import { R } from '@library/helpers/R'
 	import CheckIcon from "@lucide/svelte/icons/check";
 	import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
 	import { tick } from "svelte";
 
-	import { Button } from "$lib/components/ui/button/index.js";
+	import Button from "$daisy/button.svelte";
 	import * as Command from "$lib/components/ui/command/index.js";
 	import * as Popover from "$lib/components/ui/popover/index.js";
-	import { cn } from "$lib/utils.js";
 
-	const frameworks = [
+	import IconText from "../icon-text/icon-text.svelte";
+
+	const { getLocale, setLocale } = $props()
+
+	const languages = [
 	 {
 		value: "sveltekit",
-		label: "SvelteKit"
+		label: "스벨트킷"
 	 },
 	 {
 		value: "next.js",
@@ -33,11 +37,11 @@ import { css } from '@emotion/css'
 	];
 
 	let open = $state(false);
-	let value = $state("");
+	let value = $state(getLocale());
 	let triggerRef = $state<HTMLButtonElement>(null!);
 
 	const selectedValue = $derived(
-	 frameworks.find((f) => f.value === value)?.label
+	 languages.find((f) => f.value === value)?.label ?? value
 	);
 
 	// We want to refocus the trigger button when the user selects
@@ -48,6 +52,12 @@ import { css } from '@emotion/css'
 	 await tick();
 	 triggerRef.focus();
 	}
+
+
+	const emotionGeneratedClass = css`
+	font-weight: normal;
+	`
+    console.log('Emotion generated class', emotionGeneratedClass)
  </script>
 
  <div class={css`
@@ -57,41 +67,35 @@ import { css } from '@emotion/css'
 		<Popover.Trigger bind:ref={triggerRef}>
 		 {#snippet child({ props })}
 			<Button
-			class={css`
-				inline-size: fit-content;
-				justify-content: space-between;
-			`}
-			variant="outline"
-			 {...props}
-			 aria-expanded={open}
-			 role="combobox"
+			{...props}
+			class={cx( (typeof props.class === 'string' ? props.class : undefined), emotionGeneratedClass )}
+			aria-expanded={open}
+			role="combobox"
+			variant="text"
 			>
-			 {selectedValue || "Select a framework..."}
-			 <ChevronsUpDownIcon class="opacity-50" />
+			<IconText IconElement={ChevronsUpDownIcon} text={selectedValue || "Select a framework..."} />
 			</Button>
 		 {/snippet}
 		</Popover.Trigger>
-		<Popover.Content class={css`
-			inline-size: 100%;
-			padding: 0;
-		`}>
+		<Popover.Content>
 		 <Command.Root>
 			<Command.Input placeholder="Search framework..." />
 			<Command.List>
 			 <Command.Empty>No framework found.</Command.Empty>
 			 <Command.Group value="frameworks">
-				{#each frameworks as framework (framework.value)}
+				{#each languages as language (language.value)}
 				 <Command.Item
+					keywords={Object.values(R.omit('value')(language))}
 					onSelect={() => {
-					 value = framework.value;
+					if (value !== language.value) {
+						setLocale(language.value);
+						value = language.value;
+					}
 					 closeAndFocusTrigger();
 					}}
-					value={framework.value}
+					value={language.value}
 				 >
-					<CheckIcon
-					 class={cn(value !== framework.value && "text-transparent")}
-					/>
-					{framework.label}
+				 <IconText IconElement={value === language.value ? CheckIcon : null} text={language.label} />
 				 </Command.Item>
 				{/each}
 			 </Command.Group>

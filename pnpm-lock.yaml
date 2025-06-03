@@ -607,6 +607,12 @@ importers:
       '@internationalized/date':
         specifier: ^3.8.1
         version: 3.8.1
+      '@library/base':
+        specifier: workspace:*
+        version: link:../base
+      '@library/helpers':
+        specifier: workspace:*
+        version: link:../helpers
       '@library/library-base':
         specifier: workspace:*
         version: link:../library-base
@@ -704,9 +710,6 @@ importers:
       '@dnd-kit-svelte/utilities':
         specifier: ^0.0.8
         version: 0.0.8(svelte@5.33.7)
-      '@library/base':
-        specifier: workspace:*
-        version: link:../base
       '@lucide/svelte':
         specifier: ^0.511.0
         version: 0.511.0(svelte@5.33.7)

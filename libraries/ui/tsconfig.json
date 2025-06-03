@@ -8,7 +8,11 @@
 			"$shadcn": ["./src/shadcn"],
 			"$shadcn/*": ["./src/shadcn/*"],
 			"$lib": ["./src/shadcn"],
-			"$lib/*": ["./src/shadcn/*"]
+			"$lib/*": ["./src/shadcn/*"],
+			"$daisy": ["./src/daisyui"],
+			"$daisy/*": ["./src/daisyui/*"],
+			"$miscellaneous": ["./src/miscellaneous"],
+			"$miscellaneous/*": ["./src/miscellaneous/*"]
 		}
 	},
 	"exclude": [

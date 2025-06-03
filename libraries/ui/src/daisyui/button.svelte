@@ -1,4 +1,6 @@
 <script>
+import { cx } from '@emotion/css'
+
 /**
  * @typedef {'primary'
  * 	| 'secondary'
@@ -11,22 +13,23 @@
  * 	| 'text'} variant
  * @property {string} [href]
  */
-let { children, href, variant = 'primary', ...restProps } = $props()
+let { children = undefined, href = undefined, variant = 'primary', class: incomingClass = '', ...restProps } = $props()
 
-;('') // eslint-disable-line
+const buttonClass = `btn btn-${variant}`
 </script>
 
 {#if href}
-	<a class={`btn btn-${variant}`} {href} role="button" type="button" {...restProps}>
+	<a class={cx(buttonClass, incomingClass)} {href} role="button" type="button" {...restProps}>
 		{@render children?.()}
 	</a>
 {:else}
-	<button class={`btn btn-${variant}`} type="button" {...restProps}>
+	<button class={cx(buttonClass, incomingClass)}  type="button" {...restProps}>
 		{@render children?.()}
 	</button>
 {/if}
 
-<span class="btn-neutral
+<span style:display="none" class="
+btn-neutral
 	 btn-primary
 	 btn-secondary
 	 btn-accent
