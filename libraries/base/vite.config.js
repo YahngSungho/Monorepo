@@ -33,7 +33,7 @@ const baseConfig = defineConfig({
 			// @ts-ignore
 			outdir: '../../libraries/paraglide/paraglide-output',
 			project: '../../libraries/paraglide/project.inlang',
-			strategy: ['url', 'cookie', 'baseLocale'],
+			strategy: ['cookie', 'localStorage', 'preferredLanguage', 'url', 'baseLocale'],
 			disableAsyncLocalStorage: true,
 		}),
 		// @ts-ignore
