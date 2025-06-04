@@ -1,6 +1,7 @@
 <script>
-// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
-import { css } from '@emotion/css'
+	import { css } from '@emotion/css'
+import { getLocale,localizeHref, setLocale } from '@library/paraglide/helpers'
+	// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
@@ -8,8 +9,7 @@ import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
 import LanguageSelector from '@library/ui/language-selector'
 import { Home } from '@lucide/svelte'
-
-import { localizeHref, setLocale, getLocale } from '@library/paraglide/helpers'
+import { toast } from "svelte-sonner";
 
 const fo = 'bigCommandKEnabled'
 
@@ -27,8 +27,15 @@ const eewre = Promise.resolve('test 122')
 <h6>Welcome to SvelteKit 000</h6>
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
-<Button2 variant="wrong">
-	<IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
+<Button2 onclick={() =>
+	toast.success("Event has been created", {
+		description: "Sunday, December 03, 2023 at 9:00 AM",
+		action: {
+			label: "Undo",
+			onClick: () => console.info("Undo")
+		}
+	})} variant="wrong">
+	<IconText IconElement={Home}>토스트 띄우기</IconText>
 </Button2>
 <Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
 <Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>

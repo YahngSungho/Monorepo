@@ -30,6 +30,7 @@
 		"@library/helpers": "workspace:*",
 		"@library/library-base": "workspace:*",
 		"@library/paraglide": "workspace:*",
+		"@qwik.dev/partytown": "^0.11.0",
 		"@shikijs/rehype": "^3.4.1",
 		"@tanstack/table-core": "^8.21.3",
 		"clsx": "^2.1.1",
@@ -59,6 +60,7 @@
 		"tailwindcss": "4.1.8"
 	},
 	"exports": {
+		"./layouts/root": "./src/layouts/root.svelte",
 		"./language-selector": "./src/miscellaneous/languageSelector/languageSelector.svelte",
 		"./accordion": "./src/shadcn/components/ui/accordion/index.ts",
 		"./alert": "./src/shadcn/components/ui/alert/index.ts",

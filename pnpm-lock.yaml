@@ -432,6 +432,9 @@ importers:
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
+      svelte-sonner:
+        specifier: ^1.0.3
+        version: 1.0.3(svelte@5.33.7)
       ufo:
         specifier: ^1.5.4
         version: 1.6.1
@@ -619,6 +622,9 @@ importers:
       '@library/paraglide':
         specifier: workspace:*
         version: link:../paraglide
+      '@qwik.dev/partytown':
+        specifier: ^0.11.0
+        version: 0.11.0
       '@shikijs/rehype':
         specifier: ^3.4.1
         version: 3.4.1
