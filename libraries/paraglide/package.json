@@ -7,6 +7,7 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
+		"get-all-language-info": "node ./src/getAllLanguageInfo.js",
 		"change-base-locale:en": "node ./src/changeBaseLocaleToEn.js",
 		"change-base-locale:ko": "node ./src/changeBaseLocaleToKo.js",
 		"check-no-missing-explanations": "node ./src/checkNoMissingExplanations.js",
@@ -29,6 +30,7 @@
 		"./paraglide_project": "./project.inlang",
 		"./runtime.js": "./paraglide-output/runtime.js",
 		"./server.js": "./paraglide-output/server.js",
-		"./getAllLocales": "./src/getAllLocales.js"
+		"./getAllLocales": "./src/getAllLocales.js",
+		"./getAllActiveLanguageInfo": "./src/getAllActiveLanguageInfo.js"
 	}
 }

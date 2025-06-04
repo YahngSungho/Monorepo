@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 import tailwindcss from '@tailwindcss/vite'
 import { FontaineTransform } from 'fontaine'
@@ -28,6 +29,13 @@ const baseConfig = defineConfig({
 		devSourcemap: true,
 	},
 	plugins: [
+		paraglideVitePlugin({
+			// @ts-ignore
+			outdir: '../../libraries/paraglide/paraglide-output',
+			project: '../../libraries/paraglide/project.inlang',
+			strategy: ['url', 'cookie', 'baseLocale'],
+			disableAsyncLocalStorage: true,
+		}),
 		// @ts-ignore
 		tsconfigPaths(),
 		// @ts-ignore

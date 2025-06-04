@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { getAllLocales } from '@library/paraglide/getAllLocales'
+import { getAllLocales } from './getAllLocales.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -23,8 +23,8 @@ const getLanguageName = (localeCode) => {
 
 		const parts = localeCode.split('-')
 		const language = parts[0]
-		let languageDisplay = capitalizeFirstLetter(languageNamer.of(language))
-		let languageDisplay_en = capitalizeFirstLetter(languageNamer_en.of(language))
+		const languageDisplay = capitalizeFirstLetter(languageNamer.of(language))
+		const languageDisplay_en = capitalizeFirstLetter(languageNamer_en.of(language))
 
 		if (parts.length > 1) {
 			const region = parts[1].toUpperCase() // 지역 코드는 대문자로
@@ -44,8 +44,8 @@ const getLanguageName = (localeCode) => {
 					value: localeCode,
 				}
 			} catch {
-				let language0 = capitalizeFirstLetter(languageNamer.of(localeCode))
-				let language0_en = capitalizeFirstLetter(languageNamer_en.of(localeCode))
+				const language0 = capitalizeFirstLetter(languageNamer.of(localeCode))
+				const language0_en = capitalizeFirstLetter(languageNamer_en.of(localeCode))
 				if (language0 && language0.includes('(') && language0.endsWith(')')) {
 					const openParenIndex = language0.lastIndexOf('(')
 					if (openParenIndex > 0 && language0[openParenIndex - 1] !== ' ') {
@@ -78,7 +78,7 @@ const getLanguageName = (localeCode) => {
 
 export const allLanguages = locales.map(getLanguageName)
 
-const outputPath = path.join(__dirname, 'languages-info.json')
+const outputPath = path.join(__dirname, '../messages-helpers/languages-info.json')
 fs.writeFileSync(outputPath, JSON.stringify(allLanguages, null, 2))
 
-console.log(`Languages saved to ${outputPath}`)
+console.log(`Language info saved to ${outputPath}`)

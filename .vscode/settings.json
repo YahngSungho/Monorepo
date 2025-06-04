@@ -120,7 +120,7 @@
 	"tailwindCSS.classFunctions": ["tw", "clsx"],
 	"tailwindCSS.codeActions": true,
 	"tailwindCSS.emmetCompletions": false,
-	"tailwindCSS.experimental.configFile": "libraries/base/src/base.css",
+	"tailwindCSS.experimental.configFile": "libraries/base/src/tailwind.css",
 	"tailwindCSS.includeLanguages": {
 		"plaintext": "html",
 		"svelte": "html",
