@@ -616,6 +616,9 @@ importers:
       '@library/library-base':
         specifier: workspace:*
         version: link:../library-base
+      '@library/paraglide':
+        specifier: workspace:*
+        version: link:../paraglide
       '@shikijs/rehype':
         specifier: ^3.4.1
         version: 3.4.1

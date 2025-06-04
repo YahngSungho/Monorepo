@@ -9,7 +9,7 @@ import IconText from '@library/ui/icon-text'
 import LanguageSelector from '@library/ui/language-selector'
 import { Home } from '@lucide/svelte'
 
-import { localizeHref, setLocale } from '../../../../libraries/paraglide/src'
+import { localizeHref, setLocale, getLocale } from '@library/paraglide/helpers'
 
 const fo = 'bigCommandKEnabled'
 
@@ -39,7 +39,7 @@ const eewre = Promise.resolve('test 122')
 	variant="default">occurs error</Button1
 >
 
-<LanguageSelector getLocale={() => "언어"} setLocale={() => {}} />
+<LanguageSelector {getLocale} {setLocale} />
 
 <button class="btn btn-primary">DaisyUI Primary</button>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button } from "$lib/components/ui/button/index.js";
+	import { Button } from "$shadcn/components/ui/button/index.js";
 </script>
 
 <Button class="w-[200px] justify-between bg-green-500 p-4 m-4 border-2 border-black">

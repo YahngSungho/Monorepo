@@ -10,37 +10,17 @@ import { css,cx } from '@emotion/css'
 	import * as Command from "$shadcn/components/ui/command/index.js";
 	import * as Popover from "$shadcn/components/ui/popover/index.js";
 
+	import { allLanguages } from "./getAllLanguages.js";
+
 	const { getLocale, setLocale } = $props()
 
-	const languages = [
-	 {
-		value: "sveltekit",
-		label: "스벨트킷"
-	 },
-	 {
-		value: "next.js",
-		label: "Next.js"
-	 },
-	 {
-		value: "nuxt.js",
-		label: "Nuxt.js"
-	 },
-	 {
-		value: "remix",
-		label: "Remix"
-	 },
-	 {
-		value: "astro",
-		label: "Astro"
-	 }
-	];
 
 	let open = $state(false);
 	let value = $state(getLocale());
 	let triggerRef = $state<HTMLButtonElement>(null!);
 
 	const selectedValue = $derived(
-	 languages.find((f) => f.value === value)?.label ?? value
+		allLanguages.find((f) => f.value === value)?.label ?? value
 	);
 
 	// We want to refocus the trigger button when the user selects
@@ -80,7 +60,7 @@ import { css,cx } from '@emotion/css'
 			<Command.List>
 			 <Command.Empty>No framework found.</Command.Empty>
 			 <Command.Group value="frameworks">
-				{#each languages as language (language.value)}
+				{#each allLanguages as language (language.value)}
 				 <Command.Item
 					keywords={Object.values(R.omit('value')(language))}
 					onSelect={() => {

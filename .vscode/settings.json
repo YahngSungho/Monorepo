@@ -127,7 +127,7 @@
 		"javascript": "javascript",
 		"typescript": "typescript"
 	},
-	"tailwindCSS.suggestions": false,
+	"tailwindCSS.suggestions": true,
 	"tailwindCSS.validate": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"workbench.colorCustomizations": {

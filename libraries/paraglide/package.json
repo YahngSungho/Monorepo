@@ -28,6 +28,7 @@
 		"./paraglide_outdir": "./paraglide-output",
 		"./paraglide_project": "./project.inlang",
 		"./runtime.js": "./paraglide-output/runtime.js",
-		"./server.js": "./paraglide-output/server.js"
+		"./server.js": "./paraglide-output/server.js",
+		"./getAllLocales": "./src/getAllLocales.js"
 	}
 }

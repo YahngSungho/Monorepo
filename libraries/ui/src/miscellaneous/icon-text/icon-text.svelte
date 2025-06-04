@@ -31,33 +31,33 @@ let { children = null, text = '', IconElement, iconProps = {}, right = false, no
 	display: inline-flex;
 	align-items: baseline;
 
-	& .icon-container {
-		position: relative;
-		inset-block-start: 0.3ex;
+& .icon-container {
+	position: relative;
+	inset-block-start: 0.3ex;
 
-		display: inline-block;
-		flex-shrink: 0;
+	display: inline-block;
+	flex-shrink: 0;
 
-		inline-size: 1em;
-		block-size: 1em;
-		margin-inline-end: 0.5ch;
+	inline-size: 1em;
+	block-size: 1em;
+	margin-inline-end: 0.5ch;
 
-		font-size: 1em;
-		color: color-mix(in srgb, currentcolor 60%, transparent);
+	font-size: 1em;
+	color: color-mix(in srgb, currentcolor 60%, transparent);
 
-		&.right {
-			margin-inline: 0.5ch 0;
-		}
+&.right {
+	margin-inline: 0.5ch 0;
+}
 
-		&.noMargin {
-			margin-inline: 0;
-		}
+&.noMargin {
+	margin-inline: 0;
+}
 
-		&.small {
-			inset-block-start: -0.3ex;
-			inline-size: 0.75em;
-			block-size: 0.75em;
-		}
-	}
+&.small {
+	inset-block-start: -0.3ex;
+	inline-size: 0.75em;
+	block-size: 0.75em;
+}
+}
 }
 </style>
