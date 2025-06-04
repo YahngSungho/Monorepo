@@ -6,10 +6,9 @@ import { css,cx } from '@emotion/css'
 	import { tick } from "svelte";
 
 	import Button from "$daisy/button.svelte";
-	import * as Command from "$lib/components/ui/command/index.js";
-	import * as Popover from "$lib/components/ui/popover/index.js";
-
-	import IconText from "../icon-text/icon-text.svelte";
+	import IconText from "$miscellaneous/icon-text/icon-text.svelte";
+	import * as Command from "$shadcn/components/ui/command/index.js";
+	import * as Popover from "$shadcn/components/ui/popover/index.js";
 
 	const { getLocale, setLocale } = $props()
 
@@ -54,21 +53,19 @@ import { css,cx } from '@emotion/css'
 	}
 
 
-	const emotionGeneratedClass = css`
-	font-weight: normal;
-	`
-    console.log('Emotion generated class', emotionGeneratedClass)
  </script>
 
  <div class={css`
 	inline-size: fit-content;
- `} data-name="루트">
+ `}>
 	<Popover.Root bind:open>
 		<Popover.Trigger bind:ref={triggerRef}>
 		 {#snippet child({ props })}
 			<Button
 			{...props}
-			class={cx( (typeof props.class === 'string' ? props.class : undefined), emotionGeneratedClass )}
+			class={cx((typeof props.class === 'string' ? props.class : undefined), css`
+			font-weight: normal;
+			` )}
 			aria-expanded={open}
 			role="combobox"
 			variant="text"

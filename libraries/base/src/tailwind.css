@@ -3,6 +3,14 @@
 
 @import url('./daisyUI.css');
 
+/* DaisyUI 버튼 클래스들을 safelist로 추가 (Tailwind CSS v4.1+ 기능) */
+/* 동적으로 사용하는 모든 btn-* 관련 클래스들을 여기에 포함시켜줘. */
+/* @source inline("btn-neutral btn-primary btn-secondary btn-accent btn-ghost btn-link btn-info btn-success btn-warning btn-error btn-outline"); */
+
+/* 만약 더 많은 클래스나 패턴을 추가해야 한다면, 아래처럼 여러 줄로 작성하거나 중괄호 확장 문법을 활용할 수 있어: */
+@source inline("btn-{primary,secondary,accent,info,success,warning,error,ghost,link,outline}");
+/* @source inline("btn-outline-{primary,secondary,accent}"); */
+/* @source inline("focus:btn-primary active:btn-primary"); */
 
 @source '../../../apps/*/src/**/*.{html,js,ts,svelte,mdx}';
 @source '../../../libraries/*/src/**/*.{html,js,ts,svelte,mdx}';
@@ -138,17 +146,7 @@
 		background-color: var(--color-background);
 		color: var(--color-foreground);
 	}
-}
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
 	*,
 	::after,
 	::before,

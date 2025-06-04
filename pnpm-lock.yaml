@@ -723,8 +723,8 @@ importers:
         specifier: ^3.1.7
         version: 3.1.7
       bits-ui:
-        specifier: ^2.3.0
-        version: 2.3.0(@internationalized/date@3.8.1)(svelte@5.33.7)
+        specifier: ^2.4.1
+        version: 2.4.1(@internationalized/date@3.8.1)(svelte@5.33.7)
       d3-scale:
         specifier: 4.0.2
         version: 4.0.2
@@ -4096,8 +4096,8 @@ packages:
     resolution: {integrity: sha512-sXnYK/Ij80TO3lcqZVV2YgfKN5QjUWIRk/XSm2J/4bd/lPko3lvk0O4ZppH6m+6hB2/GTu+ptNwVFe1xh+QLQw==}
     engines: {node: '>=4'}
 
-  bits-ui@2.3.0:
-    resolution: {integrity: sha512-PgDcs49PdHGRC7T1tTNqWhMrTHgOVE0q/q03K7n64V5MxeB2aMrbAqoW9Wg+43P4u2vMzUn8ifhLBPSfZDNceg==}
+  bits-ui@2.4.1:
+    resolution: {integrity: sha512-Z0qZkPgtxP5dkEOyZqCK2PQ1oFXsD0AlfFMtsrMLJqaYtjUBoQGosHVKEH03M9q4G8kxVnG74Zb0F9pS0X4+6w==}
     engines: {node: '>=20', pnpm: '>=8.7.0'}
     peerDependencies:
       '@internationalized/date': ^3.8.1
@@ -13930,7 +13930,7 @@ snapshots:
     dependencies:
       editions: 6.21.0
 
-  bits-ui@2.3.0(@internationalized/date@3.8.1)(svelte@5.33.7):
+  bits-ui@2.4.1(@internationalized/date@3.8.1)(svelte@5.33.7):
     dependencies:
       '@floating-ui/core': 1.7.0
       '@floating-ui/dom': 1.7.0

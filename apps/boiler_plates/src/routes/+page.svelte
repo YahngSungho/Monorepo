@@ -6,6 +6,7 @@ import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
+import LanguageSelector from '@library/ui/language-selector'
 import { Home } from '@lucide/svelte'
 
 import { localizeHref, setLocale } from '../../../../libraries/paraglide/src'
@@ -37,6 +38,8 @@ const eewre = Promise.resolve('test 122')
 	}}
 	variant="default">occurs error</Button1
 >
+
+<LanguageSelector getLocale={() => "언어"} setLocale={() => {}} />
 
 <button class="btn btn-primary">DaisyUI Primary</button>
 

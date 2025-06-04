@@ -23,6 +23,16 @@
 		"paraglide-output/**"
 	],
 	"extends": ["@library/base/tsconfig.json", "./.svelte-kit/tsconfig.json"],
+	"compilerOptions": {
+		"paths": {
+			"$shadcn": ["../../libraries/ui/src/shadcn"],
+			"$shadcn/*": ["../../libraries/ui/src/shadcn/*"],
+			"$daisy": ["../../libraries/ui/src/daisyui"],
+			"$daisy/*": ["../../libraries/ui/src/daisyui/*"],
+			"$miscellaneous": ["../../libraries/ui/src/miscellaneous"],
+			"$miscellaneous/*": ["../../libraries/ui/src/miscellaneous/*"]
+		}
+	},
 	"include": [
 		"tests/**/*",
 		"src/**/*",
