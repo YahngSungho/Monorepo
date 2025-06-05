@@ -4,4 +4,4 @@
 	let { ref = $bindable(null), ...restProps }: ContextMenuPrimitive.GroupProps = $props();
 </script>
 
-<ContextMenuPrimitive.Group bind:ref data-slot="context-menu-group" {...restProps} />
+<ContextMenuPrimitive.Group data-slot="context-menu-group" bind:ref {...restProps} />

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Pagination as PaginationPrimitive } from "bits-ui";
+
+	import { buttonVariants,type Props } from "$shadcn/components/ui/button/index.js";
 	import { cn } from "$shadcn/utils.js";
-	import { type Props, buttonVariants } from "$shadcn/components/ui/button/index.js";
 
 	let {
 		ref = $bindable(null),
@@ -22,11 +23,6 @@
 {/snippet}
 
 <PaginationPrimitive.Page
-	bind:ref
-	{page}
-	aria-current={isActive ? "page" : undefined}
-	data-slot="pagination-link"
-	data-active={isActive}
 	class={cn(
 		buttonVariants({
 			variant: isActive ? "outline" : "ghost",
@@ -34,6 +30,11 @@
 		}),
 		className
 	)}
+	aria-current={isActive ? "page" : undefined}
 	children={children || Fallback}
+	data-active={isActive}
+	data-slot="pagination-link"
+	{page}
+	bind:ref
 	{...restProps}
 />

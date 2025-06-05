@@ -1,5 +1,6 @@
 <script lang="ts" module>
 	import { getContext, setContext } from "svelte";
+
 	import type { ToggleVariants } from "$shadcn/components/ui/toggle/index.js";
 	export function setToggleGroupCtx(props: ToggleVariants) {
 		setContext("toggleGroup", props);
@@ -12,6 +13,7 @@
 
 <script lang="ts">
 	import { ToggleGroup as ToggleGroupPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -34,14 +36,14 @@ Discriminated Unions + Destructing (required for bindable) do not
 get along, so we shut typescript up by casting `value` to `never`.
 -->
 <ToggleGroupPrimitive.Root
-	bind:value={value as never}
-	bind:ref
-	data-slot="toggle-group"
-	data-variant={variant}
-	data-size={size}
 	class={cn(
 		"group/toggle-group data-[variant=outline]:shadow-xs flex w-fit items-center rounded-md",
 		className
 	)}
+	data-size={size}
+	data-slot="toggle-group"
+	data-variant={variant}
+	bind:value={value as never}
+	bind:ref
 	{...restProps}
 />

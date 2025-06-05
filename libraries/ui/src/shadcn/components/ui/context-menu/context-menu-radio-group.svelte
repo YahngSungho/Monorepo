@@ -9,8 +9,8 @@
 </script>
 
 <ContextMenuPrimitive.RadioGroup
+	data-slot="context-menu-radio-group"
 	bind:ref
 	bind:value
-	data-slot="context-menu-radio-group"
 	{...restProps}
 />

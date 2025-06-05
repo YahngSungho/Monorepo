@@ -1,3 +1,5 @@
-import Root from "./aspect-ratio.svelte";
 
-export { Root, Root as AspectRatio };
+
+
+
+export {default as AspectRatio, default as Root} from "./aspect-ratio.svelte";

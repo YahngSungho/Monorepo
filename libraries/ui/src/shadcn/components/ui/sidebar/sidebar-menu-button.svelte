@@ -28,11 +28,13 @@
 </script>
 
 <script lang="ts">
-	import * as Tooltip from "$shadcn/components/ui/tooltip/index.js";
-	import { cn, type WithElementRef, type WithoutChildrenOrChild } from "$shadcn/utils.js";
 	import { mergeProps } from "bits-ui";
 	import type { ComponentProps, Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import * as Tooltip from "$shadcn/components/ui/tooltip/index.js";
+	import { cn, type WithElementRef, type WithoutChildrenOrChild } from "$shadcn/utils.js";
+
 	import { useSidebar } from "./context.svelte.js";
 
 	let {
@@ -47,12 +49,12 @@
 		tooltipContentProps,
 		...restProps
 	}: WithElementRef<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
+		child?: Snippet<[{ props: Record<string, unknown> }]>;
 		isActive?: boolean;
-		variant?: SidebarMenuButtonVariant;
 		size?: SidebarMenuButtonSize;
 		tooltipContent?: Snippet | string;
 		tooltipContentProps?: WithoutChildrenOrChild<ComponentProps<typeof Tooltip.Content>>;
-		child?: Snippet<[{ props: Record<string, unknown> }]>;
+		variant?: SidebarMenuButtonVariant;
 	} = $props();
 
 	const sidebar = useSidebar();
@@ -88,9 +90,9 @@
 			{/snippet}
 		</Tooltip.Trigger>
 		<Tooltip.Content
-			side="right"
 			align="center"
 			hidden={sidebar.state !== "collapsed" || sidebar.isMobile}
+			side="right"
 			{...tooltipContentProps}
 		>
 			{#if typeof tooltipContent === "string"}

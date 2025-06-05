@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
@@ -12,8 +13,8 @@
 
 <p
 	bind:this={ref}
-	data-slot="card-description"
 	class={cn("text-muted-foreground text-sm", className)}
+	data-slot="card-description"
 	{...restProps}
 >
 	{@render children?.()}

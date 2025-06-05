@@ -4,4 +4,4 @@
 	let { ref = $bindable(null), ...restProps }: AspectRatioPrimitive.RootProps = $props();
 </script>
 
-<AspectRatioPrimitive.Root bind:ref data-slot="aspect-ratio" {...restProps} />
+<AspectRatioPrimitive.Root data-slot="aspect-ratio" bind:ref {...restProps} />

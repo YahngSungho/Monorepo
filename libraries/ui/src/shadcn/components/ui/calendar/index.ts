@@ -1,30 +1,40 @@
-import Root from "./calendar.svelte";
-import Cell from "./calendar-cell.svelte";
-import Day from "./calendar-day.svelte";
-import Grid from "./calendar-grid.svelte";
-import Header from "./calendar-header.svelte";
-import Months from "./calendar-months.svelte";
-import GridRow from "./calendar-grid-row.svelte";
+
+
+
+
+
+
+
+
+
 import Heading from "./calendar-heading.svelte";
-import GridBody from "./calendar-grid-body.svelte";
-import GridHead from "./calendar-grid-head.svelte";
-import HeadCell from "./calendar-head-cell.svelte";
+import Months from "./calendar-months.svelte";
 import NextButton from "./calendar-next-button.svelte";
 import PrevButton from "./calendar-prev-button.svelte";
 
 export {
-	Day,
-	Cell,
-	Grid,
-	Header,
-	Months,
-	GridRow,
+	//
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	Heading,
-	GridBody,
-	GridHead,
-	HeadCell,
+	Months,
 	NextButton,
 	PrevButton,
-	//
-	Root as Calendar,
 };
+
+export {default as Calendar} from "./calendar.svelte";
+export {default as Cell} from "./calendar-cell.svelte";
+export {default as Day} from "./calendar-day.svelte";
+export {default as Grid} from "./calendar-grid.svelte";
+export {default as GridBody} from "./calendar-grid-body.svelte";
+export {default as GridHead} from "./calendar-grid-head.svelte";
+export {default as GridRow} from "./calendar-grid-row.svelte";
+export {default as HeadCell} from "./calendar-head-cell.svelte";
+export {default as Header} from "./calendar-header.svelte";

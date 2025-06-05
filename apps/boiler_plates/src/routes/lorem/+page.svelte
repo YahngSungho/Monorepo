@@ -4,9 +4,10 @@ import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
-import { Home } from '@lucide/svelte'
-import { localizeHref, setLocale } from '../../../../../libraries/paraglide/src'
 import IconText from '@library/ui/icon-text'
+import { Home } from '@lucide/svelte'
+
+import { localizeHref, setLocale } from '../../../../../libraries/paraglide/src'
 
 const fo = 'bigCommandKEnabled'
 

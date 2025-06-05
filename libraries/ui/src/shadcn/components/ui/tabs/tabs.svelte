@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Tabs as TabsPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -11,9 +12,9 @@
 </script>
 
 <TabsPrimitive.Root
+	class={cn("flex flex-col gap-2", className)}
+	data-slot="tabs"
 	bind:ref
 	bind:value
-	data-slot="tabs"
-	class={cn("flex flex-col gap-2", className)}
 	{...restProps}
 />

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -12,8 +13,8 @@
 
 <div
 	bind:this={ref}
-	data-slot="select-label"
 	class={cn("text-muted-foreground px-2 py-1.5 text-xs", className)}
+	data-slot="select-label"
 	{...restProps}
 >
 	{@render children?.()}

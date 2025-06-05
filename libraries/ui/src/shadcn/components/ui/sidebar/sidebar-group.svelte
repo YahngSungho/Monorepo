@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
@@ -12,9 +13,9 @@
 
 <div
 	bind:this={ref}
-	data-slot="sidebar-group"
-	data-sidebar="group"
 	class={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+	data-sidebar="group"
+	data-slot="sidebar-group"
 	{...restProps}
 >
 	{@render children?.()}

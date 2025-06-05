@@ -1,7 +1,9 @@
 <script lang="ts">
+	import type { HTMLAttributes } from "svelte/elements";
+
 	import * as Tooltip from "$shadcn/components/ui/tooltip/index.js";
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
-	import type { HTMLAttributes } from "svelte/elements";
+
 	import {
 		SIDEBAR_COOKIE_MAX_AGE,
 		SIDEBAR_COOKIE_NAME,
@@ -19,8 +21,8 @@
 		children,
 		...restProps
 	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
-		open?: boolean;
 		onOpenChange?: (open: boolean) => void;
+		open?: boolean;
 	} = $props();
 
 	const sidebar = setSidebar({
@@ -39,13 +41,13 @@
 
 <Tooltip.Provider delayDuration={0}>
 	<div
-		data-slot="sidebar-wrapper"
+		bind:this={ref}
 		style="--sidebar-width: {SIDEBAR_WIDTH}; --sidebar-width-icon: {SIDEBAR_WIDTH_ICON}; {style}"
 		class={cn(
 			"group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
 			className
 		)}
-		bind:this={ref}
+		data-slot="sidebar-wrapper"
 		{...restProps}
 	>
 		{@render children?.()}

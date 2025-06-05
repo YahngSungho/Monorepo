@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { Snippet } from "svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),

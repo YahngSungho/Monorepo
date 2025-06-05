@@ -1,7 +1,8 @@
-<script lang="ts" generics="T extends Record<string, unknown>, U extends FormPathLeaves<T>">
+<script generics="T extends Record<string, unknown>, U extends FormPathLeaves<T>" lang="ts">
 	import * as FormPrimitive from "formsnap";
-	import type { FormPathLeaves } from "sveltekit-superforms";
 	import type { HTMLAttributes } from "svelte/elements";
+	import type { FormPathLeaves } from "sveltekit-superforms";
+
 	import { cn, type WithElementRef, type WithoutChildren } from "$shadcn/utils.js";
 
 	let {
@@ -11,11 +12,11 @@
 		name,
 		children: childrenProp,
 		...restProps
-	}: WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> &
-		FormPrimitive.ElementFieldProps<T, U> = $props();
+	}: FormPrimitive.ElementFieldProps<T, U> &
+		WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props();
 </script>
 
-<FormPrimitive.ElementField {form} {name}>
+<FormPrimitive.ElementField {name} {form}>
 	{#snippet children({ constraints, errors, tainted, value })}
 		<div bind:this={ref} class={cn("space-y-2", className)} {...restProps}>
 			{@render childrenProp?.({ constraints, errors, tainted, value: value as T[U] })}

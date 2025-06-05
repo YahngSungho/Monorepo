@@ -1,8 +1,7 @@
 <script lang="ts">
+	import { css,cx } from '@emotion/css'
 	import SearchIcon from "@lucide/svelte/icons/search";
 	import { Command as CommandPrimitive } from "bits-ui";
-	import { cx, css } from '@emotion/css'
-
 
 	import { cn } from "$shadcn/utils.js";
 

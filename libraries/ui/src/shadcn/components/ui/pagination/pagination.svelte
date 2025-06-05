@@ -15,14 +15,14 @@
 </script>
 
 <PaginationPrimitive.Root
+	class={cn("mx-auto flex w-full justify-center", className)}
+	aria-label="pagination"
+	{count}
+	data-slot="pagination"
+	{perPage}
+	role="navigation"
+	{siblingCount}
 	bind:ref
 	bind:page
-	role="navigation"
-	aria-label="pagination"
-	data-slot="pagination"
-	class={cn("mx-auto flex w-full justify-center", className)}
-	{count}
-	{perPage}
-	{siblingCount}
 	{...restProps}
 />

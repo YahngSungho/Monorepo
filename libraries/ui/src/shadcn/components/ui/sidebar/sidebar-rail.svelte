@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
+
 	import { useSidebar } from "./context.svelte.js";
 
 	let {
@@ -15,12 +17,6 @@
 
 <button
 	bind:this={ref}
-	data-sidebar="rail"
-	data-slot="sidebar-rail"
-	aria-label="Toggle Sidebar"
-	tabIndex={-1}
-	onclick={sidebar.toggle}
-	title="Toggle Sidebar"
 	class={cn(
 		"hover:after:bg-sidebar-border absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex",
 		"in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize",
@@ -30,6 +26,12 @@
 		"[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
 		className
 	)}
+	aria-label="Toggle Sidebar"
+	data-sidebar="rail"
+	data-slot="sidebar-rail"
+	onclick={sidebar.toggle}
+	tabIndex={-1}
+	title="Toggle Sidebar"
 	{...restProps}
 >
 	{@render children?.()}

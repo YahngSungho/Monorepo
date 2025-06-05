@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { Command as CommandPrimitive, Dialog as DialogPrimitive } from "bits-ui";
 	import type { Snippet } from "svelte";
-	import Command from "./command.svelte";
+
 	import * as Dialog from "$shadcn/components/ui/dialog/index.js";
 	import type { WithoutChildrenOrChild } from "$shadcn/utils.js";
+
+	import Command from "./command.svelte";
 
 	let {
 		open = $bindable(false),
@@ -14,12 +16,12 @@
 		portalProps,
 		children,
 		...restProps
-	}: WithoutChildrenOrChild<DialogPrimitive.RootProps> &
-		WithoutChildrenOrChild<CommandPrimitive.RootProps> & {
-			portalProps?: DialogPrimitive.PortalProps;
+	}: WithoutChildrenOrChild<CommandPrimitive.RootProps> &
+		WithoutChildrenOrChild<DialogPrimitive.RootProps> & {
 			children: Snippet;
-			title?: string;
 			description?: string;
+			portalProps?: DialogPrimitive.PortalProps;
+			title?: string;
 		} = $props();
 </script>
 
@@ -32,9 +34,9 @@
 		<Command
 			class="**:data-[slot=command-input-wrapper]:h-12 [&_[data-command-group]:not([hidden])_~[data-command-group]]:pt-0 [&_[data-command-group]]:px-2 [&_[data-command-input-wrapper]_svg]:h-5 [&_[data-command-input-wrapper]_svg]:w-5 [&_[data-command-input]]:h-12 [&_[data-command-item]]:px-2 [&_[data-command-item]]:py-3 [&_[data-command-item]_svg]:h-5 [&_[data-command-item]_svg]:w-5"
 			{...restProps}
+			{children}
 			bind:value
 			bind:ref
-			{children}
 		/>
 	</Dialog.Content>
 </Dialog.Root>

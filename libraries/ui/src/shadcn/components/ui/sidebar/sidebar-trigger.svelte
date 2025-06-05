@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { Button } from "$shadcn/components/ui/button/index.js";
-	import { cn } from "$shadcn/utils.js";
 	import PanelLeftIcon from "@lucide/svelte/icons/panel-left";
 	import type { ComponentProps } from "svelte";
+
+	import { Button } from "$shadcn/components/ui/button/index.js";
+	import { cn } from "$shadcn/utils.js";
+
 	import { useSidebar } from "./context.svelte.js";
 
 	let {
@@ -18,16 +20,16 @@
 </script>
 
 <Button
+	class={cn("size-7", className)}
 	data-sidebar="trigger"
 	data-slot="sidebar-trigger"
-	variant="ghost"
-	size="icon"
-	class={cn("size-7", className)}
-	type="button"
 	onclick={(e) => {
 		onclick?.(e);
 		sidebar.toggle();
 	}}
+	size="icon"
+	type="button"
+	variant="ghost"
 	{...restProps}
 >
 	<PanelLeftIcon />

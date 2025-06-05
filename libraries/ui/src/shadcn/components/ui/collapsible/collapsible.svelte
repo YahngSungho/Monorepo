@@ -8,4 +8,4 @@
 	}: CollapsiblePrimitive.RootProps = $props();
 </script>
 
-<CollapsiblePrimitive.Root bind:ref data-slot="collapsible" {...restProps} />
+<CollapsiblePrimitive.Root data-slot="collapsible" bind:ref {...restProps} />

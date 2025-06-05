@@ -4,8 +4,8 @@
 }
 
 html {
-	color-scheme: light dark;
 	color: var(--foreground);
+	color-scheme: light dark;
 }
 
 body {

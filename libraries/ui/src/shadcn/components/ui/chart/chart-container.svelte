@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
+
 	import ChartStyle from "./chart-style.svelte";
-	import { setChartContext, type ChartConfig } from "./chart-utils.js";
+	import { type ChartConfig,setChartContext } from "./chart-utils.js";
 
 	const uid = $props.id();
 
@@ -17,7 +19,7 @@
 		config: ChartConfig;
 	} = $props();
 
-	const chartId = `chart-${id || uid.replace(/:/g, "")}`;
+	const chartId = `chart-${id || uid.replaceAll(':', "")}`;
 
 	setChartContext({
 		get config() {
@@ -28,8 +30,6 @@
 
 <div
 	bind:this={ref}
-	data-chart={chartId}
-	data-slot="chart"
 	class={cn(
 		// "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
 		"flex aspect-video justify-center overflow-visible text-xs",
@@ -74,6 +74,8 @@
 		"[&_.lc-root-container]:w-full",
 		className
 	)}
+	data-chart={chartId}
+	data-slot="chart"
 	{...restProps}
 >
 	<ChartStyle id={chartId} {config} />

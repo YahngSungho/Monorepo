@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef, type WithoutChildren } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef, type WithoutChildren } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -11,7 +12,7 @@
 
 <div
 	bind:this={ref}
-	data-slot="skeleton"
 	class={cn("bg-accent animate-pulse rounded-md", className)}
+	data-slot="skeleton"
 	{...restProps}
 ></div>

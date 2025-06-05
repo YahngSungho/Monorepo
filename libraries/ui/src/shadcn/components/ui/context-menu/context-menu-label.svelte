@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -15,9 +16,9 @@
 
 <div
 	bind:this={ref}
-	data-slot="context-menu-label"
-	data-inset={inset}
 	class={cn("text-foreground px-2 py-1.5 text-sm font-medium data-[inset]:pl-8", className)}
+	data-inset={inset}
+	data-slot="context-menu-label"
 	{...restProps}
 >
 	{@render children?.()}

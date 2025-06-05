@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Dialog as SheetPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -10,8 +11,8 @@
 </script>
 
 <SheetPrimitive.Title
-	bind:ref
-	data-slot="sheet-title"
 	class={cn("text-foreground font-semibold", className)}
+	data-slot="sheet-title"
+	bind:ref
 	{...restProps}
 />

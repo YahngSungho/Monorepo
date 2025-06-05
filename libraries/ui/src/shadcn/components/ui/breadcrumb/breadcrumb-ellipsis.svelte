@@ -1,6 +1,7 @@
 <script lang="ts">
 	import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
 	import type { HTMLAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef, type WithoutChildren } from "$shadcn/utils.js";
 
 	let {
@@ -12,10 +13,10 @@
 
 <span
 	bind:this={ref}
+	class={cn("flex size-9 items-center justify-center", className)}
+	aria-hidden="true"
 	data-slot="breadcrumb-ellipsis"
 	role="presentation"
-	aria-hidden="true"
-	class={cn("flex size-9 items-center justify-center", className)}
 	{...restProps}
 >
 	<EllipsisIcon class="size-4" />

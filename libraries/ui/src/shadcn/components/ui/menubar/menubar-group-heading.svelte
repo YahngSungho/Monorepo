@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { cn } from "$shadcn/utils.js";
 	import { Menubar as MenubarPrimitive } from "bits-ui";
 	import type { ComponentProps } from "svelte";
+
+	import { cn } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -14,9 +15,9 @@
 </script>
 
 <MenubarPrimitive.GroupHeading
-	bind:ref
-	data-slot="menubar-group-heading"
-	data-inset={inset}
 	class={cn("px-2 py-1.5 text-sm font-medium data-[inset]:pl-8", className)}
+	data-inset={inset}
+	data-slot="menubar-group-heading"
+	bind:ref
 	{...restProps}
 />

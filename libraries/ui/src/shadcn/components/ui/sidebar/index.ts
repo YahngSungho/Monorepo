@@ -1,32 +1,26 @@
-import { useSidebar } from "./context.svelte.js";
-import Content from "./sidebar-content.svelte";
-import Footer from "./sidebar-footer.svelte";
+
+import Root from "./sidebar.svelte";
 import GroupAction from "./sidebar-group-action.svelte";
 import GroupContent from "./sidebar-group-content.svelte";
 import GroupLabel from "./sidebar-group-label.svelte";
-import Group from "./sidebar-group.svelte";
 import Header from "./sidebar-header.svelte";
 import Input from "./sidebar-input.svelte";
 import Inset from "./sidebar-inset.svelte";
+import Menu from "./sidebar-menu.svelte";
 import MenuAction from "./sidebar-menu-action.svelte";
 import MenuBadge from "./sidebar-menu-badge.svelte";
 import MenuButton from "./sidebar-menu-button.svelte";
 import MenuItem from "./sidebar-menu-item.svelte";
 import MenuSkeleton from "./sidebar-menu-skeleton.svelte";
+import MenuSub from "./sidebar-menu-sub.svelte";
 import MenuSubButton from "./sidebar-menu-sub-button.svelte";
 import MenuSubItem from "./sidebar-menu-sub-item.svelte";
-import MenuSub from "./sidebar-menu-sub.svelte";
-import Menu from "./sidebar-menu.svelte";
 import Provider from "./sidebar-provider.svelte";
 import Rail from "./sidebar-rail.svelte";
 import Separator from "./sidebar-separator.svelte";
 import Trigger from "./sidebar-trigger.svelte";
-import Root from "./sidebar.svelte";
 
 export {
-	Content,
-	Footer,
-	Group,
 	GroupAction,
 	GroupContent,
 	GroupLabel,
@@ -48,9 +42,6 @@ export {
 	Separator,
 	//
 	Root as Sidebar,
-	Content as SidebarContent,
-	Footer as SidebarFooter,
-	Group as SidebarGroup,
 	GroupAction as SidebarGroupAction,
 	GroupContent as SidebarGroupContent,
 	GroupLabel as SidebarGroupLabel,
@@ -71,5 +62,9 @@ export {
 	Separator as SidebarSeparator,
 	Trigger as SidebarTrigger,
 	Trigger,
-	useSidebar,
 };
+
+export {useSidebar} from "./context.svelte.js";
+export {default as Content, default as SidebarContent} from "./sidebar-content.svelte";
+export {default as Footer, default as SidebarFooter} from "./sidebar-footer.svelte";
+export {default as Group, default as SidebarGroup} from "./sidebar-group.svelte";

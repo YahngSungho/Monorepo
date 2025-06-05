@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
@@ -12,11 +13,11 @@
 
 <span
 	bind:this={ref}
+	class={cn("text-foreground font-normal", className)}
+	aria-current="page"
+	aria-disabled="true"
 	data-slot="breadcrumb-page"
 	role="link"
-	aria-disabled="true"
-	aria-current="page"
-	class={cn("text-foreground font-normal", className)}
 	{...restProps}
 >
 	{@render children?.()}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
@@ -12,8 +13,8 @@
 
 <div
 	bind:this={ref}
-	data-slot="input-otp-group"
 	class={cn("flex items-center", className)}
+	data-slot="input-otp-group"
 	{...restProps}
 >
 	{@render children?.()}

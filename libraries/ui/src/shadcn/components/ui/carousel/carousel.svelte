@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
+
 	import {
 		type CarouselAPI,
 		type CarouselProps,
 		type EmblaContext,
 		setEmblaContext,
 	} from "./context.js";
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -90,10 +91,10 @@
 
 <div
 	bind:this={ref}
-	data-slot="carousel"
 	class={cn("relative", className)}
-	role="region"
 	aria-roledescription="carousel"
+	data-slot="carousel"
+	role="region"
 	{...restProps}
 >
 	{@render children?.()}

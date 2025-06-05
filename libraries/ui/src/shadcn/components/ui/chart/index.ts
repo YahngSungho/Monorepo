@@ -1,6 +1,6 @@
-import ChartContainer from "./chart-container.svelte";
-import ChartTooltip from "./chart-tooltip.svelte";
 
-export { getPayloadConfigFromPayload, type ChartConfig } from "./chart-utils.js";
 
-export { ChartContainer, ChartTooltip, ChartContainer as Container, ChartTooltip as Tooltip };
+
+export {default as ChartContainer, default as Container} from "./chart-container.svelte";
+export {default as ChartTooltip, default as Tooltip} from "./chart-tooltip.svelte";
+export { type ChartConfig,getPayloadConfigFromPayload } from "./chart-utils.js";

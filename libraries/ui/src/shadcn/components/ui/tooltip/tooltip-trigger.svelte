@@ -4,4 +4,4 @@
 	let { ref = $bindable(null), ...restProps }: TooltipPrimitive.TriggerProps = $props();
 </script>
 
-<TooltipPrimitive.Trigger bind:ref data-slot="tooltip-trigger" {...restProps} />
+<TooltipPrimitive.Trigger data-slot="tooltip-trigger" bind:ref {...restProps} />

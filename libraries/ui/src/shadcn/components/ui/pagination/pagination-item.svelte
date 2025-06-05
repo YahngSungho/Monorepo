@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLLiAttributes } from "svelte/elements";
+
 	import type { WithElementRef } from "$shadcn/utils.js";
 
 	let {

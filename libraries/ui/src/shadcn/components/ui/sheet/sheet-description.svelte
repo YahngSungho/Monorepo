@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Dialog as SheetPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -10,8 +11,8 @@
 </script>
 
 <SheetPrimitive.Description
-	bind:ref
-	data-slot="sheet-description"
 	class={cn("text-muted-foreground text-sm", className)}
+	data-slot="sheet-description"
+	bind:ref
 	{...restProps}
 />

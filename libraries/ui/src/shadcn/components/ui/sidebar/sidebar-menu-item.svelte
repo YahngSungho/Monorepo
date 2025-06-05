@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -12,9 +13,9 @@
 
 <li
 	bind:this={ref}
-	data-slot="sidebar-menu-item"
-	data-sidebar="menu-item"
 	class={cn("group/menu-item relative", className)}
+	data-sidebar="menu-item"
+	data-slot="sidebar-menu-item"
 	{...restProps}
 >
 	{@render children?.()}

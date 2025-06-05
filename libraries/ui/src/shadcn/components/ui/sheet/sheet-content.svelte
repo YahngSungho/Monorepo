@@ -19,11 +19,13 @@
 </script>
 
 <script lang="ts">
-	import { Dialog as SheetPrimitive } from "bits-ui";
 	import XIcon from "@lucide/svelte/icons/x";
+	import { Dialog as SheetPrimitive } from "bits-ui";
 	import type { Snippet } from "svelte";
-	import SheetOverlay from "./sheet-overlay.svelte";
+
 	import { cn, type WithoutChildrenOrChild } from "$shadcn/utils.js";
+
+	import SheetOverlay from "./sheet-overlay.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -33,18 +35,18 @@
 		children,
 		...restProps
 	}: WithoutChildrenOrChild<SheetPrimitive.ContentProps> & {
+		children: Snippet;
 		portalProps?: SheetPrimitive.PortalProps;
 		side?: Side;
-		children: Snippet;
 	} = $props();
 </script>
 
 <SheetPrimitive.Portal {...portalProps}>
 	<SheetOverlay />
 	<SheetPrimitive.Content
-		bind:ref
-		data-slot="sheet-content"
 		class={cn(sheetVariants({ side }), className)}
+		data-slot="sheet-content"
+		bind:ref
 		{...restProps}
 	>
 		{@render children?.()}

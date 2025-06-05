@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Calendar as CalendarPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -9,4 +10,4 @@
 	}: CalendarPrimitive.GridRowProps = $props();
 </script>
 
-<CalendarPrimitive.GridRow bind:ref class={cn("flex", className)} {...restProps} />
+<CalendarPrimitive.GridRow class={cn("flex", className)} bind:ref {...restProps} />

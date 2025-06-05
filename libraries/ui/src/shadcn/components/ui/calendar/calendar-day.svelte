@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { Calendar as CalendarPrimitive } from "bits-ui";
+
 	import { buttonVariants } from "$shadcn/components/ui/button/index.js";
 	import { cn } from "$shadcn/utils.js";
-	import { Calendar as CalendarPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -11,7 +12,6 @@
 </script>
 
 <CalendarPrimitive.Day
-	bind:ref
 	class={cn(
 		buttonVariants({ variant: "ghost" }),
 		"size-8 select-none p-0 font-normal",
@@ -26,5 +26,6 @@
 		"data-[outside-month]:text-muted-foreground [&[data-outside-month][data-selected]]:bg-accent/50 [&[data-outside-month][data-selected]]:text-muted-foreground data-[outside-month]:pointer-events-none data-[outside-month]:opacity-50 [&[data-outside-month][data-selected]]:opacity-30",
 		className
 	)}
+	bind:ref
 	{...restProps}
 />

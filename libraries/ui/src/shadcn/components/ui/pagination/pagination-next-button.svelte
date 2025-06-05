@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Pagination as PaginationPrimitive } from "bits-ui";
 	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
+	import { Pagination as PaginationPrimitive } from "bits-ui";
+
 	import { buttonVariants } from "$shadcn/components/ui/button/index.js";
 	import { cn } from "$shadcn/utils.js";
 
@@ -18,8 +19,6 @@
 {/snippet}
 
 <PaginationPrimitive.NextButton
-	bind:ref
-	aria-label="Go to next page"
 	class={cn(
 		buttonVariants({
 			size: "default",
@@ -28,6 +27,8 @@
 		}),
 		className
 	)}
+	aria-label="Go to next page"
 	children={children || Fallback}
+	bind:ref
 	{...restProps}
 />

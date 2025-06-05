@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
@@ -12,8 +13,8 @@
 
 <span
 	bind:this={ref}
-	data-slot="dropdown-menu-shortcut"
 	class={cn("text-muted-foreground ml-auto text-xs tracking-widest", className)}
+	data-slot="dropdown-menu-shortcut"
 	{...restProps}
 >
 	{@render children?.()}

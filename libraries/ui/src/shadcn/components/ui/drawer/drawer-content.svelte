@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { Drawer as DrawerPrimitive } from "vaul-svelte";
-	import DrawerOverlay from "./drawer-overlay.svelte";
+
 	import { cn } from "$shadcn/utils.js";
+
+	import DrawerOverlay from "./drawer-overlay.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -17,8 +19,6 @@
 <DrawerPrimitive.Portal {...portalProps}>
 	<DrawerOverlay />
 	<DrawerPrimitive.Content
-		bind:ref
-		data-slot="drawer-content"
 		class={cn(
 			"group/drawer-content bg-background fixed z-50 flex h-auto flex-col",
 			"data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-lg data-[vaul-drawer-direction=top]:border-b",
@@ -27,6 +27,8 @@
 			"data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=left]:sm:max-w-sm",
 			className
 		)}
+		data-slot="drawer-content"
+		bind:ref
 		{...restProps}
 	>
 		<div

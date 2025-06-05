@@ -1,41 +1,35 @@
 import { Drawer as DrawerPrimitive } from "vaul-svelte";
 
 import Root from "./drawer.svelte";
-import Content from "./drawer-content.svelte";
-import Description from "./drawer-description.svelte";
-import Overlay from "./drawer-overlay.svelte";
 import Footer from "./drawer-footer.svelte";
 import Header from "./drawer-header.svelte";
-import Title from "./drawer-title.svelte";
 import NestedRoot from "./drawer-nested.svelte";
-import Close from "./drawer-close.svelte";
+import Overlay from "./drawer-overlay.svelte";
+import Title from "./drawer-title.svelte";
 import Trigger from "./drawer-trigger.svelte";
 
-const Portal: typeof DrawerPrimitive.Portal = DrawerPrimitive.Portal;
+const {Portal} = DrawerPrimitive;
 
 export {
-	Root,
-	NestedRoot,
-	Content,
-	Description,
-	Overlay,
-	Footer,
-	Header,
-	Title,
-	Trigger,
-	Portal,
-	Close,
-
 	//
 	Root as Drawer,
-	NestedRoot as DrawerNestedRoot,
-	Content as DrawerContent,
-	Description as DrawerDescription,
-	Overlay as DrawerOverlay,
 	Footer as DrawerFooter,
 	Header as DrawerHeader,
+	NestedRoot as DrawerNestedRoot,
+	Overlay as DrawerOverlay,
+	Portal as DrawerPortal,
 	Title as DrawerTitle,
 	Trigger as DrawerTrigger,
-	Portal as DrawerPortal,
-	Close as DrawerClose,
+	Footer,
+	Header,
+	NestedRoot,
+	Overlay,
+	Portal,
+	Root,
+	Title,
+	Trigger,
 };
+
+export {default as Close, default as DrawerClose} from "./drawer-close.svelte";
+export {default as Content, default as DrawerContent} from "./drawer-content.svelte";
+export {default as Description, default as DrawerDescription} from "./drawer-description.svelte";

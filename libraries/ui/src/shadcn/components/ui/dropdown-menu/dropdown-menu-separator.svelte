@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -10,8 +11,8 @@
 </script>
 
 <DropdownMenuPrimitive.Separator
-	bind:ref
-	data-slot="dropdown-menu-separator"
 	class={cn("bg-border -mx-1 my-1 h-px", className)}
+	data-slot="dropdown-menu-separator"
+	bind:ref
 	{...restProps}
 />

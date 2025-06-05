@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Drawer as DrawerPrimitive } from "vaul-svelte";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -10,8 +11,8 @@
 </script>
 
 <DrawerPrimitive.Description
-	bind:ref
-	data-slot="drawer-description"
 	class={cn("text-muted-foreground text-sm", className)}
+	data-slot="drawer-description"
+	bind:ref
 	{...restProps}
 />

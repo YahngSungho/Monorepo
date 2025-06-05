@@ -9,4 +9,4 @@
 	} = $props();
 </script>
 
-<MenubarPrimitive.Group bind:ref data-slot="menubar-group" {...restProps} />
+<MenubarPrimitive.Group data-slot="menubar-group" bind:ref {...restProps} />

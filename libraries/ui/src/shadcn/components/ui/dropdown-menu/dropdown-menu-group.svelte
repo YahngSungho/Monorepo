@@ -4,4 +4,4 @@
 	let { ref = $bindable(null), ...restProps }: DropdownMenuPrimitive.GroupProps = $props();
 </script>
 
-<DropdownMenuPrimitive.Group bind:ref data-slot="dropdown-menu-group" {...restProps} />
+<DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" bind:ref {...restProps} />

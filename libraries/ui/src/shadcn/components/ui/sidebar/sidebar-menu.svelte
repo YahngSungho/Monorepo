@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -12,9 +13,9 @@
 
 <ul
 	bind:this={ref}
-	data-slot="sidebar-menu"
-	data-sidebar="menu"
 	class={cn("flex w-full min-w-0 flex-col gap-1", className)}
+	data-sidebar="menu"
+	data-slot="sidebar-menu"
 	{...restProps}
 >
 	{@render children?.()}

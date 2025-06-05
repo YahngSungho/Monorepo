@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -10,8 +11,8 @@
 </script>
 
 <AlertDialogPrimitive.Description
-	bind:ref
-	data-slot="alert-dialog-description"
 	class={cn("text-muted-foreground text-sm", className)}
+	data-slot="alert-dialog-description"
+	bind:ref
 	{...restProps}
 />

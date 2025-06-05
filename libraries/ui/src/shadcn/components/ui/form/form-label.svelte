@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as FormPrimitive from "formsnap";
+
 	import { Label } from "$shadcn/components/ui/label/index.js";
 	import { cn, type WithoutChild } from "$shadcn/utils.js";
 
@@ -15,8 +16,8 @@
 	{#snippet child({ props })}
 		<Label
 			{...props}
-			data-slot="form-label"
 			class={cn("data-[fs-error]:text-destructive", className)}
+			data-slot="form-label"
 		>
 			{@render children?.()}
 		</Label>

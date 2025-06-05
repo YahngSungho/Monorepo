@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
@@ -12,8 +13,8 @@
 
 <ul
 	bind:this={ref}
-	data-slot="pagination-content"
 	class={cn("flex flex-row items-center gap-1", className)}
+	data-slot="pagination-content"
 	{...restProps}
 >
 	{@render children?.()}

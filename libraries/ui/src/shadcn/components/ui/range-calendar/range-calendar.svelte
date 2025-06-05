@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui";
-	import * as RangeCalendar from "./index.js";
+
 	import { cn, type WithoutChildrenOrChild } from "$shadcn/utils.js";
+
+	import * as RangeCalendar from "./index.js";
 
 	let {
 		ref = $bindable(null),
@@ -14,11 +16,11 @@
 </script>
 
 <RangeCalendarPrimitive.Root
+	class={cn("p-3", className)}
+	{weekdayFormat}
 	bind:ref
 	bind:value
 	bind:placeholder
-	{weekdayFormat}
-	class={cn("p-3", className)}
 	{...restProps}
 >
 	{#snippet children({ months, weekdays })}

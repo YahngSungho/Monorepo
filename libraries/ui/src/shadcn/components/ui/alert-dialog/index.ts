@@ -1,39 +1,35 @@
 import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
-import Trigger from "./alert-dialog-trigger.svelte";
-import Title from "./alert-dialog-title.svelte";
-import Action from "./alert-dialog-action.svelte";
-import Cancel from "./alert-dialog-cancel.svelte";
+
+import Description from "./alert-dialog-description.svelte";
 import Footer from "./alert-dialog-footer.svelte";
 import Header from "./alert-dialog-header.svelte";
 import Overlay from "./alert-dialog-overlay.svelte";
-import Content from "./alert-dialog-content.svelte";
-import Description from "./alert-dialog-description.svelte";
+import Title from "./alert-dialog-title.svelte";
+import Trigger from "./alert-dialog-trigger.svelte";
 
-const Root = AlertDialogPrimitive.Root;
-const Portal = AlertDialogPrimitive.Portal;
+const {Root} = AlertDialogPrimitive;
+const {Portal} = AlertDialogPrimitive;
 
 export {
-	Root,
-	Title,
-	Action,
-	Cancel,
-	Portal,
-	Footer,
-	Header,
-	Trigger,
-	Overlay,
-	Content,
-	Description,
 	//
 	Root as AlertDialog,
-	Title as AlertDialogTitle,
-	Action as AlertDialogAction,
-	Cancel as AlertDialogCancel,
-	Portal as AlertDialogPortal,
+	Description as AlertDialogDescription,
 	Footer as AlertDialogFooter,
 	Header as AlertDialogHeader,
-	Trigger as AlertDialogTrigger,
 	Overlay as AlertDialogOverlay,
-	Content as AlertDialogContent,
-	Description as AlertDialogDescription,
+	Portal as AlertDialogPortal,
+	Title as AlertDialogTitle,
+	Trigger as AlertDialogTrigger,
+	Description,
+	Footer,
+	Header,
+	Overlay,
+	Portal,
+	Root,
+	Title,
+	Trigger,
 };
+
+export {default as Action, default as AlertDialogAction} from "./alert-dialog-action.svelte";
+export {default as AlertDialogCancel, default as Cancel} from "./alert-dialog-cancel.svelte";
+export {default as AlertDialogContent, default as Content} from "./alert-dialog-content.svelte";

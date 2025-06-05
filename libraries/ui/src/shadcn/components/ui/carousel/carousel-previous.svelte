@@ -1,9 +1,11 @@
 <script lang="ts">
 	import ArrowLeftIcon from "@lucide/svelte/icons/arrow-left";
 	import type { WithoutChildren } from "bits-ui";
-	import { getEmblaContext } from "./context.js";
-	import { cn } from "$shadcn/utils.js";
+
 	import { Button, type Props } from "$shadcn/components/ui/button/index.js";
+	import { cn } from "$shadcn/utils.js";
+
+	import { getEmblaContext } from "./context.js";
 
 	let {
 		ref = $bindable(null),
@@ -17,9 +19,6 @@
 </script>
 
 <Button
-	data-slot="carousel-previous"
-	{variant}
-	{size}
 	class={cn(
 		"absolute size-8 rounded-full",
 		emblaCtx.orientation === "horizontal"
@@ -27,9 +26,12 @@
 			: "-top-12 left-1/2 -translate-x-1/2 rotate-90",
 		className
 	)}
+	data-slot="carousel-previous"
 	disabled={!emblaCtx.canScrollPrev}
 	onclick={emblaCtx.scrollPrev}
 	onkeydown={emblaCtx.handleKeyDown}
+	{size}
+	{variant}
 	{...restProps}
 	bind:ref
 >

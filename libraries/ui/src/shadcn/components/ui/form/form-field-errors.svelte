@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as FormPrimitive from "formsnap";
+
 	import { cn, type WithoutChild } from "$shadcn/utils.js";
 
 	let {
@@ -9,13 +10,13 @@
 		children: childrenProp,
 		...restProps
 	}: WithoutChild<FormPrimitive.FieldErrorsProps> & {
-		errorClasses?: string | undefined | null;
+		errorClasses?: null | string | undefined;
 	} = $props();
 </script>
 
 <FormPrimitive.FieldErrors
-	bind:ref
 	class={cn("text-destructive text-sm font-medium", className)}
+	bind:ref
 	{...restProps}
 >
 	{#snippet children({ errors, errorProps })}

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -12,8 +13,8 @@
 
 <caption
 	bind:this={ref}
-	data-slot="table-caption"
 	class={cn("text-muted-foreground mt-4 text-sm", className)}
+	data-slot="table-caption"
 	{...restProps}
 >
 	{@render children?.()}

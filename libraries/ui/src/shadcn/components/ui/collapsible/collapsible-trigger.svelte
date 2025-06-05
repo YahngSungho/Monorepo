@@ -4,4 +4,4 @@
 	let { ref = $bindable(null), ...restProps }: CollapsiblePrimitive.TriggerProps = $props();
 </script>
 
-<CollapsiblePrimitive.Trigger bind:ref data-slot="collapsible-trigger" {...restProps} />
+<CollapsiblePrimitive.Trigger data-slot="collapsible-trigger" bind:ref {...restProps} />

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
+
 	import { buttonVariants } from "$shadcn/components/ui/button/index.js";
 	import { cn } from "$shadcn/utils.js";
 
@@ -11,8 +12,8 @@
 </script>
 
 <AlertDialogPrimitive.Cancel
-	bind:ref
-	data-slot="alert-dialog-cancel"
 	class={cn(buttonVariants({ variant: "outline" }), className)}
+	data-slot="alert-dialog-cancel"
+	bind:ref
 	{...restProps}
 />

@@ -1,8 +1,10 @@
 <script lang="ts">
 	import emblaCarouselSvelte from "embla-carousel-svelte";
 	import type { HTMLAttributes } from "svelte/elements";
-	import { getEmblaContext } from "./context.js";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
+
+	import { getEmblaContext } from "./context.js";
 
 	let {
 		ref = $bindable(null),
@@ -15,8 +17,9 @@
 </script>
 
 <div
-	data-slot="carousel-content"
 	class="overflow-hidden"
+	data-slot="carousel-content"
+	onemblaInit={emblaCtx.onInit}
 	use:emblaCarouselSvelte={{
 		options: {
 			container: "[data-embla-container]",
@@ -26,7 +29,6 @@
 		},
 		plugins: emblaCtx.plugins,
 	}}
-	onemblaInit={emblaCtx.onInit}
 >
 	<div
 		bind:this={ref}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui";
+
 	import { buttonVariants } from "$shadcn/components/ui/button/index.js";
 	import { cn } from "$shadcn/utils.js";
 
@@ -13,7 +14,6 @@
 </script>
 
 <RangeCalendarPrimitive.Day
-	bind:ref
 	class={cn(
 		buttonVariants({ variant: "ghost" }),
 		"size-8 select-none p-0 font-normal data-[selected]:opacity-100",
@@ -30,5 +30,6 @@
 		"data-[unavailable]:text-destructive-foreground data-[unavailable]:line-through",
 		className
 	)}
+	bind:ref
 	{...restProps}
 />

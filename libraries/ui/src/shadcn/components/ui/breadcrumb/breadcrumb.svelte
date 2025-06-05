@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import type { WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -12,9 +13,9 @@
 
 <nav
 	bind:this={ref}
-	data-slot="breadcrumb"
 	class={className}
 	aria-label="breadcrumb"
+	data-slot="breadcrumb"
 	{...restProps}
 >
 	{@render children?.()}

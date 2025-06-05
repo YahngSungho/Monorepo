@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLLiAttributes } from "svelte/elements";
+
 	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
@@ -12,8 +13,8 @@
 
 <li
 	bind:this={ref}
-	data-slot="breadcrumb-item"
 	class={cn("inline-flex items-center gap-1.5", className)}
+	data-slot="breadcrumb-item"
 	{...restProps}
 >
 	{@render children?.()}

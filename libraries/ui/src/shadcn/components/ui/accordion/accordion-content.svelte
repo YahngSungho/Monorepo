@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Accordion as AccordionPrimitive } from "bits-ui";
+
 	import { cn, type WithoutChild } from "$shadcn/utils.js";
 
 	let {
@@ -11,12 +12,12 @@
 </script>
 
 <AccordionPrimitive.Content
-	bind:ref
-	data-slot="accordion-content"
 	class={cn(
 		"data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm",
 		className
 	)}
+	data-slot="accordion-content"
+	bind:ref
 	{...restProps}
 >
 	<div class="pb-4 pt-0">

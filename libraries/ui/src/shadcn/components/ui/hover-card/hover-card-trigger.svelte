@@ -4,4 +4,4 @@
 	let { ref = $bindable(null), ...restProps }: HoverCardPrimitive.TriggerProps = $props();
 </script>
 
-<HoverCardPrimitive.Trigger bind:ref data-slot="hover-card-trigger" {...restProps} />
+<HoverCardPrimitive.Trigger data-slot="hover-card-trigger" bind:ref {...restProps} />

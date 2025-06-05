@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -12,8 +13,6 @@
 
 <div
 	bind:this={ref}
-	data-slot="sidebar-menu-badge"
-	data-sidebar="menu-badge"
 	class={cn(
 		"text-sidebar-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums",
 		"peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground",
@@ -23,6 +22,8 @@
 		"group-data-[collapsible=icon]:hidden",
 		className
 	)}
+	data-sidebar="menu-badge"
+	data-slot="sidebar-menu-badge"
 	{...restProps}
 >
 	{@render children?.()}

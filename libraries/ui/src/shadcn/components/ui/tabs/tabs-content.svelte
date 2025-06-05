@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Tabs as TabsPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -10,8 +11,8 @@
 </script>
 
 <TabsPrimitive.Content
-	bind:ref
-	data-slot="tabs-content"
 	class={cn("flex-1 outline-none", className)}
+	data-slot="tabs-content"
+	bind:ref
 	{...restProps}
 />

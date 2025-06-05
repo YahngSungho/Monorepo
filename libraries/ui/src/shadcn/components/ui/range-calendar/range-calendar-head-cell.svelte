@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui";
+
 	import { cn } from "$shadcn/utils.js";
 
 	let {
@@ -10,7 +11,7 @@
 </script>
 
 <RangeCalendarPrimitive.HeadCell
-	bind:ref
 	class={cn("text-muted-foreground w-8 rounded-md text-[0.8rem] font-normal", className)}
+	bind:ref
 	{...restProps}
 />

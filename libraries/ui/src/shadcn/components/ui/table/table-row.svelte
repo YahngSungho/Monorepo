@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef } from "$shadcn/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -12,11 +13,11 @@
 
 <tr
 	bind:this={ref}
-	data-slot="table-row"
 	class={cn(
 		"hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
 		className
 	)}
+	data-slot="table-row"
 	{...restProps}
 >
 	{@render children?.()}

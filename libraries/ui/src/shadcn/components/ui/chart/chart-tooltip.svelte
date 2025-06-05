@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { cn, type WithElementRef, type WithoutChildren } from "$shadcn/utils.js";
-	import type { HTMLAttributes } from "svelte/elements";
-	import { getPayloadConfigFromPayload, useChart, type TooltipPayload } from "./chart-utils.js";
 	import { getTooltipContext, Tooltip as TooltipPrimitive } from "layerchart";
 	import type { Snippet } from "svelte";
+	import type { HTMLAttributes } from "svelte/elements";
+
+	import { cn, type WithElementRef, type WithoutChildren } from "$shadcn/utils.js";
+
+	import { getPayloadConfigFromPayload, type TooltipPayload,useChart } from "./chart-utils.js";
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	function defaultFormatter(value: any, _payload: TooltipPayload[]) {
@@ -25,26 +27,26 @@
 		color,
 		...restProps
 	}: WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> & {
-		hideLabel?: boolean;
-		label?: string;
-		indicator?: "line" | "dot" | "dashed";
-		nameKey?: string;
-		labelKey?: string;
-		hideIndicator?: boolean;
-		labelClassName?: string;
-		labelFormatter?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-		((value: any, payload: TooltipPayload[]) => string | number | Snippet) | null;
 		formatter?: Snippet<
 			[
 				{
-					value: unknown;
-					name: string;
-					item: TooltipPayload;
 					index: number;
+					item: TooltipPayload;
+					name: string;
 					payload: TooltipPayload[];
+					value: unknown;
 				},
 			]
 		>;
+		hideIndicator?: boolean;
+		hideLabel?: boolean;
+		indicator?: "dashed" | "dot" | "line";
+		label?: string;
+		labelClassName?: string;
+		labelFormatter?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+		((value: any, payload: TooltipPayload[]) => number | Snippet | string) | null;
+		labelKey?: string;
+		nameKey?: string;
 	} = $props();
 
 	const chart = useChart();
