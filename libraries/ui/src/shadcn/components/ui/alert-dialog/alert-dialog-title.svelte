@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
+import { AlertDialog as AlertDialogPrimitive } from 'bits-ui'
 
-	import { cn } from "$shadcn/utils.js";
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: AlertDialogPrimitive.TitleProps = $props();
+let {
+	ref = $bindable(null),
+	class: className,
+	...restProps
+}: AlertDialogPrimitive.TitleProps = $props()
 </script>
 
 <AlertDialogPrimitive.Title
-	class={cn("text-lg font-semibold", className)}
+	class={cn('text-lg font-semibold', className)}
 	data-slot="alert-dialog-title"
 	bind:ref
 	{...restProps}

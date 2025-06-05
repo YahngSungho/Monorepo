@@ -1,5 +1,1 @@
-
-
-
-
-export {default as Label, default as Root} from "./label.svelte";
+export { default as Label, default as Root } from './label.svelte'

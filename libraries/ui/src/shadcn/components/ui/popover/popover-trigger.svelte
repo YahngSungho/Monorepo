@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { Popover as PopoverPrimitive } from "bits-ui";
+import { Popover as PopoverPrimitive } from 'bits-ui'
 
-	import { cn } from "$shadcn/utils.js";
+import { cn } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: PopoverPrimitive.TriggerProps = $props();
+let {
+	ref = $bindable(null),
+	class: className,
+	...restProps
+}: PopoverPrimitive.TriggerProps = $props()
 </script>
 
 <PopoverPrimitive.Trigger
-	class={cn("", className)}
+	class={cn('', className)}
 	data-slot="popover-trigger"
 	bind:ref
 	{...restProps}

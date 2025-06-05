@@ -1,5 +1,1 @@
-
-
-
-
-export {default as Root, default as Separator} from "./separator.svelte";
+export { default as Root, default as Separator } from './separator.svelte'

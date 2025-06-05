@@ -1,9 +1,8 @@
-
 export {
-default as Root, default as Toggle,
+	default as Root,
+	default as Toggle,
 	type ToggleSize,
 	type ToggleVariant,
 	type ToggleVariants,
-	toggleVariants, } from "./toggle.svelte";
-
-
+	toggleVariants,
+} from './toggle.svelte'

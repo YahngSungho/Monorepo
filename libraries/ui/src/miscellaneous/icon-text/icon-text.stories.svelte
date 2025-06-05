@@ -1,10 +1,10 @@
 <script module>
 // 자바스크립트 전용 - lang="ts" 사용 금지
 // lucide-svelte에서 아이콘들을 가져옵니다.
-import { Aperture, ExternalLink, Github,Link, Smile } from '@lucide/svelte';
-import { defineMeta } from '@storybook/addon-svelte-csf';
+import { Aperture, ExternalLink, Github, Link, Smile } from '@lucide/svelte'
+import { defineMeta } from '@storybook/addon-svelte-csf'
 
-import IconText from './icon-text.svelte';
+import IconText from './icon-text.svelte'
 
 // defineMeta는 컴포넌트 메타데이터를 정의합니다.
 const { Story } = defineMeta({
@@ -28,7 +28,7 @@ const { Story } = defineMeta({
 		noMargin: false,
 		small: false,
 	},
-});
+})
 </script>
 
 <!-- 일관성을 위한 공유 스니펫 -->
@@ -155,7 +155,7 @@ const { Story } = defineMeta({
 <Story
 	name="매우_긴_텍스트_입력"
 	args={{
-		text: `${'이것은 매우 긴 텍스트 문자열입니다. '.repeat(20)  }이 문자열은 IconText 컴포넌트가 긴 내용을 어떻게 처리하는지, 예를 들어 줄 바꿈이나 오버플로우 관리를 테스트하기 위한 것입니다.`,
+		text: `${'이것은 매우 긴 텍스트 문자열입니다. '.repeat(20)}이 문자열은 IconText 컴포넌트가 긴 내용을 어떻게 처리하는지, 예를 들어 줄 바꿈이나 오버플로우 관리를 테스트하기 위한 것입니다.`,
 		IconElement: Link,
 	}}
 	children={template}

@@ -14,7 +14,7 @@ export const generateText = R.curry(async (model, config, cache, contents) => {
 			topP: 0.2,
 			responseMimeType: 'application/json',
 			thinkingConfig: {
-				thinkingBudget: 5000
+				thinkingBudget: 5000,
 			},
 			...config0,
 		},

@@ -1,10 +1,10 @@
-import { getContext, setContext } from "svelte";
+import { getContext, setContext } from 'svelte'
 
-import { IsMobile } from "$shadcn/hooks/is-mobile.svelte.js";
+import { IsMobile } from '$shadcn/hooks/is-mobile.svelte.js'
 
-import { SIDEBAR_KEYBOARD_SHORTCUT } from "./constants.js";
+import { SIDEBAR_KEYBOARD_SHORTCUT } from './constants.js'
 
-type Getter<T> = () => T;
+type Getter<T> = () => T
 
 export type SidebarStateProps = {
 	/**
@@ -12,56 +12,54 @@ export type SidebarStateProps = {
 	 * We use a getter function here to support `bind:open` on the `Sidebar.Provider`
 	 * component.
 	 */
-	open: Getter<boolean>;
+	open: Getter<boolean>
 
 	/**
 	 * A function that sets the open state of the sidebar. To support `bind:open`, we need
 	 * a source of truth for changing the open state to ensure it will be synced throughout
 	 * the sub-components and any `bind:` references.
 	 */
-	setOpen: (open: boolean) => void;
-};
+	setOpen: (open: boolean) => void
+}
 
 class SidebarState {
-	readonly props: SidebarStateProps;
-	open = $derived.by(() => this.props.open());
-	openMobile = $state(false);
-	setOpen: SidebarStateProps["setOpen"];
-	state = $derived.by(() => (this.open ? "expanded" : "collapsed"));
+	readonly props: SidebarStateProps
+	open = $derived.by(() => this.props.open())
+	openMobile = $state(false)
+	setOpen: SidebarStateProps['setOpen']
+	state = $derived.by(() => (this.open ? 'expanded' : 'collapsed'))
 	// Convenience getter for checking if the sidebar is mobile
 	// without this, we would need to use `sidebar.isMobile.current` everywhere
 	get isMobile() {
-		return this.#isMobile.current;
+		return this.#isMobile.current
 	}
 
-	#isMobile: IsMobile;
+	#isMobile: IsMobile
 
 	constructor(props: SidebarStateProps) {
-		this.setOpen = props.setOpen;
-		this.#isMobile = new IsMobile();
-		this.props = props;
+		this.setOpen = props.setOpen
+		this.#isMobile = new IsMobile()
+		this.props = props
 	}
 
 	// Event handler to apply to the `<svelte:window>`
 	handleShortcutKeydown = (e: KeyboardEvent) => {
 		if (e.key === SIDEBAR_KEYBOARD_SHORTCUT && (e.metaKey || e.ctrlKey)) {
-			e.preventDefault();
-			this.toggle();
+			e.preventDefault()
+			this.toggle()
 		}
-	};
+	}
 
 	setOpenMobile = (value: boolean) => {
-		this.openMobile = value;
-	};
+		this.openMobile = value
+	}
 
 	toggle = () => {
-		return this.#isMobile.current
-			? (this.openMobile = !this.openMobile)
-			: this.setOpen(!this.open);
-	};
+		return this.#isMobile.current ? (this.openMobile = !this.openMobile) : this.setOpen(!this.open)
+	}
 }
 
-const SYMBOL_KEY = "scn-sidebar";
+const SYMBOL_KEY = 'scn-sidebar'
 
 /**
  * Instantiates a new `SidebarState` instance and sets it in the context.
@@ -70,7 +68,7 @@ const SYMBOL_KEY = "scn-sidebar";
  * @returns  The `SidebarState` instance.
  */
 export function setSidebar(props: SidebarStateProps): SidebarState {
-	return setContext(Symbol.for(SYMBOL_KEY), new SidebarState(props));
+	return setContext(Symbol.for(SYMBOL_KEY), new SidebarState(props))
 }
 
 /**
@@ -79,5 +77,5 @@ export function setSidebar(props: SidebarStateProps): SidebarState {
  * @returns The `SidebarState` instance.
  */
 export function useSidebar(): SidebarState {
-	return getContext(Symbol.for(SYMBOL_KEY));
+	return getContext(Symbol.for(SYMBOL_KEY))
 }

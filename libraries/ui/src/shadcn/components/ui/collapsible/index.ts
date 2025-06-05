@@ -1,8 +1,8 @@
-import { Collapsible as CollapsiblePrimitive } from "bits-ui";
+import { Collapsible as CollapsiblePrimitive } from 'bits-ui'
 
-const {Root} = CollapsiblePrimitive;
-const {Trigger} = CollapsiblePrimitive;
-const {Content} = CollapsiblePrimitive;
+const { Root } = CollapsiblePrimitive
+const { Trigger } = CollapsiblePrimitive
+const { Content } = CollapsiblePrimitive
 
 export {
 	//
@@ -12,4 +12,4 @@ export {
 	Content,
 	Root,
 	Trigger,
-};
+}

@@ -14,7 +14,13 @@ import { cx } from '@emotion/css'
  * 	| 'text'} variant
  * @property {string} [href]
  */
-let { children = undefined, href = undefined, variant = 'primary', class: incomingClass = '', ...restProps } = $props()
+let {
+	children = undefined,
+	href = undefined,
+	variant = 'primary',
+	class: incomingClass = '',
+	...restProps
+} = $props()
 
 const buttonClass = `btn btn-${variant}`
 
@@ -26,11 +32,10 @@ const buttonClass = `btn btn-${variant}`
 		{@render children?.()}
 	</a>
 {:else}
-	<button class={cx(buttonClass, incomingClass)}  type="button" {...restProps}>
+	<button class={cx(buttonClass, incomingClass)} type="button" {...restProps}>
 		{@render children?.()}
 	</button>
 {/if}
-
 
 <style>
 .btn-outline {

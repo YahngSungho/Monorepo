@@ -4,7 +4,7 @@ import {
 	type TableOptions,
 	type TableOptionsResolved,
 	type TableState,
-} from "@tanstack/table-core";
+} from '@tanstack/table-core'
 
 /**
  * Creates a reactive TanStack table object for Svelte.
@@ -40,45 +40,44 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 			renderFallbackValue: null,
 			mergeOptions: (
 				defaultOptions: TableOptions<TData>,
-				options: Partial<TableOptions<TData>>
+				options: Partial<TableOptions<TData>>,
 			) => {
-				return mergeObjects(defaultOptions, options);
+				return mergeObjects(defaultOptions, options)
 			},
 		},
-		options
-	);
+		options,
+	)
 
-	const table = createTable(resolvedOptions);
-	let state = $state<Partial<TableState>>(table.initialState);
+	const table = createTable(resolvedOptions)
+	let state = $state<Partial<TableState>>(table.initialState)
 
 	function updateOptions() {
 		table.setOptions((prev) => {
 			return mergeObjects(prev, options, {
 				state: mergeObjects(state, options.state || {}),
 
-				 
 				onStateChange: (updater: any) => {
-					state = typeof updater === 'function' ? updater(state) : mergeObjects(state, updater);
+					state = typeof updater === 'function' ? updater(state) : mergeObjects(state, updater)
 
-					options.onStateChange?.(updater);
+					options.onStateChange?.(updater)
 				},
-			});
-		});
+			})
+		})
 	}
 
-	updateOptions();
+	updateOptions()
 
 	$effect.pre(() => {
-		updateOptions();
-	});
+		updateOptions()
+	})
 
-	return table;
+	return table
 }
 
-type MaybeThunk<T extends object> = (() => null | T | undefined) | T;
-type Intersection<T extends readonly unknown[]> = (T extends [infer H, ...infer R]
-	? H & Intersection<R>
-	: unknown) & {};
+type MaybeThunk<T extends object> = (() => null | T | undefined) | T
+type Intersection<T extends readonly unknown[]> = (T extends [infer H, ...infer R] ?
+	H & Intersection<R>
+:	unknown) & {}
 
 /**
  * Lazily merges several objects (or thunks) while preserving
@@ -86,55 +85,55 @@ type Intersection<T extends readonly unknown[]> = (T extends [infer H, ...infer 
  *
  * Proxy-based to avoid known WebKit recursion issue.
  */
- 
+
 export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(
 	...sources: Sources
 ): Intersection<{ [K in keyof Sources]: Sources[K] }> {
 	const resolve = <T extends object>(src: MaybeThunk<T>): T | undefined =>
-		typeof src === "function" ? (src() ?? undefined) : src;
+		typeof src === 'function' ? (src() ?? undefined) : src
 
 	const findSourceWithKey = (key: PropertyKey) => {
 		for (let i = sources.length - 1; i >= 0; i--) {
-			const obj = resolve(sources[i]);
-			if (obj && key in obj) return obj;
+			const obj = resolve(sources[i])
+			if (obj && key in obj) return obj
 		}
-		return undefined;
-	};
+		return undefined
+	}
 
 	return new Proxy(Object.create(null), {
 		get(_, key) {
-			const src = findSourceWithKey(key);
+			const src = findSourceWithKey(key)
 
-			return src?.[key as never];
+			return src?.[key as never]
 		},
 
 		has(_, key) {
-			return !!findSourceWithKey(key);
+			return !!findSourceWithKey(key)
 		},
 
 		ownKeys(): (string | symbol)[] {
-			const all = new Set<string | symbol>();
+			const all = new Set<string | symbol>()
 			for (const s of sources) {
-				const obj = resolve(s);
+				const obj = resolve(s)
 				if (obj) {
 					for (const k of Reflect.ownKeys(obj) as (string | symbol)[]) {
-						all.add(k);
+						all.add(k)
 					}
 				}
 			}
-			return Array.from(all);
+			return Array.from(all)
 		},
 
 		getOwnPropertyDescriptor(_, key) {
-			const src = findSourceWithKey(key);
-			if (!src) return undefined;
+			const src = findSourceWithKey(key)
+			if (!src) return undefined
 			return {
 				configurable: true,
 				enumerable: true,
-				 
+
 				value: (src as any)[key],
 				writable: true,
-			};
+			}
 		},
-	}) as Intersection<{ [K in keyof Sources]: Sources[K] }>;
+	}) as Intersection<{ [K in keyof Sources]: Sources[K] }>
 }

@@ -1,14 +1,14 @@
 <script lang="ts">
-	import DotIcon from "@lucide/svelte/icons/dot";
-	import type { HTMLAttributes } from "svelte/elements";
+import DotIcon from '@lucide/svelte/icons/dot'
+import type { HTMLAttributes } from 'svelte/elements'
 
-	import type { WithElementRef } from "$shadcn/utils.js";
+import type { WithElementRef } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		children,
-		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+let {
+	ref = $bindable(null),
+	children,
+	...restProps
+}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 </script>
 
 <div bind:this={ref} data-slot="input-otp-separator" role="separator" {...restProps}>

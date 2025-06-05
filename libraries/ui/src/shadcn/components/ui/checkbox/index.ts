@@ -1,4 +1,1 @@
-
-
-
-export {default as Checkbox, default as Root} from "./checkbox.svelte";
+export { default as Checkbox, default as Root } from './checkbox.svelte'

@@ -1,20 +1,20 @@
 <script lang="ts">
-	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
-	import type { HTMLLiAttributes } from "svelte/elements";
+import ChevronRightIcon from '@lucide/svelte/icons/chevron-right'
+import type { HTMLLiAttributes } from 'svelte/elements'
 
-	import { cn, type WithElementRef } from "$shadcn/utils.js";
+import { cn, type WithElementRef } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		children,
-		...restProps
-	}: WithElementRef<HTMLLiAttributes> = $props();
+let {
+	ref = $bindable(null),
+	class: className,
+	children,
+	...restProps
+}: WithElementRef<HTMLLiAttributes> = $props()
 </script>
 
 <li
 	bind:this={ref}
-	class={cn("[&>svg]:size-3.5", className)}
+	class={cn('[&>svg]:size-3.5', className)}
 	aria-hidden="true"
 	data-slot="breadcrumb-separator"
 	role="presentation"

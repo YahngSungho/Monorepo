@@ -1,27 +1,30 @@
 <script lang="ts">
-	import CheckIcon from "@lucide/svelte/icons/check";
-	import MinusIcon from "@lucide/svelte/icons/minus";
-	import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
-	import type { Snippet } from "svelte";
+import CheckIcon from '@lucide/svelte/icons/check'
+import MinusIcon from '@lucide/svelte/icons/minus'
+import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui'
+import type { Snippet } from 'svelte'
 
-	import { cn, type WithoutChildrenOrChild } from "$shadcn/utils.js";
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils.js'
 
-	let {
-		ref = $bindable(null),
-		checked = $bindable(false),
-		indeterminate = $bindable(false),
-		class: className,
-		children: childrenProp,
-		...restProps
-	}: WithoutChildrenOrChild<DropdownMenuPrimitive.CheckboxItemProps> & {
-		children?: Snippet;
-	} = $props();
+let {
+	ref = $bindable(null),
+	checked = $bindable(false),
+	indeterminate = $bindable(false),
+	class: className,
+	children: childrenProp,
+	...restProps
+}: WithoutChildrenOrChild<DropdownMenuPrimitive.CheckboxItemProps> & {
+	children?: Snippet
+} = $props()
 </script>
 
 <DropdownMenuPrimitive.CheckboxItem
 	class={cn(
-		"focus:bg-accent focus:text-accent-foreground outline-hidden relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-		className
+		`focus:bg-accent focus:text-accent-foreground outline-hidden relative flex cursor-default select-none
+		items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm data-[disabled]:pointer-events-none
+		data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none
+		[&_svg]:shrink-0`,
+		className,
 	)}
 	data-slot="dropdown-menu-checkbox-item"
 	bind:ref
@@ -34,7 +37,7 @@
 			{#if indeterminate}
 				<MinusIcon class="size-4" />
 			{:else}
-				<CheckIcon class={cn("size-4", !checked && "text-transparent")} />
+				<CheckIcon class={cn('size-4', !checked && 'text-transparent')} />
 			{/if}
 		</span>
 		{@render childrenProp?.()}

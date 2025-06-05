@@ -11,7 +11,6 @@
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
 		"dev": "dotenv -e ../../.env vite dev",
-		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
@@ -25,7 +24,8 @@
 		"translate:dotenv": "dotenv -e ../../.env node ./src/translation/scripts.js",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview",
-		"previewWithDotenv": "dotenv -e ../../.env vite preview"
+		"previewWithDotenv": "dotenv -e ../../.env vite preview",
+		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",

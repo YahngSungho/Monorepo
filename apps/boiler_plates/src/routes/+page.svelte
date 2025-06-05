@@ -1,7 +1,7 @@
 <script>
 import { css } from '@emotion/css'
-import { getLocale,localizeHref, setLocale } from '@library/paraglide/helpers'
-	// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
+import { getLocale, localizeHref, setLocale } from '@library/paraglide/helpers'
+// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
@@ -10,7 +10,7 @@ import IconText from '@library/ui/icon-text'
 import LanguageSelector from '@library/ui/language-selector'
 import ThemeToggle from '@library/ui/themeToggle'
 import { Home } from '@lucide/svelte'
-import { toast } from "svelte-sonner";
+import { toast } from 'svelte-sonner'
 
 const fo = 'bigCommandKEnabled'
 
@@ -21,7 +21,6 @@ foo += ' bar13332222222 3$3$32$3 4$$$'
 const eewre = Promise.resolve('test 122')
 </script>
 
-
 <h2 class="bg-primary">{m.welcome()}</h2>
 <h3>{foo}</h3>
 <h4>Welcome to SvelteKit</h4>
@@ -31,14 +30,17 @@ const eewre = Promise.resolve('test 122')
 <ThemeToggle />
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
-<Button2 onclick={() =>
-	toast.success("Event has been created", {
-		description: "Sunday, December 03, 2023 at 9:00 AM",
-		action: {
-			label: "Undo",
-			onClick: () => console.info("Undo")
-		}
-	})} variant="wrong">
+<Button2
+	onclick={() =>
+		toast.success('Event has been created', {
+			description: 'Sunday, December 03, 2023 at 9:00 AM',
+			action: {
+				label: 'Undo',
+				onClick: () => console.info('Undo'),
+			},
+		})}
+	variant="wrong"
+>
 	<IconText IconElement={Home}>토스트 띄우기</IconText>
 </Button2>
 <Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
@@ -54,17 +56,17 @@ const eewre = Promise.resolve('test 122')
 
 <button class="btn btn-primary">DaisyUI Primary</button>
 
-<div class="w-[200px] h-[3em] bg-red-500 p-1">
-	TailwindCSS 테스트
-</div>
+<div class="h-[3em] w-[200px] bg-red-500 p-1">TailwindCSS 테스트</div>
 
-<div class={css`
-width: 200px;
-height: 3em;
-background-color: blue;
-padding: 1em;
-`}>
-Emotion 테스트
+<div
+	class={css`
+		width: 200px;
+		height: 3em;
+		background-color: blue;
+		padding: 1em;
+	`}
+>
+	Emotion 테스트
 </div>
 
 <div class="p1 boxed long-text gutter">

@@ -30,12 +30,5 @@
 		"static/**"
 	],
 	"extends": ["../library-base/tsconfig.json"],
-	"include": [
-		"src/**/*",
-		"./*.js",
-		"./*.ts",
-		"./*.svelte",
-		"./*.cjs",
-		"./*.mjs"
-	]
+	"include": ["src/**/*", "./*.js", "./*.ts", "./*.svelte", "./*.cjs", "./*.mjs"]
 }
