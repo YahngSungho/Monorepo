@@ -1,6 +1,6 @@
 import { R } from '@library/helpers/R'
 
-import { generateWithRetry_atQuotaLimit } from '../heleprs.js'
+import { generateWithRetry_atQuotaLimit } from '../helpers.js'
 import { generateText } from './generateText.js'
 import { flashModel, latestModel } from './modelNames.js'
 
