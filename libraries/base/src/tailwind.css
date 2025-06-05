@@ -60,7 +60,7 @@
 
 .dark {
 	--background: hsl(210deg 40% 2%); /* gray-12 */
-	--foreground: hsl(210deg 16.7% 97.6%); /* gray-0 */
+	--foreground: hsl(210 15.8% 92.5%); /* gray-2 */
 	--muted: hsl(210deg 10.3% 22.7%); /* gray-8 */
 	--muted-foreground: hsl(228deg 100% 78.4%); /* indigo-3 */
 	--popover: hsl(210deg 40% 2%); /* gray-12 */

@@ -1,5 +1,5 @@
 <script>
-	import { css } from '@emotion/css'
+import { css } from '@emotion/css'
 import { getLocale,localizeHref, setLocale } from '@library/paraglide/helpers'
 	// 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
@@ -8,6 +8,7 @@ import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
 import LanguageSelector from '@library/ui/language-selector'
+import ThemeToggle from '@library/ui/themeToggle'
 import { Home } from '@lucide/svelte'
 import { toast } from "svelte-sonner";
 
@@ -20,11 +21,14 @@ foo += ' bar13332222222 3$3$32$3 4$$$'
 const eewre = Promise.resolve('test 122')
 </script>
 
+
 <h2 class="bg-primary">{m.welcome()}</h2>
 <h3>{foo}</h3>
 <h4>Welcome to SvelteKit</h4>
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
+
+<ThemeToggle />
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
 <Button2 onclick={() =>

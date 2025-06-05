@@ -9,13 +9,13 @@
 @import url('sanitize.css/assets.css') layer(sanitize);
 @import url('sanitize.css/reduce-motion.css') layer(sanitize);
 
-/* @import url('open-props/style') layer(openProps); */
-/* @import url('open-props/media') layer(openProps); */
+@import url('open-props/style') layer(openProps);
 @import url('./openProps-normalize.css') layer(openPropsNormalize);
+/* @import url('open-props/media') layer(openProps); */
 /* @import url('open-props/postcss/buttons') layer(sanitize); */
 
 @import url('./tailwind.css');
 
 @import url('./baseClasses.css');
-@import url('./baseVariables.css');
+@import url('./baseVariables.css') layer(openProps);
 @import url('./baseCSS.css');

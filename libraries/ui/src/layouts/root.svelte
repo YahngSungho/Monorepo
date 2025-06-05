@@ -4,6 +4,7 @@
 	import { css } from '@emotion/css'
 	import { partytownSnippet } from '@qwik.dev/partytown/integration'
 	import * as Sentry from '@sentry/sveltekit'
+import { ModeWatcher } from "mode-watcher"
 
 	import { Toaster } from "$shadcn/components/ui/sonner/index"
 
@@ -31,6 +32,7 @@
 
 	<div>
 		{@render children()}
+		<ModeWatcher />
 		<Toaster closeButton hotkey={['']} position="bottom-center" toastOptions={{
 			classes: {
 				toast: css`
@@ -46,9 +48,11 @@
 				closeButton: css`
     right: 0 !important;
 		top: -10px !important;
+		color: var(--foreground) !important;
 `,
 				icon: css`
 				top: 0.15em;
+				color: var(--foreground) !important;
 				`,
 			}
 		}} 	visibleToasts={9} />

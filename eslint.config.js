@@ -188,7 +188,7 @@ const baseRules = {
 			allowedClassNames: [],
 		},
 	],
-	'svelte/prefer-style-directive': 'warn',
+	'svelte/prefer-style-directive': 'off',
 	'svelte/html-closing-bracket-new-line': 'warn',
 	'svelte/prefer-class-directive': 'warn',
 	'svelte/require-each-key': 'warn',
