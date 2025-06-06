@@ -5,13 +5,22 @@ import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
-const settingPath = getAbsolutePath(
-	import.meta.url,
-	'../../../paraglide/project.inlang/settings.json',
-)
-const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
-
 export function getInitialLanguageMap() {
+	// Vitest/Jest 같은 테스트 환경에서는 모듈 최상단(모듈 스코프)에서 fs 모듈을 바로 사용하면,
+	// 테스트 설정(예: fs 모의 객체)이 적용되기 전에 파일 읽기 코드가 먼저 실행될 수 있다.
+	// 이 경우, 파일을 제대로 읽지 못해 오류가 발생한다.
+	//
+	// 코드를 함수 내부에 두면, 함수가 '호출'되는 시점에 파일을 읽게 된다.
+	// 테스트 코드에서는 보통 모든 모의 설정이 끝난 후에 함수를 호출하므로,
+	// 이 방식은 fs가 안전하게 모의 처리된 상태에서 실행되는 것을 보장해준다.
+	//
+	// 따라서, 이 코드를 함수 밖으로 꺼내면 테스트가 실패할 수 있으므로 여기에 둔다.
+	const settingPath = getAbsolutePath(
+		import.meta.url,
+		'../../../paraglide/project.inlang/settings.json',
+	)
+	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
+
 	const result = {}
 	for (const language of settings.locales) {
 		result[language] = {}

@@ -1,6 +1,6 @@
 ---
 description:
-globs: **/+page.svelte
+globs: **/+layout.svelte,**/+page.svelte,hooks.*
 alwaysApply: false
 ---
 

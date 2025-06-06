@@ -45,6 +45,7 @@ const emotionSsrHandle: Handle = async ({ event, resolve }) => {
 					// 이 transformedHtml을 기반으로 스타일 태그를 주입합니다.
 					return transformedHtml.replace(
 						'</head>', // </head> 태그를 찾아 그 바로 앞에 스타일 태그를 삽입합니다.
+						// eslint-disable-next-line github/unescaped-html-literal
 						`<style data-emotion-css="${ids.join(' ')}">${css}</style></head>`,
 					)
 				}
