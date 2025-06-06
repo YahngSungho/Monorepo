@@ -25,8 +25,13 @@ export const changeBaseLocaleInFile_action = async (absolutePath, newBaseLocale)
 
 		// 3. 'baseLocale' 값 변경 (계산)
 		// jsonData가 객체이고 'baseLocale' 속성을 가지고 있는지 확인
-		if (typeof jsonData === 'object' && jsonData !== null && 'baseLocale' in jsonData) {
-			jsonData.baseLocale = newBaseLocale
+		if (typeof jsonData === 'object' && jsonData !== null) {
+			if ('baseLocale' in jsonData) {
+				jsonData.baseLocale = newBaseLocale
+			}
+			if ('sourceLanguageTag' in jsonData) {
+				jsonData.sourceLanguageTag = newBaseLocale
+			}
 		} else {
 			// baseLocale 속성이 없거나 jsonData가 예상한 형식이 아닌 경우
 			// 필요에 따라 오류를 발생시키거나, 파일을 그대로 두거나, 새 속성을 추가할 수 있습니다.

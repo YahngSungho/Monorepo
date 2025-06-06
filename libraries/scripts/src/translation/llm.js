@@ -2,8 +2,8 @@
 import { readFileFromRelativePath } from '@library/helpers/fs-async'
 import { validateNumbers } from '@library/helpers/helper-functions'
 import { R } from '@library/helpers/R'
-import { generateObjectWithRetry_latestModel } from '@library/llms/gemini/generate'
-import { getCacheBySystemInstructions_latestModel } from '@library/llms/gemini/getCache'
+import { generateObjectWithRetry_flashModel } from '@library/llms/gemini/generate'
+import { getCacheBySystemInstructions_flashModel } from '@library/llms/gemini/getCache'
 import { z } from 'zod'
 
 import { getLanguageName } from './getLanguageName.js'
@@ -13,12 +13,12 @@ const readPrompt = readFileFromRelativePath(import.meta.url)
 const promptForParaglide = await readPrompt('./paraglide/prompt.md')
 const promptForMarkdown = await readPrompt('./markdown/prompt.md')
 
-const cacheForParaglide = await getCacheBySystemInstructions_latestModel(
+const cacheForParaglide = await getCacheBySystemInstructions_flashModel(
 	5,
 	undefined,
 	promptForParaglide,
 )
-const cacheForMarkdown = await getCacheBySystemInstructions_latestModel(
+const cacheForMarkdown = await getCacheBySystemInstructions_flashModel(
 	5,
 	undefined,
 	promptForMarkdown,
@@ -68,7 +68,7 @@ export const generateTranslation_paraglide = async (
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
-	const object = await generateObjectWithRetry_latestModel(cacheForParaglide, schema, target)
+	const object = await generateObjectWithRetry_flashModel(cacheForParaglide, schema, target)
 	return object
 }
 
@@ -105,7 +105,7 @@ export const generateTranslation_markdown = async (
 		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
-	const object = await generateObjectWithRetry_latestModel(cacheForMarkdown, schema, target)
+	const object = await generateObjectWithRetry_flashModel(cacheForMarkdown, schema, target)
 	return object
 }
 

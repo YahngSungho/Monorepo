@@ -1,6 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/project-settings",
-	"baseLocale": "en",
+	"baseLocale": "ko",
 	"languageTags": [
 		"ar",
 		"ar-EG",
@@ -243,5 +243,5 @@
 	"plugin.inlang.messageFormat": {
 		"pathPattern": "./messages/{languageTag}.json"
 	},
-	"sourceLanguageTag": "en"
+	"sourceLanguageTag": "ko"
 }

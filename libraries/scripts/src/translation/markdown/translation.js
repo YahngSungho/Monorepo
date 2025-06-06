@@ -247,8 +247,6 @@ export async function saveFiles(
 		}
 
 		for await (const [messageKey, messageValue] of Object.entries(messageMap.newMessages)) {
-			console.log('💬 forawait messageValue:', messageValue)
-			console.log('💬 forawait messageKey:', messageKey)
 			const filePath = path.join(rootAbsolutePath, messageKey, `${language}.md`)
 			await writeFile_async(filePath, messageValue)
 		}

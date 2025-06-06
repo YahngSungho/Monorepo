@@ -5,19 +5,17 @@ import { Input } from '$shadcn/components/ui/input/index.js'
 import { cn } from '$shadcn/utils.js'
 
 let {
-	class: className,
-	ref = $bindable(),
+	ref = $bindable(null),
 	value = $bindable(''),
+	class: className,
 	...restProps
 }: ComponentProps<typeof Input> = $props()
 </script>
 
 <Input
-	class={cn(
-		'bg-background focus-visible:ring-sidebar-ring h-8 w-full shadow-none focus-visible:ring-2',
-		className,
-	)}
+	class={cn('bg-background h-8 w-full shadow-none', className)}
 	data-sidebar="input"
+	data-slot="sidebar-input"
 	bind:ref
 	bind:value
 	{...restProps}

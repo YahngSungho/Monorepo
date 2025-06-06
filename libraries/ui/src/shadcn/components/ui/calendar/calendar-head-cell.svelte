@@ -4,14 +4,14 @@ import { Calendar as CalendarPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	...restProps
 }: CalendarPrimitive.HeadCellProps = $props()
 </script>
 
 <CalendarPrimitive.HeadCell
-	class={cn('text-muted-foreground w-9 rounded-md text-[0.8rem] font-normal', className)}
+	class={cn('text-muted-foreground w-8 rounded-md text-[0.8rem] font-normal', className)}
 	bind:ref
 	{...restProps}
 />

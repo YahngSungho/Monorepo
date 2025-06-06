@@ -1,7 +1,16 @@
 @import url('tailwindcss');
+@import 'tw-animate-css';
+
 @import url('./daisyUI.css');
 
-@plugin 'tailwindcss-animate';
+/* DaisyUI 버튼 클래스들을 safelist로 추가 (Tailwind CSS v4.1+ 기능) */
+/* 동적으로 사용하는 모든 btn-* 관련 클래스들을 여기에 포함시켜줘. */
+/* @source inline("btn-neutral btn-primary btn-secondary btn-accent btn-ghost btn-link btn-info btn-success btn-warning btn-error btn-outline"); */
+
+/* 만약 더 많은 클래스나 패턴을 추가해야 한다면, 아래처럼 여러 줄로 작성하거나 중괄호 확장 문법을 활용할 수 있어: */
+@source inline("btn-{primary,secondary,accent,info,success,warning,error,ghost,link,outline}");
+/* @source inline("btn-outline-{primary,secondary,accent}"); */
+/* @source inline("focus:btn-primary active:btn-primary"); */
 
 @source '../../../apps/*/src/**/*.{html,js,ts,svelte,mdx}';
 @source '../../../libraries/*/src/**/*.{html,js,ts,svelte,mdx}';
@@ -27,9 +36,9 @@
 	--primary: hsl(214deg 13.7% 10%); /* gray-10 */
 	--primary-foreground: hsl(210deg 16.7% 97.6%); /* gray-0 */
 	--primary-content: hsl(210deg 16.7% 97.6%); /* gray-0 */
-	--secondary: hsl(210deg 16.7% 95.3%); /* gray-1 */
-	--secondary-foreground: hsl(214deg 13.7% 10%); /* gray-10 */
-	--secondary-content: hsl(214deg 13.7% 10%); /* gray-10 */
+	--secondary: hsl(210deg 16.7% 97.6%); /* gray-0 */
+	--secondary-foreground: hsl(210deg 10.3% 22.7%); /* gray-8 */
+	--secondary-content: hsl(210deg 10.3% 22.7%); /* gray-8 */
 	--accent: var(--gray-4);
 	--accent-foreground: var(--gray-10);
 	--accent-content: var(--gray-10);
@@ -51,7 +60,7 @@
 
 .dark {
 	--background: hsl(210deg 40% 2%); /* gray-12 */
-	--foreground: hsl(210deg 16.7% 97.6%); /* gray-0 */
+	--foreground: hsl(210deg 15.8% 92.5%); /* gray-2 */
 	--muted: hsl(210deg 10.3% 22.7%); /* gray-8 */
 	--muted-foreground: hsl(228deg 100% 78.4%); /* indigo-3 */
 	--popover: hsl(210deg 40% 2%); /* gray-12 */
@@ -85,80 +94,42 @@
 	--sidebar-ring: hsl(228deg 80.9% 59%); /* indigo-7 */
 }
 
-@theme {
-	--color-border: var(--border);
-	--color-input: var(--input);
-	--color-ring: var(--ring);
+@theme inline {
+	/* Radius (for rounded-*) */
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	/* Colors */
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
-	--color-primary: var(--primary);
-	--color-primary-foreground: var(--primary-foreground);
-	--color-primary-content: var(--primary-content);
-	--color-secondary: var(--secondary);
-	--color-secondary-foreground: var(--secondary-foreground);
-	--color-secondary-content: var(--secondary-content);
-	--color-destructive: var(--destructive);
-	--color-destructive-foreground: var(--destructive-foreground);
-	--color-destructive-content: var(--destructive-content);
 	--color-muted: var(--muted);
 	--color-muted-foreground: var(--muted-foreground);
-	--color-accent: var(--accent);
-	--color-accent-foreground: var(--accent-foreground);
-	--color-accent-content: var(--accent-content);
 	--color-popover: var(--popover);
 	--color-popover-foreground: var(--popover-foreground);
 	--color-card: var(--card);
-	--color-card-foreground: var(--card-foreground) / <alpha-value>;
-	--color-sidebar-DEFAULT: var(--sidebar-background);
+	--color-card-foreground: var(--card-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-ring: var(--ring);
+	--color-radius: var(--radius);
+	--color-sidebar: var(--sidebar);
 	--color-sidebar-foreground: var(--sidebar-foreground);
 	--color-sidebar-primary: var(--sidebar-primary);
 	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-primary-content: var(--sidebar-primary-content);
 	--color-sidebar-accent: var(--sidebar-accent);
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-accent-content: var(--sidebar-accent-content);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
-	--radius-xl: var(--radius-4);
-	--radius-lg: var(--radius-3);
-	--radius-md: var(--radius-2);
-	--radius-sm: var(--radius-1);
-	--animate-accordion-down: accordion-down 0.2s ease-out;
-	--animate-accordion-up: accordion-up 0.2s ease-out;
-	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
-
-	@keyframes accordion-down {
-		from {
-			block-size: 0;
-		}
-
-		to {
-			block-size: var(--bits-accordion-content-height);
-		}
-	}
-
-	@keyframes accordion-up {
-		from {
-			block-size: var(--bits-accordion-content-height);
-		}
-
-		to {
-			block-size: 0;
-		}
-	}
-
-	@keyframes caret-blink {
-		0%,
-		70%,
-		100% {
-			opacity: 1;
-		}
-
-		20%,
-		50% {
-			opacity: 0;
-		}
-	}
 }
 
 @utility container {
@@ -168,25 +139,14 @@
 
 @layer base {
 	* {
-		/* stylelint-disable-next-line at-rule-no-deprecated */
-		@apply border-border;
+		border-color: var(--color-border);
 	}
 
 	body {
-		/* stylelint-disable-next-line at-rule-no-deprecated */
-		@apply bg-background text-foreground;
+		color: var(--color-foreground);
+		background-color: var(--color-background);
 	}
-}
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
 	*,
 	::after,
 	::before,

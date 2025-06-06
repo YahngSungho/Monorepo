@@ -1,22 +1,17 @@
 import { Select as SelectPrimitive } from 'bits-ui'
 
 const { Root } = SelectPrimitive
-const { Group } = SelectPrimitive
 
 export {
-	Group,
 	Root,
 	//
 	Root as Select,
-	Group as SelectGroup,
 }
 
 export { default as Content, default as SelectContent } from './select-content.svelte'
-export {
-	default as GroupHeading,
-	default as SelectGroupHeading,
-} from './select-group-heading.svelte'
+export { default as Group, default as SelectGroup } from './select-group.svelte'
 export { default as Item, default as SelectItem } from './select-item.svelte'
+export { default as Label, default as SelectLabel } from './select-label.svelte'
 export {
 	default as ScrollDownButton,
 	default as SelectScrollDownButton,

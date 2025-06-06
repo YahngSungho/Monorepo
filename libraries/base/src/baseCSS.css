@@ -1,6 +1,10 @@
 :root {
-	font-size: var(--font-size-fluid-1);
+	font-size: var(--font-size-fluid-0p6);
 	text-size-adjust: 100%;
+}
+
+html {
+	color: var(--foreground);
 	color-scheme: light dark;
 }
 
@@ -31,6 +35,12 @@ body {
 	word-break: keep-all;
 	line-break: strict;
 	overflow-wrap: break-word;
+}
+
+@layer base {
+	:where(*, *::before, *::after) {
+		color: inherit;
+	}
 }
 
 button,

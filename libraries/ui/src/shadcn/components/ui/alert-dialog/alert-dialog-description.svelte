@@ -4,14 +4,15 @@ import { AlertDialog as AlertDialogPrimitive } from 'bits-ui'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	...restProps
 }: AlertDialogPrimitive.DescriptionProps = $props()
 </script>
 
 <AlertDialogPrimitive.Description
 	class={cn('text-muted-foreground text-sm', className)}
+	data-slot="alert-dialog-description"
 	bind:ref
 	{...restProps}
 />

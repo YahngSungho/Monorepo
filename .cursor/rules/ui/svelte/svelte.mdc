@@ -1,6 +1,6 @@
 ---
 description:
-globs: *.svelte,*.svelte.*,*.svx
+globs: *.svelte,*.svelte.*
 alwaysApply: false
 ---
 

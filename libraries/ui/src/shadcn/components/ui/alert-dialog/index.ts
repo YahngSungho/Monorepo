@@ -1,17 +1,14 @@
 import { AlertDialog as AlertDialogPrimitive } from 'bits-ui'
 
 const { Root } = AlertDialogPrimitive
-const { Trigger } = AlertDialogPrimitive
 const { Portal } = AlertDialogPrimitive
 
 export {
 	//
 	Root as AlertDialog,
 	Portal as AlertDialogPortal,
-	Trigger as AlertDialogTrigger,
 	Portal,
 	Root,
-	Trigger,
 }
 
 export { default as Action, default as AlertDialogAction } from './alert-dialog-action.svelte'
@@ -25,3 +22,4 @@ export { default as AlertDialogFooter, default as Footer } from './alert-dialog-
 export { default as AlertDialogHeader, default as Header } from './alert-dialog-header.svelte'
 export { default as AlertDialogOverlay, default as Overlay } from './alert-dialog-overlay.svelte'
 export { default as AlertDialogTitle, default as Title } from './alert-dialog-title.svelte'
+export { default as AlertDialogTrigger, default as Trigger } from './alert-dialog-trigger.svelte'

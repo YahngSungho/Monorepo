@@ -1,6 +1,8 @@
 @plugin 'daisyui';
 
 :root {
+	--fontsize: 1rem;
+	--border-size-1: 1px;
 	/* --radius-selector: var(--radius-2-5); */
 	--radius-selector: var(--radius-1);
 	/* --radius-field: var(--radius-2); */
@@ -9,7 +11,7 @@
 	--radius-box: var(--radius-1);
 	--size-selector: var(--size-1);
 	--size-field: var(--size-1);
-	--border: var(--border-size-1);
+	/* --border: var(--border-size-1); - tailwind.css와 중복. 이거 대신 daisyui는 border-width 일일이 설정해줘야 함  */
 	--depth: 1;
 	--noise: 0;
 	--rounded-box: var(--radius-3);
@@ -28,6 +30,14 @@
 	--color-base-200: var(--gray-2);
 	--color-base-300: var(--gray-4);
 	--color-base-content: var(--gray-12);
+
+	--color-primary: var(--gray-10);
+	--color-primary-content: var(--gray-0);
+	--color-secondary: var(--gray-0);
+	--color-secondary-content: var(--gray-8);
+	--color-accent: var(--gray-4);
+	--color-accent-content: var(--gray-10);
+
 	--color-neutral: var(--gray-7);
 	--color-neutral-content: var(--gray-0);
 	--color-info: var(--cyan-3);

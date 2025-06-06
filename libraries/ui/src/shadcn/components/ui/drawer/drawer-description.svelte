@@ -4,14 +4,15 @@ import { Drawer as DrawerPrimitive } from 'vaul-svelte'
 import { cn } from '$shadcn/utils.js'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	...restProps
 }: DrawerPrimitive.DescriptionProps = $props()
 </script>
 
 <DrawerPrimitive.Description
 	class={cn('text-muted-foreground text-sm', className)}
+	data-slot="drawer-description"
 	bind:ref
 	{...restProps}
 />

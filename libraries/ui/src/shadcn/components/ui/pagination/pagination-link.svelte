@@ -5,12 +5,12 @@ import { buttonVariants, type Props } from '$shadcn/components/ui/button/index.j
 import { cn } from '$shadcn/utils.js'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
+	size = 'icon',
 	isActive = false,
 	page,
-	ref = $bindable(),
-	size = 'icon',
+	children,
 	...restProps
 }: PaginationPrimitive.PageProps &
 	Props & {
@@ -25,12 +25,15 @@ let {
 <PaginationPrimitive.Page
 	class={cn(
 		buttonVariants({
-			size,
 			variant: isActive ? 'outline' : 'ghost',
+			size,
 		}),
 		className,
 	)}
+	aria-current={isActive ? 'page' : undefined}
 	children={children || Fallback}
+	data-active={isActive}
+	data-slot="pagination-link"
 	{page}
 	bind:ref
 	{...restProps}

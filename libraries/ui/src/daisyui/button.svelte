@@ -1,4 +1,6 @@
 <script>
+import { cx } from '@emotion/css'
+
 /**
  * @typedef {'primary'
  * 	| 'secondary'
@@ -8,30 +10,34 @@
  * 	| 'warning'
  * 	| 'error'
  * 	| 'outline'
+ * 	| 'ghost'
  * 	| 'text'} variant
  * @property {string} [href]
  */
-let { children, href, variant = 'primary', ...restProps } = $props()
+let {
+	children = undefined,
+	href = undefined,
+	variant = 'primary',
+	class: incomingClass = '',
+	...restProps
+} = $props()
 
-;('') // eslint-disable-line
+const buttonClass = `btn btn-${variant}`
+
+// Todo: 현재 주소랑 href로 받은 주소비교해서 internal이면 locale 유지되게 하는거 - 이거 localizeHref를 prop으로 안받고 내부로만 해도 작동됨?
 </script>
 
 {#if href}
-	<a class={`button-type btn btn-${variant}`} {href} role="button" type="button" {...restProps}>
+	<a class={cx(buttonClass, incomingClass)} {href} role="button" type="button" {...restProps}>
 		{@render children?.()}
 	</a>
 {:else}
-	<button class={`button-type btn btn-${variant}`} type="button" {...restProps}>
+	<button class={cx(buttonClass, incomingClass)} type="button" {...restProps}>
 		{@render children?.()}
 	</button>
 {/if}
 
 <style>
-.button-type {
-	font-size: var(--font-size-2);
-	font-weight: var(--font-weight-5);
-}
-
 .btn-outline {
 	border-width: var(--border-size-2);
 	background-color: transparent;
