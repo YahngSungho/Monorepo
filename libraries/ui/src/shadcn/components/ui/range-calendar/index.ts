@@ -1,14 +1,11 @@
 import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui'
 
-import PrevButton from './range-calendar-prev-button.svelte'
-
 const { GridHead } = RangeCalendarPrimitive
 const { GridBody } = RangeCalendarPrimitive
 
 export {
 	GridBody,
 	GridHead,
-	PrevButton,
 	//
 }
 
@@ -22,3 +19,4 @@ export { default as Header } from './range-calendar-header.svelte'
 export { default as Heading } from './range-calendar-heading.svelte'
 export { default as Months } from './range-calendar-months.svelte'
 export { default as NextButton } from './range-calendar-next-button.svelte'
+export { default as PrevButton } from './range-calendar-prev-button.svelte'

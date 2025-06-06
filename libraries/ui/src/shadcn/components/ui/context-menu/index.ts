@@ -1,9 +1,5 @@
 import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 
-import RadioGroup from './context-menu-radio-group.svelte'
-import RadioItem from './context-menu-radio-item.svelte'
-import Separator from './context-menu-separator.svelte'
-import Shortcut from './context-menu-shortcut.svelte'
 import SubContent from './context-menu-sub-content.svelte'
 import SubTrigger from './context-menu-sub-trigger.svelte'
 import Trigger from './context-menu-trigger.svelte'
@@ -13,18 +9,11 @@ const { Root } = ContextMenuPrimitive
 export {
 	//
 	Root as ContextMenu,
-	RadioItem as ContextMenuRadioItem,
-	Separator as ContextMenuSeparator,
-	Shortcut as ContextMenuShortcut,
 	Sub as ContextMenuSub,
 	SubContent as ContextMenuSubContent,
 	SubTrigger as ContextMenuSubTrigger,
 	Trigger as ContextMenuTrigger,
-	RadioGroup,
-	RadioItem,
 	Root,
-	Separator,
-	Shortcut,
 	Sub,
 	SubContent,
 	SubTrigger,
@@ -43,4 +32,16 @@ export {
 } from './context-menu-group-heading.svelte'
 export { default as ContextMenuItem, default as Item } from './context-menu-item.svelte'
 export { default as ContextMenuLabel, default as Label } from './context-menu-label.svelte'
-export { default as ContextMenuRadioGroup } from './context-menu-radio-group.svelte'
+export {
+	default as ContextMenuRadioGroup,
+	default as RadioGroup,
+} from './context-menu-radio-group.svelte'
+export {
+	default as ContextMenuRadioItem,
+	default as RadioItem,
+} from './context-menu-radio-item.svelte'
+export {
+	default as ContextMenuSeparator,
+	default as Separator,
+} from './context-menu-separator.svelte'
+export { default as ContextMenuShortcut, default as Shortcut } from './context-menu-shortcut.svelte'

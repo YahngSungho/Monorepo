@@ -1,9 +1,5 @@
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 
-import Root from './menubar.svelte'
-import RadioItem from './menubar-radio-item.svelte'
-import Separator from './menubar-separator.svelte'
-import Shortcut from './menubar-shortcut.svelte'
 import SubContent from './menubar-sub-content.svelte'
 import SubTrigger from './menubar-sub-trigger.svelte'
 import Trigger from './menubar-trigger.svelte'
@@ -17,24 +13,18 @@ export {
 	//
 	Menu as MenubarMenu,
 	RadioGroup as MenubarRadioGroup,
-	RadioItem as MenubarRadioItem,
-	Separator as MenubarSeparator,
-	Shortcut as MenubarShortcut,
 	Sub as MenubarSub,
 	SubContent as MenubarSubContent,
 	SubTrigger as MenubarSubTrigger,
 	Trigger as MenubarTrigger,
 	RadioGroup,
-	RadioItem,
-	Root,
-	Separator,
-	Shortcut,
 	Sub,
 	SubContent,
 	SubTrigger,
 	Trigger,
 }
 
+export { default as Menubar, default as Root } from './menubar.svelte'
 export {
 	default as CheckboxItem,
 	default as MenubarCheckboxItem,
@@ -47,4 +37,6 @@ export {
 } from './menubar-group-heading.svelte'
 export { default as Item, default as MenubarItem } from './menubar-item.svelte'
 export { default as Label, default as MenubarLabel } from './menubar-label.svelte'
-export { default as Menubar } from './menubar.svelte'
+export { default as MenubarRadioItem, default as RadioItem } from './menubar-radio-item.svelte'
+export { default as MenubarSeparator, default as Separator } from './menubar-separator.svelte'
+export { default as MenubarShortcut, default as Shortcut } from './menubar-shortcut.svelte'

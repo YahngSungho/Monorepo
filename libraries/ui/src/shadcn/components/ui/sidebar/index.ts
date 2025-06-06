@@ -1,8 +1,5 @@
 import Root from './sidebar.svelte'
-import Header from './sidebar-header.svelte'
-import Input from './sidebar-input.svelte'
-import Inset from './sidebar-inset.svelte'
-import Menu from './sidebar-menu.svelte'
+
 import MenuAction from './sidebar-menu-action.svelte'
 import MenuBadge from './sidebar-menu-badge.svelte'
 import MenuButton from './sidebar-menu-button.svelte'
@@ -17,9 +14,6 @@ import Separator from './sidebar-separator.svelte'
 import Trigger from './sidebar-trigger.svelte'
 
 export {
-	Input,
-	Inset,
-	Menu,
 	MenuAction,
 	MenuBadge,
 	MenuButton,
@@ -34,10 +28,6 @@ export {
 	Separator,
 	//
 	Root as Sidebar,
-	Header as SidebarHeader,
-	Input as SidebarInput,
-	Inset as SidebarInset,
-	Menu as SidebarMenu,
 	MenuAction as SidebarMenuAction,
 	MenuBadge as SidebarMenuBadge,
 	MenuButton as SidebarMenuButton,
@@ -66,4 +56,7 @@ export {
 	default as SidebarGroupContent,
 } from './sidebar-group-content.svelte'
 export { default as GroupLabel, default as SidebarGroupLabel } from './sidebar-group-label.svelte'
-export { default as Header } from './sidebar-header.svelte'
+export { default as Header, default as SidebarHeader } from './sidebar-header.svelte'
+export { default as Input, default as SidebarInput } from './sidebar-input.svelte'
+export { default as Inset, default as SidebarInset } from './sidebar-inset.svelte'
+export { default as Menu, default as SidebarMenu } from './sidebar-menu.svelte'
