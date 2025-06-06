@@ -60,8 +60,13 @@ const buttonClass = `btn btn-${variant} btn-${size} ${btnShape}`
 
 <style>
 .btn-outline {
+	border-color: currentcolor;
 	border-width: var(--border-size-2);
 	background-color: transparent;
+
+&.btn-xs, &.btn-sm {
+	border-width: 1px;
+}
 }
 
 .btn-text {

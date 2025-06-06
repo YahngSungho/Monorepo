@@ -15,8 +15,10 @@ color: var(--gray-8);
 	<input
 		id="theme-controller"
 		checked={mode.current === 'dark'}
-		onchange={() => {
-			setMode(mode.current === 'light' ? 'dark' : 'light')
+		onchange={async () => {
+			setTimeout(() => {
+				setMode(mode.current === 'light' ? 'dark' : 'light')
+			}, 150)
 		}}
 		type="checkbox"
 	/>

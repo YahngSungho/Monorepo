@@ -22,8 +22,6 @@ const preferredLocales = (() => {
 	}
 	return [] as readonly string[]
 })()
-console.log('💬 preferredLocales preferredLocales:', preferredLocales)
-
 // 주요 언어 목록 (accept-language에 없는 언어들 사이의 순서 결정용)
 // 영어, 스페인어, 중국어, 일본어, 힌디어, 포르투갈어, 러시아어, 독일어, 프랑스어, 한국어 순.
 const MAJOR_LANGUAGES = ['en', 'es', 'zh', 'ja', 'hi', 'pt', 'ru', 'de', 'fr', 'ko']
@@ -70,8 +68,6 @@ const allLanguages_sorted = Array.from(allLanguages).sort((a, b) => {
 	}
 	return rankA[2] - rankB[2]
 })
-console.log('💬 constallLanguages_sorted=Array.from allLanguages_sorted:', allLanguages_sorted)
-
 let open = $state(false)
 let value = $state(getLocale())
 let triggerRef = $state<HTMLButtonElement>(null!)
@@ -100,7 +96,7 @@ const LOADING_VALUE = '$loading'
 					aria-expanded={open}
 					role="combobox"
 					size="xs"
-					variant="text"
+					variant="outline"
 				>
 					{#if value === LOADING_VALUE}
 						<span style="margin-inline: 1em;" class="loading loading-dots loading-sm"></span>

@@ -228,6 +228,6 @@ blockquote {
 	}
 }
 
-a:visited .iconify-icon {
+a:visited .icon-container {
 	color: var(--purple-6);
 }
