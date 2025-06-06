@@ -3,7 +3,7 @@ import PanelLeftIcon from '@lucide/svelte/icons/panel-left'
 import type { ComponentProps } from 'svelte'
 
 import { Button } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 import { useSidebar } from './context.svelte.js'
 

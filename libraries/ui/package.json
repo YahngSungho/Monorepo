@@ -11,7 +11,7 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"eslint": "eslint . --ignore-pattern ./src/shadcn/components/** --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
+		"eslint": "eslint . --ignore-pattern ./src/shadcn/components/**/*.* --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-all": "eslint .",
 		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",

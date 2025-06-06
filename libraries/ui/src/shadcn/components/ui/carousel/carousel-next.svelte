@@ -3,7 +3,7 @@ import ArrowRightIcon from '@lucide/svelte/icons/arrow-right'
 import type { WithoutChildren } from 'bits-ui'
 
 import { Button, type Props } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 import { getEmblaContext } from './context.js'
 

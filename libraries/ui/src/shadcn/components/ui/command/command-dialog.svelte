@@ -3,7 +3,7 @@ import type { Command as CommandPrimitive, Dialog as DialogPrimitive } from 'bit
 import type { Snippet } from 'svelte'
 
 import * as Dialog from '$shadcn/components/ui/dialog/index.js'
-import type { WithoutChildrenOrChild } from '$shadcn/utils.js'
+import type { WithoutChildrenOrChild } from '$shadcn/utils'
 
 import Command from './command.svelte'
 

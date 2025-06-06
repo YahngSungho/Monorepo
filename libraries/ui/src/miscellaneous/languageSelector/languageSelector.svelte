@@ -95,6 +95,7 @@ const LOADING_VALUE = '$loading'
 					aria-expanded={open}
 					role="combobox"
 					variant="text"
+					size="xs"
 				>
 					{#if value === LOADING_VALUE}
 						<span

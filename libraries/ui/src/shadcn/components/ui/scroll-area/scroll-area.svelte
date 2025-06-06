@@ -1,7 +1,7 @@
 <script lang="ts">
 import { ScrollArea as ScrollAreaPrimitive } from 'bits-ui'
 
-import { cn, type WithoutChild } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 import { Scrollbar } from './index.js'
 

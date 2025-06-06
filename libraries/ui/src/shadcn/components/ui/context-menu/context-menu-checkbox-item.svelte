@@ -3,7 +3,7 @@ import CheckIcon from '@lucide/svelte/icons/check'
 import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 
-import { cn, type WithoutChildrenOrChild } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

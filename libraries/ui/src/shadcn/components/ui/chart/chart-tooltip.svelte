@@ -3,7 +3,7 @@ import { getTooltipContext, Tooltip as TooltipPrimitive } from 'layerchart'
 import type { Snippet } from 'svelte'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn, type WithElementRef, type WithoutChildren } from '$shadcn/utils.js'
+import { cn, type WithElementRef, type WithoutChildren } from '$shadcn/utils'
 
 import { getPayloadConfigFromPayload, type TooltipPayload, useChart } from './chart-utils.js'
 

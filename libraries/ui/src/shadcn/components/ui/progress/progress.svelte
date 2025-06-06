@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Progress as ProgressPrimitive } from 'bits-ui'
 
-import { cn, type WithoutChildrenOrChild } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

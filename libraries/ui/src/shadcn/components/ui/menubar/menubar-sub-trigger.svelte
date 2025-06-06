@@ -2,7 +2,7 @@
 import ChevronRightIcon from '@lucide/svelte/icons/chevron-right'
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 
-import { cn, type WithoutChild } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

@@ -56,6 +56,7 @@ import svelteConfig from './libraries/base/svelte.config.js'
 const baseRules = {
 	'unicorn/no-null': 'off',
 	'perfectionist/sort-named-imports': 'warn',
+	'functional/no-class-inheritance': 'off',
 	'functional/functional-parameters': 'off',
 	'perfectionist/sort-named-exports': 'warn',
 	'unicorn/import-style': 'off',

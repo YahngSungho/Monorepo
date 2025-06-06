@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'svelte/elements'
 
 import { Skeleton } from '$shadcn/components/ui/skeleton/index.js'
-import { cn, type WithElementRef } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

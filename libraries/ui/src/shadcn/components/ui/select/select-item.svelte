@@ -2,7 +2,7 @@
 import CheckIcon from '@lucide/svelte/icons/check'
 import { Select as SelectPrimitive } from 'bits-ui'
 
-import { cn, type WithoutChild } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

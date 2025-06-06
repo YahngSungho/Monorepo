@@ -2,7 +2,7 @@
 import { Pagination as PaginationPrimitive } from 'bits-ui'
 
 import { buttonVariants, type Props } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

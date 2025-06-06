@@ -1,7 +1,7 @@
 <script lang="ts">
 import * as FormPrimitive from 'formsnap'
 
-import { cn, type WithoutChild } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

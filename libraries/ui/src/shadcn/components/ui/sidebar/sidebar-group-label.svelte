@@ -2,7 +2,7 @@
 import type { Snippet } from 'svelte'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn, type WithElementRef } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

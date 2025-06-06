@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let { ref = $bindable(null), class: className, ...restProps }: MenubarPrimitive.RootProps = $props()
 </script>

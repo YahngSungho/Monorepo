@@ -27,7 +27,16 @@ const eewre = Promise.resolve('test 122')
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<ThemeToggle />
+<div style="
+display: flex;
+flex-wrap: wrap;
+gap: var(--space-em-cqi-2xs);
+align-items: center;
+
+margin: var(--space-em-cqi-m);">
+	<LanguageSelector {getLocale} {setLocale} />
+	<ThemeToggle />
+</div>
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
 <Button2
@@ -51,8 +60,6 @@ const eewre = Promise.resolve('test 122')
 	}}
 	variant="default">occurs error</Button1
 >
-
-<LanguageSelector {getLocale} {setLocale} />
 
 <button class="btn btn-primary">DaisyUI Primary</button>
 

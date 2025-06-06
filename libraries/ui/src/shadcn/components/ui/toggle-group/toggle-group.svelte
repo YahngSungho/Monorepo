@@ -14,7 +14,7 @@ export function getToggleGroupCtx() {
 <script lang="ts">
 import { ToggleGroup as ToggleGroupPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

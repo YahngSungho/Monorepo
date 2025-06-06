@@ -2,7 +2,7 @@
 import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui'
 import type { ComponentProps } from 'svelte'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

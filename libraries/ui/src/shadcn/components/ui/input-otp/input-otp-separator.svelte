@@ -2,7 +2,7 @@
 import DotIcon from '@lucide/svelte/icons/dot'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import type { WithElementRef } from '$shadcn/utils.js'
+import type { WithElementRef } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn, type WithElementRef, type WithoutChildren } from '$shadcn/utils.js'
+import { cn, type WithElementRef, type WithoutChildren } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

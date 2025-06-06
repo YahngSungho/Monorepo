@@ -2,6 +2,7 @@
 import MoonIcon from '@lucide/svelte/icons/moon'
 import SunIcon from '@lucide/svelte/icons/sun'
 import { mode, setMode } from 'mode-watcher'
+
 </script>
 
 <label
@@ -13,13 +14,13 @@ color: var(--gray-8);
 >
 	<input
 		id="theme-controller"
-		checked={mode.current !== 'light'}
+		checked={mode.current === 'dark'}
 		onchange={() => {
 			setMode(mode.current === 'light' ? 'dark' : 'light')
 		}}
 		type="checkbox"
 	/>
 
-	<SunIcon />
-	<MoonIcon />
+	<SunIcon role="button" />
+	<MoonIcon role="button" />
 </label>

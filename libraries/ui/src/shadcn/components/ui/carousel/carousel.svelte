@@ -1,5 +1,5 @@
 <script lang="ts">
-import { cn, type WithElementRef } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 import {
 	type CarouselAPI,

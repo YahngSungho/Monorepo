@@ -21,7 +21,7 @@ export type AlertVariant = VariantProps<typeof alertVariants>['variant']
 <script lang="ts">
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn, type WithElementRef } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

@@ -1,0 +1,7 @@
+---
+description:
+globs: **/daisyui/**
+alwaysApply: false
+---
+
+For getting DaisyUI's docs, refer to `https://daisyui.com/llms.txt`

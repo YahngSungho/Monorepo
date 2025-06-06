@@ -3,7 +3,7 @@ import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left'
 import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui'
 
 import { buttonVariants } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

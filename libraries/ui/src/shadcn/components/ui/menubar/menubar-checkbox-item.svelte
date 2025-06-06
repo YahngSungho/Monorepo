@@ -4,7 +4,7 @@ import MinusIcon from '@lucide/svelte/icons/minus'
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 
-import { cn, type WithoutChildrenOrChild } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

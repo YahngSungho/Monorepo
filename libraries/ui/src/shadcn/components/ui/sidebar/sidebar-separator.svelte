@@ -2,7 +2,7 @@
 import type { ComponentProps } from 'svelte'
 
 import { Separator } from '$shadcn/components/ui/separator/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

@@ -2,7 +2,7 @@
 import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical'
 import * as ResizablePrimitive from 'paneforge'
 
-import { cn, type WithoutChildrenOrChild } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

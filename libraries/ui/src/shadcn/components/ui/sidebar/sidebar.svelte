@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'svelte/elements'
 
 import * as Sheet from '$shadcn/components/ui/sheet/index.js'
-import { cn, type WithElementRef } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 import { SIDEBAR_WIDTH_MOBILE } from './constants.js'
 import { useSidebar } from './context.svelte.js'

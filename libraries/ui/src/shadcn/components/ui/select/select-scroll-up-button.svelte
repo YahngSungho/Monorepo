@@ -2,7 +2,7 @@
 import ChevronUpIcon from '@lucide/svelte/icons/chevron-up'
 import { Select as SelectPrimitive } from 'bits-ui'
 
-import { cn, type WithoutChildrenOrChild } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
 	ref = $bindable(null),

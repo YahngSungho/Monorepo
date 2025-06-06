@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { HTMLLiAttributes } from 'svelte/elements'
 
-import type { WithElementRef } from '$shadcn/utils.js'
+import type { WithElementRef } from '$shadcn/utils'
 
 let { ref = $bindable(null), children, ...restProps }: WithElementRef<HTMLLiAttributes> = $props()
 </script>

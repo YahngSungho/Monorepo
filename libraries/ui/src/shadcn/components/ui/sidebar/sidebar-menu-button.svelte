@@ -31,7 +31,7 @@ import type { ComponentProps, Snippet } from 'svelte'
 import type { HTMLAttributes } from 'svelte/elements'
 
 import * as Tooltip from '$shadcn/components/ui/tooltip/index.js'
-import { cn, type WithElementRef, type WithoutChildrenOrChild } from '$shadcn/utils.js'
+import { cn, type WithElementRef, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 import { useSidebar } from './context.svelte.js'
 
