@@ -30,12 +30,11 @@ const eewre = Promise.resolve('test 122')
 <div style="
 display: flex;
 flex-wrap: wrap;
-gap: var(--space-em-cqi-2xs);
 align-items: center;
 
 margin: var(--space-em-cqi-m);">
-	<LanguageSelector {getLocale} {setLocale} />
-	<ThemeToggle />
+<ThemeToggle />
+<LanguageSelector {getLocale} {setLocale} />
 </div>
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>

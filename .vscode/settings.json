@@ -98,13 +98,6 @@
 		"typescriptreact",
 		"javascriptsvelte"
 	],
-	"files.associations": {
-		"*.ts": "typescript",
-		"*.css": "tailwindcss",
-		"*.svx": "markdown",
-		"*.mdc": "markdown",
-		"*.mdx": "markdown"
-	},
 	"peacock.color": "#79021b",
 	"prettier.endOfLine": "lf",
 	"prettier.experimentalTernaries": false,
@@ -151,5 +144,5 @@
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#79021b99",
 		"titleBar.inactiveForeground": "#e7e7e799"
-	}
+	},
 }
