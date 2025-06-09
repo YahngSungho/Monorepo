@@ -5,11 +5,12 @@ import CheckIcon from '@lucide/svelte/icons/check'
 import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down'
 
 import Button from '$daisy/button.svelte'
-import IconText from '$miscellaneous/icon-text/icon-text.svelte'
 import * as Command from '$shadcn/components/ui/command/index.js'
 import * as Popover from '$shadcn/components/ui/popover/index.js'
 
-const { getLocale, setLocale } = $props()
+import IconText from './icon-text.svelte'
+
+const { getLocale, setLocale, buttonClass = '' } = $props()
 
 const preferredLocales = (() => {
 	if (typeof navigator !== 'undefined') {
@@ -92,6 +93,7 @@ const LOADING_VALUE = '$loading'
 			{#snippet child({ props })}
 				<Button
 					{...props}
+					class={buttonClass}
 					style="font-weight: normal;"
 					aria-expanded={open}
 					role="combobox"

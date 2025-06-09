@@ -8,7 +8,6 @@ import { mode, setMode } from 'mode-watcher'
 <label
 	style="
 border: 1px solid currentcolor;
-color: var(--gray-8);
 "
 	class="toggle text-base-content"
 >

@@ -4,4 +4,4 @@ globs: **/daisyui/**
 alwaysApply: false
 ---
 
-The svelte components in the daisyui folder are components of DaisyUI. For getting DaisyUI's docs, refer to `https://daisyui.com/llms.txt`
+The svelte components in the daisyui folder are components of DaisyUI. For getting DaisyUI's docs, refer to `https://daisyui.com/llms.txt` by `web_search` tool

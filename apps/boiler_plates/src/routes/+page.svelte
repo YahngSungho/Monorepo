@@ -7,8 +7,7 @@ import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
-import LanguageSelector from '@library/ui/language-selector'
-import ThemeToggle from '@library/ui/themeToggle'
+import VariaitonSetter from '@library/ui/variaitonSetter'
 import { Home } from '@lucide/svelte'
 import { toast } from 'svelte-sonner'
 
@@ -28,13 +27,8 @@ const eewre = Promise.resolve('test 122')
 <h6>Welcome to SvelteKit 000</h6>
 
 <div style="
-display: flex;
-flex-wrap: wrap;
-align-items: center;
-
 margin: var(--space-em-cqi-m);">
-<ThemeToggle />
-<LanguageSelector {getLocale} {setLocale} />
+<VariaitonSetter {getLocale} {setLocale} />
 </div>
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>

@@ -79,9 +79,10 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./variaitonSetter": "./src/miscellaneous/variaitonSetter.svelte",
 		"./themeToggle": "./src/miscellaneous/themeToggle.svelte",
 		"./layouts/root": "./src/layouts/root.svelte",
-		"./language-selector": "./src/miscellaneous/languageSelector/languageSelector.svelte",
+		"./language-selector": "./src/miscellaneous/languageSelector.svelte",
 		"./accordion": "./src/shadcn/components/ui/accordion/index.ts",
 		"./alert": "./src/shadcn/components/ui/alert/index.ts",
 		"./alert-dialog": "./src/shadcn/components/ui/alert-dialog/index.ts",
@@ -106,7 +107,7 @@
 		"./dropdown-menu": "./src/shadcn/components/ui/dropdown-menu/index.ts",
 		"./form": "./src/shadcn/components/ui/form/index.ts",
 		"./hover-card": "./src/shadcn/components/ui/hover-card/index.ts",
-		"./icon-text": "./src/miscellaneous/icon-text/icon-text.svelte",
+		"./icon-text": "./src/miscellaneous/icon-text.svelte",
 		"./input": "./src/shadcn/components/ui/input/index.ts",
 		"./input-otp": "./src/shadcn/components/ui/input-otp/index.ts",
 		"./label": "./src/shadcn/components/ui/label/index.ts",
