@@ -50,8 +50,13 @@ Sentry.setTag('App Name', appName)
 				actionButton: '',
 				cancelButton: '',
 				closeButton: css`
-					right: 0 !important;
+					width: 20px !important;
+					height: 20px !important;
 					top: -10px !important;
+					bottom: auto !important;
+					right: 0 !important;
+					left: auto !important;
+					transform: none !important;
 					color: var(--foreground) !important;
 				`,
 				icon: css`

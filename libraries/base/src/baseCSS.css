@@ -181,7 +181,7 @@ blockquote {
 	}
 
 	/* 4. Firefox용 컨테이너 쿼리 */
-	@container (max-width: 15ch) {
+	@container (max-width: 30ch) {
 		* {
 			scrollbar-width: thin;
 		}

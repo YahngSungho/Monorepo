@@ -14,7 +14,7 @@ border: 1px solid currentcolor;
 	<input
 		id="theme-controller"
 		checked={mode.current === 'dark'}
-		onchange={async () => {
+		onchange={() => {
 			setTimeout(() => {
 				setMode(mode.current === 'light' ? 'dark' : 'light')
 			}, 150)

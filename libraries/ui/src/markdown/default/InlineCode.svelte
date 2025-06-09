@@ -1,8 +1,8 @@
 <script>
-let { children } = $props()
+let { children, ...restProps } = $props()
 </script>
 
-<code>{@render children()}</code>
+<code {...restProps}>{@render children()}</code>
 
 <style>
 code {

@@ -2,7 +2,7 @@
 let { children, ...restProps } = $props()
 </script>
 
-<pre>{@render children()}</pre>
+<pre {...restProps}>{@render children()}</pre>
 
 <style>
 pre {

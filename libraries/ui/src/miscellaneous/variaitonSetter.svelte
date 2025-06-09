@@ -11,10 +11,11 @@
 <div style="
 display: flex;
 flex-wrap: wrap;
-align-items: center;
+align-items: end;
 " class={css`
 	& > * {
 		margin-inline-end: -1px;
+		margin-block-start: -1px;
 		border-radius: 0 !important;
 	}
 `}>
