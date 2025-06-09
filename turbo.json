@@ -24,7 +24,7 @@
 			"outputs": ["dist/**", ".svelte-kit/**", "paraglide-output/**"]
 		},
 		"build:en": {
-			"dependsOn": ["^change-base-locale:en", "^build"],
+			"dependsOn": ["^build:en"],
 			"env": [],
 			"inputs": [
 				"$TURBO_DEFAULT$",
