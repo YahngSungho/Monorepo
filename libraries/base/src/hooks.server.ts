@@ -2,6 +2,11 @@ import { extractCritical } from '@emotion/server' // Emotion 서버 유틸리티
 import { paraglideMiddleware } from '@library/paraglide/server.js'
 import { handleErrorWithSentry, initCloudflareSentryHandle, sentryHandle } from '@sentry/sveltekit'
 import type { Handle } from '@sveltejs/kit'
+
+// 환경 변수 확인
+const isDeployEnv =
+	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'
+
 import { sequence } from '@sveltejs/kit/hooks'
 
 // 에러 핸들러 정의
@@ -15,15 +20,18 @@ const myErrorHandler = ({ error, event }) => {
 // Sentry 에러 핸들러
 export const handleError = handleErrorWithSentry(myErrorHandler)
 
-// 환경 변수 확인
-const isDeployEnv =
-	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'
+// eslint-disable-next-line unicorn/prefer-set-has
+const rtlLocales = ['ar', 'fa', 'he', 'prs', 'ps', 'sd', 'ur']
+function getDir(locale: string) {
+	const lang = locale.split('-')[0]
+	return rtlLocales.includes(lang) ? 'rtl' : 'ltr'
+}
 
 // Paraglide 핸들러
 const paraglideHandle: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ locale }) => {
 		return resolve(event, {
-			transformPageChunk: ({ html }) => html.replace('%lang%', locale),
+			transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
 		})
 	})
 
