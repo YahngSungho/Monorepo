@@ -28,26 +28,30 @@
 }
 
 :root {
-	--color-base-100: var(--gray-0);
-	--color-base-200: var(--gray-2);
-	--color-base-300: var(--gray-4);
-	--color-base-content: var(--gray-12);
+	--color-base-100: var(--background);
+	--color-base-200: var(--gray-4);
+	--color-base-300: var(--gray-6);
+	--color-base-content: var(--foreground);
 
-	--color-primary: var(--gray-10);
-	--color-primary-content: var(--gray-0);
-	--color-secondary: var(--gray-0);
-	--color-secondary-content: var(--gray-8);
-	--color-accent: var(--gray-4);
-	--color-accent-content: var(--gray-10);
+	--color-primary: var(--primary);
+	--color-primary-content: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-content: var(--secondary-foreground);
+	--color-accent: var(--accent);
+	--color-accent-content: var(--accent-foreground);
 
-	--color-neutral: var(--gray-7);
-	--color-neutral-content: var(--gray-0);
-	--color-info: var(--cyan-3);
-	--color-info-content: var(--gray-12);
-	--color-success: var(--green-9);
-	--color-success-content: var(--gray-0);
-	--color-warning: var(--orange-7);
-	--color-warning-content: var(--gray-0);
-	--color-error: var(--red-9);
-	--color-error-content: var(--gray-0);
+	--color-neutral: var(--gray-6);
+	--color-neutral-content: var(--foreground);
+	--color-info: var(--blue-6);
+	--color-info-content: var(--foreground);
+	--color-success: var(--green-6);
+	--color-success-content: var(--foreground);
+	--color-warning: var(--orange-6);
+	--color-warning-content: var(--foreground);
+	--color-error: var(--destructive);
+	--color-error-content: var(--destructive-foreground);
+}
+
+.dark {
+	--noise: 1;
 }

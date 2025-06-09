@@ -1,5 +1,5 @@
 /* Open Props variables 덮어쓰기 Or 확장 */
-body {
+:root {
 	--size-content-4: 90ch;
 	--radius-2-5: 0.5rem;
 }

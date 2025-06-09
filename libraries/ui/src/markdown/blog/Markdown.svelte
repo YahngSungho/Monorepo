@@ -32,7 +32,7 @@ const shikiPlugin = {
 		{
 			themes: {
 				light: 'vitesse-dark',
-				dark: 'vitesse-light',
+				dark: 'vitesse-dark',
 			},
 		},
 	],
