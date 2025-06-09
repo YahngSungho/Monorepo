@@ -15,7 +15,7 @@
 	--size-field: var(--size-1);
 	/* --border: var(--border-size-1); - tailwind.css와 중복. 이거 대신 daisyui는 border-width 일일이 설정해줘야 함  */
 	--depth: 1;
-	--noise: 1;
+	--noise: 0;
 	--rounded-box: var(--radius-3);
 	--rounded-btn: var(--radius-2-5);
 	--rounded-badge: var(--radius-4);

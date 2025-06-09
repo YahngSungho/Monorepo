@@ -60,8 +60,8 @@ margin: var(--space-em-cqi-m);">
 
 <div
 	class={css`
-		width: 200px;
-		height: 3em;
+		inline-size: 200px;
+		block-size: 3em;
 		background-color: blue;
 		padding: 1em;
 	`}

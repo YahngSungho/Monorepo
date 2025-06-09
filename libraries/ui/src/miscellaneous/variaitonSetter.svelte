@@ -1,5 +1,5 @@
 <script>
-	import { css, cx } from '@emotion/css'
+	import { css } from '@emotion/css'
 
 	import LanguageSelector from './languageSelector.svelte'
 	import ThemeToggle from './themeToggle.svelte'
@@ -9,18 +9,10 @@
 </script>
 
 <div style="
-display: flex;
-flex-wrap: wrap;
 align-items: end;
-" class={cx('boxed', css`
-& > * {
-	margin-inline-end: -1px;
-	margin-block-start: -1px;
+" class="boxed attached-group pyramid-wrap">
+ <LanguageSelector buttonClass={css`
 	border-radius: 0 !important;
-}
-`)}>
+	`} {getLocale} {setLocale} />
 	<ThemeToggle />
-	<LanguageSelector buttonClass={css`
-		border-radius: 0 !important;
-			`} {getLocale} {setLocale} />
 </div>

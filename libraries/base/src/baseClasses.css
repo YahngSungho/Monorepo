@@ -7,6 +7,25 @@
 	scrollbar-gutter: stable both-edges;
 }
 
+/* flex-wrap인데, 윗줄보다 아랫줄이 더 많은 방식으로 배열
+하지만!! 이 클래스 쓰면 child element들이 거꾸로 배열되니까 거꾸로 배치해야 함  */
+.pyramid-wrap {
+	display: flex;
+	flex-wrap: wrap-reverse;
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+}
+
+.attached-group {
+	gap: 0;
+}
+
+.attached-group > * {
+	margin-inline-end: -1px;
+	margin-block-start: -1px;
+	border-radius: 0 !important;
+}
+
 .long-text {
 	/* font가 load 되면서 생기는 flash를 줄이기 위해 ch 대신 em 사용 */
 	max-inline-size: 40em;

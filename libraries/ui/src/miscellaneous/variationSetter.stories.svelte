@@ -24,4 +24,4 @@
 
 	<!-- 1. 기본 상태 (해피 패스) -->
 	<!-- 설명: 컴포넌트의 기본 렌더링 상태입니다. 사용자가 직접 상호작용하여 기능을 테스트할 수 있습니다. -->
-	<Story name="기본_상태_및_일반_동작" children={default_template_snippet} />
+	<Story name="기본 상태 및 일반 동작" children={default_template_snippet} />
