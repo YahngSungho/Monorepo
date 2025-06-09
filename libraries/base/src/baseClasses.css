@@ -11,19 +11,18 @@
 하지만!! 이 클래스 쓰면 child element들이 거꾸로 배열되니까 거꾸로 배치해야 함  */
 .pyramid-wrap {
 	display: flex;
-	flex-wrap: wrap-reverse;
-	flex-direction: row-reverse;
+	flex-flow: row-reverse wrap-reverse;
 	justify-content: flex-end;
 }
 
 .attached-group {
 	gap: 0;
-}
 
-.attached-group > * {
-	margin-inline-end: -1px;
+& > * {
 	margin-block-start: -1px;
+	margin-inline-end: -1px;
 	border-radius: 0 !important;
+}
 }
 
 .long-text {

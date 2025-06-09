@@ -167,7 +167,7 @@ blockquote {
 	background-color: var(--surface-1);
 
 	& * {
-		font-size: var(--font-size-fluid-em-cqi-0) !important;
+		font-size: inherit !important;
 	}
 }
 

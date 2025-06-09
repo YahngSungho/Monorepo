@@ -3,8 +3,7 @@
 		"stylelint-config-standard",
 		"stylelint-config-html",
 		"@double-great/stylelint-a11y",
-		"stylelint-config-clean-order",
-		"stylelint-config-tailwindcss"
+		"stylelint-config-clean-order"
 	],
 	"overrides": [
 		{
@@ -35,6 +34,7 @@
 	],
 	"reportNeedlessDisables": false,
 	"rules": {
+		"no-descending-specificity": [true, { "ignore": ["selectors-within-list"] }],
 		"selector-id-pattern": null,
 		"custom-media-pattern": null,
 		"custom-property-pattern": null,

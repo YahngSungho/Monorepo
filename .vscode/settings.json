@@ -1,4 +1,29 @@
 {
+	"stylelint.snippet": [
+		"css",
+		"svelte",
+		"html",
+		"postcss",
+		"jsx",
+		"tsx",
+		"js",
+		"ts"
+	],
+	"stylelint.validate": [
+		"css",
+		"svelte",
+		"html",
+		"postcss",
+		"jsx",
+		"tsx",
+		"js",
+		"ts",
+		"javascript",
+		"typescript",
+		"javascriptsvelte"
+	],
+	"stylelint.packageManager": "pnpm",
+	"stylelint.stylelintPath": "node_modules/stylelint",
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -50,7 +75,6 @@
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
 	"eslint.probe": [
-		"css",
 		"svelte",
 		"html",
 		"postcss",
@@ -76,7 +100,6 @@
 	"eslint.useESLintClass": true,
 	"eslint.useFlatConfig": true,
 	"eslint.validate": [
-		"css",
 		"svelte",
 		"html",
 		"postcss",
@@ -107,7 +130,6 @@
 	"prettier.singleQuote": true,
 	"prettier.useTabs": true,
 	"prettier.vueIndentScriptAndStyle": false,
-	"stylelint.validate": ["css", "scss", "svelte"],
 	"svelte.plugin.svelte.format.config.singleQuote": true,
 	"svelte.plugin.svelte.format.config.svelteAllowShorthand": true,
 	"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": true,
