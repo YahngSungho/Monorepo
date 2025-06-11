@@ -1,23 +1,9 @@
 import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui'
 
-import SubContent from './dropdown-menu-sub-content.svelte'
-import SubTrigger from './dropdown-menu-sub-trigger.svelte'
-import Trigger from './dropdown-menu-trigger.svelte'
 const { Sub } = DropdownMenuPrimitive
 const { Root } = DropdownMenuPrimitive
 
-export {
-	Root as DropdownMenu,
-	Sub as DropdownMenuSub,
-	SubContent as DropdownMenuSubContent,
-	SubTrigger as DropdownMenuSubTrigger,
-	Trigger as DropdownMenuTrigger,
-	Root,
-	Sub,
-	SubContent,
-	SubTrigger,
-	Trigger,
-}
+export { Root as DropdownMenu, Sub as DropdownMenuSub, Root, Sub }
 
 export {
 	default as CheckboxItem,
@@ -47,3 +33,12 @@ export {
 	default as DropdownMenuShortcut,
 	default as Shortcut,
 } from './dropdown-menu-shortcut.svelte'
+export {
+	default as DropdownMenuSubContent,
+	default as SubContent,
+} from './dropdown-menu-sub-content.svelte'
+export {
+	default as DropdownMenuSubTrigger,
+	default as SubTrigger,
+} from './dropdown-menu-sub-trigger.svelte'
+export { default as DropdownMenuTrigger, default as Trigger } from './dropdown-menu-trigger.svelte'

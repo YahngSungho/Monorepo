@@ -26,9 +26,11 @@ const eewre = Promise.resolve('test 122')
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<div style="
-margin: var(--space-em-cqi-m);">
-<VariaitonSetter {getLocale} {setLocale} />
+<div
+	style="
+margin: var(--space-em-cqi-m);"
+>
+	<VariaitonSetter {getLocale} {setLocale} />
 </div>
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>

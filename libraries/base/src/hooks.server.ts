@@ -31,7 +31,8 @@ function getDir(locale: string) {
 const paraglideHandle: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ locale }) => {
 		return resolve(event, {
-			transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
+			transformPageChunk: ({ html }) =>
+				html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
 		})
 	})
 

@@ -1,8 +1,5 @@
 import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 
-import SubContent from './context-menu-sub-content.svelte'
-import SubTrigger from './context-menu-sub-trigger.svelte'
-import Trigger from './context-menu-trigger.svelte'
 const { Sub } = ContextMenuPrimitive
 const { Root } = ContextMenuPrimitive
 
@@ -10,14 +7,8 @@ export {
 	//
 	Root as ContextMenu,
 	Sub as ContextMenuSub,
-	SubContent as ContextMenuSubContent,
-	SubTrigger as ContextMenuSubTrigger,
-	Trigger as ContextMenuTrigger,
 	Root,
 	Sub,
-	SubContent,
-	SubTrigger,
-	Trigger,
 }
 
 export {
@@ -45,3 +36,12 @@ export {
 	default as Separator,
 } from './context-menu-separator.svelte'
 export { default as ContextMenuShortcut, default as Shortcut } from './context-menu-shortcut.svelte'
+export {
+	default as ContextMenuSubContent,
+	default as SubContent,
+} from './context-menu-sub-content.svelte'
+export {
+	default as ContextMenuSubTrigger,
+	default as SubTrigger,
+} from './context-menu-sub-trigger.svelte'
+export { default as ContextMenuTrigger, default as Trigger } from './context-menu-trigger.svelte'

@@ -18,11 +18,11 @@
 .attached-group {
 	gap: 0;
 
-& > * {
-	margin-block-start: -1px;
-	margin-inline-end: -1px;
-	border-radius: 0 !important;
-}
+	& > * {
+		margin-block-start: -1px;
+		margin-inline-end: -1px;
+		border-radius: 0 !important;
+	}
 }
 
 .long-text {

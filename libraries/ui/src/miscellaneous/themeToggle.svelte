@@ -2,7 +2,6 @@
 import MoonIcon from '@lucide/svelte/icons/moon'
 import SunIcon from '@lucide/svelte/icons/sun'
 import { mode, setMode } from 'mode-watcher'
-
 </script>
 
 <label

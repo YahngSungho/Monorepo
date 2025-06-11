@@ -86,7 +86,6 @@
 	--space-cqi-s-l: clamp(1.125rem, 0.6467rem + 2.3913cqi, 2.5rem);
 }
 
-
 :root {
 	/* Space 2xs: 9px → 10px */
 	--space-2xs: clamp(0.5625rem, 0.5408rem + 0.1087vi, 0.625rem);

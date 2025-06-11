@@ -32,9 +32,9 @@ const getLanguageRank = (lang: string): [number, number, number] => {
 	const lang_primary = lang_lowerCase.split('-')[0]
 
 	// 1순위: 브라우저 선호 언어와 일치하는 경우
-	const exactMatchIndex = R.findIndex(
-		(preferred) => preferred.toLowerCase() === lang_lowerCase,
-	)(preferredLocales)
+	const exactMatchIndex = R.findIndex((preferred) => preferred.toLowerCase() === lang_lowerCase)(
+		preferredLocales,
+	)
 	if (exactMatchIndex !== -1) {
 		return [0, exactMatchIndex, 0] // [티어, 우선순위 인덱스, 타입: 완전 일치]
 	}
@@ -93,8 +93,8 @@ const LOADING_VALUE = '$loading'
 			{#snippet child({ props })}
 				<Button
 					{...props}
-					class={buttonClass}
 					style="font-weight: normal;"
+					class={buttonClass}
 					aria-expanded={open}
 					role="combobox"
 					size="xs"

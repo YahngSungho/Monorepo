@@ -43,13 +43,12 @@ body {
 	}
 }
 
-
-*:focus, label:focus-within {
+*:focus,
+label:focus-within {
 	z-index: 1;
 	outline: 2px dashed color-mix(in srgb, var(--gray-6) 80%, transparent 20%);
 	outline-offset: 2px;
 }
-
 
 input:focus {
 	outline: transparent;

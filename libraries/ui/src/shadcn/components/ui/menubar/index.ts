@@ -1,9 +1,5 @@
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 
-import SubContent from './menubar-sub-content.svelte'
-import SubTrigger from './menubar-sub-trigger.svelte'
-import Trigger from './menubar-trigger.svelte'
-
 const { Menu } = MenubarPrimitive
 const { Sub } = MenubarPrimitive
 const { RadioGroup } = MenubarPrimitive
@@ -14,14 +10,8 @@ export {
 	Menu as MenubarMenu,
 	RadioGroup as MenubarRadioGroup,
 	Sub as MenubarSub,
-	SubContent as MenubarSubContent,
-	SubTrigger as MenubarSubTrigger,
-	Trigger as MenubarTrigger,
 	RadioGroup,
 	Sub,
-	SubContent,
-	SubTrigger,
-	Trigger,
 }
 
 export { default as Menubar, default as Root } from './menubar.svelte'
@@ -40,3 +30,6 @@ export { default as Label, default as MenubarLabel } from './menubar-label.svelt
 export { default as MenubarRadioItem, default as RadioItem } from './menubar-radio-item.svelte'
 export { default as MenubarSeparator, default as Separator } from './menubar-separator.svelte'
 export { default as MenubarShortcut, default as Shortcut } from './menubar-shortcut.svelte'
+export { default as MenubarSubContent, default as SubContent } from './menubar-sub-content.svelte'
+export { default as MenubarSubTrigger, default as SubTrigger } from './menubar-sub-trigger.svelte'
+export { default as MenubarTrigger, default as Trigger } from './menubar-trigger.svelte'
