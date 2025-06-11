@@ -67,7 +67,7 @@ export default {
 			reducedMotion: 'reduce',
 		},
 		screenshot: 'only-on-failure',
-		trace: 'on-first-retry',
+		trace: 'retain-on-failure',
 	},
 
 	workers: process.env.CI ? 1 : '50%',
