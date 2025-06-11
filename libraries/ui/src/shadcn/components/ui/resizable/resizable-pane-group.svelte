@@ -1,12 +1,12 @@
 <script lang="ts">
 import * as ResizablePrimitive from 'paneforge'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
-	class: className,
-	ref = $bindable(),
+	ref = $bindable(null),
 	this: paneGroup = $bindable(),
+	class: className,
 	...restProps
 }: ResizablePrimitive.PaneGroupProps & {
 	this?: ResizablePrimitive.PaneGroup
@@ -16,5 +16,6 @@ let {
 <ResizablePrimitive.PaneGroup
 	bind:this={paneGroup}
 	class={cn('flex h-full w-full data-[direction=vertical]:flex-col', className)}
+	data-slot="resizable-pane-group"
 	{...restProps}
 />

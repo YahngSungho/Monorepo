@@ -1,0 +1,567 @@
+[
+  {
+    "label": "العربية",
+    "label_en": "Arabic",
+    "value": "ar"
+  },
+  {
+    "label": "العربية (مصر)",
+    "label_en": "Arabic (Egypt)",
+    "value": "ar-EG"
+  },
+  {
+    "label": "العربية (المملكة العربية السعودية)",
+    "label_en": "Arabic (Saudi Arabia)",
+    "value": "ar-SA"
+  },
+  {
+    "label": "বাংলা",
+    "label_en": "Bangla",
+    "value": "bn"
+  },
+  {
+    "label": "বাংলা (বাংলাদেশ)",
+    "label_en": "Bangla (Bangladesh)",
+    "value": "bn-BD"
+  },
+  {
+    "label": "বাংলা (ভারত)",
+    "label_en": "Bangla (India)",
+    "value": "bn-IN"
+  },
+  {
+    "label": "Български",
+    "label_en": "Bulgarian",
+    "value": "bg"
+  },
+  {
+    "label": "中文",
+    "label_en": "Chinese",
+    "value": "zh"
+  },
+  {
+    "label": "中文 (中国)",
+    "label_en": "Chinese (China)",
+    "value": "zh-CN"
+  },
+  {
+    "label": "中文 (中國香港特別行政區)",
+    "label_en": "Chinese (Hong Kong SAR China)",
+    "value": "zh-HK"
+  },
+  {
+    "label": "中文 (中國澳門特別行政區)",
+    "label_en": "Chinese (Macao SAR China)",
+    "value": "zh-MO"
+  },
+  {
+    "label": "中文 (新加坡)",
+    "label_en": "Chinese (Singapore)",
+    "value": "zh-SG"
+  },
+  {
+    "label": "中文 (台灣)",
+    "label_en": "Chinese (Taiwan)",
+    "value": "zh-TW"
+  },
+  {
+    "label": "简体中文",
+    "label_en": "Simplified Chinese",
+    "value": "zh-Hans"
+  },
+  {
+    "label": "繁體中文",
+    "label_en": "Traditional Chinese",
+    "value": "zh-Hant"
+  },
+  {
+    "label": "Hrvatski",
+    "label_en": "Croatian",
+    "value": "hr"
+  },
+  {
+    "label": "Čeština",
+    "label_en": "Czech",
+    "value": "cs"
+  },
+  {
+    "label": "Dansk",
+    "label_en": "Danish",
+    "value": "da"
+  },
+  {
+    "label": "Nederlands",
+    "label_en": "Dutch",
+    "value": "nl"
+  },
+  {
+    "label": "Nederlands (Nederland)",
+    "label_en": "Dutch (Netherlands)",
+    "value": "nl-NL"
+  },
+  {
+    "label": "Nederlands (België)",
+    "label_en": "Dutch (Belgium)",
+    "value": "nl-BE"
+  },
+  {
+    "label": "English",
+    "label_en": "English",
+    "value": "en"
+  },
+  {
+    "label": "English (United States)",
+    "label_en": "English (United States)",
+    "value": "en-US"
+  },
+  {
+    "label": "English (United Kingdom)",
+    "label_en": "English (United Kingdom)",
+    "value": "en-GB"
+  },
+  {
+    "label": "English (Australia)",
+    "label_en": "English (Australia)",
+    "value": "en-AU"
+  },
+  {
+    "label": "English (Canada)",
+    "label_en": "English (Canada)",
+    "value": "en-CA"
+  },
+  {
+    "label": "English (India)",
+    "label_en": "English (India)",
+    "value": "en-IN"
+  },
+  {
+    "label": "English (Ireland)",
+    "label_en": "English (Ireland)",
+    "value": "en-IE"
+  },
+  {
+    "label": "English (New Zealand)",
+    "label_en": "English (New Zealand)",
+    "value": "en-NZ"
+  },
+  {
+    "label": "English (South Africa)",
+    "label_en": "English (South Africa)",
+    "value": "en-ZA"
+  },
+  {
+    "label": "Eesti",
+    "label_en": "Estonian",
+    "value": "et"
+  },
+  {
+    "label": "Suomi",
+    "label_en": "Finnish",
+    "value": "fi"
+  },
+  {
+    "label": "Français",
+    "label_en": "French",
+    "value": "fr"
+  },
+  {
+    "label": "Français (France)",
+    "label_en": "French (France)",
+    "value": "fr-FR"
+  },
+  {
+    "label": "Français (Canada)",
+    "label_en": "French (Canada)",
+    "value": "fr-CA"
+  },
+  {
+    "label": "Français (Suisse)",
+    "label_en": "French (Switzerland)",
+    "value": "fr-CH"
+  },
+  {
+    "label": "Français (Belgique)",
+    "label_en": "French (Belgium)",
+    "value": "fr-BE"
+  },
+  {
+    "label": "Deutsch",
+    "label_en": "German",
+    "value": "de"
+  },
+  {
+    "label": "Deutsch (Deutschland)",
+    "label_en": "German (Germany)",
+    "value": "de-DE"
+  },
+  {
+    "label": "Deutsch (Österreich)",
+    "label_en": "German (Austria)",
+    "value": "de-AT"
+  },
+  {
+    "label": "Deutsch (Schweiz)",
+    "label_en": "German (Switzerland)",
+    "value": "de-CH"
+  },
+  {
+    "label": "Ελληνικά",
+    "label_en": "Greek",
+    "value": "el"
+  },
+  {
+    "label": "עברית",
+    "label_en": "Hebrew",
+    "value": "he"
+  },
+  {
+    "label": "हिन्दी",
+    "label_en": "Hindi",
+    "value": "hi"
+  },
+  {
+    "label": "Magyar",
+    "label_en": "Hungarian",
+    "value": "hu"
+  },
+  {
+    "label": "Indonesia",
+    "label_en": "Indonesian",
+    "value": "id"
+  },
+  {
+    "label": "Italiano",
+    "label_en": "Italian",
+    "value": "it"
+  },
+  {
+    "label": "Italiano (Italia)",
+    "label_en": "Italian (Italy)",
+    "value": "it-IT"
+  },
+  {
+    "label": "Italiano (Svizzera)",
+    "label_en": "Italian (Switzerland)",
+    "value": "it-CH"
+  },
+  {
+    "label": "日本語",
+    "label_en": "Japanese",
+    "value": "ja"
+  },
+  {
+    "label": "한국어",
+    "label_en": "Korean",
+    "value": "ko"
+  },
+  {
+    "label": "Latviešu",
+    "label_en": "Latvian",
+    "value": "lv"
+  },
+  {
+    "label": "Lietuvių",
+    "label_en": "Lithuanian",
+    "value": "lt"
+  },
+  {
+    "label": "Norsk",
+    "label_en": "Norwegian",
+    "value": "no"
+  },
+  {
+    "label": "Polski",
+    "label_en": "Polish",
+    "value": "pl"
+  },
+  {
+    "label": "Português",
+    "label_en": "Portuguese",
+    "value": "pt"
+  },
+  {
+    "label": "Português (Portugal)",
+    "label_en": "Portuguese (Portugal)",
+    "value": "pt-PT"
+  },
+  {
+    "label": "Português (Brasil)",
+    "label_en": "Portuguese (Brazil)",
+    "value": "pt-BR"
+  },
+  {
+    "label": "Română",
+    "label_en": "Romanian",
+    "value": "ro"
+  },
+  {
+    "label": "Русский",
+    "label_en": "Russian",
+    "value": "ru"
+  },
+  {
+    "label": "Српски",
+    "label_en": "Serbian",
+    "value": "sr"
+  },
+  {
+    "label": "Srpski (Crna Gora)",
+    "label_en": "Serbian (Montenegro)",
+    "value": "sr-ME"
+  },
+  {
+    "label": "Srpski (latinica)",
+    "label_en": "Serbian (Latin)",
+    "value": "sr-Latn"
+  },
+  {
+    "label": "Slovenčina",
+    "label_en": "Slovak",
+    "value": "sk"
+  },
+  {
+    "label": "Slovenščina",
+    "label_en": "Slovenian",
+    "value": "sl"
+  },
+  {
+    "label": "Español",
+    "label_en": "Spanish",
+    "value": "es"
+  },
+  {
+    "label": "Español (España)",
+    "label_en": "Spanish (Spain)",
+    "value": "es-ES"
+  },
+  {
+    "label": "Español (México)",
+    "label_en": "Spanish (Mexico)",
+    "value": "es-MX"
+  },
+  {
+    "label": "Español (Argentina)",
+    "label_en": "Spanish (Argentina)",
+    "value": "es-AR"
+  },
+  {
+    "label": "Español (Colombia)",
+    "label_en": "Spanish (Colombia)",
+    "value": "es-CO"
+  },
+  {
+    "label": "Español (Estados Unidos)",
+    "label_en": "Spanish (United States)",
+    "value": "es-US"
+  },
+  {
+    "label": "Kiswahili",
+    "label_en": "Swahili",
+    "value": "sw"
+  },
+  {
+    "label": "Svenska",
+    "label_en": "Swedish",
+    "value": "sv"
+  },
+  {
+    "label": "ไทย",
+    "label_en": "Thai",
+    "value": "th"
+  },
+  {
+    "label": "Türkçe",
+    "label_en": "Turkish",
+    "value": "tr"
+  },
+  {
+    "label": "Українська",
+    "label_en": "Ukrainian",
+    "value": "uk"
+  },
+  {
+    "label": "Tiếng Việt",
+    "label_en": "Vietnamese",
+    "value": "vi"
+  },
+  {
+    "label": "Melayu",
+    "label_en": "Malay",
+    "value": "ms"
+  },
+  {
+    "label": "தமிழ்",
+    "label_en": "Tamil",
+    "value": "ta"
+  },
+  {
+    "label": "தமிழ் (இந்தியா)",
+    "label_en": "Tamil (India)",
+    "value": "ta-IN"
+  },
+  {
+    "label": "தமிழ் (இலங்கை)",
+    "label_en": "Tamil (Sri Lanka)",
+    "value": "ta-LK"
+  },
+  {
+    "label": "தமிழ் (சிங்கப்பூர்)",
+    "label_en": "Tamil (Singapore)",
+    "value": "ta-SG"
+  },
+  {
+    "label": "தமிழ் (மலேசியா)",
+    "label_en": "Tamil (Malaysia)",
+    "value": "ta-MY"
+  },
+  {
+    "label": "ਪੰਜਾਬੀ",
+    "label_en": "Punjabi",
+    "value": "pa"
+  },
+  {
+    "label": "اردو",
+    "label_en": "Urdu",
+    "value": "ur"
+  },
+  {
+    "label": "پښتو",
+    "label_en": "Pashto",
+    "value": "ps"
+  },
+  {
+    "label": "Filipino",
+    "label_en": "Filipino",
+    "value": "tl"
+  },
+  {
+    "label": "Filipino",
+    "label_en": "Filipino",
+    "value": "fil"
+  },
+  {
+    "label": "မြန်မာ",
+    "label_en": "Burmese",
+    "value": "my"
+  },
+  {
+    "label": "فارسی",
+    "label_en": "Persian",
+    "value": "fa"
+  },
+  {
+    "label": "دری",
+    "label_en": "Dari",
+    "value": "prs"
+  },
+  {
+    "label": "Kurdî (kurmancî)",
+    "label_en": "Kurdish",
+    "value": "ku"
+  },
+  {
+    "label": "Jawa",
+    "label_en": "Javanese",
+    "value": "jv"
+  },
+  {
+    "label": "ಕನ್ನಡ",
+    "label_en": "Kannada",
+    "value": "kn"
+  },
+  {
+    "label": "తెలుగు",
+    "label_en": "Telugu",
+    "value": "te"
+  },
+  {
+    "label": "മലയാളം",
+    "label_en": "Malayalam",
+    "value": "ml"
+  },
+  {
+    "label": "मराठी",
+    "label_en": "Marathi",
+    "value": "mr"
+  },
+  {
+    "label": "ଓଡ଼ିଆ",
+    "label_en": "Odia",
+    "value": "or"
+  },
+  {
+    "label": "नेपाली",
+    "label_en": "Nepali",
+    "value": "ne"
+  },
+  {
+    "label": "አማርኛ",
+    "label_en": "Amharic",
+    "value": "am"
+  },
+  {
+    "label": "Hausa",
+    "label_en": "Hausa",
+    "value": "ha"
+  },
+  {
+    "label": "Soomaali",
+    "label_en": "Somali",
+    "value": "so"
+  },
+  {
+    "label": "Тоҷикӣ",
+    "label_en": "Tajik",
+    "value": "tg"
+  },
+  {
+    "label": "Azərbaycan",
+    "label_en": "Azerbaijani",
+    "value": "az"
+  },
+  {
+    "label": "ગુજરાતી",
+    "label_en": "Gujarati",
+    "value": "gu"
+  },
+  {
+    "label": "O‘zbek",
+    "label_en": "Uzbek",
+    "value": "uz"
+  },
+  {
+    "label": "Èdè Yorùbá",
+    "label_en": "Yoruba",
+    "value": "yo"
+  },
+  {
+    "label": "Igbo",
+    "label_en": "Igbo",
+    "value": "ig"
+  },
+  {
+    "label": "Oromoo",
+    "label_en": "Oromo",
+    "value": "om"
+  },
+  {
+    "label": "سنڌي",
+    "label_en": "Sindhi",
+    "value": "sd"
+  },
+  {
+    "label": "Afrikaans",
+    "label_en": "Afrikaans",
+    "value": "af"
+  },
+  {
+    "label": "Қазақ тілі",
+    "label_en": "Kazakh",
+    "value": "kk"
+  },
+  {
+    "label": "සිංහල",
+    "label_en": "Sinhala",
+    "value": "si"
+  }
+]

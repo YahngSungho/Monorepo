@@ -1,13 +1,14 @@
 <script lang="ts">
 import { Avatar as AvatarPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
-let { class: className, ref = $bindable(), ...restProps }: AvatarPrimitive.ImageProps = $props()
+let { ref = $bindable(null), class: className, ...restProps }: AvatarPrimitive.ImageProps = $props()
 </script>
 
 <AvatarPrimitive.Image
-	class={cn('aspect-square h-full w-full', className)}
+	class={cn('aspect-square size-full', className)}
+	data-slot="avatar-image"
 	bind:ref
 	{...restProps}
 />

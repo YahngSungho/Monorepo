@@ -1,13 +1,12 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 </script>
@@ -16,6 +15,7 @@ let {
 	bind:this={ref}
 	class={cn('w-full text-sm', className)}
 	data-sidebar="group-content"
+	data-slot="sidebar-group-content"
 	{...restProps}
 >
 	{@render children?.()}

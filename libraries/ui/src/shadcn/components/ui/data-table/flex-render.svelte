@@ -1,15 +1,9 @@
-<script lang="ts" module>
-import type { CellContext, ColumnDefTemplate, HeaderContext } from '@tanstack/table-core'
-
-type TData = unknown
-type TValue = unknown
-type TContext = unknown
-</script>
-
 <script
 	generics="TData, TValue, TContext extends CellContext<TData, TValue> | HeaderContext<TData, TValue>"
 	lang="ts"
 >
+import type { CellContext, ColumnDefTemplate, HeaderContext } from '@tanstack/table-core'
+
 import { RenderComponentConfig, RenderSnippetConfig } from './render-helpers.js'
 type Props = {
 	/** The cell or header field of the current cell's column definition. */
@@ -34,7 +28,7 @@ let { content, context }: Props = $props()
 		{@const { component: Component, props } = result}
 		<Component {...props} />
 	{:else if result instanceof RenderSnippetConfig}
-		{@const { params, snippet } = result}
+		{@const { snippet, params } = result}
 		{@render snippet(params)}
 	{:else}
 		{result}

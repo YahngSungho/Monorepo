@@ -1,13 +1,12 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLElement>> = $props()
 </script>
@@ -26,6 +25,7 @@ let {
 		className,
 	)}
 	data-sidebar="menu-badge"
+	data-slot="sidebar-menu-badge"
 	{...restProps}
 >
 	{@render children?.()}

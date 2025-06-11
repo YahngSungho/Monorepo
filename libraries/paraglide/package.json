@@ -7,11 +7,13 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
+		"get-all-language-info": "node ./src/getAllLanguageInfo.js",
 		"change-base-locale:en": "node ./src/changeBaseLocaleToEn.js",
 		"change-base-locale:ko": "node ./src/changeBaseLocaleToKo.js",
 		"check-no-missing-explanations": "node ./src/checkNoMissingExplanations.js",
 		"explanation-ready": "node ./src/readyMissingExplanations.js",
 		"build": "node ./src/compile.js",
+		"build:en": "pnpm run change-base-locale:en && pnpm run build",
 		"translate": "pnpm run check-no-missing-explanations && node ./src/translation.js",
 		"translate-machine": "npx @inlang/cli machine translate --project ./project.inlang",
 		"translate:dotenv": "dotenv -e ../../.env node ./src/translation.js"
@@ -28,6 +30,8 @@
 		"./paraglide_outdir": "./paraglide-output",
 		"./paraglide_project": "./project.inlang",
 		"./runtime.js": "./paraglide-output/runtime.js",
-		"./server.js": "./paraglide-output/server.js"
+		"./server.js": "./paraglide-output/server.js",
+		"./getAllLocales": "./src/getAllLocales.js",
+		"./getAllActiveLanguageInfo": "./src/getAllActiveLanguageInfo.js"
 	}
 }

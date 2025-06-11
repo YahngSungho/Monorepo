@@ -1,26 +1,25 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import emblaCarouselSvelte from 'embla-carousel-svelte'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 import { getEmblaContext } from './context.js'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 
 const emblaCtx = getEmblaContext('<Carousel.Content/>')
 </script>
 
-<!-- svelte-ignore event_directive_deprecated -->
 <div
 	class="overflow-hidden"
-	on:emblaInit={emblaCtx.onInit}
+	data-slot="carousel-content"
+	onemblaInit={emblaCtx.onInit}
 	use:emblaCarouselSvelte={{
 		options: {
 			container: '[data-embla-container]',

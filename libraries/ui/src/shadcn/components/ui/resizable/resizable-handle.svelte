@@ -1,13 +1,12 @@
 <script lang="ts">
-import type { WithoutChildrenOrChild } from 'bits-ui'
-import GripVertical from 'lucide-svelte/icons/grip-vertical'
+import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical'
 import * as ResizablePrimitive from 'paneforge'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	withHandle = false,
 	...restProps
 }: WithoutChildrenOrChild<ResizablePrimitive.PaneResizerProps> & {
@@ -26,12 +25,13 @@ let {
 		[&[data-direction=vertical]>div]:rotate-90`,
 		className,
 	)}
+	data-slot="resizable-handle"
 	bind:ref
 	{...restProps}
 >
 	{#if withHandle}
-		<div class="bg-border z-10 flex h-4 w-3 items-center justify-center rounded-sm border">
-			<GripVertical class="size-2.5" />
+		<div class="bg-border rounded-xs z-10 flex h-4 w-3 items-center justify-center border">
+			<GripVerticalIcon class="size-2.5" />
 		</div>
 	{/if}
 </ResizablePrimitive.PaneResizer>

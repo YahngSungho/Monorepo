@@ -1,7 +1,7 @@
 <script>
 import '@library/base/fontStyle.css'
 
-import BaseLayout from '@library/base/baseLayout'
+import BaseLayout from '@library/ui/layouts/root'
 
 import { APP_NAME } from './base'
 

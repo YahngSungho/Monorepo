@@ -1,15 +1,14 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
 import { Skeleton } from '$shadcn/components/ui/skeleton/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	showIcon = false,
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLElement>> & {
 	showIcon?: boolean
@@ -23,6 +22,7 @@ const width = `${Math.floor(Math.random() * 40) + 50}%`
 	bind:this={ref}
 	class={cn('flex h-8 items-center gap-2 rounded-md px-2', className)}
 	data-sidebar="menu-skeleton"
+	data-slot="sidebar-menu-skeleton"
 	{...restProps}
 >
 	{#if showIcon}

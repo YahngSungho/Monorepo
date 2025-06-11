@@ -1,17 +1,25 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 </script>
 
-<div bind:this={ref} class={cn('flex flex-col space-y-1.5 p-6 pb-0', className)} {...restProps}>
+<div
+	bind:this={ref}
+	class={cn(
+		`@container/card-header has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 grid
+		auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6`,
+		className,
+	)}
+	data-slot="card-header"
+	{...restProps}
+>
 	{@render children?.()}
 </div>

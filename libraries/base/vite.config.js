@@ -54,6 +54,9 @@ const baseConfig = defineConfig({
 		reporters: process.env.GITHUB_ACTIONS ? ['junit', 'github-actions'] : 'default',
 		outputFile: './vitest-report/result.xml',
 	},
+	ssr: {
+		noExternal: ['bits-ui'],
+	},
 })
 
 // @ts-ignore

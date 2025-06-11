@@ -2,9 +2,18 @@
 import type { Separator as SeparatorPrimitive } from 'bits-ui'
 
 import { Separator } from '$shadcn/components/ui/separator/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
-let { class: className, ref = $bindable(), ...restProps }: SeparatorPrimitive.RootProps = $props()
+let {
+	ref = $bindable(null),
+	class: className,
+	...restProps
+}: SeparatorPrimitive.RootProps = $props()
 </script>
 
-<Separator class={cn('bg-muted -mx-1 my-1 h-px', className)} bind:ref {...restProps} />
+<Separator
+	class={cn('bg-border pointer-events-none -mx-1 my-1 h-px', className)}
+	data-slot="select-separator"
+	bind:ref
+	{...restProps}
+/>

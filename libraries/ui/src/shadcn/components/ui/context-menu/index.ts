@@ -2,22 +2,13 @@ import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 
 const { Sub } = ContextMenuPrimitive
 const { Root } = ContextMenuPrimitive
-const { Trigger } = ContextMenuPrimitive
-const { Group } = ContextMenuPrimitive
-const { RadioGroup } = ContextMenuPrimitive
 
 export {
 	//
 	Root as ContextMenu,
-	Group as ContextMenuGroup,
-	RadioGroup as ContextMenuRadioGroup,
 	Sub as ContextMenuSub,
-	Trigger as ContextMenuTrigger,
-	Group,
-	RadioGroup,
 	Root,
 	Sub,
-	Trigger,
 }
 
 export {
@@ -25,11 +16,17 @@ export {
 	default as ContextMenuCheckboxItem,
 } from './context-menu-checkbox-item.svelte'
 export { default as Content, default as ContextMenuContent } from './context-menu-content.svelte'
+export { default as ContextMenuGroup, default as Group } from './context-menu-group.svelte'
 export {
 	default as ContextMenuGroupHeading,
 	default as GroupHeading,
 } from './context-menu-group-heading.svelte'
 export { default as ContextMenuItem, default as Item } from './context-menu-item.svelte'
+export { default as ContextMenuLabel, default as Label } from './context-menu-label.svelte'
+export {
+	default as ContextMenuRadioGroup,
+	default as RadioGroup,
+} from './context-menu-radio-group.svelte'
 export {
 	default as ContextMenuRadioItem,
 	default as RadioItem,
@@ -47,3 +44,4 @@ export {
 	default as ContextMenuSubTrigger,
 	default as SubTrigger,
 } from './context-menu-sub-trigger.svelte'
+export { default as ContextMenuTrigger, default as Trigger } from './context-menu-trigger.svelte'

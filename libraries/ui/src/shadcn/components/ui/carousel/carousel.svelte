@@ -1,5 +1,5 @@
 <script lang="ts">
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 import {
 	type CarouselAPI,
@@ -9,29 +9,30 @@ import {
 } from './context.js'
 
 let {
-	children,
-	class: className,
+	ref = $bindable(null),
 	opts = {},
-	orientation = 'horizontal',
 	plugins = [],
 	setApi = () => {},
+	orientation = 'horizontal',
+	class: className,
+	children,
 	...restProps
-}: CarouselProps = $props()
+}: WithElementRef<CarouselProps> = $props()
 
 let carouselState = $state<EmblaContext>({
 	api: undefined,
+	scrollPrev,
+	scrollNext,
+	orientation,
 	canScrollNext: false,
 	canScrollPrev: false,
 	handleKeyDown,
-	onInit,
 	options: opts,
-	orientation,
 	plugins,
-	scrollNext,
-	scrollPrev,
+	onInit,
 	scrollSnaps: [],
-	scrollTo,
 	selectedIndex: 0,
+	scrollTo,
 })
 
 setEmblaContext(carouselState)
@@ -88,6 +89,13 @@ $effect(() => {
 })
 </script>
 
-<div class={cn('relative', className)} aria-roledescription="carousel" role="region" {...restProps}>
+<div
+	bind:this={ref}
+	class={cn('relative', className)}
+	aria-roledescription="carousel"
+	data-slot="carousel"
+	role="region"
+	{...restProps}
+>
 	{@render children?.()}
 </div>

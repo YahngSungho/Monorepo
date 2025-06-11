@@ -1,5 +1,1 @@
-import { AspectRatio as AspectRatioPrimitive } from 'bits-ui'
-
-const { Root } = AspectRatioPrimitive
-
-export { Root as AspectRatio, Root }
+export { default as AspectRatio, default as Root } from './aspect-ratio.svelte'

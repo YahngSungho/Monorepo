@@ -1,20 +1,23 @@
 <script lang="ts">
 import { Menubar as MenubarPrimitive } from 'bits-ui'
+import type { ComponentProps } from 'svelte'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
-	class: className,
+	ref = $bindable(null),
 	inset,
-	ref = $bindable(),
+	class: className,
 	...restProps
-}: MenubarPrimitive.GroupHeadingProps & {
+}: ComponentProps<typeof MenubarPrimitive.GroupHeading> & {
 	inset?: boolean
 } = $props()
 </script>
 
 <MenubarPrimitive.GroupHeading
-	class={cn('px-2 py-1.5 text-sm font-semibold', inset && 'pl-8', className)}
+	class={cn('px-2 py-1.5 text-sm font-medium data-[inset]:pl-8', className)}
+	data-inset={inset}
+	data-slot="menubar-group-heading"
 	bind:ref
 	{...restProps}
 />

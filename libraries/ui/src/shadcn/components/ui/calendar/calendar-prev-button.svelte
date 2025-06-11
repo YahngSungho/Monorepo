@@ -1,20 +1,20 @@
 <script lang="ts">
+import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left'
 import { Calendar as CalendarPrimitive } from 'bits-ui'
-import ChevronLeft from 'lucide-svelte/icons/chevron-left'
 
 import { buttonVariants } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: CalendarPrimitive.PrevButtonProps = $props()
 </script>
 
 {#snippet Fallback()}
-	<ChevronLeft class="size-4" />
+	<ChevronLeftIcon class="size-4" />
 {/snippet}
 
 <CalendarPrimitive.PrevButton

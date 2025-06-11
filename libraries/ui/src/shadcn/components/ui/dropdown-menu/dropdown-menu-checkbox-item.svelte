@@ -1,17 +1,17 @@
 <script lang="ts">
-import { DropdownMenu as DropdownMenuPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
-import Check from 'lucide-svelte/icons/check'
-import Minus from 'lucide-svelte/icons/minus'
+import CheckIcon from '@lucide/svelte/icons/check'
+import MinusIcon from '@lucide/svelte/icons/minus'
+import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	checked = $bindable(false),
-	children: childrenProp,
-	class: className,
 	indeterminate = $bindable(false),
-	ref = $bindable(),
+	class: className,
+	children: childrenProp,
 	...restProps
 }: WithoutChildrenOrChild<DropdownMenuPrimitive.CheckboxItemProps> & {
 	children?: Snippet
@@ -20,22 +20,24 @@ let {
 
 <DropdownMenuPrimitive.CheckboxItem
 	class={cn(
-		`data-highlighted:bg-accent data-highlighted:text-accent-foreground outline-hidden
-		data-disabled:pointer-events-none data-disabled:opacity-50 relative flex cursor-default select-none
-		items-center rounded-sm py-1.5 pl-8 pr-2 text-sm`,
+		`focus:bg-accent focus:text-accent-foreground outline-hidden relative flex cursor-default select-none
+		items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm data-[disabled]:pointer-events-none
+		data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none
+		[&_svg]:shrink-0`,
 		className,
 	)}
+	data-slot="dropdown-menu-checkbox-item"
 	bind:ref
 	bind:checked
 	bind:indeterminate
 	{...restProps}
 >
 	{#snippet children({ checked, indeterminate })}
-		<span class="absolute left-2 flex size-3.5 items-center justify-center">
+		<span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
 			{#if indeterminate}
-				<Minus class="size-4" />
+				<MinusIcon class="size-4" />
 			{:else}
-				<Check class={cn('size-4', !checked && 'text-transparent')} />
+				<CheckIcon class={cn('size-4', !checked && 'text-transparent')} />
 			{/if}
 		</span>
 		{@render childrenProp?.()}

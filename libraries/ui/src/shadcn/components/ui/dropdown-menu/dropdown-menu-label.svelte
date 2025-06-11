@@ -1,14 +1,13 @@
 <script lang="ts">
-import { type WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
 	inset,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
 	inset?: boolean
@@ -17,7 +16,9 @@ let {
 
 <div
 	bind:this={ref}
-	class={cn('px-2 py-1.5 text-sm font-semibold', inset && 'pl-8', className)}
+	class={cn('px-2 py-1.5 text-sm font-semibold data-[inset]:pl-8', className)}
+	data-inset={inset}
+	data-slot="dropdown-menu-label"
 	{...restProps}
 >
 	{@render children?.()}

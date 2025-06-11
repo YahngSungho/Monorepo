@@ -1,12 +1,12 @@
 <script lang="ts">
-import { Accordion as AccordionPrimitive, type WithoutChild } from 'bits-ui'
+import { Accordion as AccordionPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithoutChild<AccordionPrimitive.ContentProps> = $props()
 </script>
@@ -14,9 +14,10 @@ let {
 <AccordionPrimitive.Content
 	class={cn(
 		`data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden
-		text-sm transition-all`,
+		text-sm`,
 		className,
 	)}
+	data-slot="accordion-content"
 	bind:ref
 	{...restProps}
 >

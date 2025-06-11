@@ -1,22 +1,16 @@
-<script lang="ts" module>
-import type { FormPathLeaves as _FormPathLeaves } from 'sveltekit-superforms'
-type T = Record<string, unknown>
-type U = _FormPathLeaves<T>
-</script>
-
-<script generics="T extends Record<string, unknown>, U extends _FormPathLeaves<T>" lang="ts">
-import type { WithElementRef, WithoutChildren } from 'bits-ui'
+<script generics="T extends Record<string, unknown>, U extends FormPathLeaves<T>" lang="ts">
 import * as FormPrimitive from 'formsnap'
 import type { HTMLAttributes } from 'svelte/elements'
+import type { FormPathLeaves } from 'sveltekit-superforms'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef, type WithoutChildren } from '$shadcn/utils'
 
 let {
-	children: childrenProp,
+	ref = $bindable(null),
 	class: className,
 	form,
 	name,
-	ref = $bindable(),
+	children: childrenProp,
 	...restProps
 }: FormPrimitive.ElementFieldProps<T, U> &
 	WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props()

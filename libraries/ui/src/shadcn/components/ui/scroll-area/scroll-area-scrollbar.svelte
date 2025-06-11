@@ -1,30 +1,32 @@
 <script lang="ts">
-import { ScrollArea as ScrollAreaPrimitive, type WithoutChild } from 'bits-ui'
+import { ScrollArea as ScrollAreaPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
 	orientation = 'vertical',
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithoutChild<ScrollAreaPrimitive.ScrollbarProps> = $props()
 </script>
 
 <ScrollAreaPrimitive.Scrollbar
 	class={cn(
-		'flex touch-none select-none transition-colors',
-		orientation === 'vertical' && 'h-full w-2.5 border-l border-l-transparent p-px',
-		orientation === 'horizontal' && 'h-2.5 w-full border-t border-t-transparent p-px',
+		'flex touch-none select-none p-px transition-colors',
+		orientation === 'vertical' && 'h-full w-2.5 border-l border-l-transparent',
+		orientation === 'horizontal' && 'h-2.5 flex-col border-t border-t-transparent',
 		className,
 	)}
+	data-slot="scroll-area-scrollbar"
 	{orientation}
 	bind:ref
 	{...restProps}
 >
 	{@render children?.()}
 	<ScrollAreaPrimitive.Thumb
-		class={cn('bg-border relative rounded-full', orientation === 'vertical' && 'flex-1')}
+		class="bg-border relative flex-1 rounded-full"
+		data-slot="scroll-area-thumb"
 	/>
 </ScrollAreaPrimitive.Scrollbar>

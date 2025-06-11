@@ -14,20 +14,20 @@ export function getToggleGroupCtx() {
 <script lang="ts">
 import { ToggleGroup as ToggleGroupPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
-	class: className,
-	ref = $bindable(),
-	size = 'default',
+	ref = $bindable(null),
 	value = $bindable(),
+	class: className,
+	size = 'default',
 	variant = 'default',
 	...restProps
 }: ToggleGroupPrimitive.RootProps & ToggleVariants = $props()
 
 setToggleGroupCtx({
-	size,
 	variant,
+	size,
 })
 </script>
 
@@ -36,7 +36,13 @@ Discriminated Unions + Destructing (required for bindable) do not
 get along, so we shut typescript up by casting `value` to `never`.
 -->
 <ToggleGroupPrimitive.Root
-	class={cn('flex items-center justify-center gap-1', className)}
+	class={cn(
+		'group/toggle-group data-[variant=outline]:shadow-xs flex w-fit items-center rounded-md',
+		className,
+	)}
+	data-size={size}
+	data-slot="toggle-group"
+	data-variant={variant}
 	bind:value={value as never}
 	bind:ref
 	{...restProps}

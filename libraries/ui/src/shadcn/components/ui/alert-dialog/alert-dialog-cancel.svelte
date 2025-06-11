@@ -2,17 +2,18 @@
 import { AlertDialog as AlertDialogPrimitive } from 'bits-ui'
 
 import { buttonVariants } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	...restProps
 }: AlertDialogPrimitive.CancelProps = $props()
 </script>
 
 <AlertDialogPrimitive.Cancel
-	class={cn(buttonVariants({ variant: 'outline' }), 'mt-2 sm:mt-0', className)}
+	class={cn(buttonVariants({ variant: 'outline' }), className)}
+	data-slot="alert-dialog-cancel"
 	bind:ref
 	{...restProps}
 />

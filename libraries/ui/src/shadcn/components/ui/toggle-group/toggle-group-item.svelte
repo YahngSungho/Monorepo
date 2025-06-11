@@ -2,15 +2,15 @@
 import { ToggleGroup as ToggleGroupPrimitive } from 'bits-ui'
 
 import { type ToggleVariants, toggleVariants } from '$shadcn/components/ui/toggle/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 import { getToggleGroupCtx } from './toggle-group.svelte'
 
 let {
-	class: className,
-	ref = $bindable(),
-	size,
+	ref = $bindable(null),
 	value = $bindable(),
+	class: className,
+	size,
 	variant,
 	...restProps
 }: ToggleGroupPrimitive.ItemProps & ToggleVariants = $props()
@@ -21,11 +21,16 @@ const ctx = getToggleGroupCtx()
 <ToggleGroupPrimitive.Item
 	class={cn(
 		toggleVariants({
-			size: ctx.size || size,
 			variant: ctx.variant || variant,
+			size: ctx.size || size,
 		}),
+		`min-w-0 flex-1 shrink-0 rounded-none shadow-none first:rounded-l-md last:rounded-r-md focus:z-10
+		focus-visible:z-10 data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l`,
 		className,
 	)}
+	data-size={ctx.size || size}
+	data-slot="toggle-group-item"
+	data-variant={ctx.variant || variant}
 	{value}
 	bind:ref
 	{...restProps}

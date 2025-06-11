@@ -1,20 +1,21 @@
 <script lang="ts">
-import { Select as SelectPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
-import ChevronUp from 'lucide-svelte/icons/chevron-up'
+import ChevronUpIcon from '@lucide/svelte/icons/chevron-up'
+import { Select as SelectPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	...restProps
 }: WithoutChildrenOrChild<SelectPrimitive.ScrollUpButtonProps> = $props()
 </script>
 
 <SelectPrimitive.ScrollUpButton
 	class={cn('flex cursor-default items-center justify-center py-1', className)}
+	data-slot="select-scroll-up-button"
 	bind:ref
 	{...restProps}
 >
-	<ChevronUp class="size-4" />
+	<ChevronUpIcon class="size-4" />
 </SelectPrimitive.ScrollUpButton>

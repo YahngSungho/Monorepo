@@ -1,22 +1,22 @@
 <script lang="ts">
 import { PinInput as InputOTPPrimitive } from 'bits-ui'
-import type { ComponentProps } from 'svelte'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	value = $bindable(''),
 	...restProps
-}: ComponentProps<typeof InputOTPPrimitive.Root> = $props()
+}: InputOTPPrimitive.RootProps = $props()
 </script>
 
 <InputOTPPrimitive.Root
 	class={cn(
-		'has-disabled:opacity-50 flex items-center gap-2 disabled:[&_input]:cursor-not-allowed',
+		'has-disabled:opacity-50 flex items-center gap-2 [&_input]:disabled:cursor-not-allowed',
 		className,
 	)}
+	data-slot="input-otp"
 	bind:ref
 	bind:value
 	{...restProps}

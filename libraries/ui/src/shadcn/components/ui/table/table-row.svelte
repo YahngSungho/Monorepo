@@ -1,13 +1,12 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLTableRowElement>> = $props()
 </script>
@@ -18,6 +17,7 @@ let {
 		'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
 		className,
 	)}
+	data-slot="table-row"
 	{...restProps}
 >
 	{@render children?.()}

@@ -1,13 +1,12 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLElement>> = $props()
 </script>
@@ -16,6 +15,7 @@ let {
 	bind:this={ref}
 	class={cn('flex flex-col gap-2 p-2', className)}
 	data-sidebar="footer"
+	data-slot="sidebar-footer"
 	{...restProps}
 >
 	{@render children?.()}

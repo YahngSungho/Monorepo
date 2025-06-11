@@ -54,7 +54,9 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'unicorn/no-null': 'off',
 	'perfectionist/sort-named-imports': 'warn',
+	'functional/no-class-inheritance': 'off',
 	'functional/functional-parameters': 'off',
 	'perfectionist/sort-named-exports': 'warn',
 	'unicorn/import-style': 'off',
@@ -187,7 +189,7 @@ const baseRules = {
 			allowedClassNames: [],
 		},
 	],
-	'svelte/prefer-style-directive': 'warn',
+	'svelte/prefer-style-directive': 'off',
 	'svelte/html-closing-bracket-new-line': 'warn',
 	'svelte/prefer-class-directive': 'warn',
 	'svelte/require-each-key': 'warn',

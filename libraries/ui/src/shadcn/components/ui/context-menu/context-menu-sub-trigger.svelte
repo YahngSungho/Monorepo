@@ -1,14 +1,14 @@
 <script lang="ts">
-import { ContextMenu as ContextMenuPrimitive, type WithoutChild } from 'bits-ui'
-import ChevronRight from 'lucide-svelte/icons/chevron-right'
+import ChevronRightIcon from '@lucide/svelte/icons/chevron-right'
+import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
 	inset,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithoutChild<ContextMenuPrimitive.SubTriggerProps> & {
 	inset?: boolean
@@ -17,15 +17,19 @@ let {
 
 <ContextMenuPrimitive.SubTrigger
 	class={cn(
-		`data-highlighted:bg-accent data-[state=open]:bg-accent data-highlighted:text-accent-foreground
-		data-[state=open]:text-accent-foreground outline-hidden flex cursor-default select-none items-center
-		rounded-sm px-2 py-1.5 text-sm`,
-		inset && 'pl-8',
+		`data-highlighted:bg-accent data-highlighted:text-accent-foreground data-[state=open]:bg-accent
+		data-[state=open]:text-accent-foreground outline-hidden
+		[&_svg:not([class*='text-'])]:text-muted-foreground flex cursor-default select-none items-center
+		gap-2 rounded-sm px-2 py-1.5 text-sm data-[disabled]:pointer-events-none data-[inset]:pl-8
+		data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none
+		[&_svg]:shrink-0`,
 		className,
 	)}
+	data-inset={inset}
+	data-slot="context-menu-sub-trigger"
 	bind:ref
 	{...restProps}
 >
 	{@render children?.()}
-	<ChevronRight class="ml-auto size-4" />
+	<ChevronRightIcon class="ml-auto" />
 </ContextMenuPrimitive.SubTrigger>

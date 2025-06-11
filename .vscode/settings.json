@@ -1,4 +1,29 @@
 {
+	"stylelint.snippet": [
+		"css",
+		"svelte",
+		"html",
+		"postcss",
+		"jsx",
+		"tsx",
+		"js",
+		"ts"
+	],
+	"stylelint.validate": [
+		"css",
+		"svelte",
+		"html",
+		"postcss",
+		"jsx",
+		"tsx",
+		"js",
+		"ts",
+		"javascript",
+		"typescript",
+		"javascriptsvelte"
+	],
+	"stylelint.packageManager": "pnpm",
+	"stylelint.stylelintPath": "node_modules/stylelint",
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -40,6 +65,7 @@
 		"**/*.sass",
 		"**/*.less"
 	],
+	"deno.enable": false,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.inlineSuggest.enabled": true,
 	"editor.quickSuggestions": {
@@ -49,7 +75,6 @@
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
 	"eslint.probe": [
-		"css",
 		"svelte",
 		"html",
 		"postcss",
@@ -75,7 +100,6 @@
 	"eslint.useESLintClass": true,
 	"eslint.useFlatConfig": true,
 	"eslint.validate": [
-		"css",
 		"svelte",
 		"html",
 		"postcss",
@@ -97,12 +121,6 @@
 		"typescriptreact",
 		"javascriptsvelte"
 	],
-	"files.associations": {
-		"*.css": "css",
-		"*.svx": "markdown",
-		"*.mdc": "markdown",
-		"*.mdx": "markdown"
-	},
 	"peacock.color": "#79021b",
 	"prettier.endOfLine": "lf",
 	"prettier.experimentalTernaries": false,
@@ -112,19 +130,21 @@
 	"prettier.singleQuote": true,
 	"prettier.useTabs": true,
 	"prettier.vueIndentScriptAndStyle": false,
-	"stylelint.validate": ["css", "scss", "svelte"],
 	"svelte.plugin.svelte.format.config.singleQuote": true,
 	"svelte.plugin.svelte.format.config.svelteAllowShorthand": true,
 	"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": true,
 	"tailwindCSS.classFunctions": ["tw", "clsx"],
-	"tailwindCSS.emmetCompletions": true,
-	"tailwindCSS.experimental.configFile": "libraries/base/src/tailwind.css",
-	// Svelte 파일 내에서 Tailwind 클래스 자동 완성 활성화
+	"tailwindCSS.codeActions": true,
+	"tailwindCSS.emmetCompletions": false,
+	"tailwindCSS.experimental.configFile": "libraries/base/src/base.css",
 	"tailwindCSS.includeLanguages": {
+		"plaintext": "html",
 		"svelte": "html",
 		"javascript": "javascript",
 		"typescript": "typescript"
 	},
+	"tailwindCSS.suggestions": true,
+	"tailwindCSS.validate": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"workbench.colorCustomizations": {
 		"activityBar.activeBackground": "#ab0326",
@@ -147,5 +167,4 @@
 		"titleBar.inactiveBackground": "#79021b99",
 		"titleBar.inactiveForeground": "#e7e7e799"
 	},
-	"deno.enable": false
 }

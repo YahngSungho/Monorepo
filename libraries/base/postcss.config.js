@@ -3,8 +3,6 @@ import { fileURLToPath } from 'node:url'
 
 import postcssGlobalData from '@csstools/postcss-global-data'
 import tailwindcss from '@tailwindcss/postcss'
-import openProps from 'open-props'
-import postcssJitProps from 'postcss-jit-props'
 import presetEnv from 'postcss-preset-env'
 
 // Simulate __dirname in ESM
@@ -23,11 +21,6 @@ const config = {
 			enableClientSidePolyfills: true,
 			minimumVendorImplementations: 2,
 			stage: 3,
-		}),
-		postcssJitProps(openProps),
-		// @ts-ignore
-		postcssJitProps({
-			files: [path.resolve(__dirname, './node_modules/open-props/open-props.min.css')],
 		}),
 	],
 }

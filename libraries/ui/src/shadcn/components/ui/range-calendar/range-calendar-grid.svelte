@@ -1,11 +1,11 @@
 <script lang="ts">
 import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	...restProps
 }: RangeCalendarPrimitive.GridProps = $props()
 </script>

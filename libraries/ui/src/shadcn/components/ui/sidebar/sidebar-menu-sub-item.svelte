@@ -1,14 +1,22 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
+import { cn, type WithElementRef } from '$shadcn/utils'
+
 let {
+	ref = $bindable(null),
 	children,
-	ref = $bindable(),
+	class: className,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLLIElement>> = $props()
 </script>
 
-<li bind:this={ref} data-sidebar="menu-sub-item" {...restProps}>
+<li
+	bind:this={ref}
+	class={cn('group/menu-sub-item relative', className)}
+	data-sidebar="menu-sub-item"
+	data-slot="sidebar-menu-sub-item"
+	{...restProps}
+>
 	{@render children?.()}
 </li>

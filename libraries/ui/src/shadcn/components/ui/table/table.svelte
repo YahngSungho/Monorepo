@@ -1,19 +1,23 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLTableAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLTableAttributes> = $props()
 </script>
 
-<div class="relative overflow-auto">
-	<table bind:this={ref} class={cn('caption-bottom text-sm', className)} {...restProps}>
+<div class="relative w-full overflow-x-auto" data-slot="table-container">
+	<table
+		bind:this={ref}
+		class={cn('w-full caption-bottom text-sm', className)}
+		data-slot="table"
+		{...restProps}
+	>
 		{@render children?.()}
 	</table>
 </div>

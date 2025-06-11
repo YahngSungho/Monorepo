@@ -1,15 +1,14 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 import { useSidebar } from './context.svelte.js'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> = $props()
 
@@ -33,7 +32,8 @@ const sidebar = useSidebar()
 	)}
 	aria-label="Toggle Sidebar"
 	data-sidebar="rail"
-	onclick={() => sidebar.toggle()}
+	data-slot="sidebar-rail"
+	onclick={sidebar.toggle}
 	tabIndex={-1}
 	title="Toggle Sidebar"
 	{...restProps}

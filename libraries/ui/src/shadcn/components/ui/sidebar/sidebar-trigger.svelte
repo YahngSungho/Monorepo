@@ -1,16 +1,16 @@
 <script lang="ts">
-import PanelLeft from 'lucide-svelte/icons/panel-left'
+import PanelLeftIcon from '@lucide/svelte/icons/panel-left'
 import type { ComponentProps } from 'svelte'
 
 import { Button } from '$shadcn/components/ui/button/index.js'
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 import { useSidebar } from './context.svelte.js'
 
 let {
+	ref = $bindable(null),
 	class: className,
 	onclick,
-	ref = $bindable(),
 	...restProps
 }: ComponentProps<typeof Button> & {
 	onclick?: (e: MouseEvent) => void
@@ -20,8 +20,9 @@ const sidebar = useSidebar()
 </script>
 
 <Button
-	class={cn('h-7 w-7', className)}
+	class={cn('size-7', className)}
 	data-sidebar="trigger"
+	data-slot="sidebar-trigger"
 	onclick={(e) => {
 		onclick?.(e)
 		sidebar.toggle()
@@ -31,6 +32,6 @@ const sidebar = useSidebar()
 	variant="ghost"
 	{...restProps}
 >
-	<PanelLeft />
+	<PanelLeftIcon />
 	<span class="sr-only">Toggle Sidebar</span>
 </Button>

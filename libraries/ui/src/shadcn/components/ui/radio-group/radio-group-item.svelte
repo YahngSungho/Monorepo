@@ -1,30 +1,33 @@
 <script lang="ts">
-import { RadioGroup as RadioGroupPrimitive, type WithoutChildrenOrChild } from 'bits-ui'
-import Circle from 'lucide-svelte/icons/circle'
+import CircleIcon from '@lucide/svelte/icons/circle'
+import { RadioGroup as RadioGroupPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	...restProps
 }: WithoutChildrenOrChild<RadioGroupPrimitive.ItemProps> = $props()
 </script>
 
 <RadioGroupPrimitive.Item
 	class={cn(
-		`border-primary text-primary ring-offset-background focus-visible:ring-ring focus:outline-hidden
-		aspect-square size-4 rounded-full border focus-visible:ring-2 focus-visible:ring-offset-2
+		`border-input text-primary focus-visible:border-ring focus-visible:ring-ring/50
+		aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40
+		aria-invalid:border-destructive dark:bg-input/30 shadow-xs aspect-square size-4 shrink-0
+		rounded-full border outline-none transition-[color,box-shadow] focus-visible:ring-[3px]
 		disabled:cursor-not-allowed disabled:opacity-50`,
 		className,
 	)}
+	data-slot="radio-group-item"
 	bind:ref
 	{...restProps}
 >
 	{#snippet children({ checked })}
-		<div class="flex items-center justify-center">
+		<div class="relative flex items-center justify-center" data-slot="radio-group-indicator">
 			{#if checked}
-				<Circle class="size-2.5 fill-current text-current" />
+				<CircleIcon class="fill-primary text-primary-foreground size-2.5" />
 			{/if}
 		</div>
 	{/snippet}

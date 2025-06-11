@@ -1,13 +1,12 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLSpanElement>> = $props()
 </script>
@@ -17,6 +16,7 @@ let {
 	class={cn('text-foreground font-normal', className)}
 	aria-current="page"
 	aria-disabled="true"
+	data-slot="breadcrumb-page"
 	role="link"
 	{...restProps}
 >

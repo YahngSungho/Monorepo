@@ -2,18 +2,19 @@
 import { tv, type VariantProps } from 'tailwind-variants'
 
 export const badgeVariants = tv({
-	base: 'focus:ring-ring inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-hidden focus:ring-2 focus:ring-offset-2',
-	defaultVariants: {
-		variant: 'default',
-	},
+	base: 'focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md border px-2 py-0.5 text-xs font-medium transition-[color,box-shadow] focus-visible:ring-[3px] [&>svg]:pointer-events-none [&>svg]:size-3',
 	variants: {
 		variant: {
-			default: 'bg-primary text-primary-foreground hover:bg-primary/80 border-transparent',
+			default: 'bg-primary text-primary-foreground [a&]:hover:bg-primary/90 border-transparent',
+			secondary:
+				'bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90 border-transparent',
 			destructive:
-				'bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent',
-			outline: 'text-foreground',
-			secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 border-transparent',
+				'bg-destructive [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/70 border-transparent text-white',
+			outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
 		},
+	},
+	defaultVariants: {
+		variant: 'default',
 	},
 })
 
@@ -21,17 +22,16 @@ export type BadgeVariant = VariantProps<typeof badgeVariants>['variant']
 </script>
 
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAnchorAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
-	class: className,
+	ref = $bindable(null),
 	href,
-	ref = $bindable(),
+	class: className,
 	variant = 'default',
+	children,
 	...restProps
 }: WithElementRef<HTMLAnchorAttributes> & {
 	variant?: BadgeVariant
@@ -42,6 +42,7 @@ let {
 	this={href ? 'a' : 'span'}
 	bind:this={ref}
 	class={cn(badgeVariants({ variant }), className)}
+	data-slot="badge"
 	{href}
 	{...restProps}
 >

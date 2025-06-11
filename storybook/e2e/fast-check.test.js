@@ -36,10 +36,11 @@ for (const entry of Object.values(manifest.entries)) {
 				// eslint-disable-next-line no-restricted-syntax
 				const requestedUrlObj = new URL(request.url())
 				const actualRequestedPathAndQuery = requestedUrlObj.pathname + requestedUrlObj.search
+				const decodedActualPathAndQuery = decodeURIComponent(actualRequestedPathAndQuery)
 
 				if (allowInitialNavigation) {
 					// 테스트 시작 시 page.goto(storyUrlWithoutHash)에 의해 호출됨
-					if (actualRequestedPathAndQuery === expectedStoryPathAndQuery) {
+					if (decodedActualPathAndQuery === expectedStoryPathAndQuery) {
 						allowInitialNavigation = false // 초기 로드 완료
 						route.continue()
 						return
@@ -59,7 +60,7 @@ for (const entry of Object.values(manifest.entries)) {
 				}
 
 				// 2. 원래 스토리 URL로의 이동/새로고침 허용 (about:blank에서 돌아오거나, 자체 새로고침)
-				if (actualRequestedPathAndQuery === expectedStoryPathAndQuery) {
+				if (decodedActualPathAndQuery === expectedStoryPathAndQuery) {
 					// console.log(`[FastCheckRoute] 스토리 URL로 이동/새로고침 허용: ${request.url()}`);
 					route.continue()
 					return

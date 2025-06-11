@@ -1,7 +1,7 @@
 import { R } from '@library/helpers/R'
 
 import { ai } from './ai.js'
-import { latestModel } from './modelNames.js'
+import { flashModel, latestModel } from './modelNames.js'
 
 export const getCachBySystemInstructions = R.curry(
 	async (modelName, duration, options, willBeCachedData) => {
@@ -28,3 +28,4 @@ export const getCachBySystemInstructions = R.curry(
 )
 
 export const getCacheBySystemInstructions_latestModel = getCachBySystemInstructions(latestModel)
+export const getCacheBySystemInstructions_flashModel = getCachBySystemInstructions(flashModel)

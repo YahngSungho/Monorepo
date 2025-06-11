@@ -1,20 +1,14 @@
-<script lang="ts" module>
-import type { FormPath as _FormPath } from 'sveltekit-superforms'
-type T = Record<string, unknown>
-type U = _FormPath<T>
-</script>
-
-<script generics="T extends Record<string, unknown>, U extends _FormPath<T>" lang="ts">
-import type { WithoutChild } from 'bits-ui'
+<script generics="T extends Record<string, unknown>, U extends FormPath<T>" lang="ts">
 import * as FormPrimitive from 'formsnap'
+import type { FormPath } from 'sveltekit-superforms'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
 	form,
 	name,
-	ref = $bindable(),
 	...restProps
 }: WithoutChild<FormPrimitive.FieldsetProps<T, U>> = $props()
 </script>

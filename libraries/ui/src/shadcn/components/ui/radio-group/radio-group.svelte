@@ -1,14 +1,20 @@
 <script lang="ts">
 import { RadioGroup as RadioGroupPrimitive } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
 	value = $bindable(''),
 	...restProps
 }: RadioGroupPrimitive.RootProps = $props()
 </script>
 
-<RadioGroupPrimitive.Root class={cn('grid gap-2', className)} bind:ref bind:value {...restProps} />
+<RadioGroupPrimitive.Root
+	class={cn('grid gap-3', className)}
+	data-slot="radio-group"
+	bind:ref
+	bind:value
+	{...restProps}
+/>

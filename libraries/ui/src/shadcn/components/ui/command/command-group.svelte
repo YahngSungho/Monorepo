@@ -1,13 +1,14 @@
 <script lang="ts">
-import { Command as CommandPrimitive } from 'bits-ui'
+import { Command as CommandPrimitive, useId } from 'bits-ui'
 
-import { cn } from '$shadcn/utils.js'
+import { cn } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
+	children,
 	heading,
-	ref = $bindable(),
+	value,
 	...restProps
 }: CommandPrimitive.GroupProps & {
 	heading?: string
@@ -16,6 +17,8 @@ let {
 
 <CommandPrimitive.Group
 	class={cn('text-foreground overflow-hidden p-1', className)}
+	data-slot="command-group"
+	value={value ?? heading ?? `----${useId()}`}
 	bind:ref
 	{...restProps}
 >

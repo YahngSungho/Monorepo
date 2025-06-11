@@ -1,15 +1,22 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
+import type { WithElementRef } from '$shadcn/utils'
+
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLElement>> = $props()
 </script>
 
-<nav bind:this={ref} class={className} aria-label="breadcrumb" {...restProps}>
+<nav
+	bind:this={ref}
+	class={className}
+	aria-label="breadcrumb"
+	data-slot="breadcrumb"
+	{...restProps}
+>
 	{@render children?.()}
 </nav>

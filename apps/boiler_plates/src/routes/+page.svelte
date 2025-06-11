@@ -1,12 +1,15 @@
 <script>
+import { css } from '@emotion/css'
+import { getLocale, localizeHref, setLocale } from '@library/paraglide/helpers'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy.svelte'
 import { Button as Button1 } from '@library/ui/button_shadcn'
-import Icon from '@library/ui/icon'
-
-import { localizeHref, setLocale } from '../../../../libraries/paraglide/src'
+import IconText from '@library/ui/icon-text'
+import VariaitonSetter from '@library/ui/variaitonSetter'
+import { Home } from '@lucide/svelte'
+import { toast } from 'svelte-sonner'
 
 const fo = 'bigCommandKEnabled'
 
@@ -23,9 +26,26 @@ const eewre = Promise.resolve('test 122')
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<Icon icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
-<Button2 variant="wrong">
-	<Icon icon="mdi:home">{m.antsy_aloof_barbel_read()}</Icon>
+<div
+	style="
+margin: var(--space-em-cqi-m);"
+>
+	<VariaitonSetter {getLocale} {setLocale} />
+</div>
+
+<IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
+<Button2
+	onclick={() =>
+		toast.success('Event has been created', {
+			description: 'Sunday, December 03, 2023 at 9:00 AM',
+			action: {
+				label: 'Undo',
+				onClick: () => console.info('Undo'),
+			},
+		})}
+	variant="wrong"
+>
+	<IconText IconElement={Home}>토스트 띄우기</IconText>
 </Button2>
 <Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
 <Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>
@@ -35,6 +55,21 @@ const eewre = Promise.resolve('test 122')
 	}}
 	variant="default">occurs error</Button1
 >
+
+<button class="btn btn-primary">DaisyUI Primary</button>
+
+<div class="h-[3em] w-[200px] bg-red-500 p-1">TailwindCSS 테스트</div>
+
+<div
+	class={css`
+		inline-size: 200px;
+		block-size: 3em;
+		background-color: blue;
+		padding: 1em;
+	`}
+>
+	Emotion 테스트
+</div>
 
 <div class="p1 boxed long-text gutter">
 	<h1>Aute aliquip laborum tempor</h1>

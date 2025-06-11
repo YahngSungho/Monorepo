@@ -7,6 +7,24 @@
 	scrollbar-gutter: stable both-edges;
 }
 
+/* flex-wrap인데, 윗줄보다 아랫줄이 더 많은 방식으로 배열
+하지만!! 이 클래스 쓰면 child element들이 거꾸로 배열되니까 거꾸로 배치해야 함  */
+.pyramid-wrap {
+	display: flex;
+	flex-flow: row-reverse wrap-reverse;
+	justify-content: flex-end;
+}
+
+.attached-group {
+	gap: 0;
+
+	& > * {
+		margin-block-start: -1px;
+		margin-inline-end: -1px;
+		border-radius: 0 !important;
+	}
+}
+
 .long-text {
 	/* font가 load 되면서 생기는 flash를 줄이기 위해 ch 대신 em 사용 */
 	max-inline-size: 40em;
@@ -64,15 +82,4 @@
 	gap: var(--space, 1rem);
 	align-items: center;
 	justify-content: flex-start;
-}
-
-.grid {
-	display: grid;
-	grid-gap: 1rem;
-}
-
-@supports (width: min(250px, 100%)) {
-	.grid {
-		grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
-	}
 }

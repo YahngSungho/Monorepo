@@ -1,20 +1,20 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLTdAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLTdAttributes> = $props()
 </script>
 
 <td
 	bind:this={ref}
-	class={cn('p-4 align-middle [&:has([role=checkbox])]:pr-0', className)}
+	class={cn('whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0', className)}
+	data-slot="table-cell"
 	{...restProps}
 >
 	{@render children?.()}

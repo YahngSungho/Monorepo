@@ -1,26 +1,60 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
-import type { HTMLInputAttributes } from 'svelte/elements'
+import type { HTMLInputAttributes, HTMLInputTypeAttribute } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
+
+type InputType = Exclude<HTMLInputTypeAttribute, 'file'>
+
+type Props = WithElementRef<
+	Omit<HTMLInputAttributes, 'type'> &
+		({ files?: FileList; type: 'file' } | { files?: undefined; type?: InputType })
+>
 
 let {
-	class: className,
-	ref = $bindable(),
+	ref = $bindable(null),
 	value = $bindable(),
+	type,
+	files = $bindable(),
+	class: className,
 	...restProps
-}: WithElementRef<HTMLInputAttributes> = $props()
+}: Props = $props()
 </script>
 
-<input
-	bind:this={ref}
-	class={cn(
-		`border-input bg-background ring-offset-background placeholder:text-muted-foreground
-		focus-visible:ring-ring focus-visible:outline-hidden flex h-10 w-full rounded-md border px-3 py-2
-		text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2
-		focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm`,
-		className,
-	)}
-	bind:value
-	{...restProps}
-/>
+{#if type === 'file'}
+	<input
+		bind:this={ref}
+		class={cn(
+			`selection:bg-primary dark:bg-input/30 selection:text-primary-foreground border-input
+			ring-offset-background placeholder:text-muted-foreground shadow-xs flex h-9 w-full min-w-0
+			rounded-md border bg-transparent px-3 py-2 text-sm font-medium outline-none
+			transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm`,
+			'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+			`aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40
+			aria-invalid:border-destructive`,
+			className,
+		)}
+		data-slot="input"
+		type="file"
+		bind:files
+		bind:value
+		{...restProps}
+	/>
+{:else}
+	<input
+		bind:this={ref}
+		class={cn(
+			`border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground
+			ring-offset-background placeholder:text-muted-foreground shadow-xs flex h-9 w-full min-w-0
+			rounded-md border px-3 py-1 text-base outline-none transition-[color,box-shadow]
+			disabled:cursor-not-allowed disabled:opacity-50 md:text-sm`,
+			'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+			`aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40
+			aria-invalid:border-destructive`,
+			className,
+		)}
+		data-slot="input"
+		{type}
+		bind:value
+		{...restProps}
+	/>
+{/if}

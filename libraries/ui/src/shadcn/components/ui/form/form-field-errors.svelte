@@ -1,17 +1,16 @@
 <script lang="ts">
-import type { WithoutChild } from 'bits-ui'
 import * as FormPrimitive from 'formsnap'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithoutChild } from '$shadcn/utils'
 
 let {
-	children: childrenProp,
+	ref = $bindable(null),
 	class: className,
 	errorClasses,
-	ref = $bindable(),
+	children: childrenProp,
 	...restProps
 }: WithoutChild<FormPrimitive.FieldErrorsProps> & {
-	errorClasses?: string | undefined | undefined
+	errorClasses?: null | string | undefined
 } = $props()
 </script>
 
@@ -20,11 +19,11 @@ let {
 	bind:ref
 	{...restProps}
 >
-	{#snippet children({ errorProps, errors })}
+	{#snippet children({ errors, errorProps })}
 		{#if childrenProp}
-			{@render childrenProp({ errorProps, errors })}
+			{@render childrenProp({ errors, errorProps })}
 		{:else}
-			{#each errors as error}
+			{#each errors as error (error)}
 				<div {...errorProps} class={cn(errorClasses)}>{error}</div>
 			{/each}
 		{/if}

@@ -1,17 +1,24 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 </script>
 
-<div bind:this={ref} class={cn('text-sm [&_p]:leading-relaxed', className)} {...restProps}>
+<div
+	bind:this={ref}
+	class={cn(
+		'text-muted-foreground col-start-2 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed',
+		className,
+	)}
+	data-slot="alert-description"
+	{...restProps}
+>
 	{@render children?.()}
 </div>

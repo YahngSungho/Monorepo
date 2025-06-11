@@ -1,15 +1,14 @@
 <script lang="ts">
-import type { WithElementRef } from 'bits-ui'
 import type { HTMLAttributes } from 'svelte/elements'
 
-import { cn } from '$shadcn/utils.js'
+import { cn, type WithElementRef } from '$shadcn/utils'
 
 import { getEmblaContext } from './context.js'
 
 let {
-	children,
+	ref = $bindable(null),
 	class: className,
-	ref = $bindable(),
+	children,
 	...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 
@@ -25,6 +24,7 @@ const emblaCtx = getEmblaContext('<Carousel.Item/>')
 	)}
 	aria-roledescription="slide"
 	data-embla-slide=""
+	data-slot="carousel-item"
 	role="group"
 	{...restProps}
 >
