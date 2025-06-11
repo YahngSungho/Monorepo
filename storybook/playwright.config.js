@@ -25,6 +25,8 @@ const config = {
 		port: portNumber,
 		timeout: 1_800_000,
 	},
+
+	workers: process.env.CI ? '100%' : '50%',
 }
 
 // @ts-ignore
