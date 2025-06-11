@@ -38,7 +38,7 @@
 		"formsnap": "^2.0.1",
 		"hast-util-to-string": "^3.0.1",
 		"mermaid": "^11.6.0",
-		"mode-watcher": "^1.0.7",
+		"mode-watcher": "^1.0.8",
 		"nanoid": "^5.1.5",
 		"open-props": "^1.7.15",
 		"rehype-autolink-headings": "^7.1.0",
