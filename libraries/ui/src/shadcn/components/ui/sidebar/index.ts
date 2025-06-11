@@ -1,17 +1,5 @@
-import Root from './sidebar.svelte'
-import Separator from './sidebar-separator.svelte'
-import Trigger from './sidebar-trigger.svelte'
-
-export {
-	Separator,
-	//
-	Root as Sidebar,
-	Separator as SidebarSeparator,
-	Trigger as SidebarTrigger,
-	Trigger,
-}
-
 export { useSidebar } from './context.svelte.js'
+export { default as Root, default as Sidebar } from './sidebar.svelte'
 export { default as Content, default as SidebarContent } from './sidebar-content.svelte'
 export { default as Footer, default as SidebarFooter } from './sidebar-footer.svelte'
 export { default as Group, default as SidebarGroup } from './sidebar-group.svelte'
@@ -47,4 +35,5 @@ export {
 } from './sidebar-menu-sub-item.svelte'
 export { default as Provider, default as SidebarProvider } from './sidebar-provider.svelte'
 export { default as Rail, default as SidebarRail } from './sidebar-rail.svelte'
-export { default as Root } from './sidebar.svelte'
+export { default as Separator, default as SidebarSeparator } from './sidebar-separator.svelte'
+export { default as SidebarTrigger, default as Trigger } from './sidebar-trigger.svelte'
