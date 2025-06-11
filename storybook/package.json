@@ -24,7 +24,7 @@
 		"@library/helpers": "workspace:*",
 		"@library/ui": "workspace:*",
 		"@storybook/addon-essentials": "^8.6.12",
-		"@storybook/addon-links": "^8.6.12",
+		"@storybook/addon-links": "^9.0.8",
 		"@storybook/addon-svelte-csf": "5.0.3",
 		"@storybook/blocks": "^8.6.12",
 		"@storybook/core": "^8.6.14",
