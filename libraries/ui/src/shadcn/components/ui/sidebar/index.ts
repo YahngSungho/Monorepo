@@ -1,8 +1,5 @@
 import Root from './sidebar.svelte'
-import MenuItem from './sidebar-menu-item.svelte'
-import MenuSkeleton from './sidebar-menu-skeleton.svelte'
-import MenuSub from './sidebar-menu-sub.svelte'
-import MenuSubButton from './sidebar-menu-sub-button.svelte'
+
 import MenuSubItem from './sidebar-menu-sub-item.svelte'
 import Provider from './sidebar-provider.svelte'
 import Rail from './sidebar-rail.svelte'
@@ -10,9 +7,6 @@ import Separator from './sidebar-separator.svelte'
 import Trigger from './sidebar-trigger.svelte'
 
 export {
-	MenuSkeleton,
-	MenuSub,
-	MenuSubButton,
 	MenuSubItem,
 	Provider,
 	Rail,
@@ -20,10 +14,6 @@ export {
 	Separator,
 	//
 	Root as Sidebar,
-	MenuItem as SidebarMenuItem,
-	MenuSkeleton as SidebarMenuSkeleton,
-	MenuSub as SidebarMenuSub,
-	MenuSubButton as SidebarMenuSubButton,
 	MenuSubItem as SidebarMenuSubItem,
 	Provider as SidebarProvider,
 	Rail as SidebarRail,
@@ -52,4 +42,13 @@ export { default as Menu, default as SidebarMenu } from './sidebar-menu.svelte'
 export { default as MenuAction, default as SidebarMenuAction } from './sidebar-menu-action.svelte'
 export { default as MenuBadge, default as SidebarMenuBadge } from './sidebar-menu-badge.svelte'
 export { default as MenuButton, default as SidebarMenuButton } from './sidebar-menu-button.svelte'
-export { default as MenuItem } from './sidebar-menu-item.svelte'
+export { default as MenuItem, default as SidebarMenuItem } from './sidebar-menu-item.svelte'
+export {
+	default as MenuSkeleton,
+	default as SidebarMenuSkeleton,
+} from './sidebar-menu-skeleton.svelte'
+export { default as MenuSub, default as SidebarMenuSub } from './sidebar-menu-sub.svelte'
+export {
+	default as MenuSubButton,
+	default as SidebarMenuSubButton,
+} from './sidebar-menu-sub-button.svelte'
