@@ -223,7 +223,7 @@ Use Emotion for more complex CSS scenarios that the `style` attribute cannot han
 
     <div class={cx('base-class', css`
         &:hover {
-          background-color: var(--color-primary-hover);
+          background-color: var(--primary);
         }`
 				)}>...</div>
     ```
