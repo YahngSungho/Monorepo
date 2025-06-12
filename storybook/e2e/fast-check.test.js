@@ -29,49 +29,49 @@ for (const entry of Object.values(manifest.entries)) {
 		// await page.route('**', (route) => route.continue())
 
 		// --- 네비게이션 차단 설정 ---
-		let allowInitialNavigation = true // 첫 페이지 로드 허용 플래그
-		await page.route('**/*', (route, request) => {
-			if (request.resourceType() === 'document') {
-				// eslint-disable-next-line no-restricted-syntax
-				const requestedUrlObj = new URL(request.url())
-				const actualRequestedPathAndQuery = requestedUrlObj.pathname + requestedUrlObj.search
-				const decodedActualPathAndQuery = decodeURIComponent(actualRequestedPathAndQuery)
+		// let allowInitialNavigation = true // 첫 페이지 로드 허용 플래그
+		// await page.route('**/*', (route, request) => {
+		// 	if (request.resourceType() === 'document') {
+		// 		// eslint-disable-next-line no-restricted-syntax
+		// 		const requestedUrlObj = new URL(request.url())
+		// 		const actualRequestedPathAndQuery = requestedUrlObj.pathname + requestedUrlObj.search
+		// 		const decodedActualPathAndQuery = decodeURIComponent(actualRequestedPathAndQuery)
 
-				if (allowInitialNavigation) {
-					// 테스트 시작 시 page.goto(storyUrlWithoutHash)에 의해 호출됨
-					if (decodedActualPathAndQuery === expectedStoryPathAndQuery) {
-						allowInitialNavigation = false // 초기 로드 완료
-						route.continue()
-						return
-					}
-					// 예상치 못한 첫 내비게이션 (예: page.goto가 storyUrlWithoutHash가 아닌 다른 곳으로 요청된 경우)
-					// console.error(`[FastCheckRoute] 예상치 못한 초기 내비게이션 차단: ${request.url()}`);
-					route.abort('aborted')
-					return
-				}
+		// 		if (allowInitialNavigation) {
+		// 			// 테스트 시작 시 page.goto(storyUrlWithoutHash)에 의해 호출됨
+		// 			if (decodedActualPathAndQuery === expectedStoryPathAndQuery) {
+		// 				allowInitialNavigation = false // 초기 로드 완료
+		// 				route.continue()
+		// 				return
+		// 			}
+		// 			// 예상치 못한 첫 내비게이션 (예: page.goto가 storyUrlWithoutHash가 아닌 다른 곳으로 요청된 경우)
+		// 			// console.error(`[FastCheckRoute] 예상치 못한 초기 내비게이션 차단: ${request.url()}`);
+		// 			route.abort('aborted')
+		// 			return
+		// 		}
 
-				// 초기 로드 이후의 내비게이션 처리
-				// 1. about:blank로의 이동 허용
-				if (request.url().startsWith('about:blank')) {
-					// console.log(`[FastCheckRoute] about:blank 허용: ${request.url()}`);
-					route.continue()
-					return
-				}
+		// 		// 초기 로드 이후의 내비게이션 처리
+		// 		// 1. about:blank로의 이동 허용
+		// 		if (request.url().startsWith('about:blank')) {
+		// 			// console.log(`[FastCheckRoute] about:blank 허용: ${request.url()}`);
+		// 			route.continue()
+		// 			return
+		// 		}
 
-				// 2. 원래 스토리 URL로의 이동/새로고침 허용 (about:blank에서 돌아오거나, 자체 새로고침)
-				if (decodedActualPathAndQuery === expectedStoryPathAndQuery) {
-					// console.log(`[FastCheckRoute] 스토리 URL로 이동/새로고침 허용: ${request.url()}`);
-					route.continue()
-					return
-				}
+		// 		// 2. 원래 스토리 URL로의 이동/새로고침 허용 (about:blank에서 돌아오거나, 자체 새로고침)
+		// 		if (decodedActualPathAndQuery === expectedStoryPathAndQuery) {
+		// 			// console.log(`[FastCheckRoute] 스토리 URL로 이동/새로고침 허용: ${request.url()}`);
+		// 			route.continue()
+		// 			return
+		// 		}
 
-				// 3. 그 외 모든 document 타입 내비게이션 차단
-				// console.log(`[FastCheckRoute] 기타 내비게이션 차단: ${request.url()} (현재: ${page.url()})`);
-				route.abort('aborted')
-			} else {
-				route.continue() // 다른 리소스(css, js 등)는 허용
-			}
-		})
+		// 		// 3. 그 외 모든 document 타입 내비게이션 차단
+		// 		// console.log(`[FastCheckRoute] 기타 내비게이션 차단: ${request.url()} (현재: ${page.url()})`);
+		// 		route.abort('aborted')
+		// 	} else {
+		// 		route.continue() // 다른 리소스(css, js 등)는 허용
+		// 	}
+		// })
 		// --- ---
 
 		// 콘솔 오류 감지 설정 (페이지 이동 전에 설정)
