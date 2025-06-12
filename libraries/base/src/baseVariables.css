@@ -129,25 +129,25 @@
 
 :root {
 	/* Step -2: 9.7222px → 10.24px */
-	--font-size-fluid-02: clamp(0.6076rem, 0.5964rem + 0.0563vi, 0.64rem);
+	--font-size-fluid-em-cqi-02: clamp(0.6076em, 0.5964em + 0.0563cqi, 0.64em);
 	/* Step -1: 11.6667px → 12.8px */
-	--font-size-fluid-01: clamp(0.7292rem, 0.7045rem + 0.1232vi, 0.8rem);
+	--font-size-fluid-em-cqi-01: clamp(0.7292em, 0.7045em + 0.1232cqi, 0.8em);
 	/* Step 0: 14px → 16px */
-	--font-size-fluid-0: clamp(0.875rem, 0.8315rem + 0.2174vi, 1rem);
+	--font-size-fluid-em-cqi-0: clamp(0.875em, 0.8315em + 0.2174cqi, 1em);
 	/* Step 0.33: 14.93px → 17.33px */
-	--font-size-fluid-0p3: clamp(1rem, 0.8811rem + 0.2609vi, 1.0833rem);
+	--font-size-fluid-em-cqi-0p3: clamp(1em, 0.8811em + 0.2609cqi, 1.0833em);
 	/* Step 0.66: 15.87px → 18.67px */
-	--font-size-fluid-0p6: clamp(1rem, 0.9308rem + 0.3043vi, 1.1667rem);
+	--font-size-fluid-em-cqi-0p6: clamp(1em, 0.9308em + 0.3043cqi, 1.1667em);
 	/* Step 1: 16.8px → 20px */
-	--font-size-fluid-1: clamp(1.05rem, 0.9804rem + 0.3478vi, 1.25rem);
+	--font-size-fluid-em-cqi-1: clamp(1.05em, 0.9804em + 0.3478cqi, 1.25em);
 	/* Step 2: 20.16px → 25px */
-	--font-size-fluid-2: clamp(1.26rem, 1.1548rem + 0.5261vi, 1.5625rem);
+	--font-size-fluid-em-cqi-2: clamp(1.26em, 1.1548em + 0.5261cqi, 1.5625em);
 	/* Step 3: 24.192px → 31.25px */
-	--font-size-fluid-3: clamp(1.512rem, 1.3586rem + 0.7672vi, 1.9531rem);
+	--font-size-fluid-em-cqi-3: clamp(1.512em, 1.3586em + 0.7672cqi, 1.9531em);
 	/* Step 4: 29.0304px → 39.0625px */
-	--font-size-fluid-4: clamp(1.8144rem, 1.5963rem + 1.0904vi, 2.4414rem);
+	--font-size-fluid-em-cqi-4: clamp(1.8144em, 1.5963em + 1.0904cqi, 2.4414em);
 	/* Step 5: 34.8365px → 48.8281px */
-	--font-size-fluid-5: clamp(2.1773rem, 1.8731rem + 1.5208vi, 3.0518rem);
+	--font-size-fluid-em-cqi-5: clamp(2.1773em, 1.8731em + 1.5208cqi, 3.0518em);
 }
 
 :root {
@@ -175,25 +175,25 @@
 
 :root {
 	/* Step -2: 9.7222px → 10.24px */
-	--font-size-fluid-em-cqi-02: clamp(0.6076em, 0.5964em + 0.0563cqi, 0.64em);
+	--font-size-fluid-02: clamp(0.6076rem, 0.5964rem + 0.0563vi, 0.64rem);
 	/* Step -1: 11.6667px → 12.8px */
-	--font-size-fluid-em-cqi-01: clamp(0.7292em, 0.7045em + 0.1232cqi, 0.8em);
+	--font-size-fluid-01: clamp(0.7292rem, 0.7045rem + 0.1232vi, 0.8rem);
 	/* Step 0: 14px → 16px */
-	--font-size-fluid-em-cqi-0: clamp(0.875em, 0.8315em + 0.2174cqi, 1em);
+	--font-size-fluid-0: clamp(0.875rem, 0.8315rem + 0.2174vi, 1rem);
 	/* Step 0.33: 14.93px → 17.33px */
-	--font-size-fluid-em-cqi-0p3: clamp(1em, 0.8811em + 0.2609cqi, 1.0833em);
+	--font-size-fluid-0p3: clamp(1rem, 0.8811rem + 0.2609vi, 1.0833rem);
 	/* Step 0.66: 15.87px → 18.67px */
-	--font-size-fluid-em-cqi-0p6: clamp(1em, 0.9308em + 0.3043cqi, 1.1667em);
+	--font-size-fluid-0p6: clamp(1rem, 0.9308rem + 0.3043vi, 1.1667rem);
 	/* Step 1: 16.8px → 20px */
-	--font-size-fluid-em-cqi-1: clamp(1.05em, 0.9804em + 0.3478cqi, 1.25em);
+	--font-size-fluid-1: clamp(1.05rem, 0.9804rem + 0.3478vi, 1.25rem);
 	/* Step 2: 20.16px → 25px */
-	--font-size-fluid-em-cqi-2: clamp(1.26em, 1.1548em + 0.5261cqi, 1.5625em);
+	--font-size-fluid-2: clamp(1.26rem, 1.1548rem + 0.5261vi, 1.5625rem);
 	/* Step 3: 24.192px → 31.25px */
-	--font-size-fluid-em-cqi-3: clamp(1.512em, 1.3586em + 0.7672cqi, 1.9531em);
+	--font-size-fluid-3: clamp(1.512rem, 1.3586rem + 0.7672vi, 1.9531rem);
 	/* Step 4: 29.0304px → 39.0625px */
-	--font-size-fluid-em-cqi-4: clamp(1.8144em, 1.5963em + 1.0904cqi, 2.4414em);
+	--font-size-fluid-4: clamp(1.8144rem, 1.5963rem + 1.0904vi, 2.4414rem);
 	/* Step 5: 34.8365px → 48.8281px */
-	--font-size-fluid-em-cqi-5: clamp(2.1773em, 1.8731em + 1.5208cqi, 3.0518em);
+	--font-size-fluid-5: clamp(2.1773rem, 1.8731rem + 1.5208vi, 3.0518rem);
 }
 
 /* 다크 테마일 때 색깔 변수 거꾸로 매핑 */
@@ -465,11 +465,11 @@
 	/* 시맨틱 변수 추가 */
 	--link: var(--indigo-7);
 	--link-visited: var(--purple-7);
-	--text-1: var(--gray-12);
+	--text-1: var(--foreground);
 	--text-2: var(--gray-7);
-	--surface-1: var(--gray-0);
-	--surface-2: var(--gray-2);
-	--surface-3: var(--gray-3);
-	--surface-4: var(--gray-4);
+	--surface-1: var(--card);
+	--surface-2: var(--gray-4);
+	--surface-3: var(--gray-6);
+	--surface-4: var(--gray-8);
 	--scrollthumb-color: var(--gray-7);
 }

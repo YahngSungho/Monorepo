@@ -231,10 +231,10 @@ blockquote {
 }
 
 a:visited .icon-container {
-	color: var(--purple-6) !important;
+	color: var(--link-visited) !important;
 
 	& path,
 	& svg {
-		color: var(--purple-6) !important;
+		color: var(--link-visited) !important;
 	}
 }

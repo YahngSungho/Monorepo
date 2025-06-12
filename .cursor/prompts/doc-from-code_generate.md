@@ -94,7 +94,7 @@ The documentation's core purpose is to help readers CLEARLY understand the code'
     		- Integrate **MERMAID DIAGRAMS** where planned. Provide the ` ```mermaid ... ``` ` code block directly in the Markdown. Use appropriate types: `flowchart`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`, `componentDiagram`.
     		- **CRITICAL: MERMAID SYNTAX PRECAUTIONS (MUST FOLLOW):**
     				- To prevent parsing errors, PAY CLOSE ATTENTION TO THESE RULES:
-    				- **ALWAYS** enclose node text containing special characters (like **parentheses `()`**, **periods `.`**, **question marks `?`**, hash `#`, colon `:`, etc.), spaces, or non-ASCII characters (like Korean) in **DOUBLE QUOTES (`"`)**.
+    				- **ALWAYS** enclose node text in **DOUBLE QUOTES (`"`)**.
     							- *Error Example:* `B{Check function() call?}` -> Causes Error!
     							- *Fix:* `B{"Check function() call?"}`
     							- *Error Example:* `C[Next step(process)]` -> Causes Error!
@@ -111,9 +111,7 @@ The documentation's core purpose is to help readers CLEARLY understand the code'
     				- **SUBGRAPH STRUCTURE for Clarity:** To avoid confusing layouts where subgraphs visually engulf unintended nodes, **structure your subgraph definitions carefully**:
     					- Define **only the nodes belonging to the subgraph** and their **internal connections** *inside* the `subgraph ... end` block.
     					- Define connections linking the main flow **to** the subgraph start node and **from** the subgraph end node *outside* the `subgraph ... end` block. This helps the layout engine render boundaries more accurately.
-    				- **COMPATIBILITY:** The `componentDiagram` type might not be supported in all rendering environments, leading to `UnknownDiagramError`. If compatibility issues are suspected or encountered, consider using more widely supported alternatives like `graph TD` or `flowchart TD` to represent similar structures.
-    				- **AVOID** parentheses `()` and special characters in node text if possible. Use **SIMPLE EXPRESSIONS**.
-    				- **Simplify** technical terms if needed for node text (e.g., `page.evaluate()` -> `"evaluate function"`).
+    				- **Diagram Types:** Use appropriate types: `flowchart`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`. But the `componentDiagram` type might not be supported, leading to `UnknownDiagramError`. consider using more widely supported alternatives like `graph TD` or `flowchart TD` to represent similar structures.
     		- Include other visuals as planned (e.g., Markdown tables to represent Types, diagrams/commentary near code blocks).
     - **CONFUSING PARTS:** Explicitly address the confusing parts identified in your plan. Explain *why* they might be confusing and provide clear clarifications, potentially using analogies or step-by-step breakdowns. Address potential misunderstandings, non-standard patterns, performance issues, side effects, error possibilities, and common mistakes as relevant.
 

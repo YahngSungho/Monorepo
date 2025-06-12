@@ -8,42 +8,20 @@ IT'S ABOUT THE CODE REVIEW YOU WRITE. THESE ARE THE GUIDELINES THAT GEMINI-CODE-
 
 ## Step 1: Code Analysis
 
-- Analyze the provided code according to the Original Prompt's "Step 1: Code Analysis" section (purpose, language, complexity, key components/relationships, data flow).
-- CRITICALLY identify potential **CONFUSING PARTS** or patterns and specific **VISUALIZATION OPPORTUNITIES**.
-- Present your analysis concisely in a MARKDOWN table format with columns: `Aspect`, `Details`.
-
-```markdown
-| Aspect                       | Details                                                                 |
-| :--------------------------- | :---------------------------------------------------------------------- |
-| Main Purpose                 | ...                                                                     |
-| Language/Frameworks          | ...                                                                     |
-| Complexity Level             | ...                                                                     |
-| Key Component/Function X     | Role: ..., Relationships: ...                                           |
-| Data Flow                    | ...                                                                     |
-| **Confusing Part Candidate** | (e.g., Naming of variable Y, complex logic in function Z)               |
-| **Visualization Idea**       | (e.g., Flowchart for function Z, Sequence diagram for interaction A->B) |
-| ...                          | ...                                                                     |
-```
+- Identify the main purpose and functionality of the code.
+- Determine the programming language and any frameworks or libraries used.
+- Analyze code complexity and interactions among key components.
+- Highlight core functions, classes, variables, and their relationships.
+- Trace the data flow and pinpoint potential confusion points.
+- Identify specific code sections that can benefit from visual illustrations.
 
 ## Step 2: Documentation Planning
 
-- Based on your analysis in Step 1, create a detailed plan for the documentation document.
-- Cover the elements mentioned in the Original Prompt's "Step 2: Documentation Planning".
-- Include sections for Overview, Architecture, Core Functionality, API (if applicable), Usage Examples, and planned explanations for confusing parts.
-- Explicitly plan which **VISUALIZATIONS** (including specific **MERMAID** diagram types) you will use and where.
-- Plan how you will balance explanations for beginners and experts.
-- Include ideas for **CREATIVE ADDITIONS** that enhance clarity beyond the basics.
-- Present your plan in a MARKDOWN table format with columns: `Document Section`, `Content Summary`, `Key Code Example(s)`, `Planned Visualization (Type + Description)`, `Confusing Part Addressed?`, `Explanation Strategy`, `Creative Addition?`.
-
-```markdown
-| Document Section               | Content Summary             | Key Code Example(s) | Planned Visualization (Type + Description) | Confusing Part Addressed? | Explanation Strategy   | Creative Addition? |
-| :----------------------------- | :-------------------------- | :------------------ | :----------------------------------------- | :------------------------ | :--------------------- | :----------------- |
-| 개요 (Overview)                | ...                         | ...                 | None                                       | No                        | ...                    | No                 |
-| 아키텍처 (Architecture)        | ...                         | ...                 | Component Diagram: High-level structure    | Maybe (overall structure) | ...                    | Yes (Analogy)      |
-| 핵심 기능: 함수 Z (Core)       | ...                         | `funcZ()` example   | Mermaid Flowchart: Logic flow              | Yes (complex logic)       | Step-by-step walkthru  | No                 |
-| 혼동하기 쉬운 부분 (Confusing) | Why variable Y is confusing | Snippet of Y usage  | None                                       | Yes (naming)              | Analogy, clarification | No                 |
-| ...                            | ...                         | ...                 | ...                                        | ...                       | ...                    | ...                |
-```
+- Outline the overall structure and sections of the document.
+- List relevant code examples and the corresponding visual aids.
+- Specify which code elements need visualization and the appropriate diagram types.
+- Plan explanations for complex or easily misunderstood sections.
+- Propose any creative suggestions or additional insights for clarity.
 
 ### Target Reader
 
@@ -138,9 +116,7 @@ To prevent parsing errors, PAY CLOSE ATTENTION TO THESE RULES:
 - **SUBGRAPH STRUCTURE for Clarity:** To avoid confusing layouts where subgraphs visually engulf unintended nodes, **structure your subgraph definitions carefully**:
   - Define **only the nodes belonging to the subgraph** and their **internal connections** _inside_ the `subgraph ... end` block.
   - Define connections linking the main flow **to** the subgraph start node and **from** the subgraph end node _outside_ the `subgraph ... end` block. This helps the layout engine render boundaries more accurately.
-- **COMPATIBILITY:** The `componentDiagram` type might not be supported in all rendering environments, leading to `UnknownDiagramError`. If compatibility issues are suspected or encountered, consider using more widely supported alternatives like `graph TD` or `flowchart TD` to represent similar structures.
-- **AVOID** parentheses `()` and special characters in node text if possible. Use **SIMPLE EXPRESSIONS**.
-- **Simplify** technical terms if needed for node text (e.g., `page.evaluate()` -> `"evaluate function"`).
+- **Diagram Types:** Use appropriate types: `flowchart`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`. But the `componentDiagram` type might not be supported, leading to `UnknownDiagramError`. consider using more widely supported alternatives like `graph TD` or `flowchart TD` to represent similar structures.
 
 #### Enhancing Document Quality
 
