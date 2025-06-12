@@ -149,12 +149,12 @@ The documentation's core purpose is to help readers CLEARLY understand the code'
 
     ```mermaid
     flowchart TD
-    		A[시작] --> B{아이템 목록 루프};
-    		B -- 각 아이템 --> C{"가격 * 수량 계산"};
-    		C --> D[합계에 더하기];
+    		A["시작"] --> B{"아이템 목록 루프"};
+    		B -- "각 아이템" --> C{"가격 * 수량 계산"};
+    		C --> D["합계에 더하기"];
     		D --> B;
-    		B -- 루프 종료 --> E[최종 합계 반환];
-    		E --> F[종료];
+    		B -- "루프 종료" --> E["최종 합계 반환"];
+    		E --> F["종료"];
     ```
 
     #### **주의할 점!**
