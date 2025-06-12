@@ -62,7 +62,6 @@ export default {
 		// 브라우저 컨텍스트 타임아웃 증가 (HMR 대기용)
 		launchOptions: {
 			slowMo: process.env.CI ? 0 : 100, // 느린 환경에서 UI 갱신 대기
-			args: process.env.CI ? ['--disable-gpu'] : [], // GPU 가속 비활성화 플래그 추가
 		},
 		contextOptions: {
 			reducedMotion: 'reduce',
