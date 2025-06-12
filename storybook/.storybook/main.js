@@ -14,11 +14,6 @@ const config = {
 	},
 
 	stories: ['../../*/*/src/**/*.stories.@(js|ts|svelte)'],
-
-	features: {
-		// @ts-ignore - 'instrument' is a valid core feature, but not in the svelte-vite types
-		instrument: false, // 이 옵션을 false로 설정
-	},
 }
 
 export default config
