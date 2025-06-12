@@ -1,0 +1,59 @@
+{
+  "private": true,
+  "name": "@app/blog",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "build:dotenv": "dotenv -e ../../.env vite build",
+    "build:en": "vite build",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
+    "check:watch": "pnpm run check -- --watch",
+    "depCheck": "npx depcheck",
+    "dev": "dotenv -e ../../.env vite dev",
+    "eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
+    "eslint-fix": "eslint --fix . || true",
+    "format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
+    "playwright-install-env": "pnpm exec playwright install --with-deps",
+    "playwright-report": "pnpm exec playwright show-report",
+    "stylelint": "stylelint --allow-empty-input **/*.{css,svelte} \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
+    "stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
+    "test:e2e": "pnpm exec playwright test",
+    "test:unit": "vitest run",
+    "translate": "node ./src/translation/scripts.js",
+    "translate:dotenv": "dotenv -e ../../.env node ./src/translation/scripts.js",
+    "type-sync": "svelte-kit sync",
+    "preview": "vite preview",
+    "previewWithDotenv": "dotenv -e ../../.env vite preview",
+    "watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
+  },
+  "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
+    "@library/base": "workspace:*",
+    "@library/helpers": "workspace:*",
+    "@library/paraglide": "workspace:*",
+    "@library/ui": "workspace:*",
+    "@lucide/svelte": "^0.511.0",
+    "luxon": "^3.6.1",
+    "nanoid": "^5.1.5",
+    "ramda": "^0.30.1",
+    "svelte-sonner": "^1.0.3",
+    "ufo": "^1.5.4",
+    "xstate": "^5.19.2",
+    "zod": "^3.25.36"
+  },
+  "devDependencies": {
+    "@library/scripts": "workspace:*",
+    "daisyui": "5.0.35",
+    "tailwindcss": "4.1.8",
+    "tw-animate-css": "^1.3.2"
+  },
+  "import": {
+    "$shadcn": "../../libraries/ui/src/shadcn",
+    "$shadcn/*": "../../libraries/ui/src/shadcn/*",
+    "$daisy": "../../libraries/ui/src/daisyui",
+    "$daisy/*": "../../libraries/ui/src/daisyui/*",
+    "$miscellaneous": "../../libraries/ui/src/miscellaneous",
+    "$miscellaneous/*": "../../libraries/ui/src/miscellaneous/*"
+  }
+}
