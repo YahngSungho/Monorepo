@@ -14,7 +14,7 @@
 		"format-all": "pnpm run format-all-path .",
 		"format-all-path": "prettier --write --ignore-unknown --ignore-path .prettierignore",
 		"format-md": "pnpm run format-all-path **/*.{md,mdx,mdc}",
-		"generate:app": "sh -c 'turbo gen workspace --type app --copy @app/boiler_plates --name @app/$1 --destination ./apps/$1' dummy",
+		"generate:app": "sh libraries/scripts/src/generate-app/generate-app.sh",
 		"lint": "turbo run check eslint stylelint --affected",
 		"lint-fix": "turbo run eslint-fix  --affected && turbo run stylelint-fix --affected && turbo run format --affected",
 		"paraglide-compile": "turbo run paraglide-compile --affected",

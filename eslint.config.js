@@ -288,6 +288,16 @@ export default defineFlatConfig([
 					project: ['apps/*/tsconfig.json', 'libraries/*/tsconfig.json', 'storybook/tsconfig.json'],
 				}),
 			],
+			'import-x/resolver': {
+				typescript: createTypeScriptImportResolver({
+					project: [
+						'./tsconfig.json',
+						'./apps/*/tsconfig.json',
+						'./libraries/*/tsconfig.json',
+						'./storybook/tsconfig.json',
+					],
+				}),
+			},
 			svelte: {
 				kit: {
 					files: {
@@ -412,6 +422,14 @@ export default defineFlatConfig([
 			'playwright/no-conditional-in-test': 'off',
 			'playwright/no-conditional-expect': 'off',
 		},
+	},
+
+	{
+		files: ['**/scripts/**/*.js'],
+
+		rules: {
+			'unicorn/no-process-exit': 'off'
+		}
 	},
 
 	...jsonc.configs['flat/base'],
