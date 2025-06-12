@@ -4,3 +4,11 @@
 html {
 	font-family: 'IBM Plex Sans KR';
 }
+
+*,
+*::before,
+*::after {
+	/* 모든 요소의 애니메이션과 트랜지션 비활성화 */
+	animation: none !important;
+	transition: none !important;
+}
