@@ -13,16 +13,16 @@ IT'S ABOUT THE CODE REVIEW YOU WRITE. THESE ARE THE GUIDELINES THAT GEMINI-CODE-
 - Present your analysis concisely in a MARKDOWN table format with columns: `Aspect`, `Details`.
 
 ```markdown
-| Aspect                    | Details                                      |
-| :------------------------ | :------------------------------------------- |
-| Main Purpose              | ...                                          |
-| Language/Frameworks       | ...                                          |
-| Complexity Level          | ...                                          |
-| Key Component/Function X  | Role: ..., Relationships: ...                |
-| Data Flow                 | ...                                          |
-| **Confusing Part Candidate** | (e.g., Naming of variable Y, complex logic in function Z) |
-| **Visualization Idea**      | (e.g., Flowchart for function Z, Sequence diagram for interaction A->B) |
-| ...                       | ...                                          |
+| Aspect                       | Details                                                                 |
+| :--------------------------- | :---------------------------------------------------------------------- |
+| Main Purpose                 | ...                                                                     |
+| Language/Frameworks          | ...                                                                     |
+| Complexity Level             | ...                                                                     |
+| Key Component/Function X     | Role: ..., Relationships: ...                                           |
+| Data Flow                    | ...                                                                     |
+| **Confusing Part Candidate** | (e.g., Naming of variable Y, complex logic in function Z)               |
+| **Visualization Idea**       | (e.g., Flowchart for function Z, Sequence diagram for interaction A->B) |
+| ...                          | ...                                                                     |
 ```
 
 ## Step 2: Documentation Planning
@@ -36,13 +36,13 @@ IT'S ABOUT THE CODE REVIEW YOU WRITE. THESE ARE THE GUIDELINES THAT GEMINI-CODE-
 - Present your plan in a MARKDOWN table format with columns: `Document Section`, `Content Summary`, `Key Code Example(s)`, `Planned Visualization (Type + Description)`, `Confusing Part Addressed?`, `Explanation Strategy`, `Creative Addition?`.
 
 ```markdown
-| Document Section          | Content Summary | Key Code Example(s) | Planned Visualization (Type + Description) | Confusing Part Addressed? | Explanation Strategy | Creative Addition? |
-| :------------------------ | :-------------- | :------------------ | :----------------------------------------- | :------------------------ | :--------------------- | :----------------- |
-| 개요 (Overview)          | ...             | ...                 | None                                       | No                        | ...                    | No                 |
-| 아키텍처 (Architecture)  | ...             | ...                 | Component Diagram: High-level structure    | Maybe (overall structure) | ...                    | Yes (Analogy)      |
-| 핵심 기능: 함수 Z (Core) | ...             | `funcZ()` example   | Mermaid Flowchart: Logic flow              | Yes (complex logic)       | Step-by-step walkthru  | No                 |
-| 혼동하기 쉬운 부분 (Confusing) | Why variable Y is confusing | Snippet of Y usage | None                                       | Yes (naming)              | Analogy, clarification | No                 |
-| ...                       | ...             | ...                 | ...                                        | ...                       | ...                    | ...                |
+| Document Section               | Content Summary             | Key Code Example(s) | Planned Visualization (Type + Description) | Confusing Part Addressed? | Explanation Strategy   | Creative Addition? |
+| :----------------------------- | :-------------------------- | :------------------ | :----------------------------------------- | :------------------------ | :--------------------- | :----------------- |
+| 개요 (Overview)                | ...                         | ...                 | None                                       | No                        | ...                    | No                 |
+| 아키텍처 (Architecture)        | ...                         | ...                 | Component Diagram: High-level structure    | Maybe (overall structure) | ...                    | Yes (Analogy)      |
+| 핵심 기능: 함수 Z (Core)       | ...                         | `funcZ()` example   | Mermaid Flowchart: Logic flow              | Yes (complex logic)       | Step-by-step walkthru  | No                 |
+| 혼동하기 쉬운 부분 (Confusing) | Why variable Y is confusing | Snippet of Y usage  | None                                       | Yes (naming)              | Analogy, clarification | No                 |
+| ...                            | ...                         | ...                 | ...                                        | ...                       | ...                    | ...                |
 ```
 
 ### Target Reader
@@ -122,22 +122,22 @@ Actively incorporate visual tools such as diagrams and tables alongside text exp
 To prevent parsing errors, PAY CLOSE ATTENTION TO THESE RULES:
 
 - **ALWAYS** enclose node text in **DOUBLE QUOTES (`"`)**.
-    - _Error Example:_ `B{Check function() call?}` -> Causes Error!
-    - _Fix:_ `B{"Check function() call?"}`
-    - _Error Example:_ `C[Next step(process)]` -> Causes Error!
-    - _Fix:_ `C["Next step(process)"]`
+  - _Error Example:_ `B{Check function() call?}` -> Causes Error!
+  - _Fix:_ `B{"Check function() call?"}`
+  - _Error Example:_ `C[Next step(process)]` -> Causes Error!
+  - _Fix:_ `C["Next step(process)"]`
 - Use **DOUBLE QUOTES (`"`)** around subgraph titles containing spaces or special characters.
 - Enclose complex text in sequence diagram messages in **QUOTES**.
 - Keep node IDs simple (alphanumeric, e.g., `node1`, `processA`) and use special characters ONLY in the _displayed text_ (inside quotes).
 - **LINE BREAKS:** **MUST USE `<br/>`** for line breaks within node text. **DO NOT USE `\\n` or `\n`**. The **entire** node text containing `<br/>` **MUST** be enclosed in **DOUBLE QUOTES (`"`)**.
-    - _Error Example:_ `A["Line 1 \\n Line 2"]` -> May not render correctly!
-    - _Fix:_ `A["Line 1<br/>Line 2"]`
+  - _Error Example:_ `A["Line 1 \\n Line 2"]` -> May not render correctly!
+  - _Fix:_ `A["Line 1<br/>Line 2"]`
 - **NO MARKDOWN LISTS:** **NEVER** use Markdown list syntax (`-`, `*`, `1.`, etc.) **INSIDE** Mermaid code blocks (` ```mermaid ... ``` `). This will cause `Unsupported markdown: list` errors. If you need list-like appearance in node text, use `<br/>` for line breaks and format manually within quotes, without list markers.
 - **NO MARKDOWN in Mermaid:** **ABSOLUTELY NEVER** use any other Markdown syntax (like backticks `` `...` `` for code emphasis) **INSIDE** Mermaid node labels or code blocks. This will break parsing. Keep node text purely descriptive.
 - **NO COMMENTS in Mermaid:** **DO NOT** include comments (like `/* ... */` or `%% ...`) inside ` ```mermaid ... ``` ` blocks. Remove them entirely.
 - **SUBGRAPH STRUCTURE for Clarity:** To avoid confusing layouts where subgraphs visually engulf unintended nodes, **structure your subgraph definitions carefully**:
-    - Define **only the nodes belonging to the subgraph** and their **internal connections** _inside_ the `subgraph ... end` block.
-    - Define connections linking the main flow **to** the subgraph start node and **from** the subgraph end node _outside_ the `subgraph ... end` block. This helps the layout engine render boundaries more accurately.
+  - Define **only the nodes belonging to the subgraph** and their **internal connections** _inside_ the `subgraph ... end` block.
+  - Define connections linking the main flow **to** the subgraph start node and **from** the subgraph end node _outside_ the `subgraph ... end` block. This helps the layout engine render boundaries more accurately.
 - **COMPATIBILITY:** The `componentDiagram` type might not be supported in all rendering environments, leading to `UnknownDiagramError`. If compatibility issues are suspected or encountered, consider using more widely supported alternatives like `graph TD` or `flowchart TD` to represent similar structures.
 - **AVOID** parentheses `()` and special characters in node text if possible. Use **SIMPLE EXPRESSIONS**.
 - **Simplify** technical terms if needed for node text (e.g., `page.evaluate()` -> `"evaluate function"`).
@@ -186,6 +186,6 @@ flowchart TD
 
 #### **주의할 점!**
 
--   `items` 배열의 각 요소에는 `price`와 `quantity` 속성이 꼭 있어야 해. 없으면 에러가 날 수 있어! (현재 에러 처리 로직은 없어.)
--   가격이 음수거나 수량이 이상한 값일 경우에 대한 검증은 따로 없어. 입력값을 잘 확인해야 해.
+- `items` 배열의 각 요소에는 `price`와 `quantity` 속성이 꼭 있어야 해. 없으면 에러가 날 수 있어! (현재 에러 처리 로직은 없어.)
+- 가격이 음수거나 수량이 이상한 값일 경우에 대한 검증은 따로 없어. 입력값을 잘 확인해야 해.
 ````
