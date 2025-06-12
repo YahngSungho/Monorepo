@@ -24,13 +24,12 @@ for (const entry of Object.values(manifest.entries)) {
 	const storyUrlWithoutHash = `./iframe.html?id=${storyId}&viewMode=story`
 	const expectedStoryPathAndQuery = `/iframe.html?id=${storyId}&viewMode=story`
 
-	let allowInitialNavigation = true // 첫 페이지 로드 허용 플래그
-
 	test(`${title}`, async ({ page }) => {
 		// 캐시 비활성화를 위한 라우트 설정
 		// await page.route('**', (route) => route.continue())
 
 		// --- 네비게이션 차단 설정 ---
+		let allowInitialNavigation = true // 첫 페이지 로드 허용 플래그
 		await page.route('**/*', (route, request) => {
 			if (request.resourceType() === 'document') {
 				// eslint-disable-next-line no-restricted-syntax
