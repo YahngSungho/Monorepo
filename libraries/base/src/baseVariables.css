@@ -469,8 +469,8 @@
 	--link: var(--indigo-7);
 	--link-visited: var(--purple-7);
 	--text-1: var(--foreground);
-	--text-2: var(--background);
-	--surface-1: var(--background);
+	--text-2: var(--gray-7);
+	--surface-1: var(--card);
 	--surface-2: var(--gray-4);
 	--surface-3: var(--gray-6);
 	--surface-4: var(--gray-8);
