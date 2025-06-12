@@ -1,7 +1,6 @@
 import { devices } from '@playwright/test'
 
 const browserConfigsForCI = [
-
 	{
 		name: 'webkit',
 		use: { ...devices['Desktop Safari'] },
@@ -18,15 +17,15 @@ const browserConfigsForCI = [
 	},
 
 	/* against branded browsers. */
-		{
-			name: 'Microsoft Edge',
-			use: { ...devices['Desktop Edge'], channel: 'msedge' },
-		},
+	{
+		name: 'Microsoft Edge',
+		use: { ...devices['Desktop Edge'], channel: 'msedge' },
+	},
 
-		{
-			name: 'Google Chrome',
-			use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-		}
+	{
+		name: 'Google Chrome',
+		use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+	},
 ]
 
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
@@ -39,11 +38,11 @@ export default {
 			name: 'chromium',
 			use: { ...devices['Desktop Chrome'], screenshot: 'only-on-failure' },
 		},
-			{
-				name: 'firefox',
-				use: { ...devices['Desktop Firefox'] },
-			},
-			...(process.env.CI ? browserConfigsForCI : []),
+		{
+			name: 'firefox',
+			use: { ...devices['Desktop Firefox'] },
+		},
+		...(process.env.CI ? browserConfigsForCI : []),
 	],
 	outputDir: 'test-results',
 	reporter:
