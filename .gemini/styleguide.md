@@ -121,7 +121,7 @@ Actively incorporate visual tools such as diagrams and tables alongside text exp
 
 To prevent parsing errors, PAY CLOSE ATTENTION TO THESE RULES:
 
-- **ALWAYS** enclose node text containing special characters (like **parentheses `()`**, **periods `.`**, **question marks `?`**, hash `#`, colon `:`, etc.), spaces, or non-ASCII characters (like Korean) in **DOUBLE QUOTES (`"`)**.
+- **ALWAYS** enclose node text in **DOUBLE QUOTES (`"`)**.
     - _Error Example:_ `B{Check function() call?}` -> Causes Error!
     - _Fix:_ `B{"Check function() call?"}`
     - _Error Example:_ `C[Next step(process)]` -> Causes Error!
