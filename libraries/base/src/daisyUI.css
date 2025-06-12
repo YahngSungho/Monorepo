@@ -5,11 +5,9 @@
 :root {
 	--fontsize: 1rem;
 	--border-size-1: 1px;
-	/* --radius-selector: var(--radius-2-5); */
+
 	--radius-selector: var(--radius-1);
-	/* --radius-field: var(--radius-2); */
 	--radius-field: var(--radius-1);
-	/* --radius-box: var(--radius-2-5); */
 	--radius-box: var(--radius-1);
 	--size-selector: var(--size-1);
 	--size-field: var(--size-1);
