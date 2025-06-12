@@ -824,5 +824,7 @@ code,
 kbd,
 samp,
 pre {
-	font-family: 'IBM Plex Mono';
+	font-family:
+		'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+		'Courier New', monospace;
 }

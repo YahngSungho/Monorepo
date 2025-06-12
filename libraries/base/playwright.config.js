@@ -1,5 +1,33 @@
 import { devices } from '@playwright/test'
 
+const browserConfigsForCI = [
+	{
+		name: 'webkit',
+		use: { ...devices['Desktop Safari'] },
+	},
+
+	/* against mobile viewports. */
+	{
+		name: 'Mobile Chrome',
+		use: { ...devices['Pixel 5'] },
+	},
+	{
+		name: 'Mobile Safari',
+		use: { ...devices['iPhone 12'] },
+	},
+
+	/* against branded browsers. */
+	{
+		name: 'Microsoft Edge',
+		use: { ...devices['Desktop Edge'], channel: 'msedge' },
+	},
+
+	{
+		name: 'Google Chrome',
+		use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+	},
+]
+
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 export default {
 	forbidOnly: !!process.env.CI,
@@ -10,49 +38,21 @@ export default {
 			name: 'chromium',
 			use: { ...devices['Desktop Chrome'], screenshot: 'only-on-failure' },
 		},
-
-		process.env.CI ?
-			{
-				name: 'firefox',
-				use: { ...devices['Desktop Firefox'] },
-			}
-		:	{},
-
 		{
-			name: 'webkit',
-			use: { ...devices['Desktop Safari'] },
+			name: 'firefox',
+			use: { ...devices['Desktop Firefox'] },
 		},
-
-		/* against mobile viewports. */
-		{
-			name: 'Mobile Chrome',
-			use: { ...devices['Pixel 5'] },
-		},
-		{
-			name: 'Mobile Safari',
-			use: { ...devices['iPhone 12'] },
-		},
-
-		/* against branded browsers. */
-		process.env.CI ?
-			{
-				name: 'Microsoft Edge',
-				use: { ...devices['Desktop Edge'], channel: 'msedge' },
-			}
-		:	{},
-
-		process.env.CI ?
-			{
-				name: 'Google Chrome',
-				use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-			}
-		:	{},
+		...(process.env.CI ? browserConfigsForCI : []),
 	],
-	outputDir: './playwright-report',
+	outputDir: 'test-results',
 	reporter:
 		process.env.GITHUB_ACTIONS ?
-			[['junit', { outputFile: 'junit.xml' }], ['github'], ['html']]
-		:	'html',
+			[
+				['junit', { outputFile: 'junit.xml' }],
+				['github'],
+				['html', { outputFolder: 'playwright-report' }],
+			]
+		:	[['html', { outputFolder: 'playwright-report' }]],
 	// retries: process.env.CI ? 1 : 0,
 	retries: 1,
 	testDir: 'e2e',

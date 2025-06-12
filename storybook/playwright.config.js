@@ -11,10 +11,9 @@ const config = {
 			use: { ...devices['Desktop Chrome'] },
 		},
 
-		/* against mobile viewports. */
 		{
-			name: 'Mobile Safari',
-			use: { ...devices['iPhone 12'] },
+			name: 'firefox',
+			use: { ...devices['Desktop Firefox'] },
 		},
 	],
 	webServer: {

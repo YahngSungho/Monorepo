@@ -155,6 +155,10 @@ h6 {
 	scroll-margin-block-start: var(--font-size-fluid-em-cqi-5);
 }
 
+code {
+	padding: 0;
+}
+
 blockquote {
 	max-inline-size: 80%;
 	margin: var(--space-em-cqi-xs-s);
@@ -227,5 +231,10 @@ blockquote {
 }
 
 a:visited .icon-container {
-	color: var(--purple-6);
+	color: var(--purple-6) !important;
+
+	& path,
+	& svg {
+		color: var(--purple-6) !important;
+	}
 }
