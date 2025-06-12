@@ -127,7 +127,6 @@
 	--space-s-l: clamp(1.125rem, 0.6467rem + 2.3913vi, 2.5rem);
 }
 
-
 :root {
 	/* Step -2: 9.7222px → 10.24px */
 	--font-size-fluid-em-cqi-02: clamp(0.6076em, 0.5964em + 0.0563cqi, 0.64em);
@@ -151,7 +150,6 @@
 	--font-size-fluid-em-cqi-5: clamp(2.1773em, 1.8731em + 1.5208cqi, 3.0518em);
 }
 
-
 :root {
 	/* Step -2: 9.7222px → 10.24px */
 	--font-size-fluid-cqi-02: clamp(0.6076rem, 0.5964rem + 0.0563cqi, 0.64rem);
@@ -174,7 +172,6 @@
 	/* Step 5: 34.8365px → 48.8281px */
 	--font-size-fluid-cqi-5: clamp(2.1773rem, 1.8731rem + 1.5208cqi, 3.0518rem);
 }
-
 
 :root {
 	/* Step -2: 9.7222px → 10.24px */

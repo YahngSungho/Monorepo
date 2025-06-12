@@ -189,50 +189,50 @@ Here are the approved methods for styling in `.svelte` files, listed in order of
 This is the default and preferred method for applying styles.
 
 - **When to Use**:
-    - Use this for all basic styling needs.
+  - Use this for all basic styling needs.
 - **Example**:
 
-    ```svelte
-    <script>
-      let myColor = 'blue';
-    </script>
-
-    <div style="margin: var(--space-em-cqi-m); color: {myColor};">...</div>
-    ```
+  ```svelte
+  <script>
+    let myColor = 'blue';
+  </script>
+  
+  <div style="margin: var(--space-em-cqi-m); color: {myColor};">...</div>
+  ```
 
 - **Key Features**:
-    - You can directly embed JavaScript variables inside the style string using `{...}`. No backticks are needed.
+  - You can directly embed JavaScript variables inside the style string using `{...}`. No backticks are needed.
 - **Limitations**:
-    - It does not support reactive state changes within the style definition.
-    - The ampersand (`&`) for nesting selectors is not available. For nested styles, use Emotion.js.
+  - It does not support reactive state changes within the style definition.
+  - The ampersand (`&`) for nesting selectors is not available. For nested styles, use Emotion.js.
 
 ### 2. Emotion.js
 
 Use Emotion for more complex CSS scenarios that the `style` attribute cannot handle.
 
 - **When to Use**:
-    - When you need to use nested selectors like `&:focus`, `&:hover`, or `& > *`.
-    - When you need to assign class names dynamically or based on component state.
+  - When you need to use nested selectors like `&:focus`, `&:hover`, or `& > *`.
+  - When you need to assign class names dynamically or based on component state.
 - **Example**:
 
-    ```svelte
-    <script>
-      import { css, cx } from '@emotion/css';
-
-    </script>
-
-    <div class={cx('base-class', css`
-        &:hover {
-          background-color: var(--primary);
-        }`
-				)}>...</div>
-    ```
+  ```svelte
+  <script>
+    import { css, cx } from '@emotion/css';
+  
+  </script>
+  
+  <div class={cx('base-class', css`
+      &:hover {
+        background-color: var(--primary);
+      }`
+  			)}>...</div>
+  ```
 
 ### 3. TailwindCSS
 
 The use of TailwindCSS is restricted to specific legacy cases.
 
 - **When to Use**:
-    - Only when integrating or maintaining third-party components (e.g., from ShadCN, DaisyUI) that already use TailwindCSS.
+  - Only when integrating or maintaining third-party components (e.g., from ShadCN, DaisyUI) that already use TailwindCSS.
 - **Important**:
-    - **Do not write new styles using TailwindCSS classes.** All new styling should be done using the `style` attribute or Emotion.js.
+  - **Do not write new styles using TailwindCSS classes.** All new styling should be done using the `style` attribute or Emotion.js.
