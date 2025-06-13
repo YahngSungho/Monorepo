@@ -49,6 +49,8 @@
     "tw-animate-css": "^1.3.2"
   },
   "import": {
+		"$lib": "./src/lib",
+		"$lib/*": "./src/lib/*",
     "$shadcn": "../../libraries/ui/src/shadcn",
     "$shadcn/*": "../../libraries/ui/src/shadcn/*",
     "$daisy": "../../libraries/ui/src/daisyui",

@@ -1,22 +1,18 @@
 <script module>
-import { initMermaidTheme_action } from './mermaid-theme'
-
-const initMermaidThemePromise = initMermaidTheme_action()
-</script>
-
-<script>
+import { mode } from 'mode-watcher'
 import './mermaid.css'
 
 import mermaid from 'mermaid'
 import { nanoid } from 'nanoid'
-import { onMount, tick } from 'svelte'
-import { getAstNode } from 'svelte-exmarkdown'
+import { tick } from 'svelte'
+import { initMermaidTheme_action } from './mermaid-theme'
+
 
 /**
  * Mermaid 플로우차트 SVG 요소에 노드 hover 시 연결 요소 하이라이트 기능을 초기화합니다.
  * @param {SVGSVGElement} svgElement 대상 Mermaid SVG 요소
  */
-function initializeMermaidHover_action(svgElement) {
+ function initializeMermaidHover_action(svgElement) {
 	if (!svgElement) {
 		console.error('SVG element not provided for Mermaid hover initialization.')
 		return
@@ -163,6 +159,12 @@ function initializeMermaidHover_action(svgElement) {
 	// console.log(`Mermaid hover effect initialized for SVG: #${svgElement.id}`);
 }
 
+const initMermaidThemePromise = $derived(initMermaidTheme_action(mode.current))
+</script>
+
+<script>
+import { getAstNode } from 'svelte-exmarkdown'
+
 const ast = getAstNode()
 let { ...props } = $props()
 
@@ -174,51 +176,54 @@ const id = `mermaid-${nanoid()}` // 각 인스턴스별 고유 ID
 // AST 노드에서 원본 텍스트 추출
 let rawText = $state(ast.current.children?.[0]?.value ?? '')
 
-// $effect 대신 onMount 사용
-onMount(async () => {
-	const definition = rawText
-		.split(String.raw`\n`) // 줄 단위로 분리
-		.filter((line) => !/^\s*%%/.test(line)) // '%%' 주석 라인 제거
-		.join(String.raw`\n`) // 다시 문자열로 합침
-		.trim() // 앞뒤 공백 제거
-
-	if (!definition) {
-		// svgContent = '' // onMount에서는 초기 상태가 ''이므로 필요 없을 수 있음
-		// errorMessage = ''
-		return // 정의가 없으면 아무것도 안 함
-	}
-
-	// errorMessage = ''; // onMount에서는 초기 상태가 ''이므로 필요 없을 수 있음
-
-	try {
+// 테마 변경 및 원본 텍스트 변경에 반응하여 Mermaid 차트를 렌더링/재렌더링하는 $effect
+$effect(() => {
+	// $effect는 비동기 콜백을 직접 지원하지 않으므로,
+	// 즉시 실행 비동기 함수(IIFE) 패턴을 사용합니다.
+	(async () => {
+		// initMermaidThemePromise를 의존성으로 등록
 		await initMermaidThemePromise
 
-		await tick()
-		// 비동기적으로 Mermaid 렌더링 실행 (onMount 콜백 자체가 async)
-		const { svg, bindFunctions } = await mermaid.render(id, definition)
-		svgContent = svg // 성공 시 SVG 콘텐츠 업데이트
+		const definition = rawText
+			.split(String.raw`\n`) // 줄 단위로 분리
+			.filter((line) => !/^\s*%%/.test(line)) // '%%' 주석 라인 제거
+			.join(String.raw`\n`) // 다시 문자열로 합침
+			.trim() // 앞뒤 공백 제거
+
+		if (!definition) {
+			svgContent = ''
+			errorMessage = ''
+			return // 정의가 없으면 아무것도 안 함
+		}
+
 		errorMessage = ''
 
-		await tick() // DOM 업데이트 기다리기
+		try {
+			await tick()
+			// 비동기적으로 Mermaid 렌더링 실행
+			const { svg, bindFunctions } = await mermaid.render(id, definition)
+			svgContent = svg // 성공 시 SVG 콘텐츠 업데이트
 
-		if (bindFunctions) {
-			bindFunctions(element) // Mermaid의 기본 바인딩 (클릭 등)
+			await tick() // DOM 업데이트 기다리기
+
+			if (bindFunctions) {
+				bindFunctions(element) // Mermaid의 기본 바인딩 (클릭 등)
+			}
+			const svgElement = element?.querySelector('svg') // 렌더링된 SVG 찾기 (element가 있을 때만)
+			if (svgElement) {
+				initializeMermaidHover_action(svgElement) // 커스텀 hover 초기화
+			}
+		} catch (error) {
+			// 오류 발생 시, 이전 렌더링을 유지하기보다는 오류 메시지를 명확히 보여주는 것이 좋을 수 있습니다.
+			// console.error('Mermaid rendering error:', error);
+			errorMessage = `Mermaid 렌더링 오류: ${error.message || String(error)}`
+			// svgContent = ''; // 오류 발생 시 이전 SVG를 지울지 여부는 선택사항
 		}
-		const svgElement = element?.querySelector('svg') // 렌더링된 SVG 찾기 (element가 있을 때만)
-		if (svgElement) {
-			initializeMermaidHover_action(svgElement) // 커스텀 hover 초기화
-		} else {
-			// console.warn('SVG element not found after rendering for hover init.');
-		}
-	} catch (error) {
-		console.error('Mermaid rendering error:', error)
-		errorMessage = `Mermaid 렌더링 오류: ${error.message || error}`
-		svgContent = '' // 오류 발생 시 이전 SVG 지우기
-	}
+	})()
 })
 </script>
 
-<div bind:this={element} {...props}>
+<div bind:this={element} class="mermaid-container" {...props}>
 	{#if errorMessage}
 		<!-- 오류 발생 시 메시지와 원본 텍스트 표시 -->
 		<pre style:color="red;">{errorMessage}</pre>
