@@ -54,6 +54,7 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'sonarjs/call-argument-line': 'off',
 	'unicorn/no-null': 'off',
 	'perfectionist/sort-named-imports': 'warn',
 	'functional/no-class-inheritance': 'off',

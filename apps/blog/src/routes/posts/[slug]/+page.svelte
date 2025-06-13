@@ -26,7 +26,6 @@ margin: var(--space-em-cqi-m);"
 <div style="
 overflow: auto;
 	margin: auto;
-	border-width: var(--border-size-3);
 " class="boxed long-text gutter">
 	{#await data.post then post}
 		<Markdown value={post} />

@@ -1,12 +1,11 @@
 <script module>
-import { mode } from 'mode-watcher'
 import './mermaid.css'
-
 import mermaid from 'mermaid'
 import { nanoid } from 'nanoid'
 import { tick } from 'svelte'
-import { initMermaidTheme_action } from './mermaid-theme'
+import { mode } from 'mode-watcher'
 
+import { initMermaidTheme_action } from './mermaid-theme'
 
 /**
  * Mermaid 플로우차트 SVG 요소에 노드 hover 시 연결 요소 하이라이트 기능을 초기화합니다.
@@ -165,8 +164,8 @@ const initMermaidThemePromise = $derived(initMermaidTheme_action(mode.current))
 <script>
 import { getAstNode } from 'svelte-exmarkdown'
 
+
 const ast = getAstNode()
-let { ...props } = $props()
 
 let element = $state() // 컨테이너 요소에 바인딩
 let svgContent = $state('') // 렌더링된 SVG 저장
@@ -178,10 +177,12 @@ let rawText = $state(ast.current.children?.[0]?.value ?? '')
 
 // 테마 변경 및 원본 텍스트 변경에 반응하여 Mermaid 차트를 렌더링/재렌더링하는 $effect
 $effect(() => {
+	// 1. $effect의 동기적 컨텍스트에서 의존성을 먼저 읽어서 등록합니다.
+
 	// $effect는 비동기 콜백을 직접 지원하지 않으므로,
 	// 즉시 실행 비동기 함수(IIFE) 패턴을 사용합니다.
 	(async () => {
-		// initMermaidThemePromise를 의존성으로 등록
+		// 2. 등록된 의존성의 값을 비동기 로직에서 사용합니다.
 		await initMermaidThemePromise
 
 		const definition = rawText
@@ -223,7 +224,7 @@ $effect(() => {
 })
 </script>
 
-<div bind:this={element} class="mermaid-container" {...props}>
+<div bind:this={element} style="color: blue;" class="mermaid-container">
 	{#if errorMessage}
 		<!-- 오류 발생 시 메시지와 원본 텍스트 표시 -->
 		<pre style:color="red;">{errorMessage}</pre>
