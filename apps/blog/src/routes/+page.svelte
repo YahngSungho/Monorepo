@@ -1,6 +1,7 @@
 <script>
-	import { getLocale, localizeHref, setLocale } from '@library/paraglide/helpers'
+	import { getLocale, setLocale } from '@library/paraglide/helpers'
 	import VariaitonSetter from '@library/ui/variaitonSetter'
+	import Button from '@library/ui/button_daisy'
 </script>
 
 <div
@@ -14,10 +15,10 @@ margin: var(--space-em-cqi-m);"
 
 <ul>
 	<li>
-		<a href={localizeHref('/posts/test-article')}>Test Article</a>
+		<Button href='/posts/test-article'>Test Article</Button>
 	</li>
 	<li>
 		<!-- 이 링크는 존재하지 않는 파일을 가리키므로, 404 에러를 테스트하는 데 사용할 수 있습니다. -->
-		<a href={localizeHref('/posts/another-post')}>Another Post (will fail as example)</a>
+		<Button variant='warning' href='/posts/another-post'>Another Post (will fail as example)</Button>
 	</li>
 </ul>

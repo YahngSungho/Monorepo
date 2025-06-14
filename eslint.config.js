@@ -140,6 +140,7 @@ const baseRules = {
 	'sonarjs/todo-tag': 'off',
 	'sql/format': 'warn',
 	'sql/no-unsafe-query': 'warn',
+	'svelte/no-navigation-without-base': 'off',
 	'svelte/no-useless-mustaches': 'off',
 	'svelte/valid-compile': [
 		'error',
@@ -182,7 +183,6 @@ const baseRules = {
 	'svelte/no-inner-declarations': 'warn',
 	'sonarjs/prefer-single-boolean-return': 'off',
 	'svelte/shorthand-attribute': 'warn',
-	'svelte/no-navigation-without-base': 'warn',
 	'svelte/shorthand-directive': 'warn',
 	'svelte/no-unused-class-name': [
 		'off',

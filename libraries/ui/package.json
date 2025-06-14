@@ -94,7 +94,7 @@
 		"./avatar": "./src/shadcn/components/ui/avatar/index.ts",
 		"./badge": "./src/shadcn/components/ui/badge/index.ts",
 		"./breadcrumb": "./src/shadcn/components/ui/breadcrumb/index.ts",
-		"./button_daisy.svelte": "./src/daisyui/button.svelte",
+		"./button_daisy": "./src/daisyui/button.svelte",
 		"./button_shadcn": "./src/shadcn/components/ui/button/index.ts",
 		"./calendar": "./src/shadcn/components/ui/calendar/index.ts",
 		"./card": "./src/shadcn/components/ui/card/index.ts",
