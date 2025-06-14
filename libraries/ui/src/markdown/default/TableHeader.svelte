@@ -1,7 +1,7 @@
 <script>
 import { TableHeader } from '$shadcn/components/ui/table/index'
 // 테이블 헤더는 align 속성을 가질 수 있습니다.
-let { align = 'left', children } = $props()
+let { align = 'left', children, ...rest } = $props()
 
 const alignClass = $derived(() => {
 	switch (align) {
@@ -21,4 +21,4 @@ const alignClass = $derived(() => {
 })
 </script>
 
-<TableHeader class={alignClass}>{@render children()}</TableHeader>
+<TableHeader class={alignClass} {...rest}>{@render children()}</TableHeader>

@@ -37,7 +37,6 @@ const { value, plugins = [] } = $props()
 
 const defaultPlugins = [
 	gfmPlugin(),
-
 	{
 		remarkPlugin: remarkCjkFriendly,
 	},

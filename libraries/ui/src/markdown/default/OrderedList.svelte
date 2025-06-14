@@ -1,8 +1,11 @@
 <script>
-let { start = undefined, children } = $props()
+	import { cx } from '@emotion/css';
+	const { children, class: className, ...rest } = $props();
 </script>
 
-<ol class="list-decimal [&>li]:mt-1" {start}>{@render children()}</ol>
+<ol {...rest} class={cx("list-decimal [&>li]:mt-1", className)}>
+	{@render children()}
+</ol>
 
 <style>
 ol {

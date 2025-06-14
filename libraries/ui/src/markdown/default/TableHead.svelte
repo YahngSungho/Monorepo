@@ -1,6 +1,6 @@
 <script>
 import { TableHead } from '$shadcn/components/ui/table/index'
-let { align = 'left', children } = $props()
+let { align = 'left', children, ...rest } = $props()
 
 const alignClass = $derived(() => {
 	switch (align) {
@@ -20,4 +20,4 @@ const alignClass = $derived(() => {
 })
 </script>
 
-<TableHead class={alignClass}>{@render children()}</TableHead>
+<TableHead class={alignClass} {...rest}>{@render children()}</TableHead>

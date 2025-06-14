@@ -1,41 +1,20 @@
 /* 링크에 호버 시 아이콘 표시 (선택 사항) */
-h1 .icon.icon-link,
-h2 .icon.icon-link,
-h3 .icon.icon-link,
-h4 .icon.icon-link,
-h5 .icon.icon-link,
-h6 .icon.icon-link {
+h1 a[href^="#"],
+h2 a[href^="#"],
+h3 a[href^="#"],
+h4 a[href^="#"],
+h5 a[href^="#"],
+h6 a[href^="#"] {
 	opacity: 0;
 	transition: opacity 0.2s ease-in-out;
 }
 
-h1:hover .icon.icon-link,
-h2:hover .icon.icon-link,
-h3:hover .icon.icon-link,
-h4:hover .icon.icon-link,
-h5:hover .icon.icon-link,
-h6:hover .icon.icon-link {
-	opacity: 1;
-}
-
-/* 링크에 호버 시 아이콘 표시 (선택 사항) */
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-	margin-inline-start: 0.5ch;
-	opacity: 0;
-	transition: opacity 0.2s ease-in-out;
-}
-
-h1:hover a,
-h2:hover a,
-h3:hover a,
-h4:hover a,
-h5:hover a,
-h6:hover a {
+h1:hover a[href^="#"],
+h2:hover a[href^="#"],
+h3:hover a[href^="#"],
+h4:hover a[href^="#"],
+h5:hover a[href^="#"],
+h6:hover a[href^="#"] {
 	opacity: 1;
 }
 
