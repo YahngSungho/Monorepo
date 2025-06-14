@@ -18,7 +18,7 @@ margin: var(--space-em-cqi-m);"
 	<VariaitonSetter {getLocale} {setLocale} />
 
 	<div>
-		<Button href='../../'>Home</Button>
+		<Button href='/'>Home</Button>
 	</div>
 </div>
 

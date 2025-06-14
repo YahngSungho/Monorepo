@@ -15,7 +15,7 @@ margin: var(--space-em-cqi-m);"
 
 <ul>
 	<li>
-		<Button href='/posts/test-article'>Test Article</Button>
+		<Button href='/posts/test-post'>Test Post</Button>
 	</li>
 	<li>
 		<!-- 이 링크는 존재하지 않는 파일을 가리키므로, 404 에러를 테스트하는 데 사용할 수 있습니다. -->

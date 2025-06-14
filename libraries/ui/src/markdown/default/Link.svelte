@@ -1,6 +1,6 @@
 <script module>
 import { localizeHref } from '@library/paraglide/helpers'
-import { ExternalLink } from '@lucide/svelte'
+import { ExternalLink, FileOutput } from '@lucide/svelte'
 
 import IconText from '../../miscellaneous/icon-text.svelte'
 
@@ -24,7 +24,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	</a>
 {:else}
 	<a href={isInternalLink ? localizeHref(href) : href} {...(isInternalLink ? {} : newTabProps)} {title}>
-		<IconText IconElement={ExternalLink} noMargin right small>
+		<IconText IconElement={isInternalLink ? FileOutput : ExternalLink} noMargin right small>
 			{@render children?.()}
 		</IconText>
 	</a>
