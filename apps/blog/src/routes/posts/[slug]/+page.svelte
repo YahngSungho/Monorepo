@@ -26,7 +26,7 @@ margin: var(--space-em-cqi-m);"
 <div style="
 overflow: auto;
 	margin: auto;
-" class="boxed long-text gutter">
+" class="boxed long-text">
 	{#await data.post then post}
 		<Markdown value={post} />
 	{:catch error}

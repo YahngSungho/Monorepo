@@ -79,4 +79,6 @@ const defaultPlugins = [
 ]
 </script>
 
-<Markdown md={value} plugins={[...defaultPlugins, ...plugins]} />
+<div class='boxed'>
+	<Markdown md={value} plugins={[...defaultPlugins, ...plugins]} />
+</div>
