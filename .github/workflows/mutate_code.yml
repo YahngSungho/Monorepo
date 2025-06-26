@@ -283,16 +283,16 @@ jobs:
           fi
           echo "--- 임시 커밋 완료 ---"
 
-      # # 5. 번역 실행
-      # - name: 번역 실행
-      #   run: |
-      #     echo "--- 번역 실행 중 (pnpm run translate) ---"
-      #     pnpm run translate
-      #     echo "--- 번역 완료 ---"
-      #     echo "'pnpm run translate' 실행 후 상태 (패치 생성 전):"
-      #     git status --short # 번역 실행 직후 상태 확인 (새 파일이 untracked로 보여야 함)
-      #   env:
-      #     GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+      # 5. 번역 실행
+      - name: 번역 실행
+        run: |
+          echo "--- 번역 실행 중 (pnpm run translate) ---"
+          pnpm run translate
+          echo "--- 번역 완료 ---"
+          echo "'pnpm run translate' 실행 후 상태 (패치 생성 전):"
+          git status --short # 번역 실행 직후 상태 확인 (새 파일이 untracked로 보여야 함)
+        env:
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
       # 6. 번역 변경사항 패치 생성 (임시 커밋 기준)
       - name: 번역 변경사항 확인 및 패치 생성
