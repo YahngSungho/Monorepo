@@ -45,7 +45,7 @@ body {
 
 *:focus,
 label:focus-within {
-	z-index: 1;
+	z-index: var(--layer-important);
 	outline: 2px dashed color-mix(in srgb, var(--gray-6) 80%, transparent 20%);
 	outline-offset: 2px;
 }
@@ -237,4 +237,13 @@ a:visited .icon-container {
 	& svg {
 		color: var(--link-visited) !important;
 	}
+}
+
+/* stylelint-disable-next-line selector-type-no-unknown */
+mermaid {
+	display: none;
+}
+
+sup {
+	font-size: 0.7em;
 }

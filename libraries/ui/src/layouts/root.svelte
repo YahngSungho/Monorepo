@@ -8,7 +8,7 @@ import { ModeWatcher } from 'mode-watcher'
 
 import { Toaster } from '$shadcn/components/ui/sonner/index'
 
-import { init } from './base.js'
+import { init } from './base.svelte.js'
 
 init()
 

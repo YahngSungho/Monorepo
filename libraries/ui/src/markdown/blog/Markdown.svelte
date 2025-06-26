@@ -1,4 +1,4 @@
-<script>
+<script module>
 import './style.css'
 
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
@@ -17,8 +17,6 @@ import themeLight from 'shiki/themes/vitesse-light.mjs'
 import Markdown from '../default/Markdown.svelte'
 import Mermaid from './Mermaid.svelte'
 
-const { value, plugins = [] } = $props()
-
 const highlighter = createHighlighterCoreSync({
 	themes: [themeLight, themeDark],
 	langs: [langTs, langHtml, langCss, langSvelte],
@@ -32,7 +30,7 @@ const shikiPlugin = {
 		{
 			themes: {
 				light: 'vitesse-dark',
-				dark: 'vitesse-dark',
+				dark: 'vitesse-light',
 			},
 		},
 	],
@@ -54,8 +52,15 @@ const addedPlugins = [
 		rehypePlugin: [rehypeAutolinkHeadings, { behavior: 'append' }],
 	},
 	shikiPlugin,
-	...plugins,
 ]
+
+function removeFrontmatter(markdown) {
+	return markdown.replace(/^---[\s\S]*?---/, '')
+}
 </script>
 
-<Markdown plugins={addedPlugins} {value} />
+<script>
+const { value, plugins = [] } = $props()
+</script>
+
+<Markdown plugins={[...addedPlugins, ...plugins]} value={removeFrontmatter(value)} />

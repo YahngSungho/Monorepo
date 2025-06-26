@@ -37,7 +37,6 @@ const { value, plugins = [] } = $props()
 
 const defaultPlugins = [
 	gfmPlugin(),
-
 	{
 		remarkPlugin: remarkCjkFriendly,
 	},
@@ -80,4 +79,6 @@ const defaultPlugins = [
 ]
 </script>
 
-<Markdown md={value} plugins={[...defaultPlugins, ...plugins]} />
+<div class="boxed">
+	<Markdown md={value} plugins={[...defaultPlugins, ...plugins]} />
+</div>

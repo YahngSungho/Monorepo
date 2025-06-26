@@ -1,7 +1,7 @@
 <script>
 // 테이블 셀은 align 속성을 가질 수 있습니다.
 import { TableCell } from '$shadcn/components/ui/table/index'
-let { align = 'left', children } = $props()
+let { align = 'left', children, ...rest } = $props()
 
 const alignClass = $derived(() => {
 	switch (align) {
@@ -21,4 +21,4 @@ const alignClass = $derived(() => {
 })
 </script>
 
-<TableCell class={alignClass}>{@render children()}</TableCell>
+<TableCell class={alignClass} {...rest}>{@render children()}</TableCell>

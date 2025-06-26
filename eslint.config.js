@@ -54,6 +54,7 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'sonarjs/call-argument-line': 'off',
 	'unicorn/no-null': 'off',
 	'perfectionist/sort-named-imports': 'warn',
 	'functional/no-class-inheritance': 'off',
@@ -139,6 +140,7 @@ const baseRules = {
 	'sonarjs/todo-tag': 'off',
 	'sql/format': 'warn',
 	'sql/no-unsafe-query': 'warn',
+	'svelte/no-navigation-without-base': 'off',
 	'svelte/no-useless-mustaches': 'off',
 	'svelte/valid-compile': [
 		'error',
@@ -181,7 +183,6 @@ const baseRules = {
 	'svelte/no-inner-declarations': 'warn',
 	'sonarjs/prefer-single-boolean-return': 'off',
 	'svelte/shorthand-attribute': 'warn',
-	'svelte/no-navigation-without-base': 'warn',
 	'svelte/shorthand-directive': 'warn',
 	'svelte/no-unused-class-name': [
 		'off',
@@ -288,6 +289,16 @@ export default defineFlatConfig([
 					project: ['apps/*/tsconfig.json', 'libraries/*/tsconfig.json', 'storybook/tsconfig.json'],
 				}),
 			],
+			'import-x/resolver': {
+				typescript: createTypeScriptImportResolver({
+					project: [
+						'./tsconfig.json',
+						'./apps/*/tsconfig.json',
+						'./libraries/*/tsconfig.json',
+						'./storybook/tsconfig.json',
+					],
+				}),
+			},
 			svelte: {
 				kit: {
 					files: {
@@ -412,6 +423,14 @@ export default defineFlatConfig([
 			'playwright/no-conditional-in-test': 'off',
 			'playwright/no-conditional-expect': 'off',
 		},
+	},
+
+	{
+		files: ['**/scripts/**/*.js'],
+
+		rules: {
+			'unicorn/no-process-exit': 'off'
+		}
 	},
 
 	...jsonc.configs['flat/base'],

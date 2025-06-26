@@ -1,8 +1,11 @@
 <script>
-let { children } = $props()
+import { cx } from '@emotion/css'
+const { children, class: className, ...rest } = $props()
 </script>
 
-<ul class="list-disc [&>li]:mt-1">{@render children()}</ul>
+<ul {...rest} class={cx('list-disc [&>li]:mt-1', className)}>
+	{@render children()}
+</ul>
 
 <style>
 ul {

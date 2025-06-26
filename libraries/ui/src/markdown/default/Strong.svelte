@@ -1,5 +1,5 @@
 <script>
-let { children } = $props()
+const { children, ...rest } = $props()
 </script>
 
-<strong>{@render children()}</strong>
+<strong {...rest}>{@render children()}</strong>

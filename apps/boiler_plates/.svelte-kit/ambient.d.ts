@@ -47,6 +47,7 @@ declare module '$env/static/private' {
 	export const FPS_BROWSER_APP_PROFILE_STRING: string;
 	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
+	export const GOOGLE_GENERATIVE_AI_API_KEY: string;
 	export const GYP_PYTHON: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
@@ -92,6 +93,7 @@ declare module '$env/static/private' {
 	export const NVM_INC: string;
 	export const NVM_SYMLINK: string;
 	export const OneDrive: string;
+	export const OPENAI_API_KEY: string;
 	export const ORIGINAL_PATH: string;
 	export const ORIGINAL_TEMP: string;
 	export const ORIGINAL_TMP: string;
@@ -119,7 +121,7 @@ declare module '$env/static/private' {
 	export const PSModulePath: string;
 	export const PUBLIC: string;
 	export const PWD: string;
-	export const SENTRY_PIPELINE: string;
+	export const SENTRY_AUTH_TOKEN: string;
 	export const SESSIONNAME: string;
 	export const SHELL: string;
 	export const SHLVL: string;
@@ -196,6 +198,7 @@ declare module '$env/dynamic/private' {
 		FPS_BROWSER_APP_PROFILE_STRING: string;
 		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
+		GOOGLE_GENERATIVE_AI_API_KEY: string;
 		GYP_PYTHON: string;
 		HOME: string;
 		HOMEDRIVE: string;
@@ -241,6 +244,7 @@ declare module '$env/dynamic/private' {
 		NVM_INC: string;
 		NVM_SYMLINK: string;
 		OneDrive: string;
+		OPENAI_API_KEY: string;
 		ORIGINAL_PATH: string;
 		ORIGINAL_TEMP: string;
 		ORIGINAL_TMP: string;
@@ -268,7 +272,7 @@ declare module '$env/dynamic/private' {
 		PSModulePath: string;
 		PUBLIC: string;
 		PWD: string;
-		SENTRY_PIPELINE: string;
+		SENTRY_AUTH_TOKEN: string;
 		SESSIONNAME: string;
 		SHELL: string;
 		SHLVL: string;

@@ -27,7 +27,7 @@
 
 .long-text {
 	/* font가 load 되면서 생기는 flash를 줄이기 위해 ch 대신 em 사용 */
-	max-inline-size: 40em;
+	max-inline-size: 50em;
 	margin: auto;
 	font-size: var(--font-size-2);
 }

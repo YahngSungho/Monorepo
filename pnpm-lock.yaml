@@ -400,6 +400,61 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1
 
+  apps/blog:
+    dependencies:
+      '@formkit/auto-animate':
+        specifier: ^0.8.2
+        version: 0.8.2
+      '@library/base':
+        specifier: workspace:*
+        version: link:../../libraries/base
+      '@library/helpers':
+        specifier: workspace:*
+        version: link:../../libraries/helpers
+      '@library/paraglide':
+        specifier: workspace:*
+        version: link:../../libraries/paraglide
+      '@library/ui':
+        specifier: workspace:*
+        version: link:../../libraries/ui
+      '@lucide/svelte':
+        specifier: ^0.511.0
+        version: 0.511.0(svelte@5.33.7)
+      luxon:
+        specifier: ^3.6.1
+        version: 3.6.1
+      nanoid:
+        specifier: ^5.1.5
+        version: 5.1.5
+      ramda:
+        specifier: ^0.30.1
+        version: 0.30.1
+      svelte-sonner:
+        specifier: ^1.0.3
+        version: 1.0.3(svelte@5.33.7)
+      ufo:
+        specifier: ^1.5.4
+        version: 1.6.1
+      xstate:
+        specifier: ^5.19.2
+        version: 5.19.2
+      zod:
+        specifier: ^3.25.36
+        version: 3.25.36
+    devDependencies:
+      '@library/scripts':
+        specifier: workspace:*
+        version: link:../../libraries/scripts
+      daisyui:
+        specifier: 5.0.35
+        version: 5.0.35
+      tailwindcss:
+        specifier: 4.1.8
+        version: 4.1.8
+      tw-animate-css:
+        specifier: ^1.3.2
+        version: 1.3.2
+
   apps/boiler_plates:
     dependencies:
       '@formkit/auto-animate':

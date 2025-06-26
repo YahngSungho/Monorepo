@@ -1,10 +1,10 @@
 <script>
 import { Table } from '$shadcn/components/ui/table/index'
-let { children } = $props()
+let { children, ...rest } = $props()
 </script>
 
 <div class="myTable">
-	<Table>{@render children()}</Table>
+	<Table {...rest}>{@render children()}</Table>
 </div>
 
 <style>

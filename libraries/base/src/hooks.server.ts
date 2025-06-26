@@ -66,8 +66,20 @@ const emotionSsrHandle: Handle = async ({ event, resolve }) => {
 	return response
 }
 
+// 개발자 도구 등에서 발생하는 불필요한 요청을 무시하기 위한 핸들러
+const junkRequestHandle: Handle = async ({ event, resolve }) => {
+	if (event.url.pathname === '/.well-known/appspecific/com.chrome.devtools.json') {
+		// 해당 경로의 요청에 대해 204 No Content 응답을 반환하여 처리를 중단합니다.
+		return new Response(null, { status: 204 })
+	}
+	// 그 외의 요청은 다음 핸들러로 전달합니다.
+	return resolve(event)
+}
+
 // 모든 핸들러를 sequence로 결합
 export const handle = sequence(
+	// 불필요한 요청 무시 핸들러 추가
+	junkRequestHandle,
 	// Sentry 초기화 핸들러 (가장 먼저 실행되도록 하는 것이 일반적)
 	initCloudflareSentryHandle({
 		dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',

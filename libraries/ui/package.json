@@ -79,6 +79,10 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./markdown-default": "./src/markdown/default/Markdown.svelte",
+		"./markdown-blog": "./src/markdown/blog/Markdown.svelte",
+		"./markdown-docs": "./src/markdown/docs/Markdown.svelte",
+		"./markdown-editable-text": "./src/markdown/editableText/Markdown.svelte",
 		"./variaitonSetter": "./src/miscellaneous/variaitonSetter.svelte",
 		"./themeToggle": "./src/miscellaneous/themeToggle.svelte",
 		"./layouts/root": "./src/layouts/root.svelte",
@@ -90,7 +94,7 @@
 		"./avatar": "./src/shadcn/components/ui/avatar/index.ts",
 		"./badge": "./src/shadcn/components/ui/badge/index.ts",
 		"./breadcrumb": "./src/shadcn/components/ui/breadcrumb/index.ts",
-		"./button_daisy.svelte": "./src/daisyui/button.svelte",
+		"./button_daisy": "./src/daisyui/button.svelte",
 		"./button_shadcn": "./src/shadcn/components/ui/button/index.ts",
 		"./calendar": "./src/shadcn/components/ui/calendar/index.ts",
 		"./card": "./src/shadcn/components/ui/card/index.ts",

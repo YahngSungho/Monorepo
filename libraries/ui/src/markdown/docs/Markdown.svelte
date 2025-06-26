@@ -4,7 +4,7 @@ import './style.css'
 
 import rehypeCallouts from 'rehype-callouts'
 
-import Markdown from '../default/Markdown.svelte'
+import Markdown from '../blog/Markdown.svelte'
 
 const { value } = $props()
 

@@ -36,6 +36,10 @@ let {
 </span>
 
 <style>
+:dir(rtl) .icon-container {
+	transform: scaleX(-1);
+}
+
 .with-icon {
 	display: inline-flex;
 	align-items: baseline;
