@@ -179,7 +179,8 @@ export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
 //   }
 // }
 
-export async function getTranslatedLanguageMap(
+export async function getTranslatedLanguageMap_action(
+	basicLangs,
 	messageMap,
 	explanations,
 	dictPerLanguage,
@@ -189,7 +190,7 @@ export async function getTranslatedLanguageMap(
 	// 순수 함수: 초기 상태 계산
 	const { combinedMessages_latest, targetLanguageMap } =
 		calculateInitialTranslationStateByBaseLanguages(
-			['ko', 'en'],
+			basicLangs,
 			messageMap,
 			explanations,
 			combinedMessages_cached,
@@ -233,20 +234,19 @@ export async function getTranslatedLanguageMap(
 //   }
 // }
 
-export async function saveFiles(
+export async function saveFiles_action(
 	rootAbsolutePath,
 	helperFolderPath,
 	translatedLanguageMap,
 	explanations,
-	languageMessageMap_ko,
-	languageMessageMap_en,
+	languageMessageMap_basicLangs,
 ) {
 	for await (const [language, messageMap] of Object.entries(translatedLanguageMap)) {
 		if (messageMap.missingMessageKeys.length === 0) {
 			continue
 		}
 
-		for await (const [messageKey, messageValue] of Object.entries(messageMap.newMessages)) {
+		for await (const [messageKey, messageValue] of Object.entries(messageMap.translatedMessages)) {
 			const filePath = path.join(rootAbsolutePath, messageKey, `${language}.md`)
 			await writeFile_async(filePath, messageValue)
 		}
@@ -265,7 +265,7 @@ export async function saveFiles(
 	}
 
 	const newCache = getNewCache(
-		{ ko: languageMessageMap_ko, en: languageMessageMap_en },
+		languageMessageMap_basicLangs,
 		explanations,
 	)
 	await writeFile_async(

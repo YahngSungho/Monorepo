@@ -84,8 +84,8 @@ import { getInitialLanguageMap, getNewCache, translateOneLanguageMessages } from
 import {
 	convertMarkdownFiles,
 	getFiles,
-	getTranslatedLanguageMap,
-	saveFiles,
+	getTranslatedLanguageMap_action,
+	saveFiles_action,
 } from './translation.js'
 
 // --- 테스트 스위트 ---
@@ -301,8 +301,9 @@ describe('getTranslatedLanguageMap 함수', () => {
 		}
 
 		// 실행 (Act)
-		const result = await getTranslatedLanguageMap(
-			messageMap, // messageMap은 ko, en, fr, de, ja를 포함해야 함
+		const result = await getTranslatedLanguageMap_action(
+			['ko', 'en'], // basicLangs 매개변수 추가
+			messageMap,
 			explanations,
 			dictPerLanguage,
 			combinedMessages_cached,
@@ -349,7 +350,8 @@ describe('getTranslatedLanguageMap 함수', () => {
 		const dummyGetTranslatedMessages = vi.fn()
 
 		// 실행 (Act)
-		const result = await getTranslatedLanguageMap(
+		const result = await getTranslatedLanguageMap_action(
+			['ko', 'en'], // basicLangs 매개변수 추가
 			messageMap,
 			explanations,
 			dictPerLanguage,
@@ -454,13 +456,12 @@ describe('saveFiles 함수', () => {
 		JSON_stringify_spy.mockClear()
 
 		// 실행 (Act)
-		await saveFiles(
+		await saveFiles_action(
 			rootInputPath,
 			helperInputPath,
 			translatedLanguageMap,
 			explanations,
-			languageMessageMap_ko,
-			languageMessageMap_en,
+			{ ko: languageMessageMap_ko, en: languageMessageMap_en },
 		)
 
 		// 검증 (Assert)
@@ -519,13 +520,12 @@ describe('saveFiles 함수', () => {
 		console.log('JSON.stringify 초기화 후 호출 횟수:', JSON_stringify_spy.mock.calls.length)
 
 		// 실행 (Act)
-		await saveFiles(
+		await saveFiles_action(
 			rootInputPath,
 			helperInputPath,
 			translatedLanguageMap,
 			explanations,
-			languageMessageMap_ko,
-			languageMessageMap_en,
+			{ ko: languageMessageMap_ko, en: languageMessageMap_en },
 		)
 
 		// 실행 후 spy 호출 확인

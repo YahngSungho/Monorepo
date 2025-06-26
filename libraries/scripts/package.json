@@ -20,8 +20,8 @@
 	},
 	"exports": {
 		"./translation-paraglide": "./src/translation/paraglide/translation.js",
-		"./translation-markdown": "./src/translation/markdown/translation.js",
 		"./translation-llm": "./src/translation/llm.js",
+		"./markdown": "./src/markdown/script.js",
 		"./explanation-ready": "./src/translation/paraglide/explanation-ready.js",
 		"./changeBaseLocaleInFile": "./src/translation/changeBaseLocaleInFile.js"
 	}

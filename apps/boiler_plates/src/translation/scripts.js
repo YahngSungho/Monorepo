@@ -1,31 +1,6 @@
 import { getAbsolutePath } from '@library/helpers/fs-sync'
-import { getTranslatedMessages_markdown } from '@library/scripts/translation-llm'
-import {
-	convertMarkdownFiles,
-	getFiles,
-	getTranslatedLanguageMap,
-	saveFiles,
-} from '@library/scripts/translation-markdown'
+import { markdownScript_action } from '@library/scripts/markdown'
 
 const rootPath = getAbsolutePath(import.meta.url, '../')
 const helperPath = getAbsolutePath(import.meta.url, './')
-const { initialMarkdownFiles, dictPerLanguage, cache } = await getFiles(rootPath, helperPath)
-const { languageMessageMap, explanations } = convertMarkdownFiles(initialMarkdownFiles, rootPath)
-const translatedLanguageMap = await getTranslatedLanguageMap(
-	languageMessageMap,
-	explanations,
-	dictPerLanguage,
-	cache,
-	getTranslatedMessages_markdown,
-)
-// @ts-ignore
-await saveFiles(
-	rootPath,
-	helperPath,
-	translatedLanguageMap,
-	explanations,
-	// @ts-ignore
-	languageMessageMap.ko,
-	// @ts-ignore
-	languageMessageMap.en,
-)
+await markdownScript_action(rootPath, helperPath)
