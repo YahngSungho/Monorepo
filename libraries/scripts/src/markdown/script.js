@@ -50,7 +50,11 @@ export async function markdownScript_action (rootPath, helperPath) {
 	)
 
 	const languageMessageMap_new = R.merge(languageMessageMap)(
-		R.mapObject((object) => object.newMessages)(translatedLanguageMap)
+		R.pipe(
+			translatedLanguageMap,
+			R.mapObject((object) => object.newMessages),
+			R.filter(Boolean),
+		),
 	)
 
 	const frontmatterObject = getFrontmatterObject(languageMessageMap_new)
