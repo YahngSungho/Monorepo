@@ -407,6 +407,10 @@ describe('saveFiles 함수', () => {
 
 		const translatedLanguageMap = {
 			fr: {
+				translatedMessages: {
+					'comp/text': 'Bonjour',
+					'comp/other': 'Monde',
+				},
 				missingMessageKeys: ['comp/text', 'comp/other'],
 				newMessages: { 'comp/text': 'Bonjour', 'comp/other': 'Monde' },
 				newDictionary: {
@@ -415,6 +419,10 @@ describe('saveFiles 함수', () => {
 				},
 			},
 			de: {
+				translatedMessages: {
+					'comp/text': 'Hallo',
+					'comp/extra': 'Extra',
+				},
 				missingMessageKeys: ['comp/text', 'comp/extra'],
 				newMessages: { 'comp/text': 'Hallo', 'comp/extra': 'Extra' },
 				newDictionary: {

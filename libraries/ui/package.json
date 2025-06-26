@@ -82,7 +82,7 @@
 		"./markdown-default": "./src/markdown/default/Markdown.svelte",
 		"./markdown-blog": "./src/markdown/blog/Markdown.svelte",
 		"./markdown-docs": "./src/markdown/docs/Markdown.svelte",
-		"./markdown-editable-text": "./src/markdown/editableText/Markdown.svelte",
+		"./markdown-editable-text": "./src/markdown/editable-text/Markdown.svelte",
 		"./variaitonSetter": "./src/miscellaneous/variaitonSetter.svelte",
 		"./themeToggle": "./src/miscellaneous/themeToggle.svelte",
 		"./layouts/root": "./src/layouts/root.svelte",
