@@ -24,8 +24,6 @@
 		"**/*.mdx",
 		"**/apps/**/*.md",
 		"**/apps/**/*.mdx",
-		"**/.svelte-kit",
-		"**/.svelte-kit/**",
 		"**/release/**",
 		"**/releases/**",
 		"**/releases",

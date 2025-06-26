@@ -7,7 +7,7 @@ import Markdown from '@library/ui/markdown-blog'
 import VariaitonSetter from '@library/ui/variaitonSetter'
 
 /** @type {import('./$types').PageProps} */
-let { data } = $props()
+const { data } = $props()
 
 </script>
 
@@ -24,14 +24,19 @@ margin: var(--space-em-cqi-m);"
 
 
 <div style="
-overflow: auto;
+overflow: visible;
 	margin: auto;
+	padding-inline: var(--space-em-cqi-m);
 " class="boxed long-text">
 	{#await data.post then post}
 		<Markdown value={post} />
 	{:catch error}
 		<p style="color: var(--destructive);">Error: {error.message}</p>
 	{/await}
+</div>
+
+<div>
+	{JSON.stringify(data.metadata)}
 </div>
 
 <div id="Page_Check"></div>

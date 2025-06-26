@@ -53,6 +53,11 @@ const addedPlugins = [
 	},
 	shikiPlugin,
 ]
+
+
+function removeFrontmatter (markdown) {
+	return markdown.replace(/^---[\s\S]*?---/, '')
+}
 </script>
 
 <script>
@@ -60,4 +65,4 @@ const { value, plugins = [] } = $props()
 
 </script>
 
-<Markdown plugins={[...addedPlugins, ...plugins]} {value} />
+<Markdown plugins={[...addedPlugins, ...plugins]} value={removeFrontmatter(value)} />
