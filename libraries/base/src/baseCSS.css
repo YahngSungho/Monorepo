@@ -239,12 +239,10 @@ a:visited .icon-container {
 	}
 }
 
-
 /* stylelint-disable-next-line selector-type-no-unknown */
 mermaid {
 	display: none;
 }
-
 
 sup {
 	font-size: 0.7em;

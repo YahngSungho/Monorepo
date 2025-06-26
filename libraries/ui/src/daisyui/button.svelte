@@ -1,11 +1,11 @@
 <script module>
-import { localizeHref } from '@library/paraglide/helpers'
 import { cx } from '@emotion/css'
+import { localizeHref } from '@library/paraglide/helpers'
 
-	const newTabProps = {
-		rel: 'noopener noreferrer',
-		target: '_blank',
-	}
+const newTabProps = {
+	rel: 'noopener noreferrer',
+	target: '_blank',
+}
 </script>
 
 <script>
@@ -57,7 +57,14 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#if href}
-	<a class={cx(buttonClass, incomingClass)} href={isInternalLink ? localizeHref(href) : href} role="button" type="button" {...(isInternalLink ? {} : newTabProps)} {...restProps}>
+	<a
+		class={cx(buttonClass, incomingClass)}
+		href={isInternalLink ? localizeHref(href) : href}
+		role="button"
+		type="button"
+		{...isInternalLink ? {} : newTabProps}
+		{...restProps}
+	>
 		{@render children?.()}
 	</a>
 {:else}

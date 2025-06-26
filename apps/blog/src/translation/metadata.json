@@ -1,8 +1,8 @@
 {
-	"posts/test-post": {
-		"date": "2025-06-20"
-	},
 	"posts/second-post": {
 		"date": "2025-06-26"
+	},
+	"posts/test-post": {
+		"date": "2025-06-20"
 	}
 }

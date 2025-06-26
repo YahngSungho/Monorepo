@@ -1,9 +1,9 @@
 <script>
-	import { cx } from '@emotion/css';
-	const { children, class: className, ...rest } = $props();
+import { cx } from '@emotion/css'
+const { children, class: className, ...rest } = $props()
 </script>
 
-<ol {...rest} class={cx("list-decimal [&>li]:mt-1", className)}>
+<ol {...rest} class={cx('list-decimal [&>li]:mt-1', className)}>
 	{@render children()}
 </ol>
 

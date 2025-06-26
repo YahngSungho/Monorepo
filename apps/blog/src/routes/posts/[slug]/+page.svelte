@@ -8,7 +8,6 @@ import VariaitonSetter from '@library/ui/variaitonSetter'
 
 /** @type {import('./$types').PageProps} */
 const { data } = $props()
-
 </script>
 
 <div
@@ -18,16 +17,18 @@ margin: var(--space-em-cqi-m);"
 	<VariaitonSetter {getLocale} {setLocale} />
 
 	<div>
-		<Button href='/'>Home</Button>
+		<Button href="/">Home</Button>
 	</div>
 </div>
 
-
-<div style="
+<div
+	style="
 overflow: visible;
 	margin: auto;
 	padding-inline: var(--space-em-cqi-m);
-" class="boxed long-text">
+"
+	class="boxed long-text"
+>
 	{#await data.post then post}
 		<Markdown value={post} />
 	{:catch error}

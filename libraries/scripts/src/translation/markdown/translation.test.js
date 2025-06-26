@@ -456,13 +456,10 @@ describe('saveFiles 함수', () => {
 		JSON_stringify_spy.mockClear()
 
 		// 실행 (Act)
-		await saveFiles_action(
-			rootInputPath,
-			helperInputPath,
-			translatedLanguageMap,
-			explanations,
-			{ ko: languageMessageMap_ko, en: languageMessageMap_en },
-		)
+		await saveFiles_action(rootInputPath, helperInputPath, translatedLanguageMap, explanations, {
+			ko: languageMessageMap_ko,
+			en: languageMessageMap_en,
+		})
 
 		// 검증 (Assert)
 		expect(vi.mocked(writeFile_async)).toHaveBeenCalledTimes(7)
@@ -520,13 +517,10 @@ describe('saveFiles 함수', () => {
 		console.log('JSON.stringify 초기화 후 호출 횟수:', JSON_stringify_spy.mock.calls.length)
 
 		// 실행 (Act)
-		await saveFiles_action(
-			rootInputPath,
-			helperInputPath,
-			translatedLanguageMap,
-			explanations,
-			{ ko: languageMessageMap_ko, en: languageMessageMap_en },
-		)
+		await saveFiles_action(rootInputPath, helperInputPath, translatedLanguageMap, explanations, {
+			ko: languageMessageMap_ko,
+			en: languageMessageMap_en,
+		})
 
 		// 실행 후 spy 호출 확인
 		console.log('saveFiles 실행 후 JSON.stringify 호출 횟수:', JSON_stringify_spy.mock.calls.length)

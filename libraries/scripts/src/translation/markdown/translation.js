@@ -264,10 +264,7 @@ export async function saveFiles_action(
 		)
 	}
 
-	const newCache = getNewCache(
-		languageMessageMap_basicLangs,
-		explanations,
-	)
+	const newCache = getNewCache(languageMessageMap_basicLangs, explanations)
 	await writeFile_async(
 		path.join(helperFolderPath, 'cache.json'),
 		JSON.stringify(newCache, undefined, 2),

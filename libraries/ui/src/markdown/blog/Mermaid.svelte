@@ -1,9 +1,10 @@
 <script module>
 import './mermaid.css'
+
 import mermaid from 'mermaid'
+import { mode } from 'mode-watcher'
 import { nanoid } from 'nanoid'
 import { tick } from 'svelte'
-import { mode } from 'mode-watcher'
 
 import { initMermaidTheme_action } from './mermaid-theme'
 
@@ -11,7 +12,7 @@ import { initMermaidTheme_action } from './mermaid-theme'
  * Mermaid 플로우차트 SVG 요소에 노드 hover 시 연결 요소 하이라이트 기능을 초기화합니다.
  * @param {SVGSVGElement} svgElement 대상 Mermaid SVG 요소
  */
- function initializeMermaidHover_action(svgElement) {
+function initializeMermaidHover_action(svgElement) {
 	if (!svgElement) {
 		console.error('SVG element not provided for Mermaid hover initialization.')
 		return
@@ -164,7 +165,6 @@ const initMermaidThemePromise = $derived(initMermaidTheme_action(mode.current))
 <script>
 import { getAstNode } from 'svelte-exmarkdown'
 
-
 const ast = getAstNode()
 
 let element = $state() // 컨테이너 요소에 바인딩
@@ -181,7 +181,7 @@ $effect(() => {
 
 	// $effect는 비동기 콜백을 직접 지원하지 않으므로,
 	// 즉시 실행 비동기 함수(IIFE) 패턴을 사용합니다.
-	(async () => {
+	;(async () => {
 		// 2. 등록된 의존성의 값을 비동기 로직에서 사용합니다.
 		await initMermaidThemePromise
 

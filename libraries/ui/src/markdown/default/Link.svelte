@@ -4,10 +4,10 @@ import { ExternalLink, FileOutput, Hash } from '@lucide/svelte'
 
 import IconText from '../../miscellaneous/icon-text.svelte'
 
-	const newTabProps = {
-		rel: 'noopener noreferrer',
-		target: '_blank',
-	}
+const newTabProps = {
+	rel: 'noopener noreferrer',
+	target: '_blank',
+}
 </script>
 
 <script>
@@ -23,15 +23,20 @@ const isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 		{#if isFootnoteLink}
 			{@render children?.()}
 		{:else}
-		<span class="headingLink">
-			<IconText IconElement={Hash} noMargin right small>
-				{@render children?.()}
-			</IconText>
-		</span>
+			<span class="headingLink">
+				<IconText IconElement={Hash} noMargin right small>
+					{@render children?.()}
+				</IconText>
+			</span>
 		{/if}
 	</a>
 {:else}
-	<a href={isInternalLink ? localizeHref(href) : href} {...(isInternalLink ? {} : newTabProps)} {title} {...rest}>
+	<a
+		href={isInternalLink ? localizeHref(href) : href}
+		{...isInternalLink ? {} : newTabProps}
+		{title}
+		{...rest}
+	>
 		<IconText IconElement={isInternalLink ? FileOutput : ExternalLink} noMargin right small>
 			{@render children?.()}
 		</IconText>

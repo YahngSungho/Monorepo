@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit'
 
-import { getPost } from '$lib/server/getPost'
 import { getMetadataOfPost } from '$lib/server/getMetadata.js'
+import { getPost } from '$lib/server/getPost'
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ params }) => {

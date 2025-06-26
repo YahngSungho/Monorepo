@@ -5,9 +5,9 @@ set -e
 
 # 앱 이름이 인자로 제공되었는지 확인합니다.
 if [ -z "$1" ]; then
-  echo "오류: 앱 이름이 필요합니다."
-  echo "사용법: pnpm run generate:app <appName>"
-  exit 1
+	echo "오류: 앱 이름이 필요합니다."
+	echo "사용법: pnpm run generate:app <appName>"
+	exit 1
 fi
 
 APP_NAME=$1

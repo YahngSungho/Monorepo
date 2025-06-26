@@ -1,6 +1,6 @@
 <script>
-	import { cx } from '@emotion/css';
-	const { children, class: className, ...rest } = $props();
+import { cx } from '@emotion/css'
+const { children, class: className, ...rest } = $props()
 </script>
 
 <ul {...rest} class={cx('list-disc [&>li]:mt-1', className)}>
