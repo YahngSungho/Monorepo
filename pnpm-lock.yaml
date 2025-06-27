@@ -193,8 +193,8 @@ importers:
         specifier: ^0.12.0
         version: 0.12.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)
       eslint-plugin-svelte:
-        specifier: ^3.8.1
-        version: 3.8.1(eslint@9.28.0(jiti@2.4.2))(svelte@5.33.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
+        specifier: ^3.10.1
+        version: 3.10.1(eslint@9.28.0(jiti@2.4.2))(svelte@5.33.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
       eslint-plugin-toml:
         specifier: ^0.12.0
         version: 0.12.0(eslint@9.28.0(jiti@2.4.2))
@@ -5489,8 +5489,8 @@ packages:
     peerDependencies:
       eslint: '>=8'
 
-  eslint-plugin-svelte@3.8.1:
-    resolution: {integrity: sha512-w6NQifz1xBIFcs4XMLYT36xukgN1xgzoPGk1nJLC1UeZ8O4CUCCSZx1tgwq3yRNkMSXMUqbMJjslFweWsDlAoA==}
+  eslint-plugin-svelte@3.10.1:
+    resolution: {integrity: sha512-csCh2x0ge/DugXC7dCANh46Igi7bjMZEy6rHZCdS13AoGVJSu7a90Kru3I8oMYLGEemPRE1hQXadxvRPVMAAXQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.1 || ^9.0.0
@@ -6707,6 +6707,9 @@ packages:
 
   known-css-properties@0.36.0:
     resolution: {integrity: sha512-A+9jP+IUmuQsNdsLdcg6Yt7voiMF/D4K83ew0OpJtpu+l34ef7LaohWV0Rc6KNvzw6ZDizkqfyB5JznZnzuKQA==}
+
+  known-css-properties@0.37.0:
+    resolution: {integrity: sha512-JCDrsP4Z1Sb9JwG0aJ8Eo2r7k4Ou5MwmThS/6lcIe1ICyb7UBJKGRIUUdqc2ASdE/42lgz6zFUnzAIhtXnBVrQ==}
 
   kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
@@ -15582,14 +15585,14 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-svelte@3.8.1(eslint@9.28.0(jiti@2.4.2))(svelte@5.33.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)):
+  eslint-plugin-svelte@3.10.1(eslint@9.28.0(jiti@2.4.2))(svelte@5.33.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)):
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.28.0(jiti@2.4.2))
       '@jridgewell/sourcemap-codec': 1.5.0
       eslint: 9.28.0(jiti@2.4.2)
       esutils: 2.0.3
       globals: 16.0.0
-      known-css-properties: 0.36.0
+      known-css-properties: 0.37.0
       postcss: 8.5.3
       postcss-load-config: 3.1.4(postcss@8.5.3)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
       postcss-safe-parser: 7.0.1(postcss@8.5.3)
@@ -17034,6 +17037,8 @@ snapshots:
   kleur@4.1.5: {}
 
   known-css-properties@0.36.0: {}
+
+  known-css-properties@0.37.0: {}
 
   kolorist@1.8.0: {}
 
