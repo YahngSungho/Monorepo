@@ -43,7 +43,6 @@ let {
 .with-icon {
 	display: inline-flex;
 	align-items: baseline;
-	inline-size: max-content;
 
 	& .icon-container {
 		position: relative;

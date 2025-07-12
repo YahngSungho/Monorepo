@@ -23,7 +23,7 @@ margin: var(--space-em-cqi-m);"
 
 <div
 	style="
-overflow: visible;
+	overflow: visible;
 	margin: auto;
 	padding-inline: var(--space-em-cqi-m);
 "
