@@ -29,6 +29,7 @@ export function getAllMetadata() {
 
 			return R.mapObject((value, key) => {
 				return {
+					slug: key.slice(key.lastIndexOf('/') + 1),
 					...value,
 					...parsedMetadata[key],
 				}

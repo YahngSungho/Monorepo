@@ -4,22 +4,44 @@ import { getLocale, setLocale } from '@library/paraglide/helpers'
 import * as m from '@library/paraglide/messages'
 import Button from '@library/ui/button_daisy'
 import Markdown from '@library/ui/markdown-blog'
-import VariaitonSetter from '@library/ui/variaitonSetter'
+import VariationSetter from '@library/ui/variationSetter'
+import store from 'store'
 
 /** @type {import('./$types').PageProps} */
-const { data } = $props()
+let { data } = $props()
+
+$effect(() => {
+	if (!data.metadata) return
+
+	const prevVisited = store.get('visited') || {}
+	if (!prevVisited[data.metadata.slug]) {
+		const newVisited = {
+			...prevVisited,
+			[data.metadata.slug]: true
+		}
+		store.set('visited', newVisited)
+	}
+})
+
 </script>
 
 <div
 	style="
 margin: var(--space-em-cqi-m);"
 >
-	<VariaitonSetter {getLocale} {setLocale} />
+	<VariationSetter {getLocale} {setLocale} />
 
 	<div>
 		<Button href="/">Home</Button>
 	</div>
 </div>
+
+{#if data.metadata}
+	<div>
+		{JSON.stringify(data.metadata)}
+	</div>
+{/if}
+
 
 <div
 	style="
@@ -29,15 +51,11 @@ margin: var(--space-em-cqi-m);"
 "
 	class="boxed long-text"
 >
-	{#await data.post then post}
-		<Markdown value={post} />
-	{:catch error}
-		<p style="color: var(--destructive);">Error: {error.message}</p>
-	{/await}
-</div>
 
-<div>
-	{JSON.stringify(data.metadata)}
+{#if data.post}
+<Markdown value={data.post} />
+{/if}
+
 </div>
 
 <div id="Page_Check"></div>

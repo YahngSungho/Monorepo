@@ -396,6 +396,9 @@ importers:
       random-js:
         specifier: ^2.1.0
         version: 2.1.0
+      store:
+        specifier: ^2.0.12
+        version: 2.0.12
       yup:
         specifier: ^1.6.1
         version: 1.6.1
@@ -429,6 +432,9 @@ importers:
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
+      store:
+        specifier: ^2.0.12
+        version: 2.0.12
       svelte-sonner:
         specifier: ^1.0.3
         version: 1.0.3(svelte@5.33.7)
@@ -484,6 +490,9 @@ importers:
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
+      store:
+        specifier: ^2.0.12
+        version: 2.0.12
       svelte-sonner:
         specifier: ^1.0.3
         version: 1.0.3(svelte@5.33.7)
@@ -9000,6 +9009,9 @@ packages:
   stoppable@1.1.0:
     resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
     engines: {node: '>=4', npm: '>=6'}
+
+  store@2.0.12:
+    resolution: {integrity: sha512-eO9xlzDpXLiMr9W1nQ3Nfp9EzZieIQc10zPPMP5jsVV7bLOziSFFBP0XoDXACEIFtdI+rIz0NwWVA/QVJ8zJtw==}
 
   storybook@8.6.12:
     resolution: {integrity: sha512-Z/nWYEHBTLK1ZBtAWdhxC0l5zf7ioJ7G4+zYqtTdYeb67gTnxNj80gehf8o8QY9L2zA2+eyMRGLC2V5fI7Z3Tw==}
@@ -19800,6 +19812,8 @@ snapshots:
   stdin-discarder@0.2.2: {}
 
   stoppable@1.1.0: {}
+
+  store@2.0.12: {}
 
   storybook@8.6.12(prettier@3.5.3):
     dependencies:
