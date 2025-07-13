@@ -20,6 +20,11 @@ onMount(() => {
 
 </script>
 
+<svelte:head>
+	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
+	<title>{data.metadata.title} - sungho.blog</title>
+</svelte:head>
+
 <div
 	style="
 margin: var(--space-em-cqi-m);"

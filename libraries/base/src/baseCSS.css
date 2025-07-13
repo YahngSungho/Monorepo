@@ -236,15 +236,6 @@ blockquote {
 	}
 }
 
-a:visited .icon-container {
-	color: var(--link-visited) !important;
-
-	& path,
-	& svg {
-		color: var(--link-visited) !important;
-	}
-}
-
 /* stylelint-disable-next-line selector-type-no-unknown */
 mermaid {
 	display: none;

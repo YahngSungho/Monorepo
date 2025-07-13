@@ -19,12 +19,14 @@ onMount(() => {
 
 const allMetadata = $derived.by(() => {
 	if (!data.allMetadata) return {}
-	return R.mapObject(metadata => {
-		return {
+	return R.pipe(
+		data.allMetadata,
+		Object.values,
+		R.map((metadata) => ({
 			...metadata,
 			visited: !!visited[metadata.slug]
-		}
-	})(data.allMetadata)
+		}))
+	)
 })
 
 function markAsVisited(slug) {
@@ -40,7 +42,8 @@ setContext('markAsVisited', markAsVisited)
 </script>
 
 <svelte:head>
-	<title>{APP_NAME}</title>
+	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
+	<title>sungho.blog</title>
 </svelte:head>
 
 <BaseLayout appName={APP_NAME}>
