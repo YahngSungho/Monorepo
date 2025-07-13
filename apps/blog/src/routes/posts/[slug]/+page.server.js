@@ -14,6 +14,6 @@ export const load = async ({ params, parent }) => {
 
 	return {
 		post,
-		currentMetadata
+		currentMetadata,
 	}
 }

@@ -4,7 +4,7 @@ import '@library/base/fontStyle.css'
 import { R } from '@library/helpers/R'
 import BaseLayout from '@library/ui/layouts/root'
 import store from 'store'
-import { onMount,setContext } from 'svelte'
+import { onMount, setContext } from 'svelte'
 
 import { APP_NAME } from './base'
 
@@ -24,8 +24,8 @@ const allMetadata = $derived.by(() => {
 		Object.values,
 		R.map((metadata) => ({
 			...metadata,
-			visited: !!visited[metadata.slug]
-		}))
+			visited: !!visited[metadata.slug],
+		})),
 	)
 })
 
@@ -38,7 +38,6 @@ function markAsVisited(slug) {
 
 setContext('getAllMetadata', () => allMetadata)
 setContext('markAsVisited', markAsVisited)
-
 </script>
 
 <svelte:head>

@@ -17,19 +17,20 @@ const markAsVisited = getContext('markAsVisited')
 let { data } = $props()
 
 let allMetadata0 = $derived(getAllMetadata())
-let allMetadata = $derived(create(allMetadata0, draft => {
-		const currentIndex = draft.findIndex(item => item.slug === data.currentMetadata.slug)
+let allMetadata = $derived(
+	create(allMetadata0, (draft) => {
+		const currentIndex = draft.findIndex((item) => item.slug === data.currentMetadata.slug)
 		const prevCurrent = draft[currentIndex]
 		draft[currentIndex] = {
 			...prevCurrent,
-			current: true
+			current: true,
 		}
-	}))
+	}),
+)
 
 $effect(() => {
 	markAsVisited(data.currentMetadata?.slug)
 })
-
 </script>
 
 <svelte:head>
@@ -52,13 +53,13 @@ margin: var(--space-em-cqi-m);"
 	<PostList {allMetadata} />
 </div>
 
-	<div>
-		{JSON.stringify(data.currentMetadata)}
-	</div>
+<div>
+	{JSON.stringify(data.currentMetadata)}
+</div>
 
-	<div>
-		{JSON.stringify(allMetadata)}
-	</div>
+<div>
+	{JSON.stringify(allMetadata)}
+</div>
 
 <div
 	style="
@@ -68,11 +69,9 @@ margin: var(--space-em-cqi-m);"
 "
 	class="boxed long-text"
 >
-
-{#if data.post}
-<Markdown value={data.post} />
-{/if}
-
+	{#if data.post}
+		<Markdown value={data.post} />
+	{/if}
 </div>
 
 <div id="Page_Check"></div>

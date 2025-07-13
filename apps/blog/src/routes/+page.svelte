@@ -2,14 +2,13 @@
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import VariationSetter from '@library/ui/variationSetter'
 import { getContext } from 'svelte'
+
 import PostList from '$lib/components/postList.svelte'
 </script>
 
 <script>
-
 const getAllMetadata = getContext('getAllMetadata')
 let allMetadata = $derived(getAllMetadata())
-
 </script>
 
 <div
