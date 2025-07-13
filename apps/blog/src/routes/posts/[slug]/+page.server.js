@@ -1,12 +1,13 @@
 import { error } from '@sveltejs/kit'
 
-import { getMetadataOfPost } from '$lib/server/getMetadata.js'
+import { getAllMetadata } from '$lib/server/getMetadata.js'
 import { getPost } from '$lib/server/getPost'
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ params }) => {
 	const post = await getPost(params.slug)
-	const metadata = await getMetadataOfPost(params.slug)
+	const allMetadata = await getAllMetadata()
+	const metadata = allMetadata[`posts/${params.slug}`]
 
 	if (!post) {
 		error(404, 'Post not found')
@@ -14,6 +15,7 @@ export const load = async ({ params }) => {
 
 	return {
 		post,
+		allMetadata,
 		metadata,
 	}
 }

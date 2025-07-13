@@ -1,18 +1,31 @@
 <script module>
+import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button_daisy'
-import VariaitonSetter from '@library/ui/variaitonSetter'
+import VariationSetter from '@library/ui/variationSetter'
+import store from 'store'
 </script>
 
 <script>
-const { data } = $props()
+let { data } = $props()
+
+const allMetadata1 = $derived.by(() => {
+	const visited = store.get('visited') || {}
+	return R.mapObject((metadata) => {
+		return {
+			...metadata,
+			visited: Boolean(visited[metadata.slug])
+		}
+	})(data.allMetadata)
+})
+
 </script>
 
 <div
 	style="
 margin: var(--space-em-cqi-m);"
 >
-	<VariaitonSetter {getLocale} {setLocale} />
+	<VariationSetter {getLocale} {setLocale} />
 </div>
 
 <h1>Blog Posts</h1>
@@ -28,7 +41,7 @@ margin: var(--space-em-cqi-m);"
 </div>
 
 <p>
-	{JSON.stringify(data.allMetadata)}
+	{JSON.stringify(allMetadata1)}
 </p>
 
 <div id="Page_Check"></div>

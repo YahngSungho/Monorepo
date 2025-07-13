@@ -39,9 +39,3 @@ export function getAllMetadata() {
 
 	return promise
 }
-
-export async function getMetadataOfPost(slug) {
-	const allMetadata = await getAllMetadata()
-
-	return allMetadata[`posts/${slug}`]
-}

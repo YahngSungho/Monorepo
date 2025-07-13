@@ -1,4 +1,5 @@
 <script>
+import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
@@ -23,6 +24,17 @@ $effect(() => {
 	}
 })
 
+
+const allMetadata1 = $derived.by(() => {
+	const visited = store.get('visited') || {}
+	return R.mapObject((metadata) => {
+		return {
+			...metadata,
+			visited: Boolean(visited[metadata.slug])
+		}
+	})(data.allMetadata)
+})
+
 </script>
 
 <div
@@ -36,12 +48,13 @@ margin: var(--space-em-cqi-m);"
 	</div>
 </div>
 
-{#if data.metadata}
 	<div>
 		{JSON.stringify(data.metadata)}
 	</div>
-{/if}
 
+	<div>
+		{JSON.stringify(allMetadata1)}
+	</div>
 
 <div
 	style="
