@@ -1,12 +1,11 @@
 import { error } from '@sveltejs/kit'
 
-import { getAllMetadata } from '$lib/server/getMetadata.js'
 import { getPost } from '$lib/server/getPost'
 
 /** @type {import('./$types').PageServerLoad} */
-export const load = async ({ params }) => {
+export const load = async ({ params, parent }) => {
 	const post = await getPost(params.slug)
-	const allMetadata = await getAllMetadata()
+	const { allMetadata } = await parent()
 	const metadata = allMetadata[`posts/${params.slug}`]
 
 	if (!post) {
@@ -15,7 +14,6 @@ export const load = async ({ params }) => {
 
 	return {
 		post,
-		allMetadata,
-		metadata,
+		metadata
 	}
 }

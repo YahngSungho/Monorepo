@@ -1,23 +1,14 @@
 <script module>
-import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button_daisy'
 import VariationSetter from '@library/ui/variationSetter'
-import store from 'store'
+import { getContext } from 'svelte'
 </script>
 
 <script>
-let { data } = $props()
 
-const allMetadata1 = $derived.by(() => {
-	const visited = store.get('visited') || {}
-	return R.mapObject((metadata) => {
-		return {
-			...metadata,
-			visited: Boolean(visited[metadata.slug])
-		}
-	})(data.allMetadata)
-})
+const getAllMetadata = getContext('getAllMetadata')
+const allMetadata = $derived(getAllMetadata())
 
 </script>
 
@@ -41,7 +32,7 @@ margin: var(--space-em-cqi-m);"
 </div>
 
 <p>
-	{JSON.stringify(allMetadata1)}
+	{JSON.stringify(allMetadata)}
 </p>
 
 <div id="Page_Check"></div>
