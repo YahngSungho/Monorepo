@@ -6,7 +6,7 @@ import { getPost } from '$lib/server/getPost'
 export const load = async ({ params, parent }) => {
 	const post = await getPost(params.slug)
 	const { allMetadata } = await parent()
-	const metadata = allMetadata[`posts/${params.slug}`]
+	const currentMetadata = allMetadata[`posts/${params.slug}`]
 
 	if (!post) {
 		error(404, 'Post not found')
@@ -14,6 +14,6 @@ export const load = async ({ params, parent }) => {
 
 	return {
 		post,
-		metadata
+		currentMetadata
 	}
 }

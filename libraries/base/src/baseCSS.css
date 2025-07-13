@@ -82,7 +82,10 @@ button,
 	}
 }
 
-a {
+a,
+.toggle,
+input[type='checkbox'],
+input[type='radio'] {
 	&:active,
 	&:hover {
 		opacity: 0.7;
