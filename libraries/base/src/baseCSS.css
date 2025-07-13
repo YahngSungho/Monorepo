@@ -18,23 +18,21 @@ body {
 	inline-size: 100svi;
 	block-size: 100svb;
 
-	line-height: var(--font-lineheight-2);
-
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	white-space: normal;
+	line-height: var(--font-lineheight-2);
 	text-wrap: stable;
 	text-rendering: optimizelegibility;
 	word-break: keep-all;
 	line-break: strict;
 	overflow-wrap: break-word;
+	white-space: normal;
 }
 
 *,
 *::before,
 *::after {
 	overscroll-behavior: contain;
-
 	box-sizing: border-box;
 }
 

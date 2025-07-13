@@ -87,7 +87,7 @@
     		const { Story } = defineMeta({
     			title: '예시/MyExampleComponent', // 제목 조정
     			component: MyExampleComponent,
-				decorators: [() => StorybookDecorator], // 모든 스토리에 데코레이터 적용
+    			decorators: [() => StorybookDecorator], // 모든 스토리에 데코레이터 적용
     			argTypes: { // 컨트롤을 위한 선택적 기본 argTypes
     				labelText: { control: 'text' },
     				isDisabled: { control: 'boolean' },

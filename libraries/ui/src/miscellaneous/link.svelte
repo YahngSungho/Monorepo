@@ -1,18 +1,17 @@
 <script module>
-	import { localizeHref } from '@library/paraglide/helpers'
+import { localizeHref } from '@library/paraglide/helpers'
 
-	const newTabProps = {
-		rel: 'noopener noreferrer',
-		target: '_blank',
-	}
-	</script>
+const newTabProps = {
+	rel: 'noopener noreferrer',
+	target: '_blank',
+}
+</script>
 
 <script>
 let { href = '', children, current = false, class: incomingClass = '', ...rest } = $props()
 
 const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
-
 
 <a
 	class={incomingClass}
@@ -21,11 +20,11 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	{...isInternalLink ? {} : newTabProps}
 	{...rest}
 >
-		{@render children?.()}
+	{@render children?.()}
 </a>
 
 <style>
-	.current {
-		opacity: 0.7;
-	}
+.current {
+	opacity: 0.7;
+}
 </style>

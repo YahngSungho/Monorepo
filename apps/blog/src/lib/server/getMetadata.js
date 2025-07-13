@@ -28,7 +28,6 @@ export function getAllMetadata() {
 			const parsedFrontmatter = JSON.parse(frontmatterContent.default)
 
 			return R.mapObject((value, key) => {
-
 				return {
 					...value,
 					...parsedMetadata[key],
