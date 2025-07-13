@@ -24,6 +24,7 @@
 				- STRESS TEST CASES (interpret this as stories using large amounts of data, deeply nested structures, or very long strings for props where applicable)
 		- **Framework:** Use the Svelte CSF format provided by `@storybook/addon-svelte-csf`. This involves using `defineMeta` in `<script module>` and the `<Story>` component for each story definition.
 		- **Interaction Tests:** DO NOT write any interaction tests using the `play` function. Stories should focus on rendering the component in different states via `args`.
+		- **No Wrapping Elements:** The component inside a story template snippet (`#snippet`) MUST NOT be wrapped by other HTML elements like `<div>`. The snippet should render the component directly.
 		- **Clarity:** Story names MUST **be in KOREAN** and clearly indicate the scenario they represent (e.g., `name="비활성화_상태"`). **All** other non-code text (comments, analysis steps, etc.) MUST also **be in KOREAN**.
 </Constraints>
 
@@ -51,11 +52,11 @@
     	**4. Generate `.stories.svelte` Code:**
     			- Write the complete content for the `.stories.svelte` file.
     			- **`<script module>` Section:**
-    				- Include necessary imports (`defineMeta` from `@storybook/addon-svelte-csf`, the target component).
-    				- Call `defineMeta`, providing `title` (e.g., `경로/컴포넌트명`), `component` (the imported component), and potentially basic `argTypes` to enable controls for common props if helpful.
+    				- Include necessary imports (`defineMeta` from `@storybook/addon-svelte-csf`, the target component, and `import StorybookDecorator from '@library/ui/storybookDecorator'`).
+    				- Call `defineMeta`, providing `title` (e.g., `경로/컴포넌트명`), `component` (the imported component), `decorators: [() => StorybookDecorator]`, and potentially basic `argTypes` to enable controls for common props if helpful.
     				- **USE JAVASCRIPT ONLY.**
     			- **Snippets:**
-    				- Define the shared snippet(s) (e.g., `{#snippet template(args)}...{/snippet}`) as planned. Ensure `args` are correctly passed down to the component within the snippet (typically using `{...args}`). Add comments **in KOREAN** if necessary.
+    				- Define the shared snippet(s) (e.g., `{#snippet template(args)}...{/snippet}`) as planned. **The snippet MUST render the component directly, without wrapping it in other elements like `<div>`.** Ensure `args` are correctly passed down to the component within the snippet (typically using `{...args}`). Add comments **in KOREAN** if necessary.
     			- **`<Story>` Components:**
     				- Create a `<Story>` component instance for EACH scenario brainstormed in step 2.
     				- Use the `name` prop for descriptive titles **in KOREAN** reflecting the scenario (e.g., `name="기본_활성화"`).
@@ -80,11 +81,13 @@
 			// 자바스크립트 전용 - lang="ts" 사용 금지
 			import { defineMeta } from '@storybook/addon-svelte-csf';
 			import MyExampleComponent from './MyExampleComponent.svelte'; // 임포트 경로 조정
+			import StorybookDecorator from '@library/ui/storybookDecorator'; // 데코레이터 임포트
 
     		// defineMeta는 컴포넌트 메타데이터를 정의합니다
     		const { Story } = defineMeta({
     			title: '예시/MyExampleComponent', // 제목 조정
     			component: MyExampleComponent,
+    			decorators: [() => StorybookDecorator], // 모든 스토리에 데코레이터 적용
     			argTypes: { // 컨트롤을 위한 선택적 기본 argTypes
     				labelText: { control: 'text' },
     				isDisabled: { control: 'boolean' },

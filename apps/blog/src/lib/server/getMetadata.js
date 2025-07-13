@@ -27,7 +27,12 @@ export function getAllMetadata() {
 			// @ts-ignore
 			const parsedFrontmatter = JSON.parse(frontmatterContent.default)
 
-			return R.mergeWith(R.mergeRight, parsedMetadata, parsedFrontmatter)
+			return R.mapObject((value, key) => {
+				return {
+					...value,
+					...parsedMetadata[key],
+				}
+			})(parsedFrontmatter)
 		})()
 	}
 

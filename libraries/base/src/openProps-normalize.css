@@ -139,20 +139,6 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
-:where(a) {
-	&:where([href]) {
-		text-decoration-color: var(--indigo-2);
-
-		&:where(:visited) {
-			text-decoration-color: var(--purple-2);
-		}
-	}
-
-	&:where(:not(:hover)) {
-		text-decoration: inherit;
-	}
-}
-
 :where(img, svg, video, canvas, audio, iframe, embed, object) {
 	display: block;
 }

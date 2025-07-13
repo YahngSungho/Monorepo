@@ -11,7 +11,7 @@ const newTabProps = {
 </script>
 
 <script>
-let { href = '', title = undefined, children, ...rest } = $props()
+let { href = '', children, ...rest } = $props()
 
 const isHeadingLink = $derived(href.startsWith('#'))
 const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
@@ -19,7 +19,7 @@ const isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 </script>
 
 {#if isHeadingLink}
-	<a {href} {title} {...rest}>
+	<a {href} {...rest}>
 		{#if isFootnoteLink}
 			{@render children?.()}
 		{:else}
@@ -34,7 +34,6 @@ const isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 	<a
 		href={isInternalLink ? localizeHref(href) : href}
 		{...isInternalLink ? {} : newTabProps}
-		{title}
 		{...rest}
 	>
 		<IconText IconElement={isInternalLink ? FileOutput : ExternalLink} noMargin right small>

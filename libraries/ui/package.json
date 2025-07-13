@@ -79,10 +79,12 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./storybookDecorator": "./src/miscellaneous/storybookDecorator.svelte",
 		"./markdown-default": "./src/markdown/default/Markdown.svelte",
 		"./markdown-blog": "./src/markdown/blog/Markdown.svelte",
 		"./markdown-docs": "./src/markdown/docs/Markdown.svelte",
 		"./markdown-editable-text": "./src/markdown/editable-text/Markdown.svelte",
+		"./link": "./src/miscellaneous/link.svelte",
 		"./variaitonSetter": "./src/miscellaneous/variaitonSetter.svelte",
 		"./themeToggle": "./src/miscellaneous/themeToggle.svelte",
 		"./layouts/root": "./src/layouts/root.svelte",
