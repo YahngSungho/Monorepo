@@ -12,7 +12,7 @@ let { data } = $props()
 
 const getAllMetadata = getContext('getAllMetadata')
 const markAsVisited = getContext('markAsVisited')
-const allMetadata = $derived(getAllMetadata())
+let allMetadata = $derived(getAllMetadata())
 
 onMount(() => {
 	markAsVisited(data.metadata?.slug)

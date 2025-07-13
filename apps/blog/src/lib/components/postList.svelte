@@ -6,7 +6,7 @@ import { Check } from '@lucide/svelte'
 </script>
 
 <script>
-const { allMetadata } = $props()
+let { allMetadata } = $props()
 </script>
 
 <div

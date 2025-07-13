@@ -8,7 +8,7 @@ import PostList from '$lib/components/postList.svelte'
 <script>
 
 const getAllMetadata = getContext('getAllMetadata')
-const allMetadata = $derived(getAllMetadata())
+let allMetadata = $derived(getAllMetadata())
 
 </script>
 

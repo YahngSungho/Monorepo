@@ -4,7 +4,7 @@ import { css } from '@emotion/css'
 import LanguageSelector from './languageSelector.svelte'
 import ThemeToggle from './themeToggle.svelte'
 
-const { getLocale, setLocale } = $props()
+let { getLocale, setLocale } = $props()
 </script>
 
 <div

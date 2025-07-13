@@ -6,7 +6,7 @@ import remarkMath from 'remark-math'
 
 import Markdown from '../default/Markdown.svelte'
 
-const { value } = $props()
+let { value } = $props()
 
 const addedPlugins = [{ remarkPlugin: [remarkMath], rehypePlugin: [rehypeKatex] }]
 </script>

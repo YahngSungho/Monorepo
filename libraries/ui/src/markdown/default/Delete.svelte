@@ -1,5 +1,5 @@
 <script>
-const { children, ...rest } = $props()
+let { children, ...rest } = $props()
 </script>
 
 <del {...rest}>{@render children()}</del>

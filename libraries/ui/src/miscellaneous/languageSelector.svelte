@@ -10,7 +10,7 @@ import * as Popover from '$shadcn/components/ui/popover/index.js'
 
 import IconText from './icon-text.svelte'
 
-const { getLocale, setLocale, buttonClass = '' } = $props()
+let { getLocale, setLocale, buttonClass = '' } = $props()
 
 const preferredLocales = (() => {
 	if (typeof navigator !== 'undefined') {
