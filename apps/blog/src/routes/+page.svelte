@@ -36,7 +36,7 @@ margin: var(--space-em-cqi-m);"
 <div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
 	<h1>Best Posts</h1>
 
-	{#if progress > 0}
+	{#if progress_best > 0}
 	<!-- Todo: title 값 paraglide 메시지로 하기 -->
 	<div style="--value:{progress_best}; --size: 1em; --thickness: 0.2em;
 

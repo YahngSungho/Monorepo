@@ -5,6 +5,8 @@ import { getLocale, setLocale } from '@library/paraglide/helpers'
 import * as m from '@library/paraglide/messages'
 import Button from '@library/ui/button_daisy'
 import Markdown from '@library/ui/markdown-blog'
+import * as Popover from "@library/ui/popover"
+import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
 import { getContext } from 'svelte'
 
@@ -51,6 +53,27 @@ margin: var(--space-em-cqi-m);"
 
 <div>
 	<PostList {allMetadata} />
+</div>
+
+<div style="inline-size: fit-content;">
+	<Popover.Root>
+		<Popover.Trigger>
+			{#snippet child({ props })}
+			<Button size="xs" variant="secondary" {...props}>
+				Open
+			</Button>
+			{/snippet}
+		</Popover.Trigger>
+		<Popover.Content>
+			<div style="max-inline-size: 100svi; padding: var(--space-em-cqi-m); font-size: var(--font-size-fluid-em-cqi-01);">
+				<SharingButtons title={data.currentMetadata.title} />
+			</div>
+		</Popover.Content>
+	</Popover.Root>
+</div>
+
+<div>
+	<SharingButtons title={data.currentMetadata.title} />
 </div>
 
 <div>

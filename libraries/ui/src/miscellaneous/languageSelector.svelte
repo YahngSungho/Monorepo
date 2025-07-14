@@ -71,17 +71,11 @@ const allLanguages_sorted = Array.from(allLanguages).sort((a, b) => {
 })
 let open = $state(false)
 let value = $state(getLocale())
-let triggerRef = $state<HTMLButtonElement>(null!)
 
 const selectedValue = $derived(allLanguages_sorted.find((f) => f.value === value)?.label ?? value)
 
-// We want to refocus the trigger button when the user selects
-// an item from the list so users can continue navigating the
-// rest of the form with the keyboard.
 async function closeAndFocusTrigger() {
-	// triggerRef.focus()
 	open = false
-	// await tick()
 }
 
 const LOADING_VALUE = '$loading'
@@ -89,7 +83,7 @@ const LOADING_VALUE = '$loading'
 
 <div style="inline-size: fit-content;">
 	<Popover.Root bind:open>
-		<Popover.Trigger bind:ref={triggerRef}>
+		<Popover.Trigger>
 			{#snippet child({ props })}
 				<Button
 					{...props}
