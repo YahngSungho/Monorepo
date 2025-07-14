@@ -29,6 +29,7 @@ export function getAllMetadata() {
 
 			return R.mapObject((value, key) => {
 				return {
+					slug: key.slice(key.lastIndexOf('/') + 1),
 					...value,
 					...parsedMetadata[key],
 				}
@@ -37,10 +38,4 @@ export function getAllMetadata() {
 	}
 
 	return promise
-}
-
-export async function getMetadataOfPost(slug) {
-	const allMetadata = await getAllMetadata()
-
-	return allMetadata[`posts/${slug}`]
 }

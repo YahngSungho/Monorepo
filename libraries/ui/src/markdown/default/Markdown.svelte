@@ -33,7 +33,7 @@ import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 
-const { value, plugins = [] } = $props()
+let { value, plugins = [] } = $props()
 
 const defaultPlugins = [
 	gfmPlugin(),

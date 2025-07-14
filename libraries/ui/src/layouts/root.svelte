@@ -12,7 +12,7 @@ import { init } from './base.svelte.js'
 
 init()
 
-const { appName, children } = $props()
+let { appName, children } = $props()
 
 Sentry.setTag('App Name', appName)
 </script>

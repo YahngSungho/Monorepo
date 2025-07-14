@@ -6,7 +6,7 @@ import rehypeCallouts from 'rehype-callouts'
 
 import Markdown from '../blog/Markdown.svelte'
 
-const { value } = $props()
+let { value } = $props()
 
 const addedPlugins = [{ rehypePlugin: [rehypeCallouts, { theme: 'github' }] }]
 </script>

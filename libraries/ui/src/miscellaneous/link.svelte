@@ -10,7 +10,7 @@ const newTabProps = {
 <script>
 let { href = '', children, current = false, class: incomingClass = '', ...rest } = $props()
 
-const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
+let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 <a

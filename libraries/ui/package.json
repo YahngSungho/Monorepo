@@ -85,7 +85,7 @@
 		"./markdown-docs": "./src/markdown/docs/Markdown.svelte",
 		"./markdown-editable-text": "./src/markdown/editable-text/Markdown.svelte",
 		"./link": "./src/miscellaneous/link.svelte",
-		"./variaitonSetter": "./src/miscellaneous/variaitonSetter.svelte",
+		"./variationSetter": "./src/miscellaneous/variationSetter.svelte",
 		"./themeToggle": "./src/miscellaneous/themeToggle.svelte",
 		"./layouts/root": "./src/layouts/root.svelte",
 		"./language-selector": "./src/miscellaneous/languageSelector.svelte",

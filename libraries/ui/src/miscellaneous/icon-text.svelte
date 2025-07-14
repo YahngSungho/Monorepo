@@ -13,7 +13,9 @@ let {
 
 {#snippet iconElement()}
 	<span class="icon-container" class:noMargin class:right class:small>
-		<IconElement size={24} {...iconProps} />
+		{#if IconElement}
+			<IconElement size={24} {...iconProps} />
+		{/if}
 	</span>
 {/snippet}
 

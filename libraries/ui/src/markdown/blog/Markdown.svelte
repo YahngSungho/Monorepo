@@ -60,7 +60,7 @@ function removeFrontmatter(markdown) {
 </script>
 
 <script>
-const { value, plugins = [] } = $props()
+let { value, plugins = [] } = $props()
 </script>
 
 <Markdown plugins={[...addedPlugins, ...plugins]} value={removeFrontmatter(value)} />

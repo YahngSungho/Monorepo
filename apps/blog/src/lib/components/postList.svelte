@@ -6,7 +6,7 @@ import { Check } from '@lucide/svelte'
 </script>
 
 <script>
-const { postMetadata } = $props()
+let { allMetadata } = $props()
 </script>
 
 <div
@@ -15,21 +15,21 @@ display: flex; flex-direction: column;
 gap: var(--space-em-cqi-3xs-2xs);inline-size: 100%;
 "
 >
-	{#each postMetadata as item (item.slug)}
+	{#each allMetadata as postMetadata (postMetadata.slug)}
 		<Link
 			class={css`
 				display: block;
 			`}
-			current={item.current}
-			href={`/posts/${item.slug}`}
+			current={postMetadata.current}
+			href={`/posts/${postMetadata.slug}`}
 		>
-			{#if item.visited || item.current}
+			{#if postMetadata.visited || postMetadata.current}
 				<IconText IconElement={Check}>
-					{item.title}
+					{postMetadata.title}
 				</IconText>
 			{:else}
 				<IconText IconElement={null}>
-					{item.title}
+					{postMetadata.title}
 				</IconText>
 			{/if}
 		</Link>

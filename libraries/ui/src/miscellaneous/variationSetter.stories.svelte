@@ -1,7 +1,7 @@
 <script module>
 import { defineMeta } from '@storybook/addon-svelte-csf'
 
-import VariaitonSetter from './variaitonSetter.svelte'
+import VariaitonSetter from './variationSetter.svelte'
 
 // 컴포넌트 메타데이터 정의
 const { Story } = defineMeta({

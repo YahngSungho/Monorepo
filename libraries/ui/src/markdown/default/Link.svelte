@@ -1,4 +1,5 @@
 <script module>
+import { css } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 import { ExternalLink, FileOutput, Hash } from '@lucide/svelte'
 
@@ -8,18 +9,29 @@ const newTabProps = {
 	rel: 'noopener noreferrer',
 	target: '_blank',
 }
+
+const linkStyle = css`
+	&:visited .icon-container {
+		color: var(--link-visited) !important;
+
+		& path,
+		& svg {
+			color: var(--link-visited) !important;
+		}
+	}
+`
 </script>
 
 <script>
 let { href = '', children, ...rest } = $props()
 
-const isHeadingLink = $derived(href.startsWith('#'))
-const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
-const isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
+let isHeadingLink = $derived(href.startsWith('#'))
+let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
+let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 </script>
 
 {#if isHeadingLink}
-	<a {href} {...rest}>
+	<a class={linkStyle} {href} {...rest}>
 		{#if isFootnoteLink}
 			{@render children?.()}
 		{:else}
@@ -32,6 +44,7 @@ const isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 	</a>
 {:else}
 	<a
+		class={linkStyle}
 		href={isInternalLink ? localizeHref(href) : href}
 		{...isInternalLink ? {} : newTabProps}
 		{...rest}
