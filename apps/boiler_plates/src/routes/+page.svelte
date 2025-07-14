@@ -7,7 +7,7 @@ import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
-import VariaitonSetter from '@library/ui/variaitonSetter'
+import VariationSetter from '@library/ui/variationSetter'
 import { Home } from '@lucide/svelte'
 import { toast } from 'svelte-sonner'
 
@@ -30,7 +30,7 @@ const eewre = Promise.resolve('test 122')
 	style="
 margin: var(--space-em-cqi-m);"
 >
-	<VariaitonSetter {getLocale} {setLocale} />
+	<VariationSetter {getLocale} {setLocale} />
 </div>
 
 <IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
