@@ -26,6 +26,7 @@ const allMetadata = $derived.by(() => {
 			...metadata,
 			visited: !!visited[metadata.slug],
 		})),
+		R.sort(R.descend(R.prop('date'))),
 	)
 })
 
