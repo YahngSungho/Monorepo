@@ -18,15 +18,16 @@ gap: var(--space-em-cqi-3xs-2xs); inline-size: 100%;
 	{#each allMetadata as postMetadata (postMetadata.slug)}
 		<Link
 			class={css`
-				display: block; inline-size: fit-content;
+				display: block;
+				inline-size: fit-content;
 			`}
 			current={postMetadata.current}
 			href={`/posts/${postMetadata.slug}`}
 		>
-		{#if postMetadata.current}
-			<IconText IconElement={ChevronRight}>
-				{postMetadata.title}
-			</IconText>
+			{#if postMetadata.current}
+				<IconText IconElement={ChevronRight}>
+					{postMetadata.title}
+				</IconText>
 			{:else if postMetadata.visited}
 				<IconText IconElement={Check}>
 					{postMetadata.title}

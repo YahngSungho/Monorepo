@@ -90,5 +90,4 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	background-color: transparent;
 	box-shadow: none;
 }
-
 </style>

@@ -45,7 +45,7 @@ setContext('getAllMetadata', () => allMetadata)
 setContext('markAsVisited', markAsVisited)
 
 let totalCount = $derived(allMetadata.length)
-let visitedCount = $derived(allMetadata.filter(item => item.visited).length)
+let visitedCount = $derived(allMetadata.filter((item) => item.visited).length)
 let progress = $derived(Math.floor((visitedCount / totalCount) * 100))
 
 let sharingButtonsOpen = $state(false)
@@ -58,7 +58,10 @@ let sharingButtonsOpen = $state(false)
 
 <BaseLayout appName={APP_NAME}>
 	<div class="with-sidebar">
-		<div style="display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);" class="sidebar boxed">
+		<div
+			style="display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);"
+			class="sidebar boxed"
+		>
 			<div style="display: flex; flex-direction: column;">
 				<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 				<!-- <div style="font-size: var(--font-size-fluid-em-cqi-02);">
@@ -72,50 +75,63 @@ let sharingButtonsOpen = $state(false)
 				</div>
 			</div>
 
-			<div style="--value:{progress}; --size: 10em; --thickness: 1em;
+			<div
+				style="--value:{progress}; --size: 10em; --thickness: 1em;
 
 			position: absolute;
 			inset-block-end: 0;
 			inset-inline-end: 0;
 			transform: scaleX(-1) scaleY(-1);
-			" class="radial-progress" class:progress_0={progress === 0} class:progress_100={progress === 100} aria-valuenow={progress} role="progressbar"></div>
+			"
+				class="radial-progress"
+				class:progress_0={progress === 0}
+				class:progress_100={progress === 100}
+				aria-valuenow={progress}
+				role="progressbar"
+			></div>
 
 			<div>
-				<VariationSetter {getLocale} {setLocale} size='sm'/>
+				<VariationSetter {getLocale} {setLocale} size="sm" />
 			</div>
 
+			<div class="join">
+				<div>
+					<label
+						style="border: 1px solid currentcolor !important;"
+						class="input input-sm validator join-item"
+					>
+						<input placeholder="mail@site.com" required type="email" />
+					</label>
+					<div class="validator-hint hidden">Enter valid email address</div>
+				</div>
+				<Button class="join-item" size="sm" type="submit">Subscribe</Button>
+			</div>
 
-
-
-
-					<div class="join">
-						<div>
-							<label style="border: 1px solid currentcolor !important;" class="input input-sm validator join-item">
-								<input placeholder="mail@site.com" required type="email" />
-							</label>
-							<div class="validator-hint hidden">Enter valid email address</div>
-						</div>
-						<Button class="join-item" size="sm" type="submit">Subscribe</Button>
+			<div
+				style="overflow: visible;"
+				class="collapse"
+				class:collapse-close={!sharingButtonsOpen}
+				class:collapse-open={sharingButtonsOpen}
+			>
+				<Button
+					style="min-block-size: auto;"
+					class="collapse-title"
+					onclick={() => {
+						sharingButtonsOpen = !sharingButtonsOpen
+					}}
+					size="sm"
+					variant="outline"
+				>
+					Share this blog...
+				</Button>
+				<div style="cursor: default;" class="collapse-content">
+					<div
+						style=" inline-size: 100%; padding: var(--space-em-cqi-3xs-2xs); font-size: var(--font-size-fluid-em-cqi-01);"
+					>
+						<SharingButtons />
 					</div>
-
-
-					<div style="overflow: visible;" class="collapse" class:collapse-close={!sharingButtonsOpen} class:collapse-open={sharingButtonsOpen}>
-						<Button style="min-block-size: auto;" class="collapse-title" onclick={() => {
-							sharingButtonsOpen = !sharingButtonsOpen
-						}} size="sm" variant="outline">
-							Share this blog...
-						</Button>
-						<div style="cursor: default;" class="collapse-content">
-							<div style=" inline-size: 100%; padding: var(--space-em-cqi-3xs-2xs); font-size: var(--font-size-fluid-em-cqi-01);">
-								<SharingButtons />
-							</div>
-						</div>
-					</div>
-
-
-
-
-
+				</div>
+			</div>
 		</div>
 
 		<div class="main boxed gutter">
@@ -147,23 +163,22 @@ let sharingButtonsOpen = $state(false)
 	padding: var(--space-em-cqi-m);
 }
 
-	.with-sidebar {
-  display: flex;
-  flex-wrap: wrap;
+.with-sidebar {
+	display: flex;
+	flex-wrap: wrap;
 	gap: 0;
 
-& > :first-child {
-  flex-basis: var(--size-content-2);
-  flex-grow: 1;
-	max-block-size: 100svb;
-}
+	& > :first-child {
+		flex-basis: var(--size-content-2);
+		flex-grow: 1;
+		max-block-size: 100svb;
+	}
 
-& > :last-child {
-  flex-basis: 0;
-  flex-grow: 999;
-  min-inline-size: 70%;
-	min-block-size: 100svb;
-}
-
+	& > :last-child {
+		flex-basis: 0;
+		flex-grow: 999;
+		min-inline-size: 70%;
+		min-block-size: 100svb;
+	}
 }
 </style>

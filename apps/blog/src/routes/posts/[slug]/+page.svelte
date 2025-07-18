@@ -5,7 +5,7 @@ import * as m from '@library/paraglide/messages'
 import Button from '@library/ui/button_daisy'
 import * as Collapsible from '@library/ui/collapsible'
 import Markdown from '@library/ui/markdown-blog'
-import * as Popover from "@library/ui/popover"
+import * as Popover from '@library/ui/popover'
 import SharingButtons from '@library/ui/sharingButtons'
 import { getContext } from 'svelte'
 
@@ -37,13 +37,13 @@ let nearMetadata = $derived.by(() => {
 
 	// 시작점이 배열 범위를 벗어나는지 확인하고 보정
 	if (startIndex < 0) {
-			startIndex = 0
+		startIndex = 0
 	}
 
 	// 시작점이 보정된 후, 끝점이 배열 범위를 벗어나는지 확인하고 보정
 	// (배열 끝에서 windowSize만큼을 확보하기 위함)
 	if (startIndex + windowSize > allMetadata.length) {
-			startIndex = Math.max(0, allMetadata.length - windowSize)
+		startIndex = Math.max(0, allMetadata.length - windowSize)
 	}
 
 	const endIndex = Math.min(allMetadata.length, startIndex + windowSize)
@@ -75,15 +75,15 @@ margin: var(--space-em-cqi-m);"
 </div>
 
 <Collapsible.Root>
-  <Collapsible.Trigger>
+	<Collapsible.Trigger>
 		{#snippet child({ props })}
-			<Button size="xs" variant="outline" {...props}>
-				Open
-			</Button>
-			{/snippet}
+			<Button size="xs" variant="outline" {...props}>Open</Button>
+		{/snippet}
 	</Collapsible.Trigger>
-  <Collapsible.Content>
-		<div style="max-inline-size: 100cqi; padding: var(--space-em-cqi-s); font-size: var(--font-size-fluid-em-cqi-01);">
+	<Collapsible.Content>
+		<div
+			style="max-inline-size: 100cqi; padding: var(--space-em-cqi-s); font-size: var(--font-size-fluid-em-cqi-01);"
+		>
 			<SharingButtons title={data.currentMetadata.title} />
 		</div>
 	</Collapsible.Content>
