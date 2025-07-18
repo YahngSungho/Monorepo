@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit'
+import { redirect } from '@sveltejs/kit'
 
 import { getPost } from '$lib/server/getPost'
 
@@ -9,7 +9,7 @@ export const load = async ({ params, parent }) => {
 	const currentMetadata = allMetadata[`posts/${params.slug}`]
 
 	if (!post) {
-		error(404, 'Post not found')
+		redirect(307, '/')
 	}
 
 	return {

@@ -79,6 +79,7 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./sharingButtons": "./src/miscellaneous/sharingButtons.svelte",
 		"./storybookDecorator": "./src/miscellaneous/storybookDecorator.svelte",
 		"./markdown-default": "./src/markdown/default/Markdown.svelte",
 		"./markdown-blog": "./src/markdown/blog/Markdown.svelte",
