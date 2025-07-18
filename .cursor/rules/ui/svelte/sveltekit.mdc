@@ -1,6 +1,6 @@
 ---
-description:
-globs: **/+layout.svelte,**/+page.svelte,hooks.*
+description: Documentation for Sveltekit
+globs:
 alwaysApply: false
 ---
 
