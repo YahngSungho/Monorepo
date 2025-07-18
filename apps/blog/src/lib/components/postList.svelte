@@ -18,7 +18,7 @@ gap: var(--space-em-cqi-3xs-2xs); inline-size: 100%;
 	{#each allMetadata as postMetadata (postMetadata.slug)}
 		<Link
 			class={css`
-				display: block;
+				display: block; inline-size: fit-content;
 			`}
 			current={postMetadata.current}
 			href={`/posts/${postMetadata.slug}`}

@@ -91,9 +91,4 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	box-shadow: none;
 }
 
-.btn-secondary {
-	border: 1px solid currentcolor;
-	color: var(--foreground);
-	background-color: var(--background);
-}
 </style>

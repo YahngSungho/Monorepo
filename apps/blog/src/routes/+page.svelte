@@ -1,6 +1,4 @@
 <script module>
-import { getLocale, setLocale } from '@library/paraglide/helpers'
-import VariationSetter from '@library/ui/variationSetter'
 import { getContext } from 'svelte'
 
 import PostList from '$lib/components/postList.svelte'
@@ -20,13 +18,6 @@ let visitedCount_best = $derived(allMetadata_best.filter(item => item.visited).l
 let progress_best = $derived(Math.floor((visitedCount_best / totalCount_best) * 100))
 
 </script>
-
-<div
-	style="
-margin: var(--space-em-cqi-m);"
->
-	<VariationSetter {getLocale} {setLocale} />
-</div>
 
 <p>
 	{JSON.stringify(allMetadata)}

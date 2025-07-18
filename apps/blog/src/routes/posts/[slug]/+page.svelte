@@ -1,13 +1,11 @@
 <script>
 import { create } from '@library/helpers/mutative'
-import { getLocale, setLocale } from '@library/paraglide/helpers'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import Button from '@library/ui/button_daisy'
 import Markdown from '@library/ui/markdown-blog'
 import * as Popover from "@library/ui/popover"
 import SharingButtons from '@library/ui/sharingButtons'
-import VariationSetter from '@library/ui/variationSetter'
 import { getContext } from 'svelte'
 
 import PostList from '$lib/components/postList.svelte'
@@ -64,10 +62,8 @@ $effect(() => {
 
 <div
 	style="
-margin: var(--space-em-cqi-m)"
+margin: var(--space-em-cqi-m);"
 >
-	<VariationSetter {getLocale} {setLocale} />
-
 	<div>
 		<Button href="/">Home</Button>
 	</div>
@@ -77,17 +73,17 @@ margin: var(--space-em-cqi-m)"
 	<PostList allMetadata={nearMetadata} />
 </div>
 
-<div style="inline-size: fit-content">
+<div style="inline-size: fit-content;">
 	<Popover.Root>
 		<Popover.Trigger>
 			{#snippet child({ props })}
-			<Button size="xs" variant="secondary" {...props}>
+			<Button size="xs" variant="outline" {...props}>
 				Open
 			</Button>
 			{/snippet}
 		</Popover.Trigger>
 		<Popover.Content>
-			<div style="max-inline-size: 100svi padding: var(--space-em-cqi-m) font-size: var(--font-size-fluid-em-cqi-01)">
+			<div style="max-inline-size: 100cqi; padding: var(--space-em-cqi-m); font-size: var(--font-size-fluid-em-cqi-01);">
 				<SharingButtons title={data.currentMetadata.title} />
 			</div>
 		</Popover.Content>
@@ -108,9 +104,9 @@ margin: var(--space-em-cqi-m)"
 
 <div
 	style="
-	overflow: visible
-	margin: auto
-	padding-inline: var(--space-em-cqi-m)
+	overflow: visible;
+	margin: auto;
+	padding-inline: var(--space-em-cqi-m);
 "
 	class="boxed long-text"
 >

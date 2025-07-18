@@ -24,7 +24,7 @@
 			setTimeout(() => {
 				isCopied = false
 			}, 3000)
-		}} size="xs" variant="secondary">
+		}} size="xs" variant="outline">
 			{isCopied ? 'Copied' : 'Copy'}
 		</Button>
 	</div>
