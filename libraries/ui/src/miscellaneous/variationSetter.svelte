@@ -21,7 +21,7 @@ let toggleSize = $derived.by(() => {
 	style="
 align-items: end;
 "
-	class="boxed attached-group pyramid-wrap"
+	class="attached-group pyramid-wrap"
 >
 	<LanguageSelector
 		buttonClass={css`

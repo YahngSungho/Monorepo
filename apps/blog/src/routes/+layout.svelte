@@ -59,38 +59,42 @@ let sharingButtonsOpen = $state(false)
 <BaseLayout appName={APP_NAME}>
 	<div class="with-sidebar">
 		<div
-			style="display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);"
+
 			class="sidebar boxed"
 		>
+
+
+
+			<div style=" position: relative;display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);">
+
+
+		<div
+		style="--value: {progress}; --size: 10em; --thickness: 1em;
+
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-end: 0;
+	transform: scaleY(-1);
+	"
+		class="radial-progress"
+		class:progress_0={progress === 0}
+		class:progress_100={progress === 100}
+		aria-valuenow={progress}
+		role="progressbar"
+	></div>
+
 			<div style="display: flex; flex-direction: column;">
 				<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 				<!-- <div style="font-size: var(--font-size-fluid-em-cqi-02);">
 					sunghoyahng@gmail.com
 				</div> -->
-				<div style=" display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 					<Link style="font-size: var(--font-size-fluid-em-cqi-5); font-weight: 900;" href="/">
 						sungho.blog
 					</Link>
-				</div>
 			</div>
 
-			<div
-				style="--value:{progress}; --size: 10em; --thickness: 1em;
-
-			position: absolute;
-			inset-block-end: 0;
-			inset-inline-end: 0;
-			transform: scaleX(-1) scaleY(-1);
-			"
-				class="radial-progress"
-				class:progress_0={progress === 0}
-				class:progress_100={progress === 100}
-				aria-valuenow={progress}
-				role="progressbar"
-			></div>
-
-			<div>
+			<div style=" z-index: 1;inline-size: fit-content; background-color: var(--color-base-100);">
 				<VariationSetter {getLocale} {setLocale} size="sm" />
 			</div>
 
@@ -131,6 +135,7 @@ let sharingButtonsOpen = $state(false)
 						<SharingButtons />
 					</div>
 				</div>
+			</div>
 			</div>
 		</div>
 
@@ -177,7 +182,7 @@ let sharingButtonsOpen = $state(false)
 	& > :last-child {
 		flex-basis: 0;
 		flex-grow: 999;
-		min-inline-size: 70%;
+		min-inline-size: 60%;
 		min-block-size: 100svb;
 	}
 }
