@@ -1,10 +1,15 @@
 <script module>
+import Button from '@library/ui/button_daisy'
+import { Input } from '@library/ui/input'
+import SharingButtons from '@library/ui/sharingButtons'
 import { getContext } from 'svelte'
 
 import PostList from '$lib/components/postList.svelte'
 </script>
 
 <script>
+
+
 const getAllMetadata = getContext('getAllMetadata')
 let allMetadata = $derived(getAllMetadata())
 
@@ -17,50 +22,37 @@ let totalCount_best = $derived(allMetadata_best.length)
 let visitedCount_best = $derived(allMetadata_best.filter(item => item.visited).length)
 let progress_best = $derived(Math.floor((visitedCount_best / totalCount_best) * 100))
 
+let sharingButtonsOpen = $state(false)
 </script>
 
-<p>
+<!-- <p>
 	{JSON.stringify(allMetadata)}
-</p>
+</p> -->
 
-
-<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
-	<h1>Best Posts</h1>
-
-	{#if progress_best > 0}
-	<!-- Todo: title 값 paraglide 메시지로 하기 -->
-	<div style="--value:{progress_best}; --size: 1em; --thickness: 0.2em;
-
-	transform: scaleX(-1);
-	inline-size: 1em;
-	block-size: 1em;
-	" class="radial-progress" aria-valuenow={progress_best} role="progressbar" title={`${visitedCount_best} / ${totalCount_best} posts visited`}></div>
-	{/if}
-</div>
+<div style="display: flex; flex-flow: column wrap; gap: var(--space-em-cqi-xs-s);">
 
 <div>
-	<PostList allMetadata={allMetadata_best} />
-</div>
+	<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
+		<h1>Best Posts</h1>
+	</div>
 
-<hr />
-
-<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
-	<h1>Blog Posts</h1>
-
-	{#if progress > 0}
-	<!-- Todo: title 값 paraglide 메시지로 하기 -->
-	<div style="--value:{progress}; --size: 1em; --thickness: 0.2em;
-
-	transform: scaleX(-1);
-	inline-size: 1em;
-	block-size: 1em;
-	" class="radial-progress" aria-valuenow={progress} role="progressbar" title={`${visitedCount} / ${totalCount} posts visited`}></div>
-	{/if}
+	<div>
+		<PostList allMetadata={allMetadata_best} />
+	</div>
 </div>
 
 
 <div>
-	<PostList {allMetadata} />
+	<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
+		<h1>Posts</h1>
+	</div>
+
+
+	<div>
+		<PostList {allMetadata} />
+	</div>
+</div>
+
 </div>
 
 

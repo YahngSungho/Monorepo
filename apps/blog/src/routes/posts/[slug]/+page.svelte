@@ -3,6 +3,7 @@ import { create } from '@library/helpers/mutative'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import Button from '@library/ui/button_daisy'
+import * as Collapsible from '@library/ui/collapsible'
 import Markdown from '@library/ui/markdown-blog'
 import * as Popover from "@library/ui/popover"
 import SharingButtons from '@library/ui/sharingButtons'
@@ -73,22 +74,20 @@ margin: var(--space-em-cqi-m);"
 	<PostList allMetadata={nearMetadata} />
 </div>
 
-<div style="inline-size: fit-content;">
-	<Popover.Root>
-		<Popover.Trigger>
-			{#snippet child({ props })}
+<Collapsible.Root>
+  <Collapsible.Trigger>
+		{#snippet child({ props })}
 			<Button size="xs" variant="outline" {...props}>
 				Open
 			</Button>
 			{/snippet}
-		</Popover.Trigger>
-		<Popover.Content>
-			<div style="max-inline-size: 100cqi; padding: var(--space-em-cqi-m); font-size: var(--font-size-fluid-em-cqi-01);">
-				<SharingButtons title={data.currentMetadata.title} />
-			</div>
-		</Popover.Content>
-	</Popover.Root>
-</div>
+	</Collapsible.Trigger>
+  <Collapsible.Content>
+		<div style="max-inline-size: 100cqi; padding: var(--space-em-cqi-s); font-size: var(--font-size-fluid-em-cqi-01);">
+			<SharingButtons title={data.currentMetadata.title} />
+		</div>
+	</Collapsible.Content>
+</Collapsible.Root>
 
 <div>
 	<SharingButtons title={data.currentMetadata.title} />

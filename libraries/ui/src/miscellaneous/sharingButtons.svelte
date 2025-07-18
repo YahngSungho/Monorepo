@@ -6,7 +6,7 @@
 	import Button from '../daisyui/button.svelte'
 	import IconText from './icon-text.svelte'
 
-	let { title } = $props()
+	let { title = '' } = $props()
 
 	let url = $derived(page.url.href)
 	let url_encoded = $derived(encodeURIComponent(url))
@@ -41,7 +41,7 @@
 			})
 	}} size="sm">
 	<IconText IconElement={Share2}>
-	Share...
+	Send...
 	</IconText>
 	</Button>
 		 </div>

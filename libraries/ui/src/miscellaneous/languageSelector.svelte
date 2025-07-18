@@ -10,7 +10,7 @@ import * as Popover from '$shadcn/components/ui/popover/index.js'
 
 import IconText from './icon-text.svelte'
 
-let { getLocale, setLocale, buttonClass = '' } = $props()
+let { getLocale, setLocale, buttonClass = '', size = 'sm' } = $props()
 
 const preferredLocales = (() => {
 	if (typeof navigator !== 'undefined') {
@@ -91,7 +91,7 @@ const LOADING_VALUE = '$loading'
 					class={buttonClass}
 					aria-expanded={open}
 					role="combobox"
-					size="xs"
+					{size}
 					variant="outline"
 				>
 					{#if value === LOADING_VALUE}
