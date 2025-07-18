@@ -413,6 +413,7 @@ let isCopied = $state(false)
 
 .resp-sharing-button--hackernews {
 	background-color: rgb(255 102 0);
+
 	&:hover,
 	&:focus {
 		background-color: rgb(251 98 0);
