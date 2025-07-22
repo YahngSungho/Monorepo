@@ -1,32 +1,33 @@
-:root {
-	font-size: var(--font-size-fluid-1);
-	text-size-adjust: 100%;
-}
-
 html {
-	color: var(--foreground);
-	color-scheme: light dark;
-}
-
-body {
 	position: relative;
-	inset: 0;
-
-	container: body / inline-size;
+	block-size: 100svb;
 	overflow: auto;
 
-	inline-size: 100svi;
-	block-size: 100svb;
+	container: root / inline-size;
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizelegibility;
+
+	color-scheme: light dark;
+
+	font-size: var(--font-size-fluid-1);
+	text-size-adjust: 100%;
+
+
 	line-height: var(--font-lineheight-2);
 	text-wrap: stable;
-	text-rendering: optimizelegibility;
 	word-break: keep-all;
 	line-break: strict;
 	overflow-wrap: break-word;
 	white-space: normal;
+
+	color: var(--foreground);
+}
+
+body {
+	min-block-size: 100%;
+	margin: 0;
 }
 
 *,

@@ -9,7 +9,10 @@ import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
 import store from 'store'
+// eslint-disable-next-line import-x/no-duplicates
 import { onMount, setContext } from 'svelte'
+// eslint-disable-next-line import-x/no-duplicates
+import { slide } from 'svelte/transition'
 
 import { page } from '$app/state'
 
@@ -55,29 +58,20 @@ let sharingButtonsOpen = $state(false)
 let y = $state(0)
 
 function scrollToTop() {
-	document.body.scrollTo({
+	window.scrollTo({
 		top: 0,
 		behavior: 'smooth',
 	})
 }
 
-$effect(() => {
-	const handleScroll = () => {
-		y = document.body.scrollTop
-	}
-
-	document.body.addEventListener('scroll', handleScroll)
-
-	return () => {
-		document.body.removeEventListener('scroll', handleScroll)
-	}
-})
 </script>
 
 <svelte:head>
 	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 	<title>sungho.blog</title>
 </svelte:head>
+
+<svelte:window bind:scrollY={y} />
 
 <BaseLayout appName={APP_NAME}>
 	<div class="with-sidebar">
@@ -132,13 +126,9 @@ $effect(() => {
 
 				<div
 					style=" z-index: 1;overflow: visible;"
-					class="collapse"
-					class:collapse-close={!sharingButtonsOpen}
-					class:collapse-open={sharingButtonsOpen}
 				>
 					<Button
 						style="min-block-size: auto;"
-						class="collapse-title"
 						onclick={() => {
 							sharingButtonsOpen = !sharingButtonsOpen
 						}}
@@ -147,18 +137,20 @@ $effect(() => {
 					>
 						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 					</Button>
-					<div
-						style="cursor: default; background-color: var(--background);"
-						class="collapse-content"
-					>
+					{#if sharingButtonsOpen}
 						<div
-							style=" inline-size: 100%; padding: var(--space-em-cqi-3xs-2xs); font-size: var(--font-size-fluid-em-cqi-01);
+							style="cursor: default;"
+							transition:slide={{ duration: 300 }}
+						>
+							<div
+								style=" inline-size: 100%; padding: var(--space-em-cqi-xs-s); font-size: var(--font-size-fluid-em-cqi-01);
 							background-color: var(--background);
 							"
-						>
-							<SharingButtons />
+							>
+								<SharingButtons />
+							</div>
 						</div>
-					</div>
+					{/if}
 				</div>
 			</div>
 		</div>
