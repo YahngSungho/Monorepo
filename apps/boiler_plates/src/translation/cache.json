@@ -1,7 +1,7 @@
 {
-	"routes/lorem/articles/test-article": {
-		"ko": "안녕\n",
-		"en": "Hello\n",
-		"explanation": "This is a test message\n"
-	}
+  "routes/lorem/articles/test-article": {
+    "ko": "안녕\n",
+    "en": "Hello\n",
+    "explanation": "This is a test message\n"
+  }
 }
