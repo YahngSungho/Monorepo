@@ -62,55 +62,23 @@ $effect(() => {
 
 <div
 	style="
-margin: var(--space-em-cqi-m);"
->
-	<div>
-		<Button href="/">Home</Button>
-	</div>
-</div>
-
-<div>
-	<PostList allMetadata={nearMetadata} />
-</div>
-
-<Collapsible.Root>
-	<Collapsible.Trigger>
-		{#snippet child({ props })}
-			<Button size="xs" variant="outline" {...props}>Open</Button>
-		{/snippet}
-	</Collapsible.Trigger>
-	<Collapsible.Content>
-		<div
-			style="max-inline-size: 100cqi; padding: var(--space-em-cqi-s); font-size: var(--font-size-fluid-em-cqi-01);"
-		>
-			<SharingButtons title={data.currentMetadata.title} />
-		</div>
-	</Collapsible.Content>
-</Collapsible.Root>
-
-<div>
-	<SharingButtons title={data.currentMetadata.title} />
-</div>
-
-<div>
-	{JSON.stringify(data.currentMetadata)}
-</div>
-
-<div>
-	{JSON.stringify(nearMetadata)}
-</div>
-
-<div
-	style="
 	overflow: visible;
+	max-inline-size: var(--size-content-4);
 	margin: auto;
-	padding-inline: var(--space-em-cqi-m);
 "
 	class="boxed long-text"
 >
-	{#if data.post}
+	<div>
+		{#if data.post}
 		<Markdown value={data.post} />
 	{/if}
+	</div>
+
+	<div style="margin-block-start: var(--space-em-cqi-xl);" class="divider"></div>
+
+	<div>
+		<PostList allMetadata={nearMetadata} />
+	</div>
 </div>
 
 <div id="Page_Check"></div>
