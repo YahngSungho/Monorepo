@@ -83,7 +83,7 @@ let sharingButtonsOpen = $state(false)
 		role="progressbar"
 	></div>
 
-			<div style="display: flex; flex-direction: column;">
+			<div style=" z-index: 1;display: flex; flex-direction: column; inline-size: fit-content;">
 				<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 				<!-- <div style="font-size: var(--font-size-fluid-em-cqi-02);">
 					sunghoyahng@gmail.com
@@ -94,25 +94,24 @@ let sharingButtonsOpen = $state(false)
 					</Link>
 			</div>
 
-			<div style=" z-index: 1;inline-size: fit-content; background-color: var(--color-base-100);">
+			<div style="z-index: 1; inline-size: fit-content; background-color: var(--color-base-100);">
 				<VariationSetter {getLocale} {setLocale} size="sm" />
 			</div>
 
-			<div class="join">
+			<div style="z-index: 1; inline-size: fit-content; max-inline-size: 18em; background-color: var(--color-base-100);" class="join">
 				<div>
 					<label
 						style="border: 1px solid currentcolor !important;"
-						class="input input-sm validator join-item"
+						class="input input-sm join-item"
 					>
 						<input placeholder="mail@site.com" required type="email" />
 					</label>
-					<div class="validator-hint hidden">Enter valid email address</div>
 				</div>
 				<Button class="join-item" size="sm" type="submit">Subscribe</Button>
 			</div>
 
 			<div
-				style="overflow: visible;"
+				style=" z-index: 1;overflow: visible;"
 				class="collapse"
 				class:collapse-close={!sharingButtonsOpen}
 				class:collapse-open={sharingButtonsOpen}
