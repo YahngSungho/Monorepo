@@ -11,6 +11,8 @@ import VariationSetter from '@library/ui/variationSetter'
 import store from 'store'
 import { onMount, setContext } from 'svelte'
 
+import { page } from '$app/state'
+
 import { APP_NAME } from './base'
 
 /** @type {import('./$types').LayoutProps} */
@@ -49,6 +51,28 @@ let visitedCount = $derived(allMetadata.filter((item) => item.visited).length)
 let progress = $derived(Math.floor((visitedCount / (totalCount || 1)) * 100))
 
 let sharingButtonsOpen = $state(false)
+
+
+	let y = $state(0)
+
+	function scrollToTop() {
+		document.body.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		})
+	}
+
+	$effect(() => {
+		const handleScroll = () => {
+			y = document.body.scrollTop
+		}
+
+		document.body.addEventListener('scroll', handleScroll)
+
+		return () => {
+			document.body.removeEventListener('scroll', handleScroll)
+		}
+	})
 </script>
 
 <svelte:head>
@@ -122,7 +146,7 @@ let sharingButtonsOpen = $state(false)
 						size="sm"
 						variant="outline"
 					>
-						Share this blog...
+						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 					</Button>
 					<div style="cursor: default;" class="collapse-content">
 						<div
@@ -135,10 +159,25 @@ let sharingButtonsOpen = $state(false)
 			</div>
 		</div>
 
-		<div class="main boxed gutter">
+		<div class="main boxed">
 			{@render children()}
 		</div>
 	</div>
+
+
+{#if y > 400}
+	<Button
+		style="
+			position: fixed;
+			z-index: var(--layer-important);
+			inset-block-end: var(--space-em-cqi-l);
+			inset-inline-end: var(--space-em-cqi-l);
+		"
+		onclick={scrollToTop}
+	>
+		To Top
+	</Button>
+{/if}
 	<div id="Top2_Layout_Check"></div>
 </BaseLayout>
 

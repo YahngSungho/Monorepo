@@ -3,6 +3,15 @@ import { css } from '@emotion/css'
 import IconText from '@library/ui/icon-text'
 import Link from '@library/ui/link'
 import { Check, ChevronRight } from '@lucide/svelte'
+
+function scrollToTop() {
+		setTimeout(() => {
+			document.body.scrollTo({
+				top: 0,
+				behavior: 'instant'
+			})
+		}, 1)
+	}
 </script>
 
 <script>
@@ -23,6 +32,7 @@ gap: var(--space-em-cqi-xs); inline-size: 100%;
 			`}
 			current={postMetadata.current}
 			href={`/posts/${postMetadata.slug}`}
+			onclick={scrollToTop}
 		>
 			{#if postMetadata.current}
 				<IconText IconElement={ChevronRight}>
