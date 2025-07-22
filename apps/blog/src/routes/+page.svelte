@@ -1,6 +1,4 @@
 <script module>
-import { getLocale, setLocale } from '@library/paraglide/helpers'
-import VariationSetter from '@library/ui/variationSetter'
 import { getContext } from 'svelte'
 
 import PostList from '$lib/components/postList.svelte'
@@ -9,22 +7,33 @@ import PostList from '$lib/components/postList.svelte'
 <script>
 const getAllMetadata = getContext('getAllMetadata')
 let allMetadata = $derived(getAllMetadata())
+let allMetadata_best = $derived(allMetadata.filter((item) => item.best))
 </script>
 
-<div
-	style="
-margin: var(--space-em-cqi-m);"
->
-	<VariationSetter {getLocale} {setLocale} />
-</div>
-
-<h1>Blog Posts</h1>
-
-<div>
-	<PostList {allMetadata} />
-</div>
-<p>
+<!-- <p>
 	{JSON.stringify(allMetadata)}
-</p>
+</p> -->
+
+<div style="display: flex; flex-flow: column wrap; gap: var(--space-em-cqi-xs-s);">
+	<div>
+		<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
+			<h1>Pinned Posts</h1>
+		</div>
+
+		<div>
+			<PostList allMetadata={allMetadata_best} />
+		</div>
+	</div>
+
+	<div>
+		<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
+			<h1>Posts</h1>
+		</div>
+
+		<div>
+			<PostList {allMetadata} />
+		</div>
+	</div>
+</div>
 
 <div id="Page_Check"></div>

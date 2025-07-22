@@ -6,36 +6,29 @@ import { getLocale } from '@library/paraglide/helpers'
 const metadata = import.meta.glob('/src/translation/metadata.json', { query: 'raw', eager: true })
 const frontmatters = import.meta.glob('/src/translation/frontmatters/*.json', { query: 'raw' })
 
-let promise = null
-export function getAllMetadata() {
-	if (!promise) {
-		promise = (async () => {
-			const lang = getLocale()
+export async function getAllMetadata0() {
+	const lang = getLocale()
 
-			const frontmatterPath = `/src/translation/frontmatters/${lang}.json`
-			const frontmatterLoader = frontmatters[frontmatterPath]
+	const frontmatterPath = `/src/translation/frontmatters/${lang}.json`
+	const frontmatterLoader = frontmatters[frontmatterPath]
 
-			// @ts-ignore
-			const parsedMetadata = JSON.parse(metadata['/src/translation/metadata.json'].default)
+	// @ts-ignore
+	const parsedMetadata = JSON.parse(metadata['/src/translation/metadata.json'].default)
 
-			if (!frontmatterLoader) {
-				console.warn(`Frontmatter file not found for lang: "${lang}"`)
-				return parsedMetadata
-			}
-
-			const frontmatterContent = await frontmatterLoader()
-			// @ts-ignore
-			const parsedFrontmatter = JSON.parse(frontmatterContent.default)
-
-			return R.mapObject((value, key) => {
-				return {
-					slug: key.slice(key.lastIndexOf('/') + 1),
-					...value,
-					...parsedMetadata[key],
-				}
-			})(parsedFrontmatter)
-		})()
+	if (!frontmatterLoader) {
+		console.warn(`Frontmatter file not found for lang: "${lang}"`)
+		return parsedMetadata
 	}
 
-	return promise
+	const frontmatterContent = await frontmatterLoader()
+	// @ts-ignore
+	const parsedFrontmatter = JSON.parse(frontmatterContent.default)
+
+	return R.mapObject((value, key) => {
+		return {
+			slug: key.slice(key.lastIndexOf('/') + 1),
+			...value,
+			...parsedMetadata[key],
+		}
+	})(parsedFrontmatter)
 }

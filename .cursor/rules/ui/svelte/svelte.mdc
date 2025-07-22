@@ -1,6 +1,6 @@
 ---
-description:
-globs: *.svelte,*.svelte.*
+description: Documentation for Svelte
+globs:
 alwaysApply: false
 ---
 
