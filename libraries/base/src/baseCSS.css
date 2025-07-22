@@ -1,28 +1,25 @@
 html {
 	position: relative;
-	block-size: 100svb;
-	overflow: auto;
 
 	container: root / inline-size;
+	overflow: auto;
 
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-rendering: optimizelegibility;
-
-	color-scheme: light dark;
+	block-size: 100svb;
 
 	font-size: var(--font-size-fluid-1);
-	text-size-adjust: 100%;
-
-
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--font-lineheight-2);
+	color: var(--foreground);
 	text-wrap: stable;
+	text-size-adjust: 100%;
+	text-rendering: optimizelegibility;
 	word-break: keep-all;
 	line-break: strict;
 	overflow-wrap: break-word;
 	white-space: normal;
 
-	color: var(--foreground);
+	color-scheme: light dark;
 }
 
 body {

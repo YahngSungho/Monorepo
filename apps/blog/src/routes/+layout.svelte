@@ -63,7 +63,6 @@ function scrollToTop() {
 		behavior: 'smooth',
 	})
 }
-
 </script>
 
 <svelte:head>
@@ -124,9 +123,7 @@ function scrollToTop() {
 					<Button class="join-item" size="sm" type="submit">Subscribe</Button>
 				</div>
 
-				<div
-					style=" z-index: 1;overflow: visible;"
-				>
+				<div style=" z-index: 1;overflow: visible;">
 					<Button
 						style="min-block-size: auto;"
 						onclick={() => {
@@ -138,10 +135,7 @@ function scrollToTop() {
 						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 					</Button>
 					{#if sharingButtonsOpen}
-						<div
-							style="cursor: default;"
-							transition:slide={{ duration: 300 }}
-						>
+						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
 							<div
 								style=" inline-size: 100%; padding: var(--space-em-cqi-xs-s); font-size: var(--font-size-fluid-em-cqi-01);
 							background-color: var(--background);
