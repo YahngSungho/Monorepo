@@ -1,7 +1,4 @@
 <script module>
-import Button from '@library/ui/button_daisy'
-import { Input } from '@library/ui/input'
-import SharingButtons from '@library/ui/sharingButtons'
 import { getContext } from 'svelte'
 
 import PostList from '$lib/components/postList.svelte'

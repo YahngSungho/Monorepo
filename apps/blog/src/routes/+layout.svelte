@@ -46,7 +46,7 @@ setContext('markAsVisited', markAsVisited)
 
 let totalCount = $derived(allMetadata.length)
 let visitedCount = $derived(allMetadata.filter((item) => item.visited).length)
-let progress = $derived(Math.floor((visitedCount / totalCount) * 100))
+let progress = $derived(Math.floor((visitedCount / (totalCount || 1)) * 100))
 
 let sharingButtonsOpen = $state(false)
 </script>

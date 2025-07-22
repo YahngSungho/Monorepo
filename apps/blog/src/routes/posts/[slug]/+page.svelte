@@ -5,7 +5,6 @@ import * as m from '@library/paraglide/messages'
 import Button from '@library/ui/button_daisy'
 import * as Collapsible from '@library/ui/collapsible'
 import Markdown from '@library/ui/markdown-blog'
-import * as Popover from '@library/ui/popover'
 import SharingButtons from '@library/ui/sharingButtons'
 import { getContext } from 'svelte'
 
@@ -29,7 +28,7 @@ let nearMetadata = $derived.by(() => {
 		}
 	})
 
-	const nearCount = 4
+	const nearCount = 3
 	const windowSize = nearCount * 2 + 1
 
 	// 이상적인 시작점을 계산

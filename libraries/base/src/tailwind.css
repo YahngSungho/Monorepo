@@ -24,10 +24,6 @@
 
 /* Shadcn variables 덮어쓰기 Or 확장 */
 :root {
-	--tw-ring-shadow: 0 !important;
-}
-
-:root {
 	--background: var(--gray-0);
 	--foreground: var(--gray-12);
 	--muted: var(--gray-3);
