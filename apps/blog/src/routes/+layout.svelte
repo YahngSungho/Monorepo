@@ -9,7 +9,12 @@ import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
 import store from 'store'
+// eslint-disable-next-line import-x/no-duplicates
 import { onMount, setContext } from 'svelte'
+// eslint-disable-next-line import-x/no-duplicates
+import { slide } from 'svelte/transition'
+
+import { page } from '$app/state'
 
 import { APP_NAME } from './base'
 
@@ -49,12 +54,23 @@ let visitedCount = $derived(allMetadata.filter((item) => item.visited).length)
 let progress = $derived(Math.floor((visitedCount / (totalCount || 1)) * 100))
 
 let sharingButtonsOpen = $state(false)
+
+let y = $state(0)
+
+function scrollToTop() {
+	window.scrollTo({
+		top: 0,
+		behavior: 'smooth',
+	})
+}
 </script>
 
 <svelte:head>
 	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 	<title>sungho.blog</title>
 </svelte:head>
+
+<svelte:window bind:scrollY={y} />
 
 <BaseLayout appName={APP_NAME}>
 	<div class="with-sidebar">
@@ -107,38 +123,50 @@ let sharingButtonsOpen = $state(false)
 					<Button class="join-item" size="sm" type="submit">Subscribe</Button>
 				</div>
 
-				<div
-					style=" z-index: 1;overflow: visible;"
-					class="collapse"
-					class:collapse-close={!sharingButtonsOpen}
-					class:collapse-open={sharingButtonsOpen}
-				>
+				<div style=" z-index: 1;overflow: visible;">
 					<Button
 						style="min-block-size: auto;"
-						class="collapse-title"
 						onclick={() => {
 							sharingButtonsOpen = !sharingButtonsOpen
 						}}
 						size="sm"
 						variant="outline"
 					>
-						Share this blog...
+						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 					</Button>
-					<div style="cursor: default;" class="collapse-content">
-						<div
-							style=" inline-size: 100%; padding: var(--space-em-cqi-3xs-2xs); font-size: var(--font-size-fluid-em-cqi-01);"
-						>
-							<SharingButtons />
+					{#if sharingButtonsOpen}
+						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
+							<div
+								style=" inline-size: 100%; padding: var(--space-em-cqi-xs-s); font-size: var(--font-size-fluid-em-cqi-01);
+							background-color: var(--background);
+							"
+							>
+								<SharingButtons />
+							</div>
 						</div>
-					</div>
+					{/if}
 				</div>
 			</div>
 		</div>
 
-		<div class="main boxed gutter">
+		<div class="main boxed">
 			{@render children()}
 		</div>
 	</div>
+
+	{#if y > 400}
+		<Button
+			style="
+			position: fixed;
+			z-index: var(--layer-important);
+			inset-block-end: var(--space-em-cqi-l);
+			inset-inline-end: var(--space-em-cqi-l);
+		"
+			onclick={scrollToTop}
+		>
+			To Top
+		</Button>
+	{/if}
 	<div id="Top2_Layout_Check"></div>
 </BaseLayout>
 

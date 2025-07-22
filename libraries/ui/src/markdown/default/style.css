@@ -1,16 +1,7 @@
-section[datafootnotes] h2 {
-	margin: 0;
-	font-size: 0;
-	line-height: 0;
+section.footnotes {
+	margin-block-start: var(--space-em-cqi-xl);
 
-	&::before {
-		content: '';
-
-		display: block;
-
-		block-size: var(--border-size-2);
-		margin-block: var(--space-cqi-m-l);
-
-		background-color: var(--gray-12);
+	& h2 {
+		margin: 0;
 	}
 }
