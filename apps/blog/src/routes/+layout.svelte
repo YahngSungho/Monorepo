@@ -148,9 +148,11 @@ let sharingButtonsOpen = $state(false)
 					>
 						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 					</Button>
-					<div style="cursor: default;" class="collapse-content">
+					<div style="cursor: default; background-color: var(--background);" class="collapse-content">
 						<div
-							style=" inline-size: 100%; padding: var(--space-em-cqi-3xs-2xs); font-size: var(--font-size-fluid-em-cqi-01);"
+							style=" inline-size: 100%; padding: var(--space-em-cqi-3xs-2xs); font-size: var(--font-size-fluid-em-cqi-01);
+							background-color: var(--background);
+							"
 						>
 							<SharingButtons />
 						</div>
