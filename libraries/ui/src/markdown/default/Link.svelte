@@ -24,12 +24,12 @@ const linkStyle = css`
 function scrollToTop() {
 	setTimeout(() => {
 		window.scrollTo({
-		top: 0,
-		behavior: 'instant'
-	})
+			top: 0,
+			behavior: 'instant',
+		})
 		document.body.scrollTo({
 			top: 0,
-			behavior: 'instant'
+			behavior: 'instant',
 		})
 	}, 1)
 }
@@ -55,34 +55,27 @@ let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 			</span>
 		{/if}
 	</a>
+{:else if isInternalLink}
+	<a
+		class={linkStyle}
+		href={isInternalLink ? localizeHref(href) : href}
+		{...isInternalLink ? {} : newTabProps}
+		{...rest}
+		onclick={scrollToTop}
+	>
+		<IconText IconElement={FileOutput} noMargin right small>
+			{@render children?.()}
+		</IconText>
+	</a>
 {:else}
-	{#if isInternalLink}
-
 	<a
-	class={linkStyle}
-	href={isInternalLink ? localizeHref(href) : href}
-	{...isInternalLink ? {} : newTabProps}
-	{...rest}
-	onclick={scrollToTop}
->
-	<IconText IconElement={FileOutput} noMargin right small>
-		{@render children?.()}
-	</IconText>
-</a>
-
-	{:else}
-
-	<a
-	class={linkStyle}
-	href={isInternalLink ? localizeHref(href) : href}
-	{...isInternalLink ? {} : newTabProps}
-	{...rest}
->
-	<IconText IconElement={ExternalLink} noMargin right small>
-		{@render children?.()}
-	</IconText>
-</a>
-	{/if}
-
-
+		class={linkStyle}
+		href={isInternalLink ? localizeHref(href) : href}
+		{...isInternalLink ? {} : newTabProps}
+		{...rest}
+	>
+		<IconText IconElement={ExternalLink} noMargin right small>
+			{@render children?.()}
+		</IconText>
+	</a>
 {/if}

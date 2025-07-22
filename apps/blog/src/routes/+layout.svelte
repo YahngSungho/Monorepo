@@ -52,27 +52,26 @@ let progress = $derived(Math.floor((visitedCount / (totalCount || 1)) * 100))
 
 let sharingButtonsOpen = $state(false)
 
+let y = $state(0)
 
-	let y = $state(0)
+function scrollToTop() {
+	document.body.scrollTo({
+		top: 0,
+		behavior: 'smooth',
+	})
+}
 
-	function scrollToTop() {
-		document.body.scrollTo({
-			top: 0,
-			behavior: 'smooth'
-		})
+$effect(() => {
+	const handleScroll = () => {
+		y = document.body.scrollTop
 	}
 
-	$effect(() => {
-		const handleScroll = () => {
-			y = document.body.scrollTop
-		}
+	document.body.addEventListener('scroll', handleScroll)
 
-		document.body.addEventListener('scroll', handleScroll)
-
-		return () => {
-			document.body.removeEventListener('scroll', handleScroll)
-		}
-	})
+	return () => {
+		document.body.removeEventListener('scroll', handleScroll)
+	}
+})
 </script>
 
 <svelte:head>
@@ -148,7 +147,10 @@ let sharingButtonsOpen = $state(false)
 					>
 						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 					</Button>
-					<div style="cursor: default; background-color: var(--background);" class="collapse-content">
+					<div
+						style="cursor: default; background-color: var(--background);"
+						class="collapse-content"
+					>
 						<div
 							style=" inline-size: 100%; padding: var(--space-em-cqi-3xs-2xs); font-size: var(--font-size-fluid-em-cqi-01);
 							background-color: var(--background);
@@ -166,20 +168,19 @@ let sharingButtonsOpen = $state(false)
 		</div>
 	</div>
 
-
-{#if y > 400}
-	<Button
-		style="
+	{#if y > 400}
+		<Button
+			style="
 			position: fixed;
 			z-index: var(--layer-important);
 			inset-block-end: var(--space-em-cqi-l);
 			inset-inline-end: var(--space-em-cqi-l);
 		"
-		onclick={scrollToTop}
-	>
-		To Top
-	</Button>
-{/if}
+			onclick={scrollToTop}
+		>
+			To Top
+		</Button>
+	{/if}
 	<div id="Top2_Layout_Check"></div>
 </BaseLayout>
 

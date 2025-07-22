@@ -5,13 +5,13 @@ import Link from '@library/ui/link'
 import { Check, ChevronRight } from '@lucide/svelte'
 
 function scrollToTop() {
-		setTimeout(() => {
-			document.body.scrollTo({
-				top: 0,
-				behavior: 'instant'
-			})
-		}, 1)
-	}
+	setTimeout(() => {
+		document.body.scrollTo({
+			top: 0,
+			behavior: 'instant',
+		})
+	}, 1)
+}
 </script>
 
 <script>

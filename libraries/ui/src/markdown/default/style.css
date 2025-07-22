@@ -1,7 +1,7 @@
 section.footnotes {
 	margin-block-start: var(--space-em-cqi-xl);
-}
 
-section.footnotes h2 {
-	margin: 0;
+	& h2 {
+		margin: 0;
+	}
 }
