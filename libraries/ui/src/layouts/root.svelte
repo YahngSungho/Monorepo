@@ -10,11 +10,30 @@ import { Toaster } from '$shadcn/components/ui/sonner/index'
 
 import { init } from './base.svelte.js'
 
+import { browser } from '$app/environment'
+import { onNavigate } from '$app/navigation'
+
 init()
 
 let { appName, children } = $props()
 
 Sentry.setTag('App Name', appName)
+
+
+if (browser) {
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) {
+			return
+		}
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve()
+				await navigation.complete
+			})
+		})
+	})
+}
 </script>
 
 <svelte:head>

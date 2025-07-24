@@ -12,8 +12,6 @@ import store from 'store'
 import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
 
-import { browser } from '$app/environment'
-import { onNavigate } from '$app/navigation'
 import { page } from '$app/state'
 
 import { APP_NAME } from './base'
@@ -26,20 +24,6 @@ onMount(() => {
 	visited = store.get('visited') || {}
 })
 
-if (browser) {
-	onNavigate((navigation) => {
-		if (!document.startViewTransition) {
-			return
-		}
-
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve()
-				await navigation.complete
-			})
-		})
-	})
-}
 
 const allMetadata = $derived.by(() => {
 	if (!data.allMetadata) return {}
