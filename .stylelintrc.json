@@ -34,6 +34,10 @@
 	],
 	"reportNeedlessDisables": false,
 	"rules": {
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{ "ignorePseudoClasses": ["global"] }
+		],
 		"no-descending-specificity": [true, { "ignore": ["selectors-within-list"] }],
 		"selector-id-pattern": null,
 		"custom-media-pattern": null,
