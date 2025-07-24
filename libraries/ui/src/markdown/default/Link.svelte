@@ -21,18 +21,6 @@ const linkStyle = css`
 	}
 `
 
-function scrollToTop() {
-	setTimeout(() => {
-		window.scrollTo({
-			top: 0,
-			behavior: 'instant',
-		})
-		document.body.scrollTo({
-			top: 0,
-			behavior: 'instant',
-		})
-	}, 1)
-}
 </script>
 
 <script>
@@ -61,7 +49,6 @@ let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 		href={isInternalLink ? localizeHref(href) : href}
 		{...isInternalLink ? {} : newTabProps}
 		{...rest}
-		onclick={scrollToTop}
 	>
 		<IconText IconElement={FileOutput} noMargin right small>
 			{@render children?.()}
