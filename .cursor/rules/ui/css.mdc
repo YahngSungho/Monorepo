@@ -167,20 +167,25 @@ alwaysApply: false
 }
 ```
 
+More pre-defined CSS variables:
+[openProps.md](mdc:.cursor/docs/openProps.md)
+[baseVariables.css](mdc:libraries/base/src/baseVariables.css)
+</Predifined-CSS-variables>
+
 </Predifined-CSS-variables>
 
 # CSS Styling Guide
 
 This document outlines the rules and best practices for styling components in this codebase.
 
-## ⭐ General Styling Rule
+## General Styling Rule
 
 - **For any new styles, do not use TailwindCSS utility classes.**
 - Instead, prefer using **standard CSS syntax** with our **predefined CSS variables**.
 
 ---
 
-## ✨ Styling Methods in `.svelte` Files
+## Styling Methods in `.svelte` Files
 
 Here are the approved methods for styling in `.svelte` files, listed in order of preference.
 
@@ -196,7 +201,7 @@ This is the default and preferred method for applying styles.
   <script>
     let myColor = 'blue';
   </script>
-  
+
   <div style="margin: var(--space-em-cqi-m); color: {myColor};">...</div>
   ```
 
@@ -218,9 +223,9 @@ Use Emotion for more complex CSS scenarios that the `style` attribute cannot han
   ```svelte
   <script>
     import { css, cx } from '@emotion/css';
-  
+
   </script>
-  
+
   <div class={cx('base-class', css`
       &:hover {
         background-color: var(--primary);
