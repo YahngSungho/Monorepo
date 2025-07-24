@@ -3,7 +3,6 @@ import { css } from '@emotion/css'
 import IconText from '@library/ui/icon-text'
 import Link from '@library/ui/link'
 import { Check, ChevronRight } from '@lucide/svelte'
-
 </script>
 
 <script>

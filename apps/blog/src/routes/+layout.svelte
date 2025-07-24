@@ -9,9 +9,7 @@ import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
 import store from 'store'
-// eslint-disable-next-line import-x/no-duplicates
 import { onMount, setContext } from 'svelte'
-// eslint-disable-next-line import-x/no-duplicates
 import { slide } from 'svelte/transition'
 
 import { browser } from '$app/environment'

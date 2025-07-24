@@ -201,7 +201,7 @@ This is the default and preferred method for applying styles.
   <script>
     let myColor = 'blue';
   </script>
-
+  
   <div style="margin: var(--space-em-cqi-m); color: {myColor};">...</div>
   ```
 
@@ -223,9 +223,9 @@ Use Emotion for more complex CSS scenarios that the `style` attribute cannot han
   ```svelte
   <script>
     import { css, cx } from '@emotion/css';
-
+  
   </script>
-
+  
   <div class={cx('base-class', css`
       &:hover {
         background-color: var(--primary);

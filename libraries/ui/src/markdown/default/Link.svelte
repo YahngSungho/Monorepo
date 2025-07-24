@@ -20,7 +20,6 @@ const linkStyle = css`
 		}
 	}
 `
-
 </script>
 
 <script>

@@ -13,8 +13,8 @@
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-	import { onNavigate } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { onNavigate } from '$app/navigation';
 
 	// Svelte 5에서는 전역적인 클라이언트 사이드 로직을 <script> 블록 최상단에 배치합니다.
 	// `browser` 환경 변수는 이 코드가 서버에서 실행되는 것을 방지합니다.
@@ -71,9 +71,9 @@
 
 **핵심 요약:**
 
-* 이 코드 하나로 모든 페이지 전환에 부드러운 크로스페이드 효과가 자동으로 적용됩니다.
-* `onNavigate` 훅은 SvelteKit의 라우팅과 View Transitions API를 완벽하게 동기화하는 역할을 합니다.
-* `{#key}` 블록은 페이지가 바뀔 때마다 내부 컨텐츠(`div#page-content-wrapper`)를 새로 그리게 하여, Svelte의 `in:/out:` 트랜지션이 발동될 수 있는 환경을 만듭니다.
+- 이 코드 하나로 모든 페이지 전환에 부드러운 크로스페이드 효과가 자동으로 적용됩니다.
+- `onNavigate` 훅은 SvelteKit의 라우팅과 View Transitions API를 완벽하게 동기화하는 역할을 합니다.
+- `{#key}` 블록은 페이지가 바뀔 때마다 내부 컨텐츠(`div#page-content-wrapper`)를 새로 그리게 하여, Svelte의 `in:/out:` 트랜지션이 발동될 수 있는 환경을 만듭니다.
 
 ---
 
@@ -212,9 +212,9 @@ Part 1에서 설정한 `+layout.svelte`가 모든 준비를 마쳤습니다. 추
 <div class="project-detail">
 	<div class="hero-image-container">
 		<img
-			src={project.imageUrl}
-			alt={project.title}
-			<!-- 목록 페이지에서 사용한 것과 정확히 동일한 규칙으로 이름을 부여합니다. -->
+			--
+			<!--
+			alt={project.title} src={project.imageUrl} 것과 규칙으로 동일한 목록 부여합니다. 사용한 이름을 정확히 페이지에서>
 			style="view-transition-name: project-image-{project.slug}"
 		/>
 	</div>
@@ -250,18 +250,18 @@ Svelte 5에서는 반응형 상태를 `.svelte.js` 파일에 정의하여 여러
 
 ```javascript
 // .svelte.js 확장자는 이 파일이 룬(Runes)을 사용함을 명시합니다.
-let isBackNavigation = $state(false);
+let isBackNavigation = $state(false)
 
 export function useNavigationDirection() {
 	return {
 		// 읽기 전용 getter를 제공하여 외부에서 직접 수정을 방지합니다.
 		get isBack() {
-			return isBackNavigation;
+			return isBackNavigation
 		},
 		// 상태를 변경하는 명시적인 함수를 제공합니다.
 		setBack: () => (isBackNavigation = true),
 		setForward: () => (isBackNavigation = false),
-	};
+	}
 }
 ```
 
@@ -272,8 +272,8 @@ export function useNavigationDirection() {
 
 ```svelte
 <script>
-	import { onNavigate } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { onNavigate } from '$app/navigation';
 	import { useNavigationDirection } from '$lib/navigationDirection.svelte.js';
 
 	// 1. 룬 모듈을 인스턴스화합니다.
@@ -310,10 +310,30 @@ export function useNavigationDirection() {
 
 ```css
 /* 애니메이션 키프레임 정의 */
-@keyframes slide-in-from-right { from { transform: translateX(30px); opacity: 0; } }
-@keyframes slide-out-to-left { to { transform: translateX(-30px); opacity: 0; } }
-@keyframes slide-in-from-left { from { transform: translateX(-30px); opacity: 0; } }
-@keyframes sl,ide-out-to-right { to { transform: translateX(30px); opacity: 0; } }
+@keyframes slide-in-from-right {
+	from {
+		transform: translateX(30px);
+		opacity: 0;
+	}
+}
+@keyframes slide-out-to-left {
+	to {
+		transform: translateX(-30px);
+		opacity: 0;
+	}
+}
+@keyframes slide-in-from-left {
+	from {
+		transform: translateX(-30px);
+		opacity: 0;
+	}
+}
+@keyframes sl,ide-out-to-right {
+	to {
+		transform: translateX(30px);
+		opacity: 0;
+	}
+}
 
 /* 기본 (앞으로 가기) 전환 애니메이션 */
 ::view-transition-old(root) {
@@ -340,8 +360,8 @@ html.is-back-navigation::view-transition-new(root) {
 
 두 기술은 함께 사용할 수 있지만, 그 목적과 역할을 명확히 이해해야 합니다.
 
-* **View Transitions API (주 애니메이터)**: 페이지 전체의 픽셀 상태(스냅샷)를 기반으로 부드러운 전환을 **직접 생성**합니다. 이것이 메인 애니메이션 엔진입니다.
-* **`{#key}` 블록 (컴포넌트 생명주기 관리자)**: 페이지가 바뀔 때 Svelte에게 "이 안의 컴포넌트를 완전히 파괴하고 새로 만들어라"라고 지시합니다.
+- **View Transitions API (주 애니메이터)**: 페이지 전체의 픽셀 상태(스냅샷)를 기반으로 부드러운 전환을 **직접 생성**합니다. 이것이 메인 애니메이션 엔진입니다.
+- **`{#key}` 블록 (컴포넌트 생명주기 관리자)**: 페이지가 바뀔 때 Svelte에게 "이 안의 컴포넌트를 완전히 파괴하고 새로 만들어라"라고 지시합니다.
 
 **언제 무엇을 사용해야 하는가?**
 
@@ -356,8 +376,8 @@ html.is-back-navigation::view-transition-new(root) {
 
 **예시**:
 
-* **안전**: `project-image-123`, `user-avatar-john-doe`
-* **주의 필요**: `item-A%20B/C` (특수 문자가 포함된 경우)
+- **안전**: `project-image-123`, `user-avatar-john-doe`
+- **주의 필요**: `item-A%20B/C` (특수 문자가 포함된 경우)
 
 #### 3. 애니메이션 타입 분류
 
@@ -385,12 +405,12 @@ View Transitions API는 전환 그룹에 타입을 추가하여 더 세밀한 �
 
 ```javascript
 onNavigate((navigation) => {
-    if (navigation.info?.type === 'show-modal') {
-        // 모달을 위한 특별한 애니메이션 클래스를 <html>에 추가
-        document.documentElement.classList.add('is-modal-transition');
-    }
-    // ...
-});
+	if (navigation.info?.type === 'show-modal') {
+		// 모달을 위한 특별한 애니메이션 클래스를 <html>에 추가
+		document.documentElement.classList.add('is-modal-transition')
+	}
+	// ...
+})
 ```
 
 이처럼 `navigation.info` 객체를 활용하면 단순한 뒤로/앞으로 가기 구분을 넘어 훨씬 더 복잡하고 의도적인 전환 로직을 구현할 수 있습니다.
