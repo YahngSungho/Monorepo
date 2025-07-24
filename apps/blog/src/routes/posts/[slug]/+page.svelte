@@ -66,6 +66,9 @@ $effect(() => {
 	class="boxed long-text"
 >
 	<div>
+		<h1>
+			{data.currentMetadata.title}
+		</h1>
 		{#if data.post}
 			<Markdown value={data.post} />
 		{/if}
