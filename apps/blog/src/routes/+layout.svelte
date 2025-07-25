@@ -106,7 +106,7 @@ function scrollToTop() {
 	position: absolute;
 	inset-block-start: 0;
 	inset-inline-end: 0;
-	transform: scaleY(-1);
+	transform: scaleY(-1) scaleX(-1);
 	"
 					class="radial-progress"
 					class:progress_0={progress === 0}
@@ -182,8 +182,8 @@ function scrollToTop() {
 			style="
 			position: fixed;
 			z-index: var(--layer-important);
-			inset-block-end: var(--space-em-cqi-l);
-			inset-inline-end: var(--space-em-cqi-l);
+			inset-block-end: var(--space-em-cqi-m);
+			inset-inline-start: var(--space-em-cqi-m);
 		"
 			onclick={scrollToTop}
 		>
@@ -212,6 +212,7 @@ function scrollToTop() {
 
 .main {
 	overflow: auto;
+	margin-block-end: var(--space-em-cqi-xl);
 	padding: var(--space-em-cqi-m);
 }
 
