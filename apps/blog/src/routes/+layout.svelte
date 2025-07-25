@@ -8,6 +8,7 @@ import BaseLayout from '@library/ui/layouts/root'
 import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
+import { Mail } from '@lucide/svelte'
 import store from 'store'
 import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
@@ -22,6 +23,28 @@ let visited = $state({})
 
 onMount(() => {
 	visited = store.get('visited') || {}
+
+	function handleStorageChange_action(event) {
+		if (event.key && event.newValue) {
+			try {
+				const newValue = JSON.parse(event.newValue)
+				console.log(`다른 탭에서 ${event.key} 변경됨:`, newValue)
+
+				if (event.key === 'visited') {
+					visited = newValue || {}
+				}
+
+			} catch (error) {
+				console.error(`${event.key} 상태 동기화 실패:`, error)
+			}
+		}
+	}
+
+	globalThis.addEventListener('storage', handleStorageChange_action)
+
+	return () => {
+		globalThis.removeEventListener('storage', handleStorageChange_action)
+	}
 })
 
 
@@ -116,7 +139,8 @@ function scrollToTop() {
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm join-item"
 						>
-							<input placeholder="mail@site.com" required type="email" />
+							<Mail style=" font-size: var(--font-size-fluid-em-cqi-01);color: var(--gray-6);" />
+							<input placeholder="my@email.com" required type="email" />
 						</label>
 					</div>
 					<Button class="join-item" size="sm" type="submit">Subscribe</Button>
