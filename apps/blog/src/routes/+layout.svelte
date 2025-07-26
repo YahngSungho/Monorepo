@@ -4,6 +4,7 @@ import '@library/base/fontStyle.css'
 import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button_daisy'
+import ConfettiButton from '@library/ui/confettiButton'
 import BaseLayout from '@library/ui/layouts/root'
 import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
@@ -12,6 +13,7 @@ import { Mail } from '@lucide/svelte'
 import store from 'store'
 import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
+import {Confetti} from 'svelte-confetti'
 
 import { page } from '$app/state'
 
@@ -144,11 +146,14 @@ function scrollToTop() {
 							<span>Email</span>
 						</label>
 					</div>
-					<Button class="join-item" size="sm" type="submit">Subscribe</Button>
+					<ConfettiButton amount={50} colorArray={['var(--gray-0)', 'var(--gray-2)', 'var(--gray-4)', 'var(--gray-6)', 'var(--gray-8)', 'var(--gray-10)', 'var(--gray-12)']} duration={750} isConfettiActivated noGravity x={[-1, 1]} y={[-1, 1]}>
+						<Button class="join-item" size="sm" type="submit">Subscribe</Button>
+					</ConfettiButton>
 				</div>
 
 				<div style=" z-index: 1;overflow: visible;">
-					<Button
+					<ConfettiButton colorArray={['var(--gray-0)', 'var(--gray-2)', 'var(--gray-4)', 'var(--gray-6)', 'var(--gray-8)', 'var(--gray-10)', 'var(--gray-12)']} isConfettiActivated={sharingButtonsOpen} x={[-2, 2]} y={[-0.25, -1]}>
+						<Button
 						style="min-block-size: auto;"
 						onclick={() => {
 							sharingButtonsOpen = !sharingButtonsOpen
@@ -158,6 +163,7 @@ function scrollToTop() {
 					>
 						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 					</Button>
+					</ConfettiButton>
 					{#if sharingButtonsOpen}
 						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
 							<div
