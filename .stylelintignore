@@ -165,3 +165,5 @@ output
 
 releases
 .repomix-output
+
+**/cache.json

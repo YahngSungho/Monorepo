@@ -98,7 +98,8 @@ function scrollToTop() {
 				style=" position: relative;display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);"
 			>
 				<div
-					style="--value: {progress}; --size: 10em; --thickness: 0.5em;
+					style:--value={progress}
+					style="--size: 10em; --thickness: 0.5em;
 
 	position: absolute;
 	inset-block-start: 0;
@@ -137,8 +138,8 @@ function scrollToTop() {
 							class="input input-sm floating-label join-item"
 						>
 							<Mail style=" font-size: var(--font-size-fluid-em-cqi-01);color: var(--gray-6);" />
-							<input placeholder="my@email.com" required type="email" />
-							<span>Email</span>
+							<input placeholder="나의@이메일.com" required type="email" />
+							<span>이메일</span>
 						</label>
 					</div>
 					<ConfettiButton
@@ -147,21 +148,15 @@ function scrollToTop() {
 						duration={750}
 						isConfettiActivated
 						noGravity
-						x={[-1, 1]}
-						y={[-1, 1]}
+						x={[-0.5, 0.5]}
+						y={[-0.5, 0.5]}
 					>
-						<Button class="join-item" size="sm" type="submit">Subscribe</Button>
+						<Button class="join-item" size="sm" type="submit">구독하기</Button>
 					</ConfettiButton>
 				</div>
 
 				<div style=" z-index: 1;overflow: visible;">
-					<ConfettiButton
-						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
-						isConfettiActivated={sharingButtonsOpen}
-						x={[-2, 2]}
-						y={[-0.25, -1]}
-					>
-						<Button
+					<Button
 							style="min-block-size: auto;"
 							onclick={() => {
 								sharingButtonsOpen = !sharingButtonsOpen
@@ -169,9 +164,8 @@ function scrollToTop() {
 							size="sm"
 							variant="outline"
 						>
-							{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
+							{page.url.pathname.includes('posts') ? '이 포스트 공유하기...' : '이 블로그 공유하기...'}
 						</Button>
-					</ConfettiButton>
 					{#if sharingButtonsOpen}
 						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
 							<div
@@ -202,7 +196,7 @@ function scrollToTop() {
 		"
 			onclick={scrollToTop}
 		>
-			To Top
+			맨 위로
 		</Button>
 	{/if}
 	<div id="Top2_Layout_Check"></div>

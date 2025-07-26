@@ -17,7 +17,7 @@ let allMetadata_best = $derived(allMetadata.filter((item) => item.best))
 <div style="display: flex; flex-flow: column wrap; gap: var(--space-em-cqi-xs-s);">
 	<div>
 		<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
-			<h1>Pinned Posts</h1>
+			<h1>고정된 포스트</h1>
 		</div>
 
 		<div>
@@ -27,7 +27,7 @@ let allMetadata_best = $derived(allMetadata.filter((item) => item.best))
 
 	<div>
 		<div style="display: flex; gap: var(--space-em-cqi-3xs-2xs); align-items: center;">
-			<h1>Posts</h1>
+			<h1>포스트</h1>
 		</div>
 
 		<div>
