@@ -245,7 +245,14 @@ const flatCompat = new FlatCompat({
 export default defineFlatConfig([
 	includeIgnoreFile(gitignorePath),
 	{
-		ignores: ['!.storybook', '**/.svelte-kit/**', 'pnpm-lock.yaml', 'package-lock.json', '**/cache.json'],
+		ignores: [
+			'!.storybook',
+			'**/.svelte-kit/**',
+			'pnpm-lock.yaml',
+			'package-lock.json',
+			'**/cache.json',
+			'**/normalize.js',
+		],
 	},
 
 	js.configs.recommended,
@@ -273,10 +280,7 @@ export default defineFlatConfig([
 	arrayFunc.configs.recommended,
 	compat.configs['flat/recommended'],
 
-	...flatCompat.extends(
-		'plugin:xstate/all',
-		'plugin:redos/recommended',
-	),
+	...flatCompat.extends('plugin:xstate/all', 'plugin:redos/recommended'),
 
 	{
 		settings: {
@@ -340,11 +344,7 @@ export default defineFlatConfig([
 				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
-				allowDefaultProject: [
-					'**/*.md/*.*',
-					'**/*.mdc/*.*',
-					'**/*.mdx/*.*',
-				],
+				allowDefaultProject: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 			},
 			sourceType: 'module',
 		},
@@ -371,11 +371,7 @@ export default defineFlatConfig([
 				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
-				allowDefaultProject: [
-					'**/*.md/*.*',
-					'**/*.mdc/*.*',
-					'**/*.mdx/*.*',
-				],
+				allowDefaultProject: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 				svelteConfig,
 				svelteFeatures: {
 					experimentalRunes: true,
@@ -430,8 +426,8 @@ export default defineFlatConfig([
 		files: ['**/scripts/**/*.js'],
 
 		rules: {
-			'unicorn/no-process-exit': 'off'
-		}
+			'unicorn/no-process-exit': 'off',
+		},
 	},
 
 	...jsonc.configs['flat/base'],
@@ -498,11 +494,7 @@ export default defineFlatConfig([
 	...markdown.configs.processor,
 
 	{
-		files: [
-			'**/*.md/*.*',
-			'**/*.mdc/*.*',
-			'**/*.mdx/*.*',
-		],
+		files: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 		languageOptions: {
 			parserOptions: {
 				project: undefined, // 타입 인식을 위한 tsconfig 사용 안 함
@@ -584,7 +576,7 @@ export default defineFlatConfig([
 			'import-x/no-named-as-default': 'off', // 타입 정보 필요
 			'import-x/no-named-as-default-member': 'off', // 타입 정보 필요
 			'import-x/no-unused-modules': 'off', // 타입 정보 필요
-		}
+		},
 	},
 
 	...jsonc.configs['flat/prettier'],

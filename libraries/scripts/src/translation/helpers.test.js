@@ -2,7 +2,7 @@
 import fs from 'node:fs' // fs 모의 위해 임포트
 
 import { getAbsolutePath } from '@library/helpers/fs-sync' // 경로 헬퍼 모의 위해 임포트
-import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
+import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/helper-functions'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -18,9 +18,13 @@ import {
 // --- 모의 설정 ---
 
 // generateKeyNumberFunctions 모의
-vi.mock('@library/helpers/helper-functions', () => ({
-	generateKeyNumberFunctions: vi.fn(),
-}))
+vi.mock('@library/helpers/helper-functions', async () => {
+	const actual = await vi.importActual('@library/helpers/helper-functions')
+	return {
+		...actual,
+		generateKeyNumberFunctions: vi.fn(),
+	}
+})
 
 // fs 모의 (getInitialLanguageMap 테스트용)
 vi.mock('node:fs', () => ({
@@ -699,15 +703,15 @@ describe('Translation Helpers', () => {
 			}
 			const expectedNewCache = {
 				greeting: {
-					ko: '안녕',
-					en: 'Hello',
-					ja: 'こんにちは',
-					explanation: '인사말',
+					ko: normalizeString('안녕'),
+					en: normalizeString('Hello'),
+					ja: normalizeString('こんにちは'),
+					explanation: normalizeString('인사말'),
 				},
 				farewell: {
-					ko: '잘가',
-					ja: 'さようなら',
-					explanation: '작별인사',
+					ko: normalizeString('잘가'),
+					ja: normalizeString('さようなら'),
+					explanation: normalizeString('작별인사'),
 				},
 			}
 
@@ -742,8 +746,8 @@ describe('Translation Helpers', () => {
 			const explanations = {} // 설명 없음
 			const expectedNewCache = {
 				greeting: {
-					ko: '안녕',
-					en: 'Hello',
+					ko: normalizeString('안녕'),
+					en: normalizeString('Hello'),
 					// explanation 필드 없음
 				},
 			}
@@ -760,8 +764,8 @@ describe('Translation Helpers', () => {
 				ko: { greeting: '안녕', farewell: '잘가' },
 			}
 			const expectedNewCachePartial = {
-				greeting: { ko: '안녕' }, // 설명 없음
-				farewell: { ko: '잘가', explanation: '작별인사' }, // 설명 있음
+				greeting: { ko: normalizeString('안녕') }, // 설명 없음
+				farewell: { ko: normalizeString('잘가'), explanation: normalizeString('작별인사') }, // 설명 있음
 			}
 			const newCachePartial = getNewCache(languageMessageMapsPartial, explanationsPartial)
 			expect(newCachePartial).toEqual(expectedNewCachePartial)
@@ -775,8 +779,8 @@ describe('Translation Helpers', () => {
 			}
 			const explanations = { greeting: '인사말' }
 			const expectedNewCache = {
-				greeting: { ko: '안녕', explanation: '인사말' },
-				farewell: { ko: '잘가' },
+				greeting: { ko: normalizeString('안녕'), explanation: normalizeString('인사말') },
+				farewell: { ko: normalizeString('잘가') },
 			}
 
 			// 실행(Act)

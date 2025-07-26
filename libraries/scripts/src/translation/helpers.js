@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 
 import { getAbsolutePath } from '@library/helpers/fs-sync'
-import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
+import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
@@ -26,6 +26,17 @@ export function getInitialLanguageMap() {
 		result[language] = {}
 	}
 	return result
+}
+
+/**
+ * combinedMessage 객체의 모든 언어 내용을 정규화
+ * @param {object} combinedMessage - { ko: string, en: string, explanation?: string }
+ * @returns {object} 정규화된 combinedMessage
+ */
+function normalizeCombinedMessage(combinedMessage) {
+	if (!combinedMessage) return combinedMessage
+
+	return R.mapObject(normalizeString)(combinedMessage)
 }
 
 export function calculateInitialTranslationStateByBaseLanguages(
@@ -64,7 +75,9 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	// missingMessageKeys 계산 (순수, 불변성 유지)
 	const finalTargetLanguageMap = create(initialTargetLanguageMap, (draft) => {
 		for (const [messageKey, combinedMessage] of Object.entries(combinedMessages_latest)) {
-			const isMessageChanged = !R.equals(combinedMessage)(combinedMessages_cached[messageKey])
+			const normalizedCurrent = normalizeCombinedMessage(combinedMessage)
+			const normalizedCached = normalizeCombinedMessage(combinedMessages_cached[messageKey])
+			const isMessageChanged = !R.equals(normalizedCurrent)(normalizedCached)
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
@@ -220,10 +233,10 @@ export function getNewCache(languageMessageMaps, explanations) {
 	for (const [language, languageMessageMap] of Object.entries(languageMessageMaps)) {
 		for (const [messageKey, messageValue] of Object.entries(languageMessageMap)) {
 			if (newCache[messageKey]) {
-				newCache[messageKey][language] = messageValue
+				newCache[messageKey][language] = normalizeString(messageValue)
 			} else {
 				newCache[messageKey] = {
-					[language]: messageValue,
+					[language]: normalizeString(messageValue),
 				}
 			}
 		}
@@ -231,7 +244,7 @@ export function getNewCache(languageMessageMaps, explanations) {
 
 	for (const messageKey of Object.keys(newCache)) {
 		if (explanations[messageKey]) {
-			newCache[messageKey].explanation = explanations[messageKey]
+			newCache[messageKey].explanation = normalizeString(explanations[messageKey])
 		}
 	}
 
