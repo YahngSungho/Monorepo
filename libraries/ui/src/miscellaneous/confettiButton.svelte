@@ -11,7 +11,6 @@ let clicked = $state(false)
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<<<<<<< ours
 <span style="position: relative; z-index: 1;" onclick={async () => {
 	clicked = false
 	await tick()
@@ -26,23 +25,5 @@ let clicked = $state(false)
 	<span style=" position: relative;z-index: 1;">
 		{@render children()}
 	</span>
-||||||| ancestor
-<span style="position: relative; z-index: 1;" onclick={async () => {
-	clicked = false
-	await tick()
-	clicked = true
-}}>
-	{@render children()}
-=======
-<span
-	style="position: relative; z-index: 1;"
-	onclick={async () => {
-		clicked = false
-		await tick()
-		clicked = true
-	}}
->
-	{@render children()}
->>>>>>> theirs
 
 </span>
