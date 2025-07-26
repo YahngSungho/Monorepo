@@ -328,7 +328,7 @@ export function useNavigationDirection() {
 		opacity: 0;
 	}
 }
-@keyframes sl,ide-out-to-right {
+@keyframes slide-out-to-right {
 	to {
 		transform: translateX(30px);
 		opacity: 0;

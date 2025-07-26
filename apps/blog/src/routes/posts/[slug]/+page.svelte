@@ -74,7 +74,7 @@ $effect(() => {
 		{/if}
 	</div>
 
-	<div style="margin-block-start: var(--space-em-cqi-xl);" class="divider"></div>
+	<hr />
 
 	<div>
 		<PostList allMetadata={nearMetadata} />

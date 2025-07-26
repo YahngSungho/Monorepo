@@ -53,6 +53,7 @@
 		"remark-smartypants": "^3.0.2",
 		"shiki": "^3.4.2",
 		"svelte": "^5.33.7",
+		"svelte-confetti": "^2.3.2",
 		"svelte-exmarkdown": "^5.0.0",
 		"svelte-sonner": "^1.0.3",
 		"sveltekit-superforms": "^2.24.1",
@@ -79,6 +80,7 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./confettiButton": "./src/miscellaneous/confettiButton.svelte",
 		"./sharingButtons": "./src/miscellaneous/sharingButtons.svelte",
 		"./storybookDecorator": "./src/miscellaneous/storybookDecorator.svelte",
 		"./markdown-default": "./src/markdown/default/Markdown.svelte",

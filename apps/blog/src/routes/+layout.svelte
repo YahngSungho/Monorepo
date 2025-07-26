@@ -4,16 +4,16 @@ import '@library/base/fontStyle.css'
 import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button_daisy'
+import ConfettiButton from '@library/ui/confettiButton'
 import BaseLayout from '@library/ui/layouts/root'
 import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
+import { Mail } from '@lucide/svelte'
 import store from 'store'
 import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
 
-import { browser } from '$app/environment'
-import { onNavigate } from '$app/navigation'
 import { page } from '$app/state'
 
 import { APP_NAME } from './base'
@@ -24,22 +24,26 @@ let visited = $state({})
 
 onMount(() => {
 	visited = store.get('visited') || {}
-})
 
-if (browser) {
-	onNavigate((navigation) => {
-		if (!document.startViewTransition) {
-			return
+	function handleStorageChange_action(event) {
+		if (event.key && event.newValue) {
+			try {
+				const newValue = JSON.parse(event.newValue)
+				if (event.key === 'visited') {
+					visited = newValue || {}
+				}
+			} catch (error) {
+				console.error(`${event.key} 상태 동기화 실패:`, error)
+			}
 		}
+	}
 
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve()
-				await navigation.complete
-			})
-		})
-	})
-}
+	globalThis.addEventListener('storage', handleStorageChange_action)
+
+	return () => {
+		globalThis.removeEventListener('storage', handleStorageChange_action)
+	}
+})
 
 const allMetadata = $derived.by(() => {
 	if (!data.allMetadata) return {}
@@ -94,12 +98,12 @@ function scrollToTop() {
 				style=" position: relative;display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);"
 			>
 				<div
-					style="--value: {progress}; --size: 10em; --thickness: 1em;
+					style="--value: {progress}; --size: 10em; --thickness: 0.5em;
 
 	position: absolute;
 	inset-block-start: 0;
 	inset-inline-end: 0;
-	transform: scaleY(-1);
+	transform: scaleY(-1) scaleX(-1);
 	"
 					class="radial-progress"
 					class:progress_0={progress === 0}
@@ -130,25 +134,44 @@ function scrollToTop() {
 					<div>
 						<label
 							style="border: 1px solid currentcolor !important;"
-							class="input input-sm join-item"
+							class="input input-sm floating-label join-item"
 						>
-							<input placeholder="mail@site.com" required type="email" />
+							<Mail style=" font-size: var(--font-size-fluid-em-cqi-01);color: var(--gray-6);" />
+							<input placeholder="my@email.com" required type="email" />
+							<span>Email</span>
 						</label>
 					</div>
-					<Button class="join-item" size="sm" type="submit">Subscribe</Button>
+					<ConfettiButton
+						amount={50}
+						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
+						duration={750}
+						isConfettiActivated
+						noGravity
+						x={[-1, 1]}
+						y={[-1, 1]}
+					>
+						<Button class="join-item" size="sm" type="submit">Subscribe</Button>
+					</ConfettiButton>
 				</div>
 
 				<div style=" z-index: 1;overflow: visible;">
-					<Button
-						style="min-block-size: auto;"
-						onclick={() => {
-							sharingButtonsOpen = !sharingButtonsOpen
-						}}
-						size="sm"
-						variant="outline"
+					<ConfettiButton
+						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
+						isConfettiActivated={sharingButtonsOpen}
+						x={[-2, 2]}
+						y={[-0.25, -1]}
 					>
-						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
-					</Button>
+						<Button
+							style="min-block-size: auto;"
+							onclick={() => {
+								sharingButtonsOpen = !sharingButtonsOpen
+							}}
+							size="sm"
+							variant="outline"
+						>
+							{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
+						</Button>
+					</ConfettiButton>
 					{#if sharingButtonsOpen}
 						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
 							<div
@@ -174,8 +197,8 @@ function scrollToTop() {
 			style="
 			position: fixed;
 			z-index: var(--layer-important);
-			inset-block-end: var(--space-em-cqi-l);
-			inset-inline-end: var(--space-em-cqi-l);
+			inset-block-end: var(--space-em-cqi-m);
+			inset-inline-start: var(--space-em-cqi-m);
 		"
 			onclick={scrollToTop}
 		>
@@ -204,6 +227,7 @@ function scrollToTop() {
 
 .main {
 	overflow: auto;
+	margin-block-end: var(--space-em-cqi-xl);
 	padding: var(--space-em-cqi-m);
 }
 
