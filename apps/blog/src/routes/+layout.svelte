@@ -147,21 +147,15 @@ function scrollToTop() {
 						duration={750}
 						isConfettiActivated
 						noGravity
-						x={[-1, 1]}
-						y={[-1, 1]}
+						x={[-0.5, 0.5]}
+						y={[-0.5, 0.5]}
 					>
 						<Button class="join-item" size="sm" type="submit">Subscribe</Button>
 					</ConfettiButton>
 				</div>
 
 				<div style=" z-index: 1;overflow: visible;">
-					<ConfettiButton
-						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
-						isConfettiActivated={sharingButtonsOpen}
-						x={[-2, 2]}
-						y={[-0.25, -1]}
-					>
-						<Button
+					<Button
 							style="min-block-size: auto;"
 							onclick={() => {
 								sharingButtonsOpen = !sharingButtonsOpen
@@ -171,7 +165,6 @@ function scrollToTop() {
 						>
 							{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
 						</Button>
-					</ConfettiButton>
 					{#if sharingButtonsOpen}
 						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
 							<div
