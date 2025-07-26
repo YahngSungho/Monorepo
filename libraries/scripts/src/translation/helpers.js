@@ -28,6 +28,39 @@ export function getInitialLanguageMap() {
 	return result
 }
 
+/**
+ * 마크다운 내용을 포맷팅 무관하게 비교 가능하도록 정규화
+ * @param {string} content - 마크다운 내용
+ * @returns {string} 정규화된 내용
+ */
+function normalizeMarkdownContent(content) {
+	if (typeof content !== 'string') {
+		return content;
+	}
+
+	let normalizedContent = content
+		// 유니코드 정규화
+		.normalize('NFC')
+		// 소문자로 통일
+		.toLowerCase()
+		// 기타 특수문자 제거
+		.replaceAll(/[^\p{L}\p{N}]/gu, '')
+
+	return normalizedContent;
+}
+
+
+/**
+ * combinedMessage 객체의 모든 언어 내용을 정규화
+ * @param {object} combinedMessage - { ko: string, en: string, explanation?: string }
+ * @returns {object} 정규화된 combinedMessage
+ */
+function normalizeCombinedMessage(combinedMessage) {
+	if (!combinedMessage) return combinedMessage
+
+	return R.mapObject(normalizeMarkdownContent)(combinedMessage)
+}
+
 export function calculateInitialTranslationStateByBaseLanguages(
 	baseLanguages,
 	messageMap,
@@ -64,7 +97,9 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	// missingMessageKeys 계산 (순수, 불변성 유지)
 	const finalTargetLanguageMap = create(initialTargetLanguageMap, (draft) => {
 		for (const [messageKey, combinedMessage] of Object.entries(combinedMessages_latest)) {
-			const isMessageChanged = !R.equals(combinedMessage)(combinedMessages_cached[messageKey])
+			const normalizedCurrent = normalizeCombinedMessage(combinedMessage)
+			const normalizedCached = normalizeCombinedMessage(combinedMessages_cached[messageKey])
+			const isMessageChanged = !R.equals(normalizedCurrent)(normalizedCached)
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
@@ -220,10 +255,10 @@ export function getNewCache(languageMessageMaps, explanations) {
 	for (const [language, languageMessageMap] of Object.entries(languageMessageMaps)) {
 		for (const [messageKey, messageValue] of Object.entries(languageMessageMap)) {
 			if (newCache[messageKey]) {
-				newCache[messageKey][language] = messageValue
+				newCache[messageKey][language] = normalizeMarkdownContent(messageValue)
 			} else {
 				newCache[messageKey] = {
-					[language]: messageValue,
+					[language]: normalizeMarkdownContent(messageValue),
 				}
 			}
 		}
@@ -231,7 +266,7 @@ export function getNewCache(languageMessageMaps, explanations) {
 
 	for (const messageKey of Object.keys(newCache)) {
 		if (explanations[messageKey]) {
-			newCache[messageKey].explanation = explanations[messageKey]
+			newCache[messageKey].explanation = normalizeMarkdownContent(explanations[messageKey])
 		}
 	}
 
