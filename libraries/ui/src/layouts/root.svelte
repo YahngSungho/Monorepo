@@ -6,19 +6,17 @@ import { partytownSnippet } from '@qwik.dev/partytown/integration'
 import * as Sentry from '@sentry/sveltekit'
 import { ModeWatcher } from 'mode-watcher'
 
+import { browser } from '$app/environment'
+import { onNavigate } from '$app/navigation'
 import { Toaster } from '$shadcn/components/ui/sonner/index'
 
 import { init } from './base.svelte.js'
-
-import { browser } from '$app/environment'
-import { onNavigate } from '$app/navigation'
 
 init()
 
 let { appName, children } = $props()
 
 Sentry.setTag('App Name', appName)
-
 
 if (browser) {
 	onNavigate((navigation) => {

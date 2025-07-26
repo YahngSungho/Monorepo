@@ -310,10 +310,30 @@ export function useNavigationDirection() {
 
 ```css
 /* 애니메이션 키프레임 정의 */
-@keyframes slide-in-from-right { from { transform: translateX(30px); opacity: 0; } }
-@keyframes slide-out-to-left { to { transform: translateX(-30px); opacity: 0; } }
-@keyframes slide-in-from-left { from { transform: translateX(-30px); opacity: 0; } }
-@keyframes slide-out-to-right { to { transform: translateX(30px); opacity: 0; } }
+@keyframes slide-in-from-right {
+	from {
+		transform: translateX(30px);
+		opacity: 0;
+	}
+}
+@keyframes slide-out-to-left {
+	to {
+		transform: translateX(-30px);
+		opacity: 0;
+	}
+}
+@keyframes slide-in-from-left {
+	from {
+		transform: translateX(-30px);
+		opacity: 0;
+	}
+}
+@keyframes slide-out-to-right {
+	to {
+		transform: translateX(30px);
+		opacity: 0;
+	}
+}
 
 /* 기본 (앞으로 가기) 전환 애니메이션 */
 ::view-transition-old(root) {

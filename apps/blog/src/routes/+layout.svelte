@@ -13,7 +13,7 @@ import { Mail } from '@lucide/svelte'
 import store from 'store'
 import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
-import {Confetti} from 'svelte-confetti'
+import { Confetti } from 'svelte-confetti'
 
 import { page } from '$app/state'
 
@@ -35,7 +35,6 @@ onMount(() => {
 				if (event.key === 'visited') {
 					visited = newValue || {}
 				}
-
 			} catch (error) {
 				console.error(`${event.key} 상태 동기화 실패:`, error)
 			}
@@ -48,7 +47,6 @@ onMount(() => {
 		globalThis.removeEventListener('storage', handleStorageChange_action)
 	}
 })
-
 
 const allMetadata = $derived.by(() => {
 	if (!data.allMetadata) return {}
@@ -146,23 +144,52 @@ function scrollToTop() {
 							<span>Email</span>
 						</label>
 					</div>
-					<ConfettiButton amount={50} colorArray={['var(--gray-0)', 'var(--gray-2)', 'var(--gray-4)', 'var(--gray-6)', 'var(--gray-8)', 'var(--gray-10)', 'var(--gray-12)']} duration={750} isConfettiActivated noGravity x={[-1, 1]} y={[-1, 1]}>
+					<ConfettiButton
+						amount={50}
+						colorArray={[
+							'var(--gray-0)',
+							'var(--gray-2)',
+							'var(--gray-4)',
+							'var(--gray-6)',
+							'var(--gray-8)',
+							'var(--gray-10)',
+							'var(--gray-12)',
+						]}
+						duration={750}
+						isConfettiActivated
+						noGravity
+						x={[-1, 1]}
+						y={[-1, 1]}
+					>
 						<Button class="join-item" size="sm" type="submit">Subscribe</Button>
 					</ConfettiButton>
 				</div>
 
 				<div style=" z-index: 1;overflow: visible;">
-					<ConfettiButton colorArray={['var(--gray-0)', 'var(--gray-2)', 'var(--gray-4)', 'var(--gray-6)', 'var(--gray-8)', 'var(--gray-10)', 'var(--gray-12)']} isConfettiActivated={sharingButtonsOpen} x={[-2, 2]} y={[-0.25, -1]}>
-						<Button
-						style="min-block-size: auto;"
-						onclick={() => {
-							sharingButtonsOpen = !sharingButtonsOpen
-						}}
-						size="sm"
-						variant="outline"
+					<ConfettiButton
+						colorArray={[
+							'var(--gray-0)',
+							'var(--gray-2)',
+							'var(--gray-4)',
+							'var(--gray-6)',
+							'var(--gray-8)',
+							'var(--gray-10)',
+							'var(--gray-12)',
+						]}
+						isConfettiActivated={sharingButtonsOpen}
+						x={[-2, 2]}
+						y={[-0.25, -1]}
 					>
-						{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
-					</Button>
+						<Button
+							style="min-block-size: auto;"
+							onclick={() => {
+								sharingButtonsOpen = !sharingButtonsOpen
+							}}
+							size="sm"
+							variant="outline"
+						>
+							{page.url.pathname.includes('posts') ? 'Share this post...' : 'Share this blog...'}
+						</Button>
 					</ConfettiButton>
 					{#if sharingButtonsOpen}
 						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
