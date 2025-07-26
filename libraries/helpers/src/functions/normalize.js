@@ -13,5 +13,5 @@ export function normalizeString(string) {
 		// 기타 특수문자 제거
 		.replaceAll(/[^\p{L}\p{N}]/gu, '')
 
-	return normalizedContent;
+	return normalizedContent
 }
