@@ -245,7 +245,7 @@ const flatCompat = new FlatCompat({
 export default defineFlatConfig([
 	includeIgnoreFile(gitignorePath),
 	{
-		ignores: ['!.storybook', '**/.svelte-kit/**', 'pnpm-lock.yaml', 'package-lock.json', '**/cache.json'],
+		ignores: ['!.storybook', '**/.svelte-kit/**', 'pnpm-lock.yaml', 'package-lock.json', '**/cache.json', '**/normalize.js'],
 	},
 
 	js.configs.recommended,
