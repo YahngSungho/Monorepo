@@ -101,7 +101,7 @@ function scrollToTop() {
 				style=" position: relative;display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);"
 			>
 				<div
-					style="--value: {progress}; --size: 10em; --thickness: 1em;
+					style="--value: {progress}; --size: 10em; --thickness: 0.5em;
 
 	position: absolute;
 	inset-block-start: 0;
@@ -137,10 +137,11 @@ function scrollToTop() {
 					<div>
 						<label
 							style="border: 1px solid currentcolor !important;"
-							class="input input-sm join-item"
+							class="input input-sm floating-label join-item"
 						>
 							<Mail style=" font-size: var(--font-size-fluid-em-cqi-01);color: var(--gray-6);" />
 							<input placeholder="my@email.com" required type="email" />
+							<span>Email</span>
 						</label>
 					</div>
 					<Button class="join-item" size="sm" type="submit">Subscribe</Button>
