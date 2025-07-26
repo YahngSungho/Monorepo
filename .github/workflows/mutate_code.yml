@@ -481,16 +481,66 @@ jobs:
           fi
           echo "--- 임시 커밋 완료 ---"
 
-      # 5. 번역 실행
-      - name: 번역 실행
+      # 5. 번역 실행 및 새 파일 목록 생성
+      - name: 번역 실행 및 새 파일 목록 생성
+        id: run_translation
         run: |
           echo "--- 번역 실행 중 (pnpm run translate) ---"
           pnpm run translate
           echo "--- 번역 완료 ---"
-          echo "'pnpm run translate' 실행 후 상태 (패치 생성 전):"
-          git status --short # 번역 실행 직후 상태 확인 (새 파일이 untracked로 보여야 함)
+
+          # git status --porcelain에서 변경된 파일 목록을 추출 (새 파일 + 수정된 파일)
+          NEW_FILES_MULTILINE=$(git status --porcelain=v1 | grep -E "^(\?\?|M |A )" | cut -c 4-)
+
+          if [ -n "$NEW_FILES_MULTILINE" ]; then
+            # 전체 새 파일 목록 (공백 구분, 공백 이스케이프 처리)을 다음 스텝에 전달하기 위해 출력으로 설정
+            ALL_NEW_FILES=$(echo "$NEW_FILES_MULTILINE" | sed 's/ /\\ /g' | tr '\n' ' ' | sed 's/ $//')
+            echo "all_changed_files=$ALL_NEW_FILES" >> $GITHUB_OUTPUT
+
+            # 새 마크다운 파일 목록 (공백 구분, 공백 이스케이프 처리)을 다음 스텝에 전달하기 위해 출력으로 설정
+            NEW_MD_FILES=$(echo "$NEW_FILES_MULTILINE" | grep -E '\.(md|mdx|mdc)$' | sed 's/ /\\ /g' | tr '\n' ' ' | sed 's/ $//')
+            echo "all_changed_markdown_files=$NEW_MD_FILES" >> $GITHUB_OUTPUT
+          else
+            echo "새로 생성된 파일이 없습니다."
+            echo "all_changed_files=" >> $GITHUB_OUTPUT
+            echo "all_changed_markdown_files=" >> $GITHUB_OUTPUT
+          fi
         env:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+
+      # 6. 새로 생성된 마크다운 파일 수정 (markdownlint)
+      - name: 새 마크다운 파일 수정 (markdownlint)
+        if: steps.run_translation.outputs.all_changed_markdown_files != ''
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: ${{ steps.run_translation.outputs.all_changed_markdown_files }}
+          config: .markdownlint.json
+          fix: true
+        continue-on-error: true
+
+      # 7. 기본 린트 및 포맷팅 실행
+      - name: 기본 린트 및 포맷팅 실행
+        if: steps.run_translation.outputs.all_changed_files != ''
+        run: |
+          # 이전 스텝에서 생성된 전체 새 파일 목록을 가져옴
+          MODIFIED_FILES="${{ steps.run_translation.outputs.all_changed_files }}"
+
+          echo "ESLint"
+          pnpm exec eslint --fix $MODIFIED_FILES
+
+          echo "Stylelint"
+          STYLELINT_FILES=$(echo "$MODIFIED_FILES" | tr ' ' '\n' | grep -E '\.(css|svelte|md|mdx|mdc)$' | tr '\n' ' ' | sed 's/ $//')
+          if [ -n "$STYLELINT_FILES" ]; then
+            pnpm exec stylelint --fix --allow-empty-input $STYLELINT_FILES
+          else
+            echo "Stylelint를 적용할 파일이 없습니다."
+          fi
+
+          echo "Prettier"
+          pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES
+
+          echo "--- 기본 린트 및 포맷팅 완료 ---"
+        continue-on-error: true
 
       # 6. 번역 변경사항 패치 생성 (임시 커밋 기준)
       - name: 번역 변경사항 확인 및 패치 생성
