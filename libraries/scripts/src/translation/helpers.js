@@ -44,6 +44,7 @@ function normalizeMarkdownContent(content) {
 		// 소문자로 통일
 		.toLowerCase()
 		// 기타 특수문자 제거
+		// eslint-disable-next-line optimize-regex/optimize-regex
 		.replaceAll(/[^\p{L}\p{N}]/gu, '')
 
 	return normalizedContent;
