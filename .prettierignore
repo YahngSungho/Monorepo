@@ -161,3 +161,5 @@ paraglide-output/**
 *.patch
 **/*.patch
 .repomix-output
+
+**/cache.json
