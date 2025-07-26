@@ -29,7 +29,7 @@ let isCopied = $state(false)
 			size="xs"
 			variant="outline"
 		>
-			{isCopied ? 'Copied' : 'Copy'}
+			{isCopied ? '복사됨' : '복사하기'}
 		</Button>
 	</div>
 
@@ -44,7 +44,7 @@ let isCopied = $state(false)
 				}}
 				size="sm"
 			>
-				<IconText IconElement={Share2}>Forward...</IconText>
+				<IconText IconElement={Share2}>전달하기...</IconText>
 			</Button>
 		</div>
 	{/if}
