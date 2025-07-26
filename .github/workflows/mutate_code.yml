@@ -126,7 +126,7 @@ jobs:
               - '**/*.md'
               - '**/*.mdx'
               - '**/*.mdc'
-              - '**/*.json'
+              # - '**/*.json' <- 이걸 왜 추가했었지?
             translation-targets:
               - 'apps/**/*.md'
               - 'apps/**/*.mdx'
@@ -287,16 +287,34 @@ jobs:
           fix: true
         continue-on-error: true
 
-      - name: 마크다운 파일 Lint 수정 (eslint-md)
-        run: pnpm run eslint-md
-        continue-on-error: true # ESLint 오류 시 워크플로우 중단 방지 (선택 사항)
+      - name: 변경된 마크다운 파일 가져오기
+        id: changed-markdown-files
+        uses: tj-actions/changed-files@v46
+        with:
+          files: |
+            **/*.md
+            **/*.mdx
+            **/*.mdc
 
-      - name: 마크다운 파일 Stylelint 수정 (stylelint-md)
-        run: pnpm run stylelint-md
-        continue-on-error: true # Stylelint 오류 시 워크플로우 중단 방지 (선택 사항)
+      - name: 마크다운 수정 (markdownlint)
+        if: steps.changed-markdown-files.outputs.all_changed_files != ''
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
+          config: .markdownlint.json
+          fix: true
+        continue-on-error: true
 
-      - name: 마크다운 포맷팅 (prettier)
-        run: pnpm run format-md
+      - name: 마크다운 파일 Lint 및 포맷 수정
+        if: steps.changed-markdown-files.outputs.all_changed_files != ''
+        run: |
+          MODIFIED_FILES="${{ steps.changed-markdown-files.outputs.all_changed_files }}"
+          echo "다음 마크다운 파일들을 수정합니다:"
+          echo "$MODIFIED_FILES"
+          pnpm exec eslint --fix $MODIFIED_FILES
+          pnpm exec stylelint --fix --allow-empty-input $MODIFIED_FILES
+          pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES
+        continue-on-error: true
 
       # 8. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
       - name: 마크다운 변경사항 확인 및 패치 생성
@@ -685,9 +703,25 @@ jobs:
           fi
           echo "--- 임시 커밋 (린트/포맷 실행 전) 완료 ---"
 
+      - name: 변경된 파일 목록 가져오기 (마크다운 제외)
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+        with:
+          files_ignore: |
+            **/*.md
+            **/*.mdx
+            **/*.mdc
+
       # 린트 실행
       - name: 린트 및 포맷 실행
-        run: pnpm run lint-fix
+        if: steps.changed-files.outputs.all_changed_files != ''
+        run: |
+          MODIFIED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "변경된 파일에 대해 린트 및 포맷을 실행합니다:"
+          echo "$MODIFIED_FILES"
+          pnpm exec eslint --fix $MODIFIED_FILES
+          pnpm exec stylelint --fix --allow-empty-input $MODIFIED_FILES
+          pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES
         continue-on-error: true
 
       # changes.patch 생성 (임시 커밋 기준) 및 변경 유무 출력
