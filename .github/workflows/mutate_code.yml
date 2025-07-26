@@ -309,10 +309,11 @@ jobs:
         if: steps.changed-markdown-files.outputs.all_changed_files != ''
         run: |
           MODIFIED_FILES="${{ steps.changed-markdown-files.outputs.all_changed_files }}"
-          echo "다음 마크다운 파일들을 수정합니다:"
-          echo "$MODIFIED_FILES"
+          echo "ESLint"
           pnpm exec eslint --fix $MODIFIED_FILES
+          echo "Stylelint"
           pnpm exec stylelint --fix --allow-empty-input $MODIFIED_FILES
+          echo "Prettier"
           pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES
         continue-on-error: true
 
@@ -717,10 +718,19 @@ jobs:
         if: steps.changed-files.outputs.all_changed_files != ''
         run: |
           MODIFIED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
-          echo "변경된 파일에 대해 린트 및 포맷을 실행합니다:"
-          echo "$MODIFIED_FILES"
+          echo "ESLint"
           pnpm exec eslint --fix $MODIFIED_FILES
-          pnpm exec stylelint --fix --allow-empty-input $MODIFIED_FILES
+          echo "Stylelint"
+          # Stylelint는 CSS, Svelte 파일 내의 스타일을 처리합니다.
+          STYLELINT_FILES=$(echo "$MODIFIED_FILES" | tr ' ' '\n' | grep -E '\.(css|svelte|md|mdx|mdc)$' | tr '\n' ' ' | sed 's/ $//')
+          if [ -n "$STYLELINT_FILES" ]; then
+            echo "Stylelint를 실행할 파일 목록:"
+            echo "$STYLELINT_FILES"
+            pnpm exec stylelint --fix --allow-empty-input $STYLELINT_FILES
+          else
+            echo "Stylelint를 실행할 파일이 없습니다."
+          fi
+          echo "Prettier"
           pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES
         continue-on-error: true
 
