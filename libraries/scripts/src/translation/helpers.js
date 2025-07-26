@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 
 import { getAbsolutePath } from '@library/helpers/fs-sync'
-import { generateKeyNumberFunctions } from '@library/helpers/helper-functions'
+import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/helper-functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
@@ -29,29 +29,6 @@ export function getInitialLanguageMap() {
 }
 
 /**
- * 마크다운 내용을 포맷팅 무관하게 비교 가능하도록 정규화
- * @param {string} content - 마크다운 내용
- * @returns {string} 정규화된 내용
- */
-function normalizeMarkdownContent(content) {
-	if (typeof content !== 'string') {
-		return content;
-	}
-
-	let normalizedContent = content
-		// 유니코드 정규화
-		.normalize('NFC')
-		// 소문자로 통일
-		.toLowerCase()
-		// 기타 특수문자 제거
-		// eslint-disable-next-line optimize-regex/optimize-regex
-		.replaceAll(/[^\p{L}\p{N}]/gu, '')
-
-	return normalizedContent;
-}
-
-
-/**
  * combinedMessage 객체의 모든 언어 내용을 정규화
  * @param {object} combinedMessage - { ko: string, en: string, explanation?: string }
  * @returns {object} 정규화된 combinedMessage
@@ -59,7 +36,7 @@ function normalizeMarkdownContent(content) {
 function normalizeCombinedMessage(combinedMessage) {
 	if (!combinedMessage) return combinedMessage
 
-	return R.mapObject(normalizeMarkdownContent)(combinedMessage)
+	return R.mapObject(normalizeString)(combinedMessage)
 }
 
 export function calculateInitialTranslationStateByBaseLanguages(
@@ -256,10 +233,10 @@ export function getNewCache(languageMessageMaps, explanations) {
 	for (const [language, languageMessageMap] of Object.entries(languageMessageMaps)) {
 		for (const [messageKey, messageValue] of Object.entries(languageMessageMap)) {
 			if (newCache[messageKey]) {
-				newCache[messageKey][language] = normalizeMarkdownContent(messageValue)
+				newCache[messageKey][language] = normalizeString(messageValue)
 			} else {
 				newCache[messageKey] = {
-					[language]: normalizeMarkdownContent(messageValue),
+					[language]: normalizeString(messageValue),
 				}
 			}
 		}
@@ -267,7 +244,7 @@ export function getNewCache(languageMessageMaps, explanations) {
 
 	for (const messageKey of Object.keys(newCache)) {
 		if (explanations[messageKey]) {
-			newCache[messageKey].explanation = normalizeMarkdownContent(explanations[messageKey])
+			newCache[messageKey].explanation = normalizeString(explanations[messageKey])
 		}
 	}
 
