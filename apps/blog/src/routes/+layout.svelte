@@ -216,8 +216,8 @@ function scrollToTop() {
 
 .main {
 	overflow: auto;
-	margin-block-end: var(--space-em-cqi-xl);
 	padding: var(--space-em-cqi-m);
+	padding-block-end: calc(var(--space-em-cqi-m) + var(--space-em-cqi-xl));
 }
 
 .with-sidebar {
@@ -228,14 +228,12 @@ function scrollToTop() {
 	& > :first-child {
 		flex-basis: 28rem;
 		flex-grow: 1;
-		max-block-size: 100svb;
 	}
 
 	& > :last-child {
 		flex-basis: 0;
 		flex-grow: 999;
 		min-inline-size: 60%;
-		min-block-size: 100svb;
 	}
 }
 

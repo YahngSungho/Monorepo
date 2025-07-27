@@ -4,14 +4,17 @@
  * @param {string} string - 문자열
  * @returns {string} 정규화된 문자열
  */
-export function normalizeString(string) {
+export function normalizeString(string, options = { toLowerCase: true }) {
 	let normalizedContent = string
 		// 유니코드 정규화
 		.normalize('NFC')
-		// 소문자로 통일
-		.toLowerCase()
 		// 기타 특수문자 제거
 		.replaceAll(/[^\p{L}\p{N}]/gu, '')
+
+	if (options.toLowerCase) {
+		// 소문자로 통일
+		normalizedContent = normalizedContent.toLowerCase()
+	}
 
 	return normalizedContent
 }
