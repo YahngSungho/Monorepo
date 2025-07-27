@@ -2,6 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { normalizeString } from '@library/helpers/helper-functions'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const CACHE_DIR = path.join(__dirname, '..', '.cache') // 프로젝트 루트의 .cache 디렉토리
@@ -51,7 +53,8 @@ function writeCache(state, cacheFilePath) {
  * @returns {Promise<string>} 직렬화된 페이지 내용 (HTML 문자열)
  */
 async function serializePage(page) {
-	return await page.content()
+	const content = await page.content()
+	return normalizeString(content)
 }
 
 /**
