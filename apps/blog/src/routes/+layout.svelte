@@ -150,15 +150,17 @@ function scrollToTop() {
 
 				<div style=" z-index: 1;overflow: visible;">
 					<Button
-							style="min-block-size: auto;"
-							onclick={() => {
-								sharingButtonsOpen = !sharingButtonsOpen
-							}}
-							size="sm"
-							variant="outline"
-						>
-							{page.url.pathname.includes('posts') ? '이 포스트 공유하기...' : '이 블로그 공유하기...'}
-						</Button>
+						style="min-block-size: auto;"
+						onclick={() => {
+							sharingButtonsOpen = !sharingButtonsOpen
+						}}
+						size="sm"
+						variant="outline"
+					>
+						{page.url.pathname.includes('posts') ?
+							'이 포스트 공유하기...'
+						:	'이 블로그 공유하기...'}
+					</Button>
 					{#if sharingButtonsOpen}
 						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
 							<div
@@ -238,7 +240,8 @@ function scrollToTop() {
 }
 
 .radial-progress {
-	--size: 10em; --thickness: 0.5em;
+	--size: 10em;
+	--thickness: 0.5em;
 
 	position: absolute;
 	inset-block-start: 0;
