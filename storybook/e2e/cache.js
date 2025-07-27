@@ -54,7 +54,7 @@ function writeCache(state, cacheFilePath) {
  */
 async function serializePage(page) {
 	const content = await page.content()
-	return normalizeString(content)
+	return normalizeString(content, { toLowerCase: false })
 }
 
 /**
