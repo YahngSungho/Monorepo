@@ -99,13 +99,6 @@ function scrollToTop() {
 			>
 				<div
 					style:--value={progress}
-					style="--size: 10em; --thickness: 0.5em;
-
-	position: absolute;
-	inset-block-start: 0;
-	inset-inline-end: 0;
-	transform: scaleY(-1) scaleX(-1);
-	"
 					class="radial-progress"
 					class:progress_0={progress === 0}
 					class:progress_100={progress === 100}
@@ -231,7 +224,7 @@ function scrollToTop() {
 	gap: 0;
 
 	& > :first-child {
-		flex-basis: var(--size-content-2);
+		flex-basis: 28rem;
 		flex-grow: 1;
 		max-block-size: 100svb;
 	}
@@ -242,5 +235,14 @@ function scrollToTop() {
 		min-inline-size: 60%;
 		min-block-size: 100svb;
 	}
+}
+
+.radial-progress {
+	--size: 10em; --thickness: 0.5em;
+
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-end: 0;
+	transform: scaleY(-1) scaleX(-1);
 }
 </style>
