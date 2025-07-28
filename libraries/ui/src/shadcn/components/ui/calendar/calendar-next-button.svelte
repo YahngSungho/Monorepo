@@ -1,5 +1,6 @@
 <script lang="ts">
-import ChevronRightIcon from '@lucide/svelte/icons/chevron-right'
+import 'iconify-icon'
+
 import { Calendar as CalendarPrimitive } from 'bits-ui'
 
 import { buttonVariants } from '$shadcn/components/ui/button/index.js'
@@ -14,7 +15,7 @@ let {
 </script>
 
 {#snippet Fallback()}
-	<ChevronRightIcon class="size-4" />
+	<iconify-icon height="16" icon="lucide:chevron-right" width="16"></iconify-icon>
 {/snippet}
 
 <CalendarPrimitive.NextButton

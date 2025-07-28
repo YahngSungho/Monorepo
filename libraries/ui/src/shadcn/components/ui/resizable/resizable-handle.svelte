@@ -1,5 +1,6 @@
 <script lang="ts">
-import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical'
+import 'iconify-icon'
+
 import * as ResizablePrimitive from 'paneforge'
 
 import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
@@ -31,7 +32,7 @@ let {
 >
 	{#if withHandle}
 		<div class="bg-border rounded-xs z-10 flex h-4 w-3 items-center justify-center border">
-			<GripVerticalIcon class="size-2.5" />
+			<iconify-icon height="16" icon="lucide:grip-vertical" width="16"></iconify-icon>
 		</div>
 	{/if}
 </ResizablePrimitive.PaneResizer>

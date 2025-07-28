@@ -1,5 +1,6 @@
 <script lang="ts">
-import XIcon from '@lucide/svelte/icons/x'
+import 'iconify-icon'
+
 import { Dialog as DialogPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 
@@ -40,7 +41,7 @@ let {
 				disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none
 				[&_svg]:shrink-0"
 		>
-			<XIcon />
+			<iconify-icon height="16" icon="lucide:x" width="16"></iconify-icon>
 			<span class="sr-only">Close</span>
 		</DialogPrimitive.Close>
 	</DialogPrimitive.Content>

@@ -1,5 +1,6 @@
 <script lang="ts">
-import ChevronRightIcon from '@lucide/svelte/icons/chevron-right'
+import 'iconify-icon'
+
 import type { HTMLLiAttributes } from 'svelte/elements'
 
 import { cn, type WithElementRef } from '$shadcn/utils'
@@ -23,6 +24,6 @@ let {
 	{#if children}
 		{@render children?.()}
 	{:else}
-		<ChevronRightIcon />
+		<iconify-icon height="16" icon="lucide:chevron-right" width="16"></iconify-icon>
 	{/if}
 </li>

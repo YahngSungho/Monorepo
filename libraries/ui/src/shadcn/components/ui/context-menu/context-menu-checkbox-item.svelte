@@ -1,5 +1,6 @@
 <script lang="ts">
-import CheckIcon from '@lucide/svelte/icons/check'
+import 'iconify-icon'
+
 import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 
@@ -34,7 +35,7 @@ let {
 	{#snippet children({ checked })}
 		<span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
 			{#if checked}
-				<CheckIcon class="size-4" />
+				<iconify-icon height="16" icon="lucide:check" width="16"></iconify-icon>
 			{/if}
 		</span>
 		{@render childrenProp?.()}

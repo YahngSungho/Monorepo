@@ -1,5 +1,6 @@
 <script lang="ts">
-import CircleIcon from '@lucide/svelte/icons/circle'
+import 'iconify-icon'
+
 import { RadioGroup as RadioGroupPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
@@ -27,7 +28,7 @@ let {
 	{#snippet children({ checked })}
 		<div class="relative flex items-center justify-center" data-slot="radio-group-indicator">
 			{#if checked}
-				<CircleIcon class="fill-primary text-primary-foreground size-2.5" />
+				<iconify-icon height="16" icon="lucide:circle" width="16"></iconify-icon>
 			{/if}
 		</div>
 	{/snippet}

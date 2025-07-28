@@ -1,5 +1,6 @@
 <script lang="ts">
-import ChevronRightIcon from '@lucide/svelte/icons/chevron-right'
+import 'iconify-icon'
+
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChild } from '$shadcn/utils'
@@ -28,5 +29,5 @@ let {
 	{...restProps}
 >
 	{@render children?.()}
-	<ChevronRightIcon class="ml-auto size-4" />
+	<iconify-icon height="16" icon="lucide:chevron-right" width="16"></iconify-icon>
 </MenubarPrimitive.SubTrigger>

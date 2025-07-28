@@ -8,7 +8,6 @@ import Button2 from '@library/ui/button_daisy'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
 import VariationSetter from '@library/ui/variationSetter'
-import { Home } from '@lucide/svelte'
 import { toast } from 'svelte-sonner'
 
 const fo = 'bigCommandKEnabled'
@@ -33,7 +32,7 @@ margin: var(--space-em-cqi-m);"
 	<VariationSetter {getLocale} {setLocale} />
 </div>
 
-<IconText IconElement={Home}>{m.antsy_aloof_barbel_read()}</IconText>
+<IconText iconName="mdi:home">{m.antsy_aloof_barbel_read()}</IconText>
 <Button2
 	onclick={() =>
 		toast.success('Event has been created', {
@@ -45,7 +44,7 @@ margin: var(--space-em-cqi-m);"
 		})}
 	variant="wrong"
 >
-	<IconText IconElement={Home}>토스트 띄우기</IconText>
+	<IconText iconName="mdi:home">토스트 띄우기</IconText>
 </Button2>
 <Button2 href={localizeHref('/about')} variant="warning">{m.deft_east_mouse_hope()}</Button2>
 <Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>

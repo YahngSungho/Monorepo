@@ -1,6 +1,7 @@
 <script lang="ts">
+import 'iconify-icon'
+
 import { css, cx } from '@emotion/css'
-import SearchIcon from '@lucide/svelte/icons/search'
 import { Command as CommandPrimitive } from 'bits-ui'
 
 import { cn } from '$shadcn/utils'
@@ -14,7 +15,7 @@ let {
 </script>
 
 <div class="flex h-9 items-center gap-2 border-b px-3" data-slot="command-input-wrapper">
-	<SearchIcon class="size-4 shrink-0 opacity-50" />
+	<iconify-icon height="16" icon="lucide:search" width="16"></iconify-icon>
 	<CommandPrimitive.Input
 		class={cx(
 			cn(

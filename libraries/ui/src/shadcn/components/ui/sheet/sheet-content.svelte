@@ -21,7 +21,8 @@ export type Side = VariantProps<typeof sheetVariants>['side']
 </script>
 
 <script lang="ts">
-import XIcon from '@lucide/svelte/icons/x'
+import 'iconify-icon'
+
 import { Dialog as SheetPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 
@@ -57,7 +58,7 @@ let {
 				right-4 top-4 opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2
 				focus-visible:ring-offset-2 disabled:pointer-events-none"
 		>
-			<XIcon class="size-4" />
+			<iconify-icon height="16" icon="lucide:x" width="16"></iconify-icon>
 			<span class="sr-only">Close</span>
 		</SheetPrimitive.Close>
 	</SheetPrimitive.Content>

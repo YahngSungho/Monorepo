@@ -13,6 +13,7 @@ const { Story } = defineMeta({
 	argTypes: {
 		text: { control: 'text', description: '표시될 텍스트' },
 		IconElement: { control: false, description: '표시될 아이콘 컴포넌트 (lucide-svelte)' },
+		iconName: { control: 'text', description: '표시될 아이콘 이름 (iconify-icon)' },
 		iconProps: { control: 'object', description: 'IconElement에 전달될 속성들' },
 		right: { control: 'boolean', description: '아이콘을 오른쪽에 표시할지 여부' },
 		noMargin: { control: 'boolean', description: '아이콘 주변 마진 제거 여부' },
@@ -22,7 +23,6 @@ const { Story } = defineMeta({
 	// 모든 스토리에 대한 기본 args를 설정할 수 있습니다.
 	args: {
 		text: '샘플 텍스트',
-		IconElement: Link, // 기본 아이콘
 		iconProps: {},
 		right: false,
 		noMargin: false,
@@ -39,6 +39,8 @@ const { Story } = defineMeta({
 
 <!-- ✨ 일반 사용 사례 (HAPPY PATHS) -->
 <Story name="기본_상태" args={{ text: 'Icon Text', IconElement: Link }} children={template} />
+
+<Story name="기본_상태 2" args={{ text: 'Icon Text', iconName: 'mdi:github', small: true }} children={template} />
 
 <Story
 	name="아이콘_오른쪽_정렬"

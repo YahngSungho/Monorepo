@@ -33,7 +33,6 @@
 		"@library/helpers": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
-		"@lucide/svelte": "^0.511.0",
 		"nanoid": "^5.1.5",
 		"store": "^2.0.12",
 		"svelte-sonner": "^1.0.3",

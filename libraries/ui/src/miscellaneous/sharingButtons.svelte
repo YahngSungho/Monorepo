@@ -1,6 +1,4 @@
 <script>
-import { Share2 } from '@lucide/svelte'
-
 import { page } from '$app/state'
 
 import Button from '../daisyui/button.svelte'
@@ -44,7 +42,7 @@ let isCopied = $state(false)
 				}}
 				size="sm"
 			>
-				<IconText IconElement={Share2}>전달하기...</IconText>
+				<IconText iconName="material-symbols:share">전달하기...</IconText>
 			</Button>
 		</div>
 	{/if}

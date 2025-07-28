@@ -1,5 +1,6 @@
 <script lang="ts">
-import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left'
+import 'iconify-icon'
+
 import { Pagination as PaginationPrimitive } from 'bits-ui'
 
 import { buttonVariants } from '$shadcn/components/ui/button/index.js'
@@ -14,7 +15,7 @@ let {
 </script>
 
 {#snippet Fallback()}
-	<ChevronLeftIcon class="size-4" />
+	<iconify-icon height="16" icon="lucide:chevron-left" width="16"></iconify-icon>
 	<span>Previous</span>
 {/snippet}
 

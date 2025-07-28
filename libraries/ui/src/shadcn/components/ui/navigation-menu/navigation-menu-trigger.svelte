@@ -9,7 +9,8 @@ export const navigationMenuTriggerStyle = tv({
 </script>
 
 <script lang="ts">
-import ChevronDownIcon from '@lucide/svelte/icons/chevron-down'
+import 'iconify-icon'
+
 import { NavigationMenu as NavigationMenuPrimitive } from 'bits-ui'
 
 let {
@@ -28,8 +29,5 @@ let {
 >
 	{@render children?.()}
 
-	<ChevronDownIcon
-		class="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
-		aria-hidden="true"
-	/>
+	<iconify-icon height="16" icon="lucide:chevron-down" width="16"></iconify-icon>
 </NavigationMenuPrimitive.Trigger>

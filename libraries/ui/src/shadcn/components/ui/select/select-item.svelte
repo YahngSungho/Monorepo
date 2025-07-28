@@ -1,5 +1,6 @@
 <script lang="ts">
-import CheckIcon from '@lucide/svelte/icons/check'
+import 'iconify-icon'
+
 import { Select as SelectPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChild } from '$shadcn/utils'
@@ -32,7 +33,7 @@ let {
 	{#snippet children({ selected, highlighted })}
 		<span class="absolute right-2 flex size-3.5 items-center justify-center">
 			{#if selected}
-				<CheckIcon class="size-4" />
+				<iconify-icon height="16" icon="lucide:check" width="16"></iconify-icon>
 			{/if}
 		</span>
 		{#if childrenProp}
