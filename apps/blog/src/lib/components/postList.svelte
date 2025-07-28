@@ -2,7 +2,6 @@
 import { css } from '@emotion/css'
 import IconText from '@library/ui/icon-text'
 import Link from '@library/ui/link'
-import { Check, ChevronRight } from '@lucide/svelte'
 </script>
 
 <script>
@@ -25,15 +24,15 @@ gap: var(--space-em-cqi-xs); inline-size: 100%;
 			href={`/posts/${postMetadata.slug}`}
 		>
 			{#if postMetadata.current}
-				<IconText IconElement={ChevronRight}>
+				<IconText iconName="mdi:chevron-right">
 					{postMetadata.title}
 				</IconText>
 			{:else if postMetadata.visited}
-				<IconText IconElement={Check}>
+				<IconText iconName="mdi:check">
 					{postMetadata.title}
 				</IconText>
 			{:else}
-				<IconText IconElement={null}>
+				<IconText>
 					{postMetadata.title}
 				</IconText>
 			{/if}

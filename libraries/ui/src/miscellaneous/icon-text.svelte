@@ -1,8 +1,13 @@
+<script module>
+	import 'iconify-icon'
+</script>
+
+
 <script>
 let {
 	children = null,
 	text = '',
-	IconElement,
+	iconName = '',
 	iconProps = {},
 	right = false,
 	noMargin = false,
@@ -13,8 +18,8 @@ let {
 
 {#snippet iconElement()}
 	<span class="icon-container" class:noMargin class:right class:small>
-		{#if IconElement}
-			<IconElement size={24} {...iconProps} />
+		{#if iconName}
+			<iconify-icon icon={iconName} {...iconProps}></iconify-icon>
 		{/if}
 	</span>
 {/snippet}
@@ -48,17 +53,17 @@ let {
 
 	& .icon-container {
 		position: relative;
-		inset-block-start: 0.3ex;
+		inset-block-start: 0.4ex;
 
 		display: inline-block;
 		flex-shrink: 0;
 
-		inline-size: 1em;
-		block-size: 1em;
+		inline-size: 1.2em;
+		block-size: 1.2em;
 		margin-inline-end: 0.5ch;
 
-		font-size: 1em;
-		color: color-mix(in srgb, currentcolor 60%, transparent);
+		font-size: 1.2em;
+		color: color-mix(in srgb, currentcolor 80%, transparent);
 
 		&.right {
 			margin-inline: 0.5ch 0;
@@ -69,9 +74,10 @@ let {
 		}
 
 		&.small {
-			inset-block-start: -0.3ex;
-			inline-size: 0.75em;
-			block-size: 0.75em;
+			inset-block-start: -0.4ex;
+			inline-size: 1em;
+			block-size: 1em;
+			font-size: 0.8em;
 		}
 	}
 }

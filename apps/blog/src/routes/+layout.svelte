@@ -9,7 +9,6 @@ import BaseLayout from '@library/ui/layouts/root'
 import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
-import { Mail } from '@lucide/svelte'
 import store from 'store'
 import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
@@ -130,8 +129,7 @@ function scrollToTop() {
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
 						>
-							<Mail style=" font-size: var(--font-size-fluid-em-cqi-01);color: var(--gray-6);" />
-							<input placeholder="나의@이메일.com" required type="email" />
+						<input placeholder="나의@이메일.com" required type="email" />
 							<span>이메일</span>
 						</label>
 					</div>
@@ -189,6 +187,7 @@ function scrollToTop() {
 			inset-block-end: var(--space-em-cqi-m);
 			inset-inline-start: var(--space-em-cqi-m);
 		"
+			iconName="mdi:transfer-up"
 			onclick={scrollToTop}
 		>
 			맨 위로

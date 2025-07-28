@@ -1,5 +1,6 @@
 <script lang="ts">
-import ChevronUpIcon from '@lucide/svelte/icons/chevron-up'
+import 'iconify-icon'
+
 import { Select as SelectPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
@@ -17,5 +18,5 @@ let {
 	bind:ref
 	{...restProps}
 >
-	<ChevronUpIcon class="size-4" />
+	<iconify-icon height="16" icon="lucide:chevron-up" width="16"></iconify-icon>
 </SelectPrimitive.ScrollUpButton>

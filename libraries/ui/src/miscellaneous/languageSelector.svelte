@@ -1,8 +1,6 @@
 <script lang="ts">
 import { R } from '@library/helpers/R'
 import { allLanguages } from '@library/paraglide/getAllActiveLanguageInfo'
-import CheckIcon from '@lucide/svelte/icons/check'
-import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down'
 
 import Button from '$daisy/button.svelte'
 import * as Command from '$shadcn/components/ui/command/index.js'
@@ -98,7 +96,7 @@ const LOADING_VALUE = '$loading'
 						<span style="margin-inline: 1em;" class="loading loading-dots loading-sm"></span>
 					{:else}
 						<IconText
-							IconElement={ChevronsUpDownIcon}
+							iconName="mdi:chevron-up-down"
 							text={selectedValue || 'Select a framework...'}
 						/>
 					{/if}
@@ -124,7 +122,7 @@ const LOADING_VALUE = '$loading'
 								value={language.value}
 							>
 								<IconText
-									IconElement={value === language.value ? CheckIcon : null}
+									iconName={value === language.value ? 'mdi:check' : ''}
 									text={language.label}
 								/>
 							</Command.Item>

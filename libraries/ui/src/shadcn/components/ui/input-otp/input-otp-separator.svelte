@@ -1,5 +1,6 @@
 <script lang="ts">
-import DotIcon from '@lucide/svelte/icons/dot'
+import 'iconify-icon'
+
 import type { HTMLAttributes } from 'svelte/elements'
 
 import type { WithElementRef } from '$shadcn/utils'
@@ -15,6 +16,6 @@ let {
 	{#if children}
 		{@render children?.()}
 	{:else}
-		<DotIcon />
+		<iconify-icon height="16" icon="lucide:dot" width="16"></iconify-icon>
 	{/if}
 </div>

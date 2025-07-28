@@ -2,6 +2,8 @@
 import { cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 
+import IconText from '../miscellaneous/icon-text.svelte'
+
 const newTabProps = {
 	rel: 'noopener noreferrer',
 	target: '_blank',
@@ -47,6 +49,8 @@ let {
 	shape = '',
 	variant = 'primary',
 	class: incomingClass = '',
+	iconName = '',
+	iconProps = {},
 	...restProps
 } = $props()
 
@@ -55,6 +59,16 @@ const buttonClass = `btn btn-${variant} btn-${size} ${btnShape}`
 
 const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
+
+{#snippet content()}
+	{#if iconName}
+		<span class="icon-text-container">
+			<IconText iconName={iconName} {...iconProps}>{@render children?.()}</IconText>
+		</span>
+	{:else}
+		{@render children?.()}
+	{/if}
+{/snippet}
 
 {#if href}
 	<a
@@ -65,15 +79,19 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		{...isInternalLink ? {} : newTabProps}
 		{...restProps}
 	>
-		{@render children?.()}
+		{@render content()}
 	</a>
 {:else}
 	<button class={cx(buttonClass, incomingClass)} type="button" {...restProps}>
-		{@render children?.()}
+		{@render content()}
 	</button>
 {/if}
 
 <style>
+.icon-text-container {
+	position: relative; inset-inline-start: -0.4em;
+}
+
 .btn-outline {
 	border-color: currentcolor;
 	border-width: var(--border-size-2);

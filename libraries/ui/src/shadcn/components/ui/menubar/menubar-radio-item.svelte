@@ -1,5 +1,6 @@
 <script lang="ts">
-import CircleIcon from '@lucide/svelte/icons/circle'
+import 'iconify-icon'
+
 import { Menubar as MenubarPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChild } from '$shadcn/utils'
@@ -27,7 +28,7 @@ let {
 	{#snippet children({ checked })}
 		<span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
 			{#if checked}
-				<CircleIcon class="size-2 fill-current" />
+				<iconify-icon height="16" icon="lucide:circle" width="16"></iconify-icon>
 			{/if}
 		</span>
 		{@render childrenProp?.({ checked })}

@@ -1,5 +1,6 @@
 <script lang="ts">
-import ArrowRightIcon from '@lucide/svelte/icons/arrow-right'
+import 'iconify-icon'
+
 import type { WithoutChildren } from 'bits-ui'
 
 import { Button, type Props } from '$shadcn/components/ui/button/index.js'
@@ -35,6 +36,6 @@ const emblaCtx = getEmblaContext('<Carousel.Next/>')
 	bind:ref
 	{...restProps}
 >
-	<ArrowRightIcon class="size-4" />
+	<iconify-icon height="16" icon="lucide:arrow-right" width="16"></iconify-icon>
 	<span class="sr-only">Next slide</span>
 </Button>

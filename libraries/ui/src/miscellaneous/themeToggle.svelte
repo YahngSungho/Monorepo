@@ -1,6 +1,4 @@
 <script>
-import MoonIcon from '@lucide/svelte/icons/moon'
-import SunIcon from '@lucide/svelte/icons/sun'
 import { mode, setMode } from 'mode-watcher'
 
 let { size = 'sm' } = $props()
@@ -23,6 +21,6 @@ border: 1px solid currentcolor;
 		type="checkbox"
 	/>
 
-	<SunIcon role="button" />
-	<MoonIcon role="button" />
+	<iconify-icon icon="mdi:white-balance-sunny"></iconify-icon>
+	<iconify-icon icon="mdi:weather-night"></iconify-icon>
 </label>

@@ -420,9 +420,6 @@ importers:
       '@library/ui':
         specifier: workspace:*
         version: link:../../libraries/ui
-      '@lucide/svelte':
-        specifier: ^0.511.0
-        version: 0.511.0(svelte@5.33.7)
       nanoid:
         specifier: ^5.1.5
         version: 5.1.5
@@ -466,9 +463,6 @@ importers:
       '@library/ui':
         specifier: workspace:*
         version: link:../../libraries/ui
-      '@lucide/svelte':
-        specifier: ^0.511.0
-        version: 0.511.0(svelte@5.33.7)
       luxon:
         specifier: ^3.6.1
         version: 3.6.1
@@ -692,6 +686,9 @@ importers:
       hast-util-to-string:
         specifier: ^3.0.1
         version: 3.0.1
+      iconify-icon:
+        specifier: ^3.0.0
+        version: 3.0.0
       mermaid:
         specifier: ^11.6.0
         version: 11.6.0
@@ -771,9 +768,6 @@ importers:
       '@dnd-kit-svelte/utilities':
         specifier: ^0.0.8
         version: 0.0.8(svelte@5.33.7)
-      '@lucide/svelte':
-        specifier: ^0.511.0
-        version: 0.511.0(svelte@5.33.7)
       '@tabler/icons-svelte':
         specifier: ^3.33.0
         version: 3.33.0(svelte@5.33.7)
@@ -2208,11 +2202,6 @@ packages:
 
   '@lix-js/server-protocol-schema@0.1.1':
     resolution: {integrity: sha512-jBeALB6prAbtr5q4vTuxnRZZv1M2rKe8iNqRQhFJ4Tv7150unEa0vKyz0hs8Gl3fUGsWaNJBh3J8++fpbrpRBQ==}
-
-  '@lucide/svelte@0.511.0':
-    resolution: {integrity: sha512-aLCSPMUJmHlCuLXzXENXa4Z1NV2mN1iAZAFKk4bEbey+/MdsNlu+/DqwVkgW3Yvj6p8y8Vn5xZ2v9CLmPlA6Vw==}
-    peerDependencies:
-      svelte: ^5
 
   '@mdn/browser-compat-data@5.7.6':
     resolution: {integrity: sha512-7xdrMX0Wk7grrTZQwAoy1GkvPMFoizStUoL+VmtUkAxegbCCec+3FKwOM6yc/uGU5+BEczQHXAlWiqvM8JeENg==}
@@ -6200,6 +6189,9 @@ packages:
   i@0.3.7:
     resolution: {integrity: sha512-FYz4wlXgkQwIPqhzC5TdNMLSE5+GS1IIDJZY/1ZiEPCT2S3COUVZeT5OW4BmW4r5LHLQuOosSwsvnroG9GR59Q==}
     engines: {node: '>=0.4'}
+
+  iconify-icon@3.0.0:
+    resolution: {integrity: sha512-yPcnpkn8HUEUckrxxJBOer3jbGv3bqozHsLMLBRxhk3As1X76BgV2mS2a1HTNOIagR8nUs30H3qAd9GLe8Mnlg==}
 
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
@@ -11738,10 +11730,6 @@ snapshots:
 
   '@lix-js/server-protocol-schema@0.1.1': {}
 
-  '@lucide/svelte@0.511.0(svelte@5.33.7)':
-    dependencies:
-      svelte: 5.33.7
-
   '@mdn/browser-compat-data@5.7.6': {}
 
   '@mdx-js/react@3.1.0(@types/react@19.1.1)(react@19.1.0)':
@@ -16574,6 +16562,10 @@ snapshots:
   husky@9.1.7: {}
 
   i@0.3.7: {}
+
+  iconify-icon@3.0.0:
+    dependencies:
+      '@iconify/types': 2.0.0
 
   iconv-lite@0.6.3:
     dependencies:

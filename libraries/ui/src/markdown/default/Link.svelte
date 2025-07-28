@@ -1,7 +1,6 @@
 <script module>
 import { css } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
-import { ExternalLink, FileOutput, Hash } from '@lucide/svelte'
 
 import IconText from '../../miscellaneous/icon-text.svelte'
 
@@ -36,7 +35,7 @@ let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 			{@render children?.()}
 		{:else}
 			<span class="headingLink">
-				<IconText IconElement={Hash} noMargin right small>
+				<IconText iconName="mdi:hashtag" noMargin right small>
 					{@render children?.()}
 				</IconText>
 			</span>
@@ -49,7 +48,7 @@ let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 		{...isInternalLink ? {} : newTabProps}
 		{...rest}
 	>
-		<IconText IconElement={FileOutput} noMargin right small>
+		<IconText iconName="mdi:file-document-arrow-right-outline" noMargin right small>
 			{@render children?.()}
 		</IconText>
 	</a>
@@ -60,7 +59,7 @@ let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 		{...isInternalLink ? {} : newTabProps}
 		{...rest}
 	>
-		<IconText IconElement={ExternalLink} noMargin right small>
+		<IconText iconName="mdi:external-link" noMargin right small>
 			{@render children?.()}
 		</IconText>
 	</a>

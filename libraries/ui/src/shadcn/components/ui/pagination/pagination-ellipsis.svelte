@@ -1,5 +1,6 @@
 <script lang="ts">
-import EllipsisIcon from '@lucide/svelte/icons/ellipsis'
+import 'iconify-icon'
+
 import type { HTMLAttributes } from 'svelte/elements'
 
 import { cn, type WithElementRef, type WithoutChildren } from '$shadcn/utils'
@@ -18,6 +19,6 @@ let {
 	data-slot="pagination-ellipsis"
 	{...restProps}
 >
-	<EllipsisIcon class="size-4" />
+	<iconify-icon height="16" icon="lucide:more-horizontal" width="16"></iconify-icon>
 	<span class="sr-only">More pages</span>
 </span>

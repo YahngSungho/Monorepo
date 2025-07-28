@@ -1,6 +1,6 @@
 <script lang="ts">
-import CheckIcon from '@lucide/svelte/icons/check'
-import MinusIcon from '@lucide/svelte/icons/minus'
+import 'iconify-icon'
+
 import { Checkbox as CheckboxPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
@@ -34,9 +34,9 @@ let {
 	{#snippet children({ checked, indeterminate })}
 		<div class="text-current transition-none" data-slot="checkbox-indicator">
 			{#if checked}
-				<CheckIcon class="size-3.5" />
+				<iconify-icon height="14" icon="lucide:check" width="14"></iconify-icon>
 			{:else if indeterminate}
-				<MinusIcon class="size-3.5" />
+				<iconify-icon height="14" icon="lucide:minus" width="14"></iconify-icon>
 			{/if}
 		</div>
 	{/snippet}

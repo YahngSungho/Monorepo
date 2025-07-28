@@ -5,7 +5,6 @@ import { Badge } from '@library/ui/badge'
 import Button2 from '@library/ui/button_daisy'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
-import { Home } from '@lucide/svelte'
 
 import { localizeHref, setLocale } from '../../../../../libraries/paraglide/src'
 
@@ -22,7 +21,7 @@ foo += ' bar133322222223'
 <h5>Welcome to SvelteKit</h5>
 <h6>Welcome to SvelteKit 000</h6>
 
-<IconText IconElement={Home} noMargin right small>{m.antsy_aloof_barbel_read()}</IconText>
+<IconText iconName="mdi:home" noMargin right small>{m.antsy_aloof_barbel_read()}</IconText>
 <Button1 href={localizeHref('/about')} variant="default">{m.deft_east_mouse_hope()}</Button1>
 <Button1 href={localizeHref('/lorem')} variant="default">{m.welcome()}</Button1>
 <Button2 href={localizeHref('/')} variant="info">home</Button2>
