@@ -1,5 +1,6 @@
 <script lang="ts">
 import 'iconify-icon'
+
 import { Checkbox as CheckboxPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'
@@ -33,9 +34,9 @@ let {
 	{#snippet children({ checked, indeterminate })}
 		<div class="text-current transition-none" data-slot="checkbox-indicator">
 			{#if checked}
-				<iconify-icon icon="lucide:check" width="14" height="14"></iconify-icon>
+				<iconify-icon height="14" icon="lucide:check" width="14"></iconify-icon>
 			{:else if indeterminate}
-				<iconify-icon icon="lucide:minus" width="14" height="14"></iconify-icon>
+				<iconify-icon height="14" icon="lucide:minus" width="14"></iconify-icon>
 			{/if}
 		</div>
 	{/snippet}
