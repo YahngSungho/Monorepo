@@ -62,7 +62,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 {#snippet content()}
 	{#if iconName}
-		<span style="position: relative; inset-inline-start: -1ch;">
+		<span style="position: relative; inset-inline-start: -0.4em;">
 			<IconText iconName={iconName} {...iconProps}>{@render children?.()}</IconText>
 		</span>
 	{:else}

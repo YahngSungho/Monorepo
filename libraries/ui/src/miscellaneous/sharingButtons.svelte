@@ -34,6 +34,7 @@ let isCopied = $state(false)
 	{#if navigator.share && navigator.canShare({ title, url })}
 		<div>
 			<Button
+				iconName="material-symbols:share"
 				onclick={async () => {
 					await navigator.share({
 						title, // 공유 팝업에 표시될 제목
@@ -42,8 +43,8 @@ let isCopied = $state(false)
 				}}
 				size="sm"
 			>
-				<IconText iconName="material-symbols:share">전달하기...</IconText>
-			</Button>
+				전달하기...
+		</Button>
 		</div>
 	{/if}
 
