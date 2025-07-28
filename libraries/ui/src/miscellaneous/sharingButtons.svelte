@@ -2,7 +2,6 @@
 import { page } from '$app/state'
 
 import Button from '../daisyui/button.svelte'
-import IconText from './icon-text.svelte'
 
 let { title = '' } = $props()
 

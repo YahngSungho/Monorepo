@@ -1,8 +1,6 @@
 <script>
 import { mode, setMode } from 'mode-watcher'
 
-import IconText from './icon-text.svelte'
-
 let { size = 'sm' } = $props()
 </script>
 
