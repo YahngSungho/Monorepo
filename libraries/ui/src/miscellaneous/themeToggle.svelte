@@ -23,6 +23,6 @@ border: 1px solid currentcolor;
 		type="checkbox"
 	/>
 
-	<iconify-icon icon="mdi:weather-sunny"></iconify-icon>
+	<iconify-icon icon="mdi:white-balance-sunny"></iconify-icon>
 	<iconify-icon icon="mdi:weather-night"></iconify-icon>
 </label>

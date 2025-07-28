@@ -5,9 +5,9 @@ import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button_daisy'
 import ConfettiButton from '@library/ui/confettiButton'
+import IconText from '@library/ui/icon-text'
 import BaseLayout from '@library/ui/layouts/root'
 import Link from '@library/ui/link'
-import IconText from '@library/ui/icon-text'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
 import store from 'store'
@@ -130,9 +130,7 @@ function scrollToTop() {
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
 						>
-							<IconText iconName="mdi:email-sync-outline">
-							</IconText>
-							<input placeholder="나의@이메일.com" required type="email" />
+						<input placeholder="나의@이메일.com" required type="email" />
 							<span>이메일</span>
 						</label>
 					</div>
@@ -190,6 +188,7 @@ function scrollToTop() {
 			inset-block-end: var(--space-em-cqi-m);
 			inset-inline-start: var(--space-em-cqi-m);
 		"
+			iconName="mdi:transfer-up"
 			onclick={scrollToTop}
 		>
 			맨 위로
