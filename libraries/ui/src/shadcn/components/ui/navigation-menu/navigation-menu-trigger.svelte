@@ -9,7 +9,7 @@ export const navigationMenuTriggerStyle = tv({
 </script>
 
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { NavigationMenu as NavigationMenuPrimitive } from 'bits-ui'
 

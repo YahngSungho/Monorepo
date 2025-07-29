@@ -21,6 +21,6 @@ border: 1px solid currentcolor;
 		type="checkbox"
 	/>
 
-	<iconify-icon icon="mdi:white-balance-sunny"></iconify-icon>
-	<iconify-icon icon="mdi:weather-night"></iconify-icon>
+	<iconify-icon height="20" icon="mdi:white-balance-sunny" width="20"></iconify-icon>
+	<iconify-icon height="20" icon="mdi:weather-night" width="20"></iconify-icon>
 </label>

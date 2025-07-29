@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { Select as SelectPrimitive } from 'bits-ui'
 

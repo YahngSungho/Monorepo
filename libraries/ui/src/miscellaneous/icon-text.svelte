@@ -1,5 +1,5 @@
 <script module>
-	import 'iconify-icon'
+
 </script>
 
 
@@ -53,7 +53,7 @@ let {
 
 	& .icon-container {
 		position: relative;
-		inset-block-start: 0.4ex;
+		inset-block-start: 0.5ex;
 
 		display: inline-block;
 		flex-shrink: 0;
@@ -63,7 +63,7 @@ let {
 		margin-inline-end: 0.5ch;
 
 		font-size: 1.2em;
-		color: color-mix(in srgb, currentcolor 80%, transparent);
+		color: color-mix(in srgb, currentcolor 60%, transparent);
 
 		&.right {
 			margin-inline: 0.5ch 0;

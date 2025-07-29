@@ -245,3 +245,9 @@ mermaid {
 sup {
 	font-size: 0.7em;
 }
+
+[type='button'] > .with-icon {
+	position: relative;
+	inset-inline-start: -0.4em;
+	bottom: 0.15em;
+}

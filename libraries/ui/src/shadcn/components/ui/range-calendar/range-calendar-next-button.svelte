@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui'
 

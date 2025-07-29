@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { Pagination as PaginationPrimitive } from 'bits-ui'
 

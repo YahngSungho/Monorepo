@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { Dialog as DialogPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
