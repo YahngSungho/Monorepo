@@ -33,7 +33,7 @@ let isCopied = $state(false)
 	{#if navigator.share && navigator.canShare({ title, url })}
 		<div>
 			<Button
-				iconName="material-symbols:share"
+				iconName="mdi:share-variant-outline"
 				onclick={async () => {
 					await navigator.share({
 						title, // 공유 팝업에 표시될 제목

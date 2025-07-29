@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { css, cx } from '@emotion/css'
 import { Command as CommandPrimitive } from 'bits-ui'
@@ -15,7 +15,7 @@ let {
 </script>
 
 <div class="flex h-9 items-center gap-2 border-b px-3" data-slot="command-input-wrapper">
-	<iconify-icon class="size-4 shrink-0 opacity-50" height="16" icon="lucide:search" width="16"
+	<iconify-icon class="size-4 shrink-0 opacity-50" height="24" icon="lucide:search" width="24"
 	></iconify-icon>
 	<CommandPrimitive.Input
 		class={cx(

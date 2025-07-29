@@ -1,5 +1,6 @@
 <script>
 import '@library/base/base.css'
+import 'iconify-icon'
 
 import { css } from '@emotion/css'
 import { partytownSnippet } from '@qwik.dev/partytown/integration'

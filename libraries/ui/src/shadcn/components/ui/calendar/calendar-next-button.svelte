@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { Calendar as CalendarPrimitive } from 'bits-ui'
 

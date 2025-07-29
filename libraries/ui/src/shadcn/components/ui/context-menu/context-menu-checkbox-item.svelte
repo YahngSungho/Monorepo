@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'

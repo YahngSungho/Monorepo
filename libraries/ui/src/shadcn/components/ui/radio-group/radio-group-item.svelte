@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { RadioGroup as RadioGroupPrimitive } from 'bits-ui'
 

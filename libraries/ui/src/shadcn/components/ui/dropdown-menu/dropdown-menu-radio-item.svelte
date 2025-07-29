@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui'
 

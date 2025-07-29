@@ -1,5 +1,5 @@
 <script lang="ts">
-import 'iconify-icon'
+
 
 import type { HTMLLiAttributes } from 'svelte/elements'
 

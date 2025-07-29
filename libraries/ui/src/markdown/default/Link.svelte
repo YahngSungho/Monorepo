@@ -10,13 +10,8 @@ const newTabProps = {
 }
 
 const linkStyle = css`
-	&:visited .icon-container {
+	&:visited iconify-icon {
 		color: var(--link-visited) !important;
-
-		& path,
-		& svg {
-			color: var(--link-visited) !important;
-		}
 	}
 `
 </script>
