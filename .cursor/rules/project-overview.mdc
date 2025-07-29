@@ -104,7 +104,6 @@ Monorepo/
 #### 2.1.2. `apps/boiler_plates` (`@app/boiler_plates`)
 
 - **Description**: A SvelteKit application serving as a template for new apps. (Adheres to JS preference). Referenced by the root `generate:app` script.
-- **Key Files & Config**: Structure and `package.json` (dependencies, scripts) are nearly identical to `apps/blog`. Includes `@lucide/svelte`.
 - **Purpose**: Provides a starting point for new SvelteKit applications within the monorepo.
 
 #### 2.1.3. `apps/Swift_Linker`
