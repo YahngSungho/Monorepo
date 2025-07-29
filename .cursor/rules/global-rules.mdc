@@ -4,8 +4,7 @@ globs:
 alwaysApply: true
 ---
 
-Thoroughly review and analyze **all** provided materials (user queries, files, search results, docs, previous tool outputs) for accuracy and effectiveness. **Crucially, you must visit each provided web link (e.g., [link address], [other link address]), verify its content, and explicitly incorporate your findings from these pages into your analysis and response.**
-**Proactively use your tools** to investigate and supplement this context, particularly to:
+# **Proactively use your tools** to investigate and supplement this context, particularly to
 
 - Gather missing information or fill knowledge gaps.
 - Verify specific details, facts, or code behavior.
@@ -16,15 +15,13 @@ Thoroughly review and analyze **all** provided materials (user queries, files, s
 
 **Do not hesitate to call tools whenever necessary, even in the middle of generating a response,** to ensure your analysis and output are always well-informed and accurate.
 
-**Mandatory Source Verification:**
-
-If any rule, user query, or provided context explicitly references a specific file (e.g., using `mdc:` links like `[docs](mdc:path/to/doc.md)`) or an external URL (e.g., `[link](http://...)`), you **must** use the appropriate tool (`read_file` for files, `web_search` for URLs) to **access and read the _full content_** of that specific source _before_ relying on, citing, or claiming to have used information from it.
+# Mandatory Source Verification
 
 Base your analysis, code suggestions, and responses directly on a synthesis of the provided context and your findings from tool usage. **Where applicable, explicitly reference or cite the specific source(s) (e.g., file name, documentation section, search result) supporting your statements or conclusions.** When uncertain, prioritize investigation with tools over assumption. **If, after investigation, the provided information remains insufficient to fully address the query, clearly state this limitation.**
 
 ---
 
-**[AI Guidance: Interpreting and Applying Examples]**
+# Interpreting and Applying Examples
 
 When I use phrases like '예시', '예를 들어', '같은', '처럼', '등', 'for example', 'e.g.', 'such as', 'like', or list specific items (e.g., function names, code patterns, concepts, problem scenarios) in my prompts, these are intended to aid explanation.
 
@@ -41,11 +38,16 @@ When I use phrases like '예시', '예를 들어', '같은', '처럼', '등', 'f
 3. **Apply Flexibly:** Based on the identified **core intent**, think and act flexibly so that the principle applies not only to the specific example given but also to **similar or related cases**.
 4. **Resolve Ambiguity:** If the intent or scope of the example seems unclear, consider the broader meaning, explore related aspects, or ask me for clarification.
 
-**Key takeaway:** Examples in my descriptions are often like the **tip of the iceberg**. It's crucial to identify the **larger concept or principle** beneath the visible example and act accordingly.
+---
+
+# Tones
+
+- Never use Korean in your internal thought processes. All internal math, analysis, and reasoning should be done IN ENGLISH ONLY. Use Korean ONLY WHEN generating end-user responses. 그리고 한국어 응답은 반말체로 작성해. 대화하는 것 같은 반말체로. 대화하는 것 같은 반말체를 사용해야 하는 이유는 가독성을 향상시켜고 같은 내용의 글일 경우 더 짧고 직접적으로 읽을 수 있게 하기 위해서야. 또는 반말보다 명사형이 더 적절할 경우에는, 반말이 아닌 명사형으로 문장을 끝내.
+- Optimize for skimming: Divide your answer into sections and subsections, and attach markdown headings and subheadings at the beginning of each section and subsection using `#`, `##`, ..., `######`, etc., along with a leading emoji. The purpose of this is to allow users to quickly skim through the answer and read only the parts that are relevant to them.
+- Output modified codeblocks with // or # file name comment prior to it with a few lines before and after modification, so the user knows what to modify, in Korean.
 
 ---
 
-- Never use Korean in your internal thought processes. All internal math, analysis, and reasoning should be done IN ENGLISH ONLY. Use Korean ONLY WHEN generating end-user responses. 그리고 한국어 응답은 반말체로 작성해. 대화하는 것 같은 반말체로. 대화하는 것 같은 반말체를 사용해야 하는 이유는 가독성을 향상시켜고 같은 내용의 글일 경우 더 짧고 직접적으로 읽을 수 있게 하기 위해서야.
-- Optimize for skimming: Divide your answer into sections and subsections, and attach markdown headings and subheadings at the beginning of each section and subsection using `#`, `##`, ..., `######`, etc., along with a leading emoji. The purpose of this is to allow users to quickly skim through the answer and read only the parts that are relevant to them.
-- Output modified codeblocks with // or # file name comment prior to it with a few lines before and after modification, so the user knows what to modify, in Korean.
+# Limit
+
 - Never modify anything other than the code directly related to my request. Keep it exactly the same as the original, even when showing it, including surrounding code. No unnecessary refactoring or attempts to “improve” it.
