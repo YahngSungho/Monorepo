@@ -150,7 +150,7 @@ Stories can still override this default snippet using any of the methods for def
 
 Behind-the-scenes, each `<Story />` definition is compiled to a variable export like `export const MyStory = ...;`. In most cases you don't have to care about this detail, however sometimes naming conflicts can arise from this. The variable names are simplifications of the story names - to make them valid JavaScript variables.
 
-This can cause conflicts, eg. two stories with the names *"my story!"* and *"My Story"* will both be simplified to `MyStory`.
+This can cause conflicts, eg. two stories with the names _"my story!"_ and _"My Story"_ will both be simplified to `MyStory`.
 
 You can explicitly define the variable name of any story by passing the `exportName` prop:
 
@@ -163,7 +163,7 @@ At least one of the `name` or `exportName` props must be passed to the `Sto
 
 ### Accessing Story context
 
-If for some reason you need to access the  *(e.g. for mocking)* while rendering the story, then `<Story />`'s attribute `children` snippet provides an optional second argument.
+If for some reason you need to access the  _(e.g. for mocking)_ while rendering the story, then `<Story />`'s attribute `children` snippet provides an optional second argument.
 
 ```svelte
 <Story name\="Default"\>

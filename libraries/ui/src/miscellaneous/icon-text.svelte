@@ -1,7 +1,5 @@
 <script module>
-
 </script>
-
 
 <script>
 let {
@@ -53,13 +51,13 @@ let {
 
 	& .icon-container {
 		position: relative;
-		inset-block-start: 0.5ex;
+		inset-block-start: 0.45ex;
 
 		display: inline-block;
 		flex-shrink: 0;
 
-		inline-size: 1.2em;
-		block-size: 1.2em;
+		inline-size: 1em;
+		block-size: 1em;
 		margin-inline-end: 0.5ch;
 
 		font-size: 1.2em;
