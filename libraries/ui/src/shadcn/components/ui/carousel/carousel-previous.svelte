@@ -36,6 +36,6 @@ const emblaCtx = getEmblaContext('<Carousel.Previous/>')
 	{...restProps}
 	bind:ref
 >
-	<iconify-icon height="16" icon="lucide:arrow-left" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:arrow-left"></iconify-icon>
 	<span class="sr-only">Previous slide</span>
 </Button>

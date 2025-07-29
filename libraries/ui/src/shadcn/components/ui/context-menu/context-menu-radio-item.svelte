@@ -28,7 +28,7 @@ let {
 	{#snippet children({ checked })}
 		<span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
 			{#if checked}
-				<iconify-icon height="16" icon="lucide:circle" width="16"></iconify-icon>
+				<iconify-icon icon="lucide:circle"></iconify-icon>
 			{/if}
 		</span>
 		{@render childrenProp?.({ checked })}

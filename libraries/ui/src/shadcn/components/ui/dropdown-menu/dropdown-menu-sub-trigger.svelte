@@ -32,5 +32,5 @@ let {
 	{...restProps}
 >
 	{@render children?.()}
-	<iconify-icon height="16" icon="lucide:chevron-right" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:chevron-right"></iconify-icon>
 </DropdownMenuPrimitive.SubTrigger>

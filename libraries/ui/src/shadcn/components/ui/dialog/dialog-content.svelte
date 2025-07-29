@@ -41,7 +41,7 @@ let {
 				disabled:pointer-events-none [&_iconify-icon:not([class*='size-'])]:size-4
 				[&_iconify-icon]:pointer-events-none [&_iconify-icon]:shrink-0"
 		>
-			<iconify-icon height="16" icon="lucide:x" width="16"></iconify-icon>
+			<iconify-icon icon="lucide:x"></iconify-icon>
 			<span class="sr-only">Close</span>
 		</DialogPrimitive.Close>
 	</DialogPrimitive.Content>

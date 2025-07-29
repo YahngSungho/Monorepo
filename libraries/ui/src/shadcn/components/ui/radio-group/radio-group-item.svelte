@@ -28,7 +28,7 @@ let {
 	{#snippet children({ checked })}
 		<div class="relative flex items-center justify-center" data-slot="radio-group-indicator">
 			{#if checked}
-				<iconify-icon height="16" icon="lucide:circle" width="16"></iconify-icon>
+				<iconify-icon icon="lucide:circle"></iconify-icon>
 			{/if}
 		</div>
 	{/snippet}

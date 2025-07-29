@@ -18,5 +18,5 @@ let {
 	bind:ref
 	{...restProps}
 >
-	<iconify-icon height="16" icon="lucide:chevron-up" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:chevron-up"></iconify-icon>
 </SelectPrimitive.ScrollUpButton>

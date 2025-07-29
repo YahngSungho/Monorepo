@@ -58,7 +58,7 @@ let {
 				right-4 top-4 opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2
 				focus-visible:ring-offset-2 disabled:pointer-events-none"
 		>
-			<iconify-icon height="16" icon="lucide:x" width="16"></iconify-icon>
+			<iconify-icon icon="lucide:x"></iconify-icon>
 			<span class="sr-only">Close</span>
 		</SheetPrimitive.Close>
 	</SheetPrimitive.Content>
