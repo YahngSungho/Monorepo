@@ -35,9 +35,9 @@ let {
 	{#snippet children({ checked, indeterminate })}
 		<span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
 			{#if indeterminate}
-				<iconify-icon height="16" icon="lucide:minus" width="16"></iconify-icon>
+				<iconify-icon icon="lucide:minus"></iconify-icon>
 			{:else if checked}
-				<iconify-icon height="16" icon="lucide:check" width="16"></iconify-icon>
+				<iconify-icon icon="lucide:check"></iconify-icon>
 			{/if}
 		</span>
 		{@render childrenProp?.()}

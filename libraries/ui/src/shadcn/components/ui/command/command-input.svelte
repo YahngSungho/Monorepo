@@ -15,7 +15,7 @@ let {
 </script>
 
 <div class="flex h-9 items-center gap-2 border-b px-3" data-slot="command-input-wrapper">
-	<iconify-icon class="size-4 shrink-0 opacity-50" height="24" icon="lucide:search" width="24"
+	<iconify-icon class="size-4 shrink-0 opacity-50" icon="lucide:search"
 	></iconify-icon>
 	<CommandPrimitive.Input
 		class={cx(

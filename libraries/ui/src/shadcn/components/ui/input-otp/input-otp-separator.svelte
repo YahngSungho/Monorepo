@@ -16,6 +16,6 @@ let {
 	{#if children}
 		{@render children?.()}
 	{:else}
-		<iconify-icon height="16" icon="lucide:dot" width="16"></iconify-icon>
+		<iconify-icon icon="lucide:dot"></iconify-icon>
 	{/if}
 </div>

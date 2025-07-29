@@ -33,7 +33,7 @@ let {
 	{#snippet children({ selected, highlighted })}
 		<span class="absolute right-2 flex size-3.5 items-center justify-center">
 			{#if selected}
-				<iconify-icon height="16" icon="lucide:check" width="16"></iconify-icon>
+				<iconify-icon icon="lucide:check"></iconify-icon>
 			{/if}
 		</span>
 		{#if childrenProp}

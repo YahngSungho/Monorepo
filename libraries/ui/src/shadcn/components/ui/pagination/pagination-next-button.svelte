@@ -16,7 +16,7 @@ let {
 
 {#snippet Fallback()}
 	<span>Next</span>
-	<iconify-icon height="16" icon="lucide:chevron-right" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:chevron-right"></iconify-icon>
 {/snippet}
 
 <PaginationPrimitive.NextButton

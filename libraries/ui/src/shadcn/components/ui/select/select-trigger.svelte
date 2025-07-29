@@ -36,5 +36,5 @@ let {
 	{...restProps}
 >
 	{@render children?.()}
-	<iconify-icon style="opacity: 0.5;" height="16" icon="lucide:chevron-down" width="16"></iconify-icon>
+	<iconify-icon style="opacity: 0.5;" icon="lucide:chevron-down"></iconify-icon>
 </SelectPrimitive.Trigger>

@@ -20,6 +20,6 @@ let {
 	role="presentation"
 	{...restProps}
 >
-	<iconify-icon height="16" icon="lucide:more-horizontal" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:more-horizontal"></iconify-icon>
 	<span class="sr-only">More</span>
 </span>

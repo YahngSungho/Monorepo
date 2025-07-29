@@ -15,7 +15,7 @@ let {
 </script>
 
 {#snippet Fallback()}
-	<iconify-icon height="16" icon="lucide:chevron-left" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:chevron-left"></iconify-icon>
 {/snippet}
 
 <CalendarPrimitive.PrevButton

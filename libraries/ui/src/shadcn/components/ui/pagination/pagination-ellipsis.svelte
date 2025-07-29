@@ -19,6 +19,6 @@ let {
 	data-slot="pagination-ellipsis"
 	{...restProps}
 >
-	<iconify-icon height="16" icon="lucide:more-horizontal" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:more-horizontal"></iconify-icon>
 	<span class="sr-only">More pages</span>
 </span>

@@ -32,7 +32,7 @@ let {
 >
 	{#if withHandle}
 		<div class="bg-border rounded-xs z-10 flex h-4 w-3 items-center justify-center border">
-			<iconify-icon height="16" icon="lucide:grip-vertical" width="16"></iconify-icon>
+			<iconify-icon icon="lucide:grip-vertical"></iconify-icon>
 		</div>
 	{/if}
 </ResizablePrimitive.PaneResizer>

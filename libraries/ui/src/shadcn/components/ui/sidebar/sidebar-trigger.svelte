@@ -33,6 +33,6 @@ const sidebar = useSidebar()
 	variant="ghost"
 	{...restProps}
 >
-	<iconify-icon height="16" icon="lucide:panel-left" width="16"></iconify-icon>
+	<iconify-icon icon="lucide:panel-left"></iconify-icon>
 	<span class="sr-only">Toggle Sidebar</span>
 </Button>
