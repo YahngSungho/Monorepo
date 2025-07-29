@@ -16,7 +16,7 @@
 - Use `getNextSnapshot(…)` instead of `machine.transition(…)`
   - The `machine.transition(...)` method now requires an "actor scope" for the 3rd argument, which is internally created by `createActor(...)`. Instead, use `getNextSnapshot(...)` to get the next snapshot from some actor logic based on the current snapshot and event:
 - Send events explictly instead of using `autoForward`
-  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's *not* recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
+  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's _not_ recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
 - The `state.toStrings()` method has been removed
 
 #### states
