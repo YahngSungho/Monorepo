@@ -46,7 +46,7 @@
 		"@library/scripts": "workspace:*",
 		"daisyui": "5.0.35",
 		"tailwindcss": "4.1.8",
-		"tw-animate-css": "^1.3.2"
+		"tw-animate-css": "^1.3.6"
 	},
 	"import": {
 		"$lib": "./src/lib",
