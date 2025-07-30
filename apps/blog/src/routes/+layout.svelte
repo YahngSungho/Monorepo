@@ -121,10 +121,10 @@ function scrollToTop() {
 				</div>
 
 				<div
-					style="z-index: 1; inline-size: 18em; background-color: var(--color-base-100);"
+					style="z-index: 1; inline-size: 17em; background-color: var(--background);"
 					class="join"
 				>
-					<div>
+					<div style="flex-grow: 1;">
 						<label
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
@@ -134,7 +134,8 @@ function scrollToTop() {
 						</label>
 					</div>
 					<ConfettiButton
-						amount={50}
+					class="join-item"
+					amount={10}
 						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
 						duration={750}
 						isConfettiActivated
@@ -186,9 +187,12 @@ function scrollToTop() {
 			z-index: var(--layer-important);
 			inset-block-end: var(--space-em-cqi-m);
 			inset-inline-start: var(--space-em-cqi-m);
+
+			background-color: var(--background);
 		"
-			iconName="mdi:transfer-up"
+			iconName="mdi:chevron-double-up"
 			onclick={scrollToTop}
+			variant="outline"
 		>
 			맨 위로
 		</Button>

@@ -7,4 +7,4 @@
 
 <Image
 {alt} background="auto"
-{height} layout="constrained" {src} {width} {...rest} sizes={`(max-width: ${width}px) 100vw, ${width}px`} />
+{height} layout="constrained" {src} {width} {...rest} sizes={`(max-width: ${width}px) ${width}px, 100cqi`} />
