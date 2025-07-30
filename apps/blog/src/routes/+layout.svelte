@@ -121,7 +121,7 @@ function scrollToTop() {
 				</div>
 
 				<div
-					style="z-index: 1; inline-size: fit-content; max-inline-size: 18em; background-color: var(--color-base-100);"
+					style="z-index: 1; inline-size: 18em; background-color: var(--color-base-100);"
 					class="join"
 				>
 					<div>

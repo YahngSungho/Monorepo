@@ -1,6 +1,10 @@
 <script>
-// MDSvex에서 'src', 'alt', 'title' 속성을 받습니다.
-let { src, alt, ...rest } = $props()
+	import { Image } from "@unpic/svelte"
+
+	let { src, width, height, alt, ...rest } = $props()
+
 </script>
 
-<img {alt} {src} {...rest} />
+<Image
+{alt} background="auto"
+{height} layout="constrained" {src} {width} {...rest} sizes={`(max-width: ${width}px) 100vw, ${width}px`} />

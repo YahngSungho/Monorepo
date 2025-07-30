@@ -8,6 +8,7 @@ import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
 import Blockquote from './Blockquote.svelte'
+import CloudinaryImage from './CloudinaryImage.svelte'
 import CodeBlock from './CodeBlock.svelte'
 import Delete from './Delete.svelte'
 import Emphasis from './Emphasis.svelte'
@@ -35,50 +36,54 @@ import UnorderedList from './UnorderedList.svelte'
 
 let { value, plugins = [] } = $props()
 
-const defaultPlugins = [
-	gfmPlugin(),
-	{
-		remarkPlugin: remarkCjkFriendly,
-	},
-	{
-		remarkPlugin: remarkCjkFriendlyGfmStrikethrough,
-	},
-	{
-		remarkPlugin: smartypants,
-	},
-	{
-		renderer: {
-			// text: Text, <- 안됨
-			blockquote: Blockquote,
-			code: InlineCode,
-			del: Delete,
-			em: Emphasis,
-			h1: Heading1,
-			h2: Heading2,
-			h3: Heading3,
-			h4: Heading4,
-			h5: Heading5,
-			h6: Heading6,
-			hr: HorizontalRule,
-			img: Image,
-			a: Link,
-			li: ListItem,
-			ol: OrderedList,
-			p: Paragraph,
-			pre: CodeBlock,
-			strong: Strong,
-			table: Table,
-			tbody: TableBody,
-			td: TableCell,
-			thead: TableHeader,
-			th: TableHead,
-			tr: TableRow,
-			ul: UnorderedList,
-		},
-	},
-]
 </script>
 
 <div class="boxed">
-	<Markdown md={value} plugins={[...defaultPlugins, ...plugins]} />
+	<Markdown md={value} plugins={[
+		gfmPlugin(),
+		{
+			remarkPlugin: remarkCjkFriendly,
+		},
+		{
+			remarkPlugin: remarkCjkFriendlyGfmStrikethrough,
+		},
+		{
+			remarkPlugin: smartypants,
+		},
+		{
+			renderer: {
+				cloudinaryimage: CloudinaryImage,
+			}
+		},
+		{
+			renderer: {
+				// text: Text, <- 안됨
+				blockquote: Blockquote,
+				code: InlineCode,
+				del: Delete,
+				em: Emphasis,
+				h1: Heading1,
+				h2: Heading2,
+				h3: Heading3,
+				h4: Heading4,
+				h5: Heading5,
+				h6: Heading6,
+				hr: HorizontalRule,
+				img: Image,
+				a: Link,
+				li: ListItem,
+				ol: OrderedList,
+				p: Paragraph,
+				pre: CodeBlock,
+				strong: Strong,
+				table: Table,
+				tbody: TableBody,
+				td: TableCell,
+				thead: TableHeader,
+				th: TableHead,
+				tr: TableRow,
+				ul: UnorderedList,
+			},
+		}
+	, ...plugins]} />
 </div>
