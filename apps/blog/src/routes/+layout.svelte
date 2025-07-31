@@ -10,7 +10,7 @@ import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
 import store from 'store'
-import { onMount, setContext } from 'svelte'
+import { onMount,setContext } from 'svelte'
 import { slide } from 'svelte/transition'
 
 import { page } from '$app/state'
@@ -58,10 +58,18 @@ const allMetadata = $derived.by(() => {
 })
 
 function markAsVisited(slug) {
-	if (!slug || visited[slug]) return
-	const newVisited = { ...visited, [slug]: true }
-	store.set('visited', newVisited)
-	visited = newVisited
+    if (!slug) return;
+
+    const currentVisited = store.get('visited') || {};
+
+    if (currentVisited[slug]) return; // 이미 방문했으면 중단
+
+    // 메모리(visited)가 아닌, 방금 읽어온 localStorage 값을 기준으로 새로운 객체를
+    const newVisited = { ...currentVisited, [slug]: true };
+
+    // localStorage와 Svelte 상태를 모두 업데이트
+    store.set('visited', newVisited);
+    visited = newVisited;
 }
 
 setContext('getAllMetadata', () => allMetadata)
