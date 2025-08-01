@@ -7,7 +7,7 @@ import PostList from '$lib/components/postList.svelte'
 <script>
 const getAllMetadata = getContext('getAllMetadata')
 let allMetadata = $derived(getAllMetadata())
-let allMetadata_best = $derived(allMetadata.filter((item) => item.best))
+let allMetadata_pinned = $derived(allMetadata.filter((item) => item.pinned))
 </script>
 
 <!-- <p>
@@ -19,7 +19,7 @@ let allMetadata_best = $derived(allMetadata.filter((item) => item.best))
 		<h1>고정된 포스트</h1>
 
 		<div>
-			<PostList allMetadata={allMetadata_best} />
+			<PostList allMetadata={allMetadata_pinned} />
 		</div>
 	</div>
 

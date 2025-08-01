@@ -1,42 +1,42 @@
 {
 	"posts/eighth-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/fifth-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/fourth-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/ninth-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/second-post": {
 		"date": "2025-06-26",
-		"best": true
+		"pinned": true
 	},
 	"posts/seventh-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/sixth-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/tenth-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/test-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	},
 	"posts/third-post": {
 		"date": "2025-06-20",
-		"best": true
+		"pinned": true
 	}
 }

@@ -1,3 +1,3 @@
 export * from './convertToNumberKeys.js'
-export * from './normalize.js'
+export * from './processText.js'
 export * from './validateNumbers.js'

@@ -5,6 +5,7 @@ import * as m from '@library/paraglide/messages'
 import Markdown from '@library/ui/markdown-blog'
 import { getContext } from 'svelte'
 
+import { page } from '$app/state'
 import PostList from '$lib/components/postList.svelte'
 
 const getAllMetadata = getContext('getAllMetadata')
@@ -50,11 +51,66 @@ let nearMetadata = $derived.by(() => {
 $effect(() => {
 	markAsVisited(data.currentMetadata?.slug)
 })
+
+// 현재 URL 계산
+let currentCanonicalUrl = $derived(`https://sungho.blog${page.url.pathname}`)
+
+// JSON-LD 데이터 생성
+let jsonLd = $derived({
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	"headline": data.currentMetadata.title,
+	"description": data.description,
+	"author": {
+		"@type": "Person",
+		"name": "Sungho Yahng"
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "sungho.blog"
+	},
+	"datePublished": data.currentMetadata.date,
+	"url": currentCanonicalUrl,
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id": currentCanonicalUrl
+	}
+})
 </script>
 
 <svelte:head>
-	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
+	<!-- 기본 메타 태그들 -->
 	<title>{data.currentMetadata.title} - sungho.blog</title>
+	<meta name="description" content={data.description} />
+	<meta name="author" content="Sungho Yahng" />
+
+	<!-- Canonical URL -->
+	<link href={currentCanonicalUrl} rel="canonical" />
+
+	<!-- Open Graph 메타 태그들 -->
+	<meta content="article" property="og:type" />
+	<meta content={data.currentMetadata.title} property="og:title" />
+	<meta content={data.description} property="og:description" />
+	<meta content={currentCanonicalUrl} property="og:url" />
+	<meta content="sungho.blog" property="og:site_name" />
+
+	<!-- Article 관련 Open Graph -->
+	{#if data.currentMetadata.date}
+		<meta content={data.currentMetadata.date} property="article:published_time" />
+	{/if}
+	<meta content="Sungho Yahng" property="article:author" />
+
+	<!-- Twitter Cards -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content={data.currentMetadata.title} />
+	<meta name="twitter:description" content={data.description} />
+	<meta name="twitter:url" content={currentCanonicalUrl} />
+	<!-- <meta name="twitter:site" content="@sungho_yahng" /> -->
+	<!-- <meta name="twitter:creator" content="@sungho_yahng" /> -->
+
+	<!-- 구조화된 데이터 (JSON-LD) -->
+	<!-- eslint-disable-next-line -->
+	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 </svelte:head>
 
 <div
