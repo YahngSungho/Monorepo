@@ -126,32 +126,30 @@ let jsonLd = $derived({
 </script>
 
 <svelte:head>
-	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-	<title>sungho.blog</title>
-	<meta name="description" content={data.description} />
+	<!-- 🌐 사이트 공통 메타태그 (모든 페이지에 적용) -->
 	<meta name="author" content="Sungho Yahng" />
-
-	<!-- Canonical URL -->
-	<link href={currentCanonicalUrl} rel="canonical" />
-
-	<!-- Open Graph 메타 태그들 -->
-	<meta content="website" property="og:type" />
-	<meta content="sungho.blog" property="og:title" />
-	<meta content={data.description} property="og:description" />
-	<meta content={currentCanonicalUrl} property="og:url" />
 	<meta content="sungho.blog" property="og:site_name" />
-
-	<!-- Twitter Cards -->
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content="sungho.blog" />
-	<meta name="twitter:description" content={data.description} />
-	<meta name="twitter:url" content={currentCanonicalUrl} />
 	<!-- <meta name="twitter:site" content="@sungho_yahng" /> -->
 	<!-- <meta name="twitter:creator" content="@sungho_yahng" /> -->
 
-	<!-- 구조화된 데이터 (JSON-LD) -->
-	<!-- eslint-disable-next-line -->
-	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
+	<!-- 🏠 홈페이지 전용 메타태그 -->
+	{#if !page.url.pathname.includes('posts')}
+		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
+		<title>sungho.blog</title>
+		<meta name="description" content={data.description} />
+		<link href={currentCanonicalUrl} rel="canonical" />
+		<meta content="website" property="og:type" />
+		<meta content="sungho.blog" property="og:title" />
+		<meta content={data.description} property="og:description" />
+		<meta content={currentCanonicalUrl} property="og:url" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="sungho.blog" />
+		<meta name="twitter:description" content={data.description} />
+		<meta name="twitter:url" content={currentCanonicalUrl} />
+
+		<!-- eslint-disable-next-line -->
+		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
+	{/if}
 </svelte:head>
 
 <svelte:window bind:scrollY={y} />

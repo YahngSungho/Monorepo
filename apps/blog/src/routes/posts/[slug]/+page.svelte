@@ -79,10 +79,9 @@ let jsonLd = $derived({
 </script>
 
 <svelte:head>
-	<!-- 기본 메타 태그들 -->
+	<!-- 📄 페이지별 메타 태그들 -->
 	<title>{data.currentMetadata.title} - sungho.blog</title>
 	<meta name="description" content={data.description} />
-	<meta name="author" content="Sungho Yahng" />
 
 	<!-- Canonical URL -->
 	<link href={currentCanonicalUrl} rel="canonical" />
