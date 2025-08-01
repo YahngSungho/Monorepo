@@ -3,9 +3,8 @@ import { page } from '$app/state'
 
 import Button from '../daisyui/button.svelte'
 
-let { title = '' } = $props()
+let { title = '', url = page.url.href } = $props()
 
-let url = $derived(page.url.href)
 let url_encoded = $derived(encodeURIComponent(url))
 let title_encoded = $derived(encodeURIComponent(title))
 

@@ -92,6 +92,17 @@ function scrollToTop() {
 
 const currentCanonicalUrl = 'https://sungho.blog'
 
+// 페이지별 공유 데이터 계산
+let sharingData = $derived.by(() => {
+	const isPostPage = page.url.pathname.includes('/posts/')
+	const postTitle = page.data?.currentMetadata?.title
+
+	return {
+		title: isPostPage && postTitle ? postTitle : "sungho.blog",
+		url: isPostPage ? (currentCanonicalUrl + page.url.pathname) : currentCanonicalUrl
+	}
+})
+
 // JSON-LD 데이터 생성
 let jsonLd = $derived({
 	"@context": "https://schema.org",
@@ -222,7 +233,7 @@ let jsonLd = $derived({
 							background-color: var(--background);
 							"
 							>
-								<SharingButtons />
+								<SharingButtons title={sharingData.title} url={sharingData.url} />
 							</div>
 						</div>
 					{/if}
