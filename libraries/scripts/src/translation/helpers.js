@@ -36,7 +36,7 @@ export function getInitialLanguageMap() {
 function normalizeCombinedMessage(combinedMessage) {
 	if (!combinedMessage) return combinedMessage
 
-	return R.mapObject((value) => value && normalizeString(value))(combinedMessage)
+	return R.mapObject((value) => (value ? normalizeString(value) : value))(combinedMessage)
 }
 
 export function calculateInitialTranslationStateByBaseLanguages(
