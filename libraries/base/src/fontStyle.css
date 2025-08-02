@@ -756,7 +756,6 @@ html[lang='zh-CN'],
 html[lang='zh-SG'] {
 	font-family: 'IBM Plex Sans SC';
 	font-feature-settings: 'ss02';
-
 }
 
 /* Chinese Traditional */
@@ -769,7 +768,6 @@ html[lang='zh-hk'], /* (lowercase variant from original) */
 html[lang='zh-tTW'] /* (non-standard, from original) */ {
 	font-family: 'IBM Plex Sans TC';
 	font-feature-settings: 'ss02';
-
 }
 
 /* Hebrew */
@@ -792,14 +790,12 @@ html[lang='sd-Deva'] /* Sindhi (Devanagari script) */ {
 html[lang^='ja'] {
 	font-family: 'IBM Plex Sans JP';
 	font-feature-settings: 'ss02';
-
 }
 
 /* Korean */
 html[lang^='ko'] {
 	font-family: 'IBM Plex Sans KR';
 	font-feature-settings: 'ss02';
-
 }
 
 /* Thai */

@@ -10,7 +10,7 @@ import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
 import VariationSetter from '@library/ui/variationSetter'
 import store from 'store'
-import { onMount,setContext } from 'svelte'
+import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
 
 import { page } from '$app/state'
@@ -58,18 +58,18 @@ const allMetadata = $derived.by(() => {
 })
 
 function markAsVisited(slug) {
-    if (!slug) return;
+	if (!slug) return
 
-    const currentVisited = store.get('visited') || {};
+	const currentVisited = store.get('visited') || {}
 
-    if (currentVisited[slug]) return; // 이미 방문했으면 중단
+	if (currentVisited[slug]) return // 이미 방문했으면 중단
 
-    // 메모리(visited)가 아닌, 방금 읽어온 localStorage 값을 기준으로 새로운 객체를
-    const newVisited = { ...currentVisited, [slug]: true };
+	// 메모리(visited)가 아닌, 방금 읽어온 localStorage 값을 기준으로 새로운 객체를
+	const newVisited = { ...currentVisited, [slug]: true }
 
-    // localStorage와 Svelte 상태를 모두 업데이트
-    store.set('visited', newVisited);
-    visited = newVisited;
+	// localStorage와 Svelte 상태를 모두 업데이트
+	store.set('visited', newVisited)
+	visited = newVisited
 }
 
 setContext('getAllMetadata', () => allMetadata)
@@ -98,30 +98,30 @@ let sharingData = $derived.by(() => {
 	const postTitle = page.data?.currentMetadata?.title
 
 	return {
-		title: isPostPage && postTitle ? postTitle : "sungho.blog",
-		url: isPostPage ? (currentCanonicalUrl + page.url.pathname) : currentCanonicalUrl
+		title: isPostPage && postTitle ? postTitle : 'sungho.blog',
+		url: isPostPage ? currentCanonicalUrl + page.url.pathname : currentCanonicalUrl,
 	}
 })
 
 // JSON-LD 데이터 생성
 let jsonLd = $derived({
-	"@context": "https://schema.org",
-	"@type": "Blog",
-	"headline": "sungho.blog",
-	"description": data.description,
-	"author": {
-		"@type": "Person",
-		"name": "Sungho Yahng"
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	headline: 'sungho.blog',
+	description: data.description,
+	author: {
+		'@type': 'Person',
+		name: 'Sungho Yahng',
 	},
-	"publisher": {
-		"@type": "Organization",
-		"name": "sungho.blog"
+	publisher: {
+		'@type': 'Organization',
+		name: 'sungho.blog',
 	},
-	"url": currentCanonicalUrl,
-	"mainEntityOfPage": {
-		"@type": "WebPage",
-		"@id": currentCanonicalUrl
-	}
+	url: currentCanonicalUrl,
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': currentCanonicalUrl,
+	},
 })
 </script>
 
@@ -193,13 +193,13 @@ let jsonLd = $derived({
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
 						>
-						<input placeholder="나의@이메일.com" required type="email" />
+							<input placeholder="나의@이메일.com" required type="email" />
 							<span>이메일</span>
 						</label>
 					</div>
 					<ConfettiButton
-					class="join-item"
-					amount={10}
+						class="join-item"
+						amount={10}
 						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
 						duration={750}
 						isConfettiActivated

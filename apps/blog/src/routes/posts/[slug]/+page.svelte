@@ -57,24 +57,24 @@ let currentCanonicalUrl = $derived(`https://sungho.blog${page.url.pathname}`)
 
 // JSON-LD 데이터 생성
 let jsonLd = $derived({
-	"@context": "https://schema.org",
-	"@type": "BlogPosting",
-	"headline": data.currentMetadata.title,
-	"description": data.description,
-	"author": {
-		"@type": "Person",
-		"name": "Sungho Yahng"
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: data.currentMetadata.title,
+	description: data.description,
+	author: {
+		'@type': 'Person',
+		name: 'Sungho Yahng',
 	},
-	"publisher": {
-		"@type": "Organization",
-		"name": "sungho.blog"
+	publisher: {
+		'@type': 'Organization',
+		name: 'sungho.blog',
 	},
-	"datePublished": data.currentMetadata.date,
-	"url": currentCanonicalUrl,
-	"mainEntityOfPage": {
-		"@type": "WebPage",
-		"@id": currentCanonicalUrl
-	}
+	datePublished: data.currentMetadata.date,
+	url: currentCanonicalUrl,
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': currentCanonicalUrl,
+	},
 })
 </script>
 

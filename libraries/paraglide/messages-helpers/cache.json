@@ -1,26 +1,26 @@
 {
   "antsy_aloof_barbel_read": {
     "ko": "아이콘",
-    "explanation": "UI에서 아이콘 컴포넌트(<Icon>) 내부에 표시되는 텍스트입니다. 주로 아이콘 자체를 설명하거나 접근성을 위한 대체 텍스트로 사용될 수 있습니다. 예를 들어, 홈 아이콘 옆에 '아이콘' 텍스트가 표시될 수 있습니다."
+    "explanation": "ui에서아이콘컴포넌트icon내부에표시되는텍스트입니다주로아이콘자체를설명하거나접근성을위한대체텍스트로사용될수있습니다예를들어홈아이콘옆에아이콘텍스트가표시될수있습니다"
   },
   "deft_east_mouse_hope": {
     "ko": "안녕하세요",
-    "explanation": "Hello"
+    "explanation": "hello"
   },
   "hello_world": {
-    "ko": "Hello, {name} from ko!",
-    "explanation": "주로 Badge 컴포넌트 내부에 표시되는 인사 메시지입니다. `{name}` 플레이스홀더를 포함하며, 이 부분은 사용자 이름과 같은 실제 값으로 대체됩니다. 예를 들어, 이름이 'David'라면 'Hello, David from ko!'와 같이 표시됩니다."
+    "ko": "hellonamefromko",
+    "explanation": "주로badge컴포넌트내부에표시되는인사메시지입니다name플레이스홀더를포함하며이부분은사용자이름과같은실제값으로대체됩니다예를들어이름이david라면hellodavidfromko와같이표시됩니다"
   },
   "tangy_late_wallaby_grip": {
-    "ko": "Welcome to SvelteKit",
-    "explanation": "Welcome to SvelteKit"
+    "ko": "welcometosveltekit",
+    "explanation": "welcometosveltekit"
   },
   "welcome": {
-    "ko": "SvelteKit에 오신 것을 환영합니다",
-    "explanation": "Welcome to SvelteKit"
+    "ko": "sveltekit에오신것을환영합니다",
+    "explanation": "welcometosveltekit"
   },
   "region": {
     "ko": "지역",
-    "explanation": "언어 이름과 함께 표시되는 지역 정보를 나타내는 레이블입니다. 예를 들어 '영어 (지역: 미국)'과 같이 사용되며, 여기서 '지역'은 이 메시지 키에 해당합니다."
+    "explanation": "언어이름과함께표시되는지역정보를나타내는레이블입니다예를들어영어지역미국과같이사용되며여기서지역은이메시지키에해당합니다"
   }
 }

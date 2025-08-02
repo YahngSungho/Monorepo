@@ -43,7 +43,7 @@ let isCopied = $state(false)
 				size="sm"
 			>
 				전달하기...
-		</Button>
+			</Button>
 		</div>
 	{/if}
 

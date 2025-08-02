@@ -10,22 +10,22 @@ import sanitizeHtml from 'sanitize-html'
  * @returns {string} 태그 제거된 문자열
  */
 export function removeTagsAll(string) {
-    // 입력 문자열에서 모든 태그명 추출
-    const tagNames = [...string.matchAll(/<(\w+)[^>]*>/g)].map(match => (match[1]).toLowerCase())
-    const uniqueTagNames = [...new Set(tagNames)]
+	// 입력 문자열에서 모든 태그명 추출
+	const tagNames = [...string.matchAll(/<(\w+)[^>]*>/g)].map((match) => match[1].toLowerCase())
+	const uniqueTagNames = [...new Set(tagNames)]
 
-    return sanitizeHtml(string, {
-        allowedTags: [],
-        allowedAttributes: {},
-        nonTextTags: [
-            ...uniqueTagNames // 발견된 모든 태그들
-        ],
-disallowedTagsMode: 'discard',
-				        // 추가 보안 설정
-								allowedSchemes: [],
-								allowedSchemesByTag: {},
-								allowProtocolRelative: false
-    })
+	return sanitizeHtml(string, {
+		allowedTags: [],
+		allowedAttributes: {},
+		nonTextTags: [
+			...uniqueTagNames, // 발견된 모든 태그들
+		],
+		disallowedTagsMode: 'discard',
+		// 추가 보안 설정
+		allowedSchemes: [],
+		allowedSchemesByTag: {},
+		allowProtocolRelative: false,
+	})
 }
 
 export function removeFrontmatter(string) {
@@ -38,10 +38,10 @@ export function removeFrontmatter(string) {
  */
 export function removeMarkdownFormat(string) {
 	let result = removeMD(string, {
-		stripListLeaders: false , // strip list leaders (default: true)
-		listUnicodeChar: '',     // char to insert instead of stripped list leaders (default: '')
-		gfm: true,                // support GitHub-Flavored Markdown (default: true)
-		useImgAltText: false      // replace images with alt-text, if present (default: true)
+		stripListLeaders: false, // strip list leaders (default: true)
+		listUnicodeChar: '', // char to insert instead of stripped list leaders (default: '')
+		gfm: true, // support GitHub-Flavored Markdown (default: true)
+		useImgAltText: false, // replace images with alt-text, if present (default: true)
 	})
 	return result
 }
@@ -51,7 +51,7 @@ export function removeMarkdownFormat(string) {
  * @returns {string} 마크다운과 태그 제거된 문자열
  */
 export function removeMDAndTags(string) {
-	let result = (removeMarkdownFormat(removeFrontmatter(removeTagsAll(string))))
+	let result = removeMarkdownFormat(removeFrontmatter(removeTagsAll(string)))
 	return result
 }
 
@@ -61,8 +61,9 @@ export function removeMDAndTags(string) {
  */
 export function getDescriptionFromMD(string) {
 	let result = removeMDAndTags(string)
-	result = result.replace(/\s/g, ' ') // 여러 공백을 하나로
-	.trim()
+	result = result
+		.replace(/\s/g, ' ') // 여러 공백을 하나로
+		.trim()
 	result = result.substring(0, 155) + '...' // 155자로 자르고 말줄임표 추가
 
 	return result
