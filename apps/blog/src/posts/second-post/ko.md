@@ -4,7 +4,7 @@ title: 제목 2
 
 # 두 번째 블로그 포스트에 오신 것을 환영합니다
 
-![img](/cornerless.png)
+<cloudinaryimage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></cloudinaryimage>
 
 ## 링크
 
@@ -16,4 +16,4 @@ title: 제목 2
 
 ### 텍스트 스타일링
 
-_이탤릭체_와 **볼드체**, 그리고 _**이탤릭 볼드체**_를 사용할 수 있습니다.
+*이탤릭체*와 **볼드체**, 그리고 ***이탤릭 볼드체***를 사용할 수 있습니다.

@@ -252,7 +252,7 @@ export default defineFlatConfig([
 			'pnpm-lock.yaml',
 			'package-lock.json',
 			'**/cache.json',
-			'**/normalize.js',
+			'**/processText.js',
 		],
 	},
 

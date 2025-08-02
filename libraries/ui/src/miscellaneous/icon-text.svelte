@@ -61,7 +61,7 @@ let {
 		margin-inline-end: 0.5ch;
 
 		font-size: 1.2em;
-		color: color-mix(in srgb, currentcolor 60%, transparent);
+		color: color-mix(in srgb, currentcolor 80%, transparent);
 
 		&.right {
 			margin-inline: 0.5ch 0;

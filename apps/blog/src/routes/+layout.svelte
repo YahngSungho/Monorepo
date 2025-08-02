@@ -58,8 +58,16 @@ const allMetadata = $derived.by(() => {
 })
 
 function markAsVisited(slug) {
-	if (!slug || visited[slug]) return
-	const newVisited = { ...visited, [slug]: true }
+	if (!slug) return
+
+	const currentVisited = store.get('visited') || {}
+
+	if (currentVisited[slug]) return // 이미 방문했으면 중단
+
+	// 메모리(visited)가 아닌, 방금 읽어온 localStorage 값을 기준으로 새로운 객체를
+	const newVisited = { ...currentVisited, [slug]: true }
+
+	// localStorage와 Svelte 상태를 모두 업데이트
 	store.set('visited', newVisited)
 	visited = newVisited
 }
@@ -81,11 +89,67 @@ function scrollToTop() {
 		behavior: 'smooth',
 	})
 }
+
+const currentCanonicalUrl = 'https://sungho.blog'
+
+// 페이지별 공유 데이터 계산
+let sharingData = $derived.by(() => {
+	const isPostPage = page.url.pathname.includes('/posts/')
+	const postTitle = page.data?.currentMetadata?.title
+
+	return {
+		title: isPostPage && postTitle ? postTitle : 'sungho.blog',
+		url: isPostPage ? currentCanonicalUrl + page.url.pathname : currentCanonicalUrl,
+	}
+})
+
+// JSON-LD 데이터 생성
+let jsonLd = $derived({
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	headline: 'sungho.blog',
+	description: data.description,
+	author: {
+		'@type': 'Person',
+		name: 'Sungho Yahng',
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'sungho.blog',
+	},
+	url: currentCanonicalUrl,
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': currentCanonicalUrl,
+	},
+})
 </script>
 
 <svelte:head>
-	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-	<title>sungho.blog</title>
+	<!-- 🌐 사이트 공통 메타태그 (모든 페이지에 적용) -->
+	<meta name="author" content="Sungho Yahng" />
+	<meta content="sungho.blog" property="og:site_name" />
+	<!-- <meta name="twitter:site" content="@sungho_yahng" /> -->
+	<!-- <meta name="twitter:creator" content="@sungho_yahng" /> -->
+
+	<!-- 🏠 홈페이지 전용 메타태그 -->
+	{#if !page.url.pathname.includes('posts')}
+		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
+		<title>sungho.blog</title>
+		<meta name="description" content={data.description} />
+		<link href={currentCanonicalUrl} rel="canonical" />
+		<meta content="website" property="og:type" />
+		<meta content="sungho.blog" property="og:title" />
+		<meta content={data.description} property="og:description" />
+		<meta content={currentCanonicalUrl} property="og:url" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="sungho.blog" />
+		<meta name="twitter:description" content={data.description} />
+		<meta name="twitter:url" content={currentCanonicalUrl} />
+
+		<!-- eslint-disable-next-line -->
+		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
+	{/if}
 </svelte:head>
 
 <svelte:window bind:scrollY={y} />
@@ -121,20 +185,21 @@ function scrollToTop() {
 				</div>
 
 				<div
-					style="z-index: 1; inline-size: fit-content; max-inline-size: 18em; background-color: var(--color-base-100);"
+					style="z-index: 1; inline-size: 17em; background-color: var(--background);"
 					class="join"
 				>
-					<div>
+					<div style="flex-grow: 1;">
 						<label
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
 						>
-						<input placeholder="나의@이메일.com" required type="email" />
+							<input placeholder="나의@이메일.com" required type="email" />
 							<span>이메일</span>
 						</label>
 					</div>
 					<ConfettiButton
-						amount={50}
+						class="join-item"
+						amount={10}
 						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
 						duration={750}
 						isConfettiActivated
@@ -166,7 +231,7 @@ function scrollToTop() {
 							background-color: var(--background);
 							"
 							>
-								<SharingButtons />
+								<SharingButtons title={sharingData.title} url={sharingData.url} />
 							</div>
 						</div>
 					{/if}
@@ -186,9 +251,12 @@ function scrollToTop() {
 			z-index: var(--layer-important);
 			inset-block-end: var(--space-em-cqi-m);
 			inset-inline-start: var(--space-em-cqi-m);
+
+			background-color: var(--background);
 		"
-			iconName="mdi:transfer-up"
+			iconName="mdi:chevron-double-up"
 			onclick={scrollToTop}
+			variant="outline"
 		>
 			맨 위로
 		</Button>

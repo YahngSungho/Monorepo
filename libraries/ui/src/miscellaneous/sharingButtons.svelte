@@ -3,9 +3,8 @@ import { page } from '$app/state'
 
 import Button from '../daisyui/button.svelte'
 
-let { title = '' } = $props()
+let { title = '', url = page.url.href } = $props()
 
-let url = $derived(page.url.href)
 let url_encoded = $derived(encodeURIComponent(url))
 let title_encoded = $derived(encodeURIComponent(title))
 
@@ -30,20 +29,21 @@ let isCopied = $state(false)
 		</Button>
 	</div>
 
-	{#if navigator.share && navigator.canShare({ title, url })}
+	{#if navigator.share && navigator.canShare({ title, text: title, url })}
 		<div>
 			<Button
 				iconName="mdi:share-variant-outline"
 				onclick={async () => {
 					await navigator.share({
-						title, // 공유 팝업에 표시될 제목
+						title, // 일부 플랫폼에서는 지원될 수 있음
+						text: title, // title이 무시되어도 text로 전달
 						url, // 공유할 페이지의 URL
 					})
 				}}
 				size="sm"
 			>
 				전달하기...
-		</Button>
+			</Button>
 		</div>
 	{/if}
 
