@@ -23,8 +23,8 @@ html {
 }
 
 body {
-	inline-size: 100svi;
 	min-block-size: 100%;
+	max-inline-size: 100svi;
 	margin: 0;
 	background-color: var(--background);
 }
