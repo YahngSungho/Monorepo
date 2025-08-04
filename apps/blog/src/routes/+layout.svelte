@@ -97,9 +97,16 @@ let sharingData = $derived.by(() => {
 	const isPostPage = page.url.pathname.includes('/posts/')
 	const postTitle = page.data?.currentMetadata?.title
 
+	let url = currentCanonicalUrl
+	if (isPostPage) {
+		const pathSegments = page.url.pathname.split('/').filter(Boolean)
+		const slug = pathSegments.at(-1)
+		url = `https://sungho.blog/posts/${slug}`
+	}
+
 	return {
 		title: isPostPage && postTitle ? postTitle : 'sungho.blog',
-		url: isPostPage ? currentCanonicalUrl + page.url.pathname : currentCanonicalUrl,
+		url,
 	}
 })
 

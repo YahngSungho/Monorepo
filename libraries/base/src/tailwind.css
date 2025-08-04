@@ -23,7 +23,7 @@
 }
 
 /* Shadcn variables 덮어쓰기 Or 확장 */
-:root {
+html {
 	--background: var(--gray-0);
 	--foreground: var(--gray-12);
 	--muted: var(--gray-3);
@@ -58,7 +58,7 @@
 	--chart-4: var(--orange-8);
 	--chart-5: var(--blue-8);
 
-	@media (prefers-color-scheme: dark) {
+	&.dark {
 		--background: var(--gray-0);
 		--foreground: var(--gray-9);
 		--card: var(--gray-1);

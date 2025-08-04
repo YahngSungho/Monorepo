@@ -6,13 +6,13 @@ import { css } from '@emotion/css'
 import { partytownSnippet } from '@qwik.dev/partytown/integration'
 import * as Sentry from '@sentry/sveltekit'
 import { ModeWatcher } from 'mode-watcher'
+import { onMount } from 'svelte'
 
 import { browser } from '$app/environment'
 import { onNavigate } from '$app/navigation'
 import { Toaster } from '$shadcn/components/ui/sonner/index'
 
 import { init } from './base.svelte.js'
-import { onMount } from 'svelte'
 
 
 let { appName, children } = $props()
@@ -37,6 +37,7 @@ if (browser) {
 	})
 }
 })
+
 </script>
 
 <svelte:head>
@@ -52,9 +53,8 @@ if (browser) {
 	{@html '<script>' + partytownSnippet() + '</script>'}
 </svelte:head>
 
-<div>
+<ModeWatcher />
 	{@render children()}
-	<ModeWatcher />
 	<Toaster
 		closeButton
 		hotkey={['']}
@@ -90,4 +90,3 @@ if (browser) {
 		visibleToasts={9}
 	/>
 	<div id="Top_Layout_Check"></div>
-</div>

@@ -24,7 +24,9 @@ html {
 
 body {
 	min-block-size: 100%;
+	inline-size: 100svi;
 	margin: 0;
+	background-color: var(--background);
 }
 
 *,
