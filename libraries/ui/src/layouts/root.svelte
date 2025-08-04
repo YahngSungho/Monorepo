@@ -21,7 +21,6 @@ Sentry.setTag('App Name', appName)
 onMount(() => {
 	init()
 
-
 	if (browser) {
 		onNavigate((navigation) => {
 			if (!document.startViewTransition) {
