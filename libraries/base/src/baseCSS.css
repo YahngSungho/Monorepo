@@ -23,8 +23,8 @@ html {
 }
 
 body {
-	min-block-size: 100%;
 	inline-size: 100svi;
+	min-block-size: 100%;
 	margin: 0;
 	background-color: var(--background);
 }
@@ -250,6 +250,6 @@ sup {
 
 [type='button'] > .with-icon {
 	position: relative;
-	inset-inline-start: -0.4em;
 	bottom: 0.15em;
+	inset-inline-start: -0.4em;
 }

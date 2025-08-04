@@ -14,7 +14,6 @@ import { Toaster } from '$shadcn/components/ui/sonner/index'
 
 import { init } from './base.svelte.js'
 
-
 let { appName, children } = $props()
 
 onMount(() => {
@@ -22,22 +21,21 @@ onMount(() => {
 
 	Sentry.setTag('App Name', appName)
 
-if (browser) {
-	onNavigate((navigation) => {
-		if (!document.startViewTransition) {
-			return
-		}
+	if (browser) {
+		onNavigate((navigation) => {
+			if (!document.startViewTransition) {
+				return
+			}
 
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve()
-				await navigation.complete
+			return new Promise((resolve) => {
+				document.startViewTransition(async () => {
+					resolve()
+					await navigation.complete
+				})
 			})
 		})
-	})
-}
+	}
 })
-
 </script>
 
 <svelte:head>
@@ -54,39 +52,39 @@ if (browser) {
 </svelte:head>
 
 <ModeWatcher />
-	{@render children()}
-	<Toaster
-		closeButton
-		hotkey={['']}
-		position="bottom-center"
-		toastOptions={{
-			classes: {
-				toast: css`
-					cursor: default;
-					align-items: flex-start;
-				`,
-				title: css`
-					font-weight: var(--font-weight-semibold);
-				`,
-				description: '',
-				actionButton: '',
-				cancelButton: '',
-				closeButton: css`
-					inline-size: 20px !important;
-					block-size: 20px !important;
-					inset-block-start: -10px !important;
-					inset-block-end: auto !important;
-					inset-inline-end: 0 !important;
-					inset-inline-start: auto !important;
-					transform: none !important;
-					color: var(--foreground) !important;
-				`,
-				icon: css`
-					inset-block-start: 0.15em;
-					color: var(--foreground) !important;
-				`,
-			},
-		}}
-		visibleToasts={9}
-	/>
-	<div id="Top_Layout_Check"></div>
+{@render children()}
+<Toaster
+	closeButton
+	hotkey={['']}
+	position="bottom-center"
+	toastOptions={{
+		classes: {
+			toast: css`
+				cursor: default;
+				align-items: flex-start;
+			`,
+			title: css`
+				font-weight: var(--font-weight-semibold);
+			`,
+			description: '',
+			actionButton: '',
+			cancelButton: '',
+			closeButton: css`
+				inline-size: 20px !important;
+				block-size: 20px !important;
+				inset-block-start: -10px !important;
+				inset-block-end: auto !important;
+				inset-inline-end: 0 !important;
+				inset-inline-start: auto !important;
+				transform: none !important;
+				color: var(--foreground) !important;
+			`,
+			icon: css`
+				inset-block-start: 0.15em;
+				color: var(--foreground) !important;
+			`,
+		},
+	}}
+	visibleToasts={9}
+/>
+<div id="Top_Layout_Check"></div>
