@@ -16,10 +16,11 @@ import { init } from './base.svelte.js'
 
 let { appName, children } = $props()
 
+Sentry.setTag('App Name', appName)
+
 onMount(() => {
 	init()
 
-	Sentry.setTag('App Name', appName)
 
 	if (browser) {
 		onNavigate((navigation) => {
