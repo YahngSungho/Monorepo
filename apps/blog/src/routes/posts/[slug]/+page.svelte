@@ -52,8 +52,13 @@ onMount(() => {
 	markAsVisited(data.currentMetadata?.slug)
 })
 
-// 현재 URL 계산
-let currentCanonicalUrl = $derived(`https://sungho.blog${page.url.pathname}`)
+// 현재 URL 계산 (경로의 마지막 부분만 사용)
+let currentCanonicalUrl = $derived.by(() => {
+	// 경로의 마지막 segment(slug)만 추출
+	const pathSegments = page.url.pathname.split('/').filter(Boolean)
+	const slug = pathSegments.at(-1)
+	return `https://sungho.blog/posts/${slug}`
+})
 
 // JSON-LD 데이터 생성
 let jsonLd = $derived({

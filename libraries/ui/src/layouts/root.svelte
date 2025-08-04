@@ -12,12 +12,15 @@ import { onNavigate } from '$app/navigation'
 import { Toaster } from '$shadcn/components/ui/sonner/index'
 
 import { init } from './base.svelte.js'
+import { onMount } from 'svelte'
 
-init()
 
 let { appName, children } = $props()
 
-Sentry.setTag('App Name', appName)
+onMount(() => {
+	init()
+
+	Sentry.setTag('App Name', appName)
 
 if (browser) {
 	onNavigate((navigation) => {
@@ -33,6 +36,7 @@ if (browser) {
 		})
 	})
 }
+})
 </script>
 
 <svelte:head>
