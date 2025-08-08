@@ -5,12 +5,11 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"build:dotenv": "dotenv -e ../../.env vite build",
 		"build:en": "vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
-		"dev": "dotenv -e ../../.env vite dev",
+		"dev": "vite dev",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
@@ -21,10 +20,9 @@
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"translate": "node ./src/translation/scripts.js",
-		"translate:dotenv": "dotenv -e ../../.env node ./src/translation/scripts.js",
+		"translate:dotenv": "node --env-file=../../.env ./src/translation/scripts.js",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview",
-		"previewWithDotenv": "dotenv -e ../../.env vite preview",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
 	},
 	"dependencies": {

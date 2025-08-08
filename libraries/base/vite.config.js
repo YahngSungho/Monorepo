@@ -20,6 +20,7 @@ if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'p
 }
 
 const baseConfig = defineConfig({
+	envDir: '../../',
 	build: {
 		sourcemap: currentEnv === 'development' ? true : 'hidden', // Sentry 설정에서 sourcemap 파일 지움
 		cssMinify: 'lightningcss',

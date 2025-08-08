@@ -3,6 +3,10 @@
 	"globalDependencies": [],
 	"globalEnv": ["NODE_ENV", "CF_PAGES_BRANCH"],
 	"globalPassThroughEnv": [
+		"MAILGUN",
+		"MAILGUN_SENDING",
+		"VITE_PUBLIC_SUPABASE_URL",
+		"VITE_PUBLIC_SUPABASE_ANON_KEY",
 		"GEMINI_API_KEY",
 		"GOOGLE_GENERATIVE_AI_API_KEY",
 		"CI",
