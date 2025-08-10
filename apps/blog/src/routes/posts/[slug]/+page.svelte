@@ -3,7 +3,7 @@ import { create } from '@library/helpers/mutative'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import Markdown from '@library/ui/markdown-blog'
-import { getContext, onMount } from 'svelte'
+import { getContext } from 'svelte'
 
 import { page } from '$app/state'
 import PostList from '$lib/components/postList.svelte'
@@ -48,7 +48,7 @@ let nearMetadata = $derived.by(() => {
 	return allMetadata2.slice(startIndex, endIndex)
 })
 
-onMount(() => {
+$effect(() => {
 	markAsVisited(data.currentMetadata?.slug)
 })
 

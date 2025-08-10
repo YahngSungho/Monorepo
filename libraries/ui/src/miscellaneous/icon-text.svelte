@@ -16,9 +16,11 @@ let {
 
 {#snippet iconElement()}
 	<span class="icon-container" class:noMargin class:right class:small>
-		{#if iconName}
-			<iconify-icon icon={iconName} {...iconProps}></iconify-icon>
-		{/if}
+		<span>
+			{#if iconName}
+				<iconify-icon icon={iconName} {...iconProps}></iconify-icon>
+			{/if}
+		</span>
 	</span>
 {/snippet}
 
@@ -56,8 +58,6 @@ let {
 		display: inline-block;
 		flex-shrink: 0;
 
-		inline-size: 1em;
-		block-size: 1em;
 		margin-inline-end: 0.5ch;
 
 		font-size: 1.2em;
@@ -73,10 +73,15 @@ let {
 
 		&.small {
 			inset-block-start: -0.4ex;
+			font-size: 0.8em;
+		}
+
+		& > span {
+			display: inline-block;
 			inline-size: 1em;
 			block-size: 1em;
-			font-size: 0.8em;
 		}
 	}
 }
+
 </style>
