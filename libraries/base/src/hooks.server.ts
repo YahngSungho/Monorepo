@@ -7,8 +7,6 @@ import type { Handle } from '@sveltejs/kit'
 const isDeployEnv =
 	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'
 
-import { sequence } from '@sveltejs/kit/hooks'
-
 // 에러 핸들러 정의
 const myErrorHandler = ({ error, event }) => {
 	console.error('서버 측에서 오류 발생:', error, event)
@@ -77,7 +75,7 @@ const junkRequestHandle: Handle = async ({ event, resolve }) => {
 }
 
 // 모든 핸들러를 sequence로 결합
-export const handle = sequence(
+export const defaultHandlers: Handle[] = [
 	// 불필요한 요청 무시 핸들러 추가
 	junkRequestHandle,
 	// Sentry 초기화 핸들러 (가장 먼저 실행되도록 하는 것이 일반적)
@@ -91,4 +89,4 @@ export const handle = sequence(
 	paraglideHandle,
 	// Emotion SSR 핸들러 (Paraglide 이후 또는 필요에 따라 순서 조정 가능)
 	emotionSsrHandle,
-)
+]
