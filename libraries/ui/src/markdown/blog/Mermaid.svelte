@@ -1,12 +1,14 @@
 <script module>
 import './mermaid.css'
 
-import mermaid from 'mermaid'
-import { mode } from 'mode-watcher'
 import { nanoid } from 'nanoid'
-import { tick } from 'svelte'
 
 import { initMermaidTheme_action } from './mermaid-theme'
+
+// 테마+정의 기반으로 SVG 결과를 캐시하여 재사용
+// key: `${mode}:${definition}` -> value: svg string
+/** @type {Record<string, string>} */
+let svgCache = Object.create(null)
 
 /**
  * Mermaid 플로우차트 SVG 요소에 노드 hover 시 연결 요소 하이라이트 기능을 초기화합니다.
@@ -159,10 +161,12 @@ function initializeMermaidHover_action(svgElement) {
 	// console.log(`Mermaid hover effect initialized for SVG: #${svgElement.id}`);
 }
 
-const initMermaidThemePromise = $derived(initMermaidTheme_action(mode.current))
 </script>
 
 <script>
+import mermaid from 'mermaid'
+import { mode } from 'mode-watcher'
+import { tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
 
 const ast = getAstNode()
@@ -175,17 +179,26 @@ const id = `mermaid-${nanoid()}` // 각 인스턴스별 고유 ID
 // AST 노드에서 원본 텍스트 추출
 let rawText = $state(ast.current.children?.[0]?.value ?? '')
 
+// 테마 모드에 반응적으로 의존하는 초기화 Promise를 인스턴스 컨텍스트에서 관리
+const initMermaidThemePromise = $derived.by(() => initMermaidTheme_action(mode.current))
+
+// 동시 실행되는 렌더의 순서를 제어하기 위한 시퀀스 토큰
+let renderSequence = 0
+
 // 테마 변경 및 원본 텍스트 변경에 반응하여 Mermaid 차트를 렌더링/재렌더링하는 $effect
 $effect(() => {
-	// 1. $effect의 동기적 컨텍스트에서 의존성을 먼저 읽어서 등록합니다.
+	// 1) 동기 구간에서 의존성 등록: 테마와 원본 텍스트, 초기화 프라미스
+	const currentMode = mode.current
+	const raw = rawText
+	const initPromise = initMermaidThemePromise
+	const thisRenderSeq = ++renderSequence
 
-	// $effect는 비동기 콜백을 직접 지원하지 않으므로,
-	// 즉시 실행 비동기 함수(IIFE) 패턴을 사용합니다.
+	// 2) 비동기 작업은 IIFE 내부에서 수행
 	;(async () => {
-		// 2. 등록된 의존성의 값을 비동기 로직에서 사용합니다.
-		await initMermaidThemePromise
+		// 등록된 의존성의 값을 사용
+		await initPromise
 
-		const definition = rawText
+		const definition = raw
 			.split(String.raw`\n`) // 줄 단위로 분리
 			.filter((line) => !/^\s*%%/.test(line)) // '%%' 주석 라인 제거
 			.join(String.raw`\n`) // 다시 문자열로 합침
@@ -200,9 +213,34 @@ $effect(() => {
 		errorMessage = ''
 
 		try {
-			await tick()
+			// 2) 캐시 조회: 동일 테마 + 동일 정의면 즉시 사용
+			const cacheKey = `${currentMode}:${definition}`
+			const cached = svgCache[cacheKey]
+			if (cached) {
+				if (thisRenderSeq !== renderSequence) return
+				svgContent = cached
+				// hover 초기화는 아래에서 idle로 지연 처리
+				await tick()
+				const svgElementCached = element?.querySelector('svg')
+				if (svgElementCached) {
+					const start = () => initializeMermaidHover_action(svgElementCached)
+					if ('requestIdleCallback' in globalThis) {
+						// @ts-ignore
+						requestIdleCallback(start, { timeout: 500 })
+					} else {
+						setTimeout(start, 0)
+					}
+				}
+				return
+			}
+
 			// 비동기적으로 Mermaid 렌더링 실행
 			const { svg, bindFunctions } = await mermaid.render(id, definition)
+
+			// 최신 렌더가 아닐 경우 폐기
+			if (thisRenderSeq !== renderSequence) return
+			// 캐시에 저장 후 반영 (불변 갱신으로 경합 경고 회피)
+			svgCache = { ...svgCache, [cacheKey]: svg }
 			svgContent = svg // 성공 시 SVG 콘텐츠 업데이트
 
 			await tick() // DOM 업데이트 기다리기
@@ -212,7 +250,14 @@ $effect(() => {
 			}
 			const svgElement = element?.querySelector('svg') // 렌더링된 SVG 찾기 (element가 있을 때만)
 			if (svgElement) {
-				initializeMermaidHover_action(svgElement) // 커스텀 hover 초기화
+				// 4) Hover 초기화는 유휴 시간에 지연 수행하여 초기 페인트 방해 최소화
+				const start = () => initializeMermaidHover_action(svgElement)
+				if ('requestIdleCallback' in globalThis) {
+					// @ts-ignore
+					requestIdleCallback(start, { timeout: 500 })
+				} else {
+					setTimeout(start, 0)
+				}
 			}
 		} catch (error) {
 			// 오류 발생 시, 이전 렌더링을 유지하기보다는 오류 메시지를 명확히 보여주는 것이 좋을 수 있습니다.
