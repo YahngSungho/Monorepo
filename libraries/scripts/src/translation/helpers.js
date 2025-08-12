@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 
 import { getAbsolutePath } from '@library/helpers/fs-sync'
-import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/helper-functions'
+import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 

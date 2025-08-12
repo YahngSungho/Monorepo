@@ -148,7 +148,7 @@ Monorepo/
 #### 2.2.4. `@library/helpers`
 
 - **Description**: Provides general-purpose utility functions, data structures, and library wrappers. (Primarily JS).
-- **Key Exports & Functionality**: `./R` (Ramda/Rambda wrapper), `./monads`, `./mutative`, `./random_engine`, `./fs-async`, `./fs-sync`, `./helper-functions`.
+- **Key Exports & Functionality**: `./R` (Ramda/Rambda wrapper), `./monads`, `./mutative`, `./random_engine`, `./fs-async`, `./fs-sync`, `./functions`.
 - **Dependencies**: `@library/library-base`, `mutative`, `rambda`, `ramda`, `tinyglobby`.
 
 #### 2.2.5. `@library/llms`

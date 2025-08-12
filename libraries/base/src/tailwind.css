@@ -23,6 +23,7 @@
 }
 
 /* Shadcn variables 덮어쓰기 Or 확장 */
+/* Warn: mermaid-theme.js에 이거 기준으로 하드코딩 했었음. 만약 아래 값 변경되면 그거 따라서 변경해야 함. */
 html {
 	--background: var(--gray-0);
 	--foreground: var(--gray-12);

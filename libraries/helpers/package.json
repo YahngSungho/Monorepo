@@ -31,7 +31,7 @@
 		"./R": "./src/library-wrappers/R.js",
 		"./fs-async": "./src/file-systems/async.js",
 		"./fs-sync": "./src/file-systems/sync.js",
-		"./helper-functions": "./src/functions/index.js",
+		"./functions": "./src/functions/index.js",
 		"./processText": "./src/functions/processText.js"
 	}
 }

@@ -2,7 +2,7 @@
 import fs from 'node:fs' // fs 모의 위해 임포트
 
 import { getAbsolutePath } from '@library/helpers/fs-sync' // 경로 헬퍼 모의 위해 임포트
-import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/helper-functions'
+import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/functions'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -18,8 +18,8 @@ import {
 // --- 모의 설정 ---
 
 // generateKeyNumberFunctions 모의
-vi.mock('@library/helpers/helper-functions', async () => {
-	const actual = await vi.importActual('@library/helpers/helper-functions')
+vi.mock('@library/helpers/functions', async () => {
+	const actual = await vi.importActual('@library/helpers/functions')
 	return {
 		...actual,
 		generateKeyNumberFunctions: vi.fn(),

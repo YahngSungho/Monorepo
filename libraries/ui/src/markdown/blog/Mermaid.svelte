@@ -5,10 +5,86 @@ import { nanoid } from 'nanoid'
 
 import { initMermaidTheme_action } from './mermaid-theme'
 
-// 테마+정의 기반으로 SVG 결과를 캐시하여 재사용
-// key: `${mode}:${definition}` -> value: svg string
-/** @type {Record<string, string>} */
-let svgCache = Object.create(null)
+// 테마+정의 기반으로 SVG 결과를 캐시하여 재사용 (LRU + TTL)
+// key: `${mode}:${definition}` -> value: { svg, expiresAt }
+/** @typedef {{ svg: string, expiresAt: number }} SvgCacheEntry */
+/** @type {Record<string, SvgCacheEntry>} */
+let svgCacheEntries = Object.create(null)
+/** @type {string[]} */
+let svgCacheOrder = [] // oldest -> newest
+// 적절한 기본값: 최대 50개 보관, 10분 TTL
+const CACHE_MAX_ENTRIES = 50
+const CACHE_TTL_MS = 1000 * 60 * 10
+
+/**
+ * 캐시에서 SVG를 조회합니다. 만료되었으면 제거하고 빈 문자열을 반환합니다.
+ * LRU 정책을 위해 조회 시 최신으로 갱신합니다.
+ * @param {string} cacheKey
+ * @returns {string} svg 문자열 또는 빈 문자열
+ */
+function getCachedSvg_action(cacheKey) {
+    const entry = svgCacheEntries[cacheKey]
+    if (!entry) return ''
+    if (Date.now() > entry.expiresAt) {
+        delete svgCacheEntries[cacheKey]
+        removeKeyFromOrder(cacheKey)
+        return ''
+    }
+    // LRU: 가장 최근 조회로 갱신 (끝으로 이동)
+    moveKeyToEnd(cacheKey)
+    return entry.svg
+}
+
+/**
+ * 캐시에 SVG를 저장하고 용량 초과 시 LRU로 제거합니다.
+ * @param {string} cacheKey
+ * @param {string} svg
+ */
+function setCachedSvg_action(cacheKey, svg) {
+    svgCacheEntries[cacheKey] = { svg, expiresAt: Date.now() + CACHE_TTL_MS }
+    moveKeyToEnd(cacheKey)
+    pruneCacheIfNeeded_action()
+    schedulePurge_action()
+}
+
+function moveKeyToEnd(cacheKey) {
+    const idx = svgCacheOrder.indexOf(cacheKey)
+    if (idx !== -1) svgCacheOrder.splice(idx, 1)
+    svgCacheOrder.push(cacheKey)
+}
+
+function removeKeyFromOrder(cacheKey) {
+    const idx = svgCacheOrder.indexOf(cacheKey)
+    if (idx !== -1) svgCacheOrder.splice(idx, 1)
+}
+
+/** 용량 초과 시 오래된 항목부터 제거 */
+function pruneCacheIfNeeded_action() {
+    while (svgCacheOrder.length > CACHE_MAX_ENTRIES) {
+        const oldestKey = svgCacheOrder.shift()
+        if (oldestKey == null) break
+        delete svgCacheEntries[oldestKey]
+    }
+}
+
+/** 만료된 항목만 일괄 제거 (O(n)) */
+function purgeExpiredEntries_action() {
+    const now = Date.now()
+    /** @type {string[]} */
+    const keysToRemove = []
+    for (const key of svgCacheOrder) {
+        const entry = svgCacheEntries[key]
+        if (!entry || entry.expiresAt <= now) keysToRemove.push(key)
+    }
+    for (const key of keysToRemove) {
+        delete svgCacheEntries[key]
+        removeKeyFromOrder(key)
+    }
+}
+
+function schedulePurge_action() {
+    idleRun_action(purgeExpiredEntries_action)
+}
 
 /**
  * Mermaid 플로우차트 SVG 요소에 노드 hover 시 연결 요소 하이라이트 기능을 초기화합니다.
@@ -168,6 +244,7 @@ import mermaid from 'mermaid'
 import { mode } from 'mode-watcher'
 import { tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
+import { idleRun_action } from '@library/helpers/functions'
 
 const ast = getAstNode()
 
@@ -213,9 +290,9 @@ $effect(() => {
 		errorMessage = ''
 
 		try {
-			// 2) 캐시 조회: 동일 테마 + 동일 정의면 즉시 사용
+			// 2) 캐시 조회: 동일 테마 + 동일 정의면 즉시 사용 (LRU/TTL)
 			const cacheKey = `${currentMode}:${definition}`
-			const cached = svgCache[cacheKey]
+			const cached = getCachedSvg_action(cacheKey)
 			if (cached) {
 				if (thisRenderSeq !== renderSequence) return
 				svgContent = cached
@@ -223,13 +300,7 @@ $effect(() => {
 				await tick()
 				const svgElementCached = element?.querySelector('svg')
 				if (svgElementCached) {
-					const start = () => initializeMermaidHover_action(svgElementCached)
-					if ('requestIdleCallback' in globalThis) {
-						// @ts-ignore
-						requestIdleCallback(start, { timeout: 500 })
-					} else {
-						setTimeout(start, 0)
-					}
+					idleRun_action(() => initializeMermaidHover_action(svgElementCached))
 				}
 				return
 			}
@@ -239,8 +310,8 @@ $effect(() => {
 
 			// 최신 렌더가 아닐 경우 폐기
 			if (thisRenderSeq !== renderSequence) return
-			// 캐시에 저장 후 반영 (불변 갱신으로 경합 경고 회피)
-			svgCache = { ...svgCache, [cacheKey]: svg }
+			// 캐시에 저장 후 반영 (LRU/TTL)
+			setCachedSvg_action(cacheKey, svg)
 			svgContent = svg // 성공 시 SVG 콘텐츠 업데이트
 
 			await tick() // DOM 업데이트 기다리기
@@ -251,13 +322,7 @@ $effect(() => {
 			const svgElement = element?.querySelector('svg') // 렌더링된 SVG 찾기 (element가 있을 때만)
 			if (svgElement) {
 				// 4) Hover 초기화는 유휴 시간에 지연 수행하여 초기 페인트 방해 최소화
-				const start = () => initializeMermaidHover_action(svgElement)
-				if ('requestIdleCallback' in globalThis) {
-					// @ts-ignore
-					requestIdleCallback(start, { timeout: 500 })
-				} else {
-					setTimeout(start, 0)
-				}
+				idleRun_action(() => initializeMermaidHover_action(svgElement))
 			}
 		} catch (error) {
 			// 오류 발생 시, 이전 렌더링을 유지하기보다는 오류 메시지를 명확히 보여주는 것이 좋을 수 있습니다.

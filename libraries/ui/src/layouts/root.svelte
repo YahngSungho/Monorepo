@@ -19,7 +19,7 @@ let { appName, children } = $props()
 Sentry.setTag('App Name', appName)
 
 onMount(() => {
-	init()
+	init(appName)
 
 	if (browser) {
 		onNavigate((navigation) => {
