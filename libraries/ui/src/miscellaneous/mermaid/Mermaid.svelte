@@ -3,7 +3,7 @@ import './mermaid.css'
 
 import { nanoid } from 'nanoid'
 
-import { initMermaidTheme_action } from './mermaid-theme'
+import { initMermaidTheme_action } from './mermaid-theme.js'
 
 // 테마+정의 기반으로 SVG 결과를 캐시하여 재사용 (LRU + TTL)
 // key: `${mode}:${definition}` -> value: { svg, expiresAt }
@@ -240,11 +240,11 @@ function initializeMermaidHover_action(svgElement) {
 </script>
 
 <script>
+import { idleRun_action } from '@library/helpers/functions'
 import mermaid from 'mermaid'
 import { mode } from 'mode-watcher'
 import { tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
-import { idleRun_action } from '@library/helpers/functions'
 
 const ast = getAstNode()
 

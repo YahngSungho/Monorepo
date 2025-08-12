@@ -1,7 +1,7 @@
 import { idleRun_action } from '@library/helpers/functions'
 import { mode } from 'mode-watcher'
 
-import { initMermaidTheme_action } from '../markdown/blog/mermaid-theme.js'
+import { initMermaidTheme_action } from '../miscellaneous/mermaid/mermaid-theme.js'
 
 export function init(appName) {
 	// 모바일 브라우저에서 가상 키보드의 크기 고려 안하기
