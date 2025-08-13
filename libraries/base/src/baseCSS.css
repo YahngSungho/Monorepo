@@ -76,19 +76,33 @@ button,
 
 	appearance: auto;
 
-	&:active,
+	transition-property: color, background-color, border-color, box-shadow, opacity;
+	transition-duration: .2s;
+	transition-timing-function: cubic-bezier(0,0,.2,1);
+
 	&:hover {
-		opacity: 0.7;
+		opacity: 0.68;
+	}
+	&:active {
+		opacity: 1;
+		transition-duration: .1s;
 	}
 }
 
 a,
-.toggle,
+.interactive,
 input[type='checkbox'],
 input[type='radio'] {
-	&:active,
+	transition-property: opacity;
+	transition-duration: .2s;
+	transition-timing-function: cubic-bezier(0,0,.2,1);
+
 	&:hover {
-		opacity: 0.7;
+		opacity: 0.68;
+	}
+	&:active {
+		opacity: 1;
+		transition-duration: .1s;
 	}
 }
 

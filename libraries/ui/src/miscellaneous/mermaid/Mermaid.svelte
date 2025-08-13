@@ -12,9 +12,9 @@ import { initMermaidTheme_action } from './mermaid-theme.js'
 /** @typedef {{ svg: string, expiresAt: number }} SvgCacheEntry */
 /** @typedef {{ entries: Record<string, SvgCacheEntry>, order: string[] }} SvgCache */
 
-// 적절한 기본값: 최대 50개 보관, 10분 TTL
+// 최대 50개 보관, 10일 TTL
 const CACHE_MAX_ENTRIES = 50
-const CACHE_TTL_MS = 1000 * 60 * 10
+const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 10
 const STORAGE_KEY = 'ui:mermaid:svg-cache'
 
 /**

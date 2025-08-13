@@ -491,7 +491,4 @@ let jsonLd = $derived({
 	transform: scaleY(-1) scaleX(-1);
 }
 
-.visibility-hidden {
-	visibility: hidden;
-}
 </style>

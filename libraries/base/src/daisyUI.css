@@ -1,5 +1,15 @@
 @plugin 'daisyui';
 
+
+.toggle {
+	&:hover {
+		opacity: 0.68;
+	}
+	&:active {
+		opacity: 1;
+	}
+}
+
 .join:not(.join-vertical) > * + * {
 	position: relative;
 	inset-inline-end: var(--border-size-2);
