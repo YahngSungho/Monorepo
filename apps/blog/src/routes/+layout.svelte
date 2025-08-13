@@ -162,7 +162,13 @@ let jsonLd = $derived({
 <svelte:window bind:scrollY={y} />
 
 <BaseLayout appName={APP_NAME}>
-	<div class="with-sidebar">
+	<div class="with-sidebar boxed">
+		<div class="main boxed">
+			<div class="long-text">
+				{@render children()}
+			</div>
+		</div>
+
 		<div class="sidebar boxed">
 			<div
 				style=" position: relative;display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);"
@@ -176,19 +182,19 @@ let jsonLd = $derived({
 					role="progressbar"
 				></div>
 
+				<div style="z-index: 1; inline-size: fit-content; background-color: var(--color-base-100);">
+					<VariationSetter {getLocale} {setLocale} size="sm" />
+				</div>
+
 				<div style=" z-index: 1;display: flex; flex-direction: column; inline-size: fit-content;">
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 					<!-- <div style="font-size: var(--font-size-fluid-em-cqi-02);">
 					sunghoyahng@gmail.com
 				</div> -->
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-size: var(--font-size-fluid-em-cqi-5); font-weight: 900;" href="/">
+					<Link style="font-size: min(calc(100cqi / 6), 5em); font-weight: 900;" href="/">
 						sungho.blog
 					</Link>
-				</div>
-
-				<div style="z-index: 1; inline-size: fit-content; background-color: var(--color-base-100);">
-					<VariationSetter {getLocale} {setLocale} size="sm" />
 				</div>
 
 				<div
@@ -245,10 +251,6 @@ let jsonLd = $derived({
 				</div>
 			</div>
 		</div>
-
-		<div class="main boxed">
-			{@render children()}
-		</div>
 	</div>
 
 	{#if y > 400}
@@ -257,7 +259,7 @@ let jsonLd = $derived({
 			position: fixed;
 			z-index: var(--layer-important);
 			inset-block-end: var(--space-em-cqi-m);
-			inset-inline-start: var(--space-em-cqi-m);
+			inset-inline-end: var(--space-em-cqi-m);
 
 			background-color: var(--background);
 		"
@@ -280,36 +282,58 @@ let jsonLd = $derived({
 	color: var(--color-success);
 }
 
-.sidebar {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-em-cqi-m);
-	padding: var(--space-em-cqi-m);
-	/* border: 2px dashed black; */
-}
-
-.main {
-	overflow: auto;
-	padding: var(--space-em-cqi-m);
-	padding-block-end: calc(var(--space-em-cqi-m) + var(--space-em-cqi-xl));
-}
-
 .with-sidebar {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0;
+	block-size: 100svb;
+	overflow: auto;
+	scrollbar-gutter: stable;
 
-	& > :first-child {
-		flex-basis: 28rem;
+
+	& > .sidebar {
+		/* flex-basis를 밑의 breakpoint랑 일치시켜야함 */
+		flex-basis: 25rem;
 		flex-grow: 1;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-em-cqi-m);
+	padding: var(--space-em-cqi-m);
+	margin-top: auto;
 	}
 
-	& > :last-child {
+	& > .main {
 		flex-basis: 0;
 		flex-grow: 999;
+		/* min-inline-size를 밑의 breakpoint랑 일치시켜야함 */
 		min-inline-size: 60%;
+
+		overflow: visible;
+		max-block-size: none;
+
+	padding: var(--space-em-cqi-m);
+	padding-block-end: calc(var(--space-em-cqi-m) + var(--space-em-cqi-xl));
 	}
 }
+
+/* flex-wrap이 작동하지 **않았을** 시의 CSS */
+@container (min-width: calc(25rem / (1 - 0.6))) {
+	.with-sidebar {
+		overflow: visible;
+		scrollbar-gutter: auto;
+	}
+	.with-sidebar > .main {
+		overflow: auto;
+		max-block-size: 100svb;
+
+	}
+	.with-sidebar > .sidebar {
+		margin-top: 0;
+	}
+}
+
+
 
 .radial-progress {
 	--size: 10em;

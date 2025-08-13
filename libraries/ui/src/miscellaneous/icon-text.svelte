@@ -1,6 +1,3 @@
-<script module>
-</script>
-
 <script>
 let {
 	children = null,
