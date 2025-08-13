@@ -13,6 +13,7 @@ import store from 'store'
 import { onMount, setContext } from 'svelte'
 import { slide } from 'svelte/transition'
 
+import { afterNavigate } from '$app/navigation'
 import { page } from '$app/state'
 
 import { APP_NAME } from './base'
@@ -81,14 +82,127 @@ let progress = $derived(Math.floor((visitedCount / (totalCount || 1)) * 100))
 
 let sharingButtonsOpen = $state(false)
 
-let y = $state(0)
+// 스크롤 타겟 요소 및 상태 관리
+let withSidebarEl
+let mainEl
+let activeEl = $state(null)
+let scrollTop = $state(0)
+let scrollHeight = $state(0)
+let clientHeight = $state(0)
 
-function scrollToTop() {
-	window.scrollTo({
-		top: 0,
-		behavior: 'smooth',
-	})
+function isScrollable(el) {
+	return !!el && el.scrollHeight > el.clientHeight + 1
 }
+function setupScrollElement_action (element) {
+	scrollHeight = element.scrollHeight
+	clientHeight = element.clientHeight
+	scrollTop = element.scrollTop
+}
+
+function pickScrollTarget() {
+	// 1) 최근 사용한 엘리먼트가 스크롤 가능하면 우선
+	if (activeEl && isScrollable(activeEl)) return activeEl
+	// 2) 스크롤 가능 후보 중에서 스크롤 여유가 큰 것 우선
+	const candidates = [withSidebarEl, mainEl].filter(isScrollable)
+	if (candidates.length > 0) {
+		const sorted = candidates.toSorted(
+			(a, b) => (b.scrollHeight - b.clientHeight) - (a.scrollHeight - a.clientHeight),
+		)
+		return sorted[0]
+	}
+	// 3) 마지막 수단
+	return withSidebarEl || mainEl || null
+}
+
+function handleWithScroll_action() {
+	if (!withSidebarEl) return
+	activeEl = withSidebarEl
+	scrollTop = withSidebarEl.scrollTop
+	scrollHeight = withSidebarEl.scrollHeight
+	clientHeight = withSidebarEl.clientHeight
+}
+
+function handleMainScroll_action() {
+	if (!mainEl) return
+	activeEl = mainEl
+	scrollTop = mainEl.scrollTop
+	scrollHeight = mainEl.scrollHeight
+	clientHeight = mainEl.clientHeight
+}
+
+// 초기 활성 스크롤 타겟 설정
+$effect(() => {
+	if (!activeEl) {
+		if (isScrollable(withSidebarEl)) {
+			activeEl = withSidebarEl
+			setupScrollElement_action(withSidebarEl)
+		} else if (isScrollable(mainEl)) {
+			activeEl = mainEl
+			setupScrollElement_action(mainEl)
+		}
+	}
+})
+
+afterNavigate(() => {
+		// 3. window 전체 스크롤을 맨 위로 올립니다.
+		window.scrollTo(0, 0);
+
+		// 4. (만약 특정 요소가 스크롤 컨테이너라면) 그 요소의 스크롤을 맨 위로 올립니다.
+		// scrollableContainer가 마운트된 후에만 실행되도록 확인합니다.
+		if (withSidebarEl) {
+			withSidebarEl.scrollTop = 0;
+		}
+		if (mainEl) {
+			mainEl.scrollTop = 0;
+		}
+		scrollTop = 0
+
+		activeEl = pickScrollTarget()
+		setupScrollElement_action(activeEl)
+	});
+
+onMount(() => {
+    const ro = new ResizeObserver(() => {
+        activeEl = pickScrollTarget()
+    })
+    if (withSidebarEl) ro.observe(withSidebarEl)
+    if (mainEl) ro.observe(mainEl)
+    queueMicrotask(() => {
+        activeEl = pickScrollTarget()
+				setupScrollElement_action(activeEl)
+    })
+    return () => {
+        ro.disconnect()
+    }
+})
+
+function getActiveEl() {
+	return activeEl || pickScrollTarget()
+}
+
+function scrollToTop_action() {
+	const el = getActiveEl()
+	if (el && typeof el.scrollTo === 'function') {
+		el.scrollTo({ top: 0, behavior: 'smooth' })
+		return
+	}
+	window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function scrollToBottom_action() {
+	const el = getActiveEl()
+	if (el && typeof el.scrollTo === 'function') {
+		el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+	}
+}
+
+let showScrollTop = $derived.by(() => {
+	return scrollTop !== 0
+})
+
+let showScrollBottom = $derived.by(() => {
+	return scrollTop + clientHeight !== scrollHeight
+})
 
 const currentCanonicalUrl = 'https://sungho.blog'
 
@@ -159,11 +273,39 @@ let jsonLd = $derived({
 	{/if}
 </svelte:head>
 
-<svelte:window bind:scrollY={y} />
+{#snippet scrollButtons()}
+{#if showScrollTop || showScrollBottom}
+<div class="join join-vertical scroll-buttons">
+		<Button
+			class="join-item"
+			disabled={!showScrollTop}
+			iconName="mdi:chevron-double-up"
+			onclick={scrollToTop_action}
+			variant="outline"
+		></Button>
+		<Button
+			class="join-item"
+			disabled={!showScrollBottom}
+			iconName="mdi:chevron-double-down"
+			onclick={scrollToBottom_action}
+			variant="outline"
+		></Button>
+</div>
+{/if}
+{/snippet}
 
 <BaseLayout appName={APP_NAME}>
-	<div class="with-sidebar boxed">
-		<div class="main boxed">
+	{#if activeEl === withSidebarEl}
+			{@render scrollButtons()}
+		{/if}
+
+	<div bind:this={withSidebarEl} class="with-sidebar boxed" onscroll={handleWithScroll_action}>
+
+		{#if activeEl === mainEl}
+				{@render scrollButtons()}
+			{/if}
+
+		<div bind:this={mainEl} class="main boxed" onscroll={handleMainScroll_action}>
 			<div class="long-text">
 				{@render children()}
 			</div>
@@ -253,27 +395,18 @@ let jsonLd = $derived({
 		</div>
 	</div>
 
-	{#if y > 400}
-		<Button
-			style="
-			position: fixed;
-			z-index: var(--layer-important);
-			inset-block-end: var(--space-em-cqi-m);
-			inset-inline-end: var(--space-em-cqi-m);
-
-			background-color: var(--background);
-		"
-			iconName="mdi:chevron-double-up"
-			onclick={scrollToTop}
-			variant="outline"
-		>
-			맨 위로
-		</Button>
-	{/if}
 	<div id="Top2_Layout_Check"></div>
 </BaseLayout>
 
 <style>
+.scroll-buttons {
+	position: absolute;
+	z-index: var(--layer-important);
+	inset-block-end: var(--space-em-cqi-m);
+	inset-inline-end: var(--space-em-cqi-m);
+	background-color: var(--background);
+}
+
 .progress_0 {
 	opacity: 0;
 }
@@ -315,6 +448,11 @@ let jsonLd = $derived({
 	padding: var(--space-em-cqi-m);
 	padding-block-end: calc(var(--space-em-cqi-m) + var(--space-em-cqi-xl));
 	}
+
+	& > .scroll-buttons {
+		inset-inline-end: calc(var(--space-em-cqi-m) + 25rem);
+		inset-block-start: var(--space-em-cqi-m);
+	}
 }
 
 /* flex-wrap이 작동하지 **않았을** 시의 CSS */
@@ -343,5 +481,9 @@ let jsonLd = $derived({
 	inset-block-start: 0;
 	inset-inline-end: 0;
 	transform: scaleY(-1) scaleX(-1);
+}
+
+.visibility-hidden {
+	visibility: hidden;
 }
 </style>

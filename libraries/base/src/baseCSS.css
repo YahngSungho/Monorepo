@@ -248,8 +248,12 @@ sup {
 	font-size: 0.7em;
 }
 
-[type='button'] > .with-icon {
+.join:not(.join-vertical) > * + * {
 	position: relative;
-	bottom: 0.15em;
-	inset-inline-start: -0.4em;
+	inset-inline-end: var(--border-size-2);
+}
+
+.join.join-vertical > * + * {
+	position: relative;
+	inset-block-end: var(--border-size-2);
 }
