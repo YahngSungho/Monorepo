@@ -15,7 +15,7 @@ import themeDark from 'shiki/themes/vitesse-dark.mjs'
 import themeLight from 'shiki/themes/vitesse-light.mjs'
 
 import Markdown from '../default/Markdown.svelte'
-import Mermaid from './Mermaid.svelte'
+import Mermaid from '../../miscellaneous/mermaid/Mermaid.svelte'
 
 const highlighter = createHighlighterCoreSync({
 	themes: [themeLight, themeDark],

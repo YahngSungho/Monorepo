@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { normalizeString } from '@library/helpers/helper-functions'
+import { normalizeString } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 

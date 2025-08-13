@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { normalizeString } from '@library/helpers/helper-functions'
+import { normalizeString } from '@library/helpers/functions'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
