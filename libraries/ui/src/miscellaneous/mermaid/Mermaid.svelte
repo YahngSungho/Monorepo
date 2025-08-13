@@ -3,19 +3,42 @@ import './mermaid.css'
 
 import { idleRun_action } from '@library/helpers/functions'
 import { nanoid } from 'nanoid'
+import store from 'store'
 
 import { initMermaidTheme_action } from './mermaid-theme.js'
 
 // 테마+정의 기반으로 SVG 결과를 캐시하여 재사용 (LRU + TTL)
 // key: `${mode}:${definition}` -> value: { svg, expiresAt }
 /** @typedef {{ svg: string, expiresAt: number }} SvgCacheEntry */
-/** @type {Record<string, SvgCacheEntry>} */
-let svgCacheEntries = Object.create(null)
-/** @type {string[]} */
-let svgCacheOrder = [] // oldest -> newest
+/** @typedef {{ entries: Record<string, SvgCacheEntry>, order: string[] }} SvgCache */
+
 // 적절한 기본값: 최대 50개 보관, 10분 TTL
 const CACHE_MAX_ENTRIES = 50
 const CACHE_TTL_MS = 1000 * 60 * 10
+const STORAGE_KEY = 'ui:mermaid:svg-cache'
+
+/**
+ * 현재 캐시를 읽습니다. 없으면 초기 구조를 반환합니다.
+ * @returns {SvgCache}
+ */
+function readCache_action() {
+	const data = store.get(STORAGE_KEY)
+	if (!data || typeof data !== 'object') {
+		return { entries: Object.create(null), order: [] }
+	}
+	// entries 혹은 order가 비정상일 경우 복구
+	const entries = data.entries && typeof data.entries === 'object' ? data.entries : Object.create(null)
+	const order = Array.isArray(data.order) ? data.order.slice() : []
+	return { entries, order }
+}
+
+/**
+ * 캐시를 localStorage에 저장합니다.
+ * @param {SvgCache} cache
+ */
+function writeCache_action(cache) {
+	store.set(STORAGE_KEY, cache)
+}
 
 /**
  * 캐시에서 SVG를 조회합니다. 만료되었으면 제거하고 빈 문자열을 반환합니다.
@@ -24,16 +47,19 @@ const CACHE_TTL_MS = 1000 * 60 * 10
  * @returns {string} svg 문자열 또는 빈 문자열
  */
 function getCachedSvg_action(cacheKey) {
-    const entry = svgCacheEntries[cacheKey]
-    if (!entry) return ''
-    if (Date.now() > entry.expiresAt) {
-        delete svgCacheEntries[cacheKey]
-        removeKeyFromOrder(cacheKey)
-        return ''
-    }
-    // LRU: 가장 최근 조회로 갱신 (끝으로 이동)
-    moveKeyToEnd(cacheKey)
-    return entry.svg
+	const cache = readCache_action()
+	const entry = cache.entries[cacheKey]
+	if (!entry) return ''
+	if (Date.now() > entry.expiresAt) {
+		delete cache.entries[cacheKey]
+		removeKeyFromOrder_action(cache, cacheKey)
+		writeCache_action(cache)
+		return ''
+	}
+	// LRU: 가장 최근 조회로 갱신 (끝으로 이동)
+	moveKeyToEnd_action(cache, cacheKey)
+	writeCache_action(cache)
+	return entry.svg
 }
 
 /**
@@ -42,45 +68,49 @@ function getCachedSvg_action(cacheKey) {
  * @param {string} svg
  */
 function setCachedSvg_action(cacheKey, svg) {
-    svgCacheEntries[cacheKey] = { svg, expiresAt: Date.now() + CACHE_TTL_MS }
-    moveKeyToEnd(cacheKey)
-    pruneCacheIfNeeded_action()
-    schedulePurge_action()
+	const cache = readCache_action()
+	cache.entries[cacheKey] = { svg, expiresAt: Date.now() + CACHE_TTL_MS }
+	moveKeyToEnd_action(cache, cacheKey)
+	pruneCacheIfNeeded_action(cache)
+	writeCache_action(cache)
+	schedulePurge_action()
 }
 
-function moveKeyToEnd(cacheKey) {
-    const idx = svgCacheOrder.indexOf(cacheKey)
-    if (idx !== -1) svgCacheOrder.splice(idx, 1)
-    svgCacheOrder.push(cacheKey)
+function moveKeyToEnd_action(cache, cacheKey) {
+	const idx = cache.order.indexOf(cacheKey)
+	if (idx !== -1) cache.order.splice(idx, 1)
+	cache.order.push(cacheKey)
 }
 
-function removeKeyFromOrder(cacheKey) {
-    const idx = svgCacheOrder.indexOf(cacheKey)
-    if (idx !== -1) svgCacheOrder.splice(idx, 1)
+function removeKeyFromOrder_action(cache, cacheKey) {
+	const idx = cache.order.indexOf(cacheKey)
+	if (idx !== -1) cache.order.splice(idx, 1)
 }
 
 /** 용량 초과 시 오래된 항목부터 제거 */
-function pruneCacheIfNeeded_action() {
-    while (svgCacheOrder.length > CACHE_MAX_ENTRIES) {
-        const oldestKey = svgCacheOrder.shift()
-        if (oldestKey == null) break
-        delete svgCacheEntries[oldestKey]
-    }
+function pruneCacheIfNeeded_action(cache) {
+	while (cache.order.length > CACHE_MAX_ENTRIES) {
+		const oldestKey = cache.order.shift()
+		if (oldestKey == null) break
+		delete cache.entries[oldestKey]
+	}
 }
 
 /** 만료된 항목만 일괄 제거 (O(n)) */
 function purgeExpiredEntries_action() {
-    const now = Date.now()
-    /** @type {string[]} */
-    const keysToRemove = []
-    for (const key of svgCacheOrder) {
-        const entry = svgCacheEntries[key]
-        if (!entry || entry.expiresAt <= now) keysToRemove.push(key)
-    }
-    for (const key of keysToRemove) {
-        delete svgCacheEntries[key]
-        removeKeyFromOrder(key)
-    }
+	const cache = readCache_action()
+	const now = Date.now()
+	/** @type {string[]} */
+	const keysToRemove = []
+	for (const key of cache.order) {
+		const entry = cache.entries[key]
+		if (!entry || entry.expiresAt <= now) keysToRemove.push(key)
+	}
+	for (const key of keysToRemove) {
+		delete cache.entries[key]
+		removeKeyFromOrder_action(cache, key)
+	}
+	if (keysToRemove.length > 0) writeCache_action(cache)
 }
 
 function schedulePurge_action() {
@@ -327,14 +357,14 @@ $effect(() => {
 		} catch (error) {
 			// 오류 발생 시, 이전 렌더링을 유지하기보다는 오류 메시지를 명확히 보여주는 것이 좋을 수 있습니다.
 			// console.error('Mermaid rendering error:', error);
-			errorMessage = `Mermaid 렌더링 오류: ${error.message || String(error)}`
+			errorMessage = `Mermaid Rendering Error: ${error.message || String(error)}`
 			// svgContent = ''; // 오류 발생 시 이전 SVG를 지울지 여부는 선택사항
 		}
 	})()
 })
 </script>
 
-<div bind:this={element} style="color: blue;" class="mermaid-container">
+<div bind:this={element} class="mermaid-container">
 	{#if errorMessage}
 		<!-- 오류 발생 시 메시지와 원본 텍스트 표시 -->
 		<pre style:color="red;">{errorMessage}</pre>
