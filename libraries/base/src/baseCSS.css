@@ -223,14 +223,14 @@ blockquote {
 
 		/* 3. 컨테이너 쿼리 대응 */
 		/* Fix  */
-		@container (max-width: 20ch) {
+		@container (max-width: 40ch) {
 			::-webkit-scrollbar {
 				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 				width: 0.5ch;
 			}
 		}
 
-		@container (max-height: 20ex) {
+		@container (max-height: 40ex) {
 			::-webkit-scrollbar {
 				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 				height: 0.5ex;
@@ -246,14 +246,4 @@ mermaid {
 
 sup {
 	font-size: 0.7em;
-}
-
-.join:not(.join-vertical) > * + * {
-	position: relative;
-	inset-inline-end: var(--border-size-2);
-}
-
-.join.join-vertical > * + * {
-	position: relative;
-	inset-block-end: var(--border-size-2);
 }

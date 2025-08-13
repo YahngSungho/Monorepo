@@ -1,6 +1,7 @@
 <script>
 import '@library/base/fontStyle.css'
 
+import { idleRun_action } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button_daisy'
@@ -116,23 +117,28 @@ function pickScrollTarget() {
 
 function handleWithScroll_action() {
 	if (!withSidebarEl) return
-	activeEl = withSidebarEl
+	idleRun_action(() => {
+		activeEl = withSidebarEl
 	scrollTop = withSidebarEl.scrollTop
 	scrollHeight = withSidebarEl.scrollHeight
 	clientHeight = withSidebarEl.clientHeight
+	})
 }
 
 function handleMainScroll_action() {
 	if (!mainEl) return
-	activeEl = mainEl
-	scrollTop = mainEl.scrollTop
-	scrollHeight = mainEl.scrollHeight
-	clientHeight = mainEl.clientHeight
+	idleRun_action(() => {
+		activeEl = mainEl
+		scrollTop = mainEl.scrollTop
+		scrollHeight = mainEl.scrollHeight
+		clientHeight = mainEl.clientHeight
+	})
 }
 
 // 초기 활성 스크롤 타겟 설정
 $effect(() => {
-	if (!activeEl) {
+	idleRun_action(() => {
+		if (!activeEl) {
 		if (isScrollable(withSidebarEl)) {
 			activeEl = withSidebarEl
 			setupScrollElement_action(withSidebarEl)
@@ -141,6 +147,7 @@ $effect(() => {
 			setupScrollElement_action(mainEl)
 		}
 	}
+	})
 })
 
 afterNavigate(() => {
@@ -163,7 +170,9 @@ afterNavigate(() => {
 
 onMount(() => {
     const ro = new ResizeObserver(() => {
-        activeEl = pickScrollTarget()
+        idleRun_action(() => {
+					activeEl = pickScrollTarget()
+				})
     })
     if (withSidebarEl) ro.observe(withSidebarEl)
     if (mainEl) ro.observe(mainEl)
@@ -446,7 +455,6 @@ let jsonLd = $derived({
 		max-block-size: none;
 
 	padding: var(--space-em-cqi-m);
-	padding-block-end: calc(var(--space-em-cqi-m) + var(--space-em-cqi-xl));
 	}
 
 	& > .scroll-buttons {
@@ -464,7 +472,7 @@ let jsonLd = $derived({
 	.with-sidebar > .main {
 		overflow: auto;
 		max-block-size: 100svb;
-
+		padding-block-end: calc(var(--space-em-cqi-m) + var(--space-em-cqi-xl));
 	}
 	.with-sidebar > .sidebar {
 		margin-top: 0;
