@@ -6,7 +6,7 @@ html {
 
 	block-size: 100svb;
 
-	font-size: var(--font-size-fluid-1);
+	font-size: 20px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--font-lineheight-2);

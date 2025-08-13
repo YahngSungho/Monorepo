@@ -117,28 +117,20 @@ let jsonLd = $derived({
 	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 </svelte:head>
 
-<div
-	style="
-	overflow: visible;
-	max-inline-size: var(--size-content-4);
-	margin: auto;
-"
-	class="boxed long-text"
->
-	<div>
-		<h1>
-			{data.currentMetadata.title}
-		</h1>
-		{#if data.post}
-			<Markdown value={data.post} />
-		{/if}
-	</div>
 
-	<hr />
+<div>
+	<h1>
+		{data.currentMetadata.title}
+	</h1>
+	{#if data.post}
+		<Markdown value={data.post} />
+	{/if}
+</div>
 
-	<div>
-		<PostList allMetadata={nearMetadata} />
-	</div>
+<hr />
+
+<div>
+	<PostList allMetadata={nearMetadata} />
 </div>
 
 <div id="Page_Check"></div>
