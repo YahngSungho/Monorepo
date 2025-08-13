@@ -20,7 +20,7 @@ gap: var(--space-em-cqi-xs); inline-size: 100%;
 				display: block;
 				inline-size: fit-content;
 			`}
-			current={postMetadata.current}
+			active={postMetadata.current}
 			href={`/posts/${postMetadata.slug}`}
 		>
 			{#if postMetadata.current}

@@ -1,4 +1,6 @@
 <script>
+import { cx } from '@emotion/css'
+
 let {
 	children = null,
 	text = '',
@@ -7,12 +9,14 @@ let {
 	right = false,
 	noMargin = false,
 	small = false,
+	alone = false,
+	class: incomingClass = '',
 	...restProps
 } = $props()
 </script>
 
 {#snippet iconElement()}
-	<span class="icon-container" class:noMargin class:right class:small>
+	<span class="icon-container" class:alone={alone || (!children && !text)} class:noMargin class:right class:small>
 		<span>
 			{#if iconName}
 				<iconify-icon icon={iconName} {...iconProps}></iconify-icon>
@@ -21,7 +25,7 @@ let {
 	</span>
 {/snippet}
 
-<span class="with-icon" {...restProps}>
+<span class={cx("with-icon", incomingClass)} {...restProps}>
 	{#if right}
 		{#if children}
 			{@render children()}
@@ -59,6 +63,10 @@ let {
 
 		font-size: 1.2em;
 		color: color-mix(in srgb, currentcolor 80%, transparent);
+
+		&.alone {
+			margin-inline-end: 0;
+		}
 
 		&.right {
 			margin-inline: 0.5ch 0;

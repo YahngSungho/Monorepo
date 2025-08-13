@@ -8,23 +8,16 @@ const newTabProps = {
 </script>
 
 <script>
-let { href = '', children, current = false, class: incomingClass = '', ...rest } = $props()
+let { href = '', children, class: incomingClass = '', ...rest } = $props()
 
 let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 <a
 	class={incomingClass}
-	class:current
 	href={isInternalLink ? localizeHref(href) : href}
 	{...isInternalLink ? {} : newTabProps}
 	{...rest}
 >
 	{@render children?.()}
 </a>
-
-<style>
-.current {
-	opacity: 0.7;
-}
-</style>
