@@ -305,6 +305,10 @@ export default defineFlatConfig([
 					],
 				}),
 			},
+			'import-x/parsers': {
+				'@typescript-eslint/parser': ['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx'],
+				'svelte-eslint-parser': ['.svelte', '.svelte.js', '.svelte.ts'],
+			},
 			svelte: {
 				kit: {
 					files: {

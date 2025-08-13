@@ -1,6 +1,7 @@
 <script module>
 import './mermaid.css'
 
+import { idleRun_action } from '@library/helpers/functions'
 import { nanoid } from 'nanoid'
 
 import { initMermaidTheme_action } from './mermaid-theme.js'
@@ -240,7 +241,6 @@ function initializeMermaidHover_action(svgElement) {
 </script>
 
 <script>
-import { idleRun_action } from '@library/helpers/functions'
 import mermaid from 'mermaid'
 import { mode } from 'mode-watcher'
 import { tick } from 'svelte'
