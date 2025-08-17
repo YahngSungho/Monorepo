@@ -76,13 +76,14 @@ button,
 
 	appearance: auto;
 
-	transition-property: color, background-color, border-color, box-shadow, opacity;
-	transition-duration: .2s;
 	transition-timing-function: cubic-bezier(0,0,.2,1);
+	transition-duration: .2s;
+	transition-property: color, background-color, border-color, box-shadow, opacity;
 
 	&:hover {
 		opacity: 0.68;
 	}
+
 	&:active {
 		opacity: 1;
 		transition-duration: .1s;
@@ -93,13 +94,16 @@ a,
 .interactive,
 input[type='checkbox'],
 input[type='radio'] {
-	transition-property: opacity;
-	transition-duration: .2s;
 	transition-timing-function: cubic-bezier(0,0,.2,1);
+	transition-duration: .2s;
+	transition-property: opacity;
+
+	cursor: pointer;
 
 	&:hover {
 		opacity: 0.68;
 	}
+
 	&:active {
 		opacity: 1;
 		transition-duration: .1s;
@@ -240,7 +244,6 @@ blockquote {
 		}
 
 		/* 3. 컨테이너 쿼리 대응 */
-		/* Fix  */
 		@container (max-width: 40ch) {
 			::-webkit-scrollbar {
 				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */

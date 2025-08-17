@@ -277,8 +277,10 @@ let jsonLd = $derived({
 		<meta name="twitter:description" content={data.description} />
 		<meta name="twitter:url" content={currentCanonicalUrl} />
 
-		<!-- eslint-disable-next-line -->
-		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
+		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
+		<script type="application/ld+json">
+			{JSON.stringify(jsonLd)}
+		</script>
 	{/if}
 </svelte:head>
 
@@ -437,11 +439,10 @@ let jsonLd = $derived({
 	& > .sidebar {
 		/* flex-basis를 밑의 breakpoint랑 일치시켜야함 */
 		flex-basis: 25rem;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-em-cqi-m);
 		flex-grow: 1;
-
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-em-cqi-m);
 	padding: var(--space-m);
 	margin-top: auto;
 	}

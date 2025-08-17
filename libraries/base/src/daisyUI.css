@@ -5,6 +5,7 @@
 	&:hover {
 		opacity: 0.68;
 	}
+
 	&:active {
 		opacity: 1;
 	}

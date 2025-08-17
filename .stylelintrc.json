@@ -38,7 +38,7 @@
 			true,
 			{ "ignorePseudoClasses": ["global"] }
 		],
-		"no-descending-specificity": [true, { "ignore": ["selectors-within-list"] }],
+		"no-descending-specificity": [true, { "ignore": ["selectors-within-list"], "severity": "warning" }],
 		"selector-id-pattern": null,
 		"custom-media-pattern": null,
 		"custom-property-pattern": null,
@@ -84,8 +84,6 @@
 				"severity": "warning"
 			}
 		],
-		"plugin/value-no-exposed-custom-properties": {
-			"severity": "warning"
-		}
+		"plugin/value-no-exposed-custom-properties": [true, { "severity": "warning" }]
 	}
 }
