@@ -446,7 +446,6 @@ let jsonLd = $derived({
 	padding: var(--space-m);
 	margin-top: auto;
 	}
-
 	& > .main {
 		flex-basis: 0;
 		flex-grow: 999;
@@ -458,7 +457,6 @@ let jsonLd = $derived({
 
 	padding: var(--space-m);
 	}
-
 	& > .scroll-buttons {
 		inset-inline-end: calc(var(--space-m) + 25rem);
 		inset-block-start: var(--space-m);
