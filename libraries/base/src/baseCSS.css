@@ -2,7 +2,7 @@ html {
 	position: relative;
 
 	container: root / inline-size;
-	overflow: auto;
+	overflow: hidden;
 
 	block-size: 100svb;
 
@@ -76,19 +76,37 @@ button,
 
 	appearance: auto;
 
-	&:active,
+	transition-timing-function: cubic-bezier(0,0,.2,1);
+	transition-duration: .2s;
+	transition-property: color, background-color, border-color, box-shadow, opacity;
+
 	&:hover {
-		opacity: 0.7;
+		opacity: 0.68;
+	}
+
+	&:active {
+		opacity: 1;
+		transition-duration: .1s;
 	}
 }
 
 a,
-.toggle,
+.interactive,
 input[type='checkbox'],
 input[type='radio'] {
-	&:active,
+	transition-timing-function: cubic-bezier(0,0,.2,1);
+	transition-duration: .2s;
+	transition-property: opacity;
+
+	cursor: pointer;
+
 	&:hover {
-		opacity: 0.7;
+		opacity: 0.68;
+	}
+
+	&:active {
+		opacity: 1;
+		transition-duration: .1s;
 	}
 }
 
@@ -209,12 +227,16 @@ blockquote {
 		}
 
 		::-webkit-scrollbar-thumb {
-			background-color: color-mix(in oklch, currentcolor 35%, transparent);
+			background-color: color-mix(in oklch, currentcolor 30%, transparent);
 		}
 
 		/* stylelint-disable-next-line csstools/use-nesting */
 		::-webkit-scrollbar-thumb:hover {
-			background-color: color-mix(in oklch, currentcolor 80%, transparent);
+			background-color: color-mix(in oklch, currentcolor 60%, transparent);
+		}
+		/* stylelint-disable-next-line csstools/use-nesting */
+		::-webkit-scrollbar-thumb:active {
+			background-color: color-mix(in oklch, currentcolor 90%, transparent);
 		}
 
 		::-webkit-scrollbar-track {
@@ -222,15 +244,14 @@ blockquote {
 		}
 
 		/* 3. 컨테이너 쿼리 대응 */
-		/* Fix  */
-		@container (max-width: 20ch) {
+		@container (max-width: 40ch) {
 			::-webkit-scrollbar {
 				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 				width: 0.5ch;
 			}
 		}
 
-		@container (max-height: 20ex) {
+		@container (max-height: 40ex) {
 			::-webkit-scrollbar {
 				/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
 				height: 0.5ex;
@@ -246,10 +267,4 @@ mermaid {
 
 sup {
 	font-size: 0.7em;
-}
-
-[type='button'] > .with-icon {
-	position: relative;
-	bottom: 0.15em;
-	inset-inline-start: -0.4em;
 }

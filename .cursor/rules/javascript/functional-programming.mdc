@@ -26,7 +26,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 3. **Managing 액션:**
 
    - **Isolation:** Manage functions containing 액션 so they are clearly identifiable (e.g., grouped in specific modules, using naming conventions).
-   - **Naming:** **Consider** suffixing the names of functions with 액션 with `_action` (e.g., `updateDOM_action`, `fetchData_action`).
+   - **Naming:** You **must** suffix the names of functions with 액션 with `_action` (e.g., `updateDOM_action`, `fetchData_action`).
 
 4. **Immutability:** Do not modify data structures (objects, arrays) directly. When changes are needed, create and return new data structures. This improves predictability and simplifies state management.
 
@@ -62,7 +62,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
     ```javascript
     import { create } from '@library/helpers/mutative' // Path verification needed
-    
+
     const baseState = { count: 0, items: [] }
     const nextState = create(baseState, (draft) => {
     	draft.count++
@@ -176,9 +176,9 @@ const logUserInfo = R.pipe(
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const numbers = [1, 2, 3, 4, 5]
-  
+
   // Example: Filter numbers greater than 2, then multiply each by 10
   const processNumbers = R.pipe(
   	numbers, // Initial data

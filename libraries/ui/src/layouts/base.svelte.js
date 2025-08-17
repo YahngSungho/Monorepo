@@ -14,8 +14,19 @@ export function init(appName) {
 
 	// Mermaid를 사용하는 앱들
 	if (doesItApply(['blog', 'docs'])) {
-		idleRun_action(() => {
-			initMermaidTheme_action(mode.current)
-		})
+	idleRun_action(async () => {
+		await initMermaidTheme_action(mode.current)
+	})
+
+		// 전역 휠/터치 추적 설치 (한 번만)
+		if (!globalThis.__ui_interaction_tracking_installed) {
+			globalThis.__ui_interaction_tracking_installed = true
+			const markBusy_action = () => {
+				const now = (globalThis.performance && performance.now()) || Date.now()
+				globalThis.__ui_interaction_busy_until = now + 500
+			}
+			globalThis.addEventListener('wheel', markBusy_action, { passive: true, capture: true })
+			globalThis.addEventListener('touchmove', markBusy_action, { passive: true, capture: true })
+		}
 	}
 }

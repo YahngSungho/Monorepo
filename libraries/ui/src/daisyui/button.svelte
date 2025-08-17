@@ -1,5 +1,5 @@
 <script module>
-import { cx } from '@emotion/css'
+import { css,cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 
 import IconText from '../miscellaneous/icon-text.svelte'
@@ -51,18 +51,30 @@ let {
 	class: incomingClass = '',
 	iconName = '',
 	iconProps = {},
+	visibilityHidden = false,
+	dimBackground = false,
+	clearBackground = false,
 	...restProps
 } = $props()
 
 const btnShape = shape ? `btn-${shape}` : ''
 const buttonClass = `btn btn-${variant} btn-${size} ${btnShape}`
+const extraStyles1 = css`
+	position: relative;
+	inset-block-end: 0.15em;
+	inset-inline-start: -0.4em;
+`
+const extraStyles2 = css`
+	position: relative;
+	inset-block-end: 0.15em;
+`
 
 const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#snippet content()}
 	{#if iconName}
-			<IconText iconName={iconName} {...iconProps}>{@render children?.()}</IconText>
+			<IconText class={children ? extraStyles1 : extraStyles2} iconName={iconName} {...iconProps} alone={!children}>{@render children?.()}</IconText>
 	{:else}
 		{@render children?.()}
 	{/if}
@@ -71,6 +83,9 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {#if href}
 	<a
 		class={cx(buttonClass, incomingClass)}
+		class:visibilityHidden
+		class:dimBackground
+		class:clearBackground
 		href={isInternalLink ? localizeHref(href) : href}
 		role="button"
 		type="button"
@@ -80,7 +95,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		{@render content()}
 	</a>
 {:else}
-	<button class={cx(buttonClass, incomingClass)} type="button" {...restProps}>
+	<button class={cx(buttonClass, incomingClass)} class:visibilityHidden class:dimBackground class:clearBackground type="button" {...restProps}>
 		{@render content()}
 	</button>
 {/if}
@@ -102,4 +117,17 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	background-color: transparent;
 	box-shadow: none;
 }
+
+.visibilityHidden {
+	visibility: hidden;
+}
+
+.dimBackground {
+	background-color: color-mix(in oklch, var(--background) 50%, transparent);
+}
+
+.clearBackground {
+	background-color: var(--background);
+}
+
 </style>

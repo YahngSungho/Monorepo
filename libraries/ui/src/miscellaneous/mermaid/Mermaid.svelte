@@ -2,20 +2,44 @@
 import './mermaid.css'
 
 import { idleRun_action } from '@library/helpers/functions'
+import { getLocale } from '@library/paraglide/helpers'
 import { nanoid } from 'nanoid'
+import store from 'store'
 
 import { initMermaidTheme_action } from './mermaid-theme.js'
 
 // 테마+정의 기반으로 SVG 결과를 캐시하여 재사용 (LRU + TTL)
-// key: `${mode}:${definition}` -> value: { svg, expiresAt }
+// key: `${mode}:${locale}:${definition}` -> value: { svg, expiresAt }
 /** @typedef {{ svg: string, expiresAt: number }} SvgCacheEntry */
-/** @type {Record<string, SvgCacheEntry>} */
-let svgCacheEntries = Object.create(null)
-/** @type {string[]} */
-let svgCacheOrder = [] // oldest -> newest
-// 적절한 기본값: 최대 50개 보관, 10분 TTL
+/** @typedef {{ entries: Record<string, SvgCacheEntry>, order: string[] }} SvgCache */
+
+// 최대 50개 보관, 10일 TTL
 const CACHE_MAX_ENTRIES = 50
-const CACHE_TTL_MS = 1000 * 60 * 10
+const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 10
+const STORAGE_KEY = 'ui:mermaid:svg-cache'
+
+/**
+ * 현재 캐시를 읽습니다. 없으면 초기 구조를 반환합니다.
+ * @returns {SvgCache}
+ */
+function readCache_action() {
+	const data = store.get(STORAGE_KEY)
+	if (!data || typeof data !== 'object') {
+		return { entries: Object.create(null), order: [] }
+	}
+	// entries 혹은 order가 비정상일 경우 복구
+	const entries = data.entries && typeof data.entries === 'object' ? data.entries : Object.create(null)
+	const order = Array.isArray(data.order) ? data.order.slice() : []
+	return { entries, order }
+}
+
+/**
+ * 캐시를 localStorage에 저장합니다.
+ * @param {SvgCache} cache
+ */
+function writeCache_action(cache) {
+	store.set(STORAGE_KEY, cache)
+}
 
 /**
  * 캐시에서 SVG를 조회합니다. 만료되었으면 제거하고 빈 문자열을 반환합니다.
@@ -24,16 +48,19 @@ const CACHE_TTL_MS = 1000 * 60 * 10
  * @returns {string} svg 문자열 또는 빈 문자열
  */
 function getCachedSvg_action(cacheKey) {
-    const entry = svgCacheEntries[cacheKey]
-    if (!entry) return ''
-    if (Date.now() > entry.expiresAt) {
-        delete svgCacheEntries[cacheKey]
-        removeKeyFromOrder(cacheKey)
-        return ''
-    }
-    // LRU: 가장 최근 조회로 갱신 (끝으로 이동)
-    moveKeyToEnd(cacheKey)
-    return entry.svg
+	const cache = readCache_action()
+	const entry = cache.entries[cacheKey]
+	if (!entry) return ''
+	if (Date.now() > entry.expiresAt) {
+		delete cache.entries[cacheKey]
+		removeKeyFromOrder_action(cache, cacheKey)
+		writeCache_action(cache)
+		return ''
+	}
+	// LRU: 가장 최근 조회로 갱신 (끝으로 이동)
+	moveKeyToEnd_action(cache, cacheKey)
+	writeCache_action(cache)
+	return entry.svg
 }
 
 /**
@@ -42,45 +69,49 @@ function getCachedSvg_action(cacheKey) {
  * @param {string} svg
  */
 function setCachedSvg_action(cacheKey, svg) {
-    svgCacheEntries[cacheKey] = { svg, expiresAt: Date.now() + CACHE_TTL_MS }
-    moveKeyToEnd(cacheKey)
-    pruneCacheIfNeeded_action()
-    schedulePurge_action()
+	const cache = readCache_action()
+	cache.entries[cacheKey] = { svg, expiresAt: Date.now() + CACHE_TTL_MS }
+	moveKeyToEnd_action(cache, cacheKey)
+	pruneCacheIfNeeded_action(cache)
+	writeCache_action(cache)
+	schedulePurge_action()
 }
 
-function moveKeyToEnd(cacheKey) {
-    const idx = svgCacheOrder.indexOf(cacheKey)
-    if (idx !== -1) svgCacheOrder.splice(idx, 1)
-    svgCacheOrder.push(cacheKey)
+function moveKeyToEnd_action(cache, cacheKey) {
+	const idx = cache.order.indexOf(cacheKey)
+	if (idx !== -1) cache.order.splice(idx, 1)
+	cache.order.push(cacheKey)
 }
 
-function removeKeyFromOrder(cacheKey) {
-    const idx = svgCacheOrder.indexOf(cacheKey)
-    if (idx !== -1) svgCacheOrder.splice(idx, 1)
+function removeKeyFromOrder_action(cache, cacheKey) {
+	const idx = cache.order.indexOf(cacheKey)
+	if (idx !== -1) cache.order.splice(idx, 1)
 }
 
 /** 용량 초과 시 오래된 항목부터 제거 */
-function pruneCacheIfNeeded_action() {
-    while (svgCacheOrder.length > CACHE_MAX_ENTRIES) {
-        const oldestKey = svgCacheOrder.shift()
-        if (oldestKey == null) break
-        delete svgCacheEntries[oldestKey]
-    }
+function pruneCacheIfNeeded_action(cache) {
+	while (cache.order.length > CACHE_MAX_ENTRIES) {
+		const oldestKey = cache.order.shift()
+		if (oldestKey == null) break
+		delete cache.entries[oldestKey]
+	}
 }
 
 /** 만료된 항목만 일괄 제거 (O(n)) */
 function purgeExpiredEntries_action() {
-    const now = Date.now()
-    /** @type {string[]} */
-    const keysToRemove = []
-    for (const key of svgCacheOrder) {
-        const entry = svgCacheEntries[key]
-        if (!entry || entry.expiresAt <= now) keysToRemove.push(key)
-    }
-    for (const key of keysToRemove) {
-        delete svgCacheEntries[key]
-        removeKeyFromOrder(key)
-    }
+	const cache = readCache_action()
+	const now = Date.now()
+	/** @type {string[]} */
+	const keysToRemove = []
+	for (const key of cache.order) {
+		const entry = cache.entries[key]
+		if (!entry || entry.expiresAt <= now) keysToRemove.push(key)
+	}
+	for (const key of keysToRemove) {
+		delete cache.entries[key]
+		removeKeyFromOrder_action(cache, key)
+	}
+	if (keysToRemove.length > 0) writeCache_action(cache)
 }
 
 function schedulePurge_action() {
@@ -238,10 +269,83 @@ function initializeMermaidHover_action(svgElement) {
 	// console.log(`Mermaid hover effect initialized for SVG: #${svgElement.id}`);
 }
 
+// 전역 렌더 큐 (탭 전역, 동시성 1)
+const QUEUE_KEY = '__ui_mermaid_render_queue__'
+if (!globalThis[QUEUE_KEY]) {
+    globalThis[QUEUE_KEY] = { tasks: [], running: false }
+}
+
+/** 백그라운드/idle 시점까지 대기 */
+/**
+ * @param {number} [timeout=1000]
+ */
+/**
+ * @param {number} [timeout=1000]
+ * @returns {Promise<void>}
+ */
+function waitForIdle_action(timeout = 1000) {
+    return new Promise((resolve) => {
+        // @ts-ignore - scheduler may not exist in all browsers
+        if (globalThis.scheduler && typeof globalThis.scheduler.postTask === 'function') {
+            // @ts-ignore
+            globalThis.scheduler.postTask(() => resolve(undefined), { priority: 'background' })
+            return
+        }
+        if (typeof globalThis.requestIdleCallback === 'function') {
+            // @ts-ignore
+            globalThis.requestIdleCallback(() => resolve(undefined), { timeout })
+            return
+        }
+        globalThis.setTimeout(() => resolve(undefined), 0)
+    })
+}
+
+/** 메인 스레드에 잠깐 양보 */
+/**
+ * @returns {Promise<void>}
+ */
+function yieldToMain_action() {
+    return new Promise((resolve) => { setTimeout(() => resolve(undefined), 0) })
+}
+
+// 사용자 상호작용(스크롤/휠/터치) 중에는 잠시 중단
+function isUserInteracting_action() {
+    const until = globalThis.__ui_interaction_busy_until || 0
+    const now = (globalThis.performance && performance.now()) || Date.now()
+    return now < until
+}
+
+async function processQueue_action() {
+    const state = globalThis[QUEUE_KEY]
+    if (state.running) return
+    state.running = true
+    try {
+        while (state.tasks.length > 0) {
+            const task = state.tasks.shift()
+            // 사용자 상호작용이 끝날 때까지 대기
+            while (isUserInteracting_action()) {
+                await waitForIdle_action(500)
+            }
+            await waitForIdle_action()
+            await task()
+            await yieldToMain_action()
+        }
+    } finally {
+        state.running = false
+    }
+}
+
+function enqueueMermaidRender_action(task) {
+    const state = globalThis[QUEUE_KEY]
+    state.tasks.push(task)
+    idleRun_action(processQueue_action)
+}
+
+// 전역 접근(다른 인스턴스와 공유) 가능하게 노출
+globalThis.__ui_mermaid_enqueueRender_action = enqueueMermaidRender_action
 </script>
 
 <script>
-import mermaid from 'mermaid'
 import { mode } from 'mode-watcher'
 import { tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
@@ -262,6 +366,35 @@ const initMermaidThemePromise = $derived.by(() => initMermaidTheme_action(mode.c
 // 동시 실행되는 렌더의 순서를 제어하기 위한 시퀀스 토큰
 let renderSequence = 0
 
+// 동적 import로 mermaid 로딩 비용 지연
+let mermaidModulePromise
+async function getMermaid_action() {
+    if (!mermaidModulePromise) mermaidModulePromise = import('mermaid')
+    const mod = await mermaidModulePromise
+    return mod.default || mod
+}
+
+// 화면 근처로 올 때만 렌더하도록 가시성 추적
+let isVisible = $state(false)
+let io
+$effect(() => {
+	const el = element
+	if (!el) return
+	io?.disconnect?.()
+	io = new IntersectionObserver(
+		(entries) => {
+			for (const e of entries) {
+				if (e.target === el) {
+					isVisible = e.isIntersecting
+				}
+			}
+		},
+		{ rootMargin: '200px 0px', threshold: 0 },
+	)
+	io.observe(el)
+	return () => io.disconnect()
+})
+
 // 테마 변경 및 원본 텍스트 변경에 반응하여 Mermaid 차트를 렌더링/재렌더링하는 $effect
 $effect(() => {
 	// 1) 동기 구간에서 의존성 등록: 테마와 원본 텍스트, 초기화 프라미스
@@ -270,8 +403,11 @@ $effect(() => {
 	const initPromise = initMermaidThemePromise
 	const thisRenderSeq = ++renderSequence
 
-	// 2) 비동기 작업은 IIFE 내부에서 수행
-	;(async () => {
+	// 2) 비동기 작업
+	if (!globalThis.__ui_mermaid_enqueueRender_action) return
+	const visibleNow = isVisible
+	globalThis.__ui_mermaid_enqueueRender_action(async () => {
+		if (!visibleNow) return
 		// 등록된 의존성의 값을 사용
 		await initPromise
 
@@ -291,7 +427,7 @@ $effect(() => {
 
 		try {
 			// 2) 캐시 조회: 동일 테마 + 동일 정의면 즉시 사용 (LRU/TTL)
-			const cacheKey = `${currentMode}:${definition}`
+			const cacheKey = `${currentMode}:${getLocale()}:${definition}`
 			const cached = getCachedSvg_action(cacheKey)
 			if (cached) {
 				if (thisRenderSeq !== renderSequence) return
@@ -306,6 +442,7 @@ $effect(() => {
 			}
 
 			// 비동기적으로 Mermaid 렌더링 실행
+			const mermaid = await getMermaid_action()
 			const { svg, bindFunctions } = await mermaid.render(id, definition)
 
 			// 최신 렌더가 아닐 경우 폐기
@@ -327,14 +464,14 @@ $effect(() => {
 		} catch (error) {
 			// 오류 발생 시, 이전 렌더링을 유지하기보다는 오류 메시지를 명확히 보여주는 것이 좋을 수 있습니다.
 			// console.error('Mermaid rendering error:', error);
-			errorMessage = `Mermaid 렌더링 오류: ${error.message || String(error)}`
+			errorMessage = `Mermaid Rendering Error: ${error.message || String(error)}`
 			// svgContent = ''; // 오류 발생 시 이전 SVG를 지울지 여부는 선택사항
 		}
-	})()
+	})
 })
 </script>
 
-<div bind:this={element} style="color: blue;" class="mermaid-container">
+<div bind:this={element} style="content-visibility: auto; contain-intrinsic-size: 300px 200px;" class="mermaid-container">
 	{#if errorMessage}
 		<!-- 오류 발생 시 메시지와 원본 텍스트 표시 -->
 		<pre style:color="red;">{errorMessage}</pre>

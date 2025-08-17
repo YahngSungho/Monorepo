@@ -1,5 +1,26 @@
 @plugin 'daisyui';
 
+
+.toggle {
+	&:hover {
+		opacity: 0.68;
+	}
+
+	&:active {
+		opacity: 1;
+	}
+}
+
+.join:not(.join-vertical) > * + * {
+	position: relative;
+	inset-inline-end: var(--border-size-2);
+}
+
+.join.join-vertical > * + * {
+	position: relative;
+	inset-block-end: var(--border-size-2);
+}
+
 /* 설정할 수 있는 variable들: https://daisyui.com/docs/utilities/#component-specific-css-variables */
 
 :root {

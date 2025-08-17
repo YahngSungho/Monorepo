@@ -1,5 +1,3 @@
-import mermaid from 'mermaid'
-
 let globalInitPromise
 let lastMode // 마지막으로 적용된 테마를 저장할 변수
 
@@ -36,19 +34,6 @@ function buildThemeVariables(mode) {
 			destructive_background = 'rgb(250, 82, 82)'
 			destructive_foreground = foreground
 		}
-
-
-    // const background = 'var(--background)'
-    // const foreground = 'var(--foreground)'
-    // const secondary_background = 'var(--secondary)'
-    // const secondary_foreground = 'var(--secondary-foreground)'
-    // const accent_background = 'var(--accent)'
-    // const accent_foreground = 'var(--accent-foreground)'
-    // const chart1 = 'var(--chart-1)'
-    // const chart2 = 'var(--chart-2)'
-    // const chart3 = 'var(--chart-3)'
-    // const destructive_background = 'var(--destructive)'
-    // const destructive_foreground = 'var(--destructive-foreground)'
 
     return {
         // General
@@ -137,11 +122,22 @@ export function initMermaidTheme_action(mode = 'light') {
     const configs = {
         theme: 'base',
         themeVariables: buildThemeVariables(mode),
+        // 성능 최적화 옵션
+        startOnLoad: false,
+        securityLevel: 'loose',
+        deterministicIds: true,
+        logLevel: 'fatal',
+        flowchart: {
+            htmlLabels: false,
+            curve: 'linear',
+        },
     }
 
     globalInitPromise = (async () => {
         // 브라우저에서만 실제 초기화 수행 (SSR에서는 설정만 준비된 상태로 반환)
         if (globalThis.window) {
+            const mod = await import('mermaid')
+            const mermaid = mod.default || mod
             // @ts-ignore
             mermaid.reset?.()
             mermaid.initialize(configs)

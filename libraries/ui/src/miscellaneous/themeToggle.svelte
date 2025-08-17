@@ -2,6 +2,8 @@
 import { mode, setMode } from 'mode-watcher'
 
 let { size = 'sm' } = $props()
+
+let checked = $derived(mode.current === 'dark')
 </script>
 
 <label
@@ -12,7 +14,7 @@ border: 1px solid currentcolor;
 >
 	<input
 		id="theme-controller"
-		checked={mode.current === 'dark'}
+		checked={checked}
 		onchange={() => {
 			setTimeout(() => {
 				setMode(mode.current === 'light' ? 'dark' : 'light')
@@ -21,10 +23,16 @@ border: 1px solid currentcolor;
 		type="checkbox"
 	/>
 
-	<span style="inline-size: 26px; block-size: 26px;"
+	<span style="inline-size: 26px; block-size: 26px;" class:opacity-0={checked} class="interactive"
 		><iconify-icon height="20" icon="mdi:white-balance-sunny" width="20"></iconify-icon></span
 	>
-	<span style="inline-size: 26px; block-size: 26px;"
+	<span style="inline-size: 26px; block-size: 26px;" class:opacity-0={!checked} class="interactive"
 		><iconify-icon height="20" icon="mdi:weather-night" width="20"></iconify-icon></span
 	>
 </label>
+
+<style>
+	.opacity-0 {
+		opacity: 0 !important;
+	}
+</style>
