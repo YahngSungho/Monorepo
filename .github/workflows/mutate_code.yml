@@ -319,19 +319,31 @@ jobs:
             filtered_md+=("$f")
           done
 
-          if [ ${#filtered_md[@]} -eq 0 ]; then
+          # 마지막 변경 커밋 subject가 정확히 [automated-mutation]인 파일만 제외 (임시 커밋은 건너뜀)
+          filtered=()
+          for f in "${filtered_md[@]}"; do
+            last_subject=$(git log --pretty=%s -- "$f" | grep -v '^Temporary commit ' | head -n1 || true)
+            echo "파일: $f | 마지막 커밋 subject: ${last_subject}"
+            if [ "${last_subject}" = "[automated-mutation]" ]; then
+              echo "제외: 마지막 커밋이 [automated-mutation]"
+              continue
+            fi
+            filtered+=("$f")
+          done
+
+          if [ ${#filtered[@]} -eq 0 ]; then
             echo "변경된 마크다운 파일 없음"
             exit 0
           fi
 
           echo "ESLint"
-          printf '%s\0' "${filtered_md[@]}" | xargs -0 -r pnpm exec eslint --fix
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix
 
           echo "Stylelint"
-          printf '%s\0' "${filtered_md[@]}" | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input
 
           echo "Prettier"
-          printf '%s\0' "${filtered_md[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore
         continue-on-error: true
 
       # 8. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
@@ -800,10 +812,14 @@ jobs:
             esac
           done
 
-          # 마지막 변경 커밋이 [automated-mutation]인 파일 제외
+          # 마지막 변경 커밋 subject가 정확히 [automated-mutation]인 파일만 제외 (임시 커밋은 건너뜀)
           filtered=()
           for f in "${files_no_md[@]}"; do
-            if git log -1 --pretty=%B -- "$f" | grep -q '\[automated-mutation\]'; then
+            # 파일별 커밋 subject 목록에서 임시 커밋(subject가 'Temporary commit '로 시작)을 제외하고 첫 번째를 선택
+            last_subject=$(git log --pretty=%s -- "$f" | grep -v '^Temporary commit ' | head -n1 || true)
+            echo "파일: $f | 마지막 커밋 subject: ${last_subject}"
+            if [ "${last_subject}" = "[automated-mutation]" ]; then
+              echo "제외: 마지막 커밋이 [automated-mutation]"
               continue
             fi
             filtered+=("$f")
