@@ -428,56 +428,59 @@ let jsonLd = $derived({
 }
 
 .with-sidebar {
+	scrollbar-gutter: stable;
+
+	overflow: auto;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0;
+
 	block-size: 100svb;
-	overflow: auto;
-	scrollbar-gutter: stable;
 
 
 	& > .sidebar {
+		display: flex;
 		/* flex-basis를 밑의 breakpoint랑 일치시켜야함 */
 		flex-basis: 25rem;
-		display: flex;
 		flex-direction: column;
-		gap: var(--space-em-cqi-m);
 		flex-grow: 1;
+		gap: var(--space-em-cqi-m);
+
+	margin-block-start: auto;
 	padding: var(--space-m);
-	margin-top: auto;
 	}
 
 	& > .main {
+		overflow: visible;
 		flex-basis: 0;
 		flex-grow: 999;
 		/* min-inline-size를 밑의 breakpoint랑 일치시켜야함 */
 		min-inline-size: 60%;
-
-		overflow: visible;
 		max-block-size: none;
-
 	padding: var(--space-m);
 	}
 
 	& > .scroll-buttons {
-		inset-inline-end: calc(var(--space-m) + 25rem);
 		inset-block-start: var(--space-m);
+		inset-inline-end: calc(var(--space-m) + 25rem);
 	}
 }
 
 /* flex-wrap이 작동하지 **않았을** 시의 CSS */
 @container (min-width: calc(25rem / (1 - 0.6))) {
 	.with-sidebar {
-		overflow: hidden;
 		scrollbar-gutter: auto;
-	}
-	.with-sidebar > .main {
+		overflow: hidden;
+
+	& > .main {
 		overflow: auto;
 		max-block-size: 100svb;
 		padding-block-end: calc(var(--space-m) + var(--space-em-cqi-xl));
 	}
-	.with-sidebar > .sidebar {
-		margin-top: 0;
+
+	& > .sidebar {
+		margin-block-start: 0;
+	}
 	}
 }
 

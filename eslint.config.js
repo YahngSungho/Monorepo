@@ -387,6 +387,7 @@ export default defineFlatConfig([
 		rules: {
 			'sonarjs/no-unused-vars': 'off',
 			'sonarjs/no-use-of-empty-return-value': 'off',
+			'import-x/default': 'off',
 		},
 	},
 
