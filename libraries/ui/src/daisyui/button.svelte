@@ -52,6 +52,8 @@ let {
 	iconName = '',
 	iconProps = {},
 	visibilityHidden = false,
+	dimBackground = false,
+	clearBackground = false,
 	...restProps
 } = $props()
 
@@ -82,6 +84,8 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	<a
 		class={cx(buttonClass, incomingClass)}
 		class:visibilityHidden
+		class:dimBackground
+		class:clearBackground
 		href={isInternalLink ? localizeHref(href) : href}
 		role="button"
 		type="button"
@@ -91,7 +95,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		{@render content()}
 	</a>
 {:else}
-	<button class={cx(buttonClass, incomingClass)} class:visibilityHidden type="button" {...restProps}>
+	<button class={cx(buttonClass, incomingClass)} class:visibilityHidden class:dimBackground class:clearBackground type="button" {...restProps}>
 		{@render content()}
 	</button>
 {/if}
@@ -116,6 +120,14 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 .visibilityHidden {
 	visibility: hidden;
+}
+
+.dimBackground {
+	background-color: color-mix(in oklch, var(--background) 50%, transparent);
+}
+
+.clearBackground {
+	background-color: var(--background);
 }
 
 </style>

@@ -287,6 +287,7 @@ let jsonLd = $derived({
 <div class="join join-vertical scroll-buttons">
 		<Button
 			class="join-item"
+			dimBackground
 			disabled={!showScrollTop}
 			iconName="mdi:chevron-double-up"
 			onclick={scrollToTop_action}
@@ -294,6 +295,7 @@ let jsonLd = $derived({
 		></Button>
 		<Button
 			class="join-item"
+			dimBackground
 			disabled={!showScrollBottom}
 			iconName="mdi:chevron-double-down"
 			onclick={scrollToBottom_action}
@@ -343,7 +345,7 @@ let jsonLd = $derived({
 					sunghoyahng@gmail.com
 				</div> -->
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-size: min(calc(100cqi / 6), 5em); font-weight: 900;" href="/">
+					<Link style="font-size: min(calc(100cqi / 6.2), 5em); font-weight: 900;" href="/">
 						sungho.blog
 					</Link>
 				</div>
@@ -411,9 +413,8 @@ let jsonLd = $derived({
 .scroll-buttons {
 	position: absolute;
 	z-index: var(--layer-important);
-	inset-block-end: var(--space-em-cqi-m);
-	inset-inline-end: var(--space-em-cqi-m);
-	background-color: var(--background);
+	inset-block-end: var(--space-m);
+	inset-inline-end: var(--space-m);
 }
 
 .progress_0 {
@@ -441,7 +442,7 @@ let jsonLd = $derived({
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-em-cqi-m);
-	padding: var(--space-em-cqi-m);
+	padding: var(--space-m);
 	margin-top: auto;
 	}
 
@@ -454,12 +455,12 @@ let jsonLd = $derived({
 		overflow: visible;
 		max-block-size: none;
 
-	padding: var(--space-em-cqi-m);
+	padding: var(--space-m);
 	}
 
 	& > .scroll-buttons {
-		inset-inline-end: calc(var(--space-em-cqi-m) + 25rem);
-		inset-block-start: var(--space-em-cqi-m);
+		inset-inline-end: calc(var(--space-m) + 25rem);
+		inset-block-start: var(--space-m);
 	}
 }
 
@@ -472,7 +473,7 @@ let jsonLd = $derived({
 	.with-sidebar > .main {
 		overflow: auto;
 		max-block-size: 100svb;
-		padding-block-end: calc(var(--space-em-cqi-m) + var(--space-em-cqi-xl));
+		padding-block-end: calc(var(--space-m) + var(--space-em-cqi-xl));
 	}
 	.with-sidebar > .sidebar {
 		margin-top: 0;

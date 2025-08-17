@@ -223,12 +223,16 @@ blockquote {
 		}
 
 		::-webkit-scrollbar-thumb {
-			background-color: color-mix(in oklch, currentcolor 35%, transparent);
+			background-color: color-mix(in oklch, currentcolor 30%, transparent);
 		}
 
 		/* stylelint-disable-next-line csstools/use-nesting */
 		::-webkit-scrollbar-thumb:hover {
-			background-color: color-mix(in oklch, currentcolor 80%, transparent);
+			background-color: color-mix(in oklch, currentcolor 60%, transparent);
+		}
+		/* stylelint-disable-next-line csstools/use-nesting */
+		::-webkit-scrollbar-thumb:active {
+			background-color: color-mix(in oklch, currentcolor 90%, transparent);
 		}
 
 		::-webkit-scrollbar-track {
