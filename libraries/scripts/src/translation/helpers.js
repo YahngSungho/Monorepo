@@ -36,7 +36,11 @@ export function getInitialLanguageMap() {
 function normalizeCombinedMessage(combinedMessage) {
 	if (!combinedMessage) return combinedMessage
 
-	return R.mapObject((value) => (value ? normalizeString(value) : value))(combinedMessage)
+	const mapped = R.mapObject((value) => (value ? normalizeString(value) : value))(
+		combinedMessage,
+	)
+	// 값이 undefined인 키는 제거하여, 키가 없는 것과 동일하게 취급
+	return R.pickBy((v) => v !== undefined)(mapped)
 }
 
 export function calculateInitialTranslationStateByBaseLanguages(
@@ -55,7 +59,10 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	for (const messageKey of Object.keys(messages_baseLanguages[baseLanguages[0]])) {
 		combinedMessages_latest[messageKey] = {}
 		for (const lang of baseLanguages) {
-			combinedMessages_latest[messageKey][lang] = messages_baseLanguages[lang][messageKey]
+			const value = messages_baseLanguages[lang][messageKey]
+			if (value) {
+				combinedMessages_latest[messageKey][lang] = value
+			}
 		}
 		if (explanations[messageKey]) {
 			combinedMessages_latest[messageKey].explanation = explanations[messageKey]
