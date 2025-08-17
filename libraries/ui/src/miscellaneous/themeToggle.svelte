@@ -30,3 +30,9 @@ border: 1px solid currentcolor;
 		><iconify-icon height="20" icon="mdi:weather-night" width="20"></iconify-icon></span
 	>
 </label>
+
+<style>
+	.opacity-0 {
+		opacity: 0 !important;
+	}
+</style>

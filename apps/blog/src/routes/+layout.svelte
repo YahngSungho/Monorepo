@@ -466,7 +466,7 @@ let jsonLd = $derived({
 /* flex-wrap이 작동하지 **않았을** 시의 CSS */
 @container (min-width: calc(25rem / (1 - 0.6))) {
 	.with-sidebar {
-		overflow: visible;
+		overflow: hidden;
 		scrollbar-gutter: auto;
 	}
 	.with-sidebar > .main {

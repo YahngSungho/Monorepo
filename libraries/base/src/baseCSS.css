@@ -2,7 +2,7 @@ html {
 	position: relative;
 
 	container: root / inline-size;
-	overflow: auto;
+	overflow: hidden;
 
 	block-size: 100svb;
 
