@@ -170,4 +170,5 @@
 		"titleBar.inactiveForeground": "#e7e7e799"
 	},
 	"editor.inlineSuggest.edits.allowCodeShifting": "always",
+	"editor.suggest.snippetsPreventQuickSuggestions": true,
 }

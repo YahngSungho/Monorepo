@@ -192,16 +192,16 @@ function getActiveEl() {
 function scrollToTop_action() {
 	const el = getActiveEl()
 	if (el && typeof el.scrollTo === 'function') {
-		el.scrollTo({ top: 0, behavior: 'smooth' })
+		el.scrollTo({ behavior: 'smooth', top: 0 })
 		return
 	}
-	window.scrollTo({ top: 0, behavior: 'smooth' })
+	window.scrollTo({ behavior: 'smooth', top: 0 })
 }
 
 function scrollToBottom_action() {
 	const el = getActiveEl()
 	if (el && typeof el.scrollTo === 'function') {
-		el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+		el.scrollTo({ behavior: 'smooth', top: el.scrollHeight })
 	}
 }
 
@@ -237,21 +237,21 @@ let sharingData = $derived.by(() => {
 let jsonLd = $derived({
 	'@context': 'https://schema.org',
 	'@type': 'Blog',
-	headline: 'sungho.blog',
-	description: data.description,
 	author: {
 		'@type': 'Person',
 		name: 'Sungho Yahng',
+	},
+	description: data.description,
+	headline: 'sungho.blog',
+	mainEntityOfPage: {
+		'@id': currentCanonicalUrl,
+		'@type': 'WebPage',
 	},
 	publisher: {
 		'@type': 'Organization',
 		name: 'sungho.blog',
 	},
 	url: currentCanonicalUrl,
-	mainEntityOfPage: {
-		'@type': 'WebPage',
-		'@id': currentCanonicalUrl,
-	},
 })
 </script>
 
@@ -446,8 +446,8 @@ let jsonLd = $derived({
 		flex-grow: 1;
 		gap: var(--space-em-cqi-m);
 
-	margin-block-start: auto;
-	padding: var(--space-m);
+		margin-block-start: auto;
+		padding: var(--space-m);
 	}
 
 	& > .main {
@@ -457,7 +457,7 @@ let jsonLd = $derived({
 		/* min-inline-size를 밑의 breakpoint랑 일치시켜야함 */
 		min-inline-size: 60%;
 		max-block-size: none;
-	padding: var(--space-m);
+		padding: var(--space-m);
 	}
 
 	& > .scroll-buttons {

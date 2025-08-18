@@ -55,7 +55,7 @@ const addedPlugins = [
 ]
 
 function removeFrontmatter(markdown) {
-	return markdown.replace(/^---[\s\S]*?---/, '')
+	return markdown.replace(/^---.*?---/s, '')
 }
 </script>
 
