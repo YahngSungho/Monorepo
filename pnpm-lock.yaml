@@ -501,6 +501,18 @@ importers:
         specifier: ^1.3.6
         version: 1.3.7
 
+  libraries/backends:
+    dependencies:
+      '@library/helpers':
+        specifier: workspace:*
+        version: link:../helpers
+      '@library/library-base':
+        specifier: workspace:*
+        version: link:../library-base
+      '@supabase/supabase-js':
+        specifier: ^2.54.0
+        version: 2.55.0
+
   libraries/base:
     dependencies:
       '@library/library-base':
@@ -635,6 +647,9 @@ importers:
       '@ai-sdk/openai':
         specifier: ^1.3.18
         version: 1.3.24(zod@3.25.76)
+      '@library/backends':
+        specifier: workspace:*
+        version: link:../backends
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
@@ -644,9 +659,6 @@ importers:
       '@library/llms':
         specifier: workspace:*
         version: link:../llms
-      '@supabase/supabase-js':
-        specifier: ^2.54.0
-        version: 2.55.0
       ai:
         specifier: ^4.3.9
         version: 4.3.19(react@19.1.1)(zod@3.25.76)
@@ -13001,7 +13013,7 @@ snapshots:
 
   '@types/concat-stream@2.0.3':
     dependencies:
-      '@types/node': 22.17.2
+      '@types/node': 24.3.0
 
   '@types/connect@3.4.38':
     dependencies:
@@ -13188,7 +13200,7 @@ snapshots:
 
   '@types/node-fetch@2.6.13':
     dependencies:
-      '@types/node': 18.19.123
+      '@types/node': 24.3.0
       form-data: 4.0.4
 
   '@types/node@18.19.123':

@@ -1,0 +1,21 @@
+{
+	"name": "@library/backends",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"depCheck": "npx depcheck",
+		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
+		"eslint-fix": "eslint --fix . || true",
+		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
+		"test:unit": "vitest run"
+	},
+	"dependencies": {
+		"@supabase/supabase-js": "^2.54.0",
+		"@library/helpers": "workspace:*",
+		"@library/library-base": "workspace:*"
+	},
+	"devDependencies": {},
+	"exports": {
+		"./supabase": "./src/supabase/index.js"
+	}
+}
