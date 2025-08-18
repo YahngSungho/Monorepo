@@ -209,12 +209,12 @@ test.describe('MyComponent Tests', () => {
 
 		// 테스트 설정 정의 (선택 사항)
 		const config = {
-			iterationCount: 5, // 테스트 반복 횟수
-			sequenceLength: 10, // 각 시퀀스의 최대 인터랙션 수
-			numRuns: 50, // fast-check 실행 횟수
-			waitAfterInteraction: 50, // 인터랙션 후 대기 시간 (ms)
 			componentSelector: '#storybook-root', // 컴포넌트 루트 요소 선택자 (기본값 사용 가능)
+			iterationCount: 5, // 테스트 반복 횟수
+			numRuns: 50, // fast-check 실행 횟수
+			sequenceLength: 10, // 각 시퀀스의 최대 인터랙션 수
 			verbose: true, // 상세 로그 출력 활성화
+			waitAfterInteraction: 50, // 인터랙션 후 대기 시간 (ms)
 		}
 
 		// 범용 테스터 실행

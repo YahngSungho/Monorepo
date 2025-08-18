@@ -208,9 +208,9 @@ sequenceDiagram
        	// Mapper: [index, value] 튜플 -> 최종 인터랙션 객체
        	([index, value]) => ({
        		...fillInteractions[index], // 원본 인터랙션 정보 복사
+       		originalIndex: index, // 원본 인덱스 저장 (unmap용)
        		type: 'fill', // 타입 명시
        		value, // 생성된 값 추가
-       		originalIndex: index, // 원본 인덱스 저장 (unmap용)
        	}),
        	// Unmapper: 최종 인터랙션 객체 -> [index, value] 튜플
        	unmapValueInteraction('fill'), // (내부 로직: obj => [obj.originalIndex, obj.value])
@@ -362,13 +362,13 @@ test.describe('MyComponent E2E Tests', () => {
 
 		// 테스트 설정 정의 (필요에 따라 조절)
 		const config = {
-			iterationCount: 5, // 테스트 반복 횟수
-			sequenceLength: 8, // 각 시퀀스의 최대 인터랙션 수
-			numRuns: 20, // fast-check 실행 횟수
 			componentSelector: '#storybook-root', // 컴포넌트를 감싸는 최상위 요소 선택자
-			waitAfterInteraction: 150, // 각 인터랙션 후 대기 시간 (ms)
-			verbose: true, // 상세 로그 출력 여부
 			debugLogDir: './test-results/mycomponent-debug-logs', // 디버그 로그 저장 위치
+			iterationCount: 5, // 테스트 반복 횟수
+			numRuns: 20, // fast-check 실행 횟수
+			sequenceLength: 8, // 각 시퀀스의 최대 인터랙션 수
+			verbose: true, // 상세 로그 출력 여부
+			waitAfterInteraction: 150, // 각 인터랙션 후 대기 시간 (ms)
 		}
 
 		// 범용 테스터 실행

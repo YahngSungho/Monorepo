@@ -19,6 +19,7 @@
 		"nanoid": "^5.1.5"
 	},
 	"devDependencies": {
+		"eslint": "^9.28.0",
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/ui": "workspace:*",
