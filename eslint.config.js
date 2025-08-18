@@ -54,30 +54,6 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
-	'sonarjs/unused-import': 'off',
-	'import-x/no-duplicates': 'off',
-	'sonarjs/call-argument-line': 'off',
-	'unicorn/no-null': 'off',
-	'perfectionist/sort-named-imports': 'warn',
-	'functional/no-class-inheritance': 'off',
-	'functional/functional-parameters': 'off',
-	'perfectionist/sort-named-exports': 'warn',
-	'unicorn/import-style': 'off',
-	'functional/immutable-data': 'off',
-	'unicorn/no-useless-undefined': 'off',
-	'unicorn/prefer-dom-node-dataset': 'off',
-	'sonarjs/no-invariant-returns': 'warn',
-	'sonarjs/cognitive-complexity': ['warn', 30],
-	'promise/always-return': 'off',
-	'unicorn/prefer-top-level-await': 'off',
-	'unicorn/no-zero-fractions': 'off',
-	'perfectionist/sort-exports': 'off',
-	'no-shadow': 'warn',
-	'unicorn/no-empty-file': 'off',
-	'unicorn/no-array-reduce': 'off',
-	'ex/no-unhandled': 'off',
-	'sonarjs/no-unused-collection': 'off',
-	'sonarjs/no-empty-test-file': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'arrow-parens': 'off',
@@ -92,6 +68,10 @@ const baseRules = {
 	],
 	'eslint-comments/no-unlimited-disable': 'off',
 	'eslint-comments/no-use': 'off',
+	'ex/no-unhandled': 'off',
+	'functional/functional-parameters': 'off',
+	'functional/immutable-data': 'off',
+	'functional/no-class-inheritance': 'off',
 	'functional/no-expression-statements': ['off', { ignoreSelfReturning: true, ignoreVoid: true }],
 	'functional/no-let': 'off',
 	'functional/no-loop-statements': 'off',
@@ -99,29 +79,35 @@ const baseRules = {
 	'functional/no-throw-statements': 'off',
 	'github/filenames-match-regex': 'off',
 	'i18n-text/no-en': 'off',
+	'import-x/no-duplicates': 'off',
 	'import-x/no-unresolved': 'off',
 	'import/extensions': 'off',
 	'import/no-namespace': 'off',
 	'import/no-nodejs-modules': 'off',
 	'import/no-unresolved': 'off',
+	indent: 'off',
 	'n/no-extraneous-import': 'off',
 	'n/no-missing-import': 'off',
 	'n/prefer-global/process': 'off',
 	'no-console': 'off',
 	'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
 	'no-secrets/no-secrets': ['error', { tolerance: 4.3 }],
+	'no-shadow': 'warn',
 	'no-unused-expressions': 1,
 	'no-unused-vars': 1,
 	'no-warning-comments': 'off',
 	'object-curly-spacing': 'off',
 	'optimize-regex/optimize-regex': 'warn',
+	'perfectionist/sort-exports': 'off',
 	'perfectionist/sort-imports': 'off',
 	'perfectionist/sort-modules': 'off',
+	'perfectionist/sort-named-exports': 'warn',
+	'perfectionist/sort-named-imports': 'warn',
 	'perfectionist/sort-objects': [
-		'off',
+		'warn',
 		{
-			order: 'asc',
-			type: 'natural',
+			partitionByComment: true,
+			partitionByNewLine: true,
 		},
 	],
 	'prefer-const': 'off',
@@ -131,82 +117,7 @@ const baseRules = {
 			endOfLine: 'auto',
 		},
 	],
-	semi: ['warn', 'never'],
-	'semi-style': 'off',
-	'simple-import-sort/exports': 'warn',
-	'simple-import-sort/imports': 'warn',
-	'sonarjs/no-commented-code': 'off',
-	'sonarjs/no-small-switch': 'off',
-	'sonarjs/no-unused-expressions': 'off',
-	'sonarjs/sonar-no-unused-vars': 'off',
-	'sonarjs/todo-tag': 'off',
-	'sql/format': 'warn',
-	'sql/no-unsafe-query': 'warn',
-	'svelte/no-navigation-without-base': 'off',
-	'svelte/no-useless-mustaches': 'off',
-	'svelte/valid-compile': [
-		'error',
-		{
-			ignoreWarnings: true,
-		},
-	],
-	'svelte/valid-style-parse': 'error',
-	'svelte/derived-has-same-inputs-outputs': 'warn',
-	'svelte/first-attribute-linebreak': 'off',
-	'svelte/html-self-closing': [
-		'warn',
-		'default', // or "all" or "html" or "none"
-	],
-	'svelte/html-closing-bracket-spacing': 'warn',
-	'svelte/html-quotes': [
-		'warn',
-		{
-			prefer: 'double',
-			dynamic: {
-				quoted: false,
-				avoidInvalidUnquotedInHTML: false,
-			},
-		},
-	],
-	'svelte/indent': 'off',
-	'svelte/infinite-reactive-loop': 'error',
-	'svelte/no-dupe-on-directives': 'warn',
-	'svelte/prefer-destructured-store-props': 'warn',
-	'svelte/no-dupe-use-directives': 'warn',
-	'svelte/no-immutable-reactive-statements': 'warn',
-	'svelte/no-reactive-functions': 'warn',
-	'svelte/no-reactive-literals': 'warn',
-	'svelte/no-reactive-reassign': 'warn',
-	'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
-	'svelte/no-store-async': 'warn',
-	'svelte/no-target-blank': 'error',
-	'svelte/sort-attributes': 'warn',
-	'svelte/no-trailing-spaces': 'warn',
-	'svelte/no-inner-declarations': 'warn',
-	'sonarjs/prefer-single-boolean-return': 'off',
-	'svelte/shorthand-attribute': 'warn',
-	'svelte/shorthand-directive': 'warn',
-	'svelte/no-unused-class-name': [
-		'off',
-		{
-			allowedClassNames: [],
-		},
-	],
-	'svelte/prefer-style-directive': 'off',
-	'svelte/html-closing-bracket-new-line': 'warn',
-	'svelte/prefer-class-directive': 'warn',
-	'svelte/require-each-key': 'warn',
-	'svelte/require-optimized-style-attribute': 'warn',
-	'svelte/require-store-reactive-access': 'warn',
-	'svelte/spaced-html-comment': 'warn',
-	'svelte/valid-each-key': 'warn',
-	'unicorn/filename-case': 'off',
-	'unicorn/no-abusive-eslint-disable': 'off',
-	'unicorn/no-array-callback-reference': 'off',
-	'unicorn/prefer-spread': 'off',
-	'unicorn/prevent-abbreviations': 'off',
-	'unicorn/require-array-join-separator': 'off',
-	indent: 'off',
+	'promise/always-return': 'off',
 	'ramda/always-simplification': 'warn',
 	'ramda/any-pass-simplification': 'warn',
 	'ramda/both-simplification': 'warn',
@@ -232,6 +143,95 @@ const baseRules = {
 	'ramda/set-simplification': 'warn',
 	'ramda/unless-simplification': 'warn',
 	'ramda/when-simplification': 'warn',
+	semi: ['warn', 'never'],
+	'semi-style': 'off',
+	'simple-import-sort/exports': 'warn',
+	'simple-import-sort/imports': 'warn',
+	'sonarjs/call-argument-line': 'off',
+	'sonarjs/cognitive-complexity': ['warn', 30],
+	'sonarjs/no-commented-code': 'off',
+	'sonarjs/no-empty-test-file': 'off',
+	'sonarjs/no-invariant-returns': 'warn',
+	'sonarjs/no-small-switch': 'off',
+	'sonarjs/no-unused-collection': 'off',
+	'sonarjs/no-unused-expressions': 'off',
+	'sonarjs/prefer-single-boolean-return': 'off',
+	'sonarjs/sonar-no-unused-vars': 'off',
+	'sonarjs/todo-tag': 'off',
+	'sonarjs/unused-import': 'off',
+	'sql/format': 'warn',
+	'sql/no-unsafe-query': 'warn',
+	'svelte/derived-has-same-inputs-outputs': 'warn',
+	'svelte/first-attribute-linebreak': 'off',
+	'svelte/html-closing-bracket-new-line': 'warn',
+	'svelte/html-closing-bracket-spacing': 'warn',
+	'svelte/html-quotes': [
+		'warn',
+		{
+			dynamic: {
+				avoidInvalidUnquotedInHTML: false,
+				quoted: false,
+			},
+			prefer: 'double',
+		},
+	],
+	'svelte/html-self-closing': [
+		'warn',
+		'default', // or "all" or "html" or "none"
+	],
+	'svelte/indent': 'off',
+	'svelte/infinite-reactive-loop': 'error',
+	'svelte/no-dupe-on-directives': 'warn',
+	'svelte/no-dupe-use-directives': 'warn',
+	'svelte/no-immutable-reactive-statements': 'warn',
+	'svelte/no-inner-declarations': 'warn',
+	'svelte/no-navigation-without-base': 'off',
+	'svelte/no-reactive-functions': 'warn',
+	'svelte/no-reactive-literals': 'warn',
+	'svelte/no-reactive-reassign': 'warn',
+	'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
+	'svelte/no-store-async': 'warn',
+	'svelte/no-target-blank': 'error',
+	'svelte/no-trailing-spaces': 'warn',
+	'svelte/no-unused-class-name': [
+		'off',
+		{
+			allowedClassNames: [],
+		},
+	],
+	'svelte/no-useless-mustaches': 'off',
+	'svelte/prefer-class-directive': 'warn',
+	'svelte/prefer-destructured-store-props': 'warn',
+	'svelte/prefer-style-directive': 'off',
+	'svelte/require-each-key': 'warn',
+	'svelte/require-optimized-style-attribute': 'warn',
+	'svelte/require-store-reactive-access': 'warn',
+	'svelte/shorthand-attribute': 'warn',
+	'svelte/shorthand-directive': 'warn',
+	'svelte/sort-attributes': 'warn',
+	'svelte/spaced-html-comment': 'warn',
+	'svelte/valid-compile': [
+		'error',
+		{
+			ignoreWarnings: true,
+		},
+	],
+	'svelte/valid-each-key': 'warn',
+	'svelte/valid-style-parse': 'error',
+	'unicorn/filename-case': 'off',
+	'unicorn/import-style': 'off',
+	'unicorn/no-abusive-eslint-disable': 'off',
+	'unicorn/no-array-callback-reference': 'off',
+	'unicorn/no-array-reduce': 'off',
+	'unicorn/no-empty-file': 'off',
+	'unicorn/no-null': 'off',
+	'unicorn/no-useless-undefined': 'off',
+	'unicorn/no-zero-fractions': 'off',
+	'unicorn/prefer-dom-node-dataset': 'off',
+	'unicorn/prefer-spread': 'off',
+	'unicorn/prefer-top-level-await': 'off',
+	'unicorn/prevent-abbreviations': 'off',
+	'unicorn/require-array-join-separator': 'off',
 }
 
 const __filename = fileURLToPath(import.meta.url)
@@ -284,17 +284,28 @@ export default defineFlatConfig([
 	...flatCompat.extends('plugin:xstate/all', 'plugin:redos/recommended'),
 
 	{
+		plugins: {
+			ex: exceptionHandling,
+			'no-secrets': noSecrets,
+			'optimize-regex': optimizeRegex,
+			ramda,
+			redos,
+			'simple-import-sort': simpleImportSort,
+			sql,
+			xstate,
+		},
+
+		rules: baseRules,
+
 		settings: {
 			browserslistOpts: {
 				env: 'defaults',
 			},
 			'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx', '.svelte', '.json'],
-			'import-x/resolver-next': [
-				createTypeScriptImportResolver({
-					alwaysTryTypes: true,
-					project: ['apps/*/tsconfig.json', 'libraries/*/tsconfig.json', 'storybook/tsconfig.json'],
-				}),
-			],
+			'import-x/parsers': {
+				'@typescript-eslint/parser': ['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx'],
+				'svelte-eslint-parser': ['.svelte', '.svelte.js', '.svelte.ts'],
+			},
 			'import-x/resolver': {
 				typescript: createTypeScriptImportResolver({
 					project: [
@@ -305,10 +316,12 @@ export default defineFlatConfig([
 					],
 				}),
 			},
-			'import-x/parsers': {
-				'@typescript-eslint/parser': ['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx'],
-				'svelte-eslint-parser': ['.svelte', '.svelte.js', '.svelte.ts'],
-			},
+			'import-x/resolver-next': [
+				createTypeScriptImportResolver({
+					alwaysTryTypes: true,
+					project: ['apps/*/tsconfig.json', 'libraries/*/tsconfig.json', 'storybook/tsconfig.json'],
+				}),
+			],
 			svelte: {
 				kit: {
 					files: {
@@ -317,19 +330,6 @@ export default defineFlatConfig([
 				},
 			},
 		},
-
-		plugins: {
-			ex: exceptionHandling,
-			'no-secrets': noSecrets,
-			'optimize-regex': optimizeRegex,
-			redos,
-			'simple-import-sort': simpleImportSort,
-			sql,
-			xstate,
-			ramda,
-		},
-
-		rules: baseRules,
 	},
 
 	{
@@ -344,12 +344,12 @@ export default defineFlatConfig([
 			},
 			parser: parser_TS,
 			parserOptions: {
+				allowDefaultProject: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte'],
 				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
-				allowDefaultProject: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 			},
 			sourceType: 'module',
 		},
@@ -370,13 +370,13 @@ export default defineFlatConfig([
 		languageOptions: {
 			parser: parser_svelte,
 			parserOptions: {
+				allowDefaultProject: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 				ecmaVersion: 'latest',
 				extraFileExtensions: ['.svelte', '.svelte.js', '.svelte.ts'],
 				parser: parser_TS,
 				projectService: true,
 				requireConfigFile: false,
 				sourceType: 'module',
-				allowDefaultProject: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 				svelteConfig,
 				svelteFeatures: {
 					experimentalRunes: true,
@@ -385,9 +385,9 @@ export default defineFlatConfig([
 		},
 
 		rules: {
+			'import-x/default': 'off',
 			'sonarjs/no-unused-vars': 'off',
 			'sonarjs/no-use-of-empty-return-value': 'off',
-			'import-x/default': 'off',
 		},
 	},
 
@@ -403,16 +403,16 @@ export default defineFlatConfig([
 		],
 
 		rules: {
+			'@intlify/svelte/no-raw-text': 'off',
+			'array-func/no-unnecessary-this-arg': 'off',
 			'functional/prefer-tacit': 'off',
 			'no-unused-vars': 'off',
-			'sonarjs/no-dead-store': 'off',
-			'unicorn/no-array-method-this-argument': 'off',
-			'array-func/no-unnecessary-this-arg': 'off',
-			'@intlify/svelte/no-raw-text': 'off',
 			'redos/no-vulnerable': 'off',
+			'sonarjs/no-dead-store': 'off',
 			'sonarjs/pseudo-random': 'off',
 			'sonarjs/slow-regex': 'off',
 			'svelte/no-useless-children-snippet': 'off',
+			'unicorn/no-array-method-this-argument': 'off',
 		},
 	},
 
@@ -423,8 +423,8 @@ export default defineFlatConfig([
 		rules: {
 			...playwright.configs['flat/recommended'].rules,
 			'no-shadow': 'off',
-			'playwright/no-conditional-in-test': 'off',
 			'playwright/no-conditional-expect': 'off',
+			'playwright/no-conditional-in-test': 'off',
 		},
 	},
 
@@ -508,12 +508,6 @@ export default defineFlatConfig([
 			},
 		},
 		rules: {
-			'unicorn/prefer-module': 'off',
-			'no-undef': 'off',
-			'no-unused-expressions': 'off',
-			'no-unused-vars': 'off',
-			'sonarjs/no-unused-vars': 'off',
-			'padded-blocks': 'off',
 			'@typescript-eslint/await-thenable': 'off',
 			'@typescript-eslint/dot-notation': 'off',
 			'@typescript-eslint/naming-convention': 'off',
@@ -566,14 +560,12 @@ export default defineFlatConfig([
 			'@typescript-eslint/triple-slash-reference': 'off',
 			'@typescript-eslint/unbound-method': 'off',
 			'@typescript-eslint/unified-signatures': 'off',
-			'functional/no-promise-reject': 'off',
+			'depend/ban-dependencies': 'off', // 타입 정보 필요
 			'functional/immutable-data': 'off',
+			'functional/no-promise-reject': 'off',
 			'functional/prefer-immutable-types': 'off', // 오류 발생 규칙
 			'functional/prefer-tacit': 'off',
 			'functional/type-declaration-immutability': 'off',
-			'promise/no-native': 'off',
-			'ramda/prefer-ramda-boolean': 'off',
-			'depend/ban-dependencies': 'off', // 타입 정보 필요
 			'import-x/default': 'off', // 타입 정보 필요
 			'import-x/named': 'off', // 타입 정보 필요
 			'import-x/namespace': 'off', // 타입 정보 필요
@@ -582,6 +574,14 @@ export default defineFlatConfig([
 			'import-x/no-named-as-default': 'off', // 타입 정보 필요
 			'import-x/no-named-as-default-member': 'off', // 타입 정보 필요
 			'import-x/no-unused-modules': 'off', // 타입 정보 필요
+			'no-undef': 'off',
+			'no-unused-expressions': 'off',
+			'no-unused-vars': 'off',
+			'padded-blocks': 'off',
+			'promise/no-native': 'off',
+			'ramda/prefer-ramda-boolean': 'off',
+			'sonarjs/no-unused-vars': 'off',
+			'unicorn/prefer-module': 'off',
 		},
 	},
 
