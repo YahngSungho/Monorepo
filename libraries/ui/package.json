@@ -39,7 +39,7 @@
 		"formsnap": "^2.0.1",
 		"hast-util-to-string": "^3.0.1",
 		"iconify-icon": "^3.0.0",
-		"mermaid": "^11.6.0",
+		"mermaid": "^11.10.0",
 		"mode-watcher": "^1.0.7",
 		"nanoid": "^5.1.5",
 		"open-props": "^1.7.15",
