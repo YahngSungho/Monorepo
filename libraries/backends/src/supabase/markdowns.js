@@ -31,12 +31,12 @@ export async function saveMarkdownList_action(markdownList) {
 	}
 }
 
-export async function getMarkdownListByProjectName(projectName, langs) {
+export async function getMarkdownListByProjectName(projectName, exceptLangs) {
 	const { data, error } = await supabase
 		.from('markdowns')
 		.select('body, key, locale')
 		.eq('project_name', projectName)
-		.in('locale', langs)
+		.not('locale', 'in', JSON.stringify(exceptLangs).replace('[', '(').replace(']', ')'))
 
 	if (error) {
 		throw error

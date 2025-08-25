@@ -32,7 +32,7 @@ const basicLangs = ['ko', 'en']
 
 export async function markdownScript_action(projectName, rootPath, helperPath) {
 	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
-	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, getValidLocales().filter(lang => !basicLangs.includes(lang)))
+	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, basicLangs)
 	const { explanations, languageMessageMap } = convertMarkdownFiles(initialMarkdownFiles, rootPath, markdownListFromSupabase)
 	const translatedLanguageMap = await getTranslatedLanguageMap_action(
 		basicLangs,
