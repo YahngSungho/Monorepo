@@ -9,7 +9,6 @@ import {
 	getTranslatedLanguageMap_action,
 	saveFiles_action,
 } from '../translation/markdown/translation.js'
-import { getValidLocales } from '../translation/helpers.js'
 
 // dummy function for test
 async function getTranslatedMessages_forTest(
@@ -20,7 +19,7 @@ async function getTranslatedMessages_forTest(
 ) {
 	const translatedMessages = {}
 	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지 4'
+		translatedMessages[messageKey] = '번역된 메시지 5'
 	}
 	return {
 		newDictionary: {},

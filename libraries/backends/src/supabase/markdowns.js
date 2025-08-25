@@ -24,7 +24,6 @@ export async function saveMarkdownList_action(markdownList) {
 	project_name: markdown.projectName,
 	updated_at: dateNow
 })), { ignoreDuplicates: false, onConflict: 'project_name,key,locale' })
-.select()
 
 	if (error) {
 		throw error
