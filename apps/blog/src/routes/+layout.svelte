@@ -17,7 +17,7 @@ import { slide } from 'svelte/transition'
 import { afterNavigate } from '$app/navigation'
 import { page } from '$app/state'
 
-import { APP_NAME } from './base'
+import { APP_NAME } from '../info.js'
 
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()

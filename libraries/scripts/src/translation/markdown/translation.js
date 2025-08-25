@@ -15,6 +15,7 @@ title, tags 등은 각 md 파일에 frontmatter로 작성
 
 import path from 'node:path'
 
+import { saveMarkdownList_action } from '@library/backends/supabase'
 import {
 	readFilesToObjects,
 	readFilesToStrings_recursive,
@@ -23,6 +24,7 @@ import {
 import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
+import { getFrontmatterObject } from '../../markdown/getFrontmatters.js'
 import {
 	calculateInitialTranslationStateByBaseLanguages,
 	getInitialLanguageMap,
@@ -66,7 +68,7 @@ export async function getFiles(rootAbsolutePath, helperFolderPath) {
 			dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
 	}
 
-	return { initialMarkdownFiles: markdownFiles, dictPerLanguage, cache }
+	return { cache, dictPerLanguage, initialMarkdownFiles: markdownFiles }
 }
 
 // const initialMarkdownFiles_forTest = [
@@ -155,7 +157,7 @@ export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
 			explanations[fileKey] = fileObject.value
 		}
 	}
-	return { languageMessageMap, explanations }
+	return { explanations, languageMessageMap }
 }
 
 // const { languageMessageMap: languageMessageMap_forTest, explanations: explanations_forTest } = convertMarkdownFiles(initialMarkdownFiles_forTest, 'src')
@@ -183,7 +185,7 @@ export async function getTranslatedLanguageMap_action(
 	basicLangs,
 	messageMap,
 	explanations,
-	dictPerLanguage,
+	dictPerLang,
 	combinedMessages_cached,
 	getTranslatedMessages,
 ) {
@@ -196,15 +198,15 @@ export async function getTranslatedLanguageMap_action(
 			combinedMessages_cached,
 		)
 
-	return await R.mapObjectParallel(async (languageMessage, language) => {
-		if (languageMessage.missingMessageKeys.length === 0) {
-			return languageMessage
+	return await R.mapObjectParallel(async (languageMessageMap, lang) => {
+		if (languageMessageMap.missingMessageKeys.length === 0) {
+			return languageMessageMap
 		}
 
 		return await translateOneLanguageMessages(
-			language,
-			languageMessage,
-			dictPerLanguage[language],
+			lang,
+			languageMessageMap,
+			dictPerLang[lang],
 			combinedMessages_latest,
 			getTranslatedMessages,
 		)
@@ -235,20 +237,28 @@ export async function getTranslatedLanguageMap_action(
 // }
 
 export async function saveFiles_action(
-	rootAbsolutePath,
+	projectName,
 	helperFolderPath,
 	translatedLanguageMap,
+	updatedMessagesPerLang,
 	explanations,
 	languageMessageMap_basicLangs,
 ) {
+	const markdownListForSave = []
+
 	for await (const [language, messageMap] of Object.entries(translatedLanguageMap)) {
 		if (messageMap.missingMessageKeys.length === 0) {
 			continue
 		}
 
 		for await (const [messageKey, messageValue] of Object.entries(messageMap.translatedMessages)) {
-			const filePath = path.join(rootAbsolutePath, messageKey, `${language}.md`)
-			await writeFile_async(filePath, messageValue)
+			markdownListForSave.push({
+				body: messageValue,
+				frontmatter: getFrontmatterObject(messageValue),
+				key: messageKey,
+				locale: language,
+				projectName,
+			})
 		}
 
 		await writeFile_async(
@@ -263,6 +273,20 @@ export async function saveFiles_action(
 			),
 		)
 	}
+
+	for (const [lang, updatedMessages] of Object.entries(updatedMessagesPerLang)) {
+		for (const [messageKey, messageValue] of Object.entries(updatedMessages)) {
+			markdownListForSave.push({
+				body: messageValue,
+				frontmatter: getFrontmatterObject(messageValue),
+				key: messageKey,
+				locale: lang,
+				projectName,
+			})
+		}
+	}
+
+	await saveMarkdownList_action(markdownListForSave)
 
 	const newCache = getNewCache(languageMessageMap_basicLangs, explanations)
 	await writeFile_async(
