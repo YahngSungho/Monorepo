@@ -5,8 +5,8 @@ import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/fu
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
-export function getInitialLanguageMap() {
-	// Vitest/Jest 같은 테스트 환경에서는 모듈 최상단(모듈 스코프)에서 fs 모듈을 바로 사용하면,
+export function getValidLocales () {
+		// Vitest/Jest 같은 테스트 환경에서는 모듈 최상단(모듈 스코프)에서 fs 모듈을 바로 사용하면,
 	// 테스트 설정(예: fs 모의 객체)이 적용되기 전에 파일 읽기 코드가 먼저 실행될 수 있다.
 	// 이 경우, 파일을 제대로 읽지 못해 오류가 발생한다.
 	//
@@ -21,8 +21,12 @@ export function getInitialLanguageMap() {
 	)
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
+	return settings.locales
+}
+
+export function getInitialLanguageMap() {
 	const result = {}
-	for (const language of settings.locales) {
+	for (const language of getValidLocales()) {
 		result[language] = {}
 	}
 	return result

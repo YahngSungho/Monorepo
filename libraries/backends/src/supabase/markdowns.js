@@ -31,6 +31,20 @@ export async function saveMarkdownList_action(markdownList) {
 	}
 }
 
+export async function getMarkdownListByProjectName(projectName, langs) {
+	const { data, error } = await supabase
+		.from('markdowns')
+		.select('body, key, locale')
+		.eq('project_name', projectName)
+		.in('locale', langs)
+
+	if (error) {
+		throw error
+	}
+
+	return data
+}
+
 // Todo: getOneMarkdown 추가
 
 // Todo: getMarkdownListMetadata 추가

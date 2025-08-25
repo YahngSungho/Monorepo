@@ -1,3 +1,4 @@
+import { getMarkdownListByProjectName } from '@library/backends/supabase'
 import { isSameNormalizedString } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 
@@ -8,6 +9,7 @@ import {
 	getTranslatedLanguageMap_action,
 	saveFiles_action,
 } from '../translation/markdown/translation.js'
+import { getValidLocales } from '../translation/helpers.js'
 
 // dummy function for test
 async function getTranslatedMessages_forTest(
@@ -18,7 +20,7 @@ async function getTranslatedMessages_forTest(
 ) {
 	const translatedMessages = {}
 	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지'
+		translatedMessages[messageKey] = '번역된 메시지 4'
 	}
 	return {
 		newDictionary: {},
@@ -30,8 +32,8 @@ const basicLangs = ['ko', 'en']
 
 export async function markdownScript_action(projectName, rootPath, helperPath) {
 	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
-	const { explanations, languageMessageMap } = convertMarkdownFiles(initialMarkdownFiles, rootPath)
-	// Todo: Supabase에서 가져온거 추가
+	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, getValidLocales().filter(lang => !basicLangs.includes(lang)))
+	const { explanations, languageMessageMap } = convertMarkdownFiles(initialMarkdownFiles, rootPath, markdownListFromSupabase)
 	const translatedLanguageMap = await getTranslatedLanguageMap_action(
 		basicLangs,
 		languageMessageMap,
@@ -53,8 +55,6 @@ export async function markdownScript_action(projectName, rootPath, helperPath) {
 		}
 	}
 
-
-	// @ts-ignore
 	await saveFiles_action(
 		projectName,
 		helperPath,

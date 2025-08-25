@@ -135,8 +135,15 @@ export async function getFiles(rootAbsolutePath, helperFolderPath) {
 // 		},
 // 	}
 
-export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
+export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath, markdownListFromSupabase) {
 	const languageMessageMap = { ...getInitialLanguageMap() }
+
+
+	for (const markdown of markdownListFromSupabase) {
+		if (languageMessageMap[markdown.locale]) {
+			languageMessageMap[markdown.locale][markdown.key] = markdown.body
+		}
+	}
 
 	const explanations = {}
 	for (const fileObject of initialMarkdownFiles) {
@@ -157,6 +164,7 @@ export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
 			explanations[fileKey] = fileObject.value
 		}
 	}
+
 	return { explanations, languageMessageMap }
 }
 

@@ -59,7 +59,6 @@ export async function readFilesToStrings_recursive(absoluteFolderPath, globPatte
 			const finalPath = fullFilePath // 저장할 경로는 호출자 기준 상대 경로 (원래 의도대로)
 
 			try {
-				console.log(`   - 파일 내용 읽기 시도: ${fullFilePath}`)
 				const value = await readFile(fullFilePath, 'utf8')
 				const fileName = basename(fullFilePath) // 전체 경로에서 파일 이름 추출
 
@@ -114,7 +113,6 @@ export async function readFilesToStrings(absoluteFolderPath, globPattern = '*') 
 
 			try {
 				// 파일 내용을 UTF-8 텍스트로 읽어옵니다.
-				console.log(` - 파일 읽기 시도: ${fullPath}`)
 				const value = await readFile(fullPath, 'utf8')
 				// 성공적으로 읽었으면 파일 이름과 내용을 객체로 반환
 				return { filename, value, path: fullPath }
