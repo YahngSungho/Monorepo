@@ -32,8 +32,28 @@ jobs:
       - name: Install dotenvx
         run: curl -sfS https://dotenvx.sh/install.sh | sh
 
-      - name: Load environment variables
-        run: dotenvx run -f .env.private -f .env.public -- bash -lc 'env >> "$GITHUB_ENV"'
+      - name: Load and mask only .env keys into job env
+        shell: bash
+        run: |
+          # 1) .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
+          awk -F= '!/^#/ && NF { gsub(/^[ \t]+|[ \t]+$/,"",$1); print $1 }' .env.public .env.private \
+            | sort -u > .env.keys
+
+          # 2) dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
+          dotenvx run -f .env.private -f .env.public -- bash -lc '
+            while IFS= read -r key; do
+              v="${!key}"
+              [ -z "$v" ] && continue
+              echo "::add-mask::$v"
+              if printf "%s" "$v" | grep -q $'\''\n'\''; then
+                echo "$key<<EOF" >> "$GITHUB_ENV"
+                printf "%s\n" "$v" >> "$GITHUB_ENV"
+                echo "EOF" >> "$GITHUB_ENV"
+              else
+                printf "%s=%s\n" "$key" "$v" >> "$GITHUB_ENV"
+              fi
+            done < .env.keys
+          '
         env:
           DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 
