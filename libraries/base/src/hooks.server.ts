@@ -1,7 +1,10 @@
+import { config } from '@dotenvx/dotenvx'
 import { extractCritical } from '@emotion/server' // Emotion 서버 유틸리티 import
 import { paraglideMiddleware } from '@library/paraglide/server.js'
 import { handleErrorWithSentry, initCloudflareSentryHandle, sentryHandle } from '@sentry/sveltekit'
 import type { Handle } from '@sveltejs/kit'
+
+config({ path: '../../.env.private' })
 
 // 환경 변수 확인
 const isDeployEnv =
@@ -39,12 +42,12 @@ const emotionSsrHandle: Handle = async ({ event, resolve }) => {
 	// resolve 함수를 호출하고, 반환된 Response 객체를 그대로 반환합니다.
 	// transformPageChunk 옵션은 resolve 함수의 두 번째 인자로 전달됩니다.
 	const response = await resolve(event, {
-		transformPageChunk: ({ html, done }) => {
+		transformPageChunk: ({ done, html }) => {
 			// 'done' 플래그는 HTML 청크 스트림의 마지막 부분을 나타냅니다.
 			// 전체 HTML이 준비되었을 때만 스타일을 추출하고 삽입합니다.
 			if (done) {
 				// extractCritical 함수는 전달된 HTML 문자열에서 사용된 Emotion 스타일을 추출합니다.
-				const { ids, css, html: transformedHtml } = extractCritical(html)
+				const { css, html: transformedHtml, ids } = extractCritical(html)
 
 				// 추출된 CSS가 있다면, <style> 태그로 만들어 <head> 태그 내부에 삽입합니다.
 				if (css) {

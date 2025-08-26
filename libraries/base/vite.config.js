@@ -20,10 +20,9 @@ if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'p
 }
 
 const baseConfig = defineConfig({
-	envDir: '../../',
 	build: {
-		sourcemap: currentEnv === 'development' ? true : 'hidden', // Sentry 설정에서 sourcemap 파일 지움
 		cssMinify: 'lightningcss',
+		sourcemap: currentEnv === 'development' ? true : 'hidden', // Sentry 설정에서 sourcemap 파일 지움
 	},
 	css: {
 		devSourcemap: true,
@@ -49,14 +48,14 @@ const baseConfig = defineConfig({
 			allow: ['.', path.resolve(__dirname, './static')],
 		},
 	},
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}'],
-		exclude: ['**/e2e/**'],
-		reporters: process.env.GITHUB_ACTIONS ? ['junit', 'github-actions'] : 'default',
-		outputFile: './vitest-report/result.xml',
-	},
 	ssr: {
 		noExternal: ['bits-ui'],
+	},
+	test: {
+		exclude: ['**/e2e/**'],
+		include: ['src/**/*.{test,spec}.{js,ts}'],
+		outputFile: './vitest-report/result.xml',
+		reporters: process.env.GITHUB_ACTIONS ? ['junit', 'github-actions'] : 'default',
 	},
 })
 
