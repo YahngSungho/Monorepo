@@ -12,7 +12,8 @@
 		"change-base-locale:ko": "node ./src/changeBaseLocaleToKo.js",
 		"check-no-missing-explanations": "node ./src/checkNoMissingExplanations.js",
 		"explanation-ready": "node ./src/readyMissingExplanations.js",
-		"build": "pnpm run change-base-locale:en && pnpm run build",
+		"compile": "node ./src/compile.js",
+		"build": "pnpm run change-base-locale:en && pnpm run compile",
 		"translate": "pnpm run check-no-missing-explanations && node ./src/translation.js",
 		"translate-machine": "npx @inlang/cli machine translate --project ./project.inlang",
 		"translate:env": "node --env-file=../../.env ./src/translation.js"
