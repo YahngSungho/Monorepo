@@ -1,9 +1,18 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"globalDependencies": [".env",
+	"globalDependencies": [".env", ".env.*",
 		"**/.env",
 		"**/.env.*"],
-	"globalEnv": ["NODE_ENV"],
+	"globalEnv": [
+		"NODE_ENV",
+		"MAILGUN",
+		"MAILGUN_SENDING",
+		"SUPABASE_URL",
+		"SUPABASE_ANON_KEY",
+		"OPENAI_API_KEY",
+		"GOOGLE_GENERATIVE_AI_API_KEY",
+		"SENTRY_AUTH_TOKEN"
+	],
 	"globalPassThroughEnv": [
 		"CF_PAGES_BRANCH",
 		"CI",
@@ -18,7 +27,7 @@
 				"$TURBO_DEFAULT$",
 				"!**/*.stories.*"
 			],
-			"outputs": ["dist/**", ".svelte-kit/**", "paraglide-output/**"]
+			"outputs": [".svelte-kit/**", "paraglide-output/**"]
 		},
 		"build:en": {
 			"dependsOn": ["^build:en"],
@@ -27,7 +36,7 @@
 				"$TURBO_DEFAULT$",
 				"!**/*.stories.*"
 			],
-			"outputs": [".svelte-kit/**"]
+			"outputs": [".svelte-kit/**", "paraglide-output/**"]
 		},
 		"change-base-locale:en": {},
 		"change-base-locale:ko": {},
