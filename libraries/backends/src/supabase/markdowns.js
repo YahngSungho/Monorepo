@@ -44,6 +44,31 @@ export async function getMarkdownListByProjectName(projectName, exceptLangs) {
 	return data
 }
 
-// Todo: getOneMarkdown 추가
+export async function getOneMarkdownBody(projectName, locale, key) {
+	const { data, error } = await supabase
+		.from('markdowns')
+		.select('body')
+		.eq('project_name', projectName)
+		.eq('locale', locale)
+		.eq('key', key)
 
-// Todo: getMarkdownListMetadata 추가
+	if (error) {
+		throw error
+	}
+
+	return data[0].body
+}
+
+export async function getMarkdownFrontmatterList(projectName, locale) {
+	const { data, error } = await supabase
+		.from('markdowns')
+		.select('frontmatter')
+		.eq('project_name', projectName)
+		.eq('locale', locale)
+
+	if (error) {
+		throw error
+	}
+
+	return data
+}
