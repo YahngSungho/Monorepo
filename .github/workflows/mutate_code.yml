@@ -391,6 +391,15 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
+
+      - name: Install dotenvx
+        run: curl -sfS https://dotenvx.sh/install.sh | sh
+
+      - name: Load environment variables
+        run: dotenvx run -f .env.private -f .env.public -- bash -lc 'env >> "$GITHUB_ENV"'
+        env:
+          DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
+
       # 1. package-json 패치 다운로드
       - name: package-json 패치 존재 여부 확인
         id: check_package_json_patch
@@ -534,8 +543,6 @@ jobs:
             echo "all_changed_files=" >> $GITHUB_OUTPUT
             echo "all_changed_markdown_files=" >> $GITHUB_OUTPUT
           fi
-        env:
-          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
       # 6. 새로 생성된 마크다운 파일 수정 (markdownlint)
       - name: 새 마크다운 파일 수정 (markdownlint)
@@ -619,8 +626,6 @@ jobs:
     if: |
       needs.path-filter.outputs.projects == 'true' && !failure() && !cancelled()
     env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       HUSKY: 0
     steps:
       - name: 저장소 체크아웃
@@ -629,6 +634,14 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{ secrets.TOKEN1 }} # 필요시 토큰 사용
           fetch-depth: 0 # diff를 위해
+
+      - name: Install dotenvx
+        run: curl -sfS https://dotenvx.sh/install.sh | sh
+
+      - name: Load environment variables
+        run: dotenvx run -f .env.private -f .env.public -- bash -lc 'env >> "$GITHUB_ENV"'
+        env:
+          DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 
       # 1. package-json 패치 다운로드
       - name: package-json 패치 존재 여부 확인

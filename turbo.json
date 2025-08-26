@@ -29,14 +29,13 @@
 			],
 			"outputs": [".svelte-kit/**", "paraglide-output/**"]
 		},
-		"build:en": {
-			"dependsOn": ["^build:en"],
+		"@tool/storybook#build": {
+			"dependsOn": [],
 			"env": [],
 			"inputs": [
-				"$TURBO_DEFAULT$",
-				"!**/*.stories.*"
+				"$TURBO_DEFAULT$"
 			],
-			"outputs": [".svelte-kit/**", "paraglide-output/**"]
+			"outputs": ["storybook-static/**"]
 		},
 		"change-base-locale:en": {},
 		"change-base-locale:ko": {},

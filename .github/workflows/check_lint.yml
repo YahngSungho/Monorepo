@@ -16,9 +16,6 @@ jobs:
     name: Check & Lint
     timeout-minutes: 15
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
     if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
 
     steps:
@@ -29,6 +26,14 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           token: ${{ secrets.TOKEN1 }}
+
+      - name: Install dotenvx
+        run: curl -sfS https://dotenvx.sh/install.sh | sh
+
+      - name: Load environment variables
+        run: dotenvx run -f .env.private -f .env.public -- bash -lc 'env >> "$GITHUB_ENV"'
+        env:
+          DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 
       - name: Cache turbo build setup
         uses: actions/cache@v4
