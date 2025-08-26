@@ -7,6 +7,62 @@ alwaysApply: false
 <Predifined-CSS-variables>
 ```css
 :root {
+	/* space based with em & cqi */
+	--space-em-cqi-2xs: clamp(0.5625em, 0.5408em + 0.1087cqi, 0.625em);
+	--space-em-cqi-xs: clamp(0.875em, 0.8533em + 0.1087cqi, 0.9375em);
+	--space-em-cqi-s: clamp(1.125em, 1.0815em + 0.2174cqi, 1.25em);
+	--space-em-cqi-m: clamp(1.6875em, 1.6223em + 0.3261cqi, 1.875em);
+	--space-em-cqi-l: clamp(2.25em, 2.163em + 0.4348cqi, 2.5em);
+	--space-em-cqi-xl: clamp(3.375em, 3.2446em + 0.6522cqi, 3.75em);
+	--space-em-cqi-2xl: clamp(4.5em, 4.3261em + 0.8696cqi, 5em);
+	--space-em-cqi-3xl: clamp(6.75em, 6.4891em + 1.3043cqi, 7.5em);
+	--space-em-cqi-3xs-2xs: clamp(0.3125em, 0.2038em + 0.5435cqi, 0.625em);
+	--space-em-cqi-2xs-xs: clamp(0.5625em, 0.4321em + 0.6522cqi, 0.9375em);
+	--space-em-cqi-xs-s: clamp(0.875em, 0.7446em + 0.6522cqi, 1.25em);
+	--space-em-cqi-s-m: clamp(1.125em, 0.8641em + 1.3043cqi, 1.875em);
+	--space-em-cqi-m-l: clamp(1.6875em, 1.4049em + 1.413cqi, 2.5em);
+	--space-em-cqi-l-xl: clamp(2.25em, 1.7283em + 2.6087cqi, 3.75em);
+	--space-em-cqi-xl-2xl: clamp(3.375em, 2.8098em + 2.8261cqi, 5em);
+	--space-em-cqi-2xl-3xl: clamp(4.5em, 3.4565em + 5.2174cqi, 7.5em);
+	--space-em-cqi-s-l: clamp(1.125em, 0.6467em + 2.3913cqi, 2.5em);
+	/* space based with rem & cqi */
+	--space-cqi-2xs: clamp(0.5625rem, 0.5408rem + 0.1087cqi, 0.625rem);
+	--space-cqi-xs: clamp(0.875rem, 0.8533rem + 0.1087cqi, 0.9375rem);
+	--space-cqi-s: clamp(1.125rem, 1.0815rem + 0.2174cqi, 1.25rem);
+	--space-cqi-m: clamp(1.6875rem, 1.6223rem + 0.3261cqi, 1.875rem);
+	--space-cqi-l: clamp(2.25rem, 2.163rem + 0.4348cqi, 2.5rem);
+	--space-cqi-xl: clamp(3.375rem, 3.2446rem + 0.6522cqi, 3.75rem);
+	--space-cqi-2xl: clamp(4.5rem, 4.3261rem + 0.8696cqi, 5rem);
+	--space-cqi-3xl: clamp(6.75rem, 6.4891rem + 1.3043cqi, 7.5rem);
+	--space-cqi-3xs-2xs: clamp(0.3125rem, 0.2038rem + 0.5435cqi, 0.625rem);
+	--space-cqi-2xs-xs: clamp(0.5625rem, 0.4321rem + 0.6522cqi, 0.9375rem);
+	--space-cqi-xs-s: clamp(0.875rem, 0.7446rem + 0.6522cqi, 1.25rem);
+	--space-cqi-s-m: clamp(1.125rem, 0.8641rem + 1.3043cqi, 1.875rem);
+	--space-cqi-m-l: clamp(1.6875rem, 1.4049rem + 1.413cqi, 2.5rem);
+	--space-cqi-l-xl: clamp(2.25rem, 1.7283rem + 2.6087cqi, 3.75rem);
+	--space-cqi-xl-2xl: clamp(3.375rem, 2.8098rem + 2.8261cqi, 5rem);
+	--space-cqi-2xl-3xl: clamp(4.5rem, 3.4565rem + 5.2174cqi, 7.5rem);
+	--space-cqi-s-l: clamp(1.125rem, 0.6467rem + 2.3913cqi, 2.5rem);
+	/* space based with rem & vi  */
+	--space-2xs: clamp(0.5625rem, 0.5408rem + 0.1087vi, 0.625rem);
+	--space-xs: clamp(0.875rem, 0.8533rem + 0.1087vi, 0.9375rem);
+	--space-s: clamp(1.125rem, 1.0815rem + 0.2174vi, 1.25rem);
+	--space-m: clamp(1.6875rem, 1.6223rem + 0.3261vi, 1.875rem);
+	--space-l: clamp(2.25rem, 2.163rem + 0.4348vi, 2.5rem);
+	--space-xl: clamp(3.375rem, 3.2446rem + 0.6522vi, 3.75rem);
+	--space-2xl: clamp(4.5rem, 4.3261rem + 0.8696vi, 5rem);
+	--space-3xl: clamp(6.75rem, 6.4891rem + 1.3043vi, 7.5rem);
+	--space-3xs-2xs: clamp(0.3125rem, 0.2038rem + 0.5435vi, 0.625rem);
+	--space-2xs-xs: clamp(0.5625rem, 0.4321rem + 0.6522vi, 0.9375rem);
+	--space-xs-s: clamp(0.875rem, 0.7446rem + 0.6522vi, 1.25rem);
+	--space-s-m: clamp(1.125rem, 0.8641rem + 1.3043vi, 1.875rem);
+	--space-m-l: clamp(1.6875rem, 1.4049rem + 1.413vi, 2.5rem);
+	--space-l-xl: clamp(2.25rem, 1.7283rem + 2.6087vi, 3.75rem);
+	--space-xl-2xl: clamp(3.375rem, 2.8098rem + 2.8261vi, 5rem);
+	--space-2xl-3xl: clamp(4.5rem, 3.4565rem + 5.2174vi, 7.5rem);
+	--space-s-l: clamp(1.125rem, 0.6467rem + 2.3913vi, 2.5rem);
+}
+:root {
 	--layer-1: 1;
 	--layer-2: 2;
 	--layer-3: 3;
@@ -37,101 +93,11 @@ alwaysApply: false
 	--radius-conditional-4: clamp(0px, calc(100vi - 100%) * 1e5, var(--radius-4));
 	--radius-conditional-5: clamp(0px, calc(100vi - 100%) * 1e5, var(--radius-5));
 	--radius-conditional-6: clamp(0px, calc(100vi - 100%) * 1e5, var(--radius-6));
-}
-:root {
-	--size-content-1: 20ch;
-	--size-content-2: 45ch;
-	--size-content-3: 60ch;
-	--size-content-4: 90ch;
-	--size-header-1: 20ch;
-	--size-header-2: 25ch;
-	--size-header-3: 35ch;
-	--size-relative-000: -0.5ch;
-	--size-relative-00: -0.25ch;
-	--size-relative-1: 0.25ch;
-	--size-relative-2: 0.5ch;
-	--size-relative-3: 1ch;
-	--size-relative-4: 1.25ch;
-	--size-relative-5: 1.5ch;
-	--size-relative-6: 1.75ch;
-	--size-relative-7: 2ch;
-	--size-relative-8: 3ch;
-	--size-relative-9: 4ch;
-	--size-relative-10: 5ch;
-	--size-relative-11: 7.5ch;
-	--size-relative-12: 10ch;
-	--size-relative-13: 15ch;
-	--size-relative-14: 20ch;
-	--size-relative-15: 30ch;
-}
-:root {
-	/* space-em-cqi 2xs: 9px → 10px */
-	--space-em-cqi-2xs: clamp(0.5625em, 0.5408em + 0.1087cqi, 0.625em);
-	/* space-em-cqi xs: 14px → 15px */
-	--space-em-cqi-xs: clamp(0.875em, 0.8533em + 0.1087cqi, 0.9375em);
-	/* space-em-cqi s: 18px → 20px */
-	--space-em-cqi-s: clamp(1.125em, 1.0815em + 0.2174cqi, 1.25em);
-	/* space-em-cqi m: 27px → 30px */
-	--space-em-cqi-m: clamp(1.6875em, 1.6223em + 0.3261cqi, 1.875em);
-	/* space-em-cqi l: 36px → 40px */
-	--space-em-cqi-l: clamp(2.25em, 2.163em + 0.4348cqi, 2.5em);
-	/* space-em-cqi xl: 54px → 60px */
-	--space-em-cqi-xl: clamp(3.375em, 3.2446em + 0.6522cqi, 3.75em);
-	/* space-em-cqi 2xl: 72px → 80px */
-	--space-em-cqi-2xl: clamp(4.5em, 4.3261em + 0.8696cqi, 5em);
-	/* space-em-cqi 3xl: 108px → 120px */
-	--space-em-cqi-3xl: clamp(6.75em, 6.4891em + 1.3043cqi, 7.5em);
-	/* One-up pairs */
-	/* space-em-cqi 3xs-2xs: 5px → 10px */
-	--space-em-cqi-3xs-2xs: clamp(0.3125em, 0.2038em + 0.5435cqi, 0.625em);
-	/* space-em-cqi 2xs-xs: 9px → 15px */
-	--space-em-cqi-2xs-xs: clamp(0.5625em, 0.4321em + 0.6522cqi, 0.9375em);
-	/* space-em-cqi xs-s: 14px → 20px */
-	--space-em-cqi-xs-s: clamp(0.875em, 0.7446em + 0.6522cqi, 1.25em);
-	/* space-em-cqi s-m: 18px → 30px */
-	--space-em-cqi-s-m: clamp(1.125em, 0.8641em + 1.3043cqi, 1.875em);
-	/* space-em-cqi m-l: 27px → 40px */
-	--space-em-cqi-m-l: clamp(1.6875em, 1.4049em + 1.413cqi, 2.5em);
-	/* space-em-cqi l-xl: 36px → 60px */
-	--space-em-cqi-l-xl: clamp(2.25em, 1.7283em + 2.6087cqi, 3.75em);
-	/* space-em-cqi xl-2xl: 54px → 80px */
-	--space-em-cqi-xl-2xl: clamp(3.375em, 2.8098em + 2.8261cqi, 5em);
-	/* space-em-cqi 2xl-3xl: 72px → 120px */
-	--space-em-cqi-2xl-3xl: clamp(4.5em, 3.4565em + 5.2174cqi, 7.5em);
-	/* Custom pairs */
-	/* space-em-cqi s-l: 18px → 40px */
-	--space-em-cqi-s-l: clamp(1.125em, 0.6467em + 2.3913cqi, 2.5em);
-}
-:root {
-	/* Step -2: 9.7222px → 10.24px */
-	--font-size-fluid-em-cqi-02: clamp(0.6076em, 0.5964em + 0.0563cqi, 0.64em);
-	/* Step -1: 11.6667px → 12.8px */
-	--font-size-fluid-em-cqi-01: clamp(0.7292em, 0.7045em + 0.1232cqi, 0.8em);
-	/* Step 0: 14px → 16px */
-	--font-size-fluid-em-cqi-0: clamp(0.875em, 0.8315em + 0.2174cqi, 1em);
-	/* Step 0.33: 14.93px → 17.33px */
-	--font-size-fluid-em-cqi-0p3: clamp(1em, 0.8811em + 0.2609cqi, 1.0833em);
-	/* Step 0.66: 15.87px → 18.67px */
-	--font-size-fluid-em-cqi-0p6: clamp(1em, 0.9308em + 0.3043cqi, 1.1667em);
-	/* Step 1: 16.8px → 20px */
-	--font-size-fluid-em-cqi-1: clamp(1.05em, 0.9804em + 0.3478cqi, 1.25em);
-	/* Step 2: 20.16px → 25px */
-	--font-size-fluid-em-cqi-2: clamp(1.26em, 1.1548em + 0.5261cqi, 1.5625em);
-	/* Step 3: 24.192px → 31.25px */
-	--font-size-fluid-em-cqi-3: clamp(1.512em, 1.3586em + 0.7672cqi, 1.9531em);
-	/* Step 4: 29.0304px → 39.0625px */
-	--font-size-fluid-em-cqi-4: clamp(1.8144em, 1.5963em + 1.0904cqi, 2.4414em);
-	/* Step 5: 34.8365px → 48.8281px */
-	--font-size-fluid-em-cqi-5: clamp(2.1773em, 1.8731em + 1.5208cqi, 3.0518em);
-}
-:root {
 	--radius-selector: var(--radius-1);
 	--radius-field: var(--radius-1);
 	--radius-box: var(--radius-1);
 	--size-selector: var(--size-1);
 	--size-field: var(--size-1);
-}
-:root {
 	--background: var(--gray-0);
 	--foreground: var(--gray-12);
 	--muted: var(--gray-3);
@@ -169,9 +135,6 @@ alwaysApply: false
 
 More pre-defined CSS variables:
 [openProps.md](mdc:.cursor/docs/openProps.md)
-[baseVariables.css](mdc:libraries/base/src/baseVariables.css)
-</Predifined-CSS-variables>
-
 </Predifined-CSS-variables>
 
 # CSS Styling Guide
@@ -201,7 +164,7 @@ This is the default and preferred method for applying styles.
   <script>
     let myColor = 'blue';
   </script>
-  
+
   <div style="margin: var(--space-em-cqi-m); color: {myColor};">...</div>
   ```
 
@@ -223,9 +186,9 @@ Use Emotion for more complex CSS scenarios that the `style` attribute cannot han
   ```svelte
   <script>
     import { css, cx } from '@emotion/css';
-  
+
   </script>
-  
+
   <div class={cx('base-class', css`
       &:hover {
         background-color: var(--primary);
