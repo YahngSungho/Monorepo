@@ -1,21 +1,14 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"globalDependencies": [],
-	"globalEnv": ["NODE_ENV", "CF_PAGES_BRANCH"],
+	"globalDependencies": [".env",
+		"**/.env",
+		"**/.env.*"],
+	"globalEnv": ["NODE_ENV"],
 	"globalPassThroughEnv": [
-		"MAILGUN",
-		"MAILGUN_SENDING",
-		"VITE_PUBLIC_SUPABASE_URL",
-		"VITE_PUBLIC_SUPABASE_ANON_KEY",
-		"GEMINI_API_KEY",
-		"GOOGLE_GENERATIVE_AI_API_KEY",
+		"CF_PAGES_BRANCH",
 		"CI",
 		"WATCH",
-		"SENTRY_AUTH_TOKEN",
-		"GITHUB_ACTIONS",
-		".env",
-		"**/.env",
-		"**/.env.*"
+		"GITHUB_ACTIONS"
 	],
 	"tasks": {
 		"build": {
@@ -44,7 +37,8 @@
 		"dev": {
 			"cache": false,
 			"env": [],
-			"persistent": true
+			"persistent": true,
+			"inputs": ["$TURBO_DEFAULT$"]
 		},
 		"eslint": {},
 		"eslint-fix": {},

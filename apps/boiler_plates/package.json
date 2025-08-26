@@ -20,7 +20,7 @@
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"translate": "node ./src/translation/scripts.js",
-		"translate:dotenv": "node --env-file=../../.env ./src/translation/scripts.js",
+		"translate:env": "node --env-file=../../.env ./src/translation/scripts.js",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
