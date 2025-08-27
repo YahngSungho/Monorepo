@@ -16,8 +16,8 @@ export const load = async ({ params, parent }) => {
 	const description = getDescriptionFromMD(post)
 
 	return {
-		post,
 		currentMetadata,
 		description,
+		post,
 	}
 }

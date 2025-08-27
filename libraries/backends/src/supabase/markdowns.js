@@ -14,16 +14,17 @@ import { supabase } from './init.js'
  */
 export async function saveMarkdownList_action(markdownList) {
 	const dateNow = new Date().toISOString()
-	const { error } = await supabase
-.from('markdowns')
-.upsert(markdownList.map(markdown => ({
-	body: markdown.body,
-	frontmatter: markdown.frontmatter,
-	key: markdown.key,
-	locale: markdown.locale,
-	project_name: markdown.projectName,
-	updated_at: dateNow
-})), { ignoreDuplicates: false, onConflict: 'project_name,key,locale' })
+	const { error } = await supabase.from('markdowns').upsert(
+		markdownList.map((markdown) => ({
+			body: markdown.body,
+			frontmatter: markdown.frontmatter,
+			key: markdown.key,
+			locale: markdown.locale,
+			project_name: markdown.projectName,
+			updated_at: dateNow,
+		})),
+		{ ignoreDuplicates: false, onConflict: 'project_name,key,locale' },
+	)
 
 	if (error) {
 		throw error

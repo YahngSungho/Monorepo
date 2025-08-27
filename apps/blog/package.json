@@ -26,8 +26,8 @@
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
-		"@library/base": "workspace:*",
 		"@library/backends": "workspace:*",
+		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",

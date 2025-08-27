@@ -15,10 +15,7 @@ title, tags 등은 각 md 파일에 frontmatter로 작성
 
 import path from 'node:path'
 
-import {
-	readFilesToObjects,
-	readFilesToStrings_recursive,
-} from '@library/helpers/fs-async'
+import { readFilesToObjects, readFilesToStrings_recursive } from '@library/helpers/fs-async'
 import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
@@ -131,9 +128,12 @@ export async function getFiles(rootAbsolutePath, helperFolderPath) {
 // 		},
 // 	}
 
-export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath, markdownListFromSupabase) {
+export function convertMarkdownFiles(
+	initialMarkdownFiles,
+	rootAbsolutePath,
+	markdownListFromSupabase,
+) {
 	const languageMessageMap = { ...getInitialLanguageMap() }
-
 
 	for (const markdown of markdownListFromSupabase) {
 		if (languageMessageMap[markdown.locale]) {

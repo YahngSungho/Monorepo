@@ -437,7 +437,6 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
-
       - name: Install dotenvx
         run: curl -sfS https://dotenvx.sh/install.sh | sh
 
@@ -509,7 +508,6 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-
       # 5. markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint_format
@@ -549,7 +547,6 @@ jobs:
           else
             echo "적용할 markdown 변경사항이 없습니다."
           fi
-
 
       # 3. pnpm 설치 및 의존성 설치 (패치 적용 후)
       - name: pnpm 설정
@@ -769,7 +766,6 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-
       # 5. markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint_format
@@ -809,7 +805,6 @@ jobs:
           else
             echo "적용할 markdown 변경사항이 없습니다."
           fi
-
 
       # 3. translation patch 다운로드
       - name: 번역 패치 존재 여부 확인
@@ -1077,7 +1072,15 @@ jobs:
           path: images-changes.patch
 
   push-and-labeled:
-    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown, update-translation]
+    needs:
+      [
+        path-filter,
+        compress-images,
+        lint-format,
+        fix-package-json,
+        fix-markdown,
+        update-translation,
+      ]
     if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
 

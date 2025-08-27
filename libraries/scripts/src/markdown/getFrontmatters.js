@@ -26,9 +26,9 @@ export const getFrontmatterObject = (messageValue) => {
 }
 
 export const getFrontmatterObjectObject = (languageMessageMap) => {
-	const result = R.mapObject((messageObject) =>
-		R.mapObject(getFrontmatterObject)(messageObject),
-	)(languageMessageMap)
+	const result = R.mapObject((messageObject) => R.mapObject(getFrontmatterObject)(messageObject))(
+		languageMessageMap,
+	)
 
 	return result
 }

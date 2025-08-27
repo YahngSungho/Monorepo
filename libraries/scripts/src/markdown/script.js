@@ -3,7 +3,6 @@ import { isSameNormalizedString } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 
 import { saveFiles_action } from '../translation/markdown/saveFiles_action.js'
-
 // import { getTranslatedMessages_markdown } from '../translation/llm.js'
 import {
 	convertMarkdownFiles,
@@ -33,7 +32,11 @@ const basicLangs = ['ko', 'en']
 export async function markdownScript_action(projectName, rootPath, helperPath) {
 	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
 	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, basicLangs)
-	const { explanations, languageMessageMap } = convertMarkdownFiles(initialMarkdownFiles, rootPath, markdownListFromSupabase)
+	const { explanations, languageMessageMap } = convertMarkdownFiles(
+		initialMarkdownFiles,
+		rootPath,
+		markdownListFromSupabase,
+	)
 	const translatedLanguageMap = await getTranslatedLanguageMap_action(
 		basicLangs,
 		languageMessageMap,
@@ -49,7 +52,7 @@ export async function markdownScript_action(projectName, rootPath, helperPath) {
 	for (const [lang, messageMap] of Object.entries(languageMessageMap_basicLangs)) {
 		updatedMessagesPerLang[lang] = {}
 		for (const [messageKey, messageValue] of Object.entries(messageMap)) {
-			if (!isSameNormalizedString(messageValue, (cache[messageKey]?.[lang] || ''))) {
+			if (!isSameNormalizedString(messageValue, cache[messageKey]?.[lang] || '')) {
 				updatedMessagesPerLang[lang][messageKey] = messageValue
 			}
 		}
@@ -61,6 +64,6 @@ export async function markdownScript_action(projectName, rootPath, helperPath) {
 		translatedLanguageMap,
 		updatedMessagesPerLang,
 		explanations,
-		languageMessageMap_basicLangs
+		languageMessageMap_basicLangs,
 	)
 }

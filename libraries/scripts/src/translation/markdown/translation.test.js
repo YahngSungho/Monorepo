@@ -81,11 +81,7 @@ import { getAbsolutePath } from '@library/helpers/fs-sync'
 // import { R } from '@library/helpers/R'; // R 사용 부분 없으므로 제거 가능
 // calculateInitialTranslationStateByBaseLanguages는 helpers에서 가져오므로 여기에 포함하지 않음
 import { getInitialLanguageMap, getNewCache, translateOneLanguageMessages } from '../helpers.js'
-import {
-	convertMarkdownFiles,
-	getFiles,
-	getTranslatedLanguageMap_action,
-} from './translation.js'
+import { convertMarkdownFiles, getFiles, getTranslatedLanguageMap_action } from './translation.js'
 
 // --- 테스트 스위트 ---
 
@@ -223,12 +219,14 @@ describe('convertMarkdownFiles 함수', () => {
 				'comp/text': '안녕',
 				'supabase/key1': 'Supabase 안녕',
 			},
-			...(getInitialLanguageMap().fr ? {
-				fr: {
-					'comp/extra': 'Bonjour',
-					'supabase/key2': 'Supabase Bonjour',
+			...(getInitialLanguageMap().fr ?
+				{
+					fr: {
+						'comp/extra': 'Bonjour',
+						'supabase/key2': 'Supabase Bonjour',
+					},
 				}
-			} : {}),
+			:	{}),
 		}
 		const expectedExplanations = {
 			'comp/text': '인사말',
@@ -236,7 +234,11 @@ describe('convertMarkdownFiles 함수', () => {
 
 		// 실행 (Act)
 		// 세 번째 인자로 markdownListFromSupabase 전달
-		const result = convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath, markdownListFromSupabase)
+		const result = convertMarkdownFiles(
+			initialMarkdownFiles,
+			rootAbsolutePath,
+			markdownListFromSupabase,
+		)
 
 		// 검증 (Assert)
 		expect(result.languageMessageMap).toEqual(expectedLanguageMap)
@@ -267,7 +269,11 @@ describe('convertMarkdownFiles 함수', () => {
 		}
 
 		// 실행 (Act)
-		const result = convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath, markdownListFromSupabase)
+		const result = convertMarkdownFiles(
+			initialMarkdownFiles,
+			rootAbsolutePath,
+			markdownListFromSupabase,
+		)
 
 		// 검증 (Assert)
 		expect(result.languageMessageMap).toEqual(expectedLanguageMap)
@@ -284,7 +290,11 @@ describe('convertMarkdownFiles 함수', () => {
 		const expectedExplanations = {}
 
 		// 실행 (Act)
-		const result = convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath, markdownListFromSupabase)
+		const result = convertMarkdownFiles(
+			initialMarkdownFiles,
+			rootAbsolutePath,
+			markdownListFromSupabase,
+		)
 
 		// 검증 (Assert)
 		expect(result.languageMessageMap).toEqual(expectedLanguageMap)
