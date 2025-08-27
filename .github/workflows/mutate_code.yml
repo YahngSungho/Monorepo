@@ -291,6 +291,7 @@ jobs:
         id: changed-markdown-files
         uses: tj-actions/changed-files@v46
         with:
+          json: true
           separator: "\n"
           files: |
             **/*.md
@@ -314,10 +315,10 @@ jobs:
           printf '%s\n' "${{ steps.changed-markdown-files.outputs.all_changed_files }}"
           echo "----- End Debug changed-markdown-files raw output -----"
           echo "----- Debug: changed-markdown-files JSON output -----"
-          printf '%s\n' '${{ steps.changed-markdown-files.outputs.all_changed_files_json }}'
+          printf '%s\n' '${{ steps.changed-markdown-files.outputs.all_changed_files }}'
           echo "----- End Debug changed-markdown-files JSON output -----"
           # JSON 기반으로 안전하게 파싱 (Node 사용)
-          mapfile -t MDFILES < <(FILES_JSON='${{ steps.changed-markdown-files.outputs.all_changed_files_json }}' node -e '
+          mapfile -t MDFILES < <(FILES_JSON='${{ steps.changed-markdown-files.outputs.all_changed_files }}' node -e '
             try {
               const input = process.env.FILES_JSON || "[]";
               const arr = JSON.parse(input);
@@ -881,6 +882,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v46
         with:
+          json: true
           separator: "\n"
           files_ignore: |
             **/*.md
@@ -896,10 +898,10 @@ jobs:
           printf '%s\n' "${{ steps.changed-files.outputs.all_changed_files }}"
           echo "----- End Debug changed-files raw output -----"
           echo "----- Debug: changed-files JSON output -----"
-          printf '%s\n' '${{ steps.changed-files.outputs.all_changed_files_json }}'
+          printf '%s\n' '${{ steps.changed-files.outputs.all_changed_files }}'
           echo "----- End Debug changed-files JSON output -----"
           # JSON 기반으로 안전하게 파싱 (Node 사용)
-          mapfile -t FILES < <(FILES_JSON='${{ steps.changed-files.outputs.all_changed_files_json }}' node -e '
+          mapfile -t FILES < <(FILES_JSON='${{ steps.changed-files.outputs.all_changed_files }}' node -e '
             try {
               const input = process.env.FILES_JSON || "[]";
               const arr = JSON.parse(input);
