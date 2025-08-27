@@ -11,16 +11,19 @@ const metadata = import.meta.glob('/src/translation/metadata.json', { eager: tru
 export async function getAllMetadata0() {
 	const lang = getLocale()
 	const frontmatterList = await getMarkdownFrontmatterList(APP_NAME, lang)
-	console.log('💬 ~ getAllMetadata0 ~ frontmatterList:', frontmatterList)
+	const frontmatterObjectObject = {}
+	for (const value of frontmatterList) {
+		frontmatterObjectObject[value.key] = value.frontmatter
+	}
 
 	// @ts-ignore
 	const parsedMetadata = JSON.parse(metadata['/src/translation/metadata.json'].default)
 
 	return R.mapObject((value, key) => {
 		return {
-			slug: key.slice(key.lastIndexOf('/') + 1),
+			slug: key,
 			...value,
 			...parsedMetadata[key],
 		}
-	})(frontmatterList)
+	})(frontmatterObjectObject)
 }

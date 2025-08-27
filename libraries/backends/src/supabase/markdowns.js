@@ -62,7 +62,7 @@ export async function getOneMarkdownBody(projectName, locale, key) {
 export async function getMarkdownFrontmatterList(projectName, locale) {
 	const { data, error } = await supabase
 		.from('markdowns')
-		.select('frontmatter')
+		.select('key, frontmatter')
 		.eq('project_name', projectName)
 		.eq('locale', locale)
 
