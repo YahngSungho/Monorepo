@@ -245,3 +245,7 @@
 :where(thead) {
 	border-collapse: collapse;
 }
+
+:where(button, input, select, textarea) {
+	border: none;
+}

@@ -64,22 +64,22 @@ let currentCanonicalUrl = $derived.by(() => {
 let jsonLd = $derived({
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',
-	headline: data.currentMetadata.title,
-	description: data.description,
 	author: {
 		'@type': 'Person',
 		name: 'Sungho Yahng',
+	},
+	datePublished: data.currentMetadata.date,
+	description: data.description,
+	headline: data.currentMetadata.title,
+	mainEntityOfPage: {
+		'@id': currentCanonicalUrl,
+		'@type': 'WebPage',
 	},
 	publisher: {
 		'@type': 'Organization',
 		name: 'sungho.blog',
 	},
-	datePublished: data.currentMetadata.date,
 	url: currentCanonicalUrl,
-	mainEntityOfPage: {
-		'@type': 'WebPage',
-		'@id': currentCanonicalUrl,
-	},
 })
 </script>
 
@@ -129,7 +129,7 @@ let jsonLd = $derived({
 	{/if}
 </div>
 
-<hr />
+<div class="divider divider-neutral"></div>
 
 <div>
 	<PostList allMetadata={nearMetadata} />
