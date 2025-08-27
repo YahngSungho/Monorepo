@@ -319,14 +319,22 @@ jobs:
           echo "----- End Debug changed-markdown-files JSON output -----"
           # JSON 기반으로 안전하게 파싱 (Node 사용)
           mapfile -t MDFILES < <(FILES_JSON='${{ steps.changed-markdown-files.outputs.all_changed_files }}' node -e '
-            try {
-              const input = process.env.FILES_JSON || "[]";
-              const arr = JSON.parse(input);
-              for (const f of arr) {
+            const raw = process.env.FILES_JSON || "[]";
+            const tryParse = (s) => { try { return JSON.parse(s); } catch { return null; } };
+            let data = tryParse(raw);
+            if (typeof data === "string") {
+              const again = tryParse(data);
+              if (again) data = again;
+            }
+            if (!Array.isArray(data)) {
+              // 최후의 수단: JSON 문자열에서 모든 "..." 토큰 추출
+              const matches = [...raw.matchAll(/"((?:\\.|[^"\\])*)"/g)].map(m => m[1]);
+              if (matches.length > 0) data = matches;
+            }
+            if (Array.isArray(data)) {
+              for (const f of data) {
                 if (typeof f === "string" && f.length > 0) console.log(f);
               }
-            } catch (e) {
-              // JSON 파싱 실패 시 아무것도 출력하지 않음
             }
           ')
           # 혹시라도 비어있다면 최후의 수단으로 공백 분리 시도
@@ -902,14 +910,22 @@ jobs:
           echo "----- End Debug changed-files JSON output -----"
           # JSON 기반으로 안전하게 파싱 (Node 사용)
           mapfile -t FILES < <(FILES_JSON='${{ steps.changed-files.outputs.all_changed_files }}' node -e '
-            try {
-              const input = process.env.FILES_JSON || "[]";
-              const arr = JSON.parse(input);
-              for (const f of arr) {
+            const raw = process.env.FILES_JSON || "[]";
+            const tryParse = (s) => { try { return JSON.parse(s); } catch { return null; } };
+            let data = tryParse(raw);
+            if (typeof data === "string") {
+              const again = tryParse(data);
+              if (again) data = again;
+            }
+            if (!Array.isArray(data)) {
+              // 최후의 수단: JSON 문자열에서 모든 "..." 토큰 추출
+              const matches = [...raw.matchAll(/"((?:\\.|[^"\\])*)"/g)].map(m => m[1]);
+              if (matches.length > 0) data = matches;
+            }
+            if (Array.isArray(data)) {
+              for (const f of data) {
                 if (typeof f === "string" && f.length > 0) console.log(f);
               }
-            } catch (e) {
-              // JSON 파싱 실패 시 아무것도 출력하지 않음
             }
           ')
           # 혹시라도 비어있다면 최후의 수단으로 공백 분리 시도
