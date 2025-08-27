@@ -113,10 +113,8 @@ let jsonLd = $derived({
 	<!-- <meta name="twitter:creator" content="@sungho_yahng" /> -->
 
 	<!-- 구조화된 데이터 (JSON-LD) -->
-	<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-	<script type="application/ld+json">
-		{JSON.stringify(jsonLd)}
-	</script>
+	<!-- eslint-disable-next-line -->
+	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 </svelte:head>
 
 

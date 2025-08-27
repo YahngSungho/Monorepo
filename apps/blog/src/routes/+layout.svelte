@@ -276,10 +276,8 @@ let jsonLd = $derived({
 		<meta name="twitter:description" content={data.description} />
 		<meta name="twitter:url" content={currentCanonicalUrl} />
 
-		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-		<script type="application/ld+json">
-			{JSON.stringify(jsonLd)}
-		</script>
+		<!-- eslint-disable-next-line -->
+		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 	{/if}
 </svelte:head>
 

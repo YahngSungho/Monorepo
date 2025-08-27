@@ -23,7 +23,6 @@
 		"prettier-plugin-sql",
 		"prettier-plugin-svelte",
 		"prettier-plugin-classnames",
-		"prettier-plugin-tailwindcss",
 		"prettier-plugin-merge"
 	],
 	"printWidth": 100,
