@@ -311,18 +311,11 @@ jobs:
         if: steps.changed-markdown-files.outputs.all_changed_files != ''
         run: |
           # PR 기준 변경된 마크다운 파일 목록 사용 (tj-actions/changed-files 출력값)
-          echo "----- Debug: changed-markdown-files raw output (multiline) -----"
-          printf '%s\n' "${{ steps.changed-markdown-files.outputs.all_changed_files }}"
-          echo "----- End Debug changed-markdown-files raw output -----"
-          echo "----- Debug: changed-markdown-files JSON output -----"
-          printf '%s\n' '${{ steps.changed-markdown-files.outputs.all_changed_files }}'
-          echo "----- End Debug changed-markdown-files JSON output -----"
           # JSON 기반으로 안전하게 파싱 (jq 사용: 이중 인코딩/이스케이프까지 처리)
           mapfile -t MDFILES < <(printf '%s' '${{ steps.changed-markdown-files.outputs.all_changed_files }}' \
             | jq -r 'def parse(x): (try (x|fromjson) catch x) | (if type=="string" then (fromjson) else . end); parse(.) | .[]' 2>/dev/null)
           # jq 파싱 실패 시 정규식으로 "..." 토큰 추출 fallback
           if [ ${#MDFILES[@]} -eq 0 ]; then
-            echo "MDFILES empty after jq parsing. Fallback: regex extract quoted strings"
             mapfile -t MDFILES < <(printf '%s' '${{ steps.changed-markdown-files.outputs.all_changed_files }}' \
               | sed -E 's/\\\"/\"/g' \
               | grep -oE '"([^"\\]|\\.)*"' \
@@ -330,16 +323,8 @@ jobs:
           fi
           # 최후 수단: 공백 분리
           if [ ${#MDFILES[@]} -eq 0 ]; then
-            echo "MDFILES still empty. Fallback: split by spaces (best-effort)"
             read -r -a MDFILES <<< "${{ steps.changed-markdown-files.outputs.all_changed_files }}"
           fi
-          # 혹시라도 비어있다면 최후의 수단으로 공백 분리 시도
-          if [ ${#MDFILES[@]} -eq 0 ]; then
-            echo "MDFILES empty after JSON parsing. Fallback: split raw by spaces (best-effort)"
-            read -r -a MDFILES <<< "${{ steps.changed-markdown-files.outputs.all_changed_files }}"
-          fi
-          echo "MDFILES count: ${#MDFILES[@]}"
-          for f in "${MDFILES[@]}"; do echo "MDFILES item: $f"; done
 
           # 존재하지 않는(삭제된) 파일 제외
           filtered_md=()
@@ -893,18 +878,11 @@ jobs:
         if: steps.changed-files.outputs.all_changed_files != ''
         run: |
           # PR 기준 변경 파일 목록 사용 (tj-actions/changed-files 출력값)
-          echo "----- Debug: changed-files raw output (multiline) -----"
-          printf '%s\n' "${{ steps.changed-files.outputs.all_changed_files }}"
-          echo "----- End Debug changed-files raw output -----"
-          echo "----- Debug: changed-files JSON output -----"
-          printf '%s\n' '${{ steps.changed-files.outputs.all_changed_files }}'
-          echo "----- End Debug changed-files JSON output -----"
           # JSON 기반으로 안전하게 파싱 (jq 사용: 이중 인코딩/이스케이프까지 처리)
           mapfile -t FILES < <(printf '%s' '${{ steps.changed-files.outputs.all_changed_files }}' \
             | jq -r 'def parse(x): (try (x|fromjson) catch x) | (if type=="string" then (fromjson) else . end); parse(.) | .[]' 2>/dev/null)
           # jq 파싱 실패 시 정규식으로 "..." 토큰 추출 fallback
           if [ ${#FILES[@]} -eq 0 ]; then
-            echo "FILES empty after jq parsing. Fallback: regex extract quoted strings"
             mapfile -t FILES < <(printf '%s' '${{ steps.changed-files.outputs.all_changed_files }}' \
               | sed -E 's/\\\"/\"/g' \
               | grep -oE '"([^"\\]|\\.)*"' \
@@ -912,22 +890,8 @@ jobs:
           fi
           # 최후 수단: 공백 분리
           if [ ${#FILES[@]} -eq 0 ]; then
-            echo "FILES still empty. Fallback: split by spaces (best-effort)"
             read -r -a FILES <<< "${{ steps.changed-files.outputs.all_changed_files }}"
           fi
-          # 혹시라도 비어있다면 최후의 수단으로 공백 분리 시도
-          if [ ${#FILES[@]} -eq 0 ]; then
-            echo "FILES empty after JSON parsing. Fallback: split raw by spaces (best-effort)"
-            read -r -a FILES <<< "${{ steps.changed-files.outputs.all_changed_files }}"
-          fi
-          echo "FILES count: ${#FILES[@]}"
-          for f in "${FILES[@]}"; do
-            if [ -e "$f" ]; then
-              echo "FILES item: $f (exists: yes)"
-            else
-              echo "FILES item: $f (exists: no)"
-            fi
-          done
 
           # 마크다운 제외 및 존재하지 않는 파일 제외
           files_no_md=()
