@@ -310,7 +310,31 @@ jobs:
         if: steps.changed-markdown-files.outputs.all_changed_files != ''
         run: |
           # PR 기준 변경된 마크다운 파일 목록 사용 (tj-actions/changed-files 출력값)
-          mapfile -t MDFILES < <(printf '%s\n' "${{ steps.changed-markdown-files.outputs.all_changed_files }}")
+          echo "----- Debug: changed-markdown-files raw output (multiline) -----"
+          printf '%s\n' "${{ steps.changed-markdown-files.outputs.all_changed_files }}"
+          echo "----- End Debug changed-markdown-files raw output -----"
+          echo "----- Debug: changed-markdown-files JSON output -----"
+          printf '%s\n' '${{ steps.changed-markdown-files.outputs.all_changed_files_json }}'
+          echo "----- End Debug changed-markdown-files JSON output -----"
+          # JSON 기반으로 안전하게 파싱 (Node 사용)
+          mapfile -t MDFILES < <(FILES_JSON='${{ steps.changed-markdown-files.outputs.all_changed_files_json }}' node -e '
+            try {
+              const input = process.env.FILES_JSON || "[]";
+              const arr = JSON.parse(input);
+              for (const f of arr) {
+                if (typeof f === "string" && f.length > 0) console.log(f);
+              }
+            } catch (e) {
+              // JSON 파싱 실패 시 아무것도 출력하지 않음
+            }
+          ')
+          # 혹시라도 비어있다면 최후의 수단으로 공백 분리 시도
+          if [ ${#MDFILES[@]} -eq 0 ]; then
+            echo "MDFILES empty after JSON parsing. Fallback: split raw by spaces (best-effort)"
+            read -r -a MDFILES <<< "${{ steps.changed-markdown-files.outputs.all_changed_files }}"
+          fi
+          echo "MDFILES count: ${#MDFILES[@]}"
+          for f in "${MDFILES[@]}"; do echo "MDFILES item: $f"; done
 
           # 존재하지 않는(삭제된) 파일 제외
           filtered_md=()
@@ -871,7 +895,26 @@ jobs:
           echo "----- Debug: changed-files raw output (multiline) -----"
           printf '%s\n' "${{ steps.changed-files.outputs.all_changed_files }}"
           echo "----- End Debug changed-files raw output -----"
-          mapfile -t FILES < <(printf '%s\n' "${{ steps.changed-files.outputs.all_changed_files }}")
+          echo "----- Debug: changed-files JSON output -----"
+          printf '%s\n' '${{ steps.changed-files.outputs.all_changed_files_json }}'
+          echo "----- End Debug changed-files JSON output -----"
+          # JSON 기반으로 안전하게 파싱 (Node 사용)
+          mapfile -t FILES < <(FILES_JSON='${{ steps.changed-files.outputs.all_changed_files_json }}' node -e '
+            try {
+              const input = process.env.FILES_JSON || "[]";
+              const arr = JSON.parse(input);
+              for (const f of arr) {
+                if (typeof f === "string" && f.length > 0) console.log(f);
+              }
+            } catch (e) {
+              // JSON 파싱 실패 시 아무것도 출력하지 않음
+            }
+          ')
+          # 혹시라도 비어있다면 최후의 수단으로 공백 분리 시도
+          if [ ${#FILES[@]} -eq 0 ]; then
+            echo "FILES empty after JSON parsing. Fallback: split raw by spaces (best-effort)"
+            read -r -a FILES <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+          fi
           echo "FILES count: ${#FILES[@]}"
           for f in "${FILES[@]}"; do
             if [ -e "$f" ]; then
