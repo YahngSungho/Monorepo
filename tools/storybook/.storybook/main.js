@@ -13,7 +13,7 @@ const config = {
 		options: {},
 	},
 
-	stories: ['../../*/*/src/**/*.stories.@(js|ts|svelte)'],
+	stories: ['../../../*/*/src/**/*.stories.@(js|ts|svelte)'],
 }
 
 export default config
