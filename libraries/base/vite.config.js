@@ -1,14 +1,20 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+// 추가: dotenvx 임포트
+import { config as dotenvx } from '@dotenvx/dotenvx'
 import { partytownVite } from '@qwik.dev/partytown/utils'
 import tailwindcss from '@tailwindcss/vite'
 import { FontaineTransform } from 'fontaine'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
+
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+// 추가: .env.public 로드 (모노레포 루트 기준)
+dotenvx({ path: path.resolve(__dirname, '../../.env.public') })
 
 let currentEnv
 if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production') {
@@ -27,6 +33,8 @@ const baseConfig = defineConfig({
 	css: {
 		devSourcemap: true,
 	},
+	// 추가: PUBLIC_ 노출
+	envPrefix: ['PUBLIC_', 'VITE_'],
 	plugins: [
 		// @ts-ignore
 		tsconfigPaths(),

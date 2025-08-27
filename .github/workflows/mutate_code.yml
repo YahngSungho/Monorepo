@@ -291,6 +291,7 @@ jobs:
         id: changed-markdown-files
         uses: tj-actions/changed-files@v46
         with:
+          json: true
           separator: "\n"
           files: |
             **/*.md
@@ -310,7 +311,20 @@ jobs:
         if: steps.changed-markdown-files.outputs.all_changed_files != ''
         run: |
           # PR 기준 변경된 마크다운 파일 목록 사용 (tj-actions/changed-files 출력값)
-          mapfile -t MDFILES < <(printf '%s\n' "${{ steps.changed-markdown-files.outputs.all_changed_files }}")
+          # JSON 기반으로 안전하게 파싱 (jq 사용: 이중 인코딩/이스케이프까지 처리)
+          mapfile -t MDFILES < <(printf '%s' '${{ steps.changed-markdown-files.outputs.all_changed_files }}' \
+            | jq -r 'def parse(x): (try (x|fromjson) catch x) | (if type=="string" then (fromjson) else . end); parse(.) | .[]' 2>/dev/null)
+          # jq 파싱 실패 시 정규식으로 "..." 토큰 추출 fallback
+          if [ ${#MDFILES[@]} -eq 0 ]; then
+            mapfile -t MDFILES < <(printf '%s' '${{ steps.changed-markdown-files.outputs.all_changed_files }}' \
+              | sed -E 's/\\\"/\"/g' \
+              | grep -oE '"([^"\\]|\\.)*"' \
+              | sed -E 's/^"|"$//g')
+          fi
+          # 최후 수단: 공백 분리
+          if [ ${#MDFILES[@]} -eq 0 ]; then
+            read -r -a MDFILES <<< "${{ steps.changed-markdown-files.outputs.all_changed_files }}"
+          fi
 
           # 존재하지 않는(삭제된) 파일 제외
           filtered_md=()
@@ -319,12 +333,29 @@ jobs:
             filtered_md+=("$f")
           done
 
-          # 마지막 변경 커밋 subject가 정확히 [automated-mutation]인 파일만 제외 (임시 커밋은 건너뜀)
+          # 파일별로 '가장 최신(HEAD 기준) 비-임시 커밋'의 subject만 확인해 필터링
           filtered=()
           for f in "${filtered_md[@]}"; do
-            last_subject=$(git log --pretty=%s -- "$f" | grep -v '^Temporary commit ' | head -n1 || true)
-            echo "파일: $f | 마지막 커밋 subject: ${last_subject}"
-            if [ "${last_subject}" = "[automated-mutation]" ]; then
+            skip=0
+            subj=""
+            while true; do
+              subj=$(git log -1 --pretty=%s --skip=$skip -- "$f" || true)
+              # 더 이상 기록이 없으면 중단
+              if [ -z "$subj" ]; then
+                break
+              fi
+              case "$subj" in
+                Temporary\ commit\ *) # 현재 런에서 만든 임시 커밋은 건너뜀
+                  skip=$((skip+1))
+                  continue
+                  ;;
+                *)
+                  break
+                  ;;
+              esac
+            done
+            echo "파일: $f | 마지막 비임시 커밋 subject: ${subj}"
+            if [ "${subj}" = "[automated-mutation]" ]; then
               echo "제외: 마지막 커밋이 [automated-mutation]"
               continue
             fi
@@ -390,7 +421,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
-
 
       - name: Install dotenvx
         run: curl -sfS https://dotenvx.sh/install.sh | sh
@@ -463,7 +493,6 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-
       # 5. markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint_format
@@ -503,7 +532,6 @@ jobs:
           else
             echo "적용할 markdown 변경사항이 없습니다."
           fi
-
 
       # 3. pnpm 설치 및 의존성 설치 (패치 적용 후)
       - name: pnpm 설정
@@ -723,7 +751,6 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-
       # 5. markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint_format
@@ -763,7 +790,6 @@ jobs:
           else
             echo "적용할 markdown 변경사항이 없습니다."
           fi
-
 
       # 3. translation patch 다운로드
       - name: 번역 패치 존재 여부 확인
@@ -840,6 +866,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v46
         with:
+          json: true
           separator: "\n"
           files_ignore: |
             **/*.md
@@ -851,7 +878,20 @@ jobs:
         if: steps.changed-files.outputs.all_changed_files != ''
         run: |
           # PR 기준 변경 파일 목록 사용 (tj-actions/changed-files 출력값)
-          mapfile -t FILES < <(printf '%s\n' "${{ steps.changed-files.outputs.all_changed_files }}")
+          # JSON 기반으로 안전하게 파싱 (jq 사용: 이중 인코딩/이스케이프까지 처리)
+          mapfile -t FILES < <(printf '%s' '${{ steps.changed-files.outputs.all_changed_files }}' \
+            | jq -r 'def parse(x): (try (x|fromjson) catch x) | (if type=="string" then (fromjson) else . end); parse(.) | .[]' 2>/dev/null)
+          # jq 파싱 실패 시 정규식으로 "..." 토큰 추출 fallback
+          if [ ${#FILES[@]} -eq 0 ]; then
+            mapfile -t FILES < <(printf '%s' '${{ steps.changed-files.outputs.all_changed_files }}' \
+              | sed -E 's/\\\"/\"/g' \
+              | grep -oE '"([^"\\]|\\.)*"' \
+              | sed -E 's/^"|"$//g')
+          fi
+          # 최후 수단: 공백 분리
+          if [ ${#FILES[@]} -eq 0 ]; then
+            read -r -a FILES <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+          fi
 
           # 마크다운 제외 및 존재하지 않는 파일 제외
           files_no_md=()
@@ -864,22 +904,53 @@ jobs:
                 ;;
             esac
           done
+          echo "files_no_md count: ${#files_no_md[@]}"
+          for f in "${files_no_md[@]}"; do echo "files_no_md item: $f"; done
 
-          # 마지막 변경 커밋 subject가 정확히 [automated-mutation]인 파일만 제외 (임시 커밋은 건너뜀)
+          echo "HEAD: $(git rev-parse --short HEAD)"
+          echo "HEAD subject: $(git log -1 --pretty=%s || true)"
+
+          # 파일별로 '가장 최신(HEAD 기준) 비-임시 커밋'의 subject만 확인해 필터링
           filtered=()
           for f in "${files_no_md[@]}"; do
-            # 파일별 커밋 subject 목록에서 임시 커밋(subject가 'Temporary commit '로 시작)을 제외하고 첫 번째를 선택
-            last_subject=$(git log --pretty=%s -- "$f" | grep -v '^Temporary commit ' | head -n1 || true)
-            echo "파일: $f | 마지막 커밋 subject: ${last_subject}"
-            if [ "${last_subject}" = "[automated-mutation]" ]; then
+            echo "검사 시작: $f"
+            skip=0
+            subj=""
+            while true; do
+              subj=$(git log -1 --pretty=%s --skip=$skip -- "$f" || true)
+              # 더 이상 기록이 없으면 중단
+              if [ -z "$subj" ]; then
+                break
+              fi
+              echo "  cand[$skip]: $subj"
+              case "$subj" in
+                Temporary\ commit\ *) # 현재 런에서 만든 임시 커밋은 건너뜀
+                  skip=$((skip+1))
+                  continue
+                  ;;
+                *)
+                  break
+                  ;;
+              esac
+            done
+            echo "파일: $f | 마지막 비임시 커밋 subject: ${subj}"
+            if [ "${subj}" = "[automated-mutation]" ]; then
               echo "제외: 마지막 커밋이 [automated-mutation]"
               continue
             fi
             filtered+=("$f")
           done
 
+          echo "filtered count: ${#filtered[@]}"
+          for f in "${filtered[@]}"; do echo "filtered item: $f"; done
+
           if [ ${#filtered[@]} -eq 0 ]; then
             echo "대상 파일 없음(자동수정만 있었거나 마크다운만 변경). 린트/포맷 생략."
+            echo "최근 파일별 커밋 로그(최대 3개)로 진단:"
+            for f in "${files_no_md[@]}"; do
+              echo "---- $f"
+              git log -3 --pretty='format:%h %s' -- "$f" || true
+            done
             exit 0
           fi
 
@@ -965,7 +1036,14 @@ jobs:
           path: images-changes.patch
 
   push-and-labeled:
-    needs: [path-filter, compress-images, lint-format, fix-package-json, fix-markdown, update-translation]
+    needs:
+      - path-filter
+      - compress-images
+      - lint-format
+      - fix-package-json
+      - fix-markdown
+      - update-translation
+
     if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
 

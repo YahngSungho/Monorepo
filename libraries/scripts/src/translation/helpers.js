@@ -5,7 +5,7 @@ import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/fu
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
-export function getInitialLanguageMap() {
+export function getValidLocales() {
 	// Vitest/Jest 같은 테스트 환경에서는 모듈 최상단(모듈 스코프)에서 fs 모듈을 바로 사용하면,
 	// 테스트 설정(예: fs 모의 객체)이 적용되기 전에 파일 읽기 코드가 먼저 실행될 수 있다.
 	// 이 경우, 파일을 제대로 읽지 못해 오류가 발생한다.
@@ -21,8 +21,12 @@ export function getInitialLanguageMap() {
 	)
 	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
+	return settings.locales
+}
+
+export function getInitialLanguageMap() {
 	const result = {}
-	for (const language of settings.locales) {
+	for (const language of getValidLocales()) {
 		result[language] = {}
 	}
 	return result
@@ -36,9 +40,7 @@ export function getInitialLanguageMap() {
 function normalizeCombinedMessage(combinedMessage) {
 	if (!combinedMessage) return combinedMessage
 
-	const mapped = R.mapObject((value) => (value ? normalizeString(value) : value))(
-		combinedMessage,
-	)
+	const mapped = R.mapObject((value) => (value ? normalizeString(value) : value))(combinedMessage)
 	// 값이 undefined인 키는 제거하여, 키가 없는 것과 동일하게 취급
 	return R.pickBy((v) => v !== undefined)(mapped)
 }
@@ -74,8 +76,8 @@ export function calculateInitialTranslationStateByBaseLanguages(
 		messageMap,
 		R.omit(baseLanguages),
 		R.mapObjIndexed((value) => ({
-			value,
 			missingMessageKeys: [], // 초기화
+			value,
 		})),
 	)
 
@@ -150,8 +152,8 @@ export function prepareTranslationPayload(languageMessageObject, combinedMessage
 
 	return {
 		combinedMessages_target_numbers: convertToNumberKeys(combinedMessages_target),
-		restoreFromNumberKeys,
 		olderMessages,
+		restoreFromNumberKeys,
 	}
 }
 
@@ -205,16 +207,16 @@ export async function translateOneLanguageMessages(
 	if (languageMessageObject.missingMessageKeys.length === 0) {
 		return {
 			...languageMessageObject,
-			newMessages: languageMessageObject.value,
 			newDictionary: dictionary,
+			newMessages: languageMessageObject.value,
 		}
 	}
 
 	// 순수 함수: 번역 요청 페이로드 준비
-	const { combinedMessages_target_numbers, restoreFromNumberKeys, olderMessages } =
+	const { combinedMessages_target_numbers, olderMessages, restoreFromNumberKeys } =
 		prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 	// 비동기 호출: 번역 실행
-	const { translatedMessages: translatedMessages_numbers, newDictionary } =
+	const { newDictionary, translatedMessages: translatedMessages_numbers } =
 		await getTranslatedMessages(
 			language,
 			combinedMessages_target_numbers,

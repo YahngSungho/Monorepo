@@ -19,15 +19,15 @@
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"translate": "node ./src/translation/scripts.js",
-		"translate:env": "node --env-file=../../.env ./src/translation/scripts.js",
+		"translate:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/translation/scripts.js",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
-		"@library/base": "workspace:*",
 		"@library/backends": "workspace:*",
+		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",

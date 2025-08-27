@@ -15,18 +15,13 @@ title, tags 등은 각 md 파일에 frontmatter로 작성
 
 import path from 'node:path'
 
-import {
-	readFilesToObjects,
-	readFilesToStrings_recursive,
-	writeFile_async,
-} from '@library/helpers/fs-async'
+import { readFilesToObjects, readFilesToStrings_recursive } from '@library/helpers/fs-async'
 import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 
 import {
 	calculateInitialTranslationStateByBaseLanguages,
 	getInitialLanguageMap,
-	getNewCache,
 	translateOneLanguageMessages,
 } from '../helpers.js'
 
@@ -42,7 +37,7 @@ import {
 // 	}
 // }
 
-const dictFolderPath = getAbsolutePath(
+export const dictFolderPath = getAbsolutePath(
 	import.meta.url,
 	'../../../../paraglide/messages-helpers/dicts',
 )
@@ -66,7 +61,7 @@ export async function getFiles(rootAbsolutePath, helperFolderPath) {
 			dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
 	}
 
-	return { initialMarkdownFiles: markdownFiles, dictPerLanguage, cache }
+	return { cache, dictPerLanguage, initialMarkdownFiles: markdownFiles }
 }
 
 // const initialMarkdownFiles_forTest = [
@@ -133,8 +128,18 @@ export async function getFiles(rootAbsolutePath, helperFolderPath) {
 // 		},
 // 	}
 
-export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
+export function convertMarkdownFiles(
+	initialMarkdownFiles,
+	rootAbsolutePath,
+	markdownListFromSupabase,
+) {
 	const languageMessageMap = { ...getInitialLanguageMap() }
+
+	for (const markdown of markdownListFromSupabase) {
+		if (languageMessageMap[markdown.locale]) {
+			languageMessageMap[markdown.locale][markdown.key] = markdown.body
+		}
+	}
 
 	const explanations = {}
 	for (const fileObject of initialMarkdownFiles) {
@@ -155,7 +160,8 @@ export function convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath) {
 			explanations[fileKey] = fileObject.value
 		}
 	}
-	return { languageMessageMap, explanations }
+
+	return { explanations, languageMessageMap }
 }
 
 // const { languageMessageMap: languageMessageMap_forTest, explanations: explanations_forTest } = convertMarkdownFiles(initialMarkdownFiles_forTest, 'src')
@@ -183,7 +189,7 @@ export async function getTranslatedLanguageMap_action(
 	basicLangs,
 	messageMap,
 	explanations,
-	dictPerLanguage,
+	dictPerLang,
 	combinedMessages_cached,
 	getTranslatedMessages,
 ) {
@@ -196,15 +202,15 @@ export async function getTranslatedLanguageMap_action(
 			combinedMessages_cached,
 		)
 
-	return await R.mapObjectParallel(async (languageMessage, language) => {
-		if (languageMessage.missingMessageKeys.length === 0) {
-			return languageMessage
+	return await R.mapObjectParallel(async (languageMessageMap, lang) => {
+		if (languageMessageMap.missingMessageKeys.length === 0) {
+			return languageMessageMap
 		}
 
 		return await translateOneLanguageMessages(
-			language,
-			languageMessage,
-			dictPerLanguage[language],
+			lang,
+			languageMessageMap,
+			dictPerLang[lang],
 			combinedMessages_latest,
 			getTranslatedMessages,
 		)
@@ -233,40 +239,3 @@ export async function getTranslatedLanguageMap_action(
 //     }
 //   }
 // }
-
-export async function saveFiles_action(
-	rootAbsolutePath,
-	helperFolderPath,
-	translatedLanguageMap,
-	explanations,
-	languageMessageMap_basicLangs,
-) {
-	for await (const [language, messageMap] of Object.entries(translatedLanguageMap)) {
-		if (messageMap.missingMessageKeys.length === 0) {
-			continue
-		}
-
-		for await (const [messageKey, messageValue] of Object.entries(messageMap.translatedMessages)) {
-			const filePath = path.join(rootAbsolutePath, messageKey, `${language}.md`)
-			await writeFile_async(filePath, messageValue)
-		}
-
-		await writeFile_async(
-			path.join(dictFolderPath, `${language}.json`),
-			JSON.stringify(
-				{
-					$schema: 'https://inlang.com/schema/inlang-message-format',
-					...messageMap.newDictionary,
-				},
-				undefined,
-				2,
-			),
-		)
-	}
-
-	const newCache = getNewCache(languageMessageMap_basicLangs, explanations)
-	await writeFile_async(
-		path.join(helperFolderPath, 'cache.json'),
-		JSON.stringify(newCache, undefined, 2),
-	)
-}

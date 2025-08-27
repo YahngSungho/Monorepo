@@ -7,7 +7,7 @@ import { getPost } from '$lib/server/getPost'
 export const load = async ({ params, parent }) => {
 	const post = await getPost(params.slug)
 	const { allMetadata } = await parent()
-	const currentMetadata = allMetadata[`posts/${params.slug}`]
+	const currentMetadata = allMetadata[params.slug]
 
 	if (!post) {
 		redirect(307, '/')
@@ -16,8 +16,8 @@ export const load = async ({ params, parent }) => {
 	const description = getDescriptionFromMD(post)
 
 	return {
-		post,
 		currentMetadata,
 		description,
+		post,
 	}
 }

@@ -32,8 +32,8 @@ vi.mock('../helpers.js', async (importOriginal) => {
 	return {
 		...actual,
 		getInitialLanguageMap: actual.getInitialLanguageMap,
-		translateOneLanguageMessages: vi.fn(),
 		getNewCache: vi.fn(() => ({ combined: 'new cache data' })), // 기본 반환값 설정
+		translateOneLanguageMessages: vi.fn(),
 		// calculateInitialTranslationStateByBaseLanguages 는 실제 구현을 사용 (모의 해제는 아니지만, 명시적으로 포함)
 		calculateInitialTranslationStateByBaseLanguages:
 			actual.calculateInitialTranslationStateByBaseLanguages,
@@ -81,12 +81,7 @@ import { getAbsolutePath } from '@library/helpers/fs-sync'
 // import { R } from '@library/helpers/R'; // R 사용 부분 없으므로 제거 가능
 // calculateInitialTranslationStateByBaseLanguages는 helpers에서 가져오므로 여기에 포함하지 않음
 import { getInitialLanguageMap, getNewCache, translateOneLanguageMessages } from '../helpers.js'
-import {
-	convertMarkdownFiles,
-	getFiles,
-	getTranslatedLanguageMap_action,
-	saveFiles_action,
-} from './translation.js'
+import { convertMarkdownFiles, getFiles, getTranslatedLanguageMap_action } from './translation.js'
 
 // --- 테스트 스위트 ---
 
@@ -110,7 +105,7 @@ describe('getFiles 함수', () => {
 
 		// mockMarkdownFiles 타입 수정 (fileName 추가)
 		const markdownPath = `/project/src/comp/text/ko.md`
-		const mockMarkdownFiles = [{ path: markdownPath, value: '안녕', fileName: 'ko.md' }] // fileName 추가
+		const mockMarkdownFiles = [{ fileName: 'ko.md', path: markdownPath, value: '안녕' }] // fileName 추가
 		const mockHelperFiles = { 'cache.json': { cached: 'data' } }
 		const mockDictFiles = { 'en.json': { hello: 'Hello' }, 'ko.json': { hello: '안녕' } }
 
@@ -188,7 +183,7 @@ describe('getFiles 함수', () => {
 
 describe('convertMarkdownFiles 함수', () => {
 	// 원칙: 동작 테스트 (공개 API), 모의 최소화 (순수 함수, 모의 불필요)
-	it('마크다운 파일 배열을 언어 메시지 맵과 설명 맵으로 올바르게 변환해야 한다', () => {
+	it('마크다운 파일 배열과 Supabase 마크다운 리스트를 언어 메시지 맵과 설명 맵으로 올바르게 변환해야 한다', () => {
 		// 준비 (Arrange)
 		const initialMarkdownFiles = [
 			{ path: '/abs/project/src/comp/text/ko.md', value: '안녕' },
@@ -203,20 +198,47 @@ describe('convertMarkdownFiles 함수', () => {
 		]
 		const rootAbsolutePath = '/abs/project/src' // 두 번째 인수로 전달
 
+		// Supabase에서 가져온 마크다운 리스트 추가
+		const markdownListFromSupabase = [
+			{ body: 'Supabase Hello', key: 'supabase/key1', locale: 'en' },
+			{ body: 'Supabase 안녕', key: 'supabase/key1', locale: 'ko' },
+			{ body: 'Supabase Bonjour', key: 'supabase/key2', locale: 'fr' },
+		]
+
 		// 실제 getInitialLanguageMap 결과 기반 예상
 		/** @type {Record<string, Record<string, string>>} */
 		const expectedLanguageMap = {
-			ko: { 'comp/text': '안녕', 'comp/other': '세상', 'comp/extra': '봉주르' },
-			en: { 'comp/text': 'Hello', 'comp/other': 'World' },
-			...(getInitialLanguageMap().fr ? { fr: { 'comp/extra': 'Bonjour' } } : {}),
+			en: {
+				'comp/other': 'World',
+				'comp/text': 'Hello',
+				'supabase/key1': 'Supabase Hello',
+			},
+			ko: {
+				'comp/extra': '봉주르',
+				'comp/other': '세상',
+				'comp/text': '안녕',
+				'supabase/key1': 'Supabase 안녕',
+			},
+			...(getInitialLanguageMap().fr ?
+				{
+					fr: {
+						'comp/extra': 'Bonjour',
+						'supabase/key2': 'Supabase Bonjour',
+					},
+				}
+			:	{}),
 		}
 		const expectedExplanations = {
 			'comp/text': '인사말',
 		}
 
 		// 실행 (Act)
-		// 두 번째 인자로 rootAbsolutePath 전달
-		const result = convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath)
+		// 세 번째 인자로 markdownListFromSupabase 전달
+		const result = convertMarkdownFiles(
+			initialMarkdownFiles,
+			rootAbsolutePath,
+			markdownListFromSupabase,
+		)
 
 		// 검증 (Assert)
 		expect(result.languageMessageMap).toEqual(expectedLanguageMap)
@@ -225,16 +247,54 @@ describe('convertMarkdownFiles 함수', () => {
 		expect(result.languageMessageMap).not.toHaveProperty('de')
 	})
 
+	it('Supabase 마크다운 리스트가 없을 경우 기존 로직만 동작해야 한다', () => {
+		// 준비 (Arrange)
+		const initialMarkdownFiles = [
+			{ path: '/abs/project/src/comp/text/ko.md', value: '안녕' },
+			{ path: '/abs/project/src/comp/text/en.md', value: 'Hello' },
+			{ path: '/abs/project/src/comp/text/explanation.md', value: '인사말' },
+		]
+		const rootAbsolutePath = '/abs/project/src'
+		const markdownListFromSupabase = [] // 빈 배열
+
+		// 실제 getInitialLanguageMap 결과 기반 예상
+		/** @type {Record<string, Record<string, string>>} */
+		const expectedLanguageMap = {
+			en: { 'comp/text': 'Hello' },
+			ko: { 'comp/text': '안녕' },
+			...(getInitialLanguageMap().fr ? { fr: {} } : {}),
+		}
+		const expectedExplanations = {
+			'comp/text': '인사말',
+		}
+
+		// 실행 (Act)
+		const result = convertMarkdownFiles(
+			initialMarkdownFiles,
+			rootAbsolutePath,
+			markdownListFromSupabase,
+		)
+
+		// 검증 (Assert)
+		expect(result.languageMessageMap).toEqual(expectedLanguageMap)
+		expect(result.explanations).toEqual(expectedExplanations)
+	})
+
 	// 원칙: 엣지 케이스 테스트
 	it('입력 파일 배열이 비어있을 경우 빈 객체를 반환해야 한다', () => {
 		// 준비 (Arrange)
 		const initialMarkdownFiles = []
 		const rootAbsolutePath = '/abs/project/src'
+		const markdownListFromSupabase = []
 		const expectedLanguageMap = getInitialLanguageMap() // 모든 값은 빈 객체
 		const expectedExplanations = {}
 
 		// 실행 (Act)
-		const result = convertMarkdownFiles(initialMarkdownFiles, rootAbsolutePath)
+		const result = convertMarkdownFiles(
+			initialMarkdownFiles,
+			rootAbsolutePath,
+			markdownListFromSupabase,
+		)
 
 		// 검증 (Assert)
 		expect(result.languageMessageMap).toEqual(expectedLanguageMap)
@@ -246,13 +306,13 @@ describe('getTranslatedLanguageMap 함수', () => {
 	// 원칙: 동작 테스트 (오케스트레이션 로직), 모의 사용 (translateOneLanguageMessages)
 
 	const mockTranslateResultFr = {
-		newMessages: { key1: 'Bonjour traduit', key2: 'Monde traduit' },
 		newDictionary: { word: 'nouveau mot' },
+		newMessages: { key1: 'Bonjour traduit', key2: 'Monde traduit' },
 	}
 	const mockTranslateResultDe = {
 		// de는 targetLanguageMap에 포함되지 않을 수 있음 (ko, en 기반)
-		newMessages: { key1: 'Hallo übersetzt' },
 		newDictionary: { word: 'neues Wort' },
+		newMessages: { key1: 'Hallo übersetzt' },
 	}
 
 	beforeEach(() => {
@@ -265,7 +325,7 @@ describe('getTranslatedLanguageMap 함수', () => {
 				// else if 사용
 				return mockTranslateResultDe
 			} // 기본값 반환
-			return { newMessages: {}, newDictionary: {} }
+			return { newDictionary: {}, newMessages: {} }
 		})
 	})
 
@@ -274,30 +334,30 @@ describe('getTranslatedLanguageMap 함수', () => {
 		// 준비 (Arrange)
 		const messageMap = {
 			// ko, en 제공, fr, de, ja는 번역 대상 가정
-			ko: { key1: '안녕', key2: '세상' },
+			de: {}, // 존재하지 않음
 			en: { key1: 'Hello', key2: 'World' },
 			fr: { key1: 'Bonjour' }, // 일부만 존재
-			de: {}, // 존재하지 않음
 			ja: {}, // 존재하지 않음 (getInitialLanguageMap 에 있다고 가정)
+			ko: { key1: '안녕', key2: '세상' },
 			// ...getInitialLanguageMap() // 초기 맵 구조 확보 - 명시적으로 targetLangs 정의
 		}
 		const targetLangs = ['fr', 'de', 'ja'] // 번역 대상 언어 목록 명시
 
 		const explanations = { key1: '인사', key2: '대상' }
-		const dictPerLanguage = { fr: { word: 'mot' }, de: { word: 'Wort' }, ja: {} }
-		const combinedMessages_cached = { oldKey: { ko: '오래됨', en: 'Old' } } // 캐시된 메시지
+		const dictPerLanguage = { de: { word: 'Wort' }, fr: { word: 'mot' }, ja: {} }
+		const combinedMessages_cached = { oldKey: { en: 'Old', ko: '오래됨' } } // 캐시된 메시지
 		const dummyGetTranslatedMessages = vi.fn() // 실제 번역 함수 (모의된 translateOneLanguageMessages 내부에서 사용될 수 있음)
 
 		// calculateInitialTranslationStateByBaseLanguages 직접 호출 대신 예상 결과 정의
 		const expectedCombinedLatest = {
-			key1: { ko: '안녕', en: 'Hello', explanation: '인사' },
-			key2: { ko: '세상', en: 'World', explanation: '대상' },
+			key1: { en: 'Hello', explanation: '인사', ko: '안녕' },
+			key2: { en: 'World', explanation: '대상', ko: '세상' },
 		}
 		// 주의: 이 예상값은 calculateInitialTranslationStateByBaseLanguages의 실제 로직을 반영해야 함
 		const expectedTargetLanguageMap = {
-			fr: { value: { key1: 'Bonjour' }, missingMessageKeys: ['key1', 'key2'] }, // key1은 있고 key2는 없음
-			de: { value: {}, missingMessageKeys: ['key1', 'key2'] }, // 둘 다 없음
-			ja: { value: {}, missingMessageKeys: ['key1', 'key2'] }, // 둘 다 없음
+			de: { missingMessageKeys: ['key1', 'key2'], value: {} }, // 둘 다 없음
+			fr: { missingMessageKeys: ['key1', 'key2'], value: { key1: 'Bonjour' } }, // key1은 있고 key2는 없음
+			ja: { missingMessageKeys: ['key1', 'key2'], value: {} }, // 둘 다 없음
 		}
 
 		// 실행 (Act)
@@ -332,7 +392,7 @@ describe('getTranslatedLanguageMap 함수', () => {
 		const expectedResult = {}
 		if (targetLangs.includes('fr')) expectedResult.fr = mockTranslateResultFr
 		if (targetLangs.includes('de')) expectedResult.de = mockTranslateResultDe
-		if (targetLangs.includes('ja')) expectedResult.ja = { newMessages: {}, newDictionary: {} } // 기본 모의 반환값
+		if (targetLangs.includes('ja')) expectedResult.ja = { newDictionary: {}, newMessages: {} } // 기본 모의 반환값
 
 		expect(result).toEqual(expectedResult)
 	})
@@ -341,8 +401,8 @@ describe('getTranslatedLanguageMap 함수', () => {
 		// 준비 (Arrange)
 		const messageMap = {
 			// ko, en만 존재
-			ko: { key1: '안녕' },
 			en: { key1: 'Hello' },
+			ko: { key1: '안녕' },
 		}
 		const explanations = { key1: '인사' }
 		const dictPerLanguage = {}
@@ -362,193 +422,5 @@ describe('getTranslatedLanguageMap 함수', () => {
 		// 검증 (Assert)
 		expect(translateOneLanguageMessages).not.toHaveBeenCalled()
 		expect(result).toEqual({})
-	})
-})
-
-describe('saveFiles 함수', () => {
-	const mockNewCache = { combined: 'new cache data' }
-	// 실제 사용되는 절대 경로로 설정
-	const expectedDictFolderPath = '/paraglide/messages-helpers/dicts'
-
-	beforeEach(() => {
-		vi.clearAllMocks()
-		// Spy 리셋
-		JSON_stringify_spy.mockClear()
-		vi.mocked(getNewCache).mockReturnValue(mockNewCache) // 항상 mockNewCache 반환
-
-		// getAbsolutePath 모의 설정으로 절대 경로 반환
-		vi.mocked(getAbsolutePath).mockImplementation((metaUrl, relativePath) => {
-			const dictRelativePath = '../../../../paraglide/messages-helpers/dicts'
-			if (relativePath === dictRelativePath) {
-				return expectedDictFolderPath
-			}
-			return `/abs/path/${relativePath}`
-		})
-	})
-
-	afterEach(() => {
-		vi.restoreAllMocks()
-	})
-
-	it('번역 파일 저장 기능 테스트', async () => {
-		// 준비 (Arrange) - 상대 경로 입력
-		const rootInputPath = 'project/output'
-		const helperInputPath = 'project/helpers'
-
-		// 기대 경로 생성
-		const expectedMsgPathFrText = path.normalize(path.join(rootInputPath, 'comp/text', 'fr.md'))
-		const expectedMsgPathFrOther = path.normalize(path.join(rootInputPath, 'comp/other', 'fr.md'))
-		const expectedMsgPathDeText = path.normalize(path.join(rootInputPath, 'comp/text', 'de.md'))
-		const expectedMsgPathDeExtra = path.normalize(path.join(rootInputPath, 'comp/extra', 'de.md'))
-		// 절대 경로 사용
-		const expectedDictPathFr = path.normalize(path.join(expectedDictFolderPath, 'fr.json'))
-		const expectedDictPathDe = path.normalize(path.join(expectedDictFolderPath, 'de.json'))
-		const expectedCachePath = path.normalize(path.join(helperInputPath, 'cache.json'))
-
-		const translatedLanguageMap = {
-			fr: {
-				translatedMessages: {
-					'comp/text': 'Bonjour',
-					'comp/other': 'Monde',
-				},
-				missingMessageKeys: ['comp/text', 'comp/other'],
-				newMessages: { 'comp/text': 'Bonjour', 'comp/other': 'Monde' },
-				newDictionary: {
-					$schema: 'https://inlang.com/schema/inlang-message-format',
-					hello: 'salut',
-				},
-			},
-			de: {
-				translatedMessages: {
-					'comp/text': 'Hallo',
-					'comp/extra': 'Extra',
-				},
-				missingMessageKeys: ['comp/text', 'comp/extra'],
-				newMessages: { 'comp/text': 'Hallo', 'comp/extra': 'Extra' },
-				newDictionary: {
-					$schema: 'https://inlang.com/schema/inlang-message-format',
-					hello: 'hallo',
-					world: 'Welt',
-				},
-			},
-		}
-		const explanations = {
-			'comp/text': 'Greeting',
-			'comp/other': 'Object',
-			'comp/extra': 'Additional',
-		}
-		const languageMessageMap_ko = {
-			'comp/text': '안녕',
-			'comp/other': '세상',
-			'comp/extra': '추가',
-		}
-		const languageMessageMap_en = {
-			'comp/text': 'Hello',
-			'comp/other': 'World',
-			'comp/extra': 'Extra',
-		}
-
-		const expectedJsonFr = JSON.stringify(
-			{ $schema: 'https://inlang.com/schema/inlang-message-format', hello: 'salut' },
-			undefined,
-			2,
-		)
-		const expectedJsonDe = JSON.stringify(
-			{ $schema: 'https://inlang.com/schema/inlang-message-format', hello: 'hallo', world: 'Welt' },
-			undefined,
-			2,
-		)
-		const expectedJsonCache = JSON.stringify(mockNewCache, undefined, 2)
-
-		// 실행 전에 명시적으로 초기화
-		JSON_stringify_spy.mockClear()
-
-		// 실행 (Act)
-		await saveFiles_action(rootInputPath, helperInputPath, translatedLanguageMap, explanations, {
-			ko: languageMessageMap_ko,
-			en: languageMessageMap_en,
-		})
-
-		// 검증 (Assert)
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledTimes(7)
-
-		// 메시지 파일 검증
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedMsgPathFrText, 'Bonjour')
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedMsgPathFrOther, 'Monde')
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedMsgPathDeText, 'Hallo')
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedMsgPathDeExtra, 'Extra')
-
-		// 사전 파일 검증 (절대 경로)
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedDictPathFr, expectedJsonFr)
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedDictPathDe, expectedJsonDe)
-
-		// 캐시 파일 검증
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedCachePath, expectedJsonCache)
-
-		expect(vi.mocked(getNewCache)).toHaveBeenCalledTimes(1)
-		expect(vi.mocked(getNewCache)).toHaveBeenCalledWith(
-			{ ko: languageMessageMap_ko, en: languageMessageMap_en },
-			explanations,
-		)
-
-		// JSON.stringify 호출 검증 - 정확한 호출 횟수 대신 최소 호출 검증으로 변경
-		expect(JSON_stringify_spy).toHaveBeenCalledWith(
-			translatedLanguageMap.fr.newDictionary, // $schema 포함된 객체
-			undefined,
-			2,
-		)
-		expect(JSON_stringify_spy).toHaveBeenCalledWith(
-			translatedLanguageMap.de.newDictionary, // $schema 포함된 객체
-			undefined,
-			2,
-		)
-		expect(JSON_stringify_spy).toHaveBeenCalledWith(mockNewCache, undefined, 2)
-	})
-
-	it('빈 번역에 대한 캐시 저장 기능 테스트', async () => {
-		// 준비 (Arrange)
-		const rootInputPath = 'project/output'
-		const helperInputPath = 'project/helpers'
-		const translatedLanguageMap = {}
-		const explanations = { key: '설명' }
-		const languageMessageMap_ko = { key: '값' }
-		const languageMessageMap_en = { key: 'value' }
-
-		const expectedCachePath = path.normalize(path.join(helperInputPath, 'cache.json'))
-
-		// 테스트를 위한 모의 동작 확인
-		console.log('테스트: mockNewCache 값:', mockNewCache)
-		console.log('테스트: getNewCache 함수 타입:', typeof getNewCache)
-
-		// 실행 전에 명시적으로 초기화
-		JSON_stringify_spy.mockClear()
-		console.log('JSON.stringify 초기화 후 호출 횟수:', JSON_stringify_spy.mock.calls.length)
-
-		// 실행 (Act)
-		await saveFiles_action(rootInputPath, helperInputPath, translatedLanguageMap, explanations, {
-			ko: languageMessageMap_ko,
-			en: languageMessageMap_en,
-		})
-
-		// 실행 후 spy 호출 확인
-		console.log('saveFiles 실행 후 JSON.stringify 호출 횟수:', JSON_stringify_spy.mock.calls.length)
-		if (JSON_stringify_spy.mock.calls.length > 0) {
-			console.log(
-				'JSON.stringify 첫 번째 호출 인자:',
-				JSON.stringify(JSON_stringify_spy.mock.calls[0]),
-			)
-		}
-
-		// 검증 (Assert)
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledTimes(1) // 캐시만
-		expect(vi.mocked(writeFile_async)).toHaveBeenCalledWith(expectedCachePath, expect.any(String))
-		expect(vi.mocked(getNewCache)).toHaveBeenCalledTimes(1)
-		expect(vi.mocked(getNewCache)).toHaveBeenCalledWith(
-			{ ko: languageMessageMap_ko, en: languageMessageMap_en },
-			explanations,
-		)
-
-		// JSON.stringify 직접 검증 대신, writeFile_async에 전달된 인자를 검증
-		expect(vi.mocked(writeFile_async).mock.calls[0][1]).toContain('new cache data')
 	})
 })

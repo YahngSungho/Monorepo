@@ -1,16 +1,14 @@
-import path from 'node:path'
-
-import { writeFile_async } from '@library/helpers/fs-async'
+import { getMarkdownListByProjectName } from '@library/backends/supabase'
+import { isSameNormalizedString } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 
+import { saveFiles_action } from '../translation/markdown/saveFiles_action.js'
 // import { getTranslatedMessages_markdown } from '../translation/llm.js'
 import {
 	convertMarkdownFiles,
 	getFiles,
 	getTranslatedLanguageMap_action,
-	saveFiles_action,
 } from '../translation/markdown/translation.js'
-import { getFrontmatterObject } from './getFrontmatters.js'
 
 // dummy function for test
 async function getTranslatedMessages_forTest(
@@ -21,19 +19,24 @@ async function getTranslatedMessages_forTest(
 ) {
 	const translatedMessages = {}
 	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지'
+		translatedMessages[messageKey] = '번역된 메시지 5'
 	}
 	return {
-		translatedMessages,
 		newDictionary: {},
+		translatedMessages,
 	}
 }
 
 const basicLangs = ['ko', 'en']
 
-export async function markdownScript_action(rootPath, helperPath) {
-	const { initialMarkdownFiles, dictPerLanguage, cache } = await getFiles(rootPath, helperPath)
-	const { languageMessageMap, explanations } = convertMarkdownFiles(initialMarkdownFiles, rootPath)
+export async function markdownScript_action(projectName, rootPath, helperPath) {
+	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
+	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, basicLangs)
+	const { explanations, languageMessageMap } = convertMarkdownFiles(
+		initialMarkdownFiles,
+		rootPath,
+		markdownListFromSupabase,
+	)
 	const translatedLanguageMap = await getTranslatedLanguageMap_action(
 		basicLangs,
 		languageMessageMap,
@@ -43,26 +46,24 @@ export async function markdownScript_action(rootPath, helperPath) {
 		// getTranslatedMessages_markdown,
 		getTranslatedMessages_forTest,
 	)
-	// @ts-ignore
+
+	const languageMessageMap_basicLangs = R.pick(basicLangs)(languageMessageMap)
+	const updatedMessagesPerLang = {}
+	for (const [lang, messageMap] of Object.entries(languageMessageMap_basicLangs)) {
+		updatedMessagesPerLang[lang] = {}
+		for (const [messageKey, messageValue] of Object.entries(messageMap)) {
+			if (!isSameNormalizedString(messageValue, cache[messageKey]?.[lang] || '')) {
+				updatedMessagesPerLang[lang][messageKey] = messageValue
+			}
+		}
+	}
+
 	await saveFiles_action(
-		rootPath,
+		projectName,
 		helperPath,
 		translatedLanguageMap,
+		updatedMessagesPerLang,
 		explanations,
-		R.pick(basicLangs)(languageMessageMap),
+		languageMessageMap_basicLangs,
 	)
-
-	const languageMessageMap_new = R.merge(languageMessageMap)(
-		R.pipe(
-			translatedLanguageMap,
-			R.mapObject((object) => object.newMessages),
-			R.filter(Boolean),
-		),
-	)
-
-	const frontmatterObject = getFrontmatterObject(languageMessageMap_new)
-	for (const [lang, frontmatter] of Object.entries(frontmatterObject)) {
-		const filePath = path.join(helperPath, 'frontmatters', `${lang}.json`)
-		await writeFile_async(filePath, JSON.stringify(frontmatter, null, 2))
-	}
 }

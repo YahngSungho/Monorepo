@@ -3,7 +3,7 @@ import '@library/base/fontStyle.css'
 
 import BaseLayout from '@library/ui/layouts/root'
 
-import { APP_NAME } from './base'
+import { APP_NAME } from '../info.js'
 
 let { children } = $props()
 </script>

@@ -7,16 +7,16 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"get-all-language-info": "node ./src/getAllLanguageInfo.js",
+		"build": "pnpm run change-base-locale:en && pnpm run compile",
 		"change-base-locale:en": "node ./src/changeBaseLocaleToEn.js",
 		"change-base-locale:ko": "node ./src/changeBaseLocaleToKo.js",
 		"check-no-missing-explanations": "node ./src/checkNoMissingExplanations.js",
-		"explanation-ready": "node ./src/readyMissingExplanations.js",
 		"compile": "node ./src/compile.js",
-		"build": "pnpm run change-base-locale:en && pnpm run compile",
+		"explanation-ready": "node ./src/readyMissingExplanations.js",
+		"get-all-language-info": "node ./src/getAllLanguageInfo.js",
 		"translate": "pnpm run check-no-missing-explanations && node ./src/translation.js",
 		"translate-machine": "npx @inlang/cli machine translate --project ./project.inlang",
-		"translate:env": "node --env-file=../../.env ./src/translation.js"
+		"translate:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/translation.js"
 	},
 	"dependencies": {
 		"@library/helpers": "workspace:*",

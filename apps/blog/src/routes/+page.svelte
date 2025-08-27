@@ -20,7 +20,7 @@ let postsOpen = $state(true)
 
 <div style="display: flex; flex-flow: column wrap; gap: var(--space-em-cqi-xs-s);">
 	<div>
-		<button onclick={() => (pinnedPostsOpen = !pinnedPostsOpen)}><h1>고정된 포스트</h1></button>
+		<h1><button onclick={() => (pinnedPostsOpen = !pinnedPostsOpen)}>고정된 포스트</button></h1>
 
 		{#if pinnedPostsOpen}
 			<div transition:slide={{ duration: 300 }}>
@@ -30,7 +30,7 @@ let postsOpen = $state(true)
 	</div>
 
 	<div>
-		<button onclick={() => (postsOpen = !postsOpen)}><h1>포스트</h1></button>
+		<h1><button onclick={() => (postsOpen = !postsOpen)}>포스트</button></h1>
 
 		{#if postsOpen}
 			<div transition:slide={{ duration: 300 }}>
