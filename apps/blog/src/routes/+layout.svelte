@@ -93,7 +93,7 @@ let clientHeight = $state(0)
 function isScrollable(el) {
 	return !!el && el.scrollHeight > el.clientHeight + 1
 }
-function setupScrollElement_action (element) {
+function setupScrollElement_action(element) {
 	scrollHeight = element.scrollHeight
 	clientHeight = element.clientHeight
 	scrollTop = element.scrollTop
@@ -106,7 +106,7 @@ function pickScrollTarget() {
 	const candidates = [withSidebarEl, mainEl].filter(isScrollable)
 	if (candidates.length > 0) {
 		const sorted = candidates.toSorted(
-			(a, b) => (b.scrollHeight - b.clientHeight) - (a.scrollHeight - a.clientHeight),
+			(a, b) => b.scrollHeight - b.clientHeight - (a.scrollHeight - a.clientHeight),
 		)
 		return sorted[0]
 	}
@@ -118,9 +118,9 @@ function handleWithScroll_action() {
 	if (!withSidebarEl) return
 	idleRun_action(() => {
 		activeEl = withSidebarEl
-	scrollTop = withSidebarEl.scrollTop
-	scrollHeight = withSidebarEl.scrollHeight
-	clientHeight = withSidebarEl.clientHeight
+		scrollTop = withSidebarEl.scrollTop
+		scrollHeight = withSidebarEl.scrollHeight
+		clientHeight = withSidebarEl.clientHeight
 	})
 }
 
@@ -138,50 +138,50 @@ function handleMainScroll_action() {
 $effect(() => {
 	idleRun_action(() => {
 		if (!activeEl) {
-		if (isScrollable(withSidebarEl)) {
-			activeEl = withSidebarEl
-			setupScrollElement_action(withSidebarEl)
-		} else if (isScrollable(mainEl)) {
-			activeEl = mainEl
-			setupScrollElement_action(mainEl)
+			if (isScrollable(withSidebarEl)) {
+				activeEl = withSidebarEl
+				setupScrollElement_action(withSidebarEl)
+			} else if (isScrollable(mainEl)) {
+				activeEl = mainEl
+				setupScrollElement_action(mainEl)
+			}
 		}
-	}
 	})
 })
 
 afterNavigate(() => {
-		// 3. window 전체 스크롤을 맨 위로 올립니다.
-		window.scrollTo(0, 0);
+	// 3. window 전체 스크롤을 맨 위로 올립니다.
+	window.scrollTo(0, 0)
 
-		// 4. (만약 특정 요소가 스크롤 컨테이너라면) 그 요소의 스크롤을 맨 위로 올립니다.
-		// scrollableContainer가 마운트된 후에만 실행되도록 확인합니다.
-		if (withSidebarEl) {
-			withSidebarEl.scrollTop = 0;
-		}
-		if (mainEl) {
-			mainEl.scrollTop = 0;
-		}
-		scrollTop = 0
+	// 4. (만약 특정 요소가 스크롤 컨테이너라면) 그 요소의 스크롤을 맨 위로 올립니다.
+	// scrollableContainer가 마운트된 후에만 실행되도록 확인합니다.
+	if (withSidebarEl) {
+		withSidebarEl.scrollTop = 0
+	}
+	if (mainEl) {
+		mainEl.scrollTop = 0
+	}
+	scrollTop = 0
 
-		activeEl = pickScrollTarget()
-		setupScrollElement_action(activeEl)
-	});
+	activeEl = pickScrollTarget()
+	setupScrollElement_action(activeEl)
+})
 
 onMount(() => {
-    const ro = new ResizeObserver(() => {
-        idleRun_action(() => {
-					activeEl = pickScrollTarget()
-				})
-    })
-    if (withSidebarEl) ro.observe(withSidebarEl)
-    if (mainEl) ro.observe(mainEl)
-    queueMicrotask(() => {
-        activeEl = pickScrollTarget()
-				setupScrollElement_action(activeEl)
-    })
-    return () => {
-        ro.disconnect()
-    }
+	const ro = new ResizeObserver(() => {
+		idleRun_action(() => {
+			activeEl = pickScrollTarget()
+		})
+	})
+	if (withSidebarEl) ro.observe(withSidebarEl)
+	if (mainEl) ro.observe(mainEl)
+	queueMicrotask(() => {
+		activeEl = pickScrollTarget()
+		setupScrollElement_action(activeEl)
+	})
+	return () => {
+		ro.disconnect()
+	}
 })
 
 function getActiveEl() {
@@ -276,46 +276,43 @@ let jsonLd = $derived({
 		<meta name="twitter:description" content={data.description} />
 		<meta name="twitter:url" content={currentCanonicalUrl} />
 
-		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-		<script type="application/ld+json">
-			{JSON.stringify(jsonLd)}
-		</script>
+		<!-- eslint-disable-next-line -->
+		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 	{/if}
 </svelte:head>
 
 {#snippet scrollButtons()}
-{#if showScrollTop || showScrollBottom}
-<div class="join join-vertical scroll-buttons">
-		<Button
-			class="join-item"
-			dimBackground
-			disabled={!showScrollTop}
-			iconName="mdi:chevron-double-up"
-			onclick={scrollToTop_action}
-			variant="outline"
-		></Button>
-		<Button
-			class="join-item"
-			dimBackground
-			disabled={!showScrollBottom}
-			iconName="mdi:chevron-double-down"
-			onclick={scrollToBottom_action}
-			variant="outline"
-		></Button>
-</div>
-{/if}
+	{#if showScrollTop || showScrollBottom}
+		<div class="join join-vertical scroll-buttons">
+			<Button
+				class="join-item"
+				dimBackground
+				disabled={!showScrollTop}
+				iconName="mdi:chevron-double-up"
+				onclick={scrollToTop_action}
+				variant="outline"
+			></Button>
+			<Button
+				class="join-item"
+				dimBackground
+				disabled={!showScrollBottom}
+				iconName="mdi:chevron-double-down"
+				onclick={scrollToBottom_action}
+				variant="outline"
+			></Button>
+		</div>
+	{/if}
 {/snippet}
 
 <BaseLayout appName={APP_NAME}>
 	{#if activeEl === withSidebarEl}
-			{@render scrollButtons()}
-		{/if}
+		{@render scrollButtons()}
+	{/if}
 
 	<div bind:this={withSidebarEl} class="with-sidebar boxed" onscroll={handleWithScroll_action}>
-
 		{#if activeEl === mainEl}
-				{@render scrollButtons()}
-			{/if}
+			{@render scrollButtons()}
+		{/if}
 
 		<div bind:this={mainEl} class="main boxed" onscroll={handleMainScroll_action}>
 			<div class="long-text">
@@ -436,7 +433,6 @@ let jsonLd = $derived({
 
 	block-size: 100svb;
 
-
 	& > .sidebar {
 		display: flex;
 		/* flex-basis를 밑의 breakpoint랑 일치시켜야함 */
@@ -471,19 +467,17 @@ let jsonLd = $derived({
 		scrollbar-gutter: auto;
 		overflow: hidden;
 
-	& > .main {
-		overflow: auto;
-		max-block-size: 100svb;
-		padding-block-end: calc(var(--space-m) + var(--space-em-cqi-xl));
-	}
+		& > .main {
+			overflow: auto;
+			max-block-size: 100svb;
+			padding-block-end: calc(var(--space-m) + var(--space-em-cqi-xl));
+		}
 
-	& > .sidebar {
-		margin-block-start: 0;
-	}
+		& > .sidebar {
+			margin-block-start: 0;
+		}
 	}
 }
-
-
 
 .radial-progress {
 	--size: 10em;
@@ -494,5 +488,4 @@ let jsonLd = $derived({
 	inset-inline-end: 0;
 	transform: scaleY(-1) scaleX(-1);
 }
-
 </style>
