@@ -868,7 +868,18 @@ jobs:
         if: steps.changed-files.outputs.all_changed_files != ''
         run: |
           # PR 기준 변경 파일 목록 사용 (tj-actions/changed-files 출력값)
+          echo "----- Debug: changed-files raw output (multiline) -----"
+          printf '%s\n' "${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "----- End Debug changed-files raw output -----"
           mapfile -t FILES < <(printf '%s\n' "${{ steps.changed-files.outputs.all_changed_files }}")
+          echo "FILES count: ${#FILES[@]}"
+          for f in "${FILES[@]}"; do
+            if [ -e "$f" ]; then
+              echo "FILES item: $f (exists: yes)"
+            else
+              echo "FILES item: $f (exists: no)"
+            fi
+          done
 
           # 마크다운 제외 및 존재하지 않는 파일 제외
           files_no_md=()
@@ -881,10 +892,16 @@ jobs:
                 ;;
             esac
           done
+          echo "files_no_md count: ${#files_no_md[@]}"
+          for f in "${files_no_md[@]}"; do echo "files_no_md item: $f"; done
+
+          echo "HEAD: $(git rev-parse --short HEAD)"
+          echo "HEAD subject: $(git log -1 --pretty=%s || true)"
 
           # 파일별로 '가장 최신(HEAD 기준) 비-임시 커밋'의 subject만 확인해 필터링
           filtered=()
           for f in "${files_no_md[@]}"; do
+            echo "검사 시작: $f"
             skip=0
             subj=""
             while true; do
@@ -893,6 +910,7 @@ jobs:
               if [ -z "$subj" ]; then
                 break
               fi
+              echo "  cand[$skip]: $subj"
               case "$subj" in
                 Temporary\ commit\ *) # 현재 런에서 만든 임시 커밋은 건너뜀
                   skip=$((skip+1))
@@ -911,8 +929,16 @@ jobs:
             filtered+=("$f")
           done
 
+          echo "filtered count: ${#filtered[@]}"
+          for f in "${filtered[@]}"; do echo "filtered item: $f"; done
+
           if [ ${#filtered[@]} -eq 0 ]; then
             echo "대상 파일 없음(자동수정만 있었거나 마크다운만 변경). 린트/포맷 생략."
+            echo "최근 파일별 커밋 로그(최대 3개)로 진단:"
+            for f in "${files_no_md[@]}"; do
+              echo "---- $f"
+              git log -3 --pretty='format:%h %s' -- "$f" || true
+            done
             exit 0
           fi
 
