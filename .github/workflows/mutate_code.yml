@@ -319,12 +319,29 @@ jobs:
             filtered_md+=("$f")
           done
 
-          # 마지막 변경 커밋 subject가 정확히 [automated-mutation]인 파일만 제외 (임시 커밋은 건너뜀)
+          # 파일별로 '가장 최신(HEAD 기준) 비-임시 커밋'의 subject만 확인해 필터링
           filtered=()
           for f in "${filtered_md[@]}"; do
-            last_subject=$(git log --pretty=%s -- "$f" | grep -v '^Temporary commit ' | head -n1 || true)
-            echo "파일: $f | 마지막 커밋 subject: ${last_subject}"
-            if [ "${last_subject}" = "[automated-mutation]" ]; then
+            skip=0
+            subj=""
+            while true; do
+              subj=$(git log -1 --pretty=%s --skip=$skip -- "$f" || true)
+              # 더 이상 기록이 없으면 중단
+              if [ -z "$subj" ]; then
+                break
+              fi
+              case "$subj" in
+                Temporary\ commit\ *) # 현재 런에서 만든 임시 커밋은 건너뜀
+                  skip=$((skip+1))
+                  continue
+                  ;;
+                *)
+                  break
+                  ;;
+              esac
+            done
+            echo "파일: $f | 마지막 비임시 커밋 subject: ${subj}"
+            if [ "${subj}" = "[automated-mutation]" ]; then
               echo "제외: 마지막 커밋이 [automated-mutation]"
               continue
             fi
@@ -865,13 +882,29 @@ jobs:
             esac
           done
 
-          # 마지막 변경 커밋 subject가 정확히 [automated-mutation]인 파일만 제외 (임시 커밋은 건너뜀)
+          # 파일별로 '가장 최신(HEAD 기준) 비-임시 커밋'의 subject만 확인해 필터링
           filtered=()
           for f in "${files_no_md[@]}"; do
-            # 파일별 커밋 subject 목록에서 임시 커밋(subject가 'Temporary commit '로 시작)을 제외하고 첫 번째를 선택
-            last_subject=$(git log --pretty=%s -- "$f" | grep -v '^Temporary commit ' | head -n1 || true)
-            echo "파일: $f | 마지막 커밋 subject: ${last_subject}"
-            if [ "${last_subject}" = "[automated-mutation]" ]; then
+            skip=0
+            subj=""
+            while true; do
+              subj=$(git log -1 --pretty=%s --skip=$skip -- "$f" || true)
+              # 더 이상 기록이 없으면 중단
+              if [ -z "$subj" ]; then
+                break
+              fi
+              case "$subj" in
+                Temporary\ commit\ *) # 현재 런에서 만든 임시 커밋은 건너뜀
+                  skip=$((skip+1))
+                  continue
+                  ;;
+                *)
+                  break
+                  ;;
+              esac
+            done
+            echo "파일: $f | 마지막 비임시 커밋 subject: ${subj}"
+            if [ "${subj}" = "[automated-mutation]" ]; then
               echo "제외: 마지막 커밋이 [automated-mutation]"
               continue
             fi
