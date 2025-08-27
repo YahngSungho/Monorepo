@@ -35,7 +35,6 @@
 :where(html) {
 	line-height: var(--font-lineheight-3);
 	text-size-adjust: none; /* https://kilianvalkhof.com/2022/css-html/your-css-reset-needs-text-size-adjust-probably/ */
-
 }
 
 :where(dialog) {
@@ -57,7 +56,6 @@
 :where(:not(dialog)) {
 	margin: 0;
 }
-
 
 @media (--motionOK) {
 	:where(:focus-visible) {
@@ -82,14 +80,14 @@
 	area,
 	button,
 	input:not(
-			[type='text'],
-			[type='email'],
-			[type='number'],
-			[type='password'],
-			[type=''],
-			[type='tel'],
-			[type='url']
-		),
+		[type='text'],
+		[type='email'],
+		[type='number'],
+		[type='password'],
+		[type=''],
+		[type='tel'],
+		[type='url']
+	),
 	label[for],
 	select,
 	summary,
@@ -143,7 +141,6 @@
 	field-sizing: content;
 }
 
-
 :where(svg:not([width])) {
 	inline-size: 1em;
 }
@@ -155,7 +152,6 @@
 :where(pre) {
 	min-inline-size: 0;
 	max-inline-size: max-content;
-
 	white-space: pre;
 }
 
@@ -171,7 +167,6 @@
 :where(p) {
 	max-inline-size: var(--size-content-long);
 }
-
 
 :where(figure) {
 	display: grid;

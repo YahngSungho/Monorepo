@@ -1,6 +1,5 @@
 section.footnotes {
 	margin-block-start: var(--space-em-cqi-xl);
-
 	border: 2px var(--color-neutral) dashed;
 
 	& h2 {

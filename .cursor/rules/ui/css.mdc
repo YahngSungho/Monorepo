@@ -168,9 +168,9 @@ This is the default and preferred method for applying styles. You should use raw
   ```svelte
   <script>
     import { css, cx } from '@emotion/css';
-
+  
   </script>
-
+  
   <SomeComponent class={cx('base-class', css`
       &:hover {
         background-color: var(--primary);

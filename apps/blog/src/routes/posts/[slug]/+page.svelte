@@ -117,7 +117,6 @@ let jsonLd = $derived({
 	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 </svelte:head>
 
-
 <div>
 	<h1>
 		{data.currentMetadata.title}
