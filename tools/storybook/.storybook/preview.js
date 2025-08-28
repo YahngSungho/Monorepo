@@ -1,4 +1,7 @@
+import { init } from '@library/ui/base.js'
 import './default.css'
+
+init('storybook')
 
 /** @type {import('@storybook/svelte').Preview} */
 const preview = {

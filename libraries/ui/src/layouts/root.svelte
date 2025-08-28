@@ -1,7 +1,4 @@
 <script>
-import '@library/base/base.css'
-import 'iconify-icon'
-
 import { css } from '@emotion/css'
 import { partytownSnippet } from '@qwik.dev/partytown/integration'
 import * as Sentry from '@sentry/sveltekit'
@@ -12,7 +9,7 @@ import { browser } from '$app/environment'
 import { onNavigate } from '$app/navigation'
 import { Toaster } from '$shadcn/components/ui/sonner/index'
 
-import { init } from './base.svelte.js'
+import { init } from './base.js'
 
 let { appName, children } = $props()
 

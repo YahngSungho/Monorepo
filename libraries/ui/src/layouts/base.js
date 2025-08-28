@@ -1,3 +1,6 @@
+import '@library/base/base.css'
+import 'iconify-icon'
+
 import { idleRun_action } from '@library/helpers/functions'
 import { mode } from 'mode-watcher'
 
