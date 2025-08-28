@@ -44,9 +44,10 @@ You can also define args at the global level; they will apply to every component
 
 .storybook/preview.js
 
-export default { // The default value of the theme arg for all stories args: { theme: 'light' },};
-
-````
+export default { // The default value of the theme arg for all stories
+  tags: ['autodocs'],
+  args: { theme: 'light' },
+};
 
 For most uses of global args, globals are a better tool for defining globally-applied settings, such as a theme. Using globals enables users to change the value with the toolbar menu.
 
@@ -158,8 +159,6 @@ The way the global, component and story parameters are combined is:
 The merging of parameters is important. This means it is possible to override a single specific sub-parameter on a per-story basis while retaining most of the parameters defined globally.
 
 If you are defining an API that relies on parameters (e.g., an **addon**) it is a good idea to take this behavior into account.
-
-Was this page useful?
 
 # Naming components and hierarchy
 
