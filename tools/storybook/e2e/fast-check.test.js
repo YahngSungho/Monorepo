@@ -3,10 +3,18 @@ import path from 'node:path'
 import { expect, test } from '@playwright/test'
 
 import manifest from '../storybook-static/index.json' with { type: 'json' }
-import { CACHE_DIR, isSameState, readCache, serializePage, writeCache } from './cache.js'
+import { CACHE_DIR, isSameState, readCache, serializePage, writeCache_action } from './cache.js'
 import { testUIComponent } from './universal-testers.js'
 
-for (const entry of Object.values(manifest.entries)) {
+// --- 태그 필터 설정 (명시 태그만 순회) ---
+const TAGS = ['auto-test']
+/** @param {any} entry */
+const hasAnyTag = (entry) => Array.isArray(entry?.tags) && TAGS.some((t) => entry.tags.includes(t))
+
+const allEntries = Object.values(manifest?.entries || {})
+const filteredEntries = allEntries.filter((entry) => entry?.id && hasAnyTag(entry))
+
+for (const entry of filteredEntries) {
 	if (!entry?.id) {
 		continue
 	}
@@ -44,7 +52,7 @@ for (const entry of Object.values(manifest.entries)) {
 						route.continue()
 						return
 					}
-					// 예상치 못한 첫 내비게이션 (예: page.goto가 storyUrlWithoutHash가 아닌 다른 곳으로 요청된 경우)
+					// 예상치 못한 초기 내비게이션 (예: page.goto가 storyUrlWithoutHash가 아닌 다른 곳으로 요청된 경우)
 					// console.error(`[FastCheckRoute] 예상치 못한 초기 내비게이션 차단: ${request.url()}`);
 					route.abort('aborted')
 					return
@@ -98,20 +106,20 @@ for (const entry of Object.values(manifest.entries)) {
 
 		if (isSameState(cachedState, currentState)) {
 			// console.log(`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`)
-			test.info().annotations.push({ type: 'cache-status', description: 'hit' })
+			test.info().annotations.push({ description: 'hit', type: 'cache-status' })
 			expect(consoleErrors, '콘솔 에러 체크 (캐시 히트)').toHaveLength(0)
 			expect(failedRequests, '네트워크 에러 체크 (캐시 히트)').toHaveLength(0)
 			return
 		}
 		// console.log(`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`)
-		test.info().annotations.push({ type: 'cache-status', description: 'miss' })
+		test.info().annotations.push({ description: 'miss', type: 'cache-status' })
 
 		await page.emulateMedia({ reducedMotion: 'reduce' })
 		const results = await testUIComponent(page, {
-			numRuns: 1,
-			sequenceLength: 1,
-			waitAfterInteraction: 50,
+			numRuns: 3,
+			sequenceLength: 10,
 			verbose: false,
+			waitAfterInteraction: 50,
 		})
 
 		// 테스트 정보 기록
@@ -136,7 +144,7 @@ for (const entry of Object.values(manifest.entries)) {
 
 		if (results.success && results.errors.length === 0) {
 			// console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`)
-			writeCache(currentState, cacheFilePath)
+			writeCache_action(currentState, cacheFilePath)
 		}
 	})
 }

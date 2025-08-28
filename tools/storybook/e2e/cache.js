@@ -32,7 +32,7 @@ function readCache(cacheFilePath) {
  * @param {string} state - 저장할 페이지 상태 (직렬화된 문자열)
  * @param {string} cacheFilePath - 저장할 캐시 파일의 전체 경로
  */
-function writeCache(state, cacheFilePath) {
+function writeCache_action(state, cacheFilePath) {
 	try {
 		// 캐시 디렉토리가 없으면 생성
 		const dir = path.dirname(cacheFilePath)
@@ -69,4 +69,4 @@ function isSameState(cachedState, currentState) {
 	return cachedState === currentState
 }
 
-export { CACHE_DIR, isSameState, readCache, serializePage, writeCache }
+export { CACHE_DIR, isSameState, readCache, serializePage, writeCache_action }

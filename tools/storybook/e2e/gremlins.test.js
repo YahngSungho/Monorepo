@@ -5,7 +5,7 @@ import { R } from '@library/helpers/R'
 import { expect, test } from '@playwright/test'
 
 import manifest from '../storybook-static/index.json' with { type: 'json' }
-import { CACHE_DIR, isSameState, readCache, serializePage, writeCache } from './cache.js'
+import { CACHE_DIR, isSameState, readCache, serializePage, writeCache_action } from './cache.js'
 
 /**
  * 페이지 컨텍스트에서 Gremlins를 실행합니다. Playwright와 함께 사용하기 위한 함수입니다.
@@ -67,15 +67,15 @@ async function unleashGremlins(page) {
 			strategies: [
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.distribution({
-					nb: 20,
+					nb: 40,
 				}),
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.allTogether({
-					nb: 5,
+					nb: 20,
 				}),
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.bySpecies({
-					nb: 5,
+					nb: 20,
 				}),
 			],
 		})
@@ -91,7 +91,15 @@ async function unleashGremlins(page) {
 	})
 }
 
-for (const entry of Object.values(manifest.entries)) {
+// --- 태그 필터 설정 (명시 태그만 순회) ---
+const TAGS = ['auto-test']
+/** @param {any} entry */
+const hasAnyTag = (entry) => Array.isArray(entry?.tags) && TAGS.some((t) => entry.tags.includes(t))
+
+const allEntries = Object.values(manifest?.entries || {})
+const filteredEntries = allEntries.filter((entry) => entry?.id && hasAnyTag(entry))
+
+for (const entry of filteredEntries) {
 	// if (!process.env.CI) {
 	// 	break
 	// }
@@ -241,7 +249,7 @@ for (const entry of Object.values(manifest.entries)) {
 			if (pageErrors.length === 0 && failedRequests.length === 0) {
 				// 네트워크 에러도 체크
 				// console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`)
-				writeCache(currentState, cacheFilePath)
+				writeCache_action(currentState, cacheFilePath)
 			}
 		} catch (error) {
 			console.error('Gremlins 테스트 중 예상치 못한 오류 발생:', error)
