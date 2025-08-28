@@ -25,7 +25,7 @@
 	"types": "./dist/index.d.ts",
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
-		"@internationalized/date": "^3.8.1",
+		"@internationalized/date": "^3.9.0",
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-base": "workspace:*",
