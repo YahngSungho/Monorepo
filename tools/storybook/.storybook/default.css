@@ -3,4 +3,5 @@
 
 html {
 	font-family: 'IBM Plex Sans KR';
+	overflow: scroll !important;
 }

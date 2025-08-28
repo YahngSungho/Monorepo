@@ -15,7 +15,7 @@
 
 @source '../../../apps/*/src/**/*.{html,js,ts,svelte,mdx}';
 @source '../../../libraries/*/src/**/*.{html,js,ts,svelte,mdx}';
-@source '../../../storybook/src/**/*.{html,js,ts,svelte,mdx}';
+@source '../../../tools/storybook/src/**/*.{html,js,ts,svelte,mdx}';
 
 :root {
 	--radius: var(--radius-2);

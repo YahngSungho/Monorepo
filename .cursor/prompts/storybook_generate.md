@@ -61,8 +61,8 @@
     				- Create a `<Story>` component instance for EACH scenario brainstormed in step 2.
     				- Use the `name` prop for descriptive titles **in KOREAN** reflecting the scenario (e.g., `name="기본_활성화"`).
     				- Pass the appropriate `args` object to define the specific state for that scenario.
-    				- If using shared snippets, pass the snippet function to the `children` prop (e.g., `children={template}`).
-    				- If a scenario requires a unique structure, define an inline snippet or static template for that specific `<Story>`. Add explanatory comments **in KOREAN**.
+    				- If using shared snippets, pass the snippet via the `template` prop (e.g., `{template}`).
+    				- If a scenario requires a unique structure, define an inline `template` snippet inside that `<Story>` or use a static template with `asChild`. Add explanatory comments **in KOREAN**.
 
     	**5. Final Review:**
     			- Before concluding, mentally review the generated code.
@@ -82,17 +82,16 @@
 			import { defineMeta } from '@storybook/addon-svelte-csf';
 			import MyExampleComponent from './MyExampleComponent.svelte'; // 임포트 경로 조정
 			import StorybookDecorator from '@library/ui/storybookDecorator'; // 데코레이터 임포트
-
-    		// defineMeta는 컴포넌트 메타데이터를 정의합니다
-    		const { Story } = defineMeta({
-    			title: '예시/MyExampleComponent', // 제목 조정
-    			component: MyExampleComponent,
-    			decorators: [() => StorybookDecorator], // 모든 스토리에 데코레이터 적용
-    			argTypes: { // 컨트롤을 위한 선택적 기본 argTypes
-    				labelText: { control: 'text' },
-    				isDisabled: { control: 'boolean' },
-    			},
-    		});
+			// defineMeta는 컴포넌트 메타데이터를 정의합니다
+			const { Story } = defineMeta({
+				title: '예시/MyExampleComponent', // 제목 조정
+				component: MyExampleComponent,
+				decorators: [() => StorybookDecorator], // 모든 스토리에 데코레이터 적용
+				argTypes: { // 컨트롤을 위한 선택적 기본 argTypes
+					labelText: { control: 'text' },
+					isDisabled: { control: 'boolean' },
+				},
+			});
     	</script>
 
     	<!-- 일관성을 위한 공유 스니펫 -->
@@ -102,21 +101,21 @@
     	{/snippet}
 
     	<!-- 정상 경로 스토리 -->
-    	<Story name="기본_활성화" args={{ labelText: '클릭하세요', isDisabled: false }} children={template} />
+    	<Story name="기본_활성화" args={{ labelText: '클릭하세요', isDisabled: false }} {template} />
 
     	<!-- 엣지 케이스 스토리 -->
-    	<Story name="비활성화_상태" args={{ labelText: '클릭 불가', isDisabled: true }} children={template} />
+    	<Story name="비활성화_상태" args={{ labelText: '클릭 불가', isDisabled: true }} {template} />
 
     	<!-- 잘못된 입력 케이스 스토리 -->
-    	<Story name="잘못된_입력_빈_레이블" args={{ labelText: '', isDisabled: false }} children={template} />
+    	<Story name="잘못된_입력_빈_레이블" args={{ labelText: '', isDisabled: false }} {template} />
 
     	<!-- 스트레스 테스트 케이스 예시 (긴 텍스트) -->
-    	<Story name="스트레스_테스트_긴_레이블" args={{ labelText: '이 레이블은 스트레스 조건 하에서 컴포넌트가 오버플로우나 줄 바꿈을 어떻게 처리하는지 테스트하기 위해 매우 깁니다. '.repeat(10), isDisabled: false }} children={template} />
+    	<Story name="스트레스_테스트_긴_레이블" args={{ labelText: '이 레이블은 스트레스 조건 하에서 컴포넌트가 오버플로우나 줄 바꿈을 어떻게 처리하는지 테스트하기 위해 매우 깁니다. '.repeat(10), isDisabled: false }} {template} />
     	```
 
 </Example>
 
-<Output\*Format>
+<Output_Format>
 Your final output MUST be structured as follows: 1. Your detailed step-by-step analysis (Component Analysis, Scenario Brainstorming, Implementation Strategy) **written in KOREAN**. 2. **If a target file path (e.g., `MyComponent.stories.svelte`) is provided**:
 \_Plan and execute the `edit_file` tool call to write the complete story file content.
 **\*Linting and Correction**: After `edit_file` attempts to apply the changes, check for lint errors.

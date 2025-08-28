@@ -1,6 +1,10 @@
 import './default.css'
 
-/** @type {import('@storybook/svelte').Preview} */
+import { init } from '@library/ui/base.js'
+
+init('storybook')
+
+/** @type {import('@storybook/svelte-vite').Preview} */
 const preview = {
 	parameters: {
 		controls: {

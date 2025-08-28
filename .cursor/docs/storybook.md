@@ -17,7 +17,7 @@ To define the args of a single story, use the `args` property in the `Story`�
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    primary: true,    label: 'Button'  }}/>
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    label: 'Button',    primary: true  }}/>
 ```
 
 These args will only apply to the story for which they are attached, although you can reuse them via JavaScript object reuse:
@@ -25,7 +25,7 @@ These args will only apply to the story for which they are attached, although yo
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    primary: true,    label: 'Button',  }</script><Story name="Primary" args={primaryArgs} /><Story name="PrimaryLongName"  args={{    ...primaryArgs,    label: 'Primary with a really long name'  }} />
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArgs} /><Story name="PrimaryLongName"  args={{    ...primaryArgs,    label: 'Primary with a really long name'  }} />
 ```
 
 In the above example, we use the object spread feature of ES 2015.
@@ -44,9 +44,10 @@ You can also define args at the global level; they will apply to every component
 
 .storybook/preview.js
 
-export default { // The default value of the theme arg for all stories args: { theme: 'light' },};
-
-````
+export default { // The default value of the theme arg for all stories
+  tags: ['autodocs'],
+  args: { theme: 'light' },
+};
 
 For most uses of global args, globals are a better tool for defining globally-applied settings, such as a theme. Using globals enables users to change the value with the toolbar menu.
 
@@ -55,7 +56,9 @@ For most uses of global args, globals are a better tool for defining globally-
 You can separate the arguments to a story to compose in other stories. Here's how you can combine args for multiple stories of the same component.
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    primary: true,    label: 'Button',  }</script><Story name="Primary" args={primaryArgs} /><Story name="Secondary" args={{...primaryArgs, primary: false}} />
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  
+
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArgs} /><Story name="Secondary" args={{...primaryArgs, primary: false}} />
 ````
 
 If you find yourself re-using the same args for most of a component's stories, you should consider using component-level args.
@@ -158,8 +161,6 @@ The way the global, component and story parameters are combined is:
 The merging of parameters is important. This means it is possible to override a single specific sub-parameter on a per-story basis while retaining most of the parameters defined globally.
 
 If you are defining an API that relies on parameters (e.g., an **addon**) it is a good idea to take this behavior into account.
-
-Was this page useful?
 
 # Naming components and hierarchy
 
@@ -498,7 +499,7 @@ We can specify which controls get used by declaring a custom argType for the 
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,    argTypes: {      variant: {        options: ['primary', 'secondary'],        control: { type: 'radio' },      },    },  });</script>
+import Button from './Button.svelte';  const { Story } = defineMeta({    argTypes: {      variant: {        control: { type: 'radio' },        options: ['primary', 'secondary'],      },    },    component: Button,  });</script>
 ```
 
 ArgTypes are a powerful feature that can be used to customize the controls for your stories. For more information, see the documentation about customizing controls with `argTypes` annotation.
@@ -624,7 +625,7 @@ The `date` control will convert the date into a UNIX timestamp when the value 
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Gizmo from './Gizmo.svelte';  const { Story } = defineMeta({    component: Gizmo,    argTypes: {      canRotate: {        control: 'boolean',      },      width: {        control: { type: 'number', min: 400, max: 1200, step: 50 },      },      height: {        control: { type: 'range', min: 200, max: 1500, step: 50 },      },      rawData: {        control: 'object',      },      coordinates: {        control: 'object',      },      texture: {        control: {          type: 'file',          accept: '.png',        },      },      position: {        control: 'radio',        options: ['left', 'right', 'center'],      },      rotationAxis: {        control: 'check',        options: ['x', 'y', 'z'],      },      scaling: {        control: 'select',        options: [10, 50, 75, 100, 200],      },      label: {        control: 'text',      },      meshColors: {        control: {          type: 'color',          presetColors: ['#ff0000', '#00ff00', '#0000ff'],        },      },      revisionDate: {        control: 'date',      },    },  });</script>
+import Gizmo from './Gizmo.svelte';  const { Story } = defineMeta({    argTypes: {      canRotate: {        control: 'boolean',      },      coordinates: {        control: 'object',      },      height: {        control: { max: 1500, min: 200, step: 50, type: 'range' },      },      label: {        control: 'text',      },      meshColors: {        control: {          presetColors: ['#ff0000', '#00ff00', '#0000ff'],          type: 'color',        },      },      position: {        control: 'radio',        options: ['left', 'right', 'center'],      },      rawData: {        control: 'object',      },      revisionDate: {        control: 'date',      },      rotationAxis: {        control: 'check',        options: ['x', 'y', 'z'],      },      scaling: {        control: 'select',        options: [10, 50, 75, 100, 200],      },      texture: {        control: {          accept: '.png',          type: 'file',        },      },      width: {        control: { max: 1200, min: 400, step: 50, type: 'number' },      },    },    component: Gizmo,  });</script>
 ```
 
 Numeric data types will default to a `number` control unless additional configuration is provided.

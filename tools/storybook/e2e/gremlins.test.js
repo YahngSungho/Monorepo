@@ -5,7 +5,7 @@ import { R } from '@library/helpers/R'
 import { expect, test } from '@playwright/test'
 
 import manifest from '../storybook-static/index.json' with { type: 'json' }
-import { CACHE_DIR, isSameState, readCache, serializePage, writeCache } from './cache.js'
+import { CACHE_DIR, isSameState, readCache, serializePage, writeCache_action } from './cache.js'
 
 /**
  * 페이지 컨텍스트에서 Gremlins를 실행합니다. Playwright와 함께 사용하기 위한 함수입니다.
@@ -24,6 +24,14 @@ async function unleashGremlins(page) {
 	await page.evaluate(async () => {
 		// @ts-ignore - window.gremlins는 addScriptTag/addInitScript에 의해 로드됨
 		const horde = globalThis.gremlins.createHorde({
+			mogwais: [
+				// @ts-ignore - 타입 오류 무시
+				globalThis.gremlins.mogwais.gizmo(),
+				// @ts-ignore - 타입 오류 무시
+				globalThis.gremlins.mogwais.fps(),
+				// @ts-ignore - 타입 오류 무시
+				globalThis.gremlins.mogwais.alert(),
+			],
 			species: [
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.species.clicker({
@@ -56,26 +64,18 @@ async function unleashGremlins(page) {
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.species.typer(),
 			],
-			mogwais: [
-				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.mogwais.gizmo(),
-				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.mogwais.fps(),
-				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.mogwais.alert(),
-			],
 			strategies: [
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.distribution({
-					nb: 20,
+					nb: 40,
 				}),
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.allTogether({
-					nb: 5,
+					nb: 20,
 				}),
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.strategies.bySpecies({
-					nb: 5,
+					nb: 20,
 				}),
 			],
 		})
@@ -91,7 +91,15 @@ async function unleashGremlins(page) {
 	})
 }
 
-for (const entry of Object.values(manifest.entries)) {
+// --- 태그 필터 설정 (명시 태그만 순회) ---
+const TAGS = ['auto-test']
+/** @param {any} entry */
+const hasAnyTag = (entry) => Array.isArray(entry?.tags) && TAGS.some((t) => entry.tags.includes(t))
+
+const allEntries = Object.values(manifest?.entries || {})
+const filteredEntries = allEntries.filter((entry) => entry?.id && hasAnyTag(entry))
+
+for (const entry of filteredEntries) {
 	// if (!process.env.CI) {
 	// 	break
 	// }
@@ -196,7 +204,7 @@ for (const entry of Object.values(manifest.entries)) {
 				// console.log(
 				// 	`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`,
 				// )
-				test.info().annotations.push({ type: 'cache-status', description: 'hit' })
+				test.info().annotations.push({ description: 'hit', type: 'cache-status' })
 				expect(consoleErrors, '콘솔 에러 체크 (캐시 히트)').toHaveLength(0)
 				expect(failedRequests, '네트워크 에러 체크 (캐시 히트)').toHaveLength(0)
 				await page.unroute('**/*') // 테스트 종료 전 라우팅 해제
@@ -205,7 +213,7 @@ for (const entry of Object.values(manifest.entries)) {
 			// console.log(
 			// 	`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`,
 			// )
-			test.info().annotations.push({ type: 'cache-status', description: 'miss' })
+			test.info().annotations.push({ description: 'miss', type: 'cache-status' })
 
 			await page.emulateMedia({ reducedMotion: 'reduce' })
 
@@ -241,7 +249,7 @@ for (const entry of Object.values(manifest.entries)) {
 			if (pageErrors.length === 0 && failedRequests.length === 0) {
 				// 네트워크 에러도 체크
 				// console.log(`[캐시 쓰기] ${title} - 테스트 성공. 새로운 상태를 캐시합니다.`)
-				writeCache(currentState, cacheFilePath)
+				writeCache_action(currentState, cacheFilePath)
 			}
 		} catch (error) {
 			console.error('Gremlins 테스트 중 예상치 못한 오류 발생:', error)

@@ -1,12 +1,13 @@
 <script module>
+// @ts-nocheck
 import { defineMeta } from '@storybook/addon-svelte-csf'
 
 import VariaitonSetter from './variationSetter.svelte'
 
 // 컴포넌트 메타데이터 정의
 const { Story } = defineMeta({
-	title: 'Miscellaneous/VariaitonSetter',
 	component: VariaitonSetter,
+	title: 'Miscellaneous/VariaitonSetter',
 	// argTypes와 args를 사용한 props 전달을 제거하여 타입 오류를 방지합니다.
 	// 각 스토리는 컴포넌트의 기본 렌더링을 보여줍니다.
 })
@@ -24,4 +25,4 @@ const { Story } = defineMeta({
 
 <!-- 1. 기본 상태 (해피 패스) -->
 <!-- 설명: 컴포넌트의 기본 렌더링 상태입니다. 사용자가 직접 상호작용하여 기능을 테스트할 수 있습니다. -->
-<Story name="기본 상태 및 일반 동작" children={default_template_snippet} />
+<Story name="기본 상태 및 일반 동작" template={default_template_snippet} />

@@ -239,7 +239,7 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 			if (isElementVisible(el)) {
 				const uniqueSelector = getUniqueSelector(el, selector)
 				const computedStyle = globalThis.getComputedStyle(el) // isElementVisible에서 이미 계산했으므로 재사용 가능하면 좋음
-				const { overflowY, overflowX } = computedStyle
+				const { overflowX, overflowY } = computedStyle
 				const toleranceY = 1
 				const toleranceX = 1
 
@@ -251,28 +251,28 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 					el.scrollWidth - el.clientWidth > toleranceX
 
 				visibleInfos.push({
-					tagName: el.tagName.toLowerCase(),
-					selector: uniqueSelector,
-					type: el.getAttribute('type'),
 					role: el.getAttribute('role'),
+					selector: uniqueSelector,
+					tagName: el.tagName.toLowerCase(),
+					type: el.getAttribute('type'),
 					// disabled와 readonly는 가시성과 별개이므로 계속 포함
+					clientHeight: el.clientHeight,
+					clientWidth: el.clientWidth,
 					disabled: el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true',
-					readonly: el.hasAttribute('readonly'),
-					options:
-						el.tagName.toLowerCase() === 'select' ?
-							Array.from(el.querySelectorAll('option'), (option) => option.value)
-						:	[],
-					min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
-					max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
 					draggable:
 						el.getAttribute('draggable') === 'true' || el.getAttribute('data-draggable') === 'true',
 					isDroppable: el.getAttribute('data-droppable') === 'true',
 					isScrollableX,
 					isScrollableY,
+					max: el.hasAttribute('max') ? Number.parseInt(el.getAttribute('max') || '100', 10) : 100,
+					min: el.hasAttribute('min') ? Number.parseInt(el.getAttribute('min') || '0', 10) : 0,
+					options:
+						el.tagName.toLowerCase() === 'select' ?
+							Array.from(el.querySelectorAll('option'), (option) => option.value)
+						:	[],
+					readonly: el.hasAttribute('readonly'),
 					scrollHeight: el.scrollHeight,
 					scrollWidth: el.scrollWidth,
-					clientHeight: el.clientHeight,
-					clientWidth: el.clientWidth,
 				})
 			}
 		}
@@ -304,9 +304,9 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 			for (const targetElement of droppableElements) {
 				// 자기 자신에게 드롭하는 경우도 포함
 				interactions.push({
-					type: 'dragDrop',
 					sourceSelector: sourceElement.selector,
 					targetSelector: targetElement.selector,
+					type: 'dragDrop',
 				})
 			}
 		}
@@ -335,18 +335,18 @@ async function discoverInteractions(page, componentSelector, verbose = false) {
 function getInteractionsFromElementInfo(elementInfo) {
 	const interactions = []
 	const {
-		tagName,
-		selector,
-		type,
-		role,
 		disabled,
-		readonly,
-		options,
-		min,
-		max,
 		draggable,
 		isScrollableX,
 		isScrollableY,
+		max,
+		min,
+		options,
+		readonly,
+		role,
+		selector,
+		tagName,
+		type,
 	} = elementInfo
 
 	if (disabled) return []
@@ -355,9 +355,9 @@ function getInteractionsFromElementInfo(elementInfo) {
 		case 'a':
 		case 'button': {
 			interactions.push(
-				{ type: 'click', selector },
-				{ type: 'hover', selector },
-				{ type: 'doubleClick', selector },
+				{ selector, type: 'click' },
+				{ selector, type: 'hover' },
+				{ selector, type: 'doubleClick' },
 			)
 			break
 		}
@@ -373,8 +373,8 @@ function getInteractionsFromElementInfo(elementInfo) {
 				case undefined: {
 					if (!readonly) {
 						interactions.push({
-							type: 'fill',
 							selector,
+							type: 'fill',
 							valueType: type || 'text',
 						})
 					}
@@ -383,16 +383,16 @@ function getInteractionsFromElementInfo(elementInfo) {
 
 				case 'checkbox':
 				case 'radio': {
-					interactions.push({ type: 'click', selector })
+					interactions.push({ selector, type: 'click' })
 					break
 				}
 
 				case 'range': {
 					interactions.push({
-						type: 'setRange',
-						selector,
-						min,
 						max,
+						min,
+						selector,
+						type: 'setRange',
 					})
 					break
 				}
@@ -402,14 +402,14 @@ function getInteractionsFromElementInfo(elementInfo) {
 
 		case 'select': {
 			if (options.length > 0) {
-				interactions.push({ type: 'select', selector, options })
+				interactions.push({ options, selector, type: 'select' })
 			}
 			break
 		}
 
 		case 'textarea': {
 			if (!readonly) {
-				interactions.push({ type: 'fill', selector, valueType: 'textarea' })
+				interactions.push({ selector, type: 'fill', valueType: 'textarea' })
 			}
 			break
 		}
@@ -417,31 +417,31 @@ function getInteractionsFromElementInfo(elementInfo) {
 
 	if (role === 'button') {
 		interactions.push(
-			{ type: 'click', selector },
-			{ type: 'hover', selector },
-			{ type: 'doubleClick', selector },
+			{ selector, type: 'click' },
+			{ selector, type: 'hover' },
+			{ selector, type: 'doubleClick' },
 		)
 	}
 
 	if (['listbox', 'menu', 'tablist'].includes(role)) {
 		interactions.push(
-			{ type: 'click', selector },
-			{ type: 'hover', selector },
-			{ type: 'doubleClick', selector },
+			{ selector, type: 'click' },
+			{ selector, type: 'hover' },
+			{ selector, type: 'doubleClick' },
 		)
 	}
 
 	if (draggable) {
-		interactions.push({ type: 'drag', selector })
+		interactions.push({ selector, type: 'drag' })
 	}
 
 	// 스크롤 가능한 요소에 대한 인터랙션 추가
 	if (isScrollableY || isScrollableX) {
 		interactions.push({
-			type: 'scroll',
-			selector,
 			isScrollableX,
 			isScrollableY,
+			selector,
+			type: 'scroll',
 		})
 	}
 
@@ -518,7 +518,7 @@ async function resetComponentState(page) {
 		}
 
 		// console.log(`[resetComponentState] 목표 URL(${targetUrl})로 이동 시도...`);
-		await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 35_000 })
+		await page.goto(targetUrl, { timeout: 35_000, waitUntil: 'domcontentloaded' })
 		if (page.isClosed()) {
 			throw new Error(`[resetComponentState] 목표 URL(${targetUrl}) 이동 후 페이지 닫힘`)
 		}
@@ -589,7 +589,7 @@ function _getValueArbitraryForType(valueType, options = {}) {
 		case 'range': {
 			// range input은 보통 숫자를 직접 다루므로 변환 불필요 (evaluate에서 처리)
 			// 단, locator.fill을 사용한다면 문자열 변환 필요할 수 있음
-			return fc.integer({ min: options.min ?? 0, max: options.max ?? 100 })
+			return fc.integer({ max: options.max ?? 100, min: options.min ?? 0 })
 		}
 		case 'scroll': {
 			// 스크롤 방향과 양을 생성하는 Arbitrary
@@ -602,11 +602,11 @@ function _getValueArbitraryForType(valueType, options = {}) {
 				directionArb = fc.constant('vertical')
 			}
 
-			const amountArb = fc.integer({ min: -100, max: 100 }).filter((n) => n !== 0)
+			const amountArb = fc.integer({ max: 100, min: -100 }).filter((n) => n !== 0)
 
 			return fc.record({
-				direction: directionArb,
 				amount: amountArb,
+				direction: directionArb,
 			})
 		}
 		case 'select': {
@@ -688,10 +688,10 @@ function getRandomValueForType(valueType) {
 async function executeInteraction(page, interaction, waitTime, verbose = false) {
 	// 결과 객체 초기화
 	const result = {
-		success: false,
-		type: interaction.type,
 		selector: interaction.selector,
+		success: false,
 		timestamp: new Date().toISOString(),
+		type: interaction.type,
 		// 상세 정보를 위한 필드 추가
 		details: {},
 	}
@@ -699,8 +699,8 @@ async function executeInteraction(page, interaction, waitTime, verbose = false) 
 	// 현재 실행 중인 인터랙션 정보 설정
 	currentInteraction = {
 		...interaction,
-		timestamp: result.timestamp,
 		id: `${interaction.type}-(${interaction.selector})-${result.timestamp}`,
+		timestamp: result.timestamp,
 	}
 
 	// 상세 로그 출력
@@ -1019,19 +1019,19 @@ async function executeScrollInteraction(page, interaction, result) {
 	// interaction 객체에 이미 value가 포함되어 있는지 확인
 	if (interaction.value) {
 		// fast-check에서 생성된 값 사용
-		const { direction, amount } = interaction.value
+		const { amount, direction } = interaction.value
 
 		// locator.evaluate를 사용하여 스크롤 실행
 		const locator = page.locator(interaction.selector)
 		await locator.evaluate(
-			(el, { direction, amount }) => {
+			(el, { amount, direction }) => {
 				if (direction === 'vertical') {
 					el.scrollTop += amount
 				} else {
 					el.scrollLeft += amount
 				}
 			},
-			{ direction, amount },
+			{ amount, direction },
 		)
 
 		result.value = interaction.value
@@ -1044,17 +1044,17 @@ async function executeScrollInteraction(page, interaction, result) {
 		// locator.evaluate를 사용하여 스크롤 실행
 		const locator = page.locator(interaction.selector)
 		await locator.evaluate(
-			(el, { direction, amount }) => {
+			(el, { amount, direction }) => {
 				if (direction === 'vertical') {
 					el.scrollTop += amount
 				} else {
 					el.scrollLeft += amount
 				}
 			},
-			{ direction, amount },
+			{ amount, direction },
 		)
 
-		result.value = { direction, amount }
+		result.value = { amount, direction }
 		result.message = `스크롤: ${direction === 'vertical' ? 'Y' : 'X'} ${amount}px`
 	}
 
@@ -1225,9 +1225,9 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				// mapper: 최종 객체에 originalIndex 포함
 				([index, value]) => ({
 					...fillInteractions[index],
+					originalIndex: index, // 원본 index 저장
 					type: 'fill',
 					value,
-					originalIndex: index, // 원본 index 저장
 				}),
 				// unmapper: 튜플 [index, value] 복원
 				unmapValueInteraction('fill'),
@@ -1248,9 +1248,9 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				// mapper: 최종 객체에 originalIndex 포함
 				([index, value]) => ({
 					...selectInteractions[index],
+					originalIndex: index, // 원본 index 저장
 					type: 'select',
 					value,
-					originalIndex: index, // 원본 index 저장
 				}),
 				// unmapper: 튜플 [index, value] 복원
 				unmapValueInteraction('select'),
@@ -1265,15 +1265,15 @@ function createInteractionSequenceArbitrary(interactions, length) {
 			const originalInteraction = rangeInteractions[i]
 			const min = originalInteraction.min ?? 0 // Use ?? for default value
 			const max = originalInteraction.max ?? 100 // Use ?? for default value
-			const valueArb = _getValueArbitraryForType('range', { min, max })
+			const valueArb = _getValueArbitraryForType('range', { max, min })
 
 			const rangeInteractionArb = fc.tuple(fc.constant(i), valueArb).map(
 				// mapper: 최종 객체에 originalIndex 포함
 				([index, value]) => ({
 					...rangeInteractions[index],
+					originalIndex: index, // 원본 index 저장
 					type: 'setRange',
 					value,
-					originalIndex: index, // 원본 index 저장
 				}),
 				// unmapper: 튜플 [index, value] 복원
 				unmapValueInteraction('setRange'),
@@ -1296,9 +1296,9 @@ function createInteractionSequenceArbitrary(interactions, length) {
 				// mapper: 최종 객체에 originalIndex 포함
 				([index, value]) => ({
 					...scrollInteractions[index],
+					originalIndex: index, // 원본 index 저장
 					type: 'scroll',
 					value,
-					originalIndex: index, // 원본 index 저장
 				}),
 				// unmapper: 튜플 [index, value] 복원
 				unmapValueInteraction('scroll'),
@@ -1317,8 +1317,8 @@ function createInteractionSequenceArbitrary(interactions, length) {
 	// 배열 길이와 요소가 자동으로 축소되도록 함
 	// 최소 길이를 1로 설정하여 개별 상호작용까지 축소 가능하도록 함
 	return fc.array(interactionArb, {
-		minLength: 1, // 여기를 0에서 1로 변경 - 최소 길이는 1이어야 함
 		maxLength: length, // config.sequenceLength를 따르도록 수정
+		minLength: 1, // 여기를 0에서 1로 변경 - 최소 길이는 1이어야 함
 	})
 }
 
@@ -1380,11 +1380,11 @@ async function saveDebugInfo(dir, filename, data) {
 
 		// JSON 형식으로 데이터 저장
 		await fs.writeFile(filePath, JSON.stringify(data, undefined, 2), 'utf8')
-		return { success: true, path: filePath }
+		return { path: filePath, success: true }
 	} catch (error) {
 		console.error(`디버그 정보 저장 실패: ${error.message}`)
 		// 실패해도 테스트 진행에 영향을 주지 않도록 에러 객체와 함께 실패 정보만 반환
-		return { success: false, error }
+		return { error, success: false }
 	}
 }
 
@@ -1488,19 +1488,19 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 	// 단계 추적용 객체
 	/** @type {StepTracker} */
 	const stepTracker = {
-		currentStep: undefined,
 		currentInteraction: undefined,
+		currentStep: undefined,
 	}
 
 	// 페이지 에러 이벤트 리스너 등록 - 각 인터랙션과 에러 연결 강화
 	const pageErrorHandler = (error) => {
 		// @ts-ignore - 타입 호환성 오류 무시 (개선 필요)
 		const errorInfo = {
+			currentInteraction: stepTracker.currentInteraction,
+			currentStep: stepTracker.currentStep,
 			message: error.message,
 			stack: error.stack,
 			timestamp: new Date().toISOString(),
-			currentStep: stepTracker.currentStep,
-			currentInteraction: stepTracker.currentInteraction,
 		}
 		pageErrors.push(errorInfo)
 		logPush(`페이지 에러 감지: ${error.message}`)
@@ -1514,10 +1514,10 @@ async function debugWithShrunkExample(page, shrunkSequence, componentSelector, w
 		if (msg.type() === 'error') {
 			// @ts-ignore - 타입 호환성 오류 무시 (개선 필요)
 			const errorInfo = {
+				currentInteraction: stepTracker.currentInteraction,
+				currentStep: stepTracker.currentStep,
 				message: msg.text(),
 				timestamp: new Date().toISOString(),
-				currentStep: stepTracker.currentStep,
-				currentInteraction: stepTracker.currentInteraction,
 			}
 			consoleErrors.push(errorInfo)
 			logPush(`콘솔 에러 감지: ${msg.text()}`)
@@ -1657,11 +1657,11 @@ async function isPageClosed(page) {
  */
 async function runSingleIteration(page, iteration, errors, config) {
 	const {
-		sequenceLength = 5,
-		numRuns = 10,
 		componentSelector = '#storybook-root',
-		waitAfterInteraction = 100,
+		numRuns = 10,
+		sequenceLength = 5,
 		verbose = false,
+		waitAfterInteraction = 100,
 	} = config
 
 	if (config.verbose) {
@@ -1670,12 +1670,12 @@ async function runSingleIteration(page, iteration, errors, config) {
 
 	/** @type {IterationInfo} */
 	const iterationInfo = {
+		errors,
+		failureInfo: undefined,
 		iterationNumber: iteration + 1,
 		sequences: [],
-		errors,
 		startTime: new Date().toISOString(),
 		success: false, // 초기값은 false로 설정
-		failureInfo: undefined,
 	}
 
 	// 페이지가 닫혔는지 확인
@@ -1769,8 +1769,8 @@ async function runSingleIteration(page, iteration, errors, config) {
 				// 시퀀스 정보 초기화 - 명시적 타입 지정
 				/** @type {SequenceInfo} */
 				const sequenceInfo = {
-					results: [],
 					errors: [],
+					results: [],
 					startTime: new Date().toISOString(),
 				}
 
@@ -1819,15 +1819,15 @@ async function runSingleIteration(page, iteration, errors, config) {
 						if (!result.success) {
 							if (result.errorMessage) {
 								errors.push({
+									interactionIndex: i, // 인덱스 정보 추가
 									message: result.errorMessage,
 									stack: result.errorStack,
-									interactionIndex: i, // 인덱스 정보 추가
 								})
 								// @ts-ignore - 타입 호환성 오류 무시
 								sequenceInfo.errors.push({
+									interactionIndex: i, // 인덱스 정보 추가
 									message: result.errorMessage,
 									stack: result.errorStack,
-									interactionIndex: i, // 인덱스 정보 추가
 								})
 							}
 							// 인덱스가 포함된 에러 메시지로 변경
@@ -1842,9 +1842,9 @@ async function runSingleIteration(page, iteration, errors, config) {
 							// @ts-ignore - 타입 호환성 오류 무시
 							sequenceInfo.errors.push(
 								...sequencePageErrors.map((err) => ({
+									interactionIndex: i, // 인덱스 정보 추가
 									message: `인터랙션 #${i} 실행 중 페이지 에러: ${err.message}`,
 									stack: err.stack,
-									interactionIndex: i, // 인덱스 정보 추가
 								})),
 							)
 
@@ -2030,21 +2030,21 @@ async function runSingleIteration(page, iteration, errors, config) {
 async function testUIComponent(page, config = {}) {
 	// 기본 설정값과 사용자 정의 설정 병합
 	const {
-		iterationCount = 3, // 테스트 반복 횟수
 		debugLogDir = './test-results/debug-logs', // 디버그 로그 저장 경로
+		iterationCount = 3, // 테스트 반복 횟수
 	} = config
 
 	const componentName = extractComponentName(page.url())
 	// 디버그 정보 초기화
 	/** @type {DebugInfo} */
 	const debugInfo = {
-		timestamp: getTimestamp(),
 		componentName,
-		url: page.url(),
-		testConfig: config,
-		iterations: [],
 		errors: [],
+		iterations: [],
 		success: true,
+		testConfig: config,
+		timestamp: getTimestamp(),
+		url: page.url(),
 	}
 	let errors = []
 	let isSuccessful = false
@@ -2054,10 +2054,10 @@ async function testUIComponent(page, config = {}) {
 		const associatedInteractionMessage = `관련 인터랙션: ${currentInteraction.type} on (${currentInteraction.selector})`
 
 		const errorInfo = {
-			message: `페이지 에러: ${exception.message}`,
-			stack: exception.stack,
 			associatedInteraction: currentInteraction ? { ...currentInteraction } : undefined,
 			associatedInteractionMessage,
+			message: `페이지 에러: ${exception.message}`,
+			stack: exception.stack,
 			timestamp: new Date().toISOString(),
 		}
 		errors.push(errorInfo)
@@ -2072,8 +2072,8 @@ async function testUIComponent(page, config = {}) {
 	const consoleErrorHandler = (msg) => {
 		if (msg.type() === 'error') {
 			const errorInfo = {
-				message: `콘솔 에러: ${msg.text()}`,
 				associatedInteraction: currentInteraction ? { ...currentInteraction } : undefined,
+				message: `콘솔 에러: ${msg.text()}`,
 				timestamp: new Date().toISOString(),
 			}
 			errors.push(errorInfo)
@@ -2144,10 +2144,10 @@ async function testUIComponent(page, config = {}) {
 		const latestTestFailureInfo = debugInfo.iterations.at(-1)?.failureInfo
 
 		console.log('디버그용', {
-			isSuccessful,
-			latestTestFailureInfo,
 			counterExample: latestTestFailureInfo?.counterExample,
 			debugInfo,
+			isSuccessful,
+			latestTestFailureInfo,
 		})
 
 		// 이 시점에서 모든 디버깅 정보 수집과 로깅이 완료됨
