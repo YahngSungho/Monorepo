@@ -6,10 +6,10 @@ All stories files must have a "meta" (aka. "default export") defined, and its st
 <script module>
   //    👆 notice the module context, defineMeta does not work in a regular <script> tag - instance
   import { defineMeta } from '@storybook/addon-svelte-csf';
+
   import MyComponent from './MyComponent.svelte';
   //      👇 Get the Story component from the return value
   const { Story } = defineMeta({
-    title: 'Path/To/MyComponent',
     component: MyComponent,
     decorators: [
       /* ... */
@@ -17,6 +17,7 @@ All stories files must have a "meta" (aka. "default export") defined, and its st
     parameters: {
       /* ... */
     },
+    title: 'Path/To/MyComponent',
   });
 </script>
 ```
@@ -117,6 +118,7 @@ Similar to regular CSF, you can define a meta-level `render`-function, by refer
 ```svelte
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
+
   import MyComponent from './MyComponent.svelte';
   const { Story } = defineMeta({
     render: template,
@@ -154,8 +156,8 @@ This can cause conflicts, eg. two stories with the names _"my story!"_ and _"
 You can explicitly define the variable name of any story by passing the `exportName` prop:
 
 ```svelte
-<Story exportName="MyStory1" name="my story!" />
-<Story exportName="MyStory2" name="My Story" />
+<Story name="my story!" exportName="MyStory1" />
+<Story name="My Story" exportName="MyStory2" />
 ```
 
 At least one of the `name` or `exportName` props must be passed to the `Story` component - passing both is also valid.
@@ -180,9 +182,10 @@ Story template snippets can be type-safe when necessary. The type of the args ar
 If you're just rendering the component directly without a custom template, you can use Svelte's `ComponentProps` type and `StoryContext` from the addon to make your template snippet type-safe:
 
 ```svelte
-<script module lang="ts">
+<script lang="ts" module>
   import { defineMeta, type StoryContext } from '@storybook/addon-svelte-csf';
   import { type ComponentProps } from 'svelte';
+
   import MyComponent from './MyComponent.svelte';
   const { Story } = defineMeta({
     component: MyComponent,
@@ -198,13 +201,12 @@ If you're just rendering the component directly without a custom template, you c
 If you use the `render`-property to define a custom template that might use custom args, the args will be inferred from the types of the snippet passed to `render`. This is especially useful when you're converting primitive args to snippets:
 
 ```svelte
-<script module lang="ts">
+<script lang="ts" module>
   import { defineMeta, type StoryContext } from '@storybook/addon-svelte-csf';
   import { type ComponentProps } from 'svelte';
+
   import MyComponent from './MyComponent.svelte';
   const { Story } = defineMeta({
-    component: MyComponent,
-    render: template, // 👈 args will be inferred from this, which is the Args type below
     argTypes: {
       children: {
         control: 'text',
@@ -213,6 +215,8 @@ If you use the `render`-property to define a custom template that might use cus
         control: 'text',
       },
     },
+    component: MyComponent,
+    render: template, // 👈 args will be inferred from this, which is the Args type below
   });
   type Args = Omit<ComponentProps<MyComponent>, 'children' | 'footer'> & {
     children: string;

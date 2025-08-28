@@ -24,6 +24,14 @@ async function unleashGremlins(page) {
 	await page.evaluate(async () => {
 		// @ts-ignore - window.gremlins는 addScriptTag/addInitScript에 의해 로드됨
 		const horde = globalThis.gremlins.createHorde({
+			mogwais: [
+				// @ts-ignore - 타입 오류 무시
+				globalThis.gremlins.mogwais.gizmo(),
+				// @ts-ignore - 타입 오류 무시
+				globalThis.gremlins.mogwais.fps(),
+				// @ts-ignore - 타입 오류 무시
+				globalThis.gremlins.mogwais.alert(),
+			],
 			species: [
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.species.clicker({
@@ -55,14 +63,6 @@ async function unleashGremlins(page) {
 				globalThis.gremlins.species.scroller(),
 				// @ts-ignore - 타입 오류 무시
 				globalThis.gremlins.species.typer(),
-			],
-			mogwais: [
-				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.mogwais.gizmo(),
-				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.mogwais.fps(),
-				// @ts-ignore - 타입 오류 무시
-				globalThis.gremlins.mogwais.alert(),
 			],
 			strategies: [
 				// @ts-ignore - 타입 오류 무시
@@ -204,7 +204,7 @@ for (const entry of filteredEntries) {
 				// console.log(
 				// 	`[캐시 히트] ${title} - 페이지 상태 변경 없음. UI 컴포넌트 테스트를 건너뛰니다.`,
 				// )
-				test.info().annotations.push({ type: 'cache-status', description: 'hit' })
+				test.info().annotations.push({ description: 'hit', type: 'cache-status' })
 				expect(consoleErrors, '콘솔 에러 체크 (캐시 히트)').toHaveLength(0)
 				expect(failedRequests, '네트워크 에러 체크 (캐시 히트)').toHaveLength(0)
 				await page.unroute('**/*') // 테스트 종료 전 라우팅 해제
@@ -213,7 +213,7 @@ for (const entry of filteredEntries) {
 			// console.log(
 			// 	`[캐시 미스] ${title} - 캐시 없거나 상태 변경됨. UI 컴포넌트 테스트를 실행합니다.`,
 			// )
-			test.info().annotations.push({ type: 'cache-status', description: 'miss' })
+			test.info().annotations.push({ description: 'miss', type: 'cache-status' })
 
 			await page.emulateMedia({ reducedMotion: 'reduce' })
 

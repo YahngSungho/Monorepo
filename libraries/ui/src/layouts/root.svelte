@@ -56,14 +56,6 @@ onMount(() => {
 	position="bottom-center"
 	toastOptions={{
 		classes: {
-			toast: css`
-				cursor: default;
-				align-items: flex-start;
-			`,
-			title: css`
-				font-weight: var(--font-weight-semibold);
-			`,
-			description: '',
 			actionButton: '',
 			cancelButton: '',
 			closeButton: css`
@@ -76,9 +68,17 @@ onMount(() => {
 				transform: none !important;
 				color: var(--foreground) !important;
 			`,
+			description: '',
 			icon: css`
 				inset-block-start: 0.15em;
 				color: var(--foreground) !important;
+			`,
+			title: css`
+				font-weight: var(--font-weight-semibold);
+			`,
+			toast: css`
+				cursor: default;
+				align-items: flex-start;
 			`,
 		},
 	}}

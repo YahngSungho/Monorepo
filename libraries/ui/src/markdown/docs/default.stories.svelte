@@ -9,11 +9,11 @@ import sampleText from './sample.md?raw'
 
 const { Story } = defineMeta({
 	component: Markdown,
-	title: 'Markdown/Docs',
 	parameters: {
 		// 레이아웃을 조정하여 내용을 더 잘 볼 수 있도록 합니다 (선택 사항).
 		layout: 'padded',
 	},
+	title: 'Markdown/Docs',
 })
 </script>
 

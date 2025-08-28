@@ -28,8 +28,8 @@ export function init(appName) {
 				const now = (globalThis.performance && performance.now()) || Date.now()
 				globalThis.__ui_interaction_busy_until = now + 500
 			}
-			globalThis.addEventListener('wheel', markBusy_action, { passive: true, capture: true })
-			globalThis.addEventListener('touchmove', markBusy_action, { passive: true, capture: true })
+			globalThis.addEventListener('wheel', markBusy_action, { capture: true, passive: true })
+			globalThis.addEventListener('touchmove', markBusy_action, { capture: true, passive: true })
 		}
 	}
 }
