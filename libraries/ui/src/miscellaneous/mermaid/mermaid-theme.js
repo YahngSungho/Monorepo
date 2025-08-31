@@ -1,4 +1,4 @@
-import { buildThemeVariables } from './helpers.js'
+import { buildThemeVariables } from "@library/library-base/mermaid"
 
 let globalInitPromise
 let lastMode // 마지막으로 적용된 테마를 저장할 변수

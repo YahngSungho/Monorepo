@@ -4,6 +4,7 @@
 	"type": "module",
 	"exports": {
 		"./baseTest.js": "./src/baseTest.js",
+		"./mermaid": "./src/mermaid.js",
 		"./tsconfig.json": "./tsconfig.json"
 	}
 }

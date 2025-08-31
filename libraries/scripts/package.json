@@ -16,7 +16,6 @@
 		"@library/helpers": "workspace:*",
 		"@library/library-base": "workspace:*",
 		"@library/llms": "workspace:*",
-		"@library/ui": "workspace:*",
 		"ai": "^4.3.9",
 		"mermaid": "^11.10.0",
 		"mermaid-isomorphic": "^3.0.4",
