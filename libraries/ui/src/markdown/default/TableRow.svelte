@@ -5,3 +5,9 @@ let { children, ...rest } = $props()
 <tr {...rest}>
 	{@render children()}
 </tr>
+
+<style>
+	tr {
+		border-block-end: 1px solid var(--color-neutral);
+	}
+</style>

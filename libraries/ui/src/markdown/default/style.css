@@ -5,4 +5,8 @@ section.footnotes {
 	& h2 {
 		margin: 0;
 	}
+
+	& ol {
+		padding-inline: 2ch;
+	}
 }

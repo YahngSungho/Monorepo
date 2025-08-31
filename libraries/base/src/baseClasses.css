@@ -1,3 +1,7 @@
+.marginBlock-1 {
+	margin-block: var(--space-em-cqi-xs-s);
+}
+
 .boxed {
 	position: relative;
 	container: boxed / inline-size;

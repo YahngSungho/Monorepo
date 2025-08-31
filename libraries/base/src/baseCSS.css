@@ -123,11 +123,17 @@ dl {
 	font-size: 1em;
 }
 
-p {
-	font-size: var(--font-size-fluid-cqi-0p3);
+ol, ul {
+	margin-inline: 1ch;
+	margin-inline-start: 2ch;
+}
 
-	& ~ p {
-		margin-block-start: 0.5em;
+.contains-task-list {
+	list-style: none;
+	margin-inline: 0;
+
+	& input[type="checkbox"] {
+		margin-inline-end: 1ch;
 	}
 }
 
@@ -188,7 +194,6 @@ code {
 
 blockquote {
 	max-inline-size: 80%;
-	margin: var(--space-em-cqi-xs-s);
 	padding: var(--space-em-cqi-s-l);
 
 	font-size: var(--font-size-fluid-em-cqi-0);

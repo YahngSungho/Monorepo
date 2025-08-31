@@ -159,11 +159,6 @@
 	writing-mode: lr;
 }
 
-/* :where(ol, ul) { padding-inline-start: var(--size-8) } */
-:where(li) {
-	padding-inline-start: 1em;
-}
-
 :where(p) {
 	max-inline-size: var(--size-content-long);
 }
