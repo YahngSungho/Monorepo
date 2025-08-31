@@ -9,6 +9,7 @@ let checked = $derived(mode.current === 'dark')
 <label
 	style="
 border: 1px solid currentcolor;
+font-size: 1rem;
 "
 	class={`toggle text-base-content toggle-${size}`}
 >

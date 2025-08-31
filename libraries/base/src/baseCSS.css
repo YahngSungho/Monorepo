@@ -66,8 +66,7 @@ button,
 	justify-content: center;
 
 	inline-size: fit-content;
-	padding-block: 1ex;
-	padding-inline: var(--space-em-cqi-s-l);
+	padding: max(0.5em, 0.5rem) max(1.5em, 1.5rem);
 
 	text-align: center;
 	text-decoration: none;

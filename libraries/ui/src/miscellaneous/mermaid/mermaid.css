@@ -1,5 +1,9 @@
 .mermaid-container p {
-	font-size: 14px;
+	font-size: 18px;
+}
+
+.mermaid-container foreignObject {
+	overflow: visible;
 }
 
 .mermaid-container svg rect,
