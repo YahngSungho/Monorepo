@@ -15,7 +15,7 @@ font-size: 1rem;
 >
 	<input
 		id="theme-controller"
-		checked={checked}
+		{checked}
 		onchange={() => {
 			setTimeout(() => {
 				setMode(mode.current === 'light' ? 'dark' : 'light')
@@ -24,14 +24,16 @@ font-size: 1rem;
 		type="checkbox"
 	/>
 
-	<span style="inline-size: 26px; block-size: 26px;"><iconify-icon height="20" icon="mdi:white-balance-sunny" width="20"></iconify-icon></span
+	<span style="inline-size: 26px; block-size: 26px;"
+		><iconify-icon height="20" icon="mdi:white-balance-sunny" width="20"></iconify-icon></span
 	>
-	<span style="inline-size: 26px; block-size: 26px;"><iconify-icon height="20" icon="mdi:weather-night" width="20"></iconify-icon></span
+	<span style="inline-size: 26px; block-size: 26px;"
+		><iconify-icon height="20" icon="mdi:weather-night" width="20"></iconify-icon></span
 	>
 </label>
 
 <style>
-	.opacity-0 {
-		opacity: 0 !important;
-	}
+.opacity-0 {
+	opacity: 0 !important;
+}
 </style>

@@ -48,7 +48,7 @@ export async function getMermaidSVGObject(markdownText) {
 
 		// 다이어그램들을 한 번에 렌더 (입력 순서 보장 가정)
 		const results = await renderer(diagrams, {
-			containerStyle: { fontSize: '18px' }
+			containerStyle: { fontSize: '18px' },
 		})
 
 		for (let i = 0; i < uniqueValues.length; i++) {
