@@ -3,9 +3,10 @@ import path from 'node:path'
 import { saveMarkdownList_action } from '@library/backends/supabase'
 import { writeFile_async } from '@library/helpers/fs-async'
 
-import { getFrontmatterObject } from '../../markdown/getFrontmatters.js'
-import { getNewCache } from '../helpers.js'
-import { dictFolderPath } from './translation.js'
+import { getNewCache } from '../translation/helpers.js'
+import { dictFolderPath } from '../translation/markdown/translation.js'
+import { getFrontmatterObject } from './getFrontmatters.js'
+import { getMermaidSVGObject } from './getMermaidSVGObject.js'
 
 export async function saveFiles_action(
 	projectName,
@@ -23,36 +24,39 @@ export async function saveFiles_action(
 		}
 
 		for await (const [messageKey, messageValue] of Object.entries(messageMap.translatedMessages)) {
+			await writeFile_async(
+				path.join(dictFolderPath, `${language}.json`),
+				JSON.stringify(
+					{
+						$schema: 'https://inlang.com/schema/inlang-message-format',
+						...messageMap.newDictionary,
+					},
+					undefined,
+					2,
+				),
+			)
+
 			markdownListForSave.push({
 				body: messageValue,
 				frontmatter: getFrontmatterObject(messageValue),
 				key: messageKey,
 				locale: language,
 				projectName,
+				mermaidSVGObject: await getMermaidSVGObject(messageValue),
 			})
 		}
 
-		await writeFile_async(
-			path.join(dictFolderPath, `${language}.json`),
-			JSON.stringify(
-				{
-					$schema: 'https://inlang.com/schema/inlang-message-format',
-					...messageMap.newDictionary,
-				},
-				undefined,
-				2,
-			),
-		)
 	}
 
-	for (const [lang, updatedMessages] of Object.entries(updatedMessagesPerLang)) {
-		for (const [messageKey, messageValue] of Object.entries(updatedMessages)) {
+	for await (const [lang, updatedMessages] of Object.entries(updatedMessagesPerLang)) {
+		for await (const [messageKey, messageValue] of Object.entries(updatedMessages)) {
 			markdownListForSave.push({
 				body: messageValue,
 				frontmatter: getFrontmatterObject(messageValue),
 				key: messageKey,
 				locale: lang,
 				projectName,
+				mermaidSVGObject: await getMermaidSVGObject(messageValue),
 			})
 		}
 	}

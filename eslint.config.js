@@ -104,7 +104,7 @@ const baseRules = {
 	'perfectionist/sort-named-exports': 'warn',
 	'perfectionist/sort-named-imports': 'warn',
 	'perfectionist/sort-objects': [
-		'warn',
+		'off',
 		{
 			partitionByComment: true,
 			partitionByNewLine: true,

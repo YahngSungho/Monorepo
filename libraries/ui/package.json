@@ -82,6 +82,7 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./mermaid-theme": "./src/miscellaneous/mermaid/mermaid-theme.js",
 		"./base.js": "./src/layouts/base.js",
 		"./confettiButton": "./src/miscellaneous/confettiButton.svelte",
 		"./sharingButtons": "./src/miscellaneous/sharingButtons.svelte",

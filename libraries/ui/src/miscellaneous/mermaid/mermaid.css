@@ -1,3 +1,7 @@
+.mermaid-container p {
+	font-size: var(--font-size-fluid-cqi-01);
+}
+
 .mermaid-container svg rect,
 .mermaid-container svg circle,
 .mermaid-container svg ellipse,

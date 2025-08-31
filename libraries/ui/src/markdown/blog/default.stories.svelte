@@ -5,7 +5,8 @@ import { defineMeta } from '@storybook/addon-svelte-csf'
 
 import Markdown from './Markdown.svelte'
 import sampleText from './sample.md?raw'
-
+// Sample text 2
+import sampleText2 from './sample2.md?raw'
 
 const { Story } = defineMeta({
 	component: Markdown,
@@ -19,6 +20,13 @@ const { Story } = defineMeta({
 
 <Story name="DefaultRender" asChild>
 	<div class="story-container boxed">
+		<Markdown value={sampleText} />
+	</div>
+</Story>
+
+<Story name="DefaultRender 2" asChild>
+	<div class="story-container boxed">
+		<Markdown value={sampleText2} />
 		<Markdown value={sampleText} />
 	</div>
 </Story>

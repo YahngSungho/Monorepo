@@ -13,7 +13,7 @@ export const load = async ({ params, parent }) => {
 		redirect(307, '/')
 	}
 
-	const description = getDescriptionFromMD(post)
+	const description = getDescriptionFromMD(post.body)
 
 	return {
 		currentMetadata,

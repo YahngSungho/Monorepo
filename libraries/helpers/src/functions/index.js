@@ -1,4 +1,5 @@
 export * from './convertToNumberKeys.js'
+export * from './getHash.js'
 export * from './processText.js'
 export * from './validateNumbers.js'
 import { normalizeString } from './processText.js'

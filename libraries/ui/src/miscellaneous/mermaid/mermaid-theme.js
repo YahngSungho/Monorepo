@@ -6,7 +6,7 @@ let lastMode // 마지막으로 적용된 테마를 저장할 변수
  * (문자열 'var(--...)'를 사용하므로 SSR/CSR 어디서든 안전)
  * @param {string} mode 'light' | 'dark'
  */
-function buildThemeVariables(mode) {
+export function buildThemeVariables(mode) {
 		let accent_background; let accent_foreground; let background; let chart1; let chart2; let chart3; let destructive_background; let destructive_foreground; let foreground; let secondary_background; let secondary_foreground
 
 		if (mode === 'dark') {
@@ -127,10 +127,6 @@ export function initMermaidTheme_action(mode = 'light') {
         securityLevel: 'loose',
         deterministicIds: true,
         logLevel: 'fatal',
-        flowchart: {
-            htmlLabels: false,
-            curve: 'linear',
-        },
     }
 
     globalInitPromise = (async () => {

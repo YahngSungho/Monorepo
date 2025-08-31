@@ -308,13 +308,6 @@ function yieldToMain_action() {
     return new Promise((resolve) => { setTimeout(() => resolve(undefined), 0) })
 }
 
-// 사용자 상호작용(스크롤/휠/터치) 중에는 잠시 중단
-function isUserInteracting_action() {
-    const until = globalThis.__ui_interaction_busy_until || 0
-    const now = (globalThis.performance && performance.now()) || Date.now()
-    return now < until
-}
-
 async function processQueue_action() {
     const state = globalThis[QUEUE_KEY]
     if (state.running) return
@@ -322,10 +315,6 @@ async function processQueue_action() {
     try {
         while (state.tasks.length > 0) {
             const task = state.tasks.shift()
-            // 사용자 상호작용이 끝날 때까지 대기
-            while (isUserInteracting_action()) {
-                await waitForIdle_action(500)
-            }
             await waitForIdle_action()
             await task()
             await yieldToMain_action()
@@ -351,6 +340,7 @@ import { tick } from 'svelte'
 import { getAstNode } from 'svelte-exmarkdown'
 
 const ast = getAstNode()
+let rawText = $state(ast.current.children?.[0]?.value ?? '')
 
 let element = $state() // 컨테이너 요소에 바인딩
 let svgContent = $state('') // 렌더링된 SVG 저장
@@ -358,7 +348,6 @@ let errorMessage = $state('') // 오류 메시지 저장
 const id = `mermaid-${nanoid()}` // 각 인스턴스별 고유 ID
 
 // AST 노드에서 원본 텍스트 추출
-let rawText = $state(ast.current.children?.[0]?.value ?? '')
 
 // 테마 모드에 반응적으로 의존하는 초기화 Promise를 인스턴스 컨텍스트에서 관리
 const initMermaidThemePromise = $derived.by(() => initMermaidTheme_action(mode.current))

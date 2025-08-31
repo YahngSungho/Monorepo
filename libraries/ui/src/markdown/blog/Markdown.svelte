@@ -14,8 +14,8 @@ import langTs from 'shiki/langs/typescript.mjs'
 import themeDark from 'shiki/themes/vitesse-dark.mjs'
 import themeLight from 'shiki/themes/vitesse-light.mjs'
 
-import Mermaid from '../../miscellaneous/mermaid/Mermaid.svelte'
 import Markdown from '../default/Markdown.svelte'
+import Mermaid from './mermaid.svelte'
 
 const highlighter = createHighlighterCoreSync({
 	themes: [themeLight, themeDark],
@@ -60,7 +60,11 @@ function removeFrontmatter(markdown) {
 </script>
 
 <script>
-let { value, plugins = [] } = $props()
+import { setContext } from 'svelte'
+
+let { value, mermaidSVGObject = {}, plugins = [] } = $props()
+
+setContext('mermaidSVGObject', mermaidSVGObject)
 </script>
 
 <Markdown plugins={[...addedPlugins, ...plugins]} value={removeFrontmatter(value)} />
