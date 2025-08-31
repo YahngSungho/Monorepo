@@ -47,7 +47,9 @@ export async function getMermaidSVGObject(markdownText) {
 		const diagrams = uniqueValues.map((v) => `%%{init: ${JSON.stringify(mermaidInit)} }%%\n${v}`)
 
 		// 다이어그램들을 한 번에 렌더 (입력 순서 보장 가정)
-		const results = await renderer(diagrams)
+		const results = await renderer(diagrams, {
+			containerStyle: { fontSize: '18px' },
+		})
 
 		for (let i = 0; i < uniqueValues.length; i++) {
 			const key = `${theme}:${hashKeys[i]}`

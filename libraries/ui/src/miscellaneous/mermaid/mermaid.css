@@ -1,5 +1,9 @@
 .mermaid-container p {
-	font-size: var(--font-size-fluid-cqi-01);
+	font-size: 18px;
+}
+
+.mermaid-container foreignObject {
+	overflow: visible;
 }
 
 .mermaid-container svg rect,

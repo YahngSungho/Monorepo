@@ -6,7 +6,7 @@ html {
 
 	block-size: 100svb;
 
-	font-size: 20px;
+	font-size: var(--font-size-fluid-0p6);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--font-lineheight-2);
@@ -76,8 +76,8 @@ button,
 
 	appearance: auto;
 
-	transition-timing-function: cubic-bezier(0,0,.2,1);
-	transition-duration: .2s;
+	transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+	transition-duration: 0.2s;
 	transition-property: color, background-color, border-color, box-shadow, opacity;
 
 	&:hover {
@@ -86,7 +86,7 @@ button,
 
 	&:active {
 		opacity: 1;
-		transition-duration: .1s;
+		transition-duration: 0.1s;
 	}
 }
 
@@ -94,11 +94,10 @@ a,
 .interactive,
 input[type='checkbox'],
 input[type='radio'] {
-	transition-timing-function: cubic-bezier(0,0,.2,1);
-	transition-duration: .2s;
-	transition-property: opacity;
-
 	cursor: pointer;
+	transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+	transition-duration: 0.2s;
+	transition-property: opacity;
 
 	&:hover {
 		opacity: 0.68;
@@ -106,7 +105,7 @@ input[type='radio'] {
 
 	&:active {
 		opacity: 1;
-		transition-duration: .1s;
+		transition-duration: 0.1s;
 	}
 }
 
@@ -123,11 +122,18 @@ dl {
 	font-size: 1em;
 }
 
-p {
-	font-size: var(--font-size-fluid-cqi-0p3);
+ol,
+ul {
+	margin-inline: 1ch;
+	margin-inline-start: 2ch;
+}
 
-	& ~ p {
-		margin-block-start: 0.5em;
+.contains-task-list {
+	margin-inline: 0;
+	list-style: none;
+
+	& input[type='checkbox'] {
+		margin-inline-end: 1ch;
 	}
 }
 
@@ -188,7 +194,6 @@ code {
 
 blockquote {
 	max-inline-size: 80%;
-	margin: var(--space-em-cqi-xs-s);
 	padding: var(--space-em-cqi-s-l);
 
 	font-size: var(--font-size-fluid-em-cqi-0);

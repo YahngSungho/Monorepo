@@ -1,6 +1,11 @@
+.marginBlock-1 {
+	margin-block: var(--space-em-cqi-xs-s);
+}
+
 .boxed {
 	position: relative;
 	container: boxed / inline-size;
+	font-size: var(--font-size-fluid-cqi-0p6);
 }
 
 .gutter {
@@ -29,7 +34,6 @@
 	/* font가 load 되면서 생기는 flash를 줄이기 위해 ch 대신 em 사용 */
 	max-inline-size: var(--size-content-4);
 	margin: auto;
-	font-size: var(--font-size-2);
 }
 
 .ellipsis {

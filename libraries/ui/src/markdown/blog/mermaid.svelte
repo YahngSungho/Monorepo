@@ -32,7 +32,7 @@ $effect(() => {
 })
 </script>
 
-<div bind:this={element} class="mermaid-container">
+<div bind:this={element} class="mermaid-container marginBlock-1">
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html svg}
 </div>
