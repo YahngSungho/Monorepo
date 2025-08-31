@@ -349,7 +349,7 @@ let jsonLd = $derived({
 				</div>
 
 				<div
-					style="z-index: 1; inline-size: 17em; background-color: var(--background);"
+					style="z-index: 1; inline-size: 17em; max-inline-size: 90%; background-color: var(--background);"
 					class="join"
 				>
 					<div style="flex-grow: 1;">
@@ -443,6 +443,7 @@ let jsonLd = $derived({
 
 		margin-block-start: auto;
 		padding: var(--space-m);
+		padding-block-end: calc(var(--space-m) + var(--space-em-cqi-xl));
 	}
 
 	& > .main {
@@ -470,11 +471,11 @@ let jsonLd = $derived({
 		& > .main {
 			overflow: auto;
 			max-block-size: 100svb;
-			padding-block-end: calc(var(--space-m) + var(--space-em-cqi-xl));
 		}
 
 		& > .sidebar {
 			margin-block-start: 0;
+			padding: var(--space-m);
 		}
 	}
 }

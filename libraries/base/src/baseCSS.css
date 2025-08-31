@@ -6,7 +6,7 @@ html {
 
 	block-size: 100svb;
 
-	font-size: 20px;
+	font-size: var(--font-size-fluid-0p6);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--font-lineheight-2);
@@ -66,7 +66,8 @@ button,
 	justify-content: center;
 
 	inline-size: fit-content;
-	padding: max(0.5em, 0.5rem) max(1.5em, 1.5rem);
+	padding-block: 1ex;
+	padding-inline: var(--space-em-cqi-s-l);
 
 	text-align: center;
 	text-decoration: none;
