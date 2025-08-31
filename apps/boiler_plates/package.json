@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
+		"build:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
