@@ -22,13 +22,13 @@ title: 제목 1
 
 ###### 이것은 H6 제목입니다
 
-<Mermaid>
+<mermaid>
 flowchart TD
     A[Start] -- "라벨" --> B{Middle}
     B --> C[End]
-</Mermaid>
+</mermaid>
 
-<Mermaid>
+<mermaid>
 journey
     title My working day
     section Go to work
@@ -38,9 +38,9 @@ journey
     section Go home
       Go downstairs: 5: Me
       Sit down: 5: Me
-</Mermaid>
+</mermaid>
 
-<Mermaid>
+<mermaid>
 graph TD
     A["testUIComponent 시작"] --> B{"테스트 반복 (iterationCount 만큼)"};
     B -- "반복" --> C["runSingleIteration 실행"];
@@ -72,16 +72,7 @@ graph TD
     V -- "No" --> I;
     B -- "모든 반복 완료" --> X("최종 결과 반환 및 Playwright 단언");
     X --> Y["testUIComponent 종료"];
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style Y fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#ccf,stroke:#333,stroke-width:2px
-    style J fill:#ccf,stroke:#333,stroke-width:2px
-    style L fill:#ccf,stroke:#333,stroke-width:2px
-    style T fill:#ccf,stroke:#333,stroke-width:2px
-    style W fill:#fcc,stroke:#333,stroke-width:1px
-
-</Mermaid>
+</mermaid>
 
 ## 2. 텍스트 서식
 

@@ -8,7 +8,8 @@ import { supabase } from './init.js'
  *   frontmatter: object,
  *   key: string,
  *   locale: string,
- *   projectName: string
+ *   projectName: string,
+ *   mermaidSVGObject: object,
  * }>} markdownList - 저장할 마크다운 객체 배열
  * @returns {Promise<void>} 에러 발생 시 예외를 throw해
  */
@@ -21,6 +22,7 @@ export async function saveMarkdownList_action(markdownList) {
 			key: markdown.key,
 			locale: markdown.locale,
 			project_name: markdown.projectName,
+			mermaid_svg_object: markdown.mermaidSVGObject,
 			updated_at: dateNow,
 		})),
 		{ ignoreDuplicates: false, onConflict: 'project_name,key,locale' },
@@ -48,7 +50,7 @@ export async function getMarkdownListByProjectName(projectName, exceptLangs) {
 export async function getOneMarkdownBody(projectName, locale, key) {
 	const { data, error } = await supabase
 		.from('markdowns')
-		.select('body')
+		.select('body, mermaid_svg_object')
 		.eq('project_name', projectName)
 		.eq('locale', locale)
 		.eq('key', key)
@@ -57,7 +59,7 @@ export async function getOneMarkdownBody(projectName, locale, key) {
 		throw error
 	}
 
-	return data[0].body
+	return data[0]
 }
 
 export async function getMarkdownFrontmatterList(projectName, locale) {

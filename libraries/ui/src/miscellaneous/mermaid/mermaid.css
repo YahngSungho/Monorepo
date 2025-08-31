@@ -1,3 +1,7 @@
+.mermaid-container p {
+	font-size: var(--font-size-fluid-cqi-01);
+}
+
 .mermaid-container svg rect,
 .mermaid-container svg circle,
 .mermaid-container svg ellipse,
@@ -6,7 +10,7 @@
 	stroke: var(--foreground) !important;
 }
 
-.mermaid-container svg  rect,
+.mermaid-container svg rect,
 .mermaid-container svg circle,
 .mermaid-container svg ellipse,
 .mermaid-container svg polygon {
@@ -22,8 +26,8 @@
 }
 
 .mermaid-container .label rect {
-	stroke: none !important;
 	background-color: var(--background) !important;
+	stroke: none !important;
 }
 
 .mermaid-container .flowchart-link {
