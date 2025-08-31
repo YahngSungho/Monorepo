@@ -6,8 +6,8 @@ import { getLocale } from '@library/paraglide/helpers'
 import { nanoid } from 'nanoid'
 import store from 'store'
 
-import { initMermaidTheme_action } from './mermaid-theme.js'
 import { initializeMermaidHover_action } from './helpers.js'
+import { initMermaidTheme_action } from './mermaid-theme.js'
 
 // 테마+정의 기반으로 SVG 결과를 캐시하여 재사용 (LRU + TTL)
 // key: `${mode}:${locale}:${definition}` -> value: { svg, expiresAt }
@@ -29,7 +29,8 @@ function readCache_action() {
 		return { entries: Object.create(null), order: [] }
 	}
 	// entries 혹은 order가 비정상일 경우 복구
-	const entries = data.entries && typeof data.entries === 'object' ? data.entries : Object.create(null)
+	const entries =
+		data.entries && typeof data.entries === 'object' ? data.entries : Object.create(null)
 	const order = Array.isArray(data.order) ? data.order.slice() : []
 	return { entries, order }
 }
@@ -116,13 +117,13 @@ function purgeExpiredEntries_action() {
 }
 
 function schedulePurge_action() {
-    idleRun_action(purgeExpiredEntries_action)
+	idleRun_action(purgeExpiredEntries_action)
 }
 
 // 전역 렌더 큐 (탭 전역, 동시성 1)
 const QUEUE_KEY = '__ui_mermaid_render_queue__'
 if (!globalThis[QUEUE_KEY]) {
-    globalThis[QUEUE_KEY] = { tasks: [], running: false }
+	globalThis[QUEUE_KEY] = { tasks: [], running: false }
 }
 
 /** 백그라운드/idle 시점까지 대기 */
@@ -134,20 +135,20 @@ if (!globalThis[QUEUE_KEY]) {
  * @returns {Promise<void>}
  */
 function waitForIdle_action(timeout = 1000) {
-    return new Promise((resolve) => {
-        // @ts-ignore - scheduler may not exist in all browsers
-        if (globalThis.scheduler && typeof globalThis.scheduler.postTask === 'function') {
-            // @ts-ignore
-            globalThis.scheduler.postTask(() => resolve(undefined), { priority: 'background' })
-            return
-        }
-        if (typeof globalThis.requestIdleCallback === 'function') {
-            // @ts-ignore
-            globalThis.requestIdleCallback(() => resolve(undefined), { timeout })
-            return
-        }
-        globalThis.setTimeout(() => resolve(undefined), 0)
-    })
+	return new Promise((resolve) => {
+		// @ts-ignore - scheduler may not exist in all browsers
+		if (globalThis.scheduler && typeof globalThis.scheduler.postTask === 'function') {
+			// @ts-ignore
+			globalThis.scheduler.postTask(() => resolve(undefined), { priority: 'background' })
+			return
+		}
+		if (typeof globalThis.requestIdleCallback === 'function') {
+			// @ts-ignore
+			globalThis.requestIdleCallback(() => resolve(undefined), { timeout })
+			return
+		}
+		globalThis.setTimeout(() => resolve(undefined), 0)
+	})
 }
 
 /** 메인 스레드에 잠깐 양보 */
@@ -155,29 +156,31 @@ function waitForIdle_action(timeout = 1000) {
  * @returns {Promise<void>}
  */
 function yieldToMain_action() {
-    return new Promise((resolve) => { setTimeout(() => resolve(undefined), 0) })
+	return new Promise((resolve) => {
+		setTimeout(() => resolve(undefined), 0)
+	})
 }
 
 async function processQueue_action() {
-    const state = globalThis[QUEUE_KEY]
-    if (state.running) return
-    state.running = true
-    try {
-        while (state.tasks.length > 0) {
-            const task = state.tasks.shift()
-            await waitForIdle_action()
-            await task()
-            await yieldToMain_action()
-        }
-    } finally {
-        state.running = false
-    }
+	const state = globalThis[QUEUE_KEY]
+	if (state.running) return
+	state.running = true
+	try {
+		while (state.tasks.length > 0) {
+			const task = state.tasks.shift()
+			await waitForIdle_action()
+			await task()
+			await yieldToMain_action()
+		}
+	} finally {
+		state.running = false
+	}
 }
 
 function enqueueMermaidRender_action(task) {
-    const state = globalThis[QUEUE_KEY]
-    state.tasks.push(task)
-    idleRun_action(processQueue_action)
+	const state = globalThis[QUEUE_KEY]
+	state.tasks.push(task)
+	idleRun_action(processQueue_action)
 }
 
 // 전역 접근(다른 인스턴스와 공유) 가능하게 노출
@@ -208,9 +211,9 @@ let renderSequence = 0
 // 동적 import로 mermaid 로딩 비용 지연
 let mermaidModulePromise
 async function getMermaid_action() {
-    if (!mermaidModulePromise) mermaidModulePromise = import('mermaid')
-    const mod = await mermaidModulePromise
-    return mod.default || mod
+	if (!mermaidModulePromise) mermaidModulePromise = import('mermaid')
+	const mod = await mermaidModulePromise
+	return mod.default || mod
 }
 
 // 화면 근처로 올 때만 렌더하도록 가시성 추적
@@ -310,7 +313,11 @@ $effect(() => {
 })
 </script>
 
-<div bind:this={element} style="content-visibility: auto; contain-intrinsic-size: 300px 200px;" class="mermaid-container">
+<div
+	bind:this={element}
+	style="content-visibility: auto; contain-intrinsic-size: 300px 200px;"
+	class="mermaid-container"
+>
 	{#if errorMessage}
 		<!-- 오류 발생 시 메시지와 원본 텍스트 표시 -->
 		<pre style:color="red;">{errorMessage}</pre>

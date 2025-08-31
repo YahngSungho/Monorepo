@@ -122,7 +122,7 @@ let jsonLd = $derived({
 		{data.currentMetadata.title}
 	</h1>
 	{#if data.post}
-		<Markdown value={data.post.body} mermaidSVGObject={data.post.mermaid_svg_object} />
+		<Markdown mermaidSVGObject={data.post.mermaid_svg_object} value={data.post.body} />
 	{/if}
 </div>
 

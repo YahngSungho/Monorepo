@@ -4,7 +4,17 @@
  * @param {string} mode 'light' | 'dark'
  */
 export function buildThemeVariables(mode) {
-	let accent_background; let accent_foreground; let background; let chart1; let chart2; let chart3; let destructive_background; let destructive_foreground; let foreground; let secondary_background; let secondary_foreground
+	let accent_background
+	let accent_foreground
+	let background
+	let chart1
+	let chart2
+	let chart3
+	let destructive_background
+	let destructive_foreground
+	let foreground
+	let secondary_background
+	let secondary_foreground
 
 	if (mode === 'dark') {
 		background = 'rgb(3, 5, 7)'
@@ -33,74 +43,74 @@ export function buildThemeVariables(mode) {
 	}
 
 	return {
-			// General
-			background,
-			darkMode: false,
-			fontFamily: 'inherit',
-			fontSize: 'inherit',
+		// General
+		background,
+		darkMode: false,
+		fontFamily: 'inherit',
+		fontSize: 'inherit',
 
-			// Primary elements (Nodes, etc.)
-			primaryColor: background,
-			primaryBorderColor: foreground,
-			primaryTextColor: foreground,
+		// Primary elements (Nodes, etc.)
+		primaryColor: background,
+		primaryBorderColor: foreground,
+		primaryTextColor: foreground,
 
-			// Lines and Edges
-			lineColor: foreground,
-			textColor: foreground,
+		// Lines and Edges
+		lineColor: foreground,
+		textColor: foreground,
 
-			// Secondary
-			secondaryColor: secondary_background,
-			secondaryBorderColor: secondary_foreground,
-			secondaryTextColor: secondary_foreground,
+		// Secondary
+		secondaryColor: secondary_background,
+		secondaryBorderColor: secondary_foreground,
+		secondaryTextColor: secondary_foreground,
 
-			// Tertiary
-			tertiaryColor: accent_background,
-			tertiaryBorderColor: accent_foreground,
-			tertiaryTextColor: accent_foreground,
+		// Tertiary
+		tertiaryColor: accent_background,
+		tertiaryBorderColor: accent_foreground,
+		tertiaryTextColor: accent_foreground,
 
-			// Notes
-			noteBkgColor: background,
-			noteTextColor: foreground,
-			noteBorderColor: foreground,
+		// Notes
+		noteBkgColor: background,
+		noteTextColor: foreground,
+		noteBorderColor: foreground,
 
-			// Flowchart
-			nodeBorder: foreground,
-			clusterBkg: background,
-			clusterBorder: foreground,
-			defaultLinkColor: foreground,
-			titleColor: foreground,
-			edgeLabelBackground: background,
-			nodeTextColor: foreground,
+		// Flowchart
+		nodeBorder: foreground,
+		clusterBkg: background,
+		clusterBorder: foreground,
+		defaultLinkColor: foreground,
+		titleColor: foreground,
+		edgeLabelBackground: background,
+		nodeTextColor: foreground,
 
-			// Sequence Diagram
-			actorBkg: background,
-			actorBorder: foreground,
-			actorTextColor: foreground,
-			actorLineColor: foreground,
-			signalColor: foreground,
-			signalTextColor: foreground,
-			labelBoxBkgColor: background,
-			labelBoxBorderColor: foreground,
-			labelTextColor: foreground,
-			loopTextColor: foreground,
-			activationBorderColor: foreground,
-			activationBkgColor: background,
-			sequenceNumberColor: foreground,
+		// Sequence Diagram
+		actorBkg: background,
+		actorBorder: foreground,
+		actorTextColor: foreground,
+		actorLineColor: foreground,
+		signalColor: foreground,
+		signalTextColor: foreground,
+		labelBoxBkgColor: background,
+		labelBoxBorderColor: foreground,
+		labelTextColor: foreground,
+		loopTextColor: foreground,
+		activationBorderColor: foreground,
+		activationBkgColor: background,
+		sequenceNumberColor: foreground,
 
-			// Other diagrams
-			pie1: chart1,
-			pie2: chart2,
-			pie3: chart3,
-			pieTitleTextColor: foreground,
-			pieSectionTextColor: foreground,
-			pieLegendTextColor: foreground,
-			pieStrokeColor: foreground,
-			pieOuterStrokeColor: foreground,
+		// Other diagrams
+		pie1: chart1,
+		pie2: chart2,
+		pie3: chart3,
+		pieTitleTextColor: foreground,
+		pieSectionTextColor: foreground,
+		pieLegendTextColor: foreground,
+		pieStrokeColor: foreground,
+		pieOuterStrokeColor: foreground,
 
-			classText: foreground,
+		classText: foreground,
 
-			// Errors
-			errorBkgColor: destructive_background,
-			errorTextColor: destructive_foreground,
+		// Errors
+		errorBkgColor: destructive_background,
+		errorTextColor: destructive_foreground,
 	}
 }

@@ -35,44 +35,45 @@ export async function saveFiles_action(
 			),
 		)
 
-// messages 배열을 순회하며 각 항목을 '최종 결과 객체를 반환하는 프로미스'로 변환합니다.
-const promises = Object.entries(messageMap.translatedMessages).map(async ([messageKey, messageValue]) => {
-	// 1. 비동기 작업을 병렬로 실행
-	const mermaidSVGObject = await getMermaidSVGObject(messageValue);
+		// messages 배열을 순회하며 각 항목을 '최종 결과 객체를 반환하는 프로미스'로 변환합니다.
+		const promises = Object.entries(messageMap.translatedMessages).map(
+			async ([messageKey, messageValue]) => {
+				// 1. 비동기 작업을 병렬로 실행
+				const mermaidSVGObject = await getMermaidSVGObject(messageValue)
 
-	// 2. 필요한 모든 데이터를 포함한 최종 객체를 반환
-	return {
-			body: messageValue,
-			frontmatter: getFrontmatterObject(messageValue),
-			key: messageKey,
-			locale: language,
-			projectName,
-			mermaidSVGObject, // await로 얻은 결과를 바로 사용
-	};
-});
+				// 2. 필요한 모든 데이터를 포함한 최종 객체를 반환
+				return {
+					body: messageValue,
+					frontmatter: getFrontmatterObject(messageValue),
+					key: messageKey,
+					locale: language,
+					projectName,
+					mermaidSVGObject, // await로 얻은 결과를 바로 사용
+				}
+			},
+		)
 
-markdownPromiseListForSave.push(...promises);
-
+		markdownPromiseListForSave.push(...promises)
 	}
 
 	for (const [lang, updatedMessages] of Object.entries(updatedMessagesPerLang)) {
 		// messages 배열을 순회하며 각 항목을 '최종 결과 객체를 반환하는 프로미스'로 변환합니다.
-const promises = Object.entries(updatedMessages).map(async ([messageKey, messageValue]) => {
-	// 1. 비동기 작업을 병렬로 실행
-	const mermaidSVGObject = await getMermaidSVGObject(messageValue);
+		const promises = Object.entries(updatedMessages).map(async ([messageKey, messageValue]) => {
+			// 1. 비동기 작업을 병렬로 실행
+			const mermaidSVGObject = await getMermaidSVGObject(messageValue)
 
-	// 2. 필요한 모든 데이터를 포함한 최종 객체를 반환
-	return {
-			body: messageValue,
-			frontmatter: getFrontmatterObject(messageValue),
-			key: messageKey,
-			locale: lang,
-			projectName,
-			mermaidSVGObject, // await로 얻은 결과를 바로 사용
-	};
-});
+			// 2. 필요한 모든 데이터를 포함한 최종 객체를 반환
+			return {
+				body: messageValue,
+				frontmatter: getFrontmatterObject(messageValue),
+				key: messageKey,
+				locale: lang,
+				projectName,
+				mermaidSVGObject, // await로 얻은 결과를 바로 사용
+			}
+		})
 
-markdownPromiseListForSave.push(...promises);
+		markdownPromiseListForSave.push(...promises)
 	}
 
 	await saveMarkdownList_action(await Promise.all(markdownPromiseListForSave))
