@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 
 export const supabase = createClient(
 	String(process.env.SUPABASE_URL),
-	String(process.env.SUPABASE_ANON_KEY),
+	String(process.env.SUPABASE_PUBLISHABLE_KEY),
 )
 
 // console.log(`init: ${new Date().toISOString()}`)
