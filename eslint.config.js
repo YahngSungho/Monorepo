@@ -22,7 +22,7 @@ import { configs as depend_configs } from 'eslint-plugin-depend'
 import { plugin as exceptionHandling } from 'eslint-plugin-exception-handling'
 import functional from 'eslint-plugin-functional'
 import github from 'eslint-plugin-github'
-import importX from 'eslint-plugin-import-x'
+import { importX } from 'eslint-plugin-import-x'
 // import jsonSchema from 'eslint-plugin-json-schema-validator'
 import jsonc from 'eslint-plugin-jsonc'
 import * as mdx from 'eslint-plugin-mdx'
@@ -30,13 +30,11 @@ import noSecrets from 'eslint-plugin-no-secrets'
 import nounsanitized from 'eslint-plugin-no-unsanitized'
 import noUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import optimizeRegex from 'eslint-plugin-optimize-regex'
-import perfectionist from 'eslint-plugin-perfectionist'
 import playwright from 'eslint-plugin-playwright'
 import promise from 'eslint-plugin-promise'
 import ramda from 'eslint-plugin-ramda'
 import redos from 'eslint-plugin-redos'
 import { configs as regexp_configs } from 'eslint-plugin-regexp'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
 import sql from 'eslint-plugin-sql'
 import storybook from 'eslint-plugin-storybook'
@@ -98,18 +96,6 @@ const baseRules = {
 	'no-warning-comments': 'off',
 	'object-curly-spacing': 'off',
 	'optimize-regex/optimize-regex': 'warn',
-	'perfectionist/sort-exports': 'off',
-	'perfectionist/sort-imports': 'off',
-	'perfectionist/sort-modules': 'off',
-	'perfectionist/sort-named-exports': 'warn',
-	'perfectionist/sort-named-imports': 'warn',
-	'perfectionist/sort-objects': [
-		'off',
-		{
-			partitionByComment: true,
-			partitionByNewLine: true,
-		},
-	],
 	'prefer-const': 'off',
 	'prettier/prettier': [
 		'off',
@@ -145,8 +131,6 @@ const baseRules = {
 	'ramda/when-simplification': 'warn',
 	semi: ['warn', 'never'],
 	'semi-style': 'off',
-	'simple-import-sort/exports': 'warn',
-	'simple-import-sort/imports': 'warn',
 	'sonarjs/call-argument-line': 'off',
 	'sonarjs/cognitive-complexity': ['warn', 30],
 	'sonarjs/no-commented-code': 'off',
@@ -163,22 +147,6 @@ const baseRules = {
 	'sql/no-unsafe-query': 'warn',
 	'svelte/derived-has-same-inputs-outputs': 'warn',
 	'svelte/first-attribute-linebreak': 'off',
-	'svelte/html-closing-bracket-new-line': 'warn',
-	'svelte/html-closing-bracket-spacing': 'warn',
-	'svelte/html-quotes': [
-		'warn',
-		{
-			dynamic: {
-				avoidInvalidUnquotedInHTML: false,
-				quoted: false,
-			},
-			prefer: 'double',
-		},
-	],
-	'svelte/html-self-closing': [
-		'warn',
-		'default', // or "all" or "html" or "none"
-	],
 	'svelte/indent': 'off',
 	'svelte/infinite-reactive-loop': 'error',
 	'svelte/no-dupe-on-directives': 'warn',
@@ -192,7 +160,6 @@ const baseRules = {
 	'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 	'svelte/no-store-async': 'warn',
 	'svelte/no-target-blank': 'error',
-	'svelte/no-trailing-spaces': 'warn',
 	'svelte/no-unused-class-name': [
 		'off',
 		{
@@ -200,16 +167,11 @@ const baseRules = {
 		},
 	],
 	'svelte/no-useless-mustaches': 'off',
-	'svelte/prefer-class-directive': 'warn',
 	'svelte/prefer-destructured-store-props': 'warn',
 	'svelte/prefer-style-directive': 'off',
 	'svelte/require-each-key': 'warn',
 	'svelte/require-optimized-style-attribute': 'warn',
-	'svelte/require-store-reactive-access': 'warn',
-	'svelte/shorthand-attribute': 'warn',
-	'svelte/shorthand-directive': 'warn',
-	'svelte/sort-attributes': 'warn',
-	'svelte/spaced-html-comment': 'warn',
+	'svelte/require-store-reactive-access': 'off',
 	'svelte/valid-compile': [
 		'error',
 		{
@@ -264,7 +226,6 @@ export default defineFlatConfig([
 	importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
 	...turboConfig,
-	perfectionist.configs['recommended-natural'],
 	noUseExtendNative.configs.recommended,
 	promise.configs['flat/recommended'],
 	functional.configs.externalVanillaRecommended,
@@ -290,7 +251,6 @@ export default defineFlatConfig([
 			'optimize-regex': optimizeRegex,
 			ramda,
 			redos,
-			'simple-import-sort': simpleImportSort,
 			sql,
 			xstate,
 		},
@@ -323,6 +283,23 @@ export default defineFlatConfig([
 				}),
 			],
 			svelte: {
+				        // Specifies an array of rules to ignore reports within the template.
+        // For example, use this to disable rules in the template that may produce unavoidable false positives.
+        ignoreWarnings: [
+          '@typescript-eslint/no-unsafe-assignment',
+          '@typescript-eslint/no-unsafe-member-access'
+        ],
+				        // Specifies options for Svelte compilation.
+        // This affects rules that rely on Svelte compilation,
+        // such as svelte/valid-compile and svelte/no-unused-svelte-ignore.
+        // Note that this setting does not impact ESLint’s custom parser.
+        compileOptions: {
+          // Specifies options related to PostCSS. You can disable the PostCSS processing by setting it to false.
+          postcss: {
+            // Specifies the path to the directory that contains the PostCSS configuration.
+            configFilePath: 'libraries/base/postcss.config.js'
+          }
+        },
 				kit: {
 					files: {
 						routes: '**/src/routes',
