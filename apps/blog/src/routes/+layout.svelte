@@ -291,7 +291,7 @@ let jsonLd = $derived({
 				iconName="mdi:chevron-double-up"
 				onclick={scrollToTop_action}
 				variant="outline"
-			></Button>
+			/>
 			<Button
 				class="join-item"
 				dimBackground
@@ -299,7 +299,7 @@ let jsonLd = $derived({
 				iconName="mdi:chevron-double-down"
 				onclick={scrollToBottom_action}
 				variant="outline"
-			></Button>
+			/>
 		</div>
 	{/if}
 {/snippet}

@@ -283,23 +283,23 @@ export default defineFlatConfig([
 				}),
 			],
 			svelte: {
-				        // Specifies an array of rules to ignore reports within the template.
-        // For example, use this to disable rules in the template that may produce unavoidable false positives.
-        ignoreWarnings: [
-          '@typescript-eslint/no-unsafe-assignment',
-          '@typescript-eslint/no-unsafe-member-access'
-        ],
-				        // Specifies options for Svelte compilation.
-        // This affects rules that rely on Svelte compilation,
-        // such as svelte/valid-compile and svelte/no-unused-svelte-ignore.
-        // Note that this setting does not impact ESLint’s custom parser.
-        compileOptions: {
-          // Specifies options related to PostCSS. You can disable the PostCSS processing by setting it to false.
-          postcss: {
-            // Specifies the path to the directory that contains the PostCSS configuration.
-            configFilePath: 'libraries/base/postcss.config.js'
-          }
-        },
+				// Specifies an array of rules to ignore reports within the template.
+				// For example, use this to disable rules in the template that may produce unavoidable false positives.
+				ignoreWarnings: [
+					'@typescript-eslint/no-unsafe-assignment',
+					'@typescript-eslint/no-unsafe-member-access',
+				],
+				// Specifies options for Svelte compilation.
+				// This affects rules that rely on Svelte compilation,
+				// such as svelte/valid-compile and svelte/no-unused-svelte-ignore.
+				// Note that this setting does not impact ESLint’s custom parser.
+				compileOptions: {
+					// Specifies options related to PostCSS. You can disable the PostCSS processing by setting it to false.
+					postcss: {
+						// Specifies the path to the directory that contains the PostCSS configuration.
+						configFilePath: 'libraries/base/postcss.config.js',
+					},
+				},
 				kit: {
 					files: {
 						routes: '**/src/routes',

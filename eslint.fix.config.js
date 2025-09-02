@@ -1,6 +1,7 @@
-import defaultConfig from './eslint.config.js'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import perfectionist from 'eslint-plugin-perfectionist'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+
+import defaultConfig from './eslint.config.js'
 
 const overrideConfig = [
 	{
@@ -22,41 +23,41 @@ const overrideConfig = [
 				'default', // or "all" or "html" or "none"
 			],
 			'svelte/no-trailing-spaces': 'warn',
-			'svelte/prefer-class-directive': 'warn',
 			'svelte/no-useless-mustaches': 'warn',
+			'svelte/prefer-class-directive': 'warn',
+			'svelte/require-store-reactive-access': 'warn',
 			'svelte/shorthand-attribute': 'warn',
-	'svelte/shorthand-directive': 'warn',
-	'svelte/sort-attributes': 'warn',
-	'svelte/spaced-html-comment': 'warn',
-	'svelte/require-store-reactive-access': 'warn',
-		}
+			'svelte/shorthand-directive': 'warn',
+			'svelte/sort-attributes': 'warn',
+			'svelte/spaced-html-comment': 'warn',
+		},
 	},
 	perfectionist.configs['recommended-natural'],
 	{
 		rules: {
 			'perfectionist/sort-exports': 'off',
-'perfectionist/sort-imports': 'off',
-'perfectionist/sort-modules': 'off',
-'perfectionist/sort-named-exports': 'off',
-'perfectionist/sort-named-imports': 'off',
-'perfectionist/sort-objects': [
-	'warn',
+			'perfectionist/sort-imports': 'off',
+			'perfectionist/sort-modules': 'off',
+			'perfectionist/sort-named-exports': 'off',
+			'perfectionist/sort-named-imports': 'off',
+			'perfectionist/sort-objects': [
+				'warn',
+				{
+					partitionByComment: true,
+					partitionByNewLine: true,
+				},
+			],
+		},
+	},
 	{
-		partitionByComment: true,
-		partitionByNewLine: true,
+		plugins: {
+			'simple-import-sort': simpleImportSort,
+		},
+		rules: {
+			'simple-import-sort/exports': 'warn',
+			'simple-import-sort/imports': 'warn',
+		},
 	},
-],
-		}
-	},
-{
-	plugins: {
-		'simple-import-sort': simpleImportSort,
-	},
-	rules: {
-		'simple-import-sort/exports': 'warn',
-		'simple-import-sort/imports': 'warn',
-	},
-}
 ]
 
 export default [...defaultConfig, ...overrideConfig]
