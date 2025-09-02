@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV) {
+if (globalThis) {
 	throw new Error('비밀 노출')
 }
 
