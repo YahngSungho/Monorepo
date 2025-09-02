@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { saveMarkdownList_action } from '@library/backends/supabase'
+import { saveMarkdownList_action } from '@library/backends/supabase_admin'
 import { writeFile_async } from '@library/helpers/fs-async'
 
 import { getNewCache } from '../translation/helpers.js'

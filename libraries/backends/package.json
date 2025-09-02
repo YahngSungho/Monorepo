@@ -10,12 +10,13 @@
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "^2.54.0",
 		"@library/helpers": "workspace:*",
-		"@library/library-base": "workspace:*"
+		"@library/library-base": "workspace:*",
+		"@supabase/supabase-js": "^2.54.0"
 	},
 	"devDependencies": {},
 	"exports": {
-		"./supabase": "./src/supabase/index.js"
+		"./supabase": "./src/supabase/index.js",
+		"./supabase_admin": "./src/supabase/index.admin.js"
 	}
 }
