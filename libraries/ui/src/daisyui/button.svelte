@@ -1,7 +1,7 @@
 <script module>
 import { css,cx } from '@emotion/css'
-import { localizeHref } from '@library/paraglide/helpers'
 
+import { localizeHref } from '@library/paraglide/helpers'
 import IconText from '../miscellaneous/icon-text.svelte'
 
 const newTabProps = {
@@ -83,9 +83,10 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {#if href}
 	<a
 		class={cx(buttonClass, incomingClass)}
-		class:visibilityHidden
-		class:dimBackground
 		class:clearBackground
+		class:dimBackground
+		class:icon-only={iconName && !children}
+		class:visibilityHidden
 		href={isInternalLink ? localizeHref(href) : href}
 		role="button"
 		type="button"
@@ -95,12 +96,16 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		{@render content()}
 	</a>
 {:else}
-	<button class={cx(buttonClass, incomingClass)} class:visibilityHidden class:dimBackground class:clearBackground type="button" {...restProps}>
+	<button class={cx(buttonClass, incomingClass)} class:clearBackground class:dimBackground class:icon-only={iconName && !children} class:visibilityHidden type="button" {...restProps}>
 		{@render content()}
 	</button>
 {/if}
 
 <style>
+.icon-only {
+	padding-inline: var(--space-em-cqi-xs-s);
+}
+
 .btn-outline {
 	border-color: currentcolor;
 	border-width: var(--border-size-2);
