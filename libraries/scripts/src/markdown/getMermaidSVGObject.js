@@ -1,6 +1,7 @@
 import { getSimpleHash, normalizeString } from '@library/helpers/functions'
 import { buildThemeVariables } from '@library/library-base/mermaid'
 import { createMermaidRenderer } from 'mermaid-isomorphic'
+import { optimizeMermaidSvg } from '@library/helpers/svgo'
 
 export async function getMermaidSVGObject(markdownText) {
 	const result = {}
@@ -61,7 +62,7 @@ export async function getMermaidSVGObject(markdownText) {
 				const value = itemAny.status === 'fulfilled' ? itemAny.value : itemAny
 				if (value && value.svg) svg = String(value.svg)
 			}
-			result[key] = svg
+			result[key] = optimizeMermaidSvg(svg)
 		}
 	}
 
