@@ -1,8 +1,6 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"globalDependencies": [".env", ".env.*",
-		"**/.env",
-		"**/.env.*"],
+	"globalDependencies": [".env", ".env.*", "**/.env", "**/.env.*"],
 	"globalEnv": [
 		"NODE_ENV",
 		"MAILGUN",
@@ -17,28 +15,18 @@
 		"SUPABASE_ADMIN_KEY",
 		"SUPABASE_PUBLISHABLE_KEY"
 	],
-	"globalPassThroughEnv": [
-		"CF_PAGES_BRANCH",
-		"CI",
-		"WATCH",
-		"GITHUB_ACTIONS"
-	],
+	"globalPassThroughEnv": ["CF_PAGES_BRANCH", "CI", "WATCH", "GITHUB_ACTIONS"],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
 			"env": [],
-			"inputs": [
-				"$TURBO_DEFAULT$",
-				"!**/*.stories.*"
-			],
+			"inputs": ["$TURBO_DEFAULT$", "!**/*.stories.*"],
 			"outputs": [".svelte-kit/**", "paraglide-output/**"]
 		},
 		"@tool/storybook#build": {
 			"dependsOn": [],
 			"env": [],
-			"inputs": [
-				"$TURBO_DEFAULT$"
-			],
+			"inputs": ["$TURBO_DEFAULT$"],
 			"outputs": ["storybook-static/**"]
 		},
 		"change-base-locale:en": {},
