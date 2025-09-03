@@ -4,7 +4,7 @@ import { supabase_admin } from '@library/backends/supabase_admin'
 import { getLocale } from '@library/paraglide/helpers'
 
 async function addSubscription_action(myEmail) {
-	const { error } = await supabase_admin.from('blog-subscribers').upsert({ email: myEmail, locale: getLocale(), subscribed: true }, { ignoreDuplicates: false, onConflict: 'email' });
+	const { error } = await supabase_admin.from('blog-subscribers').upsert({ email: myEmail, locale: getLocale(), subscribed: true }, { onConflict: 'email' });
 
 	if (error) {
 		throw error;

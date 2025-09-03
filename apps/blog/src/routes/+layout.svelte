@@ -84,14 +84,16 @@ const emailErrorMessageList = {
 			} else {
 				if (response.status === 400) {
 					emailErrorMessage = emailErrorMessageList.incorrectFormat
+				} else {
+					emailErrorMessage = emailErrorMessageList.unknownError
 				}
-				emailErrorMessage = emailErrorMessageList.unknownError
 			}
 		} catch {
 			emailErrorMessage = emailErrorMessageList.unknownError
+		} finally {
+			// eslint-disable-next-line require-atomic-updates
+			isSubmitting = false
 		}
-		// eslint-disable-next-line require-atomic-updates
-		isSubmitting = false
 	}
 
 onMount(() => {
