@@ -157,7 +157,6 @@ const baseRules = {
 	'svelte/no-reactive-functions': 'warn',
 	'svelte/no-reactive-literals': 'warn',
 	'svelte/no-reactive-reassign': 'warn',
-	'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 	'svelte/no-store-async': 'warn',
 	'svelte/no-target-blank': 'error',
 	'svelte/no-unused-class-name': [

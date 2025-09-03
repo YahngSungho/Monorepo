@@ -6,6 +6,7 @@ import defaultConfig from './eslint.config.js'
 const overrideConfig = [
 	{
 		rules: {
+			'svelte/first-attribute-linebreak': 'warn',
 			'svelte/html-closing-bracket-new-line': 'warn',
 			'svelte/html-closing-bracket-spacing': 'warn',
 			'svelte/html-quotes': [
@@ -24,7 +25,12 @@ const overrideConfig = [
 			],
 			'svelte/no-trailing-spaces': 'warn',
 			'svelte/no-useless-mustaches': 'warn',
-			'svelte/prefer-class-directive': 'warn',
+			'svelte/prefer-class-directive': ['warn', {
+				prefer: 'always'
+			}],
+			'svelte/mustache-spacing': 'warn',
+			'svelte/prefer-style-directive': 'warn',
+			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 			'svelte/require-store-reactive-access': 'warn',
 			'svelte/shorthand-attribute': 'warn',
 			'svelte/shorthand-directive': 'warn',

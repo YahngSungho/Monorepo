@@ -83,7 +83,9 @@ let progress = $derived(Math.floor((visitedCount / (totalCount || 1)) * 100))
 let sharingButtonsOpen = $state(false)
 
 // 스크롤 타겟 요소 및 상태 관리
+// svelte-ignore non_reactive_update
 let withSidebarEl
+// svelte-ignore non_reactive_update
 let mainEl
 let activeEl = $state(null)
 let scrollTop = $state(0)
