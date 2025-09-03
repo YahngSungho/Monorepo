@@ -14,7 +14,7 @@
 		"@library/helpers": "workspace:*",
 		"mutative": "^1.1.0",
 		"nanoid": "^5.1.5",
-		"ramda": "^0.30.1",
+		"ramda": "^0.31.3",
 		"random-js": "^2.1.0",
 		"store": "^2.0.12",
 		"yup": "^1.6.1"

@@ -385,8 +385,8 @@ importers:
         specifier: ^5.1.5
         version: 5.1.5
       ramda:
-        specifier: ^0.30.1
-        version: 0.30.1
+        specifier: ^0.31.3
+        version: 0.31.3
       random-js:
         specifier: ^2.1.0
         version: 2.1.0
@@ -467,8 +467,8 @@ importers:
         specifier: ^5.1.5
         version: 5.1.5
       ramda:
-        specifier: ^0.30.1
-        version: 0.30.1
+        specifier: ^0.31.3
+        version: 0.31.3
       store:
         specifier: ^2.0.12
         version: 2.0.12
@@ -583,8 +583,8 @@ importers:
         specifier: ^10.2.0
         version: 10.3.2
       ramda:
-        specifier: ^0.30.1
-        version: 0.30.1
+        specifier: ^0.31.3
+        version: 0.31.3
       random-js:
         specifier: ^2.1.0
         version: 2.1.0
@@ -7941,8 +7941,8 @@ packages:
   ramda@0.25.0:
     resolution: {integrity: sha512-GXpfrYVPwx3K7RQ6aYT8KPS8XViSXUVJT1ONhoKPE9VAleW42YE+U+8VEyGWt41EnEQW7gwecYJriTI0pKoecQ==}
 
-  ramda@0.30.1:
-    resolution: {integrity: sha512-tEF5I22zJnuclswcZMc8bDIrwRHRzf+NqVEmqg50ShAZMP7MWeR/RGDthfM/p+BlqvF2fXAzpn8i+SJcYD3alw==}
+  ramda@0.31.3:
+    resolution: {integrity: sha512-xKADKRNnqmDdX59PPKLm3gGmk1ZgNnj3k7DryqWwkamp4TJ6B36DdpyKEQ0EoEYmH2R62bV4Q+S0ym2z8N2f3Q==}
 
   randexp@0.4.6:
     resolution: {integrity: sha512-80WNmd9DA0tmZrw9qQa62GPPWfuXJknrmVmLcxvq4uZBdYqb1wYoKTmnlGUchvVWe0XiLupYkBoXVOxz3C8DYQ==}
@@ -17929,7 +17929,7 @@ snapshots:
 
   ramda@0.25.0: {}
 
-  ramda@0.30.1: {}
+  ramda@0.31.3: {}
 
   randexp@0.4.6:
     dependencies:
