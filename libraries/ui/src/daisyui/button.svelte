@@ -54,6 +54,7 @@ let {
 	size = 'md',
 	variant = 'primary',
 	visibilityHidden = false,
+	loading: loadingButton = false,
 	...restProps
 } = $props()
 
@@ -73,20 +74,27 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#snippet content()}
-	{#if iconName}
-		<IconText
-			class={children ? extraStyles1 : extraStyles2}
-			{iconName}
-			{...iconProps}
-			alone={!children}>{@render children?.()}</IconText
-		>
-	{:else}
+{#if loadingButton}
+<span style="margin-inline: 1em;" class="loading loading-dots loading-sm"></span>
+{:else}
+{#if iconName}
+	<IconText
+		class={children ? extraStyles1 : extraStyles2}
+		{iconName}
+		{...iconProps}
+		alone={!children}>
+
 		{@render children?.()}
-	{/if}
+		</IconText>
+{:else}
+		{@render children?.()}
+{/if}
+{/if}
 {/snippet}
 
 {#if href}
 	<a
+		class:loadingButton
 		class={cx(buttonClass, incomingClass)}
 		class:clearBackground
 		class:dimBackground
@@ -96,18 +104,21 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		role="button"
 		type="button"
 		{...isInternalLink ? {} : newTabProps}
+		class:hoverButton={loadingButton}
 		{...restProps}
 	>
 		{@render content()}
 	</a>
 {:else}
 	<button
+		class:loadingButton
 		class={cx(buttonClass, incomingClass)}
 		class:clearBackground
 		class:dimBackground
 		class:icon-only={iconName && !children}
 		class:visibilityHidden
 		type="button"
+		class:hoverButton={loadingButton}
 		{...restProps}
 	>
 		{@render content()}
@@ -115,6 +126,10 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {/if}
 
 <style>
+.loadingButton {
+	cursor: not-allowed !important;
+}
+
 .icon-only {
 	padding-inline: var(--space-em-cqi-xs-s);
 }

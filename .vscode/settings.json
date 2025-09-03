@@ -23,7 +23,7 @@
 		"javascriptsvelte"
 	],
 	"stylelint.packageManager": "pnpm",
-	"stylelint.stylelintPath": "node_modules/stylelint",
+	"stylelint.stylelintPath": "",
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},

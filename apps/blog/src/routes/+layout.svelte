@@ -1,6 +1,7 @@
 <script>
 import '@library/base/fontStyle.css'
 
+import { emailSchema } from '@library/helpers/zod-schemas'
 import { idleRun_action } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
@@ -21,6 +22,77 @@ import { APP_NAME } from '$lib/info.js'
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()
 let visited = $state({})
+
+let emailValue = $state('')
+/**
+ * @type {null | { submittedEmail: string, success: boolean }}
+ */
+let formResult = $state(null)
+// 제출 진행 상태가 필요하면 UI에 연결하세요. 현재는 내부 사용만 함
+let isSubscribed = $state(false)
+let emailErrorMessage = $state('')
+let isSubmitting = $state(false)
+
+function validateEmail (emailValue0) {
+	const result = emailSchema.safeParse(emailValue0)
+	return result.success
+}
+function handleInput_action () {
+	emailErrorMessage = ''
+	isSubscribed = false
+}
+
+const emailErrorMessageList = {
+	incorrectFormat: '이메일 형식 잘못됨',
+	unknownError: '이유는 뭔지 몰라도 구독에 실패함',
+}
+
+	/**
+	 * 구독 폼 제출 처리 (API 엔드포인트로 POST)
+	 * @param {SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }} event
+	 */
+	async function handleSubscribeSubmit_action(event) {
+		event.preventDefault()
+		if (isSubmitting) {
+			return
+		}
+		isSubmitting = true
+
+		isSubscribed = false
+		const isValid = validateEmail(emailValue)
+		if (!isValid) {
+			emailErrorMessage = emailErrorMessageList.incorrectFormat
+			return
+		}
+		emailErrorMessage = ''
+		formResult = null
+
+		try {
+			const formEl = event.currentTarget
+			const response = await fetch(formEl.action, {
+				method: 'POST',
+				body: new FormData(formEl),
+			})
+			const responseData = await response.json()
+			const success = response.ok && response.status === 200
+			formResult = {
+				success,
+				submittedEmail: responseData?.email,
+			}
+			if (success) {
+				isSubscribed = true
+			} else {
+				if (response.status === 400) {
+					emailErrorMessage = emailErrorMessageList.incorrectFormat
+				}
+				emailErrorMessage = emailErrorMessageList.unknownError
+			}
+		} catch {
+			emailErrorMessage = emailErrorMessageList.unknownError
+		}
+		// eslint-disable-next-line require-atomic-updates
+		isSubmitting = false
+	}
 
 onMount(() => {
 	visited = store.get('visited') || {}
@@ -362,6 +434,7 @@ let jsonLd = $derived({
 					</Link>
 				</div>
 
+				<form autocomplete="on" action="/api/subscribe" method='post' onsubmit={handleSubscribeSubmit_action}>
 				<div
 					style:z-index="1"
 					style:inline-size="17em"
@@ -371,10 +444,11 @@ let jsonLd = $derived({
 				>
 					<div style:flex-grow="1">
 						<label
+						for="email"
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
 						>
-							<input placeholder="나의@이메일.com" required type="email" />
+							<input disabled={isSubmitting} autocomplete="email" placeholder="나의@이메일.com" required id="email" name="email" type="email" bind:value={emailValue} oninput={handleInput_action} />
 							<span>이메일</span>
 						</label>
 					</div>
@@ -383,14 +457,27 @@ let jsonLd = $derived({
 						amount={10}
 						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
 						duration={750}
-						isConfettiActivated
+						isConfettiActivated={isSubscribed && !isSubmitting}
 						noGravity
 						x={[-0.5, 0.5]}
 						y={[-0.5, 0.5]}
 					>
-						<Button class="join-item" size="sm" type="submit">구독하기</Button>
+						<Button loading={isSubmitting} class="join-item" size="sm" type="submit">{isSubscribed ? '구독 됨!' : '구독하기'}</Button>
 					</ConfettiButton>
 				</div>
+
+				<div style="font-size: var(--font-size-fluid-em-cqi-01); z-index: 1; position: relative;">
+					{#if emailErrorMessage}
+					<div role="alert" style="color: var(--color-destructive);" transition:slide={{ duration: 300 }}>{emailErrorMessage}</div>
+				{/if}
+
+				{#if !emailErrorMessage && isSubscribed && formResult?.submittedEmail}
+					<div role="status" transition:slide={{ duration: 300 }}>{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}</div>
+				{/if}
+				</div>
+
+
+				</form>
 
 				<div style:z-index="1" style:overflow="visible">
 					<Button
@@ -508,5 +595,6 @@ let jsonLd = $derived({
 	inset-block-start: 0;
 	inset-inline-end: 0;
 	transform: scaleY(-1) scaleX(-1);
+	z-index: 0;
 }
 </style>
