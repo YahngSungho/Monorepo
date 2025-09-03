@@ -1,4 +1,15 @@
 {
+	"files.associations": {
+		"*.ahk": "ahk",
+		"*.html": "html",
+		"*.js": "javascript",
+		"*.ts": "typescript",
+		"*.css": "tailwindcss",
+		"*.svx": "markdown",
+		"*.mdc": "markdown",
+		"*.mdx": "markdown",
+		"*.svelte": "svelte",
+	},
 	"stylelint.snippet": [
 		"css",
 		"svelte",
@@ -14,6 +25,7 @@
 		"svelte",
 		"html",
 		"postcss",
+		"tailwindcss",
 		"jsx",
 		"tsx",
 		"js",
@@ -22,8 +34,9 @@
 		"typescript",
 		"javascriptsvelte"
 	],
-	"stylelint.packageManager": "pnpm",
-	"stylelint.stylelintPath": "",
+	"stylelint.packageManager": "npm",
+	"stylelint.stylelintPath": "node_modules/stylelint",
+	"stylelint.configFile": ".stylelintrc.json",
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -138,12 +151,6 @@
 	"tailwindCSS.emmetCompletions": false,
 	"tailwindCSS.experimental.configFile": {
 		"libraries/base/src/tailwind.css": "**"
-	},
-	"tailwindCSS.includeLanguages": {
-		"plaintext": "html",
-		"svelte": "html",
-		"javascript": "javascript",
-		"typescript": "typescript"
 	},
 	"tailwindCSS.suggestions": true,
 	"tailwindCSS.validate": true,

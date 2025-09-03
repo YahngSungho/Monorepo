@@ -1,12 +1,16 @@
 import { json } from '@sveltejs/kit';
 import { emailSchema } from '@library/helpers/zod-schemas';
+import { supabase_admin } from '@library/backends/supabase_admin'
+import { getLocale } from '@library/paraglide/helpers'
 
-async function addEmail_forTest(myEmail) {
-	await new Promise((resolve) => {
-		setTimeout(resolve, 2000)
-		console.log(`[DB] ${myEmail} 주소가 추가되었습니다.`);
-	})
-	return true;
+async function addSubscription_action(myEmail) {
+	const { error } = await supabase_admin.from('blog-subscribers').upsert({ email: myEmail, locale: getLocale(), subscribed: true }, { ignoreDuplicates: false, onConflict: 'email' });
+
+	if (error) {
+		throw error;
+	}
+
+	return true
 }
 
 export const POST = async ({ request }) => {
@@ -22,7 +26,7 @@ export const POST = async ({ request }) => {
 	}
 
 	try {
-		await addEmail_forTest(email);
+		await addSubscription_action(email);
 		return json({ email },
 			{ status: 200, headers: { 'content-type': 'application/json' } },
 		);

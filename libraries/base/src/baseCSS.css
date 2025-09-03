@@ -109,6 +109,12 @@ input[type='radio'] {
 	}
 }
 
+input[type='email'], input[type='number'], input[type='password'], input[type='tel'], input[type='url'], input[name*='cc-'], input[name='id'], pre, kbd, .ltr {
+	direction: ltr;
+  /* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+  text-align: left;
+}
+
 :where(div) {
 	color: inherit;
 	outline: var(--size-1) solid transparent;
