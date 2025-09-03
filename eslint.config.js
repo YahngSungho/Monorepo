@@ -53,6 +53,7 @@ import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
 	'unicorn/prefer-ternary': 'off',
+	'no-lonely-if': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'arrow-parens': 'off',
