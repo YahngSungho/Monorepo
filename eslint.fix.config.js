@@ -32,23 +32,6 @@ const overrideConfig = [
 			'svelte/spaced-html-comment': 'warn',
 		},
 	},
-	perfectionist.configs['recommended-natural'],
-	{
-		rules: {
-			'perfectionist/sort-exports': 'off',
-			'perfectionist/sort-imports': 'off',
-			'perfectionist/sort-modules': 'off',
-			'perfectionist/sort-named-exports': 'off',
-			'perfectionist/sort-named-imports': 'off',
-			'perfectionist/sort-objects': [
-				'warn',
-				{
-					partitionByComment: true,
-					partitionByNewLine: true,
-				},
-			],
-		},
-	},
 	{
 		plugins: {
 			'simple-import-sort': simpleImportSort,
@@ -56,6 +39,42 @@ const overrideConfig = [
 		rules: {
 			'simple-import-sort/exports': 'warn',
 			'simple-import-sort/imports': 'warn',
+		},
+	},
+	perfectionist.configs['recommended-natural'],
+	{
+		rules: {
+			'perfectionist/sort-exports': 'off',
+			'perfectionist/sort-imports': 'off',
+			'perfectionist/sort-named-exports': 'warn',
+			'perfectionist/sort-named-imports': 'warn',
+
+			'perfectionist/sort-classes': [
+				'warn',
+				{
+					partitionByComment: true,
+				},
+			],
+			'perfectionist/sort-modules': [
+				'warn',
+				{
+					partitionByComment: true,
+				},
+			],
+			'perfectionist/sort-objects': [
+				'warn',
+				{
+					partitionByComment: true,
+					partitionByNewLine: true,
+				},
+			],
+			'perfectionist/sort-variable-declarations': [
+				'warn',
+				{
+					partitionByComment: true,
+					partitionByNewLine: true,
+				},
+			]
 		},
 	},
 ]
