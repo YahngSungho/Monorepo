@@ -1,45 +1,69 @@
-.mermaid-container p {
+.mermaid-container {
+& p {
 	font-size: 18px;
 }
 
-.mermaid-container foreignObject {
+& foreignObject {
 	overflow: visible;
 }
 
-.mermaid-container svg rect,
-.mermaid-container svg circle,
-.mermaid-container svg ellipse,
-.mermaid-container svg polygon,
-.mermaid-container svg line {
+& svg rect,
+& svg circle,
+& svg ellipse,
+& svg polygon,
+& svg line {
 	stroke: var(--foreground) !important;
 }
 
-.mermaid-container svg rect,
-.mermaid-container svg circle,
-.mermaid-container svg ellipse,
-.mermaid-container svg polygon {
+& svg rect,
+& svg circle,
+& svg ellipse,
+& svg polygon {
 	stroke-width: 2px !important;
 }
 
-.mermaid-container .node rect,
-.mermaid-container .node circle,
-.mermaid-container .node ellipse,
-.mermaid-container .node polygon,
-.mermaid-container .node path {
+& .node rect,
+& .node circle,
+& .node ellipse,
+& .node polygon,
+& .node path {
 	stroke-width: 4px !important;
 }
 
-.mermaid-container .label rect {
+& .label rect {
 	background-color: var(--background) !important;
 	stroke: none !important;
 }
 
-.mermaid-container .flowchart-link {
+& .flowchart-link {
 	/* stroke-dasharray: 4, 4 !important; 기존 점선 정의 주석 처리 */
 	stroke-dasharray: 10, 5 !important;
 	stroke-width: 2px !important;
 	animation: flow-highlight 1.5s linear infinite; /* 새 애니메이션 적용 */
 }
+
+}
+
+.mermaid-container .mermaid-dim {
+	opacity: 0.3 !important; /* 흐리게 만들기 (값 조절 가능) */
+	transition: opacity 0.2s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+/* 기본 상태 및 전환 효과 */
+.mermaid-container svg.flowchart g.node,
+.mermaid-container svg.flowchart path.flowchart-link {
+	opacity: 1; /* 기본 투명도는 1 */
+	transition: opacity 0.2s ease-in-out; /* 마우스 아웃 시 부드러운 전환 */
+}
+
+.mermaid-container .marker {
+	overflow: visible !important;
+}
+
+.mermaid-container .arrowMarkerPath {
+	transform: scale(1.5, 2) translateX(-7px) translateY(-2.5px);
+}
+
 
 /* 기존 flow 키프레임 대신 새로운 키프레임 정의 */
 @keyframes flow-highlight {
@@ -64,27 +88,3 @@
 	}
 }
 */
-
-/* libraries/ui/src/markdown/blog/mermaid.css */
-/* ... 기존 CSS 코드 ... */
-
-/* Hover 효과를 위한 스타일 */
-.mermaid-container .mermaid-dim {
-	opacity: 0.3 !important; /* 흐리게 만들기 (값 조절 가능) */
-	transition: opacity 0.2s ease-in-out; /* 부드러운 전환 효과 */
-}
-
-/* 기본 상태 및 전환 효과 */
-.mermaid-container svg.flowchart g.node,
-.mermaid-container svg.flowchart path.flowchart-link {
-	opacity: 1; /* 기본 투명도는 1 */
-	transition: opacity 0.2s ease-in-out; /* 마우스 아웃 시 부드러운 전환 */
-}
-
-.mermaid-container .marker {
-	overflow: visible !important;
-}
-
-.mermaid-container .arrowMarkerPath {
-	transform: scale(1.5, 2) translateX(-7px) translateY(-2.5px);
-}
