@@ -22,10 +22,12 @@
 		"remove-markdown": "^0.6.2",
 		"sanitize-html": "^2.17.0",
 		"svgo": "^4.0.0",
-		"tinyglobby": "^0.2.13"
+		"tinyglobby": "^0.2.13",
+		"zod": "^3.25.36"
 	},
 	"keywords": [],
 	"exports": {
+		"./zod-schemas": "./src/zod-schemas/index.js",
 		"./svgo": "./src/library-wrappers/svgo.js",
 		"./monads": "./src/data-structures/monads.js",
 		"./mutative": "./src/library-wrappers/mutative.js",

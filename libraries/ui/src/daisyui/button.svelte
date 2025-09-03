@@ -50,6 +50,7 @@ let {
 	href = undefined,
 	iconName = '',
 	iconProps = {},
+	loading: loadingButton = false,
 	shape = '',
 	size = 'md',
 	variant = 'primary',
@@ -73,16 +74,23 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#snippet content()}
-	{#if iconName}
-		<IconText
-			class={children ? extraStyles1 : extraStyles2}
-			{iconName}
-			{...iconProps}
-			alone={!children}>{@render children?.()}</IconText
-		>
-	{:else}
+{#if loadingButton}
+<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
+{:else}
+{#if iconName}
+	<IconText
+		class={children ? extraStyles1 : extraStyles2}
+		{iconName}
+		{...iconProps}
+		alone={!children}
+>
+
 		{@render children?.()}
-	{/if}
+		</IconText>
+{:else}
+		{@render children?.()}
+{/if}
+{/if}
 {/snippet}
 
 {#if href}
@@ -90,7 +98,9 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		class={cx(buttonClass, incomingClass)}
 		class:clearBackground
 		class:dimBackground
+		class:hoverButton={loadingButton}
 		class:icon-only={iconName && !children}
+		class:loadingButton
 		class:visibilityHidden
 		href={isInternalLink ? localizeHref(href) : href}
 		role="button"
@@ -105,7 +115,9 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		class={cx(buttonClass, incomingClass)}
 		class:clearBackground
 		class:dimBackground
+		class:hoverButton={loadingButton}
 		class:icon-only={iconName && !children}
+		class:loadingButton
 		class:visibilityHidden
 		type="button"
 		{...restProps}
@@ -115,6 +127,10 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {/if}
 
 <style>
+.loadingButton {
+	cursor: not-allowed !important;
+}
+
 .icon-only {
 	padding-inline: var(--space-em-cqi-xs-s);
 }

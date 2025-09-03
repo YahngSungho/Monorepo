@@ -367,11 +367,11 @@ jobs:
             exit 0
           fi
 
-          echo "ESLint"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
-
           echo "Stylelint"
           printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input
+
+          echo "ESLint"
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
 
           echo "Prettier"
           printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore
@@ -609,9 +609,6 @@ jobs:
           # 이전 스텝에서 생성된 전체 새 파일 목록을 가져옴
           MODIFIED_FILES="${{ steps.run_translation.outputs.all_changed_files }}"
 
-          echo "ESLint"
-          pnpm exec eslint --fix --config eslint.fix.config.js $MODIFIED_FILES
-
           echo "Stylelint"
           STYLELINT_FILES=$(echo "$MODIFIED_FILES" | tr ' ' '\n' | grep -E '\.(css|svelte|md|mdx|mdc)$' | tr '\n' ' ' | sed 's/ $//')
           if [ -n "$STYLELINT_FILES" ]; then
@@ -619,6 +616,10 @@ jobs:
           else
             echo "Stylelint를 적용할 파일이 없습니다."
           fi
+
+          echo "ESLint"
+          pnpm exec eslint --fix --config eslint.fix.config.js $MODIFIED_FILES
+
 
           echo "Prettier"
           pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES
@@ -954,11 +955,11 @@ jobs:
             exit 0
           fi
 
-          echo "ESLint"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
-
           echo "Stylelint"
           printf '%s\0' "${filtered[@]}" | grep -z -E '\.(css|svelte|md|mdx|mdc)$' | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input
+
+          echo "ESLint"
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
 
           echo "Prettier"
           printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore

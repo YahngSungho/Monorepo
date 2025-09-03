@@ -80,11 +80,13 @@ button,
 	transition-duration: 0.2s;
 	transition-property: color, background-color, border-color, box-shadow, opacity;
 
-	&:hover {
+	&:hover,
+	&.hoverButton {
 		opacity: 0.68;
 	}
 
-	&:active {
+	&:active,
+	&.activeButton {
 		opacity: 1;
 		transition-duration: 0.1s;
 	}
@@ -107,6 +109,21 @@ input[type='radio'] {
 		opacity: 1;
 		transition-duration: 0.1s;
 	}
+}
+
+input[type='email'],
+input[type='number'],
+input[type='password'],
+input[type='tel'],
+input[type='url'],
+input[name*='cc-'],
+input[name='id'],
+pre,
+kbd,
+.ltr {
+	direction: ltr;
+	/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+	text-align: left;
 }
 
 :where(div) {

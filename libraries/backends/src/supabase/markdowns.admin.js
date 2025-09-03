@@ -21,11 +21,11 @@ export async function saveMarkdownList_action(markdownList) {
 			frontmatter: markdown.frontmatter,
 			key: markdown.key,
 			locale: markdown.locale,
-			project_name: markdown.projectName,
 			mermaid_svg_object: markdown.mermaidSVGObject,
+			project_name: markdown.projectName,
 			updated_at: dateNow,
 		})),
-		{ ignoreDuplicates: false, onConflict: 'project_name,key,locale' },
+		{ onConflict: 'project_name,key,locale' },
 	)
 
 	if (error) {

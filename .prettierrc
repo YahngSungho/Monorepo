@@ -1,6 +1,7 @@
 {
 	"endOfLine": "lf",
 	"experimentalTernaries": true,
+	"htmlWhitespaceSensitivity": "ignore",
 	"jsxSingleQuote": false,
 	"overrides": [
 		{
