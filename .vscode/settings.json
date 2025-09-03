@@ -21,7 +21,20 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[svelte]": {
-		"editor.defaultFormatter": "svelte.svelte-vscode"
+		"editor.defaultFormatter": "svelte.svelte-vscode",
+		"explicitFolding.rules": [
+			{
+				"beginRegex": "^\\s*<([A-Z][\\w:-]*)\\b",
+				"endRegex": "^(?:.*\\/>\\s*$)|(?:<\\/\\1\\s*>)",
+				"foldLastLine": [true, false],
+				"nested": true
+			},
+			{
+				"beginRegex": "^\\s*<(?!area\\b|base\\b|br\\b|col\\b|embed\\b|hr\\b|img\\b|input\\b|link\\b|menuitem\\b|meta\\b|param\\b|source\\b|track\\b|wbr\\b|svelte:options\\b|svelte:window\\b|svelte:body\\b|svelte:document\\b)(svelte:[a-z][\\w:-]*|[a-z][\\w:]*)\\b",
+				"endRegex": "<\\/\\1\\s*>",
+				"nested": true
+			}
+		]
 	},
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
