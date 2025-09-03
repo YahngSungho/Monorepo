@@ -597,6 +597,9 @@ importers:
       tinyglobby:
         specifier: ^0.2.13
         version: 0.2.14
+      zod:
+        specifier: ^3.25.36
+        version: 3.25.76
 
   libraries/library-base: {}
 

@@ -32,10 +32,19 @@ export function getValidLocales() {
 	return settings.locales
 }
 
+
 /**
- * combinedMessage 객체의 모든 언어 내용을 정규화
- * @param {object} combinedMessage - { ko: string, en: string, explanation?: string }
- * @returns {object} 정규화된 combinedMessage
+ * 여러 기준 언어(baseLanguages)와 메시지 맵, 설명, 캐시된 결합 메시지를 기반으로
+ * 초기 번역 상태(최신 결합 메시지와 타겟 언어 맵)를 계산하는 함수.
+ *
+ * @param {string[]} baseLanguages - 기준이 되는 언어들의 배열 (예: ['ko', 'en'])
+ * @param {Object.<string, Object.<string, string>>} messageMap - 각 언어별 메시지 맵 (messageMap[lang][messageKey] = message)
+ * @param {Object.<string, string>} explanations - 각 메시지 키에 대한 설명 객체
+ * @param {Object.<string, Object>} combinedMessages_cached - 이전에 캐시된 결합 메시지 객체
+ * @returns {{
+ *   combinedMessages_latest: Object.<string, Object>,
+ *   targetLanguageMap: Object.<string, { missingMessageKeys: string[], value: Object }>
+ * }} - 최신 결합 메시지와 타겟 언어별(기준 언어 제외) 번역 상태 맵
  */
 export function calculateInitialTranslationStateByBaseLanguages(
 	baseLanguages,
@@ -188,14 +197,11 @@ export function integrateTranslatedMessages(
 }
 
 /**
- * 특정 언어에 대한 메시지를 번역하고 결과를 통합하는 비동기 함수입니다.
+ * 여러 언어의 메시지 맵과 설명 객체를 받아, 각 메시지 키별로 언어별 메시지와 설명을 포함하는 새 캐시 객체를 반환하는 함수.
  *
- * @param {string} language - 대상 언어 코드
- * @param {object} languageMessageObject - 해당 언어의 메시지 정보 객체
- * @param {object} combinedMessages_latest - 최신 결합 메시지 객체
- * @param {object} dictionary - 번역 사전 객체
- * @param {function} getTranslatedMessages - 메시지 번역을 수행하는 비동기 함수
- * @returns {Promise<object>} - 번역 결과가 포함된 업데이트된 언어 메시지 정보 객체
+ * @param {Object.<string, Object.<string, string>>} languageMessageMaps - 언어별 메시지 맵 (예: { ko: { key1: '...', ... }, en: { key1: '...', ... } })
+ * @param {Object.<string, string>} explanations - 메시지 키별 설명 객체 (예: { key1: '설명', ... })
+ * @returns {Object.<string, Object>} - 메시지 키별로 언어별 메시지와 설명이 포함된 새 캐시 객체
  */
 export function getNewCache(languageMessageMaps, explanations) {
 	const newCache = {}
