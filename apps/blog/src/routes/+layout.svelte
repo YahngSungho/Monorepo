@@ -47,54 +47,54 @@ const emailErrorMessageList = {
 	unknownError: '이유는 뭔지 몰라도 구독에 실패함',
 }
 
-	/**
-	 * 구독 폼 제출 처리 (API 엔드포인트로 POST)
-	 * @param {SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }} event
-	 */
-	async function handleSubscribeSubmit_action(event) {
-		event.preventDefault()
-		if (isSubmitting) {
-			return
-		}
-		isSubmitting = true
-
-		isSubscribed = false
-		const isValid = validateEmail(emailValue)
-		if (!isValid) {
-			emailErrorMessage = emailErrorMessageList.incorrectFormat
-			return
-		}
-		emailErrorMessage = ''
-		formResult = null
-
-		try {
-			const formEl = event.currentTarget
-			const response = await fetch(formEl.action, {
-				body: new FormData(formEl),
-				method: 'POST',
-			})
-			const responseData = await response.json()
-			const success = response.ok && response.status === 200
-			formResult = {
-				submittedEmail: responseData?.email,
-				success,
-			}
-			if (success) {
-				isSubscribed = true
-			} else {
-				if (response.status === 400) {
-					emailErrorMessage = emailErrorMessageList.incorrectFormat
-				} else {
-					emailErrorMessage = emailErrorMessageList.unknownError
-				}
-			}
-		} catch {
-			emailErrorMessage = emailErrorMessageList.unknownError
-		} finally {
-			// eslint-disable-next-line require-atomic-updates
-			isSubmitting = false
-		}
+/**
+ * 구독 폼 제출 처리 (API 엔드포인트로 POST)
+ * @param {SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }} event
+ */
+async function handleSubscribeSubmit_action(event) {
+	event.preventDefault()
+	if (isSubmitting) {
+		return
 	}
+	isSubmitting = true
+
+	isSubscribed = false
+	const isValid = validateEmail(emailValue)
+	if (!isValid) {
+		emailErrorMessage = emailErrorMessageList.incorrectFormat
+		return
+	}
+	emailErrorMessage = ''
+	formResult = null
+
+	try {
+		const formEl = event.currentTarget
+		const response = await fetch(formEl.action, {
+			body: new FormData(formEl),
+			method: 'POST',
+		})
+		const responseData = await response.json()
+		const success = response.ok && response.status === 200
+		formResult = {
+			submittedEmail: responseData?.email,
+			success,
+		}
+		if (success) {
+			isSubscribed = true
+		} else {
+			if (response.status === 400) {
+				emailErrorMessage = emailErrorMessageList.incorrectFormat
+			} else {
+				emailErrorMessage = emailErrorMessageList.unknownError
+			}
+		}
+	} catch {
+		emailErrorMessage = emailErrorMessageList.unknownError
+	} finally {
+		// eslint-disable-next-line require-atomic-updates
+		isSubmitting = false
+	}
+}
 
 onMount(() => {
 	visited = store.get('visited') || {}
@@ -477,8 +477,6 @@ let jsonLd = $derived({
 					<div role="status" transition:slide={{ duration: 300 }}>{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}</div>
 				{/if}
 				</div>
-
-
 				</form>
 
 				<div style:z-index="1" style:overflow="visible">
