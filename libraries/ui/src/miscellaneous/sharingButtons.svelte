@@ -25,7 +25,7 @@ let isCopied = $state(false)
 			size="xs"
 			variant="outline"
 		>
-			{isCopied ? '복사됨' : '복사하기'}
+			{isCopied ? '복사 됨' : '복사하기'}
 		</Button>
 	</div>
 
