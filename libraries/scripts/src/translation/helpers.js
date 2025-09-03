@@ -32,7 +32,6 @@ export function getValidLocales() {
 	return settings.locales
 }
 
-
 /**
  * 여러 기준 언어(baseLanguages)와 메시지 맵, 설명, 캐시된 결합 메시지를 기반으로
  * 초기 번역 상태(최신 결합 메시지와 타겟 언어 맵)를 계산하는 함수.
