@@ -5,6 +5,14 @@ import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/fu
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
+export function getInitialLanguageMap() {
+	const result = {}
+	for (const language of getValidLocales()) {
+		result[language] = {}
+	}
+	return result
+}
+
 export function getValidLocales() {
 	// Vitest/Jest 같은 테스트 환경에서는 모듈 최상단(모듈 스코프)에서 fs 모듈을 바로 사용하면,
 	// 테스트 설정(예: fs 모의 객체)이 적용되기 전에 파일 읽기 코드가 먼저 실행될 수 있다.
@@ -24,27 +32,11 @@ export function getValidLocales() {
 	return settings.locales
 }
 
-export function getInitialLanguageMap() {
-	const result = {}
-	for (const language of getValidLocales()) {
-		result[language] = {}
-	}
-	return result
-}
-
 /**
  * combinedMessage 객체의 모든 언어 내용을 정규화
  * @param {object} combinedMessage - { ko: string, en: string, explanation?: string }
  * @returns {object} 정규화된 combinedMessage
  */
-function normalizeCombinedMessage(combinedMessage) {
-	if (!combinedMessage) return combinedMessage
-
-	const mapped = R.mapObject((value) => (value ? normalizeString(value) : value))(combinedMessage)
-	// 값이 undefined인 키는 제거하여, 키가 없는 것과 동일하게 취급
-	return R.pickBy((v) => v !== undefined)(mapped)
-}
-
 export function calculateInitialTranslationStateByBaseLanguages(
 	baseLanguages,
 	messageMap,
@@ -103,6 +95,14 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	})
 
 	return { combinedMessages_latest, targetLanguageMap: finalTargetLanguageMap }
+}
+
+function normalizeCombinedMessage(combinedMessage) {
+	if (!combinedMessage) return combinedMessage
+
+	const mapped = R.mapObject((value) => (value ? normalizeString(value) : value))(combinedMessage)
+	// 값이 undefined인 키는 제거하여, 키가 없는 것과 동일하게 취급
+	return R.pickBy((v) => v !== undefined)(mapped)
 }
 
 /**
@@ -197,6 +197,29 @@ export function integrateTranslatedMessages(
  * @param {function} getTranslatedMessages - 메시지 번역을 수행하는 비동기 함수
  * @returns {Promise<object>} - 번역 결과가 포함된 업데이트된 언어 메시지 정보 객체
  */
+export function getNewCache(languageMessageMaps, explanations) {
+	const newCache = {}
+	for (const [language, languageMessageMap] of Object.entries(languageMessageMaps)) {
+		for (const [messageKey, messageValue] of Object.entries(languageMessageMap)) {
+			if (newCache[messageKey]) {
+				newCache[messageKey][language] = normalizeString(messageValue)
+			} else {
+				newCache[messageKey] = {
+					[language]: normalizeString(messageValue),
+				}
+			}
+		}
+	}
+
+	for (const messageKey of Object.keys(newCache)) {
+		if (explanations[messageKey]) {
+			newCache[messageKey].explanation = normalizeString(explanations[messageKey])
+		}
+	}
+
+	return newCache
+}
+
 export async function translateOneLanguageMessages(
 	language,
 	languageMessageObject,
@@ -235,27 +258,4 @@ export async function translateOneLanguageMessages(
 			...newDictionary,
 		},
 	}
-}
-
-export function getNewCache(languageMessageMaps, explanations) {
-	const newCache = {}
-	for (const [language, languageMessageMap] of Object.entries(languageMessageMaps)) {
-		for (const [messageKey, messageValue] of Object.entries(languageMessageMap)) {
-			if (newCache[messageKey]) {
-				newCache[messageKey][language] = normalizeString(messageValue)
-			} else {
-				newCache[messageKey] = {
-					[language]: normalizeString(messageValue),
-				}
-			}
-		}
-	}
-
-	for (const messageKey of Object.keys(newCache)) {
-		if (explanations[messageKey]) {
-			newCache[messageKey].explanation = normalizeString(explanations[messageKey])
-		}
-	}
-
-	return newCache
 }

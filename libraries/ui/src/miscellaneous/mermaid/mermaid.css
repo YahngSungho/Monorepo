@@ -1,52 +1,51 @@
 .mermaid-container {
-& p {
-	font-size: 18px;
-}
+	& p {
+		font-size: 18px;
+	}
 
-& foreignObject {
-	overflow: visible;
-}
+	& foreignObject {
+		overflow: visible;
+	}
 
-& svg rect,
-& svg circle,
-& svg ellipse,
-& svg polygon,
-& svg line {
-	stroke: var(--foreground) !important;
-}
+	& svg rect,
+	& svg circle,
+	& svg ellipse,
+	& svg polygon,
+	& svg line {
+		stroke: var(--foreground) !important;
+	}
 
-& svg rect,
-& svg circle,
-& svg ellipse,
-& svg polygon {
-	stroke-width: 2px !important;
-}
+	& svg rect,
+	& svg circle,
+	& svg ellipse,
+	& svg polygon {
+		stroke-width: 2px !important;
+	}
 
-& .node rect,
-& .node circle,
-& .node ellipse,
-& .node polygon,
-& .node path {
-	stroke-width: 4px !important;
-}
+	& .node rect,
+	& .node circle,
+	& .node ellipse,
+	& .node polygon,
+	& .node path {
+		stroke-width: 4px !important;
+	}
 
-& .label rect {
-	background-color: var(--background) !important;
-	stroke: none !important;
-}
+	& .label rect {
+		background-color: var(--background) !important;
+		stroke: none !important;
+	}
 
-& .flowchart-link {
-	/* stroke-dasharray: 4, 4 !important; 기존 점선 정의 주석 처리 */
-	stroke-dasharray: 10, 5 !important;
-	stroke-width: 2px !important;
-	animation: flow-highlight 1.5s linear infinite; /* 새 애니메이션 적용 */
-}
+	& .flowchart-link {
+		/* stroke-dasharray: 4, 4 !important; 기존 점선 정의 주석 처리 */
+		stroke-dasharray: 10, 5 !important;
+		stroke-width: 2px !important;
+		animation: flow-highlight 1.5s linear infinite; /* 새 애니메이션 적용 */
+	}
 
-}
-
-.mermaid-container .mermaid-dim {
-	opacity: 0.3 !important; /* 흐리게 만들기 (값 조절 가능) */
-	transition: opacity 0.2s ease-in-out; /* 부드러운 전환 효과 */
+	& .mermaid-dim {
+		opacity: 0.3 !important; /* 흐리게 만들기 (값 조절 가능) */
+		transition: opacity 0.2s ease-in-out; /* 부드러운 전환 효과 */
+	}
 }
 
 /* 기본 상태 및 전환 효과 */
@@ -63,7 +62,6 @@
 .mermaid-container .arrowMarkerPath {
 	transform: scale(1.5, 2) translateX(-7px) translateY(-2.5px);
 }
-
 
 /* 기존 flow 키프레임 대신 새로운 키프레임 정의 */
 @keyframes flow-highlight {

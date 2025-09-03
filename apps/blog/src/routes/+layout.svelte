@@ -324,7 +324,10 @@ let jsonLd = $derived({
 
 		<div class="sidebar boxed">
 			<div
-				style=" position: relative;display: flex; flex-flow: column; gap: var(--space-em-cqi-3xs-2xs);"
+				style:position="relative"
+				style:flex-flow="column"
+				style:gap="var(--space-em-cqi-3xs-2xs)"
+				style:display="flex"
 			>
 				<div
 					style:--value={progress}
@@ -335,11 +338,20 @@ let jsonLd = $derived({
 					role="progressbar"
 				></div>
 
-				<div style="z-index: 1; inline-size: fit-content; background-color: var(--color-base-100);">
+				<div
+					style:z-index="1"
+					style:inline-size="fit-content"
+					style:background-color="var(--color-base-100)"
+				>
 					<VariationSetter {getLocale} {setLocale} size="sm" />
 				</div>
 
-				<div style=" z-index: 1;display: flex; flex-direction: column; inline-size: fit-content;">
+				<div
+					style:z-index="1"
+					style:display="flex"
+					style:inline-size="fit-content"
+					style:flex-direction="column"
+				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 					<!-- <div style="font-size: var(--font-size-fluid-em-cqi-02);">
 					sunghoyahng@gmail.com
@@ -351,10 +363,13 @@ let jsonLd = $derived({
 				</div>
 
 				<div
-					style="z-index: 1; inline-size: 17em; max-inline-size: 90%; background-color: var(--background);"
+					style:z-index="1"
+					style:inline-size="17em"
+					style:background-color="var(--background)"
+					style:max-inline-size="90%"
 					class="join"
 				>
-					<div style="flex-grow: 1;">
+					<div style:flex-grow="1">
 						<label
 							style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
@@ -377,7 +392,7 @@ let jsonLd = $derived({
 					</ConfettiButton>
 				</div>
 
-				<div style=" z-index: 1;overflow: visible;">
+				<div style:z-index="1" style:overflow="visible">
 					<Button
 						style="min-block-size: auto;"
 						onclick={() => {
@@ -391,11 +406,12 @@ let jsonLd = $derived({
 						:	'이 블로그 공유하기...'}
 					</Button>
 					{#if sharingButtonsOpen}
-						<div style="cursor: default;" transition:slide={{ duration: 300 }}>
+						<div style:cursor="default" transition:slide={{ duration: 300 }}>
 							<div
-								style=" inline-size: 100%; padding: var(--space-em-cqi-xs-s); font-size: var(--font-size-fluid-em-cqi-01);
-							background-color: var(--background);
-							"
+								style:inline-size="100%"
+								style:padding="var(--space-em-cqi-xs-s)"
+								style:background-color="var(--background)"
+								style:font-size="var(--font-size-fluid-em-cqi-01)"
 							>
 								<SharingButtons title={sharingData.title} url={sharingData.url} />
 							</div>

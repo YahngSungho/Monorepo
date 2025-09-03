@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const config = {
+	extensions: ['.svelte', '.md'],
 	kit: {
 		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
@@ -18,7 +19,6 @@ const config = {
 		},
 	},
 	preprocess: [vitePreprocess()],
-	extensions: ['.svelte', '.md'],
 }
 
 export default config

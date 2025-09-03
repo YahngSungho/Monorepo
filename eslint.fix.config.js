@@ -23,14 +23,17 @@ const overrideConfig = [
 				'warn',
 				'default', // or "all" or "html" or "none"
 			],
+			'svelte/mustache-spacing': 'warn',
+			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 			'svelte/no-trailing-spaces': 'warn',
 			'svelte/no-useless-mustaches': 'warn',
-			'svelte/prefer-class-directive': ['warn', {
-				prefer: 'always'
-			}],
-			'svelte/mustache-spacing': 'warn',
+			'svelte/prefer-class-directive': [
+				'warn',
+				{
+					prefer: 'always',
+				},
+			],
 			'svelte/prefer-style-directive': 'warn',
-			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 			'svelte/require-store-reactive-access': 'warn',
 			'svelte/shorthand-attribute': 'warn',
 			'svelte/shorthand-directive': 'warn',
@@ -80,7 +83,7 @@ const overrideConfig = [
 					partitionByComment: true,
 					partitionByNewLine: true,
 				},
-			]
+			],
 		},
 	},
 ]
