@@ -93,9 +93,6 @@ importers:
       cursor-tools:
         specifier: latest
         version: 0.6.0-alpha.12(@playwright/test@1.55.0)(deepmerge@4.3.1)(ws@8.18.3)
-      dotenv:
-        specifier: ^16.5.0
-        version: 16.6.1
       eslint:
         specifier: ^9.28.0
         version: 9.34.0(jiti@2.5.1)
