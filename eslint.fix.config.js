@@ -23,6 +23,15 @@ const overrideConfig = [
 				'warn',
 				'default', // or "all" or "html" or "none"
 			],
+			'svelte/indent': [
+				'warn',
+				{
+					ignoredNodes: [],
+					indent: 'tab',
+					indentScript: false,
+					switchCase: 1,
+				},
+			],
 			'svelte/mustache-spacing': 'warn',
 			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
 			'svelte/no-trailing-spaces': 'warn',

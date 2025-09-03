@@ -33,11 +33,11 @@ let isSubscribed = $state(false)
 let emailErrorMessage = $state('')
 let isSubmitting = $state(false)
 
-function validateEmail (emailValue0) {
+function validateEmail(emailValue0) {
 	const result = emailSchema.safeParse(emailValue0)
 	return result.success
 }
-function handleInput_action () {
+function handleInput_action() {
 	emailErrorMessage = ''
 	isSubscribed = false
 }
@@ -47,54 +47,54 @@ const emailErrorMessageList = {
 	unknownError: '이유는 뭔지 몰라도 구독에 실패함',
 }
 
-	/**
-	 * 구독 폼 제출 처리 (API 엔드포인트로 POST)
-	 * @param {SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }} event
-	 */
-	async function handleSubscribeSubmit_action(event) {
-		event.preventDefault()
-		if (isSubmitting) {
-			return
-		}
-		isSubmitting = true
-
-		isSubscribed = false
-		const isValid = validateEmail(emailValue)
-		if (!isValid) {
-			emailErrorMessage = emailErrorMessageList.incorrectFormat
-			return
-		}
-		emailErrorMessage = ''
-		formResult = null
-
-		try {
-			const formEl = event.currentTarget
-			const response = await fetch(formEl.action, {
-				body: new FormData(formEl),
-				method: 'POST',
-			})
-			const responseData = await response.json()
-			const success = response.ok && response.status === 200
-			formResult = {
-				submittedEmail: responseData?.email,
-				success,
-			}
-			if (success) {
-				isSubscribed = true
-			} else {
-				if (response.status === 400) {
-					emailErrorMessage = emailErrorMessageList.incorrectFormat
-				} else {
-					emailErrorMessage = emailErrorMessageList.unknownError
-				}
-			}
-		} catch {
-			emailErrorMessage = emailErrorMessageList.unknownError
-		} finally {
-			// eslint-disable-next-line require-atomic-updates
-			isSubmitting = false
-		}
+/**
+ * 구독 폼 제출 처리 (API 엔드포인트로 POST)
+ * @param {SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }} event
+ */
+async function handleSubscribeSubmit_action(event) {
+	event.preventDefault()
+	if (isSubmitting) {
+		return
 	}
+	isSubmitting = true
+
+	isSubscribed = false
+	const isValid = validateEmail(emailValue)
+	if (!isValid) {
+		emailErrorMessage = emailErrorMessageList.incorrectFormat
+		return
+	}
+	emailErrorMessage = ''
+	formResult = null
+
+	try {
+		const formEl = event.currentTarget
+		const response = await fetch(formEl.action, {
+			body: new FormData(formEl),
+			method: 'POST',
+		})
+		const responseData = await response.json()
+		const success = response.ok && response.status === 200
+		formResult = {
+			submittedEmail: responseData?.email,
+			success,
+		}
+		if (success) {
+			isSubscribed = true
+		} else {
+			if (response.status === 400) {
+				emailErrorMessage = emailErrorMessageList.incorrectFormat
+			} else {
+				emailErrorMessage = emailErrorMessageList.unknownError
+			}
+		}
+	} catch {
+		emailErrorMessage = emailErrorMessageList.unknownError
+	} finally {
+		// eslint-disable-next-line require-atomic-updates
+		isSubmitting = false
+	}
+}
 
 onMount(() => {
 	visited = store.get('visited') || {}
@@ -436,49 +436,76 @@ let jsonLd = $derived({
 					</Link>
 				</div>
 
-				<form action="/api/subscribe" autocomplete="on" method="post" onsubmit={handleSubscribeSubmit_action}>
-				<div
-					style:z-index="1"
-					style:inline-size="17em"
-					style:background-color="var(--background)"
-					style:max-inline-size="90%"
-					class="join"
+				<form
+					action="/api/subscribe"
+					autocomplete="on"
+					method="post"
+					onsubmit={handleSubscribeSubmit_action}
 				>
-					<div style:flex-grow="1">
-						<label
-						style="border: 1px solid currentcolor !important;"
-							class="input input-sm floating-label join-item"
-							for="email"
-						>
-							<input id="email" name="email" autocomplete="email" disabled={isSubmitting} oninput={handleInput_action} placeholder="나의@이메일.com" required type="email" bind:value={emailValue} />
-							<span>이메일</span>
-						</label>
-					</div>
-					<ConfettiButton
-						class="join-item"
-						amount={10}
-						colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
-						duration={750}
-						isConfettiActivated={isSubscribed && !isSubmitting}
-						noGravity
-						x={[-0.5, 0.5]}
-						y={[-0.5, 0.5]}
+					<div
+						style:z-index="1"
+						style:inline-size="17em"
+						style:background-color="var(--background)"
+						style:max-inline-size="90%"
+						class="join"
 					>
-						<Button class="join-item" loading={isSubmitting} size="sm" type="submit">{isSubscribed ? '구독 됨!' : '구독하기'}</Button>
-					</ConfettiButton>
-				</div>
+						<div style:flex-grow="1">
+							<label
+								style="border: 1px solid currentcolor !important;"
+								class="input input-sm floating-label join-item"
+								for="email"
+							>
+								<input
+									id="email"
+									name="email"
+									autocomplete="email"
+									disabled={isSubmitting}
+									oninput={handleInput_action}
+									placeholder="나의@이메일.com"
+									required
+									type="email"
+									bind:value={emailValue}
+								/>
+								<span>이메일</span>
+							</label>
+						</div>
+						<ConfettiButton
+							class="join-item"
+							amount={10}
+							colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
+							duration={750}
+							isConfettiActivated={isSubscribed && !isSubmitting}
+							noGravity
+							x={[-0.5, 0.5]}
+							y={[-0.5, 0.5]}
+						>
+							<Button class="join-item" loading={isSubmitting} size="sm" type="submit">
+								{isSubscribed ? '구독 됨!' : '구독하기'}
+							</Button>
+						</ConfettiButton>
+					</div>
 
-				<div style:font-size="var(--font-size-fluid-em-cqi-01)" style:z-index="1" style:position="relative">
-					{#if emailErrorMessage}
-					<div style:color="var(--color-destructive)" role="alert" transition:slide={{ duration: 300 }}>{emailErrorMessage}</div>
-				{/if}
+					<div
+						style:font-size="var(--font-size-fluid-em-cqi-01)"
+						style:z-index="1"
+						style:position="relative"
+					>
+						{#if emailErrorMessage}
+							<div
+								style:color="var(--color-destructive)"
+								role="alert"
+								transition:slide={{ duration: 300 }}
+							>
+								{emailErrorMessage}
+							</div>
+						{/if}
 
-				{#if !emailErrorMessage && isSubscribed && formResult?.submittedEmail}
-					<div role="status" transition:slide={{ duration: 300 }}>{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}</div>
-				{/if}
-				</div>
-
-
+						{#if !emailErrorMessage && isSubscribed && formResult?.submittedEmail}
+							<div role="status" transition:slide={{ duration: 300 }}>
+								{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}
+							</div>
+						{/if}
+					</div>
 				</form>
 
 				<div style:z-index="1" style:overflow="visible">
