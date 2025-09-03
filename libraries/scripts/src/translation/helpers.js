@@ -90,8 +90,8 @@ export function calculateInitialTranslationStateByBaseLanguages(
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
-				// 메시지가 변경되었거나 해당 언어에 메시지 자체가 없는 경우
-				if (isMessageChanged || !languageMessage.value[messageKey]) {
+				// if (isMessageChanged || !languageMessage.value[messageKey]) {
+				if (isMessageChanged) {
 					languageMessage.missingMessageKeys.push(messageKey)
 				}
 			}
