@@ -1,5 +1,5 @@
 <script module>
-import { css,cx } from '@emotion/css'
+import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 
 import IconText from '../miscellaneous/icon-text.svelte'
@@ -44,16 +44,16 @@ const newTabProps = {
  */
 let {
 	children = undefined,
-	href = undefined,
-	size = 'md',
-	shape = '',
-	variant = 'primary',
 	class: incomingClass = '',
+	clearBackground = false,
+	dimBackground = false,
+	href = undefined,
 	iconName = '',
 	iconProps = {},
+	shape = '',
+	size = 'md',
+	variant = 'primary',
 	visibilityHidden = false,
-	dimBackground = false,
-	clearBackground = false,
 	...restProps
 } = $props()
 
@@ -74,7 +74,12 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 {#snippet content()}
 	{#if iconName}
-			<IconText class={children ? extraStyles1 : extraStyles2} iconName={iconName} {...iconProps} alone={!children}>{@render children?.()}</IconText>
+		<IconText
+			class={children ? extraStyles1 : extraStyles2}
+			{iconName}
+			{...iconProps}
+			alone={!children}>{@render children?.()}</IconText
+		>
 	{:else}
 		{@render children?.()}
 	{/if}
@@ -83,9 +88,10 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {#if href}
 	<a
 		class={cx(buttonClass, incomingClass)}
-		class:visibilityHidden
-		class:dimBackground
 		class:clearBackground
+		class:dimBackground
+		class:icon-only={iconName && !children}
+		class:visibilityHidden
 		href={isInternalLink ? localizeHref(href) : href}
 		role="button"
 		type="button"
@@ -95,12 +101,24 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		{@render content()}
 	</a>
 {:else}
-	<button class={cx(buttonClass, incomingClass)} class:visibilityHidden class:dimBackground class:clearBackground type="button" {...restProps}>
+	<button
+		class={cx(buttonClass, incomingClass)}
+		class:clearBackground
+		class:dimBackground
+		class:icon-only={iconName && !children}
+		class:visibilityHidden
+		type="button"
+		{...restProps}
+	>
 		{@render content()}
 	</button>
 {/if}
 
 <style>
+.icon-only {
+	padding-inline: var(--space-em-cqi-xs-s);
+}
+
 .btn-outline {
 	border-color: currentcolor;
 	border-width: var(--border-size-2);
@@ -129,5 +147,4 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 .clearBackground {
 	background-color: var(--background);
 }
-
 </style>

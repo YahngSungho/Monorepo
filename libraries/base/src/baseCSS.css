@@ -54,7 +54,7 @@ input:focus {
 }
 
 button,
-.button-type {
+*[type='button'] {
 	cursor: pointer;
 	user-select: none;
 

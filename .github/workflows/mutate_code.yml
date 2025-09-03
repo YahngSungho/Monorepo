@@ -368,7 +368,7 @@ jobs:
           fi
 
           echo "ESLint"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
 
           echo "Stylelint"
           printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input
@@ -610,7 +610,7 @@ jobs:
           MODIFIED_FILES="${{ steps.run_translation.outputs.all_changed_files }}"
 
           echo "ESLint"
-          pnpm exec eslint --fix $MODIFIED_FILES
+          pnpm exec eslint --fix --config eslint.fix.config.js $MODIFIED_FILES
 
           echo "Stylelint"
           STYLELINT_FILES=$(echo "$MODIFIED_FILES" | tr ' ' '\n' | grep -E '\.(css|svelte|md|mdx|mdc)$' | tr '\n' ' ' | sed 's/ $//')
@@ -955,7 +955,7 @@ jobs:
           fi
 
           echo "ESLint"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
 
           echo "Stylelint"
           printf '%s\0' "${filtered[@]}" | grep -z -E '\.(css|svelte|md|mdx|mdc)$' | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input

@@ -72,7 +72,7 @@ function getCachedSvg_action(cacheKey) {
  */
 function setCachedSvg_action(cacheKey, svg) {
 	const cache = readCache_action()
-	cache.entries[cacheKey] = { svg, expiresAt: Date.now() + CACHE_TTL_MS }
+	cache.entries[cacheKey] = { expiresAt: Date.now() + CACHE_TTL_MS, svg }
 	moveKeyToEnd_action(cache, cacheKey)
 	pruneCacheIfNeeded_action(cache)
 	writeCache_action(cache)
@@ -123,7 +123,7 @@ function schedulePurge_action() {
 // 전역 렌더 큐 (탭 전역, 동시성 1)
 const QUEUE_KEY = '__ui_mermaid_render_queue__'
 if (!globalThis[QUEUE_KEY]) {
-	globalThis[QUEUE_KEY] = { tasks: [], running: false }
+	globalThis[QUEUE_KEY] = { running: false, tasks: [] }
 }
 
 /** 백그라운드/idle 시점까지 대기 */
@@ -285,7 +285,7 @@ $effect(() => {
 
 			// 비동기적으로 Mermaid 렌더링 실행
 			const mermaid = await getMermaid_action()
-			const { svg, bindFunctions } = await mermaid.render(id, definition)
+			const { bindFunctions, svg } = await mermaid.render(id, definition)
 
 			// 최신 렌더가 아닐 경우 폐기
 			if (thisRenderSeq !== renderSequence) return

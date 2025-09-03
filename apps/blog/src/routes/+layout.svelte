@@ -291,7 +291,7 @@ let jsonLd = $derived({
 				iconName="mdi:chevron-double-up"
 				onclick={scrollToTop_action}
 				variant="outline"
-			></Button>
+			/>
 			<Button
 				class="join-item"
 				dimBackground
@@ -299,7 +299,7 @@ let jsonLd = $derived({
 				iconName="mdi:chevron-double-down"
 				onclick={scrollToBottom_action}
 				variant="outline"
-			></Button>
+			/>
 		</div>
 	{/if}
 {/snippet}
@@ -433,6 +433,8 @@ let jsonLd = $derived({
 
 	block-size: 100svb;
 
+	--shared-padding: var(--space-s-l);
+
 	& > .sidebar {
 		display: flex;
 		/* flex-basis를 밑의 breakpoint랑 일치시켜야함 */
@@ -442,8 +444,8 @@ let jsonLd = $derived({
 		gap: var(--space-em-cqi-m);
 
 		margin-block-start: auto;
-		padding: var(--space-m);
-		padding-block-end: calc(var(--space-m) + var(--space-em-cqi-xl));
+		padding: var(--shared-padding);
+		padding-block-end: calc(var(--shared-padding) + var(--space-cqi-xl));
 	}
 
 	& > .main {
@@ -453,12 +455,12 @@ let jsonLd = $derived({
 		/* min-inline-size를 밑의 breakpoint랑 일치시켜야함 */
 		min-inline-size: 60%;
 		max-block-size: none;
-		padding: var(--space-m);
+		padding: var(--shared-padding);
 	}
 
 	& > .scroll-buttons {
-		inset-block-start: var(--space-m);
-		inset-inline-end: calc(var(--space-m) + 25rem);
+		inset-block-start: var(--shared-padding);
+		inset-inline-end: calc(var(--shared-padding) + 25rem);
 	}
 }
 
@@ -475,7 +477,7 @@ let jsonLd = $derived({
 
 		& > .sidebar {
 			margin-block-start: 0;
-			padding: var(--space-m);
+			padding: var(--shared-padding);
 		}
 	}
 }
