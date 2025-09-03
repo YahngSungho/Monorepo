@@ -6,15 +6,6 @@ import defaultConfig from './eslint.config.js'
 const overrideConfig = [
 	{
 		rules: {
-			"svelte/indent": [
-				"warn",
-				{
-					"indent": 'tab',
-					'indentScript': false,
-					"ignoredNodes": [],
-					"switchCase": 1,
-				}
-			],
 			'svelte/first-attribute-linebreak': 'warn',
 			'svelte/html-closing-bracket-new-line': 'warn',
 			'svelte/html-closing-bracket-spacing': 'warn',
@@ -31,6 +22,15 @@ const overrideConfig = [
 			'svelte/html-self-closing': [
 				'warn',
 				'default', // or "all" or "html" or "none"
+			],
+			'svelte/indent': [
+				'warn',
+				{
+					ignoredNodes: [],
+					indent: 'tab',
+					indentScript: false,
+					switchCase: 1,
+				},
 			],
 			'svelte/mustache-spacing': 'warn',
 			'svelte/no-spaces-around-equal-signs-in-attribute': 'warn',
