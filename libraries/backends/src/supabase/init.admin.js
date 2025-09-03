@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined'
+const isBrowser = globalThis.window !== undefined && typeof document !== 'undefined'
 if (isBrowser) {
 	throw new Error('비밀 노출')
 }

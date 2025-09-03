@@ -1,7 +1,7 @@
-import { json } from '@sveltejs/kit';
-import { emailSchema } from '@library/helpers/zod-schemas';
 import { supabase_admin } from '@library/backends/supabase_admin'
+import { emailSchema } from '@library/helpers/zod-schemas';
 import { getLocale } from '@library/paraglide/helpers'
+import { json } from '@sveltejs/kit';
 
 async function addSubscription_action(myEmail) {
 	const { error } = await supabase_admin.from('blog-subscribers').upsert({ email: myEmail, locale: getLocale(), subscribed: true }, { onConflict: 'email' });
@@ -28,7 +28,7 @@ export const POST = async ({ request }) => {
 	try {
 		await addSubscription_action(email);
 		return json({ email },
-			{ status: 200, headers: { 'content-type': 'application/json' } },
+			{ headers: { 'content-type': 'application/json' }, status: 200 },
 		);
 	} catch (error) {
 		console.error(error);

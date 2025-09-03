@@ -1,9 +1,9 @@
 <script>
 import '@library/base/fontStyle.css'
 
-import { emailSchema } from '@library/helpers/zod-schemas'
 import { idleRun_action } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
+import { emailSchema } from '@library/helpers/zod-schemas'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button_daisy'
 import ConfettiButton from '@library/ui/confettiButton'
@@ -70,14 +70,14 @@ const emailErrorMessageList = {
 		try {
 			const formEl = event.currentTarget
 			const response = await fetch(formEl.action, {
-				method: 'POST',
 				body: new FormData(formEl),
+				method: 'POST',
 			})
 			const responseData = await response.json()
 			const success = response.ok && response.status === 200
 			formResult = {
-				success,
 				submittedEmail: responseData?.email,
+				success,
 			}
 			if (success) {
 				isSubscribed = true
@@ -436,7 +436,7 @@ let jsonLd = $derived({
 					</Link>
 				</div>
 
-				<form autocomplete="on" action="/api/subscribe" method='post' onsubmit={handleSubscribeSubmit_action}>
+				<form action="/api/subscribe" autocomplete="on" method="post" onsubmit={handleSubscribeSubmit_action}>
 				<div
 					style:z-index="1"
 					style:inline-size="17em"
@@ -446,11 +446,11 @@ let jsonLd = $derived({
 				>
 					<div style:flex-grow="1">
 						<label
-						for="email"
-							style="border: 1px solid currentcolor !important;"
+						style="border: 1px solid currentcolor !important;"
 							class="input input-sm floating-label join-item"
+							for="email"
 						>
-							<input disabled={isSubmitting} autocomplete="email" placeholder="나의@이메일.com" required id="email" name="email" type="email" bind:value={emailValue} oninput={handleInput_action} />
+							<input id="email" name="email" autocomplete="email" disabled={isSubmitting} oninput={handleInput_action} placeholder="나의@이메일.com" required type="email" bind:value={emailValue} />
 							<span>이메일</span>
 						</label>
 					</div>
@@ -464,13 +464,13 @@ let jsonLd = $derived({
 						x={[-0.5, 0.5]}
 						y={[-0.5, 0.5]}
 					>
-						<Button loading={isSubmitting} class="join-item" size="sm" type="submit">{isSubscribed ? '구독 됨!' : '구독하기'}</Button>
+						<Button class="join-item" loading={isSubmitting} size="sm" type="submit">{isSubscribed ? '구독 됨!' : '구독하기'}</Button>
 					</ConfettiButton>
 				</div>
 
-				<div style="font-size: var(--font-size-fluid-em-cqi-01); z-index: 1; position: relative;">
+				<div style:font-size="var(--font-size-fluid-em-cqi-01)" style:z-index="1" style:position="relative">
 					{#if emailErrorMessage}
-					<div role="alert" style="color: var(--color-destructive);" transition:slide={{ duration: 300 }}>{emailErrorMessage}</div>
+					<div style:color="var(--color-destructive)" role="alert" transition:slide={{ duration: 300 }}>{emailErrorMessage}</div>
 				{/if}
 
 				{#if !emailErrorMessage && isSubscribed && formResult?.submittedEmail}
