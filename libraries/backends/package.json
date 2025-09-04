@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@library/helpers": "workspace:*",
 		"@library/library-base": "workspace:*",
-		"@supabase/supabase-js": "^2.54.0"
+		"@supabase/supabase-js": "^2.57.0"
 	},
 	"devDependencies": {},
 	"exports": {
