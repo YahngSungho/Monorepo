@@ -26,7 +26,6 @@
 			{
 				"beginRegex": "^\\s*<([A-Z][\\w:-]*)\\b",
 				"endRegex": "^(?:.*\\/>\\s*$)|(?:<\\/\\1\\s*>)",
-				"foldLastLine": [true, false],
 				"nested": true
 			},
 			{

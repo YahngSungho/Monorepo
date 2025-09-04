@@ -427,10 +427,6 @@ let jsonLd = $derived({
 					style:flex-direction="column"
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<!-- <div style="font-size: var(--font-size-fluid-em-cqi-02);">
-					sunghoyahng@gmail.com
-				</div> -->
-					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 					<Link style="font-size: min(calc(100cqi / 6.2), 5em); font-weight: 900;" href="/">
 						sungho.blog
 					</Link>
@@ -500,7 +496,7 @@ let jsonLd = $derived({
 							</div>
 						{/if}
 
-						{#if !emailErrorMessage && isSubscribed && formResult?.submittedEmail}
+						{#if isSubscribed && formResult?.submittedEmail && !emailErrorMessage}
 							<div role="status" transition:slide={{ duration: 300 }}>
 								{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}
 							</div>

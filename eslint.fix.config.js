@@ -26,7 +26,7 @@ const overrideConfig = [
 			'svelte/indent': [
 				'warn',
 				{
-					ignoredNodes: [],
+					ignoredNodes: ['style'],
 					indent: 'tab',
 					indentScript: false,
 					switchCase: 1,
