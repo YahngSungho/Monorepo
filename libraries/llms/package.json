@@ -16,7 +16,7 @@
 		"@google/generative-ai": "^0.24.1",
 		"@library/helpers": "workspace:*",
 		"@library/library-base": "workspace:*",
-		"ai": "^4.3.9",
+		"ai": "^5.0.33",
 		"zod": "^3.25.36"
 	},
 	"exports": {
