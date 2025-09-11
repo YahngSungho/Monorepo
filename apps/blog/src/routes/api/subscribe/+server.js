@@ -2,7 +2,7 @@ import { supabase_admin } from '@library/backends/supabase_admin'
 import { emailSchema } from '@library/helpers/zod-schemas';
 import { getLocale } from '@library/paraglide/helpers'
 import { json } from '@sveltejs/kit';
-import { sendMails } from '$lib/server/sendMails.js'
+import { sendMails } from '@library/library-top/sendMails'
 
 async function addSubscription_action(myEmail) {
 	const { error } = await supabase_admin.from('blog-subscribers').upsert({ email: myEmail, locale: getLocale(), subscribed: true }, { onConflict: 'email' });

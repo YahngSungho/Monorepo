@@ -609,6 +609,18 @@ importers:
 
   libraries/library-bottom: {}
 
+  libraries/library-top:
+    dependencies:
+      '@library/backends':
+        specifier: workspace:*
+        version: link:../backends
+      '@library/helpers':
+        specifier: workspace:*
+        version: link:../helpers
+      '@library/ui':
+        specifier: workspace:*
+        version: link:../ui
+
   libraries/llms:
     dependencies:
       '@ai-sdk/google':
