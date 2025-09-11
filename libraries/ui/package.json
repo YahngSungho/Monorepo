@@ -82,6 +82,7 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./emailContent": "./src/emailContent/emialContent.svelte",
 		"./mermaid-helpers": "./src/miscellaneous/mermaid/helpers.js",
 		"./base.js": "./src/layouts/base.js",
 		"./confettiButton": "./src/miscellaneous/confettiButton.svelte",
