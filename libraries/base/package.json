@@ -19,7 +19,7 @@
 	},
 	"dependencies": {
 		"@dotenvx/dotenvx": "^1.49.0",
-		"@library/library-base": "workspace:*",
+		"@library/library-bottom": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@qwik.dev/partytown": "^0.11.0",
 		"open-props": "^1.7.15",

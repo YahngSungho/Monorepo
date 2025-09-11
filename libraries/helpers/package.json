@@ -14,7 +14,7 @@
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
-		"@library/library-base": "workspace:*",
+		"@library/library-bottom": "workspace:*",
 		"mutative": "^1.1.0",
 		"rambda": "^10.2.0",
 		"ramda": "^0.31.3",

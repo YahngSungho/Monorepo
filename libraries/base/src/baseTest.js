@@ -1,1 +1,1 @@
-export { runTest } from '@library/library-base/baseTest.js'
+export { runTest } from '@library/library-bottom/baseTest.js'

@@ -500,9 +500,9 @@ importers:
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
-      '@library/library-base':
+      '@library/library-bottom':
         specifier: workspace:*
-        version: link:../library-base
+        version: link:../library-bottom
       '@supabase/supabase-js':
         specifier: ^2.57.0
         version: 2.57.0
@@ -518,9 +518,9 @@ importers:
       '@dotenvx/dotenvx':
         specifier: ^1.49.0
         version: 1.49.0
-      '@library/library-base':
+      '@library/library-bottom':
         specifier: workspace:*
-        version: link:../library-base
+        version: link:../library-bottom
       '@library/paraglide':
         specifier: workspace:*
         version: link:../paraglide
@@ -576,9 +576,9 @@ importers:
 
   libraries/helpers:
     dependencies:
-      '@library/library-base':
+      '@library/library-bottom':
         specifier: workspace:*
-        version: link:../library-base
+        version: link:../library-bottom
       mutative:
         specifier: ^1.1.0
         version: 1.2.0
@@ -607,7 +607,7 @@ importers:
         specifier: ^3.25.36
         version: 3.25.76
 
-  libraries/library-base: {}
+  libraries/library-bottom: {}
 
   libraries/llms:
     dependencies:
@@ -626,9 +626,9 @@ importers:
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
-      '@library/library-base':
+      '@library/library-bottom':
         specifier: workspace:*
-        version: link:../library-base
+        version: link:../library-bottom
       ai:
         specifier: ^4.3.9
         version: 4.3.19(react@19.1.1)(zod@3.25.76)
@@ -641,9 +641,9 @@ importers:
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
-      '@library/library-base':
+      '@library/library-bottom':
         specifier: workspace:*
-        version: link:../library-base
+        version: link:../library-bottom
       '@library/scripts':
         specifier: workspace:*
         version: link:../scripts
@@ -662,9 +662,9 @@ importers:
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
-      '@library/library-base':
+      '@library/library-bottom':
         specifier: workspace:*
-        version: link:../library-base
+        version: link:../library-bottom
       '@library/llms':
         specifier: workspace:*
         version: link:../llms
@@ -701,9 +701,9 @@ importers:
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
-      '@library/library-base':
+      '@library/library-bottom':
         specifier: workspace:*
-        version: link:../library-base
+        version: link:../library-bottom
       '@library/paraglide':
         specifier: workspace:*
         version: link:../paraglide

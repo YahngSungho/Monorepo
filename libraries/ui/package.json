@@ -28,7 +28,7 @@
 		"@internationalized/date": "^3.9.0",
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
-		"@library/library-base": "workspace:*",
+		"@library/library-bottom": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@qwik.dev/partytown": "^0.11.0",
 		"@shikijs/rehype": "^3.4.1",

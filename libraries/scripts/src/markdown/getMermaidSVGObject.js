@@ -1,6 +1,6 @@
 import { getSimpleHash, normalizeString } from '@library/helpers/functions'
 import { optimizeMermaidSvg } from '@library/helpers/svgo'
-import { buildThemeVariables } from '@library/library-base/mermaid'
+import { buildThemeVariables } from '@library/library-bottom/mermaid'
 import { createMermaidRenderer } from 'mermaid-isomorphic'
 
 export async function getMermaidSVGObject(markdownText) {
