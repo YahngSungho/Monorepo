@@ -1,4 +1,4 @@
-import { getDescriptionFromMD } from '@library/helpers/processText'
+import { getDescriptionFromMD } from '@library/helpers/markdown'
 import { redirect } from '@sveltejs/kit'
 
 import { getPost } from '$lib/server/getPost'

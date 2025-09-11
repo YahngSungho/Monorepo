@@ -5,7 +5,7 @@ import { writeFile_async } from '@library/helpers/fs-async'
 
 import { getNewCache } from '../translation/helpers.js'
 import { dictFolderPath } from '../translation/markdown/translation.js'
-import { getFrontmatterObject } from './getFrontmatters.js'
+import { getFrontmatterObject } from '@library/helpers/markdown'
 import { getMermaidSVGObject } from './getMermaidSVGObject.js'
 
 export async function saveFiles_action(

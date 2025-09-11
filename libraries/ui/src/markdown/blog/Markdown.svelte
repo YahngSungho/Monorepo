@@ -16,6 +16,7 @@ import themeLight from 'shiki/themes/vitesse-light.mjs'
 
 import Markdown from '../default/Markdown.svelte'
 import Mermaid from './mermaid.svelte'
+import { removeFrontmatter } from '@library/helpers/markdown'
 
 const highlighter = createHighlighterCoreSync({
 	themes: [themeLight, themeDark],
@@ -53,10 +54,6 @@ const addedPlugins = [
 	},
 	shikiPlugin,
 ]
-
-function removeFrontmatter(markdown) {
-	return markdown.replace(/^---.*?---/s, '')
-}
 </script>
 
 <script>

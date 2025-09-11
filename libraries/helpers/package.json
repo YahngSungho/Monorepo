@@ -36,6 +36,7 @@
 		"./fs-async": "./src/file-systems/async.js",
 		"./fs-sync": "./src/file-systems/sync.js",
 		"./functions": "./src/functions/index.js",
-		"./processText": "./src/functions/processText.js"
+		"./processText": "./src/functions/processText.js",
+		"./markdown": "./src/markdown/index.js"
 	}
 }
