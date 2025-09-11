@@ -18,4 +18,5 @@ export const sendMails_action = sendMails_base({
 	name: 'Sungho Yahng',
 	url: 'sungho.blog',
 	myEmail: 'hi@sungho.blog',
+	preprocessMarkdownText: ((string) => (string.replaceAll('(/posts/', '(https://sungho.blog/posts/')))
 })

@@ -23,22 +23,24 @@ function getEmailHTMLContent(markdownText, mermaidSVGObject) {
 }
 
 export const sendMails_action = R.curry(async (info, content, emailList) => {
-	const { name, url, myEmail } = info
+	const { name, url, myEmail, preprocessMarkdownText = R.identity } = info
 	const { markdownText, mermaidSVGObject } = content
+
 	const frontmatterObject = getFrontmatterObject(markdownText)
 	const {title} = frontmatterObject
 	if (!title) {
 		throw new Error('title is required')
 	}
 
+	const markdownText_preprocessed = preprocessMarkdownText(markdownText)
 	let result
 	try {
 		result = await mg.messages.create(url, {
 			from: `${name} <${myEmail}>`,
 			to: emailList,
 			subject: title,
-			html: juice(getEmailHTMLContent(markdownText, mermaidSVGObject)),
-			text: removeMDAndTags(markdownText),
+			html: juice(getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject)),
+			text: removeMDAndTags(markdownText_preprocessed),
 'recipient-variables': JSON.stringify(toObject(emailList)),
 		})
 	} catch (error) {
