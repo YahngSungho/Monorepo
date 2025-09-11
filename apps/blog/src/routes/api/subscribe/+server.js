@@ -2,7 +2,7 @@ import { supabase_admin } from '@library/backends/supabase_admin'
 import { emailSchema } from '@library/helpers/zod-schemas';
 import { getLocale } from '@library/paraglide/helpers'
 import { json } from '@sveltejs/kit';
-import { sendMails } from '@library/library-top/sendMails'
+import { sendMails_action } from '$lib/server/sendMails.js'
 
 async function addSubscription_action(myEmail) {
 	const { error } = await supabase_admin.from('blog-subscribers').upsert({ email: myEmail, locale: getLocale(), subscribed: true }, { onConflict: 'email' });
@@ -28,9 +28,9 @@ export const POST = async ({ request }) => {
 
 	try {
 		await addSubscription_action(email);
-		await sendMails([email], `
+		await sendMails_action({ mermaidSVGObject: {}, markdownText: `
 ---
-title: Mailgun 테스트 테스트 테스트
+title: 2 Mailgun 테스트 테스트 테스트
 ---
 
 # 두 번째 블로그 포스트에 오신 것을 환영합니다
@@ -170,8 +170,7 @@ HTML
 
 ---
 
-이 문서는 마크다운의 다양한 기능을 테스트하기 위한 샘플입니다.
-			`, {});
+이 문서는 마크다운의 다양한 기능을 테스트하기 위한 샘플입니다.` }, [String(email)]);
 		return json({ email },
 			{ headers: { 'content-type': 'application/json' }, status: 200 },
 		);

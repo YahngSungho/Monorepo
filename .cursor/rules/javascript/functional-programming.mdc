@@ -20,8 +20,9 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
 2. **Preference Order:** **Data > 계산 > 액션**
 
-   - Whenever possible, implement logic as 계산. Consider if 계산 can be represented as data.
-   - Use 액션 only when necessary. Isolate 액션 by extracting as much logic as possible into 계산, minimizing and isolating the code sections with 액션.
+   - Prefer Data to 계산. Prefer 계산 to 액션.
+   - Whenever possible, implement logic as 계산. Consider if 계산 can be represented as data. Isolate 계산 by extracting as much logic as possible into Data.
+   - Use 액션 only when necessary. Isolate 액션 by extracting as much logic as possible into 계산. Always minimize and isolate 액션.
 
 3. **Managing 액션:**
 
@@ -34,10 +35,22 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
 6. **Currying:** A technique of transforming a function that takes multiple arguments into a sequence of functions that each take a single argument. It can improve function reusability and composition (e.g., using `R.curry`).
    - **Caution:** When using `R.curry` (or functions that behave like Ramda's `curry`), if the target function has default parameter values, the `curry` function might not correctly determine the function's arity (the number of arguments it expects). This is because a function's `length` property in JavaScript only counts parameters up to the first one with a default value. Consequently, `curry` might execute the function prematurely with fewer arguments than expected (e.g., returning a Promise immediately for an `async` function) or return something other than a partially applied function. To prevent this, it's advisable to remove default parameter values from the signature of the function being curried and handle defaults explicitly within the function body.
+   - JSDoc for Curried Functions: When you write JSDoc for it, Use callback typedef + type assertion for partially-applied functons.
+
+     ```javascript
+     /**
+      * @callback SendMailsAction
+      * @param {EmailContent} content
+      * @param {string[]} emailList
+      * @returns {Promise<void>}
+      */
+     /** @type {SendMailsAction} */
+     export const sendMails_action = sendMails_base(myInfo)
+     ```
 
 ## Library Usage
 
-- **Rambda / Ramda (via `@library/helpers/R`):** Utility library for functional programming.
+### Ramda / Rambda (via `@library/helpers/R`)
 
   - **Primary Use:** Utilize the `R` object imported from `@library/helpers/R` for functional programming tasks. This export is the primary source for utility functions in this project.
   - **Import:** `import { R } from '@library/helpers/R'`
@@ -54,14 +67,14 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
     - This pattern facilitates partial application and composition.
   - **Example:** Use `R.pipe` for composition and `R.curry` for currying. Employ clear, single-purpose functions like `R.map`, `R.filter`, `R.prop`, `R.concat` from the `R` object within pipes. Handle complex conditional logic or side effects primarily before or after the pipe for better readability.
 
-- **Mutative:** A library to help modify objects or arrays while maintaining immutability.
+### Mutative: A library to help modify objects or arrays while maintaining immutability
 
   - **When to Use:** Consider using `mutative` when Ramda doesn't provide a simple method, when the Ramda equivalent is complicated or just unpopular, or when dealing with deeply nested objects that need immutable updates.
   - **Import:** `import { create } from '@library/helpers/mutative'`
   - **Example:**
 
     ```javascript
-    import { create } from '@library/helpers/mutative' // Path verification needed
+    import { create } from '@library/helpers/mutative'
 
     const baseState = { count: 0, items: [] }
     const nextState = create(baseState, (draft) => {
@@ -70,105 +83,6 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
     })
     // baseState remains unchanged
     ```
-
-## Practical Examples
-
-### Example 1: State Update with Immutability
-
-```javascript
-// Before (mutation)
-function addItem_action(cart, item) {
-	// Assume calculateTotal exists and is 계산
-	cart.items.push(item) // Side effect: modifies original array
-	cart.total = calculateTotal(cart.items) // Side effect: modifies original object
-	return cart
-}
-
-// After (immutability + 계산)
-import { R } from '@library/helpers/R' // Example using Ramda
-
-// Assume calculateTotal exists and is 계산, e.g.:
-const calculateTotal = (items) => R.sum(R.pluck('price', items || []))
-
-const addItem = (cart, item) => {
-	const currentItems = cart.items || []
-	const newItems = R.append(item, currentItems) // Creates a new array using R from @library/helpers/R
-	return {
-		// Creates a new object
-		...cart, // Copy existing properties
-		items: newItems,
-		total: calculateTotal(newItems), // Uses 계산 with R functions
-	}
-}
-
-// Example Usage:
-// const cart1 = { items: [{ name: 'apple', price: 1 }], total: 1 }
-// const item1 = { name: 'banana', price: 2 }
-// const cart2 = addItem(cart1, item1)
-// console.log(cart1) // { items: [{ name: 'apple', price: 1 }], total: 1 } (unchanged)
-// console.log(cart2) // { items: [{ name: 'apple', price: 1 }, { name: 'banana', price: 2 }], total: 3 }
-```
-
-### Example 2: Data Processing with Function Composition
-
-```javascript
-// Before (imperative)
-// Assume fetchUser_action(userId) performs a side effect (e.g., API call)
-// Assume formatName(name) is a 계산
-function processUserData_action(userId) {
-	try {
-		const user = fetchUser_action(userId) // Side effect
-		if (user && user.isActive) {
-			const formattedName = formatName(user.name) // 계산 call
-			console.log(`Active user: ${formattedName}`) // Side effect
-			return formattedName // Returns data but also had 액션
-		}
-		return null
-	} catch (error) {
-		console.error('Failed to process user data:', error) // Side effect (error logging)
-		return null
-	}
-}
-
-// After (function composition + Maybe concept)
-import { R } from '@library/helpers/R'
-
-// Assume fetchUser_action exists
-// Assume formatName exists, e.g., const formatName = (name) => String(name).toUpperCase()
-
-// Function returning a Maybe-like result (conceptual example using simple object)
-const fetchActiveUser = (userId) => {
-	try {
-		const user = fetchUser_action(userId) // Side effect is isolated here
-		// Return a consistent structure indicating success/failure or value presence
-		return user && user.isActive ? { type: 'Just', value: user } : { type: 'Nothing' }
-	} catch (error) {
-		console.error('fetchActiveUser failed:', error) // Keep error side effect contained if desired
-		return { type: 'Nothing' } // Represent failure as Nothing
-	}
-}
-
-// Helper to work with our Maybe-like structure
-const mapMaybe = R.curry((fn, maybe) =>
-	maybe.type === 'Just' ? { type: 'Just', value: fn(maybe.value) } : maybe,
-)
-
-const logUserInfo = R.pipe(
-	fetchActiveUser, // userId => Maybe<User>
-	mapMaybe(R.prop('name')), // Maybe<User> => Maybe<string> (Clear purpose: get 'name')
-	mapMaybe(formatName), // Maybe<string> => Maybe<string> (Clear purpose: format)
-	// Final step: Handle the outcome. Conditional logic/side effect outside the main transformation pipe.
-	(maybeFormattedName) => {
-		if (maybeFormattedName.type === 'Just') {
-			console.log(`Active user: ${maybeFormattedName.value}`)
-		}
-		return maybeFormattedName
-	},
-)
-
-// Example Usage:
-// logUserInfo(123) // Side effect (logging or nothing) occurs upon execution
-```
 
 ## Style Guide
 

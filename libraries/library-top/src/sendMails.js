@@ -1,7 +1,10 @@
 import { mg } from '@library/backends/mailgun'
 import { getFrontmatterObject, removeMDAndTags } from '@library/helpers/markdown'
 import { render } from 'svelte/server'
+// @ts-ignore
 import EmailContent from '@library/ui/emailContent'
+import { R } from '@library/helpers/R'
+import juice from 'juice'
 
 function getEmailHTMLContent(markdownText, mermaidSVGObject) {
 	const { body, head } = render(EmailContent, { props: { value: markdownText, mermaidSVGObject } })
@@ -19,7 +22,9 @@ function getEmailHTMLContent(markdownText, mermaidSVGObject) {
 `;
 }
 
-export async function sendMails(emailList, markdownText, mermaidSVGObject) {
+export const sendMails_action = R.curry(async (info, content, emailList) => {
+	const { name, url, myEmail } = info
+	const { markdownText, mermaidSVGObject } = content
 	const frontmatterObject = getFrontmatterObject(markdownText)
 	const {title} = frontmatterObject
 	if (!title) {
@@ -28,11 +33,11 @@ export async function sendMails(emailList, markdownText, mermaidSVGObject) {
 
 	let result
 	try {
-		result = await mg.messages.create('sungho.blog', {
-			from: "Sungho Yahng <hi@sungho.blog>",
+		result = await mg.messages.create(url, {
+			from: `${name} <${myEmail}>`,
 			to: emailList,
 			subject: title,
-			html: getEmailHTMLContent(markdownText, mermaidSVGObject),
+			html: juice(getEmailHTMLContent(markdownText, mermaidSVGObject)),
 			text: removeMDAndTags(markdownText),
 'recipient-variables': JSON.stringify(toObject(emailList)),
 		})
@@ -42,7 +47,7 @@ export async function sendMails(emailList, markdownText, mermaidSVGObject) {
 	}
 
 	console.log(result)
-}
+})
 
 
 /**
