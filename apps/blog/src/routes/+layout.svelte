@@ -18,7 +18,7 @@ import { slide } from 'svelte/transition'
 import { afterNavigate } from '$app/navigation'
 import { page } from '$app/state'
 import { globalVariables } from '$lib/globalVariables.js'
-import { APP_NAME, EMAIL_SENDER_NAME,URL } from '$lib/info.js'
+import { APP_NAME, EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()
@@ -70,11 +70,7 @@ async function handleSubscribeSubmit_action(event) {
 
 	try {
 		const formEl = event.currentTarget
-		// 여기서 allMetadata를 본문에 같이 담아서 보냄 (쿠키 불필요)
 		const fd = new FormData(formEl)
-		try {
-			fd.set('allMetadata', JSON.stringify(allMetadata))
-		} catch {}
 
 		const response = await fetch(formEl.action, {
 			body: fd,
@@ -526,7 +522,7 @@ let jsonLd = $derived({
 					>
 						{page.url.pathname.includes('posts') ?
 							'이 포스트 공유하기...'
-							:	'이 블로그 공유하기...'}
+						:	'이 블로그 공유하기...'}
 					</Button>
 					{#if sharingButtonsOpen}
 						<div style:cursor="default" transition:slide={{ duration: 300 }}>

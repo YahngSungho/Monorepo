@@ -368,13 +368,13 @@ jobs:
           fi
 
           echo "Stylelint"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input || true
 
           echo "ESLint"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js || true
 
           echo "Prettier"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore || true
         continue-on-error: true
 
       # 8. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
@@ -602,17 +602,17 @@ jobs:
           echo "Stylelint"
           STYLELINT_FILES=$(echo "$MODIFIED_FILES" | tr ' ' '\n' | grep -E '\.(css|svelte|md|mdx|mdc)$' | tr '\n' ' ' | sed 's/ $//')
           if [ -n "$STYLELINT_FILES" ]; then
-            pnpm exec stylelint --fix --allow-empty-input $STYLELINT_FILES
+            pnpm exec stylelint --fix --allow-empty-input $STYLELINT_FILES || true
           else
             echo "Stylelint를 적용할 파일이 없습니다."
           fi
 
           echo "ESLint"
-          pnpm exec eslint --fix --config eslint.fix.config.js $MODIFIED_FILES
+          pnpm exec eslint --fix --config eslint.fix.config.js $MODIFIED_FILES || true
 
 
           echo "Prettier"
-          pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES
+          pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore $MODIFIED_FILES || true
 
           echo "--- 기본 린트 및 포맷팅 완료 ---"
         continue-on-error: true
@@ -896,7 +896,7 @@ jobs:
             esac
           done
           echo "files_no_md count: ${#files_no_md[@]}"
-          for f in "${files_no_md[@]}"; do echo "files_no_md item: $f"; done
+          # for f in "${files_no_md[@]}"; do echo "files_no_md item: $f"; done
 
           echo "HEAD: $(git rev-parse --short HEAD)"
           echo "HEAD subject: $(git log -1 --pretty=%s || true)"
@@ -904,7 +904,7 @@ jobs:
           # 파일별로 '가장 최신(HEAD 기준) 비-임시 커밋'의 subject만 확인해 필터링
           filtered=()
           for f in "${files_no_md[@]}"; do
-            echo "검사 시작: $f"
+            # echo "검사 시작: $f"
             skip=0
             subj=""
             while true; do
@@ -913,7 +913,7 @@ jobs:
               if [ -z "$subj" ]; then
                 break
               fi
-              echo "  cand[$skip]: $subj"
+              # echo "  cand[$skip]: $subj"
               case "$subj" in
                 Temporary\ commit\ *) # 현재 런에서 만든 임시 커밋은 건너뜀
                   skip=$((skip+1))
@@ -933,7 +933,7 @@ jobs:
           done
 
           echo "filtered count: ${#filtered[@]}"
-          for f in "${filtered[@]}"; do echo "filtered item: $f"; done
+          # for f in "${filtered[@]}"; do echo "filtered item: $f"; done
 
           if [ ${#filtered[@]} -eq 0 ]; then
             echo "대상 파일 없음(자동수정만 있었거나 마크다운만 변경). 린트/포맷 생략."
@@ -946,13 +946,13 @@ jobs:
           fi
 
           echo "Stylelint"
-          printf '%s\0' "${filtered[@]}" | grep -z -E '\.(css|svelte|md|mdx|mdc)$' | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input
+          printf '%s\0' "${filtered[@]}" | grep -z -E '\.(css|svelte|md|mdx|mdc)$' | xargs -0 -r pnpm exec stylelint --fix --allow-empty-input || true
 
           echo "ESLint"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec eslint --fix --config eslint.fix.config.js || true
 
           echo "Prettier"
-          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore
+          printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore || true
         continue-on-error: true
 
       # changes.patch 생성 (임시 커밋 기준) 및 변경 유무 출력
