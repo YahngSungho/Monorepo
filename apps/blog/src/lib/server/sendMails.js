@@ -1,4 +1,4 @@
-import { sendMails_action as sendMails_base } from '@library/library-top/sendMails'
+import { sendMails_base } from '@library/library-top/sendMails'
 import { EMAIL_SENDER_NAME, URL, EMAIL } from '$lib/info.js'
 
 /**

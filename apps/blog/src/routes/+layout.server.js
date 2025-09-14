@@ -1,4 +1,4 @@
-import { getAllMetadata0 } from '$lib/server/getMetadata'
+import { getAllMetadata0 } from '../markdown-helpers/getMetadata'
 
 export const load = async () => {
 	const allMetadata = await getAllMetadata0()

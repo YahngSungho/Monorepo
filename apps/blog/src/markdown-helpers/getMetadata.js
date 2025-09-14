@@ -5,8 +5,8 @@ import { R } from '@library/helpers/R'
 import { getLocale } from '@library/paraglide/helpers'
 
 import { APP_NAME } from '$lib/info.js'
+import { metadata } from './metadata.js'
 
-const metadata = import.meta.glob('/src/translation/metadata.json', { eager: true, query: 'raw' })
 
 export async function getAllMetadata0() {
 	const lang = getLocale()
@@ -16,14 +16,16 @@ export async function getAllMetadata0() {
 		frontmatterObjectObject[value.key] = value.frontmatter
 	}
 
-	// @ts-ignore
-	const parsedMetadata = JSON.parse(metadata['/src/translation/metadata.json'].default)
 
-	return R.mapObject((value, key) => {
-		return {
-			slug: key,
-			...value,
-			...parsedMetadata[key],
-		}
-	})(frontmatterObjectObject)
+	return R.pipe(
+		frontmatterObjectObject,
+		R.mapObject((value, key) => {
+			return {
+				slug: key,
+				...value,
+				...metadata[key],
+			}
+		}),
+		R.pickBy((value) => !(value.skip))
+	)
 }

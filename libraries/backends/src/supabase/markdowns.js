@@ -14,7 +14,7 @@ export async function getMarkdownListByProjectName(projectName, exceptLangs) {
 	return data
 }
 
-export async function getOneMarkdownBody(projectName, locale, key) {
+export async function getOneMarkdown_base(projectName, locale, key) {
 	const { data, error } = await supabase
 		.from('markdowns')
 		.select('body, mermaid_svg_object')

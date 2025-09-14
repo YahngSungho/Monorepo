@@ -1,11 +1,11 @@
 import { getDescriptionFromMD } from '@library/helpers/markdown'
 import { redirect } from '@sveltejs/kit'
 
-import { getPost } from '$lib/server/getPost'
+import { getOneMarkdown } from '../../../markdown-helpers/getMarkdown'
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ params, parent }) => {
-	const post = await getPost(params.slug)
+	const post = await getOneMarkdown(params.slug)
 	const { allMetadata } = await parent()
 	const currentMetadata = allMetadata[params.slug]
 

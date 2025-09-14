@@ -42,7 +42,7 @@ return juice.inlineContent(html, `
 			`);
 }
 
-export const sendMails_action = R.curry(async (info, config, content, emailList) => {
+export const sendMails_base = R.curry(async (info, config, content, emailList) => {
 	const { name, domain, emailOfSender, preprocessMarkdownText = R.identity } = info
 	const { markdownText, mermaidSVGObject } = content
 	const { deliveryTimeOptimize = true } = config
