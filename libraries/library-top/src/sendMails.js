@@ -9,7 +9,7 @@ import juice from 'juice'
 function getEmailHTMLContent(markdownText, mermaidSVGObject) {
 	const { body, head } = render(EmailContent, { props: { value: markdownText, mermaidSVGObject } })
 
-	return `
+	const html = `
 	<!DOCTYPE html>
 	<html>
 		<head>
@@ -19,7 +19,26 @@ function getEmailHTMLContent(markdownText, mermaidSVGObject) {
 			${body}
 		</body>
 	</html>
-`;
+`
+
+// eslint-disable-next-line import-x/no-named-as-default-member
+return juice.inlineContent(html, `
+	ul {
+		padding-inline-start: 1em !important;
+	}
+
+	ol {
+		padding-inline-start: 1em !important;
+	}
+
+	pre {
+		padding: 1em;
+	}
+
+	h2[id$='footnote-label'] {
+		visibility: hidden;
+	}
+			`);
 }
 
 export const sendMails_action = R.curry(async (info, content, emailList) => {
@@ -39,7 +58,7 @@ export const sendMails_action = R.curry(async (info, content, emailList) => {
 			from: `${name} <${myEmail}>`,
 			to: emailList,
 			subject: title,
-			html: juice(getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject)),
+			html: getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject),
 			text: removeMDAndTags(markdownText_preprocessed),
 'recipient-variables': JSON.stringify(toObject(emailList)),
 		})

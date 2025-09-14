@@ -1,5 +1,3 @@
-<svelte:options css="injected" />
-
 <script>
 	import Markdown from '../markdown/blog/Markdown.svelte'
 	import '@library/base/base.css'
