@@ -28,24 +28,6 @@ export const POST = async ({ request }) => {
 	const email = formData.get('email')
 	const validation = emailSchema.safeParse(email)
 
-	const allMetadataObject = await getAllMetadataObject()
-	const markdownMetadata_pinned = R.pipe(
-		allMetadataObject,
-		Object.values,
-		R.filter(R.prop('pinned')),
-		R.sort(R.descend(R.prop('date'))),
-	)
-	const markdownLinks = markdownMetadata_pinned.map((item) => {
-		return `- [${item.title}](${urlPost}${item.slug})`
-	})
-	const markdownLinksString = markdownLinks.join('\n')
-	const meanwhileLinksString =
-		markdownLinksString ?
-			`## Meanwhile, you can read:
-
-${markdownLinksString}`
-		:	''
-
 	if (!validation.success) {
 		return json(
 			{
@@ -64,15 +46,29 @@ ${markdownLinksString}`
 				if (!markdown) {
 					throw new Error('markdown not found')
 				}
-				const sendText =
-					meanwhileLinksString ?
-						`${markdown.body}
 
-${meanwhileLinksString}`
-					:	markdown.body
-				await sendMails_immediate_action({ markdownText: sendText, mermaidSVGObject: {} }, [
-					String(email),
-				])
+				const allMetadataObject = await getAllMetadataObject()
+	const markdownMetadata_pinned = R.pipe(
+		allMetadataObject,
+		Object.values,
+		R.filter(R.prop('pinned')),
+		R.sort(R.descend(R.prop('date'))),
+	)
+	const markdownLinks = markdownMetadata_pinned.map((item) => {
+		return `- [${item.title}](${urlPost}${item.slug})`
+	})
+	const markdownLinksString = markdownLinks.join('\n')
+	const meanwhileLinksString =
+markdownLinksString ? `## Meanwhile, you can read:
+
+${markdownLinksString}` : ''
+
+				const sendText = meanwhileLinksString ?
+`${markdown.body}
+
+${meanwhileLinksString}` : markdown.body
+
+await sendMails_immediate_action({ markdownText: sendText, mermaidSVGObject: {} }, [String(email)]);
 			})(),
 		])
 		return json({ email }, { headers: { 'content-type': 'application/json' }, status: 200 })
