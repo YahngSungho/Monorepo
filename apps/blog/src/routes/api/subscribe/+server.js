@@ -48,27 +48,33 @@ export const POST = async ({ request }) => {
 				}
 
 				const allMetadataObject = await getAllMetadataObject()
-	const markdownMetadata_pinned = R.pipe(
-		allMetadataObject,
-		Object.values,
-		R.filter(R.prop('pinned')),
-		R.sort(R.descend(R.prop('date'))),
-	)
-	const markdownLinks = markdownMetadata_pinned.map((item) => {
-		return `- [${item.title}](${urlPost}${item.slug})`
-	})
-	const markdownLinksString = markdownLinks.join('\n')
-	const meanwhileLinksString =
-markdownLinksString ? `## Meanwhile, you can read:
+				const markdownMetadata_pinned = R.pipe(
+					allMetadataObject,
+					Object.values,
+					R.filter(R.prop('pinned')),
+					R.sort(R.descend(R.prop('date'))),
+				)
+				const markdownLinks = markdownMetadata_pinned.map((item) => {
+					return `- [${item.title}](${urlPost}${item.slug})`
+				})
+				const markdownLinksString = markdownLinks.join('\n')
+				const meanwhileLinksString =
+					markdownLinksString ?
+						`## Meanwhile, you can read:
 
-${markdownLinksString}` : ''
+${markdownLinksString}`
+					:	''
 
-				const sendText = meanwhileLinksString ?
-`${markdown.body}
+				const sendText =
+					meanwhileLinksString ?
+						`${markdown.body}
 
-${meanwhileLinksString}` : markdown.body
+${meanwhileLinksString}`
+					:	markdown.body
 
-await sendMails_immediate_action({ markdownText: sendText, mermaidSVGObject: {} }, [String(email)]);
+				await sendMails_immediate_action({ markdownText: sendText, mermaidSVGObject: {} }, [
+					String(email),
+				])
 			})(),
 		])
 		return json({ email }, { headers: { 'content-type': 'application/json' }, status: 200 })
