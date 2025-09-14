@@ -1,6 +1,7 @@
 {
 	"name": "@library/library-bottom",
 	"version": "0.0.1",
+	"type": "module",
 	"scripts": {
 		"depCheck": "npx depcheck",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
@@ -8,7 +9,6 @@
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"test:unit": "vitest run"
 	},
-	"type": "module",
 	"exports": {
 		"./baseTest.js": "./src/baseTest.js",
 		"./mermaid": "./src/mermaid.js",
