@@ -2,10 +2,10 @@ import path from 'node:path'
 
 import { saveMarkdownList_action } from '@library/backends/supabase_admin'
 import { writeFile_async } from '@library/helpers/fs-async'
+import { getFrontmatterObject } from '@library/helpers/markdown'
 
 import { getNewCache } from '../translation/helpers.js'
 import { dictFolderPath } from '../translation/markdown/translation.js'
-import { getFrontmatterObject } from './getFrontmatters.js'
 import { getMermaidSVGObject } from './getMermaidSVGObject.js'
 
 export async function saveFiles_action(
@@ -47,8 +47,8 @@ export async function saveFiles_action(
 					frontmatter: getFrontmatterObject(messageValue),
 					key: messageKey,
 					locale: language,
-					projectName,
 					mermaidSVGObject, // await로 얻은 결과를 바로 사용
+					projectName,
 				}
 			},
 		)
@@ -68,8 +68,8 @@ export async function saveFiles_action(
 				frontmatter: getFrontmatterObject(messageValue),
 				key: messageKey,
 				locale: lang,
-				projectName,
 				mermaidSVGObject, // await로 얻은 결과를 바로 사용
+				projectName,
 			}
 		})
 

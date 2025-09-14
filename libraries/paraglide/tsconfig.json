@@ -69,7 +69,7 @@
 		"messages/**",
 		"messages-helpers/**"
 	],
-	"extends": ["../library-base/tsconfig.json"],
+	"extends": ["../library-bottom/tsconfig.json"],
 	"include": [
 		"src/**/*",
 		"e2e/**/*",

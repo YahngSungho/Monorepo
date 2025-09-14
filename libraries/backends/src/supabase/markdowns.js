@@ -1,3 +1,5 @@
+import { R } from '@library/helpers/R'
+
 import { supabase } from './init.js'
 
 export async function getMarkdownListByProjectName(projectName, exceptLangs) {
@@ -14,10 +16,10 @@ export async function getMarkdownListByProjectName(projectName, exceptLangs) {
 	return data
 }
 
-export async function getOneMarkdownBody(projectName, locale, key) {
+export const getOneMarkdown_base = R.curry(async (projectName, locale, select, key) => {
 	const { data, error } = await supabase
 		.from('markdowns')
-		.select('body, mermaid_svg_object')
+		.select(select)
 		.eq('project_name', projectName)
 		.eq('locale', locale)
 		.eq('key', key)
@@ -27,7 +29,7 @@ export async function getOneMarkdownBody(projectName, locale, key) {
 	}
 
 	return data[0]
-}
+})
 
 export async function getMarkdownFrontmatterList(projectName, locale) {
 	const { data, error } = await supabase

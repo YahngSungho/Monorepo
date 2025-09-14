@@ -6,9 +6,10 @@ import { getLocale } from '@library/paraglide/helpers'
 
 import { APP_NAME } from '$lib/info.js'
 
-const metadata = import.meta.glob('/src/translation/metadata.json', { eager: true, query: 'raw' })
+import { metadata } from './metadata.js'
 
-export async function getAllMetadata0() {
+
+export async function getAllMetadataObject() {
 	const lang = getLocale()
 	const frontmatterList = await getMarkdownFrontmatterList(APP_NAME, lang)
 	const frontmatterObjectObject = {}
@@ -16,14 +17,16 @@ export async function getAllMetadata0() {
 		frontmatterObjectObject[value.key] = value.frontmatter
 	}
 
-	// @ts-ignore
-	const parsedMetadata = JSON.parse(metadata['/src/translation/metadata.json'].default)
 
-	return R.mapObject((value, key) => {
-		return {
-			slug: key,
-			...value,
-			...parsedMetadata[key],
-		}
-	})(frontmatterObjectObject)
+	return R.pipe(
+		frontmatterObjectObject,
+		R.mapObject((value, key) => {
+			return {
+				slug: key,
+				...value,
+				...metadata[key],
+			}
+		}),
+		R.pickBy((value) => !(value.skip))
+	)
 }

@@ -1,6 +1,7 @@
 <script module>
 import './style.css'
 
+import { removeFrontmatter } from '@library/helpers/markdown'
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeRaw from 'rehype-raw'
@@ -18,9 +19,9 @@ import Markdown from '../default/Markdown.svelte'
 import Mermaid from './mermaid.svelte'
 
 const highlighter = createHighlighterCoreSync({
-	themes: [themeLight, themeDark],
-	langs: [langTs, langHtml, langCss, langSvelte],
 	engine: createJavaScriptRegexEngine(),
+	langs: [langTs, langHtml, langCss, langSvelte],
+	themes: [themeLight, themeDark],
 })
 
 const shikiPlugin = {
@@ -29,8 +30,8 @@ const shikiPlugin = {
 		highlighter,
 		{
 			themes: {
-				light: 'vitesse-dark',
 				dark: 'vitesse-light',
+				light: 'vitesse-dark',
 			},
 		},
 	],
@@ -53,16 +54,12 @@ const addedPlugins = [
 	},
 	shikiPlugin,
 ]
-
-function removeFrontmatter(markdown) {
-	return markdown.replace(/^---.*?---/s, '')
-}
 </script>
 
 <script>
 import { setContext } from 'svelte'
 
-let { value, mermaidSVGObject = {}, plugins = [] } = $props()
+let { mermaidSVGObject = {}, plugins = [], value } = $props()
 
 setContext('mermaidSVGObject', mermaidSVGObject)
 </script>

@@ -1,0 +1,14 @@
+{
+	"name": "@library/library-top",
+	"version": "0.0.1",
+	"type": "module",
+	"dependencies": {
+		"@library/backends": "workspace:*",
+		"@library/helpers": "workspace:*",
+		"@library/ui": "workspace:*",
+		"juice": "^11.0.1"
+	},
+	"exports": {
+		"./sendMails": "./src/sendMails.js"
+	}
+}

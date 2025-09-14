@@ -1,3 +1,3 @@
-import { runTest } from '@library/library-base/baseTest.js'
+import { runTest } from '@library/library-bottom/baseTest.js'
 
 runTest()

@@ -1,4 +1,4 @@
-{
+export const metadata = {
 	"eighth-post": {
 		"date": "2025-06-20",
 		"pinned": true
@@ -38,5 +38,8 @@
 	"third-post": {
 		"date": "2025-06-20",
 		"pinned": true
+	},
+	welcome: {
+		skip: true
 	}
 }

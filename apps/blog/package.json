@@ -19,8 +19,8 @@
 		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
-		"translate": "node ./src/translation/scripts.js",
-		"translate:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/translation/scripts.js",
+		"translate": "node ./src/lib/markdown-helpers/translation-scripts.js",
+		"translate:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/lib/markdown-helpers/translation-scripts.js",
 		"type-sync": "svelte-kit sync",
 		"preview": "vite preview",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
@@ -32,6 +32,7 @@
 		"@library/helpers": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
+		"@library/library-top": "workspace:*",
 		"nanoid": "^5.1.5",
 		"store": "^2.0.12",
 		"svelte-sonner": "^1.0.3",

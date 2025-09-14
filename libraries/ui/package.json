@@ -28,7 +28,7 @@
 		"@internationalized/date": "^3.9.0",
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
-		"@library/library-base": "workspace:*",
+		"@library/library-bottom": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@qwik.dev/partytown": "^0.11.0",
 		"@shikijs/rehype": "^3.4.1",
@@ -82,6 +82,7 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
+		"./emailContent": "./src/emailContent/emailContent.svelte",
 		"./mermaid-helpers": "./src/miscellaneous/mermaid/helpers.js",
 		"./base.js": "./src/layouts/base.js",
 		"./confettiButton": "./src/miscellaneous/confettiButton.svelte",

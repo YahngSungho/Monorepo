@@ -10,6 +10,7 @@ import { onNavigate } from '$app/navigation'
 import { Toaster } from '$shadcn/components/ui/sonner/index'
 
 import { init } from './base.js'
+// Warn: 여기서 default로 가져오는 게 늘면 emailContent/emialContent.svelte에도 추가해야 할 수 있음
 
 let { appName, children } = $props()
 
@@ -38,10 +39,10 @@ onMount(() => {
 <svelte:head>
 	<!-- eslint-disable-next-line  -->
 	<script>
-	// Forward the necessary functions to the web worker layer
-	partytown = {
+		// Forward the necessary functions to the web worker layer
+		partytown = {
 		forward: [],
-	}
+		}
 	</script>
 
 	<!-- eslint-disable-next-line  -->

@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"@library/helpers": "workspace:*",
-		"@library/library-base": "workspace:*",
+		"@library/library-bottom": "workspace:*",
 		"@library/scripts": "workspace:*"
 	},
 	"keywords": [],

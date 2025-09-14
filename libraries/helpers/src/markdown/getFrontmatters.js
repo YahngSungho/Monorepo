@@ -1,4 +1,4 @@
-import { R } from '@library/helpers/R'
+import { R } from '../library-wrappers/R.js'
 
 export const getFrontmatterObject = (messageValue) => {
 	const parts = messageValue.trim().split('---')

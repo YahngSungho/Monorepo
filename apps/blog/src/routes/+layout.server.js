@@ -1,14 +1,14 @@
-import { getAllMetadata0 } from '$lib/server/getMetadata'
+import { getAllMetadataObject } from '$lib/markdown-helpers/getMetadata'
 
 export const load = async () => {
-	const allMetadata = await getAllMetadata0()
-	const description = Object.values(allMetadata)
+	const allMetadataObject = await getAllMetadataObject()
+	const description = Object.values(allMetadataObject)
 		.filter((item) => item.pinned)
 		.map((item) => item.title)
 		.join(' / ')
 
 	return {
-		allMetadata,
+		allMetadataObject,
 		description,
 	}
 }

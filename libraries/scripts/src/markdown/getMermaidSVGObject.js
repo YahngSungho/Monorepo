@@ -1,6 +1,6 @@
 import { getSimpleHash, normalizeString } from '@library/helpers/functions'
 import { optimizeMermaidSvg } from '@library/helpers/svgo'
-import { buildThemeVariables } from '@library/library-base/mermaid'
+import { buildThemeVariables } from '@library/library-bottom/mermaid'
 import { createMermaidRenderer } from 'mermaid-isomorphic'
 
 export async function getMermaidSVGObject(markdownText) {
@@ -36,12 +36,12 @@ export async function getMermaidSVGObject(markdownText) {
 
 	for (const theme of ['light', 'dark']) {
 		const mermaidInit = {
-			theme: 'base',
-			themeVariables: buildThemeVariables(theme),
-			startOnLoad: false,
-			securityLevel: 'loose',
 			deterministicIds: true,
 			logLevel: 'fatal',
+			securityLevel: 'loose',
+			startOnLoad: false,
+			theme: 'base',
+			themeVariables: buildThemeVariables(theme),
 		}
 
 		// 다이어그램 앞에 init 디렉티브를 주입하여 테마 적용

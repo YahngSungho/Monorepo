@@ -1,6 +1,6 @@
 ---
 description:
-globs: .cursor/**,*prompt*
+globs: .cursor/**,.cursor/*/*.*,*prompt*
 alwaysApply: false
 ---
 

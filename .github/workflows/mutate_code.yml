@@ -592,17 +592,7 @@ jobs:
             echo "all_changed_markdown_files=" >> $GITHUB_OUTPUT
           fi
 
-      # 6. 새로 생성된 마크다운 파일 수정 (markdownlint)
-      - name: 새 마크다운 파일 수정 (markdownlint)
-        if: steps.run_translation.outputs.all_changed_markdown_files != ''
-        uses: DavidAnson/markdownlint-cli2-action@v19
-        with:
-          globs: ${{ steps.run_translation.outputs.all_changed_markdown_files }}
-          config: .markdownlint.json
-          fix: true
-        continue-on-error: true
-
-      # 7. 기본 린트 및 포맷팅 실행
+      # 6. 기본 린트 및 포맷팅 실행
       - name: 기본 린트 및 포맷팅 실행
         if: steps.run_translation.outputs.all_changed_files != ''
         run: |

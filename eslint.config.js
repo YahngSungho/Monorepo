@@ -52,7 +52,6 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
-	'no-lonely-if': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'arrow-parens': 'off',
@@ -89,11 +88,13 @@ const baseRules = {
 	'n/no-missing-import': 'off',
 	'n/prefer-global/process': 'off',
 	'no-console': 'off',
+	'no-lonely-if': 'off',
 	'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
 	'no-secrets/no-secrets': ['error', { tolerance: 4.3 }],
 	'no-shadow': 'warn',
 	'no-unused-expressions': 1,
 	'no-unused-vars': 1,
+	'no-use-before-define': 'off',
 	'no-warning-comments': 'off',
 	'object-curly-spacing': 'off',
 	'optimize-regex/optimize-regex': 'warn',
@@ -215,7 +216,6 @@ export default defineFlatConfig([
 			'pnpm-lock.yaml',
 			'package-lock.json',
 			'**/cache.json',
-			'**/processText.js',
 		],
 	},
 

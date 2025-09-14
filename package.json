@@ -152,7 +152,7 @@
 		"zod-fast-check": "^0.10.1"
 	},
 	"engines": {
-		"node": "23.5.0"
+		"node": "24.8.0"
 	},
 	"packageManager": "pnpm@10.8.0",
 	"pnpm": {
