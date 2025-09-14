@@ -620,6 +620,9 @@ importers:
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
+      '@library/library-bottom':
+        specifier: workspace:*
+        version: link:../library-bottom
       '@library/ui':
         specifier: workspace:*
         version: link:../ui

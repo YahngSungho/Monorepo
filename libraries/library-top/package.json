@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@library/backends": "workspace:*",
 		"@library/helpers": "workspace:*",
+		"@library/library-bottom": "workspace:*",
 		"@library/ui": "workspace:*",
 		"juice": "^11.0.1"
 	},
