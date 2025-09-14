@@ -42,9 +42,10 @@ return juice.inlineContent(html, `
 			`);
 }
 
-export const sendMails_action = R.curry(async (info, content, emailList) => {
+export const sendMails_action = R.curry(async (info, config, content, emailList) => {
 	const { name, url, myEmail, preprocessMarkdownText = R.identity } = info
 	const { markdownText, mermaidSVGObject } = content
+	const { deliverytimeOptimizePeriod = true } = config
 
 	const frontmatterObject = getFrontmatterObject(markdownText)
 	const {title} = frontmatterObject
@@ -61,6 +62,10 @@ export const sendMails_action = R.curry(async (info, content, emailList) => {
 			subject: title,
 			html: getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject),
 			text: removeMDAndTags(markdownText_preprocessed),
+			'o:deliverytime-optimize-period': deliverytimeOptimizePeriod ? "24h" : undefined,
+			'o:tracking': 'yes',
+			'o:tracking-opens': 'yes',
+			'o:tracking-clicks': 'yes',
 'recipient-variables': JSON.stringify(toObject(emailList)),
 		})
 	} catch (error) {

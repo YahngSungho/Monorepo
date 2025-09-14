@@ -2,7 +2,7 @@ import { supabase_admin } from '@library/backends/supabase_admin'
 import { emailSchema } from '@library/helpers/zod-schemas';
 import { getLocale } from '@library/paraglide/helpers'
 import { json } from '@sveltejs/kit';
-import { sendMails_action } from '$lib/server/sendMails.js'
+import { sendMails_immediate_action } from '$lib/server/sendMails.js'
 
 async function addSubscription_action(myEmail) {
 	const { error } = await supabase_admin.from('blog-subscribers').upsert({ email: myEmail, locale: getLocale(), subscribed: true }, { onConflict: 'email' });
@@ -28,7 +28,7 @@ export const POST = async ({ request }) => {
 
 	try {
 		await addSubscription_action(email);
-		await sendMails_action({ mermaidSVGObject: {}, markdownText: `
+		await sendMails_immediate_action({ mermaidSVGObject: {}, markdownText: `
 ---
 title: 2 Mailgun 테스트 테스트 테스트
 ---

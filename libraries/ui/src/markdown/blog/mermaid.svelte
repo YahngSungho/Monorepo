@@ -15,7 +15,7 @@ let mounted = $state(false)
 onMount(() => {
 	mounted = true
 })
-const svg = $derived(mounted ? mermaidSVGObject[`${mode.current}:${hashValue}`] : '')
+const svg = $derived(mounted ? (mermaidSVGObject[`${mode.current}:${hashValue}`] ?? '') : '')
 
 let element = $state()
 
