@@ -43,9 +43,9 @@ return juice.inlineContent(html, `
 }
 
 export const sendMails_action = R.curry(async (info, config, content, emailList) => {
-	const { name, url, myEmail, preprocessMarkdownText = R.identity } = info
+	const { name, domain, emailOfSender, preprocessMarkdownText = R.identity } = info
 	const { markdownText, mermaidSVGObject } = content
-	const { deliverytimeOptimizePeriod = true } = config
+	const { deliveryTimeOptimize = true } = config
 
 	const frontmatterObject = getFrontmatterObject(markdownText)
 	const {title} = frontmatterObject
@@ -56,13 +56,13 @@ export const sendMails_action = R.curry(async (info, config, content, emailList)
 	const markdownText_preprocessed = preprocessMarkdownText(markdownText)
 	let result
 	try {
-		result = await mg.messages.create(url, {
-			from: `${name} <${myEmail}>`,
+		result = await mg.messages.create(domain, {
+			from: `${name} <${emailOfSender}>`,
 			to: emailList,
 			subject: title,
 			html: getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject),
 			text: removeMDAndTags(markdownText_preprocessed),
-			'o:deliverytime-optimize-period': deliverytimeOptimizePeriod ? "24h" : undefined,
+			'o:deliverytime-optimize-period': deliveryTimeOptimize ? "24h" : undefined,
 			'o:tracking': 'yes',
 			'o:tracking-opens': 'yes',
 			'o:tracking-clicks': 'yes',

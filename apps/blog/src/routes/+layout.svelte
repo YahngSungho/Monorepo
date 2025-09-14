@@ -17,7 +17,7 @@ import { slide } from 'svelte/transition'
 
 import { afterNavigate } from '$app/navigation'
 import { page } from '$app/state'
-import { APP_NAME } from '$lib/info.js'
+import { APP_NAME, URL, EMAIL_SENDER_NAME } from '$lib/info.js'
 
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()
@@ -288,7 +288,7 @@ let showScrollBottom = $derived.by(() => {
 	return scrollTop + clientHeight !== scrollHeight
 })
 
-const currentCanonicalUrl = 'https://sungho.blog'
+const currentCanonicalUrl = `https://${URL}`
 
 // 페이지별 공유 데이터 계산
 let sharingData = $derived.by(() => {
@@ -299,11 +299,11 @@ let sharingData = $derived.by(() => {
 	if (isPostPage) {
 		const pathSegments = page.url.pathname.split('/').filter(Boolean)
 		const slug = pathSegments.at(-1)
-		url = `https://sungho.blog/posts/${slug}`
+		url = `${currentCanonicalUrl}/posts/${slug}`
 	}
 
 	return {
-		title: isPostPage && postTitle ? postTitle : 'sungho.blog',
+		title: isPostPage && postTitle ? postTitle : URL,
 		url,
 	}
 })
@@ -314,17 +314,17 @@ let jsonLd = $derived({
 	'@type': 'Blog',
 	author: {
 		'@type': 'Person',
-		name: 'Sungho Yahng',
+		name: EMAIL_SENDER_NAME,
 	},
 	description: data.description,
-	headline: 'sungho.blog',
+	headline: URL,
 	mainEntityOfPage: {
 		'@id': currentCanonicalUrl,
 		'@type': 'WebPage',
 	},
 	publisher: {
 		'@type': 'Organization',
-		name: 'sungho.blog',
+		name: URL,
 	},
 	url: currentCanonicalUrl,
 })
@@ -332,23 +332,23 @@ let jsonLd = $derived({
 
 <svelte:head>
 	<!-- 🌐 사이트 공통 메타태그 (모든 페이지에 적용) -->
-	<meta name="author" content="Sungho Yahng" />
-	<meta content="sungho.blog" property="og:site_name" />
+	<meta name="author" content={EMAIL_SENDER_NAME} />
+	<meta content={URL} property="og:site_name" />
 	<!-- <meta name="twitter:site" content="@sungho_yahng" /> -->
 	<!-- <meta name="twitter:creator" content="@sungho_yahng" /> -->
 
 	<!-- 🏠 홈페이지 전용 메타태그 -->
 	{#if !page.url.pathname.includes('posts')}
 		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-		<title>sungho.blog</title>
+		<title>{URL}</title>
 		<meta name="description" content={data.description} />
 		<link href={currentCanonicalUrl} rel="canonical" />
 		<meta content="website" property="og:type" />
-		<meta content="sungho.blog" property="og:title" />
+		<meta content={URL} property="og:title" />
 		<meta content={data.description} property="og:description" />
 		<meta content={currentCanonicalUrl} property="og:url" />
 		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content="sungho.blog" />
+		<meta name="twitter:title" content={URL} />
 		<meta name="twitter:description" content={data.description} />
 		<meta name="twitter:url" content={currentCanonicalUrl} />
 
@@ -428,7 +428,7 @@ let jsonLd = $derived({
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 					<Link style="font-size: min(calc(100cqi / 6.2), 5em); font-weight: 900;" href="/">
-						sungho.blog
+						{URL}
 					</Link>
 				</div>
 

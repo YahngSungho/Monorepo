@@ -1,5 +1,6 @@
 <script>
 import { create } from '@library/helpers/mutative'
+import { URL, EMAIL_SENDER_NAME } from '$lib/info.js'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import Markdown from '@library/ui/markdown-blog'
@@ -57,7 +58,7 @@ let currentCanonicalUrl = $derived.by(() => {
 	// 경로의 마지막 segment(slug)만 추출
 	const pathSegments = page.url.pathname.split('/').filter(Boolean)
 	const slug = pathSegments.at(-1)
-	return `https://sungho.blog/posts/${slug}`
+	return `https://${URL}/posts/${slug}`
 })
 
 // JSON-LD 데이터 생성
@@ -66,7 +67,7 @@ let jsonLd = $derived({
 	'@type': 'BlogPosting',
 	author: {
 		'@type': 'Person',
-		name: 'Sungho Yahng',
+		name: EMAIL_SENDER_NAME,
 	},
 	datePublished: data.currentMetadata.date,
 	description: data.description,
@@ -77,7 +78,7 @@ let jsonLd = $derived({
 	},
 	publisher: {
 		'@type': 'Organization',
-		name: 'sungho.blog',
+		name: URL,
 	},
 	url: currentCanonicalUrl,
 })
@@ -85,7 +86,7 @@ let jsonLd = $derived({
 
 <svelte:head>
 	<!-- 📄 페이지별 메타 태그들 -->
-	<title>{data.currentMetadata.title} - sungho.blog</title>
+	<title>{data.currentMetadata.title} - {URL}</title>
 	<meta name="description" content={data.description} />
 
 	<!-- Canonical URL -->
@@ -96,13 +97,13 @@ let jsonLd = $derived({
 	<meta content={data.currentMetadata.title} property="og:title" />
 	<meta content={data.description} property="og:description" />
 	<meta content={currentCanonicalUrl} property="og:url" />
-	<meta content="sungho.blog" property="og:site_name" />
+	<meta content={URL} property="og:site_name" />
 
 	<!-- Article 관련 Open Graph -->
 	{#if data.currentMetadata.date}
 		<meta content={data.currentMetadata.date} property="article:published_time" />
 	{/if}
-	<meta content="Sungho Yahng" property="article:author" />
+	<meta content={EMAIL_SENDER_NAME} property="article:author" />
 
 	<!-- Twitter Cards -->
 	<meta name="twitter:card" content="summary" />
