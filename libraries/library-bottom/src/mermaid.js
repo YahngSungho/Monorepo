@@ -50,8 +50,8 @@ export function buildThemeVariables(mode) {
 		fontSize: 'inherit',
 
 		// Primary elements (Nodes, etc.)
-		primaryColor: background,
 		primaryBorderColor: foreground,
+		primaryColor: background,
 		primaryTextColor: foreground,
 
 		// Lines and Edges
@@ -59,53 +59,53 @@ export function buildThemeVariables(mode) {
 		textColor: foreground,
 
 		// Secondary
-		secondaryColor: secondary_background,
 		secondaryBorderColor: secondary_foreground,
+		secondaryColor: secondary_background,
 		secondaryTextColor: secondary_foreground,
 
 		// Tertiary
-		tertiaryColor: accent_background,
 		tertiaryBorderColor: accent_foreground,
+		tertiaryColor: accent_background,
 		tertiaryTextColor: accent_foreground,
 
 		// Notes
 		noteBkgColor: background,
-		noteTextColor: foreground,
 		noteBorderColor: foreground,
+		noteTextColor: foreground,
 
 		// Flowchart
-		nodeBorder: foreground,
 		clusterBkg: background,
 		clusterBorder: foreground,
 		defaultLinkColor: foreground,
-		titleColor: foreground,
 		edgeLabelBackground: background,
+		nodeBorder: foreground,
 		nodeTextColor: foreground,
+		titleColor: foreground,
 
 		// Sequence Diagram
+		activationBkgColor: background,
+		activationBorderColor: foreground,
 		actorBkg: background,
 		actorBorder: foreground,
-		actorTextColor: foreground,
 		actorLineColor: foreground,
-		signalColor: foreground,
-		signalTextColor: foreground,
+		actorTextColor: foreground,
 		labelBoxBkgColor: background,
 		labelBoxBorderColor: foreground,
 		labelTextColor: foreground,
 		loopTextColor: foreground,
-		activationBorderColor: foreground,
-		activationBkgColor: background,
 		sequenceNumberColor: foreground,
+		signalColor: foreground,
+		signalTextColor: foreground,
 
 		// Other diagrams
 		pie1: chart1,
 		pie2: chart2,
 		pie3: chart3,
-		pieTitleTextColor: foreground,
-		pieSectionTextColor: foreground,
 		pieLegendTextColor: foreground,
-		pieStrokeColor: foreground,
 		pieOuterStrokeColor: foreground,
+		pieSectionTextColor: foreground,
+		pieStrokeColor: foreground,
+		pieTitleTextColor: foreground,
 
 		classText: foreground,
 

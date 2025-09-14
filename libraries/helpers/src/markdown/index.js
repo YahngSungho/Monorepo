@@ -7,6 +7,11 @@ import sanitizeHtml from 'sanitize-html'
  * @param {string} string - 문자열
  * @returns {string} 태그 제거된 문자열
  */
+export function removeFrontmatter(string) {
+	return string.trim().replace(/^---.*?---/s, '')
+}
+
+
 export function removeTagsAll(string) {
 	// 입력 문자열에서 모든 태그명 추출 (정규식은 태그명만 가볍게 매칭)
 	const rawMatches = string.matchAll(/<\/?([a-z][\d:a-z-]*)\b/gi)
@@ -25,20 +30,15 @@ export function removeTagsAll(string) {
 	const uniqueTagNames = Array.from(new Set(tagNames))
 
 	return sanitizeHtml(string, {
-		allowedTags: [],
 		allowedAttributes: {},
-		nonTextTags: uniqueTagNames,
+		allowedTags: [],
 		disallowedTagsMode: 'discard',
+		nonTextTags: uniqueTagNames,
 		// 추가 보안 설정
 		allowedSchemes: [],
 		allowedSchemesByTag: {},
 		allowProtocolRelative: false,
 	})
-}
-
-
-export function removeFrontmatter(string) {
-	return string.trim().replace(/^---.*?---/s, '')
 }
 
 /**
@@ -47,9 +47,9 @@ export function removeFrontmatter(string) {
  */
 export function removeMarkdownFormat(string) {
 	let result = removeMD(string, {
-		stripListLeaders: false, // strip list leaders (default: true)
-		listUnicodeChar: '', // char to insert instead of stripped list leaders (default: '')
 		gfm: true, // support GitHub-Flavored Markdown (default: true)
+		listUnicodeChar: '', // char to insert instead of stripped list leaders (default: '')
+		stripListLeaders: false, // strip list leaders (default: true)
 		useImgAltText: false, // replace images with alt-text, if present (default: true)
 	})
 	return result

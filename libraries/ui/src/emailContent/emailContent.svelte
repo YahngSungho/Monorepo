@@ -1,7 +1,7 @@
 <script>
-	import Markdown from '../markdown/blog/Markdown.svelte'
+import Markdown from '../markdown/blog/Markdown.svelte'
 
-	let { value, mermaidSVGObject = {} } = $props()
+let { mermaidSVGObject = {}, value } = $props()
 </script>
 
-<Markdown value={value} mermaidSVGObject={mermaidSVGObject} />
+<Markdown {mermaidSVGObject} {value} />

@@ -5,6 +5,7 @@ import { R } from '@library/helpers/R'
 import { getLocale } from '@library/paraglide/helpers'
 
 import { APP_NAME } from '$lib/info.js'
+
 import { metadata } from './metadata.js'
 
 

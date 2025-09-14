@@ -1,6 +1,5 @@
 <script>
 import { create } from '@library/helpers/mutative'
-import { URL, EMAIL_SENDER_NAME } from '$lib/info.js'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import Markdown from '@library/ui/markdown-blog'
@@ -8,6 +7,7 @@ import { getContext } from 'svelte'
 
 import { page } from '$app/state'
 import PostList from '$lib/components/postList.svelte'
+import { EMAIL_SENDER_NAME,URL } from '$lib/info.js'
 
 const getAllMetadata = getContext('getAllMetadata')
 const markAsVisited = getContext('markAsVisited')

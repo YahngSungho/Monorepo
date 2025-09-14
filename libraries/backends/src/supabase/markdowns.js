@@ -1,4 +1,5 @@
 import { R } from '@library/helpers/R'
+
 import { supabase } from './init.js'
 
 export async function getMarkdownListByProjectName(projectName, exceptLangs) {

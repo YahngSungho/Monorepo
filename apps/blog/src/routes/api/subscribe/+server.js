@@ -2,9 +2,10 @@ import { supabase_admin } from '@library/backends/supabase_admin'
 import { emailSchema } from '@library/helpers/zod-schemas';
 import { getLocale } from '@library/paraglide/helpers'
 import { json } from '@sveltejs/kit';
-import { sendMails_immediate_action } from '$lib/server/sendMails.js'
-import { getOneMarkdownBody } from '$lib/markdown-helpers/getMarkdown.js'
+
 import { URL } from '$lib/info.js'
+import { getOneMarkdownBody } from '$lib/markdown-helpers/getMarkdown.js'
+import { sendMails_immediate_action } from '$lib/server/sendMails.js'
 
 const urlPost = `https://${URL}/posts/`
 
@@ -57,7 +58,7 @@ ${markdownLinksString}` : ''
 `${markdown.body}
 
 ${meanwhileLinksString}` : markdown.body
-				await sendMails_immediate_action({ mermaidSVGObject: {}, markdownText: sendText }, [String(email)]);
+				await sendMails_immediate_action({ markdownText: sendText, mermaidSVGObject: {} }, [String(email)]);
 			})(),
 		])
 		return json({ email },

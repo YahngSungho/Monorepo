@@ -17,9 +17,8 @@ import { slide } from 'svelte/transition'
 
 import { afterNavigate } from '$app/navigation'
 import { page } from '$app/state'
-import { APP_NAME, URL, EMAIL_SENDER_NAME } from '$lib/info.js'
-
 import { globalVariables } from '$lib/globalVariables.js'
+import { APP_NAME, EMAIL_SENDER_NAME,URL } from '$lib/info.js'
 
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()
@@ -527,7 +526,7 @@ let jsonLd = $derived({
 					>
 						{page.url.pathname.includes('posts') ?
 							'이 포스트 공유하기...'
-						:	'이 블로그 공유하기...'}
+							:	'이 블로그 공유하기...'}
 					</Button>
 					{#if sharingButtonsOpen}
 						<div style:cursor="default" transition:slide={{ duration: 300 }}>

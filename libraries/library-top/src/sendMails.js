@@ -1,13 +1,13 @@
 import { mg } from '@library/backends/mailgun'
 import { getFrontmatterObject, removeMDAndTags } from '@library/helpers/markdown'
-import { render } from 'svelte/server'
+import { R } from '@library/helpers/R'
 // @ts-ignore
 import EmailContent from '@library/ui/emailContent'
-import { R } from '@library/helpers/R'
 import juice from 'juice'
+import { render } from 'svelte/server'
 
 function getEmailHTMLContent(markdownText, mermaidSVGObject) {
-	const { body, head } = render(EmailContent, { props: { value: markdownText, mermaidSVGObject } })
+	const { body, head } = render(EmailContent, { props: { mermaidSVGObject, value: markdownText } })
 
 	const html = `
 	<!DOCTYPE html>
@@ -43,7 +43,7 @@ return juice.inlineContent(html, `
 }
 
 export const sendMails_base = R.curry(async (info, config, content, emailList) => {
-	const { name, domain, emailOfSender, preprocessMarkdownText = R.identity } = info
+	const { domain, emailOfSender, name, preprocessMarkdownText = R.identity } = info
 	const { markdownText, mermaidSVGObject } = content
 	const { deliveryTimeOptimize = true } = config
 
@@ -58,15 +58,15 @@ export const sendMails_base = R.curry(async (info, config, content, emailList) =
 	try {
 		result = await mg.messages.create(domain, {
 			from: `${name} <${emailOfSender}>`,
-			to: emailList,
-			subject: title,
 			html: getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject),
-			text: removeMDAndTags(markdownText_preprocessed),
 			'o:deliverytime-optimize-period': deliveryTimeOptimize ? "24h" : undefined,
 			'o:tracking': 'yes',
-			'o:tracking-opens': 'yes',
 			'o:tracking-clicks': 'yes',
-'recipient-variables': JSON.stringify(toObject(emailList)),
+			'o:tracking-opens': 'yes',
+			'recipient-variables': JSON.stringify(toObject(emailList)),
+			subject: title,
+			text: removeMDAndTags(markdownText_preprocessed),
+to: emailList,
 		})
 	} catch (error) {
 		console.error(error)

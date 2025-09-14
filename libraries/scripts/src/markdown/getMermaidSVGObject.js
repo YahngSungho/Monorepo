@@ -36,12 +36,12 @@ export async function getMermaidSVGObject(markdownText) {
 
 	for (const theme of ['light', 'dark']) {
 		const mermaidInit = {
-			theme: 'base',
-			themeVariables: buildThemeVariables(theme),
-			startOnLoad: false,
-			securityLevel: 'loose',
 			deterministicIds: true,
 			logLevel: 'fatal',
+			securityLevel: 'loose',
+			startOnLoad: false,
+			theme: 'base',
+			themeVariables: buildThemeVariables(theme),
 		}
 
 		// 다이어그램 앞에 init 디렉티브를 주입하여 테마 적용

@@ -18,10 +18,10 @@ export function initMermaidTheme_action(mode = 'light') {
 		theme: 'base',
 		themeVariables: buildThemeVariables(mode),
 		// 성능 최적화 옵션
-		startOnLoad: false,
-		securityLevel: 'loose',
 		deterministicIds: true,
 		logLevel: 'fatal',
+		securityLevel: 'loose',
+		startOnLoad: false,
 	}
 
 	globalInitPromise = (async () => {
