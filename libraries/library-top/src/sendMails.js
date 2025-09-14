@@ -23,20 +23,21 @@ function getEmailHTMLContent(markdownText, mermaidSVGObject) {
 
 // eslint-disable-next-line import-x/no-named-as-default-member
 return juice.inlineContent(html, `
-	ul {
-		padding-inline-start: 1em !important;
-	}
-
-	ol {
-		padding-inline-start: 1em !important;
+	ul, ol {
+		padding-inline: 1em !important;
+		padding-left: 1em !important;
+		padding-right: 1em !important;
 	}
 
 	pre {
 		padding: 1em;
 	}
 
+	section {
+		padding-top: 2em !important;
+	}
 	h2[id$='footnote-label'] {
-		visibility: hidden;
+		display: none;
 	}
 			`);
 }
