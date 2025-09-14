@@ -1,6 +1,13 @@
 {
 	"name": "@library/library-bottom",
 	"version": "0.0.1",
+	"scripts": {
+		"depCheck": "npx depcheck",
+		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
+		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",
+		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
+		"test:unit": "vitest run"
+	},
 	"type": "module",
 	"exports": {
 		"./baseTest.js": "./src/baseTest.js",

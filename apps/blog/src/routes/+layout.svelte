@@ -70,11 +70,7 @@ async function handleSubscribeSubmit_action(event) {
 
 	try {
 		const formEl = event.currentTarget
-		// 여기서 allMetadata를 본문에 같이 담아서 보냄 (쿠키 불필요)
 		const fd = new FormData(formEl)
-		try {
-			fd.set('allMetadata', JSON.stringify(allMetadata))
-		} catch {}
 
 		const response = await fetch(formEl.action, {
 			body: fd,
