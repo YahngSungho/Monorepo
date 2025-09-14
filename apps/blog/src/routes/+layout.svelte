@@ -19,6 +19,8 @@ import { afterNavigate } from '$app/navigation'
 import { page } from '$app/state'
 import { APP_NAME, URL, EMAIL_SENDER_NAME } from '$lib/info.js'
 
+import { globalVariables } from '$lib/globalVariables.js'
+
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()
 let visited = $state({})
@@ -69,8 +71,14 @@ async function handleSubscribeSubmit_action(event) {
 
 	try {
 		const formEl = event.currentTarget
+		// 여기서 allMetadata를 본문에 같이 담아서 보냄 (쿠키 불필요)
+		const fd = new FormData(formEl)
+		try {
+			fd.set('allMetadata', JSON.stringify(allMetadata))
+		} catch {}
+
 		const response = await fetch(formEl.action, {
-			body: new FormData(formEl),
+			body: fd,
 			method: 'POST',
 		})
 		const responseData = await response.json()
@@ -119,10 +127,11 @@ onMount(() => {
 	}
 })
 
-const allMetadata = $derived.by(() => {
-	if (!data.allMetadata) return {}
+/** @type {Array<Object>} */
+let allMetadata = $derived.by(() => {
+	if (!data.allMetadataObject) return []
 	return R.pipe(
-		data.allMetadata,
+		data.allMetadataObject,
 		Object.values,
 		R.map((metadata) => ({
 			...metadata,
@@ -130,6 +139,9 @@ const allMetadata = $derived.by(() => {
 		})),
 		R.sort(R.descend(R.prop('date'))),
 	)
+})
+$effect(() => {
+	globalVariables.markdownMetadata = allMetadata
 })
 
 function markAsVisited(slug) {

@@ -8,7 +8,7 @@ import { APP_NAME } from '$lib/info.js'
 import { metadata } from './metadata.js'
 
 
-export async function getAllMetadata0() {
+export async function getAllMetadataObject() {
 	const lang = getLocale()
 	const frontmatterList = await getMarkdownFrontmatterList(APP_NAME, lang)
 	const frontmatterObjectObject = {}

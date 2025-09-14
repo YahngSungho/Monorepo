@@ -6,7 +6,7 @@ import { APP_NAME } from '$lib/info.js'
 /**
  * @typedef {Object} MarkdownWithMermaid
  * @property {string} body
- * @property {Object} [mermaid_svg_object]
+ * @property {Object} mermaid_svg_object
  */
 
 /**
