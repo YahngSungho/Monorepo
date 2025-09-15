@@ -21,7 +21,7 @@ const sendMails_base0 = sendMails_base({
 	domain: URL,
 	emailOfSender: EMAIL,
 	name: EMAIL_SENDER_NAME,
-	preprocessMarkdownText: ((string) => (string.replaceAll('(/posts/', `(https://${URL}/posts/`)))
+	preprocessMarkdownText: ((string) => (string.replaceAll('(/', `(https://${URL}/`)))
 })
 
 

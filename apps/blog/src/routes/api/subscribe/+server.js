@@ -7,7 +7,7 @@ import { json } from '@sveltejs/kit'
 import { URL } from '$lib/info.js'
 import { getOneMarkdownBody } from '$lib/markdown-helpers/getMarkdown.js'
 import { getAllMetadataObject } from '$lib/markdown-helpers/getMetadata.js'
-import { sendMails_immediate_action } from '$lib/server/sendMails.js'
+import { sendMails_immediate_action } from '$lib/wrappers/sendMails.js'
 
 const urlPost = `https://${URL}/posts/`
 
