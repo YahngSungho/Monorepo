@@ -148,8 +148,8 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1(eslint@9.34.0(jiti@2.5.1))
       eslint-plugin-no-unsanitized:
-        specifier: ^4.1.2
-        version: 4.1.2(eslint@9.34.0(jiti@2.5.1))
+        specifier: ^4.1.4
+        version: 4.1.4(eslint@9.34.0(jiti@2.5.1))
       eslint-plugin-no-use-extend-native:
         specifier: ^0.7.2
         version: 0.7.2(eslint@9.34.0(jiti@2.5.1))
@@ -5318,8 +5318,8 @@ packages:
     peerDependencies:
       eslint: '>=5'
 
-  eslint-plugin-no-unsanitized@4.1.2:
-    resolution: {integrity: sha512-ydF3PMFKEIkP71ZbLHFvu6/FW8SvRv6VV/gECfrQkqyD5+5oCAtPz8ZHy0GRuMDtNe2jsNdPCQXX4LSbkapAVQ==}
+  eslint-plugin-no-unsanitized@4.1.4:
+    resolution: {integrity: sha512-cjAoZoq3J+5KJuycYYOWrc0/OpZ7pl2Z3ypfFq4GtaAgheg+L7YGxUo2YS3avIvo/dYU5/zR2hXu3v81M9NxhQ==}
     peerDependencies:
       eslint: ^8 || ^9
 
@@ -14868,7 +14868,7 @@ snapshots:
     dependencies:
       eslint: 9.34.0(jiti@2.5.1)
 
-  eslint-plugin-no-unsanitized@4.1.2(eslint@9.34.0(jiti@2.5.1)):
+  eslint-plugin-no-unsanitized@4.1.4(eslint@9.34.0(jiti@2.5.1)):
     dependencies:
       eslint: 9.34.0(jiti@2.5.1)
 
