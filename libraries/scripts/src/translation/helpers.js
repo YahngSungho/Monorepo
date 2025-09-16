@@ -72,7 +72,7 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	}
 
 	// 초기 targetLanguageMap 계산 (순수) - ko 제외
-	const initialTargetLanguageMap = R.pipe(
+	const initialTargetLanguageMap = R.applyPipe(
 		messageMap,
 		R.omit(baseLanguages),
 		R.mapObjIndexed((value) => ({

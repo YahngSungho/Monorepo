@@ -19,7 +19,7 @@ const getErrors = R.curry(
 	 */
 
 	(config, conditions) =>
-		R.pipe(
+		R.applyPipe(
 			R.reject((condition) => condition.function(config)),
 			R.map((condition) => condition.error),
 		)(conditions),
@@ -76,7 +76,7 @@ export default class Validator {
 			return this
 		}
 
-		return new Validator(this.config, R.concat(this.errors, errors))
+		return new Validator(this.config, R.concat(this.errors)(errors))
 	}
 
 	// ----- Applicative Validator
@@ -176,7 +176,7 @@ export default class Validator {
 
 		this.errors =
 			Array.isArray(validators) ?
-				R.pipe(
+				R.applyPipe(
 					R.map((validator) => validator.errors),
 					R.flatten,
 					R.concat(this.errors),

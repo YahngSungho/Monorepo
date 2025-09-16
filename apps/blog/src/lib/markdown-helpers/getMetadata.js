@@ -18,7 +18,7 @@ export async function getAllMetadataObject() {
 	}
 
 
-	return R.pipe(
+	return R.applyPipe(
 		frontmatterObjectObject,
 		R.mapObject((value, key) => {
 			return {

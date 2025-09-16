@@ -125,7 +125,7 @@ onMount(() => {
 /** @type {Array<Object>} */
 let allMetadata = $derived.by(() => {
 	if (!data.allMetadataObject) return []
-	return R.pipe(
+	return R.applyPipe(
 		data.allMetadataObject,
 		Object.values,
 		R.map((metadata) => ({

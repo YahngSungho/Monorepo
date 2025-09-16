@@ -9,6 +9,8 @@ import { getOneMarkdownBody } from '$lib/markdown-helpers/getMarkdown.js'
 import { getAllMetadataObject } from '$lib/markdown-helpers/getMetadata.js'
 import { sendMails_immediate_action } from '$lib/wrappers/sendMails.js'
 
+import { shuffleArray } from '@library/helpers/random'
+
 const urlPost = `https://${URL}/posts/`
 
 async function addSubscription_action(myEmail) {
@@ -48,11 +50,11 @@ export const POST = async ({ request }) => {
 				}
 
 				const allMetadataObject = await getAllMetadataObject()
-				const markdownMetadata_pinned = R.pipe(
+				const markdownMetadata_pinned = R.applyPipe(
 					allMetadataObject,
 					Object.values,
 					R.filter(R.prop('pinned')),
-					R.sort(R.descend(R.prop('date'))),
+					shuffleArray
 				)
 				const markdownLinks = markdownMetadata_pinned.map((item) => {
 					return `- [${item.title}](${urlPost}${item.slug})`
