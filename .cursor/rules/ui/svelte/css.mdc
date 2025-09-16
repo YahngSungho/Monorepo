@@ -11,7 +11,7 @@ This document outlines the rules and best practices for styling components in th
 ## General Styling Rule
 
 - **For any new styles, do not use TailwindCSS utility classes.**
-- Instead, prefer using **standard CSS syntax** with our **predefined CSS variables**.
+- Instead, prefer using **raw CSS syntax** with our **predefined CSS variables**.
 
 ---
 
