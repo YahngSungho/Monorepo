@@ -18,12 +18,12 @@
 		"form-data": "^4.0.4",
 		"mailgun.js": "^12.0.3"
 	},
+	"devDependencies": {
+		"jsonc-parser": "^3.3.1"
+	},
 	"exports": {
 		"./supabase": "./src/supabase/index.js",
 		"./supabase_admin": "./src/supabase/index.admin.js",
 		"./mailgun": "./src/mailgun/index.js"
-	},
-	"devDependencies": {
-		"jsonc-parser": "^3.3.1"
 	}
 }

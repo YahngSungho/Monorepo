@@ -1,7 +1,8 @@
-import { getAbsolutePath } from '@library/helpers/fs-sync'
-import { R } from '@library/helpers/R'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+
+import { getAbsolutePath } from '@library/helpers/fs-sync'
+import { R } from '@library/helpers/R'
 import * as jsoncParser from 'jsonc-parser'
 
 const appsPath = getAbsolutePath(import.meta.url, '../../../../apps/')
@@ -31,7 +32,7 @@ function deepMergePreferOverride(base, override) {
 async function readJsoncFile_action(absoluteFilePath) {
 	const content = await fs.readFile(absoluteFilePath, 'utf8')
 	const errors = []
-	const options = { allowTrailingComma: true, disallowComments: false, allowEmptyContent: true }
+	const options = { allowEmptyContent: true, allowTrailingComma: true, disallowComments: false }
 	const data = jsoncParser.parse(content, errors, options)
 	if (errors.length > 0) {
 		const msg = errors.map((e) => `code=${e.error}`).join(', ')

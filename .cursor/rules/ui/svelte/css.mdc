@@ -3,6 +3,7 @@ description:
 globs: *.svelte,
 alwaysApply: false
 ---
+
 # Svelte CSS Styling Guide
 
 This document outlines the rules and best practices for styling components in this codebase.
@@ -64,9 +65,9 @@ In short, for each element where you use `style`, choose one approach exclusivel
   ```svelte
   <script>
     import { css, cx } from '@emotion/css';
-
+  
   </script>
-
+  
   <SomeComponent class={cx('base-class', css`
       &:hover {
         background-color: var(--primary);

@@ -35,8 +35,6 @@
 		"zod": "^3.25.36"
 	},
 	"devDependencies": {
-		"@sentry/sveltekit": "^9.13.0",
-		"gremlins.js": "^2.2.0",
 		"@babel/core": "^7.27.1",
 		"@double-great/stylelint-a11y": "^3.0.4",
 		"@eslint/compat": "^1.2.9",
@@ -52,6 +50,7 @@
 		"@intlify/eslint-plugin-svelte": "^1.0.0",
 		"@microsoft/eslint-plugin-sdl": "github:microsoft/eslint-plugin-sdl",
 		"@playwright/test": "^1.52.0",
+		"@sentry/sveltekit": "^9.13.0",
 		"@storybook/addon-svelte-csf": "5.0.8",
 		"@sveltejs/adapter-cloudflare": "^7.0.3",
 		"@sveltejs/kit": "^2.20.7",
@@ -98,6 +97,7 @@
 		"eslint-plugin-yml": "^1.17.0",
 		"fast-check": "^4.1.1",
 		"globals": "^16.0.0",
+		"gremlins.js": "^2.2.0",
 		"husky": "^9.1.7",
 		"i": "^0.3.7",
 		"jest-junit": "^16.0.0",
