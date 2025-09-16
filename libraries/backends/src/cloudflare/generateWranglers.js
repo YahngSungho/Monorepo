@@ -167,7 +167,8 @@ function parseJsonc_toObject(content) {
  * @returns {any}
  */
 function deepMergePreferOverride(base, override) {
-	const combine = (left, right) => (Array.isArray(left) && Array.isArray(right) ? R.concat(left)(right) : right)
+	const combine = (left, right) =>
+		Array.isArray(left) && Array.isArray(right) ? R.concat(left)(right) : right
 	return R.mergeDeepWith(combine, base, override)
 }
 
@@ -199,7 +200,9 @@ async function writeJsoncFile_action(absoluteFilePath, data) {
  */
 async function getAppDirsWithOverride_action(absoluteAppsPath) {
 	const dirents = await fs.readdir(absoluteAppsPath, { withFileTypes: true })
-	const appDirs = dirents.filter((d) => d.isDirectory()).map((d) => path.join(absoluteAppsPath, d.name))
+	const appDirs = dirents
+		.filter((d) => d.isDirectory())
+		.map((d) => path.join(absoluteAppsPath, d.name))
 	/** @type {string[]} */
 	const targets = []
 	for (const dir of appDirs) {

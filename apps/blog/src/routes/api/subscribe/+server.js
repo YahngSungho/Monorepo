@@ -54,7 +54,7 @@ export const POST = async ({ request }) => {
 					allMetadataObject,
 					Object.values,
 					R.filter(R.prop('pinned')),
-					shuffleArray
+					shuffleArray,
 				)
 				const markdownLinks = markdownMetadata_pinned.map((item) => {
 					return `- [${item.title}](${urlPost}${item.slug})`

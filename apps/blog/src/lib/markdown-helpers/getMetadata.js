@@ -8,7 +8,6 @@ import { APP_NAME } from '$lib/info.js'
 
 import { metadata } from './metadata.js'
 
-
 export async function getAllMetadataObject() {
 	const lang = getLocale()
 	const frontmatterList = await getMarkdownFrontmatterList(APP_NAME, lang)
@@ -16,7 +15,6 @@ export async function getAllMetadataObject() {
 	for (const value of frontmatterList) {
 		frontmatterObjectObject[value.key] = value.frontmatter
 	}
-
 
 	return R.applyPipe(
 		frontmatterObjectObject,
@@ -27,6 +25,6 @@ export async function getAllMetadataObject() {
 				...metadata[key],
 			}
 		}),
-		R.pickBy((value) => !(value.skip))
+		R.pickBy((value) => !value.skip),
 	)
 }
