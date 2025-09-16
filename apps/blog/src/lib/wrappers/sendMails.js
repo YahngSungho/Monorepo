@@ -1,4 +1,4 @@
-import { sendMails_base } from '@library/library-top/sendMails'
+import { sendMails_base_action } from '@library/library-top/sendMails'
 
 import { EMAIL,EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 
@@ -17,7 +17,7 @@ import { EMAIL,EMAIL_SENDER_NAME, URL } from '$lib/info.js'
  */
 
 
-const sendMails_base0 = sendMails_base({
+const sendMails_base0_action = sendMails_base_action({
 	domain: URL,
 	emailOfSender: EMAIL,
 	name: EMAIL_SENDER_NAME,
@@ -26,7 +26,7 @@ const sendMails_base0 = sendMails_base({
 
 
 /** @type {SendMailsAction} */
-export const sendMails_immediate_action = sendMails_base0({ deliveryTimeOptimize: false })
+export const sendMails_immediate_action = sendMails_base0_action({ deliveryTimeOptimize: false })
 
 /** @type {SendMailsAction} */
-export const sendMails_optimize_action = sendMails_base0({ deliveryTimeOptimize: true })
+export const sendMails_optimize_action = sendMails_base0_action({ deliveryTimeOptimize: true })

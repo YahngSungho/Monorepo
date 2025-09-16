@@ -45,7 +45,7 @@ function getEmailHTMLContent(markdownText, mermaidSVGObject) {
 	)
 }
 
-export const sendMails_base = R.curry(async (info, config, content, emailList) => {
+export const sendMails_base_action = R.curry(async (info, config, content, emailList) => {
 	const { domain, emailOfSender, name, preprocessMarkdownText = R.identity } = info
 	const { markdownText, mermaidSVGObject } = content
 	const { deliveryTimeOptimize = true } = config

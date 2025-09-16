@@ -49,7 +49,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
       * @returns {Promise<void>}
       */
      /** @type {SendMailsAction} */
-     export const sendMails_action = sendMails_base(myInfo)
+     export const sendMails_action = sendMails_base_action(myInfo)
      ```
 
 ## Library Usage
