@@ -20,8 +20,8 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 2. **Preference Order:** **Data > 계산 > 액션**
    - ALWAYS PREFER Data TO 계산. ALWAYS PREFER 계산 TO 액션.
    - Whenever possible, implement logic as 계산. Consider if 계산 can be represented as data. Isolate 계산 by extracting as much logic as possible into Data.
-   - Use 액션 only when necessary. Isolate 액션 by extracting as much logic as possible into 계산. Always minimize and isolate 액션.
-   - Use 계산 only when necessary. Isolate 계산 by extracting as much Data as possible into external value. Always minimize and isolate 계산. Before writing a calculation, attempt to externalize configuration, constants, decision tables, and branching rules as Data (e.g., maps, arrays of rules). Keep 계산 bodies small and deterministic, delegating structure to Data.
+   - Use 액션 only when necessary. ISOLATE 액션 BY EXTRACTING AS MUCH LOGIC AS POSSIBLE INTO EXTERNAL 계산 함수들. ALWAYS MINIMIZE THE CONTENTS OF THE BODY OF 액션 FUNCTIONS BY MOVING AS MUCH AS POSSIBLE THOSE ARE NOT 액션 OUTSIDE OF THAT 액션 FUNCTION INTO EXTERNAL 계산 FUNCTIONS.
+   - Use 계산 only when necessary. ISOLATE 계산 BY EXTRACTING AS MUCH DATA AS POSSIBLE INTO EXTERNAL VALUES. ALWAYS MINIMIZE THE CONTENTS OF THE BODY OF 계산 FUNCTIONS BY MOVING AS MUCH AS POSSIBLE THOSE ARE NOT 계산 OUTSIDE OF THAT 계산 FUNCTION INTO EXTERNAL VALUES. Before writing a calculation, attempt to externalize configuration, constants, decision tables, and branching rules as Data (e.g., maps, arrays of rules). Keep 계산 bodies small and deterministic, delegating structure to Data.
    - Isolate 계산 from 액션: move any I/O, logging, timing, randomness, and environment access out of 계산. Prefer feeding 계산 with Data prepared up-front and consuming its output later.
    - ALWAYS try data-driven design: table-driven logic, config objects, and pattern lists often replace branching inside 계산.
 
@@ -75,10 +75,10 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const result = R.applyPipe({ a: 1, b: 2 }, R.prop('a'), R.add(10))
   // result === 11
-  
+
   // Async pipeline
   const asyncResult = await R.applyPipeAsync(
   	[1, 2, 3],
@@ -92,12 +92,12 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const transform = R.getPipedFunction(
   	R.filter((x) => x > 2),
   	R.map((x) => x * 10),
   )
-  
+
   const out1 = transform([1, 2, 3, 4]) // [30, 40]
   const out2 = transform([3, 5]) // [30, 50]
   ```
@@ -110,7 +110,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const src = { a: 1, b: 2 }
   const doubled = R.mapObject((value, key) => value * 2)(src)
   // doubled === { a: 2, b: 4 }
@@ -120,7 +120,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const users = { a: 1, b: 2 }
   const withProfiles = await R.mapObjectParallel(async (id, key) => {
   	return await fetch(`/api/profile/${id}`).then((r) => r.json())
@@ -136,7 +136,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { create } from '@library/helpers/mutative'
-  
+
   const baseState = { count: 0, items: [] }
   const nextState = create(baseState, (draft) => {
   	draft.count++
@@ -151,9 +151,9 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const numbers = [1, 2, 3, 4, 5]
-  
+
   // Example: Filter numbers greater than 2, then multiply each by 10
   const processNumbers = R.applyPipe(
   	numbers, // Initial data
