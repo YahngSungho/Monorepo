@@ -22,5 +22,8 @@
 		"./supabase": "./src/supabase/index.js",
 		"./supabase_admin": "./src/supabase/index.admin.js",
 		"./mailgun": "./src/mailgun/index.js"
+	},
+	"devDependencies": {
+		"jsonc-parser": "^3.3.1"
 	}
 }

@@ -2,6 +2,7 @@ import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import * as jsoncParser from 'jsonc-parser'
 
 const appsPath = getAbsolutePath(import.meta.url, '../../../../apps/')
 const wranglerBasePath = getAbsolutePath(import.meta.url, './wrangler.base.jsonc')
@@ -9,156 +10,6 @@ const wranglerBasePath = getAbsolutePath(import.meta.url, './wrangler.base.jsonc
 await generateWranglers_action()
 
 // ---
-
-/**
- * 헬퍼들 (계산)
- */
-function isQuote(ch) {
-	return ch === '"' || ch === "'"
-}
-
-function isWhitespace(ch) {
-	return /\s/.test(ch)
-}
-
-function startsLineComment(input, i) {
-	return input[i] === '/' && i + 1 < input.length && input[i + 1] === '/'
-}
-
-function startsBlockComment(input, i) {
-	return input[i] === '/' && i + 1 < input.length && input[i + 1] === '*'
-}
-
-function advanceToLineEnd(input, startIndex) {
-	let index = startIndex
-	while (index < input.length && input[index] !== '\n') index++
-	return index
-}
-
-function advanceToBlockEnd(input, startIndex) {
-	let index = startIndex
-	while (index < input.length) {
-		if (input[index] === '*' && index + 1 < input.length && input[index + 1] === '/') {
-			return index + 2
-		}
-		index++
-	}
-	return index
-}
-
-function isTrailingCommaAt(input, i) {
-	if (input[i] !== ',') return false
-	let j = i + 1
-	while (j < input.length && isWhitespace(input[j])) j++
-	const c = j < input.length ? input[j] : ''
-	return c === '}' || c === ']'
-}
-
-function consumeComment(input, i, keepComments) {
-	if (startsLineComment(input, i)) {
-		const start = i
-		const end = advanceToLineEnd(input, i + 2)
-		return { handled: true, newIndex: end, snippet: keepComments ? input.slice(start, end) : '' }
-	}
-	if (startsBlockComment(input, i)) {
-		const start = i
-		const end = advanceToBlockEnd(input, i + 2)
-		return { handled: true, newIndex: end, snippet: keepComments ? input.slice(start, end) : '' }
-	}
-	return { handled: false }
-}
-
-function consumeString(input, i) {
-	const quote = input[i]
-	let j = i + 1
-	while (j < input.length) {
-		const ch = input[j]
-		if (ch === '\\') {
-			j += 2
-			continue
-		}
-		if (ch === quote) {
-			j++
-			break
-		}
-		j++
-	}
-	return { newIndex: j, snippet: input.slice(i, j) }
-}
-
-/**
- * 공통 JSONC 변환기 (계산)
- * @param {string} input
- * @param {{ removeComments: boolean, removeTrailingCommas: boolean }} options
- */
-function transformJsonc(input, options) {
-	const keepComments = !options.removeComments
-	const removeTrailing = options.removeTrailingCommas
-
-	let output = ''
-	let i = 0
-
-	while (i < input.length) {
-		const ch = input[i]
-
-		// 댓글 처리
-		const comment = consumeComment(input, i, keepComments)
-		if (comment.handled) {
-			output += comment.snippet
-			i = comment.newIndex
-			continue
-		}
-
-		// 문자열 처리
-		if (isQuote(ch)) {
-			const { newIndex, snippet } = consumeString(input, i)
-			output += snippet
-			i = newIndex
-			continue
-		}
-
-		// 트레일링 콤마 처리
-		if (removeTrailing && ch === ',' && isTrailingCommaAt(input, i)) {
-			i++
-			continue
-		}
-
-		// 기본 문자 출력
-		output += ch
-		i++
-	}
-
-	return output
-}
-
-/**
- * JSONC 문자열에서 주석을 제거합니다. (계산)
- * @param {string} input
- * @returns {string}
- */
-function stripComments(input) {
-	return transformJsonc(input, { removeComments: true, removeTrailingCommas: false })
-}
-
-/**
- * JSONC 문자열에서 트레일링 콤마를 제거합니다. (계산)
- * @param {string} input
- * @returns {string}
- */
-function stripTrailingCommas(input) {
-	return transformJsonc(input, { removeComments: false, removeTrailingCommas: true })
-}
-
-/**
- * JSONC 문자열을 안전하게 파싱합니다. (계산)
- * @param {string} content
- * @returns {any}
- */
-function parseJsonc_toObject(content) {
-	const noComments = stripComments(content)
-	const normalized = stripTrailingCommas(noComments)
-	return JSON.parse(normalized)
-}
 
 /**
  * 깊은 병합: 객체는 재귀 병합, 배열은 concat, 그 외는 override 선택 (계산)
@@ -179,7 +30,14 @@ function deepMergePreferOverride(base, override) {
  */
 async function readJsoncFile_action(absoluteFilePath) {
 	const content = await fs.readFile(absoluteFilePath, 'utf8')
-	return parseJsonc_toObject(content)
+	const errors = []
+	const options = { allowTrailingComma: true, disallowComments: false, allowEmptyContent: true }
+	const data = jsoncParser.parse(content, errors, options)
+	if (errors.length > 0) {
+		const msg = errors.map((e) => `code=${e.error}`).join(', ')
+		throw new Error(`Invalid JSONC at ${absoluteFilePath}: ${msg}`)
+	}
+	return data
 }
 
 /**

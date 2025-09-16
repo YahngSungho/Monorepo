@@ -31,12 +31,12 @@
 	"dependencies": {
 		"@emotion/css": "^11.13.5",
 		"@emotion/server": "^11.11.0",
-		"@sentry/sveltekit": "^9.13.0",
 		"daisyui": "5.0.35",
-		"gremlins.js": "^2.2.0",
 		"zod": "^3.25.36"
 	},
 	"devDependencies": {
+		"@sentry/sveltekit": "^9.13.0",
+		"gremlins.js": "^2.2.0",
 		"@babel/core": "^7.27.1",
 		"@double-great/stylelint-a11y": "^3.0.4",
 		"@eslint/compat": "^1.2.9",

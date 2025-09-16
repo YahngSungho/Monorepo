@@ -20,9 +20,10 @@ const getErrors = R.curry(
 
 	(config, conditions) =>
 		R.applyPipe(
+			conditions,
 			R.reject((condition) => condition.function(config)),
 			R.map((condition) => condition.error),
-		)(conditions),
+		),
 )
 
 /** @template T - The type of the inner value that Validator holds. */
