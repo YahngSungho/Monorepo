@@ -62,7 +62,7 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
 		result = await mg.messages.create(domain, {
 			from: `${name} <${emailOfSender}>`,
 			html: getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject),
-			'o:deliverytime-optimize-period': deliveryTimeOptimize ? '168h' : undefined, // 168h = 7일
+			'o:deliverytime-optimize-period': deliveryTimeOptimize ? '72h' : undefined, // 72h = 3일
 			'o:tracking': 'yes',
 			'o:tracking-clicks': 'yes',
 			'o:tracking-opens': 'yes',
