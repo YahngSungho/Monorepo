@@ -29,7 +29,6 @@ let emailValue = $state('')
  * @type {null | { submittedEmail: string, success: boolean }}
  */
 let formResult = $state(null)
-// 제출 진행 상태가 필요하면 UI에 연결하세요. 현재는 내부 사용만 함
 let isSubscribed = $state(false)
 let emailErrorMessage = $state('')
 let isSubmitting = $state(false)
@@ -537,11 +536,11 @@ let jsonLd = $derived({
 						</div>
 					{/if}
 				</div>
+
+				<div id="Top2_Layout_Check"></div>
 			</div>
 		</div>
 	</div>
-
-	<div id="Top2_Layout_Check"></div>
 </BaseLayout>
 
 <style>

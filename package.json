@@ -31,6 +31,7 @@
 	"dependencies": {
 		"@emotion/css": "^11.13.5",
 		"@emotion/server": "^11.11.0",
+		"@sentry/sveltekit": "^9.13.0",
 		"daisyui": "5.0.35",
 		"zod": "^3.25.36"
 	},
@@ -50,7 +51,6 @@
 		"@intlify/eslint-plugin-svelte": "^1.0.0",
 		"@microsoft/eslint-plugin-sdl": "github:microsoft/eslint-plugin-sdl",
 		"@playwright/test": "^1.52.0",
-		"@sentry/sveltekit": "^9.13.0",
 		"@storybook/addon-svelte-csf": "5.0.8",
 		"@sveltejs/adapter-cloudflare": "^7.0.3",
 		"@sveltejs/kit": "^2.20.7",

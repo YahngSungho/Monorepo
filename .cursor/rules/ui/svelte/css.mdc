@@ -11,7 +11,7 @@ This document outlines the rules and best practices for styling components in th
 ## General Styling Rule
 
 - **For any new styles, do not use TailwindCSS utility classes.**
-- Instead, prefer using **standard CSS syntax** with our **predefined CSS variables**.
+- Instead, prefer using **raw CSS syntax** with our **predefined CSS variables**.
 
 ---
 
@@ -23,8 +23,13 @@ Here are the approved methods for styling in `.svelte` files, listed in order of
 
 This is the default and preferred method for applying styles. You should use raw CSS Sytanx with CSS variables directly in them. You can use custom CSS Classes (not from Tailwind).
 
-- **When to Use**:
-  - Use this for all basic styling needs.
+#### When to Use
+
+Use this for all basic styling needs.
+
+#### What to Use
+
+For complex CSS like styles using syntax like `&` or CSS applied to multiple elements, write and use classes within `<style>` tags. Otherwise, use style directives or style strings.
 
 #### Using `style` in Svelte: directive vs string
 
@@ -58,28 +63,33 @@ In short, for each element where you use `style`, choose one approach exclusivel
 
 ### 2. Emotion.js
 
-- **When to Use**:
-  - Use Emotion for passing CSS Classes
-- **Example**:
+#### When to Use
 
-  ```svelte
-  <script>
-    import { css, cx } from '@emotion/css';
-  
-  </script>
-  
-  <SomeComponent class={cx('base-class', css`
-      &:hover {
-        background-color: var(--primary);
-      }`
-  			)} />
-  ```
+Use Emotion for passing CSS Classes
+
+#### Example
+
+```svelte
+<script>
+  import { css, cx } from '@emotion/css';
+
+</script>
+
+<SomeComponent class={cx('base-class', css`
+    &:hover {
+      background-color: var(--primary);
+    }`
+			)} />
+```
 
 ### 3. TailwindCSS
 
 The use of TailwindCSS is restricted to specific legacy cases.
 
-- **When to Use**:
-  - Only when integrating or maintaining third-party components (e.g., from ShadCN, DaisyUI) that already use TailwindCSS.
-- **Important**:
-  - **Do not write new styles using TailwindCSS classes.** All new styling should be done using raw CSS syntax directly with CSS variables, or custom Classes.
+#### When to Use
+
+Only when integrating or maintaining third-party components (e.g., from ShadCN, DaisyUI) that already use TailwindCSS.
+
+#### Caution
+
+**Do not write new styles using TailwindCSS classes.** All new styling should be done using raw CSS syntax directly with CSS variables, or custom Classes.
