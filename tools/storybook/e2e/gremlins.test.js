@@ -229,7 +229,7 @@ for (const entry of filteredEntries) {
 				body: dateNow.toLocaleString('ko-KR'),
 			})
 
-			const errors = R.concat(pageErrors, failedRequests)
+			const errors = R.concat(pageErrors)(failedRequests)
 			if (errors.length > 0) {
 				test.info().attach('발견된 에러', {
 					body: errors.join('\n'),

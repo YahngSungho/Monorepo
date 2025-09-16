@@ -4,7 +4,7 @@ import { unsafe } from 'mutative'
 import { nanoid } from 'nanoid'
 import * as R from 'ramda'
 import { areAllDisjoint } from '../utilities/functions/utilities.js'
-import { shuffleArray } from './random_engine.js'
+import { shuffleArray } from './random.js'
 
 export { AllMembers, Cohort, Member, Team, Teams }
 

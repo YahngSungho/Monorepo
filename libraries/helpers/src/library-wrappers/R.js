@@ -4,7 +4,9 @@ import * as ramda from 'ramda'
 export const R = {
 	...ramda,
 	...rambda,
-	concat: ramda.concat,
+	applyPipe: rambda.pipe,
+	applyPipeAsync: rambda.pipeAsync,
+	getPipedFunction: ramda.pipe,
 	mapObjectParallel: ramda.curry(async (fn, obj) => {
 		return await rambda.pipeAsync(
 			Object.entries(obj),

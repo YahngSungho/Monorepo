@@ -31,7 +31,7 @@
 		"./svgo": "./src/library-wrappers/svgo.js",
 		"./monads": "./src/data-structures/monads.js",
 		"./mutative": "./src/library-wrappers/mutative.js",
-		"./random_engine": "./src/library-wrappers/random_engine.js",
+		"./random": "./src/library-wrappers/random.js",
 		"./R": "./src/library-wrappers/R.js",
 		"./fs-async": "./src/file-systems/async.js",
 		"./fs-sync": "./src/file-systems/sync.js",

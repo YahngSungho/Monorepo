@@ -134,7 +134,7 @@ const baseRules = {
 	semi: ['warn', 'never'],
 	'semi-style': 'off',
 	'sonarjs/call-argument-line': 'off',
-	'sonarjs/cognitive-complexity': ['warn', 30],
+	'sonarjs/cognitive-complexity': ['error', 30],
 	'sonarjs/no-commented-code': 'off',
 	'sonarjs/no-empty-test-file': 'off',
 	'sonarjs/no-invariant-returns': 'warn',

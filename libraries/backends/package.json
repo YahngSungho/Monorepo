@@ -3,6 +3,8 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
+		"build": "pnpm run build:cloudflare",
+		"build:cloudflare": "node ./src/cloudflare/generateWranglers.js",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",

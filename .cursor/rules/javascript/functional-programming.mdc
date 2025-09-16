@@ -11,30 +11,31 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 ## Core Principles
 
 1. **Code Separation:** Clearly distinguish and manage code into the following three types:
-
    1. Data
-   2. 계산 (= Pure Functions )
+   2. 계산 (= Pure Functions)
    3. 액션 (= Impure Functions, Side Effects)
 
    Keep in mind that in this codebase, we call pure code "계산(computation or calculation)" and impure code "액션(action)".
 
 2. **Preference Order:** **Data > 계산 > 액션**
-
-   - Prefer Data to 계산. Prefer 계산 to 액션.
+   - ALWAYS PREFER Data TO 계산. ALWAYS PREFER 계산 TO 액션.
    - Whenever possible, implement logic as 계산. Consider if 계산 can be represented as data. Isolate 계산 by extracting as much logic as possible into Data.
    - Use 액션 only when necessary. Isolate 액션 by extracting as much logic as possible into 계산. Always minimize and isolate 액션.
+   - Use 계산 only when necessary. Isolate 계산 by extracting as much Data as possible into external value. Always minimize and isolate 계산. Before writing a calculation, attempt to externalize configuration, constants, decision tables, and branching rules as Data (e.g., maps, arrays of rules). Keep 계산 bodies small and deterministic, delegating structure to Data.
+   - Isolate 계산 from 액션: move any I/O, logging, timing, randomness, and environment access out of 계산. Prefer feeding 계산 with Data prepared up-front and consuming its output later.
+   - ALWAYS try data-driven design: table-driven logic, config objects, and pattern lists often replace branching inside 계산.
 
 3. **Managing 액션:**
-
    - **Isolation:** Manage functions containing 액션 so they are clearly identifiable (e.g., grouped in specific modules, using naming conventions).
-   - **Naming:** You **must** suffix the names of functions with 액션 with `_action` (e.g., `updateDOM_action`, `fetchData_action`).
+   - Minimize 액션: keep the 액션 surface tiny. Extract pure computations out into separate 계산 and pass results into 액션. Keep orchestration thin and explicit.
+   - Isolate 액션 from 계산: compose 액션 as adapters around boundaries (I/O, network, DOM, DB). Sequence 액션 outside of `pipe` when it obscures intent; prefer clear, linear flows.
+   - **Naming:** You **must** suffix the names of functions with 액션 with `_action` (e.g., `updateDOM_action`, `fetchData_action`). 이 접미사는 해당 함수가 부수효과를 갖는 **주의 구간**임을 코드리뷰와 사용 시점 모두에서 즉시 드러내 경각심을 높이기 위함. `_action` 표기는 테스트 전략(목/스텁) 분리와 모듈 경계 파악에도 도움을 준다.
 
 4. **Immutability:** Do not modify data structures (objects, arrays) directly. When changes are needed, create and return new data structures. This improves predictability and simplifies state management.
 
-5. **Function Composition:** Build complex functionality by combining smaller, reusable functions. This enhances code reuse and helps separate logic clearly (e.g., using `R.pipe`).
+5. **Function Composition:** Build complex functionality by combining smaller, reusable functions. This enhances code reuse and helps separate logic clearly (e.g., using `R.applyPipe`).
 
-6. **Currying:** A technique of transforming a function that takes multiple arguments into a sequence of functions that each take a single argument. It can improve function reusability and composition (e.g., using `R.curry`).
-   - **Caution:** When using `R.curry` (or functions that behave like Ramda's `curry`), if the target function has default parameter values, the `curry` function might not correctly determine the function's arity (the number of arguments it expects). This is because a function's `length` property in JavaScript only counts parameters up to the first one with a default value. Consequently, `curry` might execute the function prematurely with fewer arguments than expected (e.g., returning a Promise immediately for an `async` function) or return something other than a partially applied function. To prevent this, it's advisable to remove default parameter values from the signature of the function being curried and handle defaults explicitly within the function body.
+6. **Currying:** Try to use `R.curry` whenever you can.
    - JSDoc for Curried Functions: When you write JSDoc for it, Use callback typedef + type assertion for partially-applied functons.
 
      ```javascript
@@ -45,56 +46,116 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
       * @returns {Promise<void>}
       */
      /** @type {SendMailsAction} */
-     export const sendMails_action = sendMails_base(myInfo)
+     export const sendMails_action = sendMails_base_action(myInfo)
      ```
 
 ## Library Usage
 
 ### Ramda / Rambda (via `@library/helpers/R`)
 
-  - **Primary Use:** Utilize the `R` object imported from `@library/helpers/R` for functional programming tasks. This export is the primary source for utility functions in this project.
-  - **Import:** `import { R } from '@library/helpers/R'`
-  - **Features & Philosophy:** This `R` object provides functions inspired by Rambda/Ramda, focusing on TypeScript compatibility and clarity. Key utilities like `pipe` (for composition) and `curry` (for partial application) are available. The guiding philosophy, aligned with Rambda, is to:
-    - **Prioritize `R.pipe`:** Structure data transformations as a clear sequence of functions within `pipe`.
-    - **Favor Simple, Obvious Functions:** Prefer functions whose behavior is clear from their name and signature. Avoid overly generic or "magic" functions that require significant context or documentation lookup (e.g., complex conditional logic handlers like `cond`/`ifElse`, or ambiguous functions like `where`/`update` if they exist in `R`). Complex logic or branching is often clearer handled outside the main pipe.
-    - **Avoid Input Order Dependency:** Be mindful of functions where the order of arguments significantly changes behavior and requires memorization (like Ramda's `difference`). Prefer functions with clearer argument roles.
-    - **Specific Notations (Rambda Influence):** The `R` object may offer convenient notations for certain functions, inspired by Rambda:
-      - `R.path`: Allows **dot notation** (e.g., `R.path('a.b.c')`) as an alternative to array paths (`R.path(['a', 'b', 'c'])`) for accessing nested properties. Note: Use array notation for keys that are purely numeric (e.g., `['a', '1', 'b']` not `'a.1.b'`).
-      - `R.pick` / `R.omit`: Allows **comma notation** (e.g., `R.pick('a,b,c', obj)`) as an alternative to array of keys (`R.pick(['a', 'b', 'c'], obj)`). Ensure there are no spaces within the comma-separated string.
-  - **Usage Pattern:** Functions within `R` often follow a curried style consistent with Rambda's approach, promoting use within `R.pipe`:
-    - Functions expecting 2 arguments are typically called like: `R.someFunction(arg1)(arg2)`
-    - Functions expecting 3 arguments are typically called like: `R.someFunction(arg1, arg2)(arg3)`
-    - This pattern facilitates partial application and composition.
-  - **Example:** Use `R.pipe` for composition and `R.curry` for currying. Employ clear, single-purpose functions like `R.map`, `R.filter`, `R.prop`, `R.concat` from the `R` object within pipes. Handle complex conditional logic or side effects primarily before or after the pipe for better readability.
+- **Primary Use:** Utilize the `R` object imported from `@library/helpers/R` for functional programming tasks. This export is the primary source for utility functions in this project.
+- **Import:** `import { R } from '@library/helpers/R'`
+- **Features & Philosophy:** This `R` object provides functions inspired by Rambda/Ramda, focusing on TypeScript compatibility and clarity. Key utilities like `pipe` (for composition) and `curry` (for partial application) are available. The guiding philosophy, aligned with Rambda, is to:
+  - **Prioritize `R.applyPipe`:** Structure data transformations as a clear sequence of functions within `pipe`.
+  - **Favor Simple, Obvious Functions:** Prefer functions whose behavior is clear from their name and signature. Avoid overly generic or "magic" functions that require significant context or documentation lookup (e.g., complex conditional logic handlers like `cond`/`ifElse`, or ambiguous functions like `where`/`update` if they exist in `R`). Complex logic or branching is often clearer handled outside the main pipe.
+  - **Avoid Input Order Dependency:** Be mindful of functions where the order of arguments significantly changes behavior and requires memorization (like Ramda's `difference`). Prefer functions with clearer argument roles.
+  - **Specific Notations (Rambda Influence):** The `R` object may offer convenient notations for certain functions, inspired by Rambda:
+    - `R.path`: Allows **dot notation** (e.g., `R.path('a.b.c')`) as an alternative to array paths (`R.path(['a', 'b', 'c'])`) for accessing nested properties. Note: Use array notation for keys that are purely numeric (e.g., `['a', '1', 'b']` not `'a.1.b'`).
+    - `R.pick` / `R.omit`: Allows **comma notation** (e.g., `R.pick('a,b,c', obj)`) as an alternative to array of keys (`R.pick(['a', 'b', 'c'], obj)`). Ensure there are no spaces within the comma-separated string.
+- **Usage Pattern:** Functions within `R` often follow a curried style consistent with Rambda's approach, promoting use within `R.applyPipe`:
+  - Functions expecting 2 arguments are typically called like: `R.someFunction(arg1)(arg2)`
+  - Functions expecting 3 arguments are typically called like: `R.someFunction(arg1, arg2)(arg3)`
+  - This pattern facilitates partial application and composition.
+- **Example:** Use `R.applyPipe` for composition and `R.curry` for currying. Employ clear, single-purpose functions like `R.map`, `R.filter`, `R.prop`, `R.concat` from the `R` object within pipes. Handle complex conditional logic or side effects primarily before or after the pipe for better readability.
 
-### Mutative: A library to help modify objects or arrays while maintaining immutability
+#### Piping utilities in `R`
 
-  - **When to Use:** Consider using `mutative` when Ramda doesn't provide a simple method, when the Ramda equivalent is complicated or just unpopular, or when dealing with deeply nested objects that need immutable updates.
-  - **Import:** `import { create } from '@library/helpers/mutative'`
-  - **Example:**
-
-    ```javascript
-    import { create } from '@library/helpers/mutative'
-
-    const baseState = { count: 0, items: [] }
-    const nextState = create(baseState, (draft) => {
-    	draft.count++
-    	draft.items.push('new')
-    })
-    // baseState remains unchanged
-    ```
-
-## Style Guide
-
-- **Function Composition:** Use `R.pipe` (left-to-right) from `@library/helpers/R` to build clear, sequential data transformations. Pass the initial data first, followed by focused, single-purpose functions. Avoid embedding complex conditional logic (e.g., `ifElse`, `cond`) or functions with unclear side effects directly within pipes. Handle conditions and side effects primarily before or after the pipe, or by refactoring the flow into separate, clear steps.
+- `R.applyPipe` (alias of Rambda's `pipe`): left-to-right composition that takes the **initial data first** and immediately executes the pipeline.
+  - Async variant: `R.applyPipeAsync` exists for asynchronous pipelines (left-to-right), returning a Promise.
 
   ```javascript
   import { R } from '@library/helpers/R'
+  
+  const result = R.applyPipe({ a: 1, b: 2 }, R.prop('a'), R.add(10))
+  // result === 11
+  
+  // Async pipeline
+  const asyncResult = await R.applyPipeAsync(
+  	[1, 2, 3],
+  	R.mapAsync(async (n) => n * 2),
+  	R.filter((n) => n > 2),
+  )
+  // asyncResult === [4, 6]
+  ```
 
+- `R.getPipedFunction` (alias of Ramda's `pipe`): returns a **reusable function** built by composing the provided functions left-to-right. You call the resulting function later with input data.
+
+  ```javascript
+  import { R } from '@library/helpers/R'
+  
+  const transform = R.getPipedFunction(
+  	R.filter((x) => x > 2),
+  	R.map((x) => x * 10),
+  )
+  
+  const out1 = transform([1, 2, 3, 4]) // [30, 40]
+  const out2 = transform([3, 5]) // [30, 50]
+  ```
+
+- Difference: Use `R.applyPipe`/`R.applyPipeAsync` when you have the initial data now and want to execute immediately. Use `R.getPipedFunction` when you want to define a reusable transformation to apply multiple times later.
+
+#### Object mapping utilities in `R`
+
+- `R.mapObject`: alias of Rambda's `mapObject`. Maps over an object's values with access to `(value, key)`; returns a new object. Curried.
+
+  ```javascript
+  import { R } from '@library/helpers/R'
+  
+  const src = { a: 1, b: 2 }
+  const doubled = R.mapObject((value, key) => value * 2)(src)
+  // doubled === { a: 2, b: 4 }
+  ```
+
+- `R.mapObjectParallel`: async variant that applies an async mapper `(value, key) => Promise<newValue>` in parallel and resolves to a new object. Curried. Returns `Promise<Record<string, unknown>>`.
+
+  ```javascript
+  import { R } from '@library/helpers/R'
+  
+  const users = { a: 1, b: 2 }
+  const withProfiles = await R.mapObjectParallel(async (id, key) => {
+  	return await fetch(`/api/profile/${id}`).then((r) => r.json())
+  })(users)
+  // withProfiles === { a: {...}, b: {...} }
+  ```
+
+### Mutative: A library to help modify objects or arrays while maintaining immutability
+
+- **When to Use:** Consider using `mutative` when Ramda doesn't provide a simple method, when the Ramda equivalent is complicated or just unpopular, or when dealing with deeply nested objects that need immutable updates.
+- **Import:** `import { create } from '@library/helpers/mutative'`
+- **Example:**
+
+  ```javascript
+  import { create } from '@library/helpers/mutative'
+  
+  const baseState = { count: 0, items: [] }
+  const nextState = create(baseState, (draft) => {
+  	draft.count++
+  	draft.items.push('new')
+  })
+  // baseState remains unchanged
+  ```
+
+## Style Guide
+
+- **Function Composition:** Use `R.applyPipe` (left-to-right) from `@library/helpers/R` to build clear, sequential data transformations. Pass the initial data first, followed by focused, single-purpose functions. Avoid embedding complex conditional logic (e.g., `ifElse`, `cond`) or functions with unclear side effects directly within pipes. Handle conditions and side effects primarily before or after the pipe, or by refactoring the flow into separate, clear steps. For async pipelines, prefer `R.applyPipeAsync`. When you need a reusable transformation function, use `R.getPipedFunction`.
+
+  ```javascript
+  import { R } from '@library/helpers/R'
+  
   const numbers = [1, 2, 3, 4, 5]
-
+  
   // Example: Filter numbers greater than 2, then multiply each by 10
-  const processNumbers = R.pipe(
+  const processNumbers = R.applyPipe(
   	numbers, // Initial data
   	R.filter((x) => x > 2), // Function 1 (assuming Rambda-style currying: R.filter(predicate)(data))
   	R.map((x) => x * 10), // Function 2 (assuming Rambda-style currying: R.map(fn)(data))

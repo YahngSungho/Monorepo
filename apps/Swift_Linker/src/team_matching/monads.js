@@ -1,6 +1,6 @@
 import { inspect } from 'node:util'
 import { create, unsafe } from '@library/helpers/mutative'
-import { shuffleArray } from '@library/helpers/random_engine'
+import { shuffleArray } from '@library/helpers/random'
 import { nanoid } from 'nanoid'
 import * as R from 'ramda'
 import { areAllDisjoint, areDisjoint } from '../utilities/functions/utilities.js'
