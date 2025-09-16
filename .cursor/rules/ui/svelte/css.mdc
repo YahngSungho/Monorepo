@@ -1,0 +1,85 @@
+---
+description:
+globs: *.svelte,
+alwaysApply: false
+---
+
+# Svelte CSS Styling Guide
+
+This document outlines the rules and best practices for styling components in this codebase.
+
+## General Styling Rule
+
+- **For any new styles, do not use TailwindCSS utility classes.**
+- Instead, prefer using **standard CSS syntax** with our **predefined CSS variables**.
+
+---
+
+## Styling Methods in `.svelte` Files
+
+Here are the approved methods for styling in `.svelte` files, listed in order of preference.
+
+### 1. Svelte Native Way (`style` Attribute, `<style>` tag, `style`/`class` directive)
+
+This is the default and preferred method for applying styles. You should use raw CSS Sytanx with CSS variables directly in them. You can use custom CSS Classes (not from Tailwind).
+
+- **When to Use**:
+  - Use this for all basic styling needs.
+
+#### Using `style` in Svelte: directive vs string
+
+This codebase requires that when you apply inline styles via `style` on a Svelte component/element, you must choose exactly one of the two approaches per element: the Svelte style directive(s) or a single `style` string. Do not mix them on the same element.
+
+- **style directives** (Svelte syntax): `style:position="relative" style:display="flex"`
+
+- **style string** (standard HTML `style` attribute): `style="position: relative; display: flex;"`
+
+Use the following rules to decide which one to use:
+
+- **Use style directives when (Or)**:
+  1. You are modifying styles on an element that is already using style directives.
+     - Keep consistency: if an element already uses `style:...` for the target property, continue using the directive for changes to that existing property.
+  2. You are declaring a CSS custom property (declaration, not usage).
+     - Example (declaration):
+
+       ```svelte
+       <div style:--value={myVar} />
+       ```
+
+- **Use a style string when (And)**:
+  1. You are adding a new CSS property (new per-property basis), regardless of other properties on the same element being written as style directives.
+     - The newly added property must go into the `style` string.
+  2. You are not declaring a CSS variable (i.e., you are using variables, not declaring them).
+
+In short, for each element where you use `style`, choose one approach exclusively:
+
+- If touching existing directive-based properties or declaring a custom property, use style directives.
+- If introducing new properties and not declaring variables, use a `style` string.
+
+### 2. Emotion.js
+
+- **When to Use**:
+  - Use Emotion for passing CSS Classes
+- **Example**:
+
+  ```svelte
+  <script>
+    import { css, cx } from '@emotion/css';
+  
+  </script>
+  
+  <SomeComponent class={cx('base-class', css`
+      &:hover {
+        background-color: var(--primary);
+      }`
+  			)} />
+  ```
+
+### 3. TailwindCSS
+
+The use of TailwindCSS is restricted to specific legacy cases.
+
+- **When to Use**:
+  - Only when integrating or maintaining third-party components (e.g., from ShadCN, DaisyUI) that already use TailwindCSS.
+- **Important**:
+  - **Do not write new styles using TailwindCSS classes.** All new styling should be done using raw CSS syntax directly with CSS variables, or custom Classes.
