@@ -65,22 +65,22 @@ In short, for each element where you use `style`, choose one approach exclusivel
 
 #### When to Use
 
-  Use Emotion for passing CSS Classes
+Use Emotion for passing CSS Classes
 
 #### Example
 
-  ```svelte
-  <script>
-    import { css, cx } from '@emotion/css';
+```svelte
+<script>
+  import { css, cx } from '@emotion/css';
 
-  </script>
+</script>
 
-  <SomeComponent class={cx('base-class', css`
-      &:hover {
-        background-color: var(--primary);
-      }`
-  			)} />
-  ```
+<SomeComponent class={cx('base-class', css`
+    &:hover {
+      background-color: var(--primary);
+    }`
+			)} />
+```
 
 ### 3. TailwindCSS
 
@@ -88,8 +88,8 @@ The use of TailwindCSS is restricted to specific legacy cases.
 
 #### When to Use
 
-  Only when integrating or maintaining third-party components (e.g., from ShadCN, DaisyUI) that already use TailwindCSS.
+Only when integrating or maintaining third-party components (e.g., from ShadCN, DaisyUI) that already use TailwindCSS.
 
 #### Caution
 
-  **Do not write new styles using TailwindCSS classes.** All new styling should be done using raw CSS syntax directly with CSS variables, or custom Classes.
+**Do not write new styles using TailwindCSS classes.** All new styling should be done using raw CSS syntax directly with CSS variables, or custom Classes.

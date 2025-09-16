@@ -31,12 +31,11 @@
 	"dependencies": {
 		"@emotion/css": "^11.13.5",
 		"@emotion/server": "^11.11.0",
+		"@sentry/sveltekit": "^9.13.0",
 		"daisyui": "5.0.35",
-		"zod": "^3.25.36",
-		"@sentry/sveltekit": "^9.13.0"
+		"zod": "^3.25.36"
 	},
 	"devDependencies": {
-		"gremlins.js": "^2.2.0",
 		"@babel/core": "^7.27.1",
 		"@double-great/stylelint-a11y": "^3.0.4",
 		"@eslint/compat": "^1.2.9",
@@ -98,6 +97,7 @@
 		"eslint-plugin-yml": "^1.17.0",
 		"fast-check": "^4.1.1",
 		"globals": "^16.0.0",
+		"gremlins.js": "^2.2.0",
 		"husky": "^9.1.7",
 		"i": "^0.3.7",
 		"jest-junit": "^16.0.0",
