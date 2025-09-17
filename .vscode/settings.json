@@ -60,7 +60,7 @@
 		"strings": "on"
 	},
 	"editor.semanticHighlighting.enabled": true,
-	"editor.suggest.snippetsPreventQuickSuggestions": true,
+	"editor.suggest.snippetsPreventQuickSuggestions": false,
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
 	"eslint.probe": [
@@ -180,5 +180,7 @@
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#79021b99",
 		"titleBar.inactiveForeground": "#e7e7e799"
-	}
+	},
+	"editor.quickSuggestionsDelay": 25,
+	"editor.snippetSuggestions": "top"
 }

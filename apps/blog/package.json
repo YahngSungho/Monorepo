@@ -4,7 +4,8 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"build": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite build",
+		"build": "vite build",
+		"build:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
 		"depCheck": "npx depcheck",
@@ -37,6 +38,8 @@
 		"zod": "^3.25.36"
 	},
 	"devDependencies": {
+		"wrangler": "^4.37.0",
+		"@cloudflare/vite-plugin": "^1.13.1",
 		"@library/scripts": "workspace:*",
 		"daisyui": "5.0.35",
 		"tailwindcss": "4.1.8",

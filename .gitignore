@@ -158,3 +158,6 @@ paraglide-output
 .sentryclirc
 .qodo
 .repomix-output
+
+.wrangler
+.dev.vars*

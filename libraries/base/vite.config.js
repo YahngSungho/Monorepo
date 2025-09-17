@@ -9,11 +9,12 @@ import { FontaineTransform } from 'fontaine'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
 
+// import { cloudflare } from "@cloudflare/vite-plugin";
+
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// 추가: .env.public 로드 (모노레포 루트 기준)
 dotenvx({ path: path.resolve(__dirname, '../../.env.public') })
 
 let currentEnv
@@ -50,6 +51,9 @@ const baseConfig = defineConfig({
 				return absolutePath
 			},
 		}),
+		// cloudflare({
+		// 	viteEnvironment: { name: "ssr" },
+		// }),
 	],
 	server: {
 		fs: {

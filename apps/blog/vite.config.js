@@ -4,6 +4,7 @@ import { sentrySvelteKit } from '@sentry/sveltekit'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig, mergeConfig } from 'vitest/config'
 
+import { cloudflare } from "@cloudflare/vite-plugin"
 import packageJson from './package.json' with { type: 'json' }
 
 const projectName = packageJson.name
@@ -18,22 +19,27 @@ export default mergeConfig(
 	defineConfig({
 		plugins: [
 			// @ts-ignore
-			sentrySvelteKit({
-				adapter: 'cloudflare',
-				sourceMapsUploadOptions: {
-					org: 'sungho-yahng',
-					project: 'monorepo',
-					authToken: process.env.SENTRY_AUTH_TOKEN,
-					sourcemaps: {
-						filesToDeleteAfterUpload: ['./.svelte-kit/**/*.map'],
+			...(currentEnv === 'development' ? [] : [
+				sentrySvelteKit({
+					adapter: 'cloudflare',
+					sourceMapsUploadOptions: {
+						org: 'sungho-yahng',
+						project: 'monorepo',
+						authToken: process.env.SENTRY_AUTH_TOKEN,
+						sourcemaps: {
+							filesToDeleteAfterUpload: ['./.svelte-kit/**/*.map'],
+						},
+						release: {
+							name: `${projectName}@${currentEnv}@${String(new Date().toISOString())}`,
+						},
 					},
-					release: {
-						name: `${projectName}@${currentEnv}@${String(new Date().toISOString())}`,
-					},
-				},
-			}),
+				})
+			]),
 			// @ts-ignore
 			sveltekit(),
+			...(currentEnv === 'development' ? [
+				cloudflare({})
+			] : []),
 		],
 	}),
 )
