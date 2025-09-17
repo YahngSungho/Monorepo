@@ -128,7 +128,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
   // withProfiles === { a: {...}, b: {...} }
   ```
 
-### Mutative: A library to help modify objects or arrays while maintaining immutability
+### Mutative: A library to help modify objects or arrays while maintaining immutability (just like `immer`)
 
 - **When to Use:** Consider using `mutative` when Ramda doesn't provide a simple method, when the Ramda equivalent is complicated or just unpopular, or when dealing with deeply nested objects that need immutable updates.
 - **Import:** `import { create } from '@library/helpers/mutative'`
