@@ -7,6 +7,7 @@
 	}
 
 	&:active {
+		/* stylelint-disable-next-line plugin/value-no-exposed-custom-properties */
 		opacity: 1;
 	}
 }
