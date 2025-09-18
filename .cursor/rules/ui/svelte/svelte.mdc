@@ -4,7 +4,76 @@ globs:*.svelte,*.svelte.*
 alwaysApply: false
 ---
 
-<SYSTEM>Always use Svelte 5 runes and Svelte 5 syntax. Runes do not need to be imported, they are globals. $state() and $props() runes are always declared using `let`, never with `const`. When passing a function to $derived, you must always use $derived.by(() => ...). Error boundaries can only catch errors during component rendering and at the top level of an $effect inside the error boundary. Error boundaries do not catch errors in onclick or other event handlers.</SYSTEM>
+# SYSTEM
+
+Always use Svelte 5 runes and Svelte 5 syntax. Runes do not need to be imported, they are globals. $state() and $props() runes are always declared using `let`, never with `const`. When passing a function to $derived, you must always use $derived.by(() => ...). Error boundaries can only catch errors during component rendering and at the top level of an $effect inside the error boundary. Error boundaries do not catch errors in onclick or other event handlers.
 
 Svelte 5 API references: [svelte.md](mdc:.cursor/docs/svelte.md)
 XState-Svelte references (Whenever handling XState & Svelte, refer this): [xstate-svelte.md](mdc:.cursor/docs/xstate-svelte.md)
+
+# Svelte 5에서 `setContext`/`getContext`로 반응성 유지하는 법
+
+## 원칙
+- **context는 의존성 주입일 뿐, 반응 시스템이 아님.**
+  - `setContext`를 다시 호출해도 기존 자식에게 교체 신호가 안 감.
+- **반응성은 context에 넣는 “값”이 책임진다.**
+  - Svelte 5에선 **`$state` 프록시**를 context에 넣고, 그 프록시의 “프로퍼티 읽기/쓰기”로 반응성을 유지하는 게 정석.
+
+## 권장 패턴
+- **제공자(Provider)**
+  - 프록시를 한 번 만든 뒤 `setContext`는 딱 한 번.
+  - 이후 업데이트는 “프록시 레퍼런스 유지 + 내부 프로퍼티만 변경”.
+
+```svelte
+<script>
+import { setContext } from 'svelte'
+
+let { mermaidSVGObject = {}, plugins = [], value } = $props()
+
+let mermaidContext = $state({})
+
+setContext('mermaidSVGObject', mermaidContext)
+
+$effect(() => {
+	const src = mermaidSVGObject ?? {}
+	for (const key in mermaidContext) {
+		if (!(key in src)) {
+			delete mermaidContext[key]
+		}
+	}
+	for (const key in src) {
+		mermaidContext[key] = src[key]
+	}
+})
+</script>
+```
+
+- **소비자(Consumer)**
+  - `getContext`로 프록시를 받고, 필요한 값을 “프록시에서 직접” 읽는다.
+  - 동적 키도 `$derived`로 계산하면 추적됨.
+
+```svelte
+const mermaid = getContext('mermaidSVGObject')
+const svg = $derived(mermaid.foo)
+```
+
+## 하지 말아야 할 것(혼동하기 쉬운 부분)
+- **프록시 “교체” 금지**
+  - `$state`로 만든 프록시 변수를 다른 객체/프록시로 재할당하면 자식이 들고 있던 참조와 끊어짐 → 반응 안 됨.
+- **`setContext` 재호출로 업데이트 기대 금지**
+  - 이미 `getContext`로 받은 자식은 새 값으로 자동 교체되지 않음.
+- **프록시 값을 구조분해/로컬 변수로 복사 후 사용**
+  - 프록시 경로에서 벗어나면 추적이 끊김. 항상 “프록시에서 직접” 읽기.
+- **`$derived(getContext(...))`로 context 자체를 추적하려고 시도**
+  - 반응은 “프록시 프로퍼티 읽기”에서 발생. context 레퍼런스 자체는 안 바뀜.
+
+## 왜 이렇게 동작하나?
+- context는 주입만 담당하고, **반응성은 `$state` 프록시가 담당**.
+- 자식이 `mermaid[someKey]`를 읽는 순간, 그 “프로퍼티 경로”가 추적됨.
+- 부모가 같은 프록시에서 그 키를 바꾸면, 그 경로가 무효화되어 파생 값이 재계산됨.
+
+## 체크리스트
+- **한 번만** `setContext`.
+- **프록시 레퍼런스 고정**, 내부 프로퍼티만 갱신.
+- 소비자는 **프록시에서 직접 읽기**(동적 키는 `$derived`로 감싸기).
+- 구조분해/복사 사용 지양.
