@@ -1,6 +1,5 @@
 <script>
 import { css } from '@emotion/css'
-import { partytownSnippet } from '@qwik.dev/partytown/integration'
 import * as Sentry from '@sentry/sveltekit'
 import { ModeWatcher } from 'mode-watcher'
 import { onMount } from 'svelte'
@@ -35,19 +34,6 @@ onMount(() => {
 	}
 })
 </script>
-
-<svelte:head>
-	<!-- eslint-disable-next-line  -->
-	<script>
-		// Forward the necessary functions to the web worker layer
-		partytown = {
-		forward: [],
-		}
-	</script>
-
-	<!-- eslint-disable-next-line  -->
-	{@html '<script>' + partytownSnippet() + '</script>'}
-</svelte:head>
 
 <ModeWatcher />
 {@render children()}

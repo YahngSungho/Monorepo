@@ -4,7 +4,6 @@ import { sentrySvelteKit } from '@sentry/sveltekit'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig, mergeConfig } from 'vitest/config'
 
-import { cloudflare } from "@cloudflare/vite-plugin"
 import packageJson from './package.json' with { type: 'json' }
 
 const projectName = packageJson.name
@@ -19,7 +18,7 @@ export default mergeConfig(
 	defineConfig({
 		plugins: [
 			// @ts-ignore
-			...(currentEnv === 'development' ? [] : [
+			...(currentEnv === 'CI' ? [
 				sentrySvelteKit({
 					adapter: 'cloudflare',
 					sourceMapsUploadOptions: {
@@ -34,12 +33,9 @@ export default mergeConfig(
 						},
 					},
 				})
-			]),
+			] : []),
 			// @ts-ignore
 			sveltekit(),
-			...(currentEnv === 'development' ? [
-				cloudflare({})
-			] : []),
 		],
 	}),
 )

@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
+import { env_public } from '@library/library-bottom/env-objects/public'
 
 export const supabase = createClient(
-	String(process.env.SUPABASE_URL),
-	String(process.env.SUPABASE_PUBLISHABLE_KEY),
+	String(env_public.PUBLIC_SUPABASE_URL),
+	String(env_public.PUBLIC_SUPABASE_PUBLISHABLE_KEY),
 )
 
 // console.log(`init: ${new Date().toISOString()}`)

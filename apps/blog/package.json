@@ -4,12 +4,11 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"build": "vite build",
+		"build": "dotenvx run -f ../../.env.public -- vite build",
 		"build:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite build",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
+		"check": "pnpm run type-sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
-		"depCheck": "npx depcheck",
-		"dev": "vite dev",
+		"dev": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite dev",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
@@ -21,7 +20,8 @@
 		"test:unit": "vitest run",
 		"translate": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/lib/markdown-helpers/translation-scripts.js",
 		"type-sync": "svelte-kit sync",
-		"preview": "vite preview",
+		"generate-env": "dotenvx decrypt -f ../../.env.public -f ../../.env.private  --stdout > .env",
+		"preview": "pnpm run generate-env && wrangler dev",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
 	},
 	"dependencies": {
@@ -30,6 +30,7 @@
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-top": "workspace:*",
+		"@library/library-bottom": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
 		"nanoid": "^5.1.5",

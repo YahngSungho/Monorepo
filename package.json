@@ -36,6 +36,7 @@
 		"zod": "^3.25.36"
 	},
 	"devDependencies": {
+		"@dotenvx/dotenvx": "^1.49.1",
 		"@babel/core": "^7.27.1",
 		"@double-great/stylelint-a11y": "^3.0.4",
 		"@eslint/compat": "^1.2.9",

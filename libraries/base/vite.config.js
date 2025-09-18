@@ -1,23 +1,18 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// 추가: dotenvx 임포트
-import { config as dotenvx } from '@dotenvx/dotenvx'
-import { partytownVite } from '@qwik.dev/partytown/utils'
 import tailwindcss from '@tailwindcss/vite'
 import { FontaineTransform } from 'fontaine'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
 
-// import { cloudflare } from "@cloudflare/vite-plugin";
+import { searchForWorkspaceRoot } from 'vite'
 
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-dotenvx({ path: path.resolve(__dirname, '../../.env.public') })
-
-let currentEnv
+export let currentEnv
 if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production') {
 	currentEnv = 'DEPLOYED'
 } else if (process.env.GITHUB_ACTIONS) {
@@ -26,10 +21,12 @@ if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'p
 	currentEnv = process.env.NODE_ENV
 }
 
+export const isDev = currentEnv === 'development'
+
 const baseConfig = defineConfig({
 	build: {
 		cssMinify: 'lightningcss',
-		sourcemap: currentEnv === 'development' ? true : 'hidden', // Sentry 설정에서 sourcemap 파일 지움
+		sourcemap: isDev ? true : 'hidden', // Sentry 설정에서 sourcemap 파일 지움
 	},
 	css: {
 		devSourcemap: true,
@@ -41,7 +38,6 @@ const baseConfig = defineConfig({
 		tsconfigPaths(),
 		// @ts-ignore
 		tailwindcss(),
-		partytownVite({}),
 		// @ts-ignore
 		FontaineTransform.vite({
 			fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Noto Sans', 'Arial'],
@@ -51,13 +47,16 @@ const baseConfig = defineConfig({
 				return absolutePath
 			},
 		}),
-		// cloudflare({
-		// 	viteEnvironment: { name: "ssr" },
-		// }),
 	],
 	server: {
+		watch: isDev ? { usePolling: true, interval: 150 } : undefined,
 		fs: {
-			allow: ['.', path.resolve(__dirname, './static')],
+			allow: [
+				'.',
+				path.resolve(__dirname, './static'),
+				searchForWorkspaceRoot(process.cwd()),
+				...(isDev ? [path.resolve(__dirname, '../../')] : []),
+			],
 		},
 	},
 	ssr: {
@@ -72,7 +71,6 @@ const baseConfig = defineConfig({
 })
 
 // @ts-ignore
-const defaultConfig = mergeConfig(configDefaults, baseConfig)
+export const defaultConfig = mergeConfig(configDefaults, baseConfig)
 
-export { currentEnv, defaultConfig }
 export default defaultConfig

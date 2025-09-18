@@ -27,6 +27,9 @@ importers:
       '@babel/core':
         specifier: ^7.27.1
         version: 7.28.3
+      '@dotenvx/dotenvx':
+        specifier: ^1.49.1
+        version: 1.49.1
       '@double-great/stylelint-a11y':
         specifier: ^3.0.4
         version: 3.4.0(stylelint@16.23.1(typescript@5.9.2))
@@ -405,6 +408,9 @@ importers:
       '@library/helpers':
         specifier: workspace:*
         version: link:../../libraries/helpers
+      '@library/library-bottom':
+        specifier: workspace:*
+        version: link:../../libraries/library-bottom
       '@library/library-top':
         specifier: workspace:*
         version: link:../../libraries/library-top
@@ -525,9 +531,6 @@ importers:
 
   libraries/base:
     dependencies:
-      '@dotenvx/dotenvx':
-        specifier: ^1.49.0
-        version: 1.49.0
       '@library/library-bottom':
         specifier: workspace:*
         version: link:../library-bottom
@@ -738,9 +741,6 @@ importers:
       '@library/paraglide':
         specifier: workspace:*
         version: link:../paraglide
-      '@qwik.dev/partytown':
-        specifier: ^0.11.0
-        version: 0.11.2
       '@shikijs/rehype':
         specifier: ^3.12.2
         version: 3.12.2
@@ -1452,8 +1452,8 @@ packages:
     peerDependencies:
       svelte: ^5.0.0
 
-  '@dotenvx/dotenvx@1.49.0':
-    resolution: {integrity: sha512-M1cyP6YstFQCjih54SAxCqHLMMi8QqV8tenpgGE48RTXWD7vfMYJiw/6xcCDpS2h28AcLpTsFCZA863Ge9yxzA==}
+  '@dotenvx/dotenvx@1.49.1':
+    resolution: {integrity: sha512-LQ8cem3RU/mI2iz5Sy+ypnhfhVge3bc9tsLJg5rdf7j7u1RRTfmmSdLwSjeYI7sL9ToN7rgFkOGSBJqaBT+gSQ==}
     hasBin: true
 
   '@double-great/stylelint-a11y@3.4.0':
@@ -10713,7 +10713,7 @@ snapshots:
       svelte: 5.38.3
       svelte-toolbelt: 0.7.1(svelte@5.38.3)
 
-  '@dotenvx/dotenvx@1.49.0':
+  '@dotenvx/dotenvx@1.49.1':
     dependencies:
       commander: 11.1.0
       dotenv: 17.2.1
