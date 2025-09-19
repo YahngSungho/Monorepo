@@ -23,9 +23,9 @@
 		"generate-env": "dotenvx decrypt -f ../../.env.public -f ../../.env.private  --stdout > .dev.vars",
 		"preview": "pnpm run generate-env && wrangler dev --port 5002",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only",
-		"deploy:env-vars": "dotenvx run -f ../../.env.public -f ../../.env.private  --",
+		"deploy:env-vars": "pnpm run generate-env && wrangler secret bulk .dev.vars",
 		"deploy:app": "dotenvx run -f ../../.env.public -f ../../.env.private -- wrangler deploy",
-		"deploy": "pnpm run deploy:env-vars && pnpm run deploy:app"
+		"deploy": "pnpm run deploy:app && pnpm run deploy:env-vars"
 
 	},
 	"dependencies": {
