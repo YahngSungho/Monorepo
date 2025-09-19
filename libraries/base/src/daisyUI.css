@@ -11,13 +11,13 @@
 	}
 }
 
-.join:not(.join-vertical) > * + *:not(:disabled) {
+.join:not(.join-vertical) > * + * {
 	position: relative;
 	/* stylelint-disable-next-line plugin/value-no-exposed-custom-properties */
 	inset-inline-end: var(--border-size-1);
 }
 
-.join.join-vertical > * + *:not(:disabled) {
+.join.join-vertical > * + * {
 	position: relative;
 	/* stylelint-disable-next-line plugin/value-no-exposed-custom-properties */
 	inset-block-end: var(--border-size-1);
