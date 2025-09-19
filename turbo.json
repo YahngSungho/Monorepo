@@ -29,6 +29,9 @@
 		"@library/backends#build": {
 			"cache": false
 		},
+		"@library/paraglide#build": {
+			"cache": false
+		},
 		"@tool/storybook#build": {
 			"inputs": ["$TURBO_DEFAULT$"],
 			"outputs": ["storybook-static/**"]

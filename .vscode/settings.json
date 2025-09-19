@@ -1,4 +1,15 @@
 {
+	"json.schemas": [
+		{
+				"fileMatch": [
+						"*.jsonc"
+				],
+				"schema": {
+						"allowTrailingCommas": true, // 후행 쉼표 허용
+						"allowComments": true         // (선택 사항) 주석도 허용
+				}
+		}
+],
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -15,7 +26,7 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[jsonc]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
 	},
 	"[markdown]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
