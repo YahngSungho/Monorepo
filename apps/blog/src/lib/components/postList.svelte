@@ -11,7 +11,7 @@ let { allMetadata } = $props()
 <div
 	style="
 display: flex; flex-direction: column;
-gap: var(--space-em-cqi-xs); inline-size: 100%;
+gap: var(--space-em-cqi-2xs); inline-size: 100%;
 "
 >
 	{#each allMetadata as postMetadata (postMetadata.slug)}

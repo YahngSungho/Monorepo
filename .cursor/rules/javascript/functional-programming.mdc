@@ -3,7 +3,6 @@ description:
 globs: *.js,*.ts,*.mjs,*.cjs,*.mts,*.cts,*.svelte,*.svx
 alwaysApply: false
 ---
-
 # Functional Programming Principles & Guidelines
 
 FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES WHENEVER POSSIBLE.
@@ -12,24 +11,74 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
 1. **Code Separation:** Clearly distinguish and manage code into the following three types:
    1. Data
-   2. 계산 (= Pure Functions)
-   3. 액션 (= Impure Functions, Side Effects)
+   2. Calculation (Pure Functions)
+   3. Action (Impure Functions, Side Effects)
 
-   Keep in mind that in this codebase, we call pure code "계산(computation or calculation)" and impure code "액션(action)".
+   Pure code is referred to as Calculation, and impure code is referred to as Action in this codebase.
 
-2. **Preference Order:** **Data > 계산 > 액션**
-   - ALWAYS PREFER Data TO 계산. ALWAYS PREFER 계산 TO 액션.
-   - Whenever possible, implement logic as 계산. Consider if 계산 can be represented as data. Isolate 계산 by extracting as much logic as possible into Data.
-   - Use 액션 only when necessary. ISOLATE 액션 BY EXTRACTING AS MUCH LOGIC AS POSSIBLE INTO EXTERNAL 계산 함수들. ALWAYS MINIMIZE THE CONTENTS OF THE BODY OF 액션 FUNCTIONS BY MOVING AS MUCH AS POSSIBLE THOSE ARE NOT 액션 OUTSIDE OF THAT 액션 FUNCTION INTO EXTERNAL 계산 FUNCTIONS.
-   - Use 계산 only when necessary. ISOLATE 계산 BY EXTRACTING AS MUCH DATA AS POSSIBLE INTO EXTERNAL VALUES. ALWAYS MINIMIZE THE CONTENTS OF THE BODY OF 계산 FUNCTIONS BY MOVING AS MUCH AS POSSIBLE THOSE ARE NOT 계산 OUTSIDE OF THAT 계산 FUNCTION INTO EXTERNAL VALUES. Before writing a calculation, attempt to externalize configuration, constants, decision tables, and branching rules as Data (e.g., maps, arrays of rules). Keep 계산 bodies small and deterministic, delegating structure to Data.
-   - Isolate 계산 from 액션: move any I/O, logging, timing, randomness, and environment access out of 계산. Prefer feeding 계산 with Data prepared up-front and consuming its output later.
-   - ALWAYS try data-driven design: table-driven logic, config objects, and pattern lists often replace branching inside 계산.
+2. **Preference Order:** **Data > Calculation > Action**
+   - Prefer Data over Calculation; prefer Calculation over Action.
+   - Whenever possible, implement logic as a Calculation. Consider whether logic can be represented as Data. Isolate Calculations by extracting as much logic as possible into Data.
+   - Use Actions only when necessary. Isolate Actions by extracting as much logic as possible into external Calculations. Minimize Action bodies by moving all non-Action logic into external Calculations.
+   - Isolate Calculations by extracting as much Data as possible into external constants. Before writing a Calculation, externalize configuration, constants, decision tables, and branching rules as Data (e.g., maps, arrays of rules). Keep Calculation bodies small and deterministic, delegating structure to Data.
+   - Isolate Calculations from Actions: move any I/O, logging, timing, randomness, and environment access out of Calculations. Prefer feeding Calculations with Data prepared up-front and consuming their output later.
+   - Prefer data-driven design: table-driven logic, config objects, and pattern lists often replace branching inside Calculations.
 
-3. **Managing 액션:**
-   - **Isolation:** Manage functions containing 액션 so they are clearly identifiable (e.g., grouped in specific modules, using naming conventions).
-   - Minimize 액션: keep the 액션 surface tiny. Extract pure computations out into separate 계산 and pass results into 액션. Keep orchestration thin and explicit.
-   - Isolate 액션 from 계산: compose 액션 as adapters around boundaries (I/O, network, DOM, DB). Sequence 액션 outside of `pipe` when it obscures intent; prefer clear, linear flows.
-   - **Naming:** You **must** suffix the names of functions with 액션 with `_action` (e.g., `updateDOM_action`, `fetchData_action`). 이 접미사는 해당 함수가 부수효과를 갖는 **주의 구간**임을 코드리뷰와 사용 시점 모두에서 즉시 드러내 경각심을 높이기 위함. `_action` 표기는 테스트 전략(목/스텁) 분리와 모듈 경계 파악에도 도움을 준다.
+	### MUST-FOLLOW RULES  (Data/Calculation/Action separation and minimization)
+
+	#### Extract Data from Calculations
+
+	- Non-trivial literal Data must not live inside function bodies. Extract to module-level constants (Data).
+	- Non-trivial includes:
+		- Multi-line template strings
+		- Objects with more than 3 properties or nested objects
+		- Arrays with 4 or more elements
+		- Regular expressions, styles, endpoints, key lists, user-facing messages
+	- Calculations must use only their inputs and module-level Data. No environment access or mutable globals.
+
+	#### Move all Calculations out of Actions
+
+	- `_action` functions (with side effects) must only orchestrate.
+	- Disallow inside `_action`: template construction, `map/filter/reduce`, validation, serialization/parsing, data shaping, complex branching.
+	- Allowed inside `_action`: calling pure Calculations and performing boundary (I/O) calls.
+	- One-level object/array literals are allowed only as minimal wrappers for boundary calls; all other shaping belongs in Calculations.
+
+	#### Examples
+
+	##### Good (Data/Calculation/Action separated)
+
+	```js
+	// Data
+	export const EMAIL_MINIMAL_STYLES = `...`
+
+	// Calculation: serialization
+	export const toMailgunParams = (payload) => new URLSearchParams(/* ... */)
+
+	// Action: boundary call only
+	export const createMessage_action = R.curry(async (domain, payload) => {
+		const body = toMailgunParams(payload)
+		const res = await fetch(`https://api.mailgun.net/v3/${domain}/messages`, { method: 'POST', body })
+		if (!res.ok) throw new Error('mailgun error')
+		return res.json()
+	})
+	```
+
+	##### Bad (Calculation/Data mixed into Action)
+
+	```js
+	export const send_action = async (domain, markdown) => {
+		const styles = `... multi-line ...` // 데이터가 액션 내부에 있음 (금지)
+		const params = new URLSearchParams() // 직렬화 계산이 액션 내부에 있음 (금지)
+		// ...
+		return fetch(...)
+	}
+	```
+
+3. **Managing Actions:**
+   - **Isolation:** Make functions with side effects clearly identifiable (e.g., grouped in specific modules, naming conventions).
+   - Minimize Actions: keep the Action surface tiny. Extract pure computations into Calculations and pass results into Actions. Keep orchestration thin and explicit.
+   - Isolate Actions from Calculations: compose Actions as adapters around boundaries (I/O, network, DOM, DB). Sequence Actions outside of `pipe` when it obscures intent; prefer clear, linear flows.
+   - **Naming:** You must suffix the names of functions with side effects with `_action` (e.g., `updateDOM_action`, `fetchData_action`). The suffix highlights side-effect boundaries and aids testing and reviews.
 
 4. **Immutability:** Do not modify data structures (objects, arrays) directly. When changes are needed, create and return new data structures. This improves predictability and simplifies state management.
 
@@ -53,7 +102,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
 ### Ramda / Rambda (via `@library/helpers/R`)
 
-- **Primary Use:** Utilize the `R` object imported from `@library/helpers/R` for functional programming tasks. This export is the primary source for utility functions in this project.
+- **Primary Use:** Utilize the `R` object imported from `@library/helpers/R` for functional programming tasks. This export is the primary source for utility functions in this project. Prefer to use these methods than custom code.
 - **Import:** `import { R } from '@library/helpers/R'`
 - **Features & Philosophy:** This `R` object provides functions inspired by Rambda/Ramda, focusing on TypeScript compatibility and clarity. Key utilities like `pipe` (for composition) and `curry` (for partial application) are available. The guiding philosophy, aligned with Rambda, is to:
   - **Prioritize `R.applyPipe`:** Structure data transformations as a clear sequence of functions within `pipe`.
@@ -75,15 +124,18 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
-  const result = R.applyPipe({ a: 1, b: 2 }, R.prop('a'), R.add(10))
+
+  const result = R.applyPipe(
+		{ a: 1, b: 2 }, // Argument
+		R.prop('a'), // First Apply
+		R.add(10)) // Second Apply
   // result === 11
-  
+
   // Async pipeline
   const asyncResult = await R.applyPipeAsync(
-  	[1, 2, 3],
-  	R.mapAsync(async (n) => n * 2),
-  	R.filter((n) => n > 2),
+  	[1, 2, 3], // Argument
+  	R.mapAsync(async (n) => n * 2), // First Apply
+  	R.filter((n) => n > 2), // Second Apply
   )
   // asyncResult === [4, 6]
   ```
@@ -92,12 +144,12 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const transform = R.getPipedFunction(
   	R.filter((x) => x > 2),
   	R.map((x) => x * 10),
   )
-  
+
   const out1 = transform([1, 2, 3, 4]) // [30, 40]
   const out2 = transform([3, 5]) // [30, 50]
   ```
@@ -110,7 +162,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const src = { a: 1, b: 2 }
   const doubled = R.mapObject((value, key) => value * 2)(src)
   // doubled === { a: 2, b: 4 }
@@ -120,7 +172,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const users = { a: 1, b: 2 }
   const withProfiles = await R.mapObjectParallel(async (id, key) => {
   	return await fetch(`/api/profile/${id}`).then((r) => r.json())
@@ -136,7 +188,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { create } from '@library/helpers/mutative'
-  
+
   const baseState = { count: 0, items: [] }
   const nextState = create(baseState, (draft) => {
   	draft.count++
@@ -151,9 +203,9 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-  
+
   const numbers = [1, 2, 3, 4, 5]
-  
+
   // Example: Filter numbers greater than 2, then multiply each by 10
   const processNumbers = R.applyPipe(
   	numbers, // Initial data
@@ -164,5 +216,10 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
   console.log(processNumbers)
   ```
 
-- **Naming:** Use clear names that reveal the function's role. 계산 should indicate the relationship between input and output (e.g., `calculateTotal`, `formatUserName`). Functions with 액션 should indicate what effect they cause (e.g., `saveUser_action`, `logMessage_action`), especially if not immediately obvious from context.
+- **Naming:** Use clear names that reveal the function's role. Calculations should indicate the relationship between input and output (e.g., `calculateTotal`, `formatUserName`). Actions should indicate what effect they cause (e.g., `saveUser_action`, `logMessage_action`).
 - **Conciseness:** Avoid unnecessary abstractions or overly complex functional techniques where simpler imperative or object-oriented approaches are more readable and maintainable. Functional programming is a tool, not a dogma. Prioritize clarity using the utilities provided by `R` from `@library/helpers/R`. Favor simple, obvious functions over complex or ambiguous ones, especially within `pipe`.
+
+## checklist
+
+1. Does any Calculation contain non-trivial literal Data? → Extract to Data constants.
+2. Does any `_action` still contain transformation/serialization/validation/template assembly? → Move to Calculations.
