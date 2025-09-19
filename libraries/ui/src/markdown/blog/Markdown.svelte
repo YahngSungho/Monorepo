@@ -67,7 +67,7 @@ setContext('mermaidSVGObject', mermaidContext)
 
 $effect(() => {
 	const src = mermaidSVGObject ?? {}
-	for (const key in mermaidContext) {
+	for (const key of Object.keys(mermaidContext)) {
 		if (!(key in src)) {
 			delete mermaidContext[key]
 		}

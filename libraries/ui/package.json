@@ -81,13 +81,13 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
-		"./emailContent": "./src/emailContent/emailContent.svelte",
 		"./mermaid-helpers": "./src/miscellaneous/mermaid/helpers.js",
 		"./base.js": "./src/layouts/base.js",
 		"./confettiButton": "./src/miscellaneous/confettiButton.svelte",
 		"./sharingButtons": "./src/miscellaneous/sharingButtons.svelte",
 		"./storybookDecorator": "./src/miscellaneous/storybookDecorator.svelte",
 		"./markdown-default": "./src/markdown/default/Markdown.svelte",
+		"./markdown-email": "./src/markdown/email/Markdonw.svelte",
 		"./markdown-blog": "./src/markdown/blog/Markdown.svelte",
 		"./markdown-docs": "./src/markdown/docs/Markdown.svelte",
 		"./markdown-editable-text": "./src/markdown/editable-text/Markdown.svelte",

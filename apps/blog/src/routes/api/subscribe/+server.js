@@ -25,6 +25,8 @@ async function addSubscription_action(myEmail) {
 	return true
 }
 
+const WELCOME_SLUG = 'welcome'
+
 export const POST = async ({ request }) => {
 	const formData = await request.formData()
 	const email = formData.get('email')
@@ -44,7 +46,7 @@ export const POST = async ({ request }) => {
 		await Promise.all([
 			addSubscription_action(email),
 			(async () => {
-				const markdown = await getOneMarkdownBody('welcome')
+				const markdown = await getOneMarkdownBody(WELCOME_SLUG)
 				if (!markdown) {
 					throw new Error('markdown not found')
 				}
@@ -74,7 +76,7 @@ ${markdownLinksString}`
 ${meanwhileLinksString}`
 					:	markdown.body
 
-				await sendMails_immediate_action({ markdownText: sendText, mermaidSVGObject: {} }, [
+				await sendMails_immediate_action({ markdownText: sendText, slug: WELCOME_SLUG }, [
 					String(email),
 				])
 			})(),

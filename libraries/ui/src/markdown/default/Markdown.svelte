@@ -1,6 +1,6 @@
 <script>
 import './style.css'
-
+import { removeFrontmatter } from '@library/helpers/markdown'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import smartypants from 'remark-smartypants'
@@ -39,7 +39,7 @@ let { value, plugins = [] } = $props()
 
 <div class="boxed">
 	<Markdown
-		md={value}
+		md={removeFrontmatter(value)}
 		plugins={[
 			gfmPlugin(),
 			{

@@ -2,7 +2,7 @@ import { createMessage_action } from '@library/backends/mailgun'
 import { getFrontmatterObject, removeMDAndTags } from '@library/helpers/markdown'
 import { R } from '@library/helpers/R'
 // @ts-ignore
-import EmailContent from '@library/ui/emailContent'
+import MarkdownComponent from '@library/ui/markdown-email'
 import { render } from 'svelte/server'
 
 const EMAIL_MINIMAL_STYLES = `
@@ -12,8 +12,11 @@ const EMAIL_MINIMAL_STYLES = `
   h2[id$='footnote-label'] { display: none; }
 `
 
-function getEmailHTMLContent(markdownText, mermaidSVGObject) {
-	const { body, head } = render(EmailContent, { props: { mermaidSVGObject, value: markdownText } })
+function getEmailHTMLContent(markdownText) {
+	const start = performance.now()
+	const { body, head } = render(MarkdownComponent, { props: { value: markdownText } })
+	const end = performance.now()
+	console.log('getEmailHTMLContent 2', 'end - start', end - start)
 
 	// Workers-safe: avoid CSS inlining via Node-only libraries. Embed minimal styles inline.
 	return `<!DOCTYPE html>
@@ -32,7 +35,7 @@ ${EMAIL_MINIMAL_STYLES}
 
 export const sendMails_base_action = R.curry(async (info, config, content, emailList) => {
 	const { domain, emailOfSender, name, preprocessMarkdownText = R.identity } = info
-	const { markdownText, mermaidSVGObject } = content
+	const { markdownText, slug } = content
 	const { deliveryTimeOptimize = true } = config
 
 	const frontmatterObject = getFrontmatterObject(markdownText)
@@ -46,11 +49,12 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
 	try {
 		result = await createMessage_action(domain)({
 			from: `${name} <${emailOfSender}>`,
-			html: getEmailHTMLContent(markdownText_preprocessed, mermaidSVGObject),
+			html: getEmailHTMLContent(markdownText_preprocessed),
 			'o:deliverytime-optimize-period': deliveryTimeOptimize ? '72h' : undefined, // 72h = 3일
 			'o:tracking': 'yes',
 			'o:tracking-clicks': 'yes',
 			'o:tracking-opens': 'yes',
+			'o:campaign': slug,
 			'recipient-variables': JSON.stringify(toObject(emailList)),
 			subject: title,
 			text: removeMDAndTags(markdownText_preprocessed),
