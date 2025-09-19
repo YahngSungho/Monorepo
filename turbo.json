@@ -2,6 +2,8 @@
 	"$schema": "https://turbo.build/schema.json",
 	"globalDependencies": [".env", ".env.*", "**/.env", "**/.env.*"],
 	"globalEnv": [
+		"SENTRY_ORG",
+		"SENTRY_PROJECT",
 		"NODE_ENV",
 		"MAILGUN",
 		"MAILGUN_SENDING",

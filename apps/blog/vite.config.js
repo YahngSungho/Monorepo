@@ -18,22 +18,20 @@ export default mergeConfig(
 	defineConfig({
 		plugins: [
 			// @ts-ignore
-			...(currentEnv === 'CI' ? [
-				sentrySvelteKit({
-					adapter: 'cloudflare',
-					sourceMapsUploadOptions: {
-						org: 'sungho-yahng',
-						project: 'monorepo',
-						authToken: process.env.SENTRY_AUTH_TOKEN,
-						sourcemaps: {
-							filesToDeleteAfterUpload: ['./.svelte-kit/**/*.map'],
-						},
-						release: {
-							name: `${projectName}@${currentEnv}@${String(new Date().toISOString())}`,
-						},
+			sentrySvelteKit({
+				adapter: 'cloudflare',
+				sourceMapsUploadOptions: {
+					org: process.env.SENTRY_ORG,
+					project: process.env.SENTRY_PROJECT,
+					authToken: process.env.SENTRY_AUTH_TOKEN,
+					sourcemaps: {
+						filesToDeleteAfterUpload: ['./.svelte-kit/**/*.map'],
 					},
-				})
-			] : []),
+					release: {
+						name: `${projectName}@${currentEnv}@${String(new Date().toISOString())}`,
+					},
+				},
+			}),
 			// @ts-ignore
 			sveltekit(),
 		],
