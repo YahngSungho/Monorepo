@@ -8,7 +8,7 @@
 		"build:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite build",
 		"check": "pnpm run type-sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
-		"dev": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite dev",
+		"dev": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite dev --port 5002",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
@@ -21,7 +21,7 @@
 		"translate": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/lib/markdown-helpers/translation-scripts.js",
 		"type-sync": "svelte-kit sync",
 		"generate-env": "dotenvx decrypt -f ../../.env.public -f ../../.env.private  --stdout > .env",
-		"preview": "pnpm run generate-env && wrangler dev",
+		"preview": "pnpm run generate-env && wrangler dev --port 5002",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
 	},
 	"dependencies": {
