@@ -3,10 +3,9 @@ import { fileURLToPath } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
 import { FontaineTransform } from 'fontaine'
+import { searchForWorkspaceRoot } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config'
-
-import { searchForWorkspaceRoot } from 'vite'
 
 // Simulate __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
@@ -49,7 +48,6 @@ const baseConfig = defineConfig({
 		}),
 	],
 	server: {
-		watch: isDev ? { usePolling: true, interval: 150 } : undefined,
 		fs: {
 			allow: [
 				'.',
@@ -58,6 +56,7 @@ const baseConfig = defineConfig({
 				...(isDev ? [path.resolve(__dirname, '../../')] : []),
 			],
 		},
+		watch: isDev ? { interval: 150, usePolling: true } : undefined,
 	},
 	ssr: {
 		noExternal: ['bits-ui'],

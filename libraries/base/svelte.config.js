@@ -15,9 +15,9 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter({
 			platformProxy: {
-        configPath: 'wrangler.jsonc',
-        persist: true
-      }
+				configPath: 'wrangler.jsonc',
+				persist: true,
+			},
 		}),
 		alias: {
 			$shadcn: path.join(__dirname, '../ui/src/shadcn'),

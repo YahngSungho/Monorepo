@@ -21,14 +21,14 @@ export default mergeConfig(
 			sentrySvelteKit({
 				adapter: 'cloudflare',
 				sourceMapsUploadOptions: {
+					authToken: process.env.SENTRY_AUTH_TOKEN,
 					org: process.env.SENTRY_ORG,
 					project: process.env.SENTRY_PROJECT,
-					authToken: process.env.SENTRY_AUTH_TOKEN,
-					sourcemaps: {
-						filesToDeleteAfterUpload: ['./.svelte-kit/**/*.map'],
-					},
 					release: {
 						name: `${projectName}@${currentEnv}@${String(new Date().toISOString())}`,
+					},
+					sourcemaps: {
+						filesToDeleteAfterUpload: ['./.svelte-kit/**/*.map'],
 					},
 				},
 			}),

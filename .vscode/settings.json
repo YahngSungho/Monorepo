@@ -59,7 +59,9 @@
 	"editor.quickSuggestions": {
 		"strings": "on"
 	},
+	"editor.quickSuggestionsDelay": 25,
 	"editor.semanticHighlighting.enabled": true,
+	"editor.snippetSuggestions": "top",
 	"editor.suggest.snippetsPreventQuickSuggestions": false,
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
@@ -181,7 +183,5 @@
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#79021b99",
 		"titleBar.inactiveForeground": "#e7e7e799"
-	},
-	"editor.quickSuggestionsDelay": 25,
-	"editor.snippetSuggestions": "top"
+	}
 }

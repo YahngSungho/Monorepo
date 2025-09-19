@@ -5,8 +5,8 @@
 	"scripts": {
 		"build": "pnpm run build:cloudflare",
 		"build:cloudflare": "pnpm run build:wrangler && pnpm run build:headers",
-		"build:wrangler": "node ./src/cloudflare/wrangler.jsonc/generateWranglers.js",
 		"build:headers": "node ./src/cloudflare/_headers/generateHeaders.js",
+		"build:wrangler": "node ./src/cloudflare/wrangler.jsonc/generateWranglers.js",
 		"depCheck": "npx depcheck",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",

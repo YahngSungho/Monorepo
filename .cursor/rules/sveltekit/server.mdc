@@ -15,7 +15,7 @@ e.g. +server.js:
 ```javascript
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request, platform }) {
-	const x = platform?.env.YOUR_DURABLE_OBJECT_NAMESPACE.idFromName('x');
+	const x = platform?.env.YOUR_DURABLE_OBJECT_NAMESPACE.idFromName('x')
 }
 ```
 

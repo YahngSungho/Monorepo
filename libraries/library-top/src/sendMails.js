@@ -32,7 +32,7 @@ ${EMAIL_MINIMAL_STYLES}
 
 export const sendMails_base_action = R.curry(async (info, config, content, emailList) => {
 	const { domain, emailOfSender, name, preprocessMarkdownText = R.identity } = info
-	const { markdownText, campaignID } = content
+	const { campaignID, markdownText } = content
 	const { deliveryTimeOptimize = true } = config
 
 	const frontmatterObject = getFrontmatterObject(markdownText)
@@ -47,11 +47,11 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
 		result = await createMessage_action(domain)({
 			from: `${name} <${emailOfSender}>`,
 			html: getEmailHTMLContent(markdownText_preprocessed),
+			'o:campaign': campaignID,
 			'o:deliverytime-optimize-period': deliveryTimeOptimize ? '72h' : undefined, // 72h = 3일
 			'o:tracking': 'yes',
 			'o:tracking-clicks': 'yes',
 			'o:tracking-opens': 'yes',
-			'o:campaign': campaignID,
 			'recipient-variables': JSON.stringify(toObject(emailList)),
 			subject: title,
 			text: removeMDAndTags(markdownText_preprocessed),

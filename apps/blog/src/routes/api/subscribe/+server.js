@@ -1,5 +1,6 @@
 import { supabase_admin } from '@library/backends/supabase_admin'
 import { R } from '@library/helpers/R'
+import { shuffleArray } from '@library/helpers/random'
 import { emailSchema } from '@library/helpers/zod-schemas'
 import { getLocale } from '@library/paraglide/helpers'
 import { json } from '@sveltejs/kit'
@@ -8,8 +9,6 @@ import { URL } from '$lib/info.js'
 import { getOneMarkdownBody } from '$lib/markdown-helpers/getMarkdown.js'
 import { getAllMetadataObject } from '$lib/markdown-helpers/getMetadata.js'
 import { sendMails_immediate_action } from '$lib/wrappers/sendMails.js'
-
-import { shuffleArray } from '@library/helpers/random'
 
 const urlPost = `https://${URL}/posts/`
 
@@ -76,7 +75,7 @@ ${markdownLinksString}`
 ${meanwhileLinksString}`
 					:	markdown.body
 
-				await sendMails_immediate_action({ markdownText: sendText, campaignID: WELCOME_SLUG }, [
+				await sendMails_immediate_action({ campaignID: WELCOME_SLUG, markdownText: sendText }, [
 					String(email),
 				])
 			})(),

@@ -12,7 +12,6 @@ const encodeBasicAuth = (username, password) => {
 	return Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
 }
 
-
 /**
  * 계산: Mailgun 메시지 페이로드를 x-www-form-urlencoded 로 변환
  * @param {Record<string, any>} data
@@ -43,13 +42,15 @@ export const createMessage_action = R.curry(async (domain, data) => {
 	const endpoint = `https://api.mailgun.net/v3/${domain}/messages`
 	const authHeader = `Basic ${encodeBasicAuth('api', String(env_private.MAILGUN || ''))}`
 	const response = await fetch(endpoint, {
-		method: 'POST',
-		headers: { authorization: authHeader },
 		body: toMailgunParams(data),
+		headers: { authorization: authHeader },
+		method: 'POST',
 	})
 	if (!response.ok) {
 		let text = ''
-		try { text = await response.text() } catch {}
+		try {
+			text = await response.text()
+		} catch {}
 		throw new Error(`Mailgun API error ${response.status}: ${text}`)
 	}
 	return response.json()
