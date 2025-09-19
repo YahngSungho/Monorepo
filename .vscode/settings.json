@@ -111,6 +111,7 @@
 		"javascriptsvelte"
 	],
 	"files.associations": {
+		"**/_headers": "plaintext",
 		"*.ahk": "ahk",
 		"*.html": "html",
 		"*.js": "javascript",
