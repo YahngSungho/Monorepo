@@ -1,5 +1,5 @@
 {
-	"$schema": "https://turbo.build/schema.json",
+	"$schema": "https://turborepo.com/schema.json",
 	"globalDependencies": [".env", ".env.*", "**/.env", "**/.env.*"],
 	"globalEnv": [
 		"SENTRY_ORG",
@@ -20,20 +20,20 @@
 	],
 	"globalPassThroughEnv": ["CI", "WATCH"],
 	"tasks": {
+		"deploy": {
+			"dependsOn": ["build"],
+			"cache": false
+		},
 		"build": {
-			"dependsOn": ["^build"],
-			"env": [],
-			"inputs": ["$TURBO_DEFAULT$", "!**/*.stories.*"],
-			"outputs": [".svelte-kit/**", "paraglide-output/**"]
+			"dependsOn": ["^build"]
 		},
 		"@library/backends#build": {
 			"cache": false
 		},
 		"@library/paraglide#build": {
-			"cache": false
+			"outputs": ["paraglide-output/**", "project.inlang/**"]
 		},
 		"@tool/storybook#build": {
-			"inputs": ["$TURBO_DEFAULT$"],
 			"outputs": ["storybook-static/**"]
 		},
 		"change-base-locale:en": {},
@@ -43,9 +43,7 @@
 		},
 		"dev": {
 			"cache": false,
-			"env": [],
-			"persistent": true,
-			"inputs": ["$TURBO_DEFAULT$"]
+			"persistent": true
 		},
 		"eslint": {},
 		"eslint-fix": {},

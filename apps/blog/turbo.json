@@ -1,28 +1,13 @@
 {
-	"$schema": "https://turbo.build/schema.json",
+	"$schema": "https://turborepo.com/schema.json",
 	"extends": ["//"],
 	"tasks": {
 		"build": {
 			"inputs": [
 				"$TURBO_DEFAULT$",
-				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
-				"**/.env.*",
-				".env.production.local",
-				".env.local",
-				".env.production",
-				".env"
-			]
-		},
-		"dev": {
-			"inputs": [
-				"$TURBO_DEFAULT$",
-				"!**/*.stories.{js,ts,svelte,tsx,jsx,mdx}",
-				"**/.env.*",
-				".env.production.local",
-				".env.local",
-				".env.production",
-				".env"
-			]
+				"!**/*.stories.*"
+			],
+			"outputs": [".svelte-kit/**"]
 		}
 	}
 }
