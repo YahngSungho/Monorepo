@@ -74,23 +74,23 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#snippet content()}
-{#if loadingButton}
-<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
-{:else}
-{#if iconName}
-	<IconText
-		class={children ? extraStyles1 : extraStyles2}
-		{iconName}
-		{...iconProps}
-		alone={!children}
->
+	{#if loadingButton}
+		<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
+	{:else}
+		{#if iconName}
+			<IconText
+				class={children ? extraStyles1 : extraStyles2}
+				{iconName}
+				{...iconProps}
+				alone={!children}
+			>
 
-		{@render children?.()}
-		</IconText>
-{:else}
-		{@render children?.()}
-{/if}
-{/if}
+				{@render children?.()}
+			</IconText>
+		{:else}
+			{@render children?.()}
+		{/if}
+	{/if}
 {/snippet}
 
 {#if href}

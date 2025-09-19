@@ -1,6 +1,5 @@
 @plugin 'daisyui';
 
-
 .toggle {
 	&:hover {
 		opacity: 0.68;
