@@ -13,10 +13,7 @@ const EMAIL_MINIMAL_STYLES = `
 `
 
 function getEmailHTMLContent(markdownText) {
-	const start = performance.now()
 	const { body, head } = render(MarkdownComponent, { props: { value: markdownText } })
-	const end = performance.now()
-	console.log('getEmailHTMLContent 2', 'end - start', end - start)
 
 	// Workers-safe: avoid CSS inlining via Node-only libraries. Embed minimal styles inline.
 	return `<!DOCTYPE html>
@@ -35,7 +32,7 @@ ${EMAIL_MINIMAL_STYLES}
 
 export const sendMails_base_action = R.curry(async (info, config, content, emailList) => {
 	const { domain, emailOfSender, name, preprocessMarkdownText = R.identity } = info
-	const { markdownText, slug } = content
+	const { markdownText, campaignID } = content
 	const { deliveryTimeOptimize = true } = config
 
 	const frontmatterObject = getFrontmatterObject(markdownText)
@@ -54,7 +51,7 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
 			'o:tracking': 'yes',
 			'o:tracking-clicks': 'yes',
 			'o:tracking-opens': 'yes',
-			'o:campaign': slug,
+			'o:campaign': campaignID,
 			'recipient-variables': JSON.stringify(toObject(emailList)),
 			subject: title,
 			text: removeMDAndTags(markdownText_preprocessed),

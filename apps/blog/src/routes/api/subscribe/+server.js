@@ -76,7 +76,7 @@ ${markdownLinksString}`
 ${meanwhileLinksString}`
 					:	markdown.body
 
-				await sendMails_immediate_action({ markdownText: sendText, slug: WELCOME_SLUG }, [
+				await sendMails_immediate_action({ markdownText: sendText, campaignID: WELCOME_SLUG }, [
 					String(email),
 				])
 			})(),

@@ -7,7 +7,7 @@ import { EMAIL, EMAIL_SENDER_NAME, URL } from '$lib/info.js'
  *
  * @typedef {Object} EmailContent
  * @property {string} markdownText
- * @property {string} slug
+ * @property {string} campaignID
  */
 /**
  * @callback SendMailsAction
