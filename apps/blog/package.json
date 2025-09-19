@@ -20,7 +20,7 @@
 		"test:unit": "vitest run",
 		"translate": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/scripts/translation-scripts.js",
 		"type-sync": "svelte-kit sync",
-		"generate-env": "dotenvx decrypt -f ../../.env.public -f ../../.env.private  --stdout > .env",
+		"generate-env": "dotenvx decrypt -f ../../.env.public -f ../../.env.private  --stdout > .dev.vars",
 		"preview": "pnpm run generate-env && wrangler dev --port 5002",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only",
 		"deploy:env-vars": "dotenvx run -f ../../.env.public -f ../../.env.private  --",
