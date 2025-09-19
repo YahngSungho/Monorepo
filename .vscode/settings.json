@@ -59,8 +59,10 @@
 	"editor.quickSuggestions": {
 		"strings": "on"
 	},
+	"editor.quickSuggestionsDelay": 25,
 	"editor.semanticHighlighting.enabled": true,
-	"editor.suggest.snippetsPreventQuickSuggestions": true,
+	"editor.snippetSuggestions": "top",
+	"editor.suggest.snippetsPreventQuickSuggestions": false,
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
 	"eslint.probe": [
@@ -111,6 +113,7 @@
 		"javascriptsvelte"
 	],
 	"files.associations": {
+		"**/_headers": "plaintext",
 		"*.ahk": "ahk",
 		"*.html": "html",
 		"*.js": "javascript",
@@ -121,6 +124,15 @@
 		"*.mdx": "markdown",
 		"*.svelte": "svelte"
 	},
+	"json.schemas": [
+		{
+			"fileMatch": ["*.jsonc"],
+			"schema": {
+				"allowTrailingCommas": true, // 후행 쉼표 허용
+				"allowComments": true // (선택 사항) 주석도 허용
+			}
+		}
+	],
 	"peacock.color": "#79021b",
 	"prettier.endOfLine": "lf",
 	"prettier.experimentalTernaries": false,

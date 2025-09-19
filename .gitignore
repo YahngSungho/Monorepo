@@ -1,3 +1,7 @@
+.env
+.env.key
+.dev.vars
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 .history
@@ -77,9 +81,6 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenvx environment variable files
-.env.keys
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
@@ -158,3 +159,6 @@ paraglide-output
 .sentryclirc
 .qodo
 .repomix-output
+
+.wrangler
+.dev.vars*

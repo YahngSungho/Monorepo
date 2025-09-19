@@ -80,6 +80,10 @@ button,
 	transition-duration: 0.2s;
 	transition-property: color, background-color, border-color, box-shadow, opacity;
 
+	&:disabled {
+		z-index: -1;
+	}
+
 	&:hover,
 	&.hoverButton {
 		opacity: 0.68;

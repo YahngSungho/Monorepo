@@ -83,6 +83,8 @@ async function handleSubscribeSubmit_action(event) {
 		}
 		if (success) {
 			isSubscribed = true
+			// eslint-disable-next-line require-atomic-updates
+			emailValue = ''
 		} else {
 			if (response.status === 400) {
 				emailErrorMessage = emailErrorMessageList.incorrectFormat

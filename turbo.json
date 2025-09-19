@@ -2,20 +2,23 @@
 	"$schema": "https://turbo.build/schema.json",
 	"globalDependencies": [".env", ".env.*", "**/.env", "**/.env.*"],
 	"globalEnv": [
+		"SENTRY_ORG",
+		"SENTRY_PROJECT",
 		"NODE_ENV",
 		"MAILGUN",
 		"MAILGUN_SENDING",
-		"SUPABASE_URL",
-		"SUPABASE_ANON_KEY",
+		"PUBLIC_SUPABASE_URL",
+		"PUBLIC_SUPABASE_ANON_KEY",
 		"OPENAI_API_KEY",
 		"GOOGLE_GENERATIVE_AI_API_KEY",
 		"SENTRY_AUTH_TOKEN",
 		"VITE_PUBLIC_SUPABASE_URL",
 		"VITE_PUBLIC_SUPABASE_ANON_KEY",
 		"SUPABASE_ADMIN_KEY",
-		"SUPABASE_PUBLISHABLE_KEY"
+		"PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+		"GITHUB_ACTIONS"
 	],
-	"globalPassThroughEnv": ["CF_PAGES_BRANCH", "CI", "WATCH", "GITHUB_ACTIONS"],
+	"globalPassThroughEnv": ["CF_PAGES_BRANCH", "CI", "WATCH"],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
@@ -24,6 +27,9 @@
 			"outputs": [".svelte-kit/**", "paraglide-output/**"]
 		},
 		"@library/backends#build": {
+			"cache": false
+		},
+		"@library/paraglide#build": {
 			"cache": false
 		},
 		"@tool/storybook#build": {

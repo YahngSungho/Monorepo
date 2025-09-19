@@ -1,0 +1,30 @@
+---
+description:
+globs: **/wrangler.*,**/*cloudflare*,**/cloudflare/**
+alwaysApply: false
+---
+
+# Architecture
+
+This codebase is a monorepo and manages multiple web projects.
+
+## Build & Deploy
+
+### Build
+
+- All web projects are built by SvelteKit with `@sveltejs/adapter-cloudflare`. And `@cloudflare/vite-plugin` is using only when running by `vite dev`.
+- `@sveltejs/adapter-cloudflare` is used in `libraries/base/svelte.config.js` and shared with all other projects.
+- `@cloudflare/vite-plugin` is used in each `apps/*/vite.config.js`.
+
+### Deploy
+
+The web projects in this codebase are deployed using "Cloudflare Workers Static Assets" service after being built.
+
+## wrangler.jsonc
+
+During the build process, the contents of `libraries/backends/src/cloudflare/wrangler.base.jsonc` are merged with `wrangler.override.jsonc` located at the root of each internal packages within the `apps` folder (e.g., `apps/blog/wrangler.override.jsonc`). This generates `wrangler.jsonc` at the root of each internal packages. (e.g., `apps/blog/wrangler.jsonc`)
+
+# Caution
+
+- Do NOT edit `wrangler.jsonc` file as they should be generated files. Instead, edit `wrangler.base.jsonc` or `wrangler.override.jsonc`.
+- Functions contained in the `/functions` directory at the project’s root will not be included in the deployment. Instead, functions should be implemented as server endpoints in the SvelteKit apps, which is compiled to a single `_worker.js` file.

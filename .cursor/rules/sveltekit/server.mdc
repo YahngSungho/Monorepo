@@ -1,0 +1,25 @@
+---
+description:
+globs: **/*server.*,**/server/**
+alwaysApply: false
+---
+
+# Cloudflare
+
+## `env`
+
+The `env` object contains bindings for Cloudflare services, which consist of KV/DO namespaces, etc. It is passed to SvelteKit via the `platform` property, along with [ctx](https://developers.cloudflare.com/workers/runtime-apis/context/), [caches](https://developers.cloudflare.com/workers/runtime-apis/cache/), and [cf](https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties), meaning that you can access it in hooks and endpoints:
+
+e.g. +server.js:
+
+```javascript
+/** @type {import('./$types').RequestHandler} */
+export async function POST({ request, platform }) {
+	const x = platform?.env.YOUR_DURABLE_OBJECT_NAMESPACE.idFromName('x')
+}
+```
+
+## Accessing the file system
+
+You can’t use `fs`, because server-side code is deployed by Cloudflare Workers and You can’t use `fs` in Cloudflare Workers.
+Instead, use the `read` function from `$app/server` to access your files. It works by fetching the file from the deployed public assets location.

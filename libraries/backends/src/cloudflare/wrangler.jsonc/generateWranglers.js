@@ -5,7 +5,7 @@ import { getAbsolutePath } from '@library/helpers/fs-sync'
 import { R } from '@library/helpers/R'
 import * as jsoncParser from 'jsonc-parser'
 
-const appsPath = getAbsolutePath(import.meta.url, '../../../../apps/')
+const appsPath = getAbsolutePath(import.meta.url, '../../../../../apps/')
 const wranglerBasePath = getAbsolutePath(import.meta.url, './wrangler.base.jsonc')
 
 await generateWranglers_action()

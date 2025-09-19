@@ -1,6 +1,7 @@
 <script>
 import './style.css'
 
+import { removeFrontmatter } from '@library/helpers/markdown'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import smartypants from 'remark-smartypants'
@@ -34,12 +35,12 @@ import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 
-let { value, plugins = [] } = $props()
+let { plugins = [], value } = $props()
 </script>
 
 <div class="boxed">
 	<Markdown
-		md={value}
+		md={removeFrontmatter(value)}
 		plugins={[
 			gfmPlugin(),
 			{
@@ -59,6 +60,7 @@ let { value, plugins = [] } = $props()
 			{
 				renderer: {
 					// text: Text, <- 안됨
+					a: Link,
 					blockquote: Blockquote,
 					code: InlineCode,
 					del: Delete,
@@ -71,7 +73,6 @@ let { value, plugins = [] } = $props()
 					h6: Heading6,
 					hr: HorizontalRule,
 					img: Image,
-					a: Link,
 					li: ListItem,
 					ol: OrderedList,
 					p: Paragraph,
@@ -80,8 +81,8 @@ let { value, plugins = [] } = $props()
 					table: Table,
 					tbody: TableBody,
 					td: TableCell,
-					thead: TableHeader,
 					th: TableHead,
+					thead: TableHeader,
 					tr: TableRow,
 					ul: UnorderedList,
 				},

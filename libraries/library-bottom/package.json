@@ -10,6 +10,9 @@
 		"test:unit": "vitest run"
 	},
 	"exports": {
+		"./env-objects/private": "./src/env-objects/private.js",
+		"./env-objects/public": "./src/env-objects/public.js",
+		"./functions": "./src/functions.js",
 		"./baseTest.js": "./src/baseTest.js",
 		"./mermaid": "./src/mermaid.js",
 		"./tsconfig.json": "./tsconfig.json"
