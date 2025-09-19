@@ -18,11 +18,15 @@
 		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
-		"translate": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/lib/markdown-helpers/translation-scripts.js",
+		"translate": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/scripts/translation-scripts.js",
 		"type-sync": "svelte-kit sync",
 		"generate-env": "dotenvx decrypt -f ../../.env.public -f ../../.env.private  --stdout > .env",
 		"preview": "pnpm run generate-env && wrangler dev --port 5002",
-		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
+		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only",
+		"deploy:env-vars": "dotenvx run -f ../../.env.public -f ../../.env.private  --",
+		"deploy:app": "dotenvx run -f ../../.env.public -f ../../.env.private -- wrangler deploy",
+		"deploy": "pnpm run deploy:env-vars && pnpm run deploy:app"
+
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
@@ -39,7 +43,7 @@
 		"zod": "^3.25.36"
 	},
 	"devDependencies": {
-		"wrangler": "^4.37.0",
+		"wrangler": "^4.38.0",
 		"@cloudflare/vite-plugin": "^1.13.1",
 		"@library/scripts": "workspace:*",
 		"daisyui": "5.0.35",
