@@ -12,15 +12,14 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export let currentEnv
-if (process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production') {
-	currentEnv = 'DEPLOYED'
-} else if (process.env.GITHUB_ACTIONS) {
+if (process.env.GITHUB_ACTIONS) {
 	currentEnv = 'CI'
+} else if (process.env.NODE_ENV === 'production') {
+	currentEnv = 'build'
 } else {
-	currentEnv = process.env.NODE_ENV
+	currentEnv = 'dev'
 }
-
-export const isDev = currentEnv === 'development'
+export const isDev = currentEnv === 'dev'
 
 const baseConfig = defineConfig({
 	build: {
@@ -30,8 +29,7 @@ const baseConfig = defineConfig({
 	css: {
 		devSourcemap: true,
 	},
-	// 추가: PUBLIC_ 노출
-	envPrefix: ['PUBLIC_', 'VITE_'],
+	envPrefix: ['PUBLIC_'],
 	plugins: [
 		// @ts-ignore
 		tsconfigPaths(),
@@ -65,7 +63,7 @@ const baseConfig = defineConfig({
 		exclude: ['**/e2e/**'],
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 		outputFile: './vitest-report/result.xml',
-		reporters: process.env.GITHUB_ACTIONS ? ['junit', 'github-actions'] : 'default',
+		reporters: currentEnv === 'CI' ? ['junit', 'github-actions'] : 'default',
 	},
 })
 

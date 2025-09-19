@@ -1,6 +1,8 @@
+const envVarList = ['NODE_ENV', 'GITHUB_ACTIONS']
+
 export let env_public = Object.fromEntries(
 	Object.entries(globalThis?.process?.env || {}).filter(
-		([key]) => key.startsWith('PUBLIC_') || key === 'NODE_ENV' || key === 'GITHUB_ACTIONS',
+		([key]) => key.startsWith('PUBLIC_') || envVarList.includes(key),
 	),
 )
 

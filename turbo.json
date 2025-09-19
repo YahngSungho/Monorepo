@@ -18,7 +18,7 @@
 		"PUBLIC_SUPABASE_PUBLISHABLE_KEY",
 		"GITHUB_ACTIONS"
 	],
-	"globalPassThroughEnv": ["CF_PAGES_BRANCH", "CI", "WATCH"],
+	"globalPassThroughEnv": ["CI", "WATCH"],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
