@@ -74,23 +74,23 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#snippet content()}
-{#if loadingButton}
-<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
-{:else}
-{#if iconName}
-	<IconText
-		class={children ? extraStyles1 : extraStyles2}
-		{iconName}
-		{...iconProps}
-		alone={!children}
->
+	{#if loadingButton}
+		<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
+	{:else}
+		{#if iconName}
+			<IconText
+				class={children ? extraStyles1 : extraStyles2}
+				{iconName}
+				{...iconProps}
+				alone={!children}
+			>
 
-		{@render children?.()}
-		</IconText>
-{:else}
-		{@render children?.()}
-{/if}
-{/if}
+				{@render children?.()}
+			</IconText>
+		{:else}
+			{@render children?.()}
+		{/if}
+	{/if}
 {/snippet}
 
 {#if href}
@@ -137,7 +137,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 .btn-outline {
 	border-color: currentcolor;
-	border-width: var(--border-size-2);
+	border-width: var(--border-size-1);
 	background-color: transparent;
 
 	&.btn-xs,
@@ -154,10 +154,6 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 .visibilityHidden {
 	visibility: hidden;
-}
-
-.dimBackground {
-	background-color: color-mix(in oklch, var(--background) 50%, transparent);
 }
 
 .clearBackground {

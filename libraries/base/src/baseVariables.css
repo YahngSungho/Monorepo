@@ -196,6 +196,12 @@
 	--font-size-fluid-5: clamp(2.1773rem, 1.8731rem + 1.5208vi, 3.0518rem);
 }
 
+html {
+	--surface-1: var(--card);
+	--surface-2: var(--gray-4);
+	--surface-3: var(--gray-6);
+	--surface-4: var(--gray-8);
+}
 /* 다크 테마일 때 색깔 변수 거꾸로 매핑 */
 html.dark {
 	--gray-12: rgb(248 249 250);
@@ -467,9 +473,5 @@ html.dark {
 	--link-visited: var(--purple-7);
 	--text-1: var(--foreground);
 	--text-2: var(--gray-7);
-	--surface-1: var(--card);
-	--surface-2: var(--gray-4);
-	--surface-3: var(--gray-6);
-	--surface-4: var(--gray-8);
 	--scrollthumb-color: var(--gray-7);
 }

@@ -9,10 +9,10 @@ let { allMetadata } = $props()
 </script>
 
 <div
-	style="
-display: flex; flex-direction: column;
-gap: var(--space-em-cqi-xs); inline-size: 100%;
-"
+	style:display="flex"
+	style:flex-direction="column"
+	style:gap="var(--space-em-cqi-2xs)"
+	style:inline-size="100%"
 >
 	{#each allMetadata as postMetadata (postMetadata.slug)}
 		<Link

@@ -3,19 +3,16 @@ import '../../miscellaneous/mermaid/mermaid.css'
 
 import { getSimpleHash, idleRun_action, normalizeString } from '@library/helpers/functions'
 import { mode } from 'mode-watcher'
-import { getContext, onMount, tick } from 'svelte'
+import { getContext, tick } from 'svelte'
 
 import { initializeMermaidHover_action } from '../../miscellaneous/mermaid/helpers.js'
 import { getRawText } from '../getRawText.svelte.js'
 
-const mermaidSVGObject = getContext('mermaidSVGObject')
+const mermaid = getContext('mermaidSVGObject')
 const rawText = $derived(getRawText())
 const hashValue = $derived(getSimpleHash(normalizeString(rawText)))
-let mounted = $state(false)
-onMount(() => {
-	mounted = true
-})
-const svg = $derived(mounted ? (mermaidSVGObject[`${mode.current}:${hashValue}`] ?? '') : '')
+
+const svg = $derived(mermaid[`${mode.current}:${hashValue}`] ?? '')
 
 let element = $state()
 

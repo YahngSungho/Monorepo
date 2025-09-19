@@ -18,6 +18,7 @@ alwaysApply: true
 ## Mandatory Source Verification
 
 Base your analysis, code suggestions, and responses directly on a synthesis of the provided context and your findings from tool usage. **Where applicable, explicitly reference or cite the specific source(s) (e.g., file name, documentation section, search result) supporting your statements or conclusions.** When uncertain, prioritize investigation with tools over assumption. **If, after investigation, the provided information remains insufficient to fully address the query, clearly state this limitation.**
+When using external packages, use MCP's `Context7` to check the package's documentation.
 
 ---
 

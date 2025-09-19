@@ -61,7 +61,21 @@ import { setContext } from 'svelte'
 
 let { mermaidSVGObject = {}, plugins = [], value } = $props()
 
-setContext('mermaidSVGObject', mermaidSVGObject)
+let mermaidContext = $state({})
+
+setContext('mermaidSVGObject', mermaidContext)
+
+$effect(() => {
+	const src = mermaidSVGObject ?? {}
+	for (const key in mermaidContext) {
+		if (!(key in src)) {
+			delete mermaidContext[key]
+		}
+	}
+	for (const key in src) {
+		mermaidContext[key] = src[key]
+	}
+})
 </script>
 
 <Markdown plugins={[...addedPlugins, ...plugins]} value={removeFrontmatter(value)} />
