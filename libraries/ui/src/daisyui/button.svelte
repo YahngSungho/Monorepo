@@ -137,7 +137,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 .btn-outline {
 	border-color: currentcolor;
-	border-width: var(--border-size-2);
+	border-width: var(--border-size-1);
 	background-color: transparent;
 
 	&.btn-xs,
@@ -154,10 +154,6 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 .visibilityHidden {
 	visibility: hidden;
-}
-
-.dimBackground {
-	background-color: color-mix(in oklch, var(--background) 50%, transparent);
 }
 
 .clearBackground {

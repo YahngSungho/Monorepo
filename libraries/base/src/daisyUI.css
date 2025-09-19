@@ -12,14 +12,16 @@
 	}
 }
 
-.join:not(.join-vertical) > * + * {
+.join:not(.join-vertical) > * + *:not(:disabled) {
 	position: relative;
-	inset-inline-end: var(--border-size-2);
+	/* stylelint-disable-next-line plugin/value-no-exposed-custom-properties */
+	inset-inline-end: var(--border-size-1);
 }
 
-.join.join-vertical > * + * {
+.join.join-vertical > * + *:not(:disabled) {
 	position: relative;
-	inset-block-end: var(--border-size-2);
+	/* stylelint-disable-next-line plugin/value-no-exposed-custom-properties */
+	inset-block-end: var(--border-size-1);
 }
 
 /* 설정할 수 있는 variable들: https://daisyui.com/docs/utilities/#component-specific-css-variables */
