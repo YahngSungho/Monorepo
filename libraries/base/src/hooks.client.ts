@@ -1,17 +1,14 @@
+import { env_public } from '@library/library-bottom/env-objects/public'
 import * as Sentry from '@sentry/sveltekit'
 
-// @ts-ignore
-import { env } from '$env/dynamic/public'
-
-const branch = env.CF_PAGES_BRANCH
-const isDeployEnv = branch === 'main' || branch === 'production'
+const isDev = env_public.dev
 
 Sentry.init({
 	dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',
-	tracesSampleRate: isDeployEnv ? 0.1 : 1,
 	integrations: [],
-	replaysSessionSampleRate: isDeployEnv ? 0.1 : 0,
-	replaysOnErrorSampleRate: 1.0,
+	replaysOnErrorSampleRate: isDev ? 0 : 1.0,
+	replaysSessionSampleRate: isDev ? 0 : 0.1,
+	tracesSampleRate: isDev ? 0 : 0.1,
 })
 
 import('@sentry/sveltekit')
@@ -19,8 +16,8 @@ import('@sentry/sveltekit')
 	.then((lazyLoadedSentry) => {
 		Sentry.addIntegration(
 			lazyLoadedSentry.replayIntegration({
-				maskAllText: true,
 				blockAllMedia: true,
+				maskAllText: true,
 			}),
 		)
 		Sentry.addIntegration(lazyLoadedSentry.replayCanvasIntegration())

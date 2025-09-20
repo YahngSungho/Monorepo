@@ -1,7 +1,10 @@
-name: Check & Lint
+name: Deploy
 
 on:
   workflow_call: {}
+  pull_request:
+    types:
+      - labeled
 
 permissions:
   pull-requests: write # Necessary to comment on PRs
@@ -9,10 +12,13 @@ permissions:
   contents: read # Necessary to access the repo content
 
 jobs:
-  check-lint:
-    name: Check & Lint
+  deploy:
+    name: Deploy
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    if: >
+      (github.event_name == 'workflow_call') ||
+      (github.event_name == 'pull_request' && github.event.action == 'labeled' && github.event.label.name == 'force-deploy')
 
     steps:
       # 저장소 코드 체크아웃
@@ -82,9 +88,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --prefer-offline
 
-      - name: build:paraglide
-        run: pnpm run build:paraglide
+      - name: Deploy
+        run: pnpm run deploy
 
-      # 린트 실행
-      - name: Run Lint
-        run: pnpm run check-lint
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        with:
+          environment: deployed

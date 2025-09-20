@@ -1,10 +1,9 @@
+import { env_public } from '@library/library-bottom/env-objects/public'
 import { paraglideMiddleware } from '@library/paraglide/server.js'
 import { handleErrorWithSentry, initCloudflareSentryHandle, sentryHandle } from '@sentry/sveltekit'
 import type { Handle } from '@sveltejs/kit'
 
-// 환경 변수 확인
-const isDeployEnv =
-	process.env.CF_PAGES_BRANCH === 'main' || process.env.CF_PAGES_BRANCH === 'production'
+const isDev = env_public.dev
 
 // 에러 핸들러 정의
 const myErrorHandler = ({ error, event }) => {
@@ -17,11 +16,10 @@ const myErrorHandler = ({ error, event }) => {
 // Sentry 에러 핸들러
 export const handleError = handleErrorWithSentry(myErrorHandler)
 
-// eslint-disable-next-line unicorn/prefer-set-has
-const rtlLocales = ['ar', 'fa', 'he', 'prs', 'ps', 'sd', 'ur']
+const rtlLocales = new Set(['ar', 'fa', 'he', 'prs', 'ps', 'sd', 'ur'])
 function getDir(locale: string) {
 	const lang = locale.split('-')[0]
-	return rtlLocales.includes(lang) ? 'rtl' : 'ltr'
+	return rtlLocales.has(lang) ? 'rtl' : 'ltr'
 }
 
 // Paraglide 핸들러
@@ -50,7 +48,7 @@ export const defaultHandlers: Handle[] = [
 	// Sentry 초기화 핸들러 (가장 먼저 실행되도록 하는 것이 일반적)
 	initCloudflareSentryHandle({
 		dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',
-		tracesSampleRate: isDeployEnv ? 0.1 : 0,
+		tracesSampleRate: isDev ? 0 : 0.1,
 	}),
 	// Sentry 요청 핸들러
 	sentryHandle(),

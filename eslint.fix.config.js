@@ -49,6 +49,7 @@ const overrideConfig = [
 			'svelte/shorthand-directive': 'warn',
 			'svelte/sort-attributes': 'warn',
 			'svelte/spaced-html-comment': 'warn',
+			'unicorn/prefer-set-has': 'warn',
 		},
 	},
 	{

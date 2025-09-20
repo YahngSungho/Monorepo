@@ -1,5 +1,5 @@
 {
-	"$schema": "https://turbo.build/schema.json",
+	"$schema": "https://turborepo.com/schema.json",
 	"globalDependencies": [".env", ".env.*", "**/.env", "**/.env.*"],
 	"globalEnv": [
 		"SENTRY_ORG",
@@ -18,39 +18,46 @@
 		"PUBLIC_SUPABASE_PUBLISHABLE_KEY",
 		"GITHUB_ACTIONS"
 	],
-	"globalPassThroughEnv": ["CF_PAGES_BRANCH", "CI", "WATCH"],
+	"globalPassThroughEnv": ["CI", "WATCH"],
 	"tasks": {
+		"deploy": {
+			"dependsOn": ["build"],
+			"cache": false
+		},
 		"build": {
-			"dependsOn": ["^build"],
-			"env": [],
-			"inputs": ["$TURBO_DEFAULT$", "!**/*.stories.*"],
-			"outputs": [".svelte-kit/**", "paraglide-output/**"]
+			"dependsOn": ["^build"]
 		},
 		"@library/backends#build": {
+			"dependsOn": ["^build"],
 			"cache": false
 		},
 		"@library/paraglide#build": {
-			"cache": false
+			"dependsOn": ["^build", "change-base-locale:en"],
+			"outputs": ["paraglide-output/**"]
 		},
 		"@tool/storybook#build": {
-			"inputs": ["$TURBO_DEFAULT$"],
+			"dependsOn": ["^build"],
 			"outputs": ["storybook-static/**"]
 		},
-		"change-base-locale:en": {},
-		"change-base-locale:ko": {},
+		"change-base-locale:en": {
+			"cache": false
+		},
+		"change-base-locale:ko": {
+			"cache": false
+		},
 		"check": {
 			"dependsOn": ["transit"]
 		},
 		"dev": {
 			"cache": false,
-			"env": [],
-			"persistent": true,
-			"inputs": ["$TURBO_DEFAULT$"]
+			"persistent": true
 		},
 		"eslint": {},
 		"eslint-fix": {},
 		"format": {},
-		"playwright-report": {},
+		"playwright-report": {
+			"cache": false
+		},
 		"stylelint": {},
 		"stylelint-fix": {},
 		"test:e2e": {
