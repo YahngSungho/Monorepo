@@ -31,5 +31,7 @@ align-items: end;
 		{setLocale}
 		{size}
 	/>
-	<ThemeToggle size={toggleSize} />
+	<div>
+		<ThemeToggle size={toggleSize} />
+	</div>
 </div>
