@@ -1,7 +1,7 @@
+import { env_public } from '@library/library-bottom/env-objects/public'
 import { paraglideMiddleware } from '@library/paraglide/server.js'
 import { handleErrorWithSentry, initCloudflareSentryHandle, sentryHandle } from '@sentry/sveltekit'
 import type { Handle } from '@sveltejs/kit'
-import { env_public } from '@library/library-bottom/env-objects/public'
 
 const isDev = env_public.dev
 
@@ -16,10 +16,10 @@ const myErrorHandler = ({ error, event }) => {
 // Sentry 에러 핸들러
 export const handleError = handleErrorWithSentry(myErrorHandler)
 
-const rtlLocales = ['ar', 'fa', 'he', 'prs', 'ps', 'sd', 'ur']
+const rtlLocales = new Set(['ar', 'fa', 'he', 'prs', 'ps', 'sd', 'ur'])
 function getDir(locale: string) {
 	const lang = locale.split('-')[0]
-	return rtlLocales.includes(lang) ? 'rtl' : 'ltr'
+	return rtlLocales.has(lang) ? 'rtl' : 'ltr'
 }
 
 // Paraglide 핸들러

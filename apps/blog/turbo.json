@@ -3,10 +3,7 @@
 	"extends": ["//"],
 	"tasks": {
 		"build": {
-			"inputs": [
-				"$TURBO_DEFAULT$",
-				"!**/*.stories.*"
-			],
+			"inputs": ["$TURBO_DEFAULT$", "!**/*.stories.*"],
 			"outputs": [".svelte-kit/**"]
 		}
 	}

@@ -5,8 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"build": "dotenvx run -f ../../.env.public -- vite build",
-		"build:turbo": "turbo run build --filter={./}",
 		"build:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite build",
+		"build:turbo": "turbo run build --filter={./}",
 		"check": "pnpm run type-sync && svelte-check --tsconfig ./tsconfig.json --no-tsconfig --ignore ../../libraries",
 		"check:watch": "pnpm run check -- --watch",
 		"deploy": "pnpm run deploy:app && pnpm run deploy:env-vars",

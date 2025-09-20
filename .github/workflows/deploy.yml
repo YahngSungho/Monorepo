@@ -6,7 +6,6 @@ on:
     types:
       - labeled
 
-
 permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue comments

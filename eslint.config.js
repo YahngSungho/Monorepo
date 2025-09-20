@@ -52,7 +52,6 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
-	'unicorn/prefer-set-has': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'arrow-parens': 'off',
@@ -192,6 +191,7 @@ const baseRules = {
 	'unicorn/no-useless-undefined': 'off',
 	'unicorn/no-zero-fractions': 'off',
 	'unicorn/prefer-dom-node-dataset': 'off',
+	'unicorn/prefer-set-has': 'off',
 	'unicorn/prefer-spread': 'off',
 	'unicorn/prefer-ternary': 'off',
 	'unicorn/prefer-top-level-await': 'off',
@@ -217,7 +217,7 @@ export default defineFlatConfig([
 			'pnpm-lock.yaml',
 			'package-lock.json',
 			'**/cache.json',
-			'**/wrangler.jsonc'
+			'**/wrangler.jsonc',
 		],
 	},
 
