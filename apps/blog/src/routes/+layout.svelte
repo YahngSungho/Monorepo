@@ -435,7 +435,7 @@ let jsonLd = $derived({
 					style:flex-direction="column"
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-size: min(calc(100cqi / 6.2), 5em); font-weight: 900;" href="/">
+					<Link style="font-size: min(calc(100cqi / 6.4), 5em); font-weight: 900;" href="/">
 						{URL}
 					</Link>
 				</div>
