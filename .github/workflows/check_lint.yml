@@ -1,7 +1,7 @@
 name: Check & Lint
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - labeled
       - synchronize
@@ -85,9 +85,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --prefer-offline
 
-      - name: paraglide-compile
-        run: pnpm --filter=@library/paraglide exec node ./src/compile.js
+      - name: build:paraglide
+        run: pnpm run build:paraglide
 
       # 린트 실행
       - name: Run Lint
-        run: pnpm run lint
+        run: pnpm run check-lint
