@@ -1,3 +1,4 @@
+import { dev } from '$app/environment'
 import { env_public } from '@library/library-bottom/env-objects/public'
 import { paraglideMiddleware } from '@library/paraglide/server.js'
 import { handleErrorWithSentry, initCloudflareSentryHandle, sentryHandle } from '@sentry/sveltekit'
@@ -22,14 +23,63 @@ function getDir(locale: string) {
 	return rtlLocales.has(lang) ? 'rtl' : 'ltr'
 }
 
-// Paraglide 핸들러
-const paraglideHandle: Handle = ({ event, resolve }) =>
-	paraglideMiddleware(event.request, ({ locale }) => {
-		return resolve(event, {
-			transformPageChunk: ({ html }) =>
-				html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
-		})
-	})
+export const paraglideHandle: Handle = async ({ event, resolve }) => {
+  return paraglideMiddleware(event.request, async ({ request: localizedRequest, locale }) => {
+		event.request = localizedRequest
+
+    if (dev) {
+      return resolve(event, {
+        transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
+      })
+    }
+
+    const cache = event.platform?.caches?.default
+    if (!cache || localizedRequest.method !== 'GET') {
+      return resolve(event, {
+        transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
+      })
+    }
+
+    // 최종(캐노니컬) URL을 캐시 키로 사용
+    const canonicalUrl = new URL(localizedRequest.url, event.url)
+
+    // 개인정보 유출 방지
+    const hasAuth = localizedRequest.headers.has('authorization') || localizedRequest.headers.has('cookie')
+    if (!hasAuth) {
+      const cached = await cache.match(canonicalUrl)
+      if (cached) return cached
+    }
+
+    const response = await resolve(event, {
+      transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
+    })
+
+    // HTML만 캐시
+    const ct = response.headers.get('content-type') || ''
+    const cc = response.headers.get('cache-control') || ''
+    const cacheable =
+      response.status === 200 &&
+      /text\/html/i.test(ct) &&
+      !response.headers.has('set-cookie') &&
+      !/no-store|private/i.test(cc) &&
+      !hasAuth
+
+    if (!cacheable) return response
+
+    const headers = new Headers(response.headers)
+    headers.set('cache-control', 'public, s-maxage=3600, max-age=0') // 1h 엣지 TTL, 브라우저 0
+
+    const toCache = new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    })
+
+    // 타입 충돌 회피: Cloudflare Response 타입과 DOM Response 타입 불일치 방지
+    event.platform?.ctx?.waitUntil((cache as any).put(canonicalUrl as any, toCache.clone() as any))
+    return toCache
+  })
+}
 
 // 개발자 도구 등에서 발생하는 불필요한 요청을 무시하기 위한 핸들러
 const junkRequestHandle: Handle = async ({ event, resolve }) => {
