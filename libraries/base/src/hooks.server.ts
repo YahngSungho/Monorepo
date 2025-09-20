@@ -26,7 +26,6 @@ function getDir(locale: string) {
 
 export const paraglideHandle: Handle = async ({ event, resolve }) => {
 	return paraglideMiddleware(event.request, async ({ locale, request: localizedRequest }) => {
-
 		if (dev) {
 			return resolve(event, {
 				transformPageChunk: ({ html }) =>
