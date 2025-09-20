@@ -90,6 +90,7 @@ jobs:
   path-filter:
     runs-on: ubuntu-latest
     outputs:
+      libraries_backends: ${{ steps.filter.outputs.libraries_backends }}
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
       package-json: ${{ steps.filter.outputs.package-json }}
@@ -101,6 +102,8 @@ jobs:
         id: filter
         with:
           filters: |
+            libraries_backends:
+              - 'libraries/backends/**'
             projects:
               - 'apps/**'
               - 'libraries/**'
@@ -193,9 +196,121 @@ jobs:
           name: package-json-changes-patch
           path: package-json-changes.patch
 
-  fix-markdown:
+  update-backend-config:
     runs-on: ubuntu-latest
     needs: [path-filter, fix-package-json]
+    if: |
+      needs.path-filter.outputs.libraries_backends == 'true' && !failure() && !cancelled()
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ secrets.TOKEN1 }}
+          fetch-depth: 0
+
+      # 1. package-json 패치 다운로드/적용 (fix-package-json 산출물 연동)
+      - name: package-json 패치 존재 여부 확인 (backend)
+        id: check_package_json_patch_backend
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "package-json-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: package-json 패치 아티팩트 다운로드 (backend)
+        if: steps.check_package_json_patch_backend.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: package-json-changes-patch
+          path: .
+
+      - name: package-json 패치 적용 (backend)
+        if: steps.check_package_json_patch_backend.outputs.result == 'true'
+        run: |
+          if [ -f package-json-changes.patch ]; then
+            echo "package.json 포맷팅 변경사항 패치를 적용합니다 (backend)..."
+            if ! git apply --check package-json-changes.patch; then
+              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+              exit 1
+            fi
+            git apply package-json-changes.patch
+            echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다 (backend)."
+            rm package-json-changes.patch
+          else
+            echo "적용할 package.json 포맷팅 변경사항이 없습니다 (backend)."
+          fi
+
+      - name: pnpm 설정
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: 의존성 설치
+        run: pnpm install --prefer-offline
+
+      # 임시 커밋 생성 (패치 + 설치 후 상태 기준) — backend build 전 기준점 마련
+      - name: diff 비교를 위한 임시 커밋 생성 (backend)
+        run: |
+          echo "--- 임시 커밋 생성 중 (backend 빌드 전) ---"
+          git config user.name "GitHub Actions Temp"
+          git config user.email "actions-temp@github.com"
+          git add -A
+          if ! git diff --staged --quiet; then
+            git commit -m "Temporary commit after applying package-json patch and install (before backend build)"
+            echo "임시 커밋 (backend 빌드 전)이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
+          else
+            echo "backend 빌드 전 임시로 커밋할 변경사항이 없습니다."
+          fi
+          echo "--- 임시 커밋 (backend 빌드 전) 완료 ---"
+
+      - name: Run @library/backends build:external
+        run: pnpm -w --filter @library/backends run build:external
+
+      - name: 백엔드 구성 변경사항 확인 및 패치 생성
+        id: check_backend_config_changes
+        run: |
+          echo "현재 상태:"
+          git status --short
+          echo "모든 변경사항 (untracked 포함) 스테이징 중..."
+          git add -A
+          echo "스테이징 후 상태:"
+          git status --short
+
+          if ! git diff --quiet --staged HEAD --exit-code; then
+            echo "백엔드 구성 변경사항이 있습니다. 패치 생성 중..."
+            git diff --staged HEAD > backend-config-changes.patch
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "backend-config-changes.patch 내용:"
+            cat backend-config-changes.patch || true
+          else
+            echo "백엔드 구성 변경사항이 없습니다."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 백엔드 구성 패치 아티팩트 업로드
+        if: steps.check_backend_config_changes.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-config-changes-patch
+          path: backend-config-changes.patch
+
+  fix-markdown:
+    runs-on: ubuntu-latest
+    needs: [path-filter, fix-package-json, update-backend-config]
     if: |
       needs.path-filter.outputs.markdown == 'true' && !failure() && !cancelled()
     steps:
@@ -246,6 +361,45 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
+      # 2.5. backend-config 패치 다운로드/적용
+      - name: backend-config 패치 존재 여부 확인
+        id: check_backend_patch_fix_md
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "backend-config-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: backend-config 패치 아티팩트 다운로드
+        if: steps.check_backend_patch_fix_md.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-config-changes-patch
+          path: .
+
+      - name: backend-config 패치 적용
+        if: steps.check_backend_patch_fix_md.outputs.result == 'true'
+        run: |
+          if [ -f backend-config-changes.patch ]; then
+            echo "backend-config 변경사항 패치를 적용합니다..."
+            if ! git apply --check backend-config-changes.patch; then
+              echo "::error::backend-config-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+              exit 1
+            fi
+            git apply backend-config-changes.patch
+            echo "backend-config 패치가 성공적으로 적용되었습니다."
+            rm backend-config-changes.patch
+          else
+            echo "적용할 backend-config 변경사항이 없습니다."
+          fi
+
       # 5. pnpm 설치 및 의존성 설치 (패치 적용 후)
       - name: pnpm 설정
         uses: pnpm/action-setup@v4
@@ -267,7 +421,7 @@ jobs:
           git config user.email "actions-temp@github.com"
           git add . # 모든 변경사항 스테이징 (패치 적용 + install 결과 포함)
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json, translation patches and install"
+            git commit -m "Temporary commit after applying package-json and backend patches and install"
             echo "임시 커밋 (마크다운 수정 전)이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
             echo "마크다운 수정 전 임시로 커밋할 변경사항이 없습니다."
@@ -411,7 +565,7 @@ jobs:
 
   update-translation:
     runs-on: ubuntu-latest
-    needs: [path-filter, fix-package-json, fix-markdown]
+    needs: [path-filter, fix-package-json, fix-markdown, update-backend-config]
     if: |
       needs.path-filter.outputs.translation-targets == 'true' && !failure() && !cancelled()
     steps:
@@ -499,6 +653,46 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
+      # 2.5. backend-config 패치 다운로드
+      - name: backend-config 패치 존재 여부 확인
+        id: check_backend_patch_translate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "backend-config-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: backend-config 패치 아티팩트 다운로드
+        if: steps.check_backend_patch_translate.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-config-changes-patch
+          path: .
+
+      # 2.6. backend-config 패치 적용
+      - name: backend-config 패치 적용
+        if: steps.check_backend_patch_translate.outputs.result == 'true'
+        run: |
+          if [ -f backend-config-changes.patch ]; then
+            echo "backend-config 변경사항 패치를 적용합니다..."
+            if ! git apply --check backend-config-changes.patch; then
+              echo "::error::backend-config-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+              exit 1
+            fi
+            git apply backend-config-changes.patch
+            echo "backend-config 패치가 성공적으로 적용되었습니다."
+            rm backend-config-changes.patch
+          else
+            echo "적용할 backend-config 변경사항이 없습니다."
+          fi
+
       # 5. markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint_format
@@ -566,7 +760,7 @@ jobs:
           echo "임시 커밋을 위한 스테이징된 변경사항 diff 통계:"
           git diff --staged --stat # 스테이징된 내용 확인
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json patch and install"
+            git commit -m "Temporary commit after applying package-json and backend patches and install"
             echo "임시 커밋이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
             echo "번역 전 임시로 커밋할 변경사항이 없습니다."
@@ -640,7 +834,7 @@ jobs:
           git status --short # 스테이징 후 상태 확인
 
           # 이제 스테이징된 변경사항을 기준으로 diff를 생성합니다.
-          # HEAD는 "Temporary commit after applying package-json patch and install" 커밋을 가리킵니다.
+          # HEAD는 "Temporary commit after applying package-json and backend patches and install" 커밋을 가리킵니다.
           # 따라서 이 diff는 번역 작업으로 인해 발생한 변경사항(새 파일 추가 포함)만을 포함하게 됩니다.
           echo "임시 커밋(HEAD) 대비 스테이징된 변경사항 diff 통계 실행 중:"
           git diff --stat --staged HEAD # 스테이징된 변경사항과 임시 커밋(HEAD) 비교
@@ -667,7 +861,7 @@ jobs:
 
   lint-format:
     runs-on: ubuntu-latest
-    needs: [path-filter, fix-package-json, update-translation, fix-markdown]
+    needs: [path-filter, fix-package-json, update-translation, fix-markdown, update-backend-config]
     if: |
       needs.path-filter.outputs.projects == 'true' && !failure() && !cancelled()
     env:
@@ -754,6 +948,46 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
+      # 2.5. backend-config 패치 다운로드 (lint-format)
+      - name: 백엔드 패치 존재 여부 확인
+        id: check_backend_patch_lint_format
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "backend-config-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: 백엔드 패치 아티팩트 다운로드
+        if: steps.check_backend_patch_lint_format.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-config-changes-patch
+          path: .
+
+      # 2.6. backend-config 패치 적용 (lint-format)
+      - name: 백엔드 패치 적용
+        if: steps.check_backend_patch_lint_format.outputs.result == 'true'
+        run: |
+          if [ -f backend-config-changes.patch ]; then
+            echo "백엔드 변경사항 패치를 적용합니다..."
+            if ! git apply --check backend-config-changes.patch; then
+              echo "::error::backend-config-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+              exit 1
+            fi
+            git apply backend-config-changes.patch
+            echo "백엔드 패치가 성공적으로 적용되었습니다."
+            rm backend-config-changes.patch
+          else
+            echo "적용할 백엔드 변경사항이 없습니다."
+          fi
+
       # 5. markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint_format
@@ -833,6 +1067,8 @@ jobs:
           else
             echo "적용할 번역 변경사항이 없습니다."
           fi
+
+      # 5. backend-config patch 다운로드
 
       # Node.js 및 pnpm 설정
       - name: pnpm 설정
@@ -1046,6 +1282,7 @@ jobs:
       - fix-package-json
       - fix-markdown
       - update-translation
+      - update-backend-config
 
     if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
@@ -1058,6 +1295,30 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0 # diff를 위해 전체 히스토리 가져오기
+
+      # 1) images → 2) package-json → 3) backend → 4) markdown → 5) translation → 6) changes
+
+      - name: 이미지 패치 존재 여부 확인
+        id: check_images_patch_push
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "images-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: 이미지 패치 아티팩트 다운로드
+        if: steps.check_images_patch_push.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: images-changes-patch
+          path: .
 
       - name: package-json 패치 존재 여부 확인
         id: check_package_json_patch_push
@@ -1076,6 +1337,28 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: package-json-changes-patch
+          path: .
+
+      - name: 백엔드 패치 존재 여부 확인
+        id: check_backend_patch_push
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const matchArtifact = artifacts.data.artifacts.find(
+              artifact => artifact.name === "backend-config-changes-patch"
+            );
+            return !!matchArtifact;
+
+      - name: 백엔드 패치 아티팩트 다운로드
+        if: steps.check_backend_patch_push.outputs.result == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-config-changes-patch
           path: .
 
       - name: 마크다운 패치 존재 여부 확인
@@ -1144,28 +1427,6 @@ jobs:
           name: changes-patch
           path: .
 
-      - name: 이미지 패치 존재 여부 확인
-        id: check_images_patch_push
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: context.runId
-            });
-            const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "images-changes-patch"
-            );
-            return !!matchArtifact;
-
-      - name: 이미지 패치 아티팩트 다운로드
-        if: steps.check_images_patch_push.outputs.result == 'true'
-        uses: actions/download-artifact@v4
-        with:
-          name: images-changes-patch
-          path: .
-
       # 추가: 다운로드한 patch 적용
       - name: 패치 적용
         run: |
@@ -1198,6 +1459,7 @@ jobs:
 
           apply_patch "images-changes.patch" "이미지 압축"
           apply_patch "package-json-changes.patch" "Package.json 포맷팅"
+          apply_patch "backend-config-changes.patch" "백엔드 구성"
           apply_patch "markdown-changes.patch" "마크다운 포맷팅"
           apply_patch "translation-changes.patch" "번역"
           apply_patch "changes.patch" "코드 포맷팅 (린트/스타일)"
