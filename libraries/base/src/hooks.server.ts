@@ -26,13 +26,18 @@ function getDir(locale: string) {
 
 export const paraglideHandle: Handle = async ({ event, resolve }) => {
 	return paraglideMiddleware(event.request, async ({ locale, request: localizedRequest }) => {
-		event.request = localizedRequest
-
 		if (dev) {
 			return resolve(event, {
 				transformPageChunk: ({ html }) =>
 					html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
 			})
+		}
+
+		// HTML 네비게이션 요청만 현지화/캐시 처리. 정적 자산은 그대로 통과
+		const accept = localizedRequest.headers.get('accept') || ''
+		const isHtmlNavigation = accept.includes('text/html')
+		if (!isHtmlNavigation) {
+			return resolve(event)
 		}
 
 		const cache = event.platform?.caches?.default

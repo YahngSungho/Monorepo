@@ -68,10 +68,10 @@ async function handleSubscribeSubmit_action(event) {
 	formResult = null
 
 	try {
-		const formEl = event.currentTarget
-		const fd = new FormData(formEl)
+		const formElement = event.currentTarget
+		const fd = new FormData(formElement)
 
-		const response = await fetch(formEl.action, {
+		const response = await fetch(formElement.action, {
 			body: fd,
 			method: 'POST',
 		})
@@ -166,16 +166,16 @@ let sharingButtonsOpen = $state(false)
 
 // 스크롤 타겟 요소 및 상태 관리
 // svelte-ignore non_reactive_update
-let withSidebarEl
+let withSidebarElement
 // svelte-ignore non_reactive_update
-let mainEl
-let activeEl = $state(null)
+let mainElement
+let activeElement = $state(null)
 let scrollTop = $state(0)
 let scrollHeight = $state(0)
 let clientHeight = $state(0)
 
-function isScrollable(el) {
-	return !!el && el.scrollHeight > el.clientHeight + 1
+function isScrollable(element) {
+	return !!element && element.scrollHeight > element.clientHeight + 1
 }
 function setupScrollElement_action(element) {
 	scrollHeight = element.scrollHeight
@@ -185,9 +185,9 @@ function setupScrollElement_action(element) {
 
 function pickScrollTarget() {
 	// 1) 최근 사용한 엘리먼트가 스크롤 가능하면 우선
-	if (activeEl && isScrollable(activeEl)) return activeEl
+	if (activeElement && isScrollable(activeElement)) return activeElement
 	// 2) 스크롤 가능 후보 중에서 스크롤 여유가 큰 것 우선
-	const candidates = [withSidebarEl, mainEl].filter(isScrollable)
+	const candidates = [withSidebarElement, mainElement].filter(isScrollable)
 	if (candidates.length > 0) {
 		const sorted = candidates.toSorted(
 			(a, b) => b.scrollHeight - b.clientHeight - (a.scrollHeight - a.clientHeight),
@@ -195,39 +195,39 @@ function pickScrollTarget() {
 		return sorted[0]
 	}
 	// 3) 마지막 수단
-	return withSidebarEl || mainEl || null
+	return withSidebarElement || mainElement || null
 }
 
 function handleWithScroll_action() {
-	if (!withSidebarEl) return
+	if (!withSidebarElement) return
 	idleRun_action(() => {
-		activeEl = withSidebarEl
-		scrollTop = withSidebarEl.scrollTop
-		scrollHeight = withSidebarEl.scrollHeight
-		clientHeight = withSidebarEl.clientHeight
+		activeElement = withSidebarElement
+		scrollTop = withSidebarElement.scrollTop
+		scrollHeight = withSidebarElement.scrollHeight
+		clientHeight = withSidebarElement.clientHeight
 	})
 }
 
 function handleMainScroll_action() {
-	if (!mainEl) return
+	if (!mainElement) return
 	idleRun_action(() => {
-		activeEl = mainEl
-		scrollTop = mainEl.scrollTop
-		scrollHeight = mainEl.scrollHeight
-		clientHeight = mainEl.clientHeight
+		activeElement = mainElement
+		scrollTop = mainElement.scrollTop
+		scrollHeight = mainElement.scrollHeight
+		clientHeight = mainElement.clientHeight
 	})
 }
 
 // 초기 활성 스크롤 타겟 설정
 $effect(() => {
 	idleRun_action(() => {
-		if (!activeEl) {
-			if (isScrollable(withSidebarEl)) {
-				activeEl = withSidebarEl
-				setupScrollElement_action(withSidebarEl)
-			} else if (isScrollable(mainEl)) {
-				activeEl = mainEl
-				setupScrollElement_action(mainEl)
+		if (!activeElement) {
+			if (isScrollable(withSidebarElement)) {
+				activeElement = withSidebarElement
+				setupScrollElement_action(withSidebarElement)
+			} else if (isScrollable(mainElement)) {
+				activeElement = mainElement
+				setupScrollElement_action(mainElement)
 			}
 		}
 	})
@@ -239,52 +239,52 @@ afterNavigate(() => {
 
 	// 4. (만약 특정 요소가 스크롤 컨테이너라면) 그 요소의 스크롤을 맨 위로 올립니다.
 	// scrollableContainer가 마운트된 후에만 실행되도록 확인합니다.
-	if (withSidebarEl) {
-		withSidebarEl.scrollTop = 0
+	if (withSidebarElement) {
+		withSidebarElement.scrollTop = 0
 	}
-	if (mainEl) {
-		mainEl.scrollTop = 0
+	if (mainElement) {
+		mainElement.scrollTop = 0
 	}
 	scrollTop = 0
 
-	activeEl = pickScrollTarget()
-	setupScrollElement_action(activeEl)
+	activeElement = pickScrollTarget()
+	setupScrollElement_action(activeElement)
 })
 
 onMount(() => {
 	const ro = new ResizeObserver(() => {
 		idleRun_action(() => {
-			activeEl = pickScrollTarget()
+			activeElement = pickScrollTarget()
 		})
 	})
-	if (withSidebarEl) ro.observe(withSidebarEl)
-	if (mainEl) ro.observe(mainEl)
+	if (withSidebarElement) ro.observe(withSidebarElement)
+	if (mainElement) ro.observe(mainElement)
 	queueMicrotask(() => {
-		activeEl = pickScrollTarget()
-		setupScrollElement_action(activeEl)
+		activeElement = pickScrollTarget()
+		setupScrollElement_action(activeElement)
 	})
 	return () => {
 		ro.disconnect()
 	}
 })
 
-function getActiveEl() {
-	return activeEl || pickScrollTarget()
+function getActiveElement() {
+	return activeElement || pickScrollTarget()
 }
 
 function scrollToTop_action() {
-	const el = getActiveEl()
-	if (el && typeof el.scrollTo === 'function') {
-		el.scrollTo({ behavior: 'smooth', top: 0 })
+	const element = getActiveElement()
+	if (element && typeof element.scrollTo === 'function') {
+		element.scrollTo({ behavior: 'smooth', top: 0 })
 		return
 	}
 	window.scrollTo({ behavior: 'smooth', top: 0 })
 }
 
 function scrollToBottom_action() {
-	const el = getActiveEl()
-	if (el && typeof el.scrollTo === 'function') {
-		el.scrollTo({ behavior: 'smooth', top: el.scrollHeight })
+	const element = getActiveElement()
+	if (element && typeof element.scrollTo === 'function') {
+		element.scrollTo({ behavior: 'smooth', top: element.scrollHeight })
 	}
 }
 
@@ -389,16 +389,16 @@ let jsonLd = $derived({
 {/snippet}
 
 <BaseLayout appName={APP_NAME}>
-	{#if activeEl === withSidebarEl}
+	{#if activeElement === withSidebarElement}
 		{@render scrollButtons()}
 	{/if}
 
-	<div bind:this={withSidebarEl} class="with-sidebar boxed" onscroll={handleWithScroll_action}>
-		{#if activeEl === mainEl}
+	<div bind:this={withSidebarElement} class="with-sidebar boxed" onscroll={handleWithScroll_action}>
+		{#if activeElement === mainElement}
 			{@render scrollButtons()}
 		{/if}
 
-		<div bind:this={mainEl} class="main boxed" onscroll={handleMainScroll_action}>
+		<div bind:this={mainElement} class="main boxed" onscroll={handleMainScroll_action}>
 			<div class="long-text">
 				{@render children()}
 			</div>
@@ -435,7 +435,7 @@ let jsonLd = $derived({
 					style:flex-direction="column"
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-size: min(calc(100cqi / 6.2), 5em); font-weight: 900;" href="/">
+					<Link style="font-size: min(calc(100cqi / 6.4), 5em); font-weight: 900;" href="/">
 						{URL}
 					</Link>
 				</div>
