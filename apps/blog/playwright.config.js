@@ -6,7 +6,7 @@ const portNumber = 5002
 const config = defineConfig({
 	...defaultConfigObject,
 	webServer: {
-		command: `pnpm run preview --port ${portNumber}`,
+		command: `pnpm run preview`,
 		env: {
 			NODE_ENV: 'production',
 		},

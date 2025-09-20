@@ -430,11 +430,11 @@ jobs:
         run: |
           # 1) .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
           awk -F= '!/^#/ && NF { gsub(/^[ \t]+|[ \t]+$/,"",$1); print $1 }' .env.public .env.private \
-            | sort -u > .env.keys
+            | sort -u > .env.masklist
 
           # 1.5) DOTENV_PRIVATE_KEY_PRIVATE 키도 목록에 포함(중복 방지)
           if [ -n "$DOTENV_PRIVATE_KEY_PRIVATE" ]; then
-            grep -qxF DOTENV_PRIVATE_KEY_PRIVATE .env.keys || echo DOTENV_PRIVATE_KEY_PRIVATE >> .env.keys
+            grep -qxF DOTENV_PRIVATE_KEY_PRIVATE .env.masklist || echo DOTENV_PRIVATE_KEY_PRIVATE >> .env.masklist
           fi
 
           # 2) dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
@@ -450,8 +450,9 @@ jobs:
               else
                 printf "%s=%s\n" "$key" "$v" >> "$GITHUB_ENV"
               fi
-            done < .env.keys
+            done < .env.masklist
           '
+          rm -f .env.masklist || true
         env:
           DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 
@@ -687,11 +688,11 @@ jobs:
         run: |
           # 1) .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
           awk -F= '!/^#/ && NF { gsub(/^[ \t]+|[ \t]+$/,"",$1); print $1 }' .env.public .env.private \
-            | sort -u > .env.keys
+            | sort -u > .env.masklist
 
           # 1.5) DOTENV_PRIVATE_KEY_PRIVATE 키도 목록에 포함(중복 방지)
           if [ -n "$DOTENV_PRIVATE_KEY_PRIVATE" ]; then
-            grep -qxF DOTENV_PRIVATE_KEY_PRIVATE .env.keys || echo DOTENV_PRIVATE_KEY_PRIVATE >> .env.keys
+            grep -qxF DOTENV_PRIVATE_KEY_PRIVATE .env.masklist || echo DOTENV_PRIVATE_KEY_PRIVATE >> .env.masklist
           fi
 
           # 2) dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
@@ -707,8 +708,9 @@ jobs:
               else
                 printf "%s=%s\n" "$key" "$v" >> "$GITHUB_ENV"
               fi
-            done < .env.keys
+            done < .env.masklist
           '
+          rm -f .env.masklist || true
         env:
           DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 

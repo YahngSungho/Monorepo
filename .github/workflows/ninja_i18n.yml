@@ -1,7 +1,7 @@
 name: Ninja i18n action
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - labeled
       - synchronize
