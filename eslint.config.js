@@ -99,12 +99,6 @@ const baseRules = {
 	'object-curly-spacing': 'off',
 	'optimize-regex/optimize-regex': 'warn',
 	'prefer-const': 'off',
-	'prettier/prettier': [
-		'off',
-		{
-			endOfLine: 'auto',
-		},
-	],
 	'promise/always-return': 'off',
 	'ramda/always-simplification': 'warn',
 	'ramda/any-pass-simplification': 'warn',
@@ -620,6 +614,12 @@ export default defineFlatConfig([
 			'import/prefer-default-export': 'off',
 			'import/unambiguous': 'off',
 			'jsonc/no-comments': 'off',
+			'prettier/prettier': [
+				'off',
+				{
+					endOfLine: 'auto',
+				},
+			],
 		},
 	},
 ])
