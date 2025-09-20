@@ -9,8 +9,8 @@ permissions:
   contents: read # Necessary to access the repo content
 
 jobs:
-  check-lint:
-    name: Check & Lint
+  main:
+    name: Main
     timeout-minutes: 15
     runs-on: ubuntu-latest
 

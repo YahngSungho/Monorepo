@@ -12,8 +12,8 @@ permissions:
   contents: read # Necessary to access the repo content
 
 jobs:
-  deploy:
-    name: Deploy
+  main:
+    name: Main
     timeout-minutes: 15
     runs-on: ubuntu-latest
     if: >

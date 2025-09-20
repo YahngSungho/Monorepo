@@ -10,8 +10,8 @@ permissions:
   contents: write # 읽기 권한에서 쓰기 권한으로 변경
 
 jobs:
-  ninja-i18n:
-    name: Ninja i18n - GitHub Lint Action
+  main:
+    name: Main
     runs-on: ubuntu-latest
 
     steps:
