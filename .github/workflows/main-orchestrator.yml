@@ -4,7 +4,6 @@ on:
   pull_request:
     types:
       - labeled
-      - synchronize
 
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
@@ -12,13 +11,14 @@ permissions:
   issues: read # Necessary to read issue commentsds
   contents: write
   checks: write
+  actions: read
 
 jobs:
   check-secrets:
     name: Check Secrets
     if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
     secrets: inherit
-    uses: ./.github/workflows/check-secrets.yml
+    uses: ./.github/workflows/check_secrets.yml
 
   link-check:
     name: Link Check
