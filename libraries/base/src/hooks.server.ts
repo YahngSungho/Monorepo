@@ -74,7 +74,10 @@ export const paraglideHandle: Handle = async ({ event, resolve }) => {
 		const ct = response.headers.get('content-type') || ''
 		const cc = response.headers.get('cache-control') || ''
 		const baseCacheable =
-			response.status === 200 && /text\/html/i.test(ct) && !/no-store|private/i.test(cc) && !hasAuthHeader
+			response.status === 200 &&
+			/text\/html/i.test(ct) &&
+			!/no-store|private/i.test(cc) &&
+			!hasAuthHeader
 
 		if (!baseCacheable) return response
 
@@ -93,7 +96,9 @@ export const paraglideHandle: Handle = async ({ event, resolve }) => {
 				status: response.status,
 				statusText: response.statusText,
 			})
-			event.platform?.ctx?.waitUntil((cache as any).put(cacheKeyUrl as any, toCacheFirst.clone() as any))
+			event.platform?.ctx?.waitUntil(
+				(cache as any).put(cacheKeyUrl as any, toCacheFirst.clone() as any),
+			)
 			// 사용자에게는 원본(쿠키 설정 포함) 반환
 			return response
 		}
