@@ -22,8 +22,7 @@ jobs:
     if: |
       (github.event.action == 'labeled' && github.event.label.name == 'restart') ||
       (github.event.action != 'labeled' &&
-        !contains(github.event.pull_request.labels.*.name, 'mutation-finished') &&
-        !contains(github.event.head_commit.message, '[automated-mutation]'))
+        !contains(github.event.pull_request.labels.*.name, 'mutation-finished'))
     steps:
       - name: 자동 병합 활성화 시 취소 시도
         uses: actions/github-script@v7
@@ -107,7 +106,7 @@ jobs:
             projects:
               - 'apps/**'
               - 'libraries/**'
-              - 'storybook/**'
+              - 'tools/**'
             images:
               - '**/**.jpg'
               - '**/**.jpeg'
@@ -187,14 +186,14 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Package.json 변경사항 확인 2 & .patch 파일 저장
-        run: git diff > package-json-changes.patch
+        run: git diff > package-json.patch
 
       - name: 패치 아티팩트 업로드
         if: steps.check_package_json_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: package-json-changes-patch
-          path: package-json-changes.patch
+          name: package-json-patch
+          path: package-json.patch
 
   update-backend-config:
     runs-on: ubuntu-latest
@@ -221,7 +220,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "package-json-changes-patch"
+              artifact => artifact.name === "package-json-patch"
             );
             return !!matchArtifact;
 
@@ -229,21 +228,21 @@ jobs:
         if: steps.check_package_json_patch_backend.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: package-json-changes-patch
+          name: package-json-patch
           path: .
 
       - name: package-json 패치 적용 (backend)
         if: steps.check_package_json_patch_backend.outputs.result == 'true'
         run: |
-          if [ -f package-json-changes.patch ]; then
+          if [ -f package-json.patch ]; then
             echo "package.json 포맷팅 변경사항 패치를 적용합니다 (backend)..."
-            if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check package-json.patch; then
+              echo "::error::package-json.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply package-json-changes.patch
+            git apply package-json.patch
             echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다 (backend)."
-            rm package-json-changes.patch
+            rm package-json.patch
           else
             echo "적용할 package.json 포맷팅 변경사항이 없습니다 (backend)."
           fi
@@ -292,10 +291,10 @@ jobs:
 
           if ! git diff --quiet --staged HEAD --exit-code; then
             echo "백엔드 구성 변경사항이 있습니다. 패치 생성 중..."
-            git diff --staged HEAD > backend-config-changes.patch
+            git diff --staged HEAD > backend-config.patch
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "backend-config-changes.patch 내용:"
-            cat backend-config-changes.patch || true
+            echo "backend-config.patch 내용:"
+            cat backend-config.patch || true
           else
             echo "백엔드 구성 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -305,8 +304,8 @@ jobs:
         if: steps.check_backend_config_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: backend-config-changes-patch
-          path: backend-config-changes.patch
+          name: backend-config-patch
+          path: backend-config.patch
 
   fix-markdown:
     runs-on: ubuntu-latest
@@ -333,7 +332,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "package-json-changes-patch"
+              artifact => artifact.name === "package-json-patch"
             );
             return !!matchArtifact;
 
@@ -341,22 +340,22 @@ jobs:
         if: steps.check_package_json_patch_fix_md.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: package-json-changes-patch
+          name: package-json-patch
           path: .
 
       # 2. package-json 패치 적용
       - name: package-json 패치 적용
         if: steps.check_package_json_patch_fix_md.outputs.result == 'true'
         run: |
-          if [ -f package-json-changes.patch ]; then
+          if [ -f package-json.patch ]; then
             echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
-            if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check package-json.patch; then
+              echo "::error::package-json.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply package-json-changes.patch
+            git apply package-json.patch
             echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
-            rm package-json-changes.patch
+            rm package-json.patch
           else
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
@@ -373,7 +372,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-changes-patch"
+              artifact => artifact.name === "backend-config-patch"
             );
             return !!matchArtifact;
 
@@ -381,21 +380,21 @@ jobs:
         if: steps.check_backend_patch_fix_md.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-changes-patch
+          name: backend-config-patch
           path: .
 
       - name: backend-config 패치 적용
         if: steps.check_backend_patch_fix_md.outputs.result == 'true'
         run: |
-          if [ -f backend-config-changes.patch ]; then
+          if [ -f backend-config.patch ]; then
             echo "backend-config 변경사항 패치를 적용합니다..."
-            if ! git apply --check backend-config-changes.patch; then
-              echo "::error::backend-config-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check backend-config.patch; then
+              echo "::error::backend-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply backend-config-changes.patch
+            git apply backend-config.patch
             echo "backend-config 패치가 성공적으로 적용되었습니다."
-            rm backend-config-changes.patch
+            rm backend-config.patch
           else
             echo "적용할 backend-config 변경사항이 없습니다."
           fi
@@ -546,9 +545,9 @@ jobs:
           if ! git diff --quiet --staged HEAD --exit-code; then # 임시 커밋과 비교
             echo "markdown 변경사항이 있습니다."
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            git diff --staged HEAD > markdown-changes.patch # 임시 커밋과의 스테이징된 차이 저장
-            echo "markdown-changes.patch 내용:"
-            cat markdown-changes.patch
+            git diff --staged HEAD > markdown.patch # 임시 커밋과의 스테이징된 차이 저장
+            echo "markdown.patch 내용:"
+            cat markdown.patch
           else
             echo "markdown 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -560,8 +559,8 @@ jobs:
         if: steps.check_markdown_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: markdown-changes-patch
-          path: markdown-changes.patch
+          name: markdown-patch
+          path: markdown.patch
 
   update-translation:
     runs-on: ubuntu-latest
@@ -622,7 +621,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "package-json-changes-patch"
+              artifact => artifact.name === "package-json-patch"
             );
             return !!matchArtifact;
 
@@ -630,25 +629,25 @@ jobs:
         if: steps.check_package_json_patch.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: package-json-changes-patch
+          name: package-json-patch
           path: .
 
       # 2. package-json 패치 적용
       - name: package-json 패치 적용
         if: steps.check_package_json_patch.outputs.result == 'true'
         run: |
-          if [ -f package-json-changes.patch ]; then
+          if [ -f package-json.patch ]; then
             echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
             # --check 옵션으로 적용 가능 여부 확인
-            if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check package-json.patch; then
+              echo "::error::package-json.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               # 여기서 실패 처리 또는 경고 후 진행 결정 필요 (우선 실패 처리)
               exit 1
             fi
             # 실제 패치 적용
-            git apply package-json-changes.patch
+            git apply package-json.patch
             echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
-            rm package-json-changes.patch
+            rm package-json.patch
           else
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
@@ -665,7 +664,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-changes-patch"
+              artifact => artifact.name === "backend-config-patch"
             );
             return !!matchArtifact;
 
@@ -673,22 +672,22 @@ jobs:
         if: steps.check_backend_patch_translate.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-changes-patch
+          name: backend-config-patch
           path: .
 
       # 2.6. backend-config 패치 적용
       - name: backend-config 패치 적용
         if: steps.check_backend_patch_translate.outputs.result == 'true'
         run: |
-          if [ -f backend-config-changes.patch ]; then
+          if [ -f backend-config.patch ]; then
             echo "backend-config 변경사항 패치를 적용합니다..."
-            if ! git apply --check backend-config-changes.patch; then
-              echo "::error::backend-config-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check backend-config.patch; then
+              echo "::error::backend-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply backend-config-changes.patch
+            git apply backend-config.patch
             echo "backend-config 패치가 성공적으로 적용되었습니다."
-            rm backend-config-changes.patch
+            rm backend-config.patch
           else
             echo "적용할 backend-config 변경사항이 없습니다."
           fi
@@ -705,7 +704,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "markdown-changes-patch"
+              artifact => artifact.name === "markdown-patch"
             );
             return !!matchArtifact;
 
@@ -713,22 +712,22 @@ jobs:
         if: steps.check_markdown_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: markdown-changes-patch
+          name: markdown-patch
           path: .
 
       # 6. markdown patch 적용
       - name: 마크다운 패치 적용
         if: steps.check_markdown_patch_lint_format.outputs.result == 'true'
         run: |
-          if [ -f markdown-changes.patch ]; then
+          if [ -f markdown.patch ]; then
             echo "markdown 변경사항 패치를 적용합니다..."
-            if ! git apply --check markdown-changes.patch; then
-              echo "::error::markdown-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check markdown.patch; then
+              echo "::error::markdown.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply markdown-changes.patch
+            git apply markdown.patch
             echo "markdown 패치가 성공적으로 적용되었습니다."
-            rm markdown-changes.patch
+            rm markdown.patch
           else
             echo "적용할 markdown 변경사항이 없습니다."
           fi
@@ -842,9 +841,9 @@ jobs:
           if ! git diff --quiet --staged HEAD --exit-code; then # 스테이징된 변경사항과 임시 커밋(HEAD) 비교
             echo "번역 변경사항이 있습니다 (새 파일 포함)."
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            git diff --staged HEAD > translation-changes.patch # 스테이징된 변경사항을 패치로 저장
-            echo "translation-changes.patch 내용:"
-            cat translation-changes.patch # 생성된 패치 내용 출력
+            git diff --staged HEAD > translation.patch # 스테이징된 변경사항을 패치로 저장
+            echo "translation.patch 내용:"
+            cat translation.patch # 생성된 패치 내용 출력
           else
             echo "번역 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -856,8 +855,8 @@ jobs:
         if: steps.check_translation_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: translation-changes-patch
-          path: translation-changes.patch
+          name: translation-patch
+          path: translation.patch
 
   lint-format:
     runs-on: ubuntu-latest
@@ -920,7 +919,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "package-json-changes-patch"
+              artifact => artifact.name === "package-json-patch"
             );
             return !!matchArtifact;
 
@@ -928,22 +927,22 @@ jobs:
         if: steps.check_package_json_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: package-json-changes-patch
+          name: package-json-patch
           path: .
 
       # 2. package-json 패치 적용
       - name: package-json 패치 적용
         if: steps.check_package_json_patch_lint_format.outputs.result == 'true'
         run: |
-          if [ -f package-json-changes.patch ]; then
+          if [ -f package-json.patch ]; then
             echo "package.json 포맷팅 변경사항 패치를 적용합니다..."
-            if ! git apply --check package-json-changes.patch; then
-              echo "::error::package-json-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check package-json.patch; then
+              echo "::error::package-json.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply package-json-changes.patch
+            git apply package-json.patch
             echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다."
-            rm package-json-changes.patch
+            rm package-json.patch
           else
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
@@ -960,7 +959,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-changes-patch"
+              artifact => artifact.name === "backend-config-patch"
             );
             return !!matchArtifact;
 
@@ -968,22 +967,22 @@ jobs:
         if: steps.check_backend_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-changes-patch
+          name: backend-config-patch
           path: .
 
       # 2.6. backend-config 패치 적용 (lint-format)
       - name: 백엔드 패치 적용
         if: steps.check_backend_patch_lint_format.outputs.result == 'true'
         run: |
-          if [ -f backend-config-changes.patch ]; then
+          if [ -f backend-config.patch ]; then
             echo "백엔드 변경사항 패치를 적용합니다..."
-            if ! git apply --check backend-config-changes.patch; then
-              echo "::error::backend-config-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check backend-config.patch; then
+              echo "::error::backend-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply backend-config-changes.patch
+            git apply backend-config.patch
             echo "백엔드 패치가 성공적으로 적용되었습니다."
-            rm backend-config-changes.patch
+            rm backend-config.patch
           else
             echo "적용할 백엔드 변경사항이 없습니다."
           fi
@@ -1000,7 +999,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "markdown-changes-patch"
+              artifact => artifact.name === "markdown-patch"
             );
             return !!matchArtifact;
 
@@ -1008,22 +1007,22 @@ jobs:
         if: steps.check_markdown_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: markdown-changes-patch
+          name: markdown-patch
           path: .
 
       # 6. markdown patch 적용
       - name: 마크다운 패치 적용
         if: steps.check_markdown_patch_lint_format.outputs.result == 'true'
         run: |
-          if [ -f markdown-changes.patch ]; then
+          if [ -f markdown.patch ]; then
             echo "markdown 변경사항 패치를 적용합니다..."
-            if ! git apply --check markdown-changes.patch; then
-              echo "::error::markdown-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check markdown.patch; then
+              echo "::error::markdown.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply markdown-changes.patch
+            git apply markdown.patch
             echo "markdown 패치가 성공적으로 적용되었습니다."
-            rm markdown-changes.patch
+            rm markdown.patch
           else
             echo "적용할 markdown 변경사항이 없습니다."
           fi
@@ -1040,7 +1039,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "translation-changes-patch"
+              artifact => artifact.name === "translation-patch"
             );
             return !!matchArtifact;
 
@@ -1048,22 +1047,22 @@ jobs:
         if: steps.check_translation_patch_lint_format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: translation-changes-patch
+          name: translation-patch
           path: .
 
       # 4. translation patch 적용
       - name: 번역 패치 적용
         if: steps.check_translation_patch_lint_format.outputs.result == 'true'
         run: |
-          if [ -f translation-changes.patch ]; then
+          if [ -f translation.patch ]; then
             echo "번역 변경사항 패치를 적용합니다..."
-            if ! git apply --check translation-changes.patch; then
-              echo "::error::translation-changes.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+            if ! git apply --check translation.patch; then
+              echo "::error::translation.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply translation-changes.patch
+            git apply translation.patch
             echo "번역 패치가 성공적으로 적용되었습니다."
-            rm translation-changes.patch
+            rm translation.patch
           else
             echo "적용할 번역 변경사항이 없습니다."
           fi
@@ -1203,8 +1202,8 @@ jobs:
           printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore || true
         continue-on-error: true
 
-      # changes.patch 생성 (임시 커밋 기준) 및 변경 유무 출력
-      - name: 린트/포맷 변경사항 확인 및 changes.patch 생성
+      # lint-format.patch 생성 (임시 커밋 기준) 및 변경 유무 출력
+      - name: 린트/포맷 변경사항 확인 및 lint-format.patch 생성
         id: create_changes_patch
         run: |
           echo "--- HEAD ($(git rev-parse HEAD)) 기준으로 린트/포맷 변경사항 패치 생성 중 ---"
@@ -1216,11 +1215,11 @@ jobs:
           git status --short
 
           if ! git diff --quiet --staged HEAD --exit-code; then # 임시 커밋과 비교
-            echo "린트 및 포맷팅 후 변경사항 감지됨. changes.patch 생성 중..."
-            git diff --staged HEAD > changes.patch
+            echo "린트 및 포맷팅 후 변경사항 감지됨. lint-format.patch 생성 중..."
+            git diff --staged HEAD > lint-format.patch
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "changes.patch 내용:"
-            cat changes.patch
+            echo "lint-format.patch 내용:"
+            cat lint-format.patch
           else
             echo "린트 및 포맷팅 후 추가 변경사항 없음."
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -1228,12 +1227,12 @@ jobs:
           echo "--- 린트/포맷 변경사항 패치 생성 완료 ---"
 
       # patch 파일을 artifact로 업로드 (변경사항 있을 때만)
-      - name: changes.patch 아티팩트 업로드
+      - name: lint-format.patch 아티팩트 업로드
         uses: actions/upload-artifact@v4
         if: steps.create_changes_patch.outputs.has_changes == 'true'
         with:
-          name: changes-patch
-          path: changes.patch
+          name: lint-format-patch
+          path: lint-format.patch
 
   compress-images:
     runs-on: ubuntu-latest
@@ -1263,7 +1262,7 @@ jobs:
           else
             echo "이미지 압축 후 변경사항이 감지되었습니다."
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            git diff > images-changes.patch
+            git diff > images.patch
           fi
 
       # 추가: patch 파일을 artifact로 업로드
@@ -1271,8 +1270,8 @@ jobs:
         if: steps.check_image_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: images-changes-patch
-          path: images-changes.patch
+          name: images-lint-format-patch
+          path: images.patch
 
   push-and-labeled:
     needs:
@@ -1309,7 +1308,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "images-changes-patch"
+              artifact => artifact.name === "images-lint-format-patch"
             );
             return !!matchArtifact;
 
@@ -1317,7 +1316,7 @@ jobs:
         if: steps.check_images_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: images-changes-patch
+          name: images-lint-format-patch
           path: .
 
       - name: package-json 패치 존재 여부 확인
@@ -1330,13 +1329,13 @@ jobs:
               repo: context.repo.repo,
               run_id: context.runId
             });
-            return !!artifacts.data.artifacts.find(artifact => artifact.name === "package-json-changes-patch");
+            return !!artifacts.data.artifacts.find(artifact => artifact.name === "package-json-patch");
 
       - name: package-json 패치 아티팩트 다운로드
         if: steps.check_package_json_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: package-json-changes-patch
+          name: package-json-patch
           path: .
 
       - name: 백엔드 패치 존재 여부 확인
@@ -1350,7 +1349,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-changes-patch"
+              artifact => artifact.name === "backend-config-patch"
             );
             return !!matchArtifact;
 
@@ -1358,7 +1357,7 @@ jobs:
         if: steps.check_backend_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-changes-patch
+          name: backend-config-patch
           path: .
 
       - name: 마크다운 패치 존재 여부 확인
@@ -1372,7 +1371,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "markdown-changes-patch"
+              artifact => artifact.name === "markdown-patch"
             );
             return !!matchArtifact;
 
@@ -1380,7 +1379,7 @@ jobs:
         if: steps.check_markdown_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: markdown-changes-patch
+          name: markdown-patch
           path: .
 
       - name: 번역 패치 존재 여부 확인
@@ -1394,7 +1393,7 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "translation-changes-patch"
+              artifact => artifact.name === "translation-patch"
             );
             return !!matchArtifact;
 
@@ -1402,10 +1401,10 @@ jobs:
         if: steps.check_translation_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: translation-changes-patch
+          name: translation-patch
           path: .
 
-      - name: changes.patch (린트/포맷) 존재 여부 확인
+      - name: lint-format.patch (린트/포맷) 존재 여부 확인
         id: check_changes_patch_push
         uses: actions/github-script@v7
         with:
@@ -1416,15 +1415,15 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "changes-patch"
+              artifact => artifact.name === "lint-format-patch"
             );
             return !!matchArtifact;
 
-      - name: changes.patch (린트/포맷) 아티팩트 다운로드
+      - name: lint-format.patch (린트/포맷) 아티팩트 다운로드
         if: steps.check_changes_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: changes-patch
+          name: lint-format-patch
           path: .
 
       # 추가: 다운로드한 patch 적용
@@ -1457,12 +1456,12 @@ jobs:
             echo "------------------------"
           }
 
-          apply_patch "images-changes.patch" "이미지 압축"
-          apply_patch "package-json-changes.patch" "Package.json 포맷팅"
-          apply_patch "backend-config-changes.patch" "백엔드 구성"
-          apply_patch "markdown-changes.patch" "마크다운 포맷팅"
-          apply_patch "translation-changes.patch" "번역"
-          apply_patch "changes.patch" "코드 포맷팅 (린트/스타일)"
+          apply_patch "images.patch" "이미지 압축"
+          apply_patch "package-json.patch" "Package.json 포맷팅"
+          apply_patch "backend-config.patch" "백엔드 구성"
+          apply_patch "markdown.patch" "마크다운 포맷팅"
+          apply_patch "translation.patch" "번역"
+          apply_patch "lint-format.patch" "코드 포맷팅 (린트/스타일)"
 
           echo "--- 모든 패치 적용 완료 ---"
           echo "모든 패치 적용 후 최종 상태 (스테이징 전):"
