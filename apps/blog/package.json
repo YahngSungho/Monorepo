@@ -11,7 +11,7 @@
 		"check:watch": "pnpm run check -- --watch",
 		"deploy": "pnpm run deploy:app && pnpm run deploy:env-vars",
 		"deploy:app": "dotenvx run -f ../../.env.public -f ../../.env.private -- wrangler deploy",
-		"deploy:env-vars": "pnpm run generate-env && wrangler secret bulk .dev.vars",
+		"deploy:env-vars": "pnpm run generate-env && dotenvx run -f ../../.env.public -- wrangler secret bulk .dev.vars",
 		"dev": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite dev --port 5002",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",
