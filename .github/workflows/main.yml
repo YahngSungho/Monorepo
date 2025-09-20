@@ -49,3 +49,5 @@ jobs:
     needs: [check-lint, build-tests]
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
+    with:
+      called_by_main: true
