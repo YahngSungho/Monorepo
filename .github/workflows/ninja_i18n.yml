@@ -1,4 +1,4 @@
-name: Ninja i18n action
+name: Ninja i18n Action
 
 on:
   pull_request:
