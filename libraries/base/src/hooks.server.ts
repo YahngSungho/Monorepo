@@ -80,7 +80,7 @@ export const paraglideHandle: Handle = async ({ event, resolve }) => {
 
 		// 캐시 헤더 준비
 		const headers = new Headers(response.headers)
-		headers.set('cache-control', 'public, s-maxage=3600, max-age=0') // 1h 엣지 TTL, 브라우저 0
+		headers.set('cache-control', 'public, s-maxage=31536000, max-age=0') // 1h 엣지 TTL, 브라우저 0
 
 		// Set-Cookie가 있는 최초 응답도 캐시에 저장하되, 저장본에서는 Set-Cookie 제거
 		const hasSetCookie = headers.has('set-cookie')
