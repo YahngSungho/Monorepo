@@ -1,3 +1,5 @@
+**/wrangler.jsonc
+
 # Package Managers
 package-lock.json
 pnpm-lock.yaml
