@@ -17,12 +17,7 @@ let toggleSize = $derived.by(() => {
 })
 </script>
 
-<div
-	style="
-align-items: end;
-"
-	class="attached-group pyramid-wrap"
->
+<div style:align-items="end" class="attached-group pyramid-wrap">
 	<LanguageSelector
 		buttonClass={css`
 			border-radius: 0 !important;
@@ -31,5 +26,7 @@ align-items: end;
 		{setLocale}
 		{size}
 	/>
-	<ThemeToggle size={toggleSize} />
+	<div>
+		<ThemeToggle size={toggleSize} />
+	</div>
 </div>

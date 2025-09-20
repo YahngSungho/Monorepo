@@ -19,5 +19,8 @@
   },
   "placement": {
     "mode": "smart"
+  },
+  "version_metadata": {
+    "binding": "VERSION_METADATA"
   }
 }
