@@ -1,19 +1,7 @@
 name: Deploy
 
 on:
-  # 1. 다른 워크플로우가 성공적으로 완료되었을 때 트리거
-  workflow_run:
-    workflows:
-      - Check & Lint
-      - Build & Tests
-      - Check Secrets
-      - Auto Merge
-      - Ninja i18n Action
-      - Link Check
-    types:
-      - completed
-
-  # 2. Pull Request에 라벨이 붙었을 때 트리거
+  workflow_call: {}
   pull_request:
     types:
       - labeled
@@ -25,12 +13,12 @@ permissions:
   contents: read # Necessary to access the repo content
 
 jobs:
-  check-lint:
+  deploy:
     name: Deploy
     timeout-minutes: 15
     runs-on: ubuntu-latest
     if: >
-      (github.event_name == 'workflow_run' && (github.event.workflow_run.conclusion == 'success') || (github.event.workflow_run.conclusion == 'skipped)) ||
+      (github.event_name == 'workflow_call') ||
       (github.event_name == 'pull_request' && github.event.action == 'labeled' && github.event.label.name == 'force-deploy')
 
     steps:

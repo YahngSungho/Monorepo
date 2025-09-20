@@ -1,0 +1,44 @@
+name: Main
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - synchronize
+
+# explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
+permissions:
+  pull-requests: write # Necessary to comment on PRs
+  issues: read # Necessary to read issue commentsds
+  contents: read # Necessary to access the repo content
+
+jobs:
+  check-secrets:
+    name: Check Secrets
+    if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
+    uses: ./.github/workflows/check_secrets.yml
+
+  link-check:
+    name: Link Check
+    if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
+    uses: ./.github/workflows/link_check.yml
+
+  ninja-i18n:
+    name: Ninja i18n Action
+    if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
+    uses: ./.github/workflows/ninja_i18n.yml
+
+  check-lint:
+    name: Check & Lint
+    needs: [check-secrets, link-check, ninja-i18n]
+    uses: ./.github/workflows/check_lint.yml
+
+  build-tests:
+    name: Build & Tests
+    needs: [check-secrets, link-check, ninja-i18n]
+    uses: ./.github/workflows/build_tests.yml
+
+  deploy:
+    name: Deploy
+    needs: [check-lint, build-tests]
+    uses: ./.github/workflows/deploy.yml
