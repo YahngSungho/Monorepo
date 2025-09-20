@@ -27,10 +27,6 @@
 		"build": {
 			"dependsOn": ["^build"]
 		},
-		"@library/backends#build": {
-			"dependsOn": ["^build"],
-			"cache": false
-		},
 		"@library/paraglide#build": {
 			"dependsOn": ["^build", "change-base-locale:en"],
 			"outputs": ["paraglide-output/**"]

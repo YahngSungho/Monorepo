@@ -10,8 +10,8 @@ permissions:
   contents: read # Necessary to access the repo content
 
 jobs:
-  build:
-    name: Linkspector
+  main:
+    name: Main
     runs-on: ubuntu-latest
 
     steps:

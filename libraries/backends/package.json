@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"build": "pnpm run build:cloudflare",
 		"build:cloudflare": "pnpm run build:wrangler && pnpm run build:headers",
+		"build:external": "pnpm run build:cloudflare",
 		"build:headers": "node ./src/cloudflare/_headers/generateHeaders.js",
 		"build:wrangler": "node ./src/cloudflare/wrangler.jsonc/generateWranglers.js",
 		"depCheck": "npx depcheck",
