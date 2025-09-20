@@ -6,7 +6,6 @@ import defaultConfig from './eslint.config.js'
 const overrideConfig = [
 	{
 		rules: {
-			'unicorn/prevent-abbreviations': 'warn',
 			'functional/readonly-type': 'warn',
 			'svelte/first-attribute-linebreak': 'warn',
 			'svelte/html-closing-bracket-new-line': 'warn',
@@ -51,6 +50,7 @@ const overrideConfig = [
 			'svelte/sort-attributes': 'warn',
 			'svelte/spaced-html-comment': 'warn',
 			'unicorn/prefer-set-has': 'warn',
+			'unicorn/prevent-abbreviations': 'warn',
 		},
 	},
 	{

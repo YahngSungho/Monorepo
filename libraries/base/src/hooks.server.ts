@@ -1,10 +1,11 @@
-import { dev } from '$app/environment'
 import { env_public } from '@library/library-bottom/env-objects/public'
 import { paraglideMiddleware } from '@library/paraglide/server.js'
 import { handleErrorWithSentry, initCloudflareSentryHandle, sentryHandle } from '@sentry/sveltekit'
 import type { Handle } from '@sveltejs/kit'
 
-const isDev = env_public.dev
+import { dev } from '$app/environment'
+
+const isDevelopment = env_public.dev
 
 // 에러 핸들러 정의
 const myErrorHandler = ({ error, event }) => {
@@ -24,61 +25,65 @@ function getDir(locale: string) {
 }
 
 export const paraglideHandle: Handle = async ({ event, resolve }) => {
-  return paraglideMiddleware(event.request, async ({ request: localizedRequest, locale }) => {
+	return paraglideMiddleware(event.request, async ({ locale, request: localizedRequest }) => {
 		event.request = localizedRequest
 
-    if (dev) {
-      return resolve(event, {
-        transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
-      })
-    }
+		if (dev) {
+			return resolve(event, {
+				transformPageChunk: ({ html }) =>
+					html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
+			})
+		}
 
-    const cache = event.platform?.caches?.default
-    if (!cache || localizedRequest.method !== 'GET') {
-      return resolve(event, {
-        transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
-      })
-    }
+		const cache = event.platform?.caches?.default
+		if (!cache || localizedRequest.method !== 'GET') {
+			return resolve(event, {
+				transformPageChunk: ({ html }) =>
+					html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
+			})
+		}
 
-    // 최종(캐노니컬) URL을 캐시 키로 사용
-    const canonicalUrl = new URL(localizedRequest.url, event.url)
+		// 최종(캐노니컬) URL을 캐시 키로 사용
+		const canonicalUrl = new URL(localizedRequest.url, event.url)
 
-    // 개인정보 유출 방지
-    const hasAuth = localizedRequest.headers.has('authorization') || localizedRequest.headers.has('cookie')
-    if (!hasAuth) {
-      const cached = await cache.match(canonicalUrl)
-      if (cached) return cached
-    }
+		// 개인정보 유출 방지
+		const hasAuth =
+			localizedRequest.headers.has('authorization') || localizedRequest.headers.has('cookie')
+		if (!hasAuth) {
+			const cached = await cache.match(canonicalUrl)
+			if (cached) return cached
+		}
 
-    const response = await resolve(event, {
-      transformPageChunk: ({ html }) => html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
-    })
+		const response = await resolve(event, {
+			transformPageChunk: ({ html }) =>
+				html.replace('%lang%', locale).replace('%dir%', getDir(locale)),
+		})
 
-    // HTML만 캐시
-    const ct = response.headers.get('content-type') || ''
-    const cc = response.headers.get('cache-control') || ''
-    const cacheable =
-      response.status === 200 &&
-      /text\/html/i.test(ct) &&
-      !response.headers.has('set-cookie') &&
-      !/no-store|private/i.test(cc) &&
-      !hasAuth
+		// HTML만 캐시
+		const ct = response.headers.get('content-type') || ''
+		const cc = response.headers.get('cache-control') || ''
+		const cacheable =
+			response.status === 200 &&
+			/text\/html/i.test(ct) &&
+			!response.headers.has('set-cookie') &&
+			!/no-store|private/i.test(cc) &&
+			!hasAuth
 
-    if (!cacheable) return response
+		if (!cacheable) return response
 
-    const headers = new Headers(response.headers)
-    headers.set('cache-control', 'public, s-maxage=3600, max-age=0') // 1h 엣지 TTL, 브라우저 0
+		const headers = new Headers(response.headers)
+		headers.set('cache-control', 'public, s-maxage=3600, max-age=0') // 1h 엣지 TTL, 브라우저 0
 
-    const toCache = new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers,
-    })
+		const toCache = new Response(response.body, {
+			headers,
+			status: response.status,
+			statusText: response.statusText,
+		})
 
-    // 타입 충돌 회피: Cloudflare Response 타입과 DOM Response 타입 불일치 방지
-    event.platform?.ctx?.waitUntil((cache as any).put(canonicalUrl as any, toCache.clone() as any))
-    return toCache
-  })
+		// 타입 충돌 회피: Cloudflare Response 타입과 DOM Response 타입 불일치 방지
+		event.platform?.ctx?.waitUntil((cache as any).put(canonicalUrl as any, toCache.clone() as any))
+		return toCache
+	})
 }
 
 // 개발자 도구 등에서 발생하는 불필요한 요청을 무시하기 위한 핸들러
@@ -98,7 +103,7 @@ export const defaultHandlers: Handle[] = [
 	// Sentry 초기화 핸들러 (가장 먼저 실행되도록 하는 것이 일반적)
 	initCloudflareSentryHandle({
 		dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',
-		tracesSampleRate: isDev ? 0 : 0.1,
+		tracesSampleRate: isDevelopment ? 0 : 0.1,
 	}),
 	// Sentry 요청 핸들러
 	sentryHandle(),

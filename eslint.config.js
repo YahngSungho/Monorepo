@@ -615,11 +615,11 @@ export default defineFlatConfig([
 			'import/unambiguous': 'off',
 			'jsonc/no-comments': 'off',
 			'prettier/prettier': [
-		'off',
-		{
-			endOfLine: 'auto',
-		},
-	],
+				'off',
+				{
+					endOfLine: 'auto',
+				},
+			],
 		},
 	},
 ])
