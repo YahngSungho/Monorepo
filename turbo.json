@@ -28,16 +28,23 @@
 			"dependsOn": ["^build"]
 		},
 		"@library/backends#build": {
+			"dependsOn": ["^build"],
 			"cache": false
 		},
 		"@library/paraglide#build": {
-			"outputs": ["paraglide-output/**", "project.inlang/**"]
+			"dependsOn": ["^build", "change-base-locale:en"],
+			"outputs": ["paraglide-output/**"]
 		},
 		"@tool/storybook#build": {
+			"dependsOn": ["^build"],
 			"outputs": ["storybook-static/**"]
 		},
-		"change-base-locale:en": {},
-		"change-base-locale:ko": {},
+		"change-base-locale:en": {
+			"cache": false
+		},
+		"change-base-locale:ko": {
+			"cache": false
+		},
 		"check": {
 			"dependsOn": ["transit"]
 		},
@@ -48,7 +55,9 @@
 		"eslint": {},
 		"eslint-fix": {},
 		"format": {},
-		"playwright-report": {},
+		"playwright-report": {
+			"cache": false
+		},
 		"stylelint": {},
 		"stylelint-fix": {},
 		"test:e2e": {

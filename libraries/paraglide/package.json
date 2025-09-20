@@ -7,7 +7,7 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"build": "pnpm run change-base-locale:en && pnpm run compile",
+		"build": "pnpm run compile",
 		"change-base-locale:en": "node ./src/changeBaseLocaleToEn.js",
 		"change-base-locale:ko": "node ./src/changeBaseLocaleToKo.js",
 		"check-no-missing-explanations": "node ./src/checkNoMissingExplanations.js",
