@@ -17,35 +17,35 @@ jobs:
   check-secrets:
     name: Check Secrets
     if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
-    secrets: inherit
     uses: ./.github/workflows/check-secrets.yml
+    secrets: inherit
 
   link-check:
     name: Link Check
     if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
-    secrets: inherit
     uses: ./.github/workflows/link-check.yml
+    secrets: inherit
 
   ninja-i18n:
     name: Ninja i18n Action
     if: github.event.action == 'labeled' && github.event.label.name == 'mutation-finished'
-    secrets: inherit
     uses: ./.github/workflows/ninja-i18n.yml
+    secrets: inherit
 
   check-lint:
     name: Check & Lint
     needs: [check-secrets, link-check, ninja-i18n]
-    secrets: inherit
     uses: ./.github/workflows/check-lint.yml
+    secrets: inherit
 
   build-tests:
     name: Build & Tests
     needs: [check-secrets, link-check, ninja-i18n]
-    secrets: inherit
     uses: ./.github/workflows/build-tests.yml
+    secrets: inherit
 
   deploy:
     name: Deploy
     needs: [check-lint, build-tests]
-    secrets: inherit
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
