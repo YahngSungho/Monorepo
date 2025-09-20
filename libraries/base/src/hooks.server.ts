@@ -48,7 +48,7 @@ export const defaultHandlers: Handle[] = [
 	// Sentry 초기화 핸들러 (가장 먼저 실행되도록 하는 것이 일반적)
 	initCloudflareSentryHandle({
 		dsn: 'https://f92c54aa251145c5a82fe3f56d688c24@o4508958888034304.ingest.us.sentry.io/4508958894129152',
-		tracesSampleRate: isDev ? 0.1 : 0,
+		tracesSampleRate: isDev ? 0 : 0.1,
 	}),
 	// Sentry 요청 핸들러
 	sentryHandle(),

@@ -72,7 +72,7 @@ jobs:
         id: playwright-page-cache
         with:
           path: storybook/.cache
-          key: ${{ runner.os }}-playwright-page-cache-${{ hashFiles('storybook/e2e/**') }}
+          key: ${{ runner.os }}-playwright-page-cache-${{ hashFiles('tools/storybook/e2e/**') }}
           restore-keys: |
             ${{ runner.os }}-playwright-page-cache-
 
