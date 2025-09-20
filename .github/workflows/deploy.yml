@@ -1,0 +1,110 @@
+name: Deploy
+
+on:
+  # 1. 다른 워크플로우가 성공적으로 완료되었을 때 트리거
+  workflow_run:
+    workflows:
+      - Check & Lint
+      - Build & Tests
+      - Check Secrets
+      - Auto Merge
+      - Ninja i18n Action
+      - Link Check
+    types:
+      - completed
+
+  # 2. Pull Request에 라벨이 붙었을 때 트리거
+  pull_request:
+    types:
+      - labeled
+
+
+permissions:
+  pull-requests: write # Necessary to comment on PRs
+  issues: read # Necessary to read issue comments
+  contents: read # Necessary to access the repo content
+
+jobs:
+  check-lint:
+    name: Deploy
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    if: >
+      (github.event_name == 'workflow_run' && (github.event.workflow_run.conclusion == 'success') || (github.event.workflow_run.conclusion == 'skipped)) ||
+      (github.event_name == 'pull_request' && github.event.action == 'labeled' && github.event.label.name == 'force-deploy')
+
+    steps:
+      # 저장소 코드 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          token: ${{ secrets.TOKEN1 }}
+
+      - name: Install dotenvx
+        run: curl -sfS https://dotenvx.sh/install.sh | sh
+
+      - name: Load and mask only .env keys into job env
+        shell: bash
+        run: |
+          # 1) .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
+          awk -F= '!/^#/ && NF { gsub(/^[ \t]+|[ \t]+$/,"",$1); print $1 }' .env.public .env.private \
+            | sort -u > .env.masklist
+
+          # 1.5) DOTENV_PRIVATE_KEY_PRIVATE 키도 목록에 포함(중복 방지)
+          if [ -n "$DOTENV_PRIVATE_KEY_PRIVATE" ]; then
+            grep -qxF DOTENV_PRIVATE_KEY_PRIVATE .env.masklist || echo DOTENV_PRIVATE_KEY_PRIVATE >> .env.masklist
+          fi
+
+          # 2) dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
+          dotenvx run -f .env.private -f .env.public -- bash -lc '
+            while IFS= read -r key; do
+              v="${!key}"
+              [ -z "$v" ] && continue
+              echo "::add-mask::$v"
+              if printf "%s" "$v" | grep -q $'\''\n'\''; then
+                echo "$key<<EOF" >> "$GITHUB_ENV"
+                printf "%s\n" "$v" >> "$GITHUB_ENV"
+                echo "EOF" >> "$GITHUB_ENV"
+              else
+                printf "%s=%s\n" "$key" "$v" >> "$GITHUB_ENV"
+              fi
+            done < .env.masklist
+          '
+          rm -f .env.masklist || true
+        env:
+          DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
+
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      # pnpm 설치 (packageManager 버전과 일치)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      # 의존성 설치 최적화
+      - name: Install dependencies
+        run: pnpm install --prefer-offline
+
+      - name: Deploy
+        run: pnpm run deploy
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        with:
+          environment: deployed
