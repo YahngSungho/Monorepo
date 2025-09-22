@@ -16,12 +16,16 @@
 		"VITE_PUBLIC_SUPABASE_ANON_KEY",
 		"SUPABASE_ADMIN_KEY",
 		"PUBLIC_SUPABASE_PUBLISHABLE_KEY",
-		"GITHUB_ACTIONS"
+		"GITHUB_ACTIONS",
+		"CI"
 	],
-	"globalPassThroughEnv": ["CI", "WATCH"],
+	"globalPassThroughEnv": ["WATCH"],
 	"tasks": {
 		"deploy": {
-			"dependsOn": ["build"],
+			"dependsOn": ["^deploy", "build"],
+			"cache": false
+		},
+		"deploy:env-vars": {
 			"cache": false
 		},
 		"build": {
@@ -33,6 +37,12 @@
 		},
 		"@tool/storybook#build": {
 			"dependsOn": ["^build"],
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				"../../*/*/src/**/*.stories.*",
+				"../../apps/*/src/**/*.{js,svelte}",
+				"../../libraries/ui/src/**/*.{js,svelte}"
+			],
 			"outputs": ["storybook-static/**"]
 		},
 		"change-base-locale:en": {

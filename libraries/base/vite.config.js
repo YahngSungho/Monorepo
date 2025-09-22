@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export let currentEnv
-if (process.env.GITHUB_ACTIONS) {
+if (process.env.CI) {
 	currentEnv = 'CI'
 } else if (process.env.NODE_ENV === 'production') {
 	currentEnv = 'build'

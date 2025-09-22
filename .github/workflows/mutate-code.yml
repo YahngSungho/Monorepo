@@ -103,6 +103,7 @@ jobs:
           filters: |
             libraries_backends:
               - 'libraries/backends/**'
+              - '**/wrangler.override.*'
             projects:
               - 'apps/**'
               - 'libraries/**'
