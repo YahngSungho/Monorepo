@@ -45,14 +45,18 @@ const overrideConfig = [
 			],
 			'svelte/prefer-style-directive': 'warn',
 			'svelte/require-store-reactive-access': 'warn',
-			'svelte/shorthand-attribute': ['warn',
+			'svelte/shorthand-attribute': [
+				'warn',
 				{
 					prefer: 'never',
-				}],
-			'svelte/shorthand-directive': ['warn',
+				},
+			],
+			'svelte/shorthand-directive': [
+				'warn',
 				{
 					prefer: 'never',
-				}],
+				},
+			],
 			'svelte/sort-attributes': 'warn',
 			'svelte/spaced-html-comment': 'warn',
 			'unicorn/no-array-push-push': 'warn',

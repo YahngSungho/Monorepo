@@ -52,7 +52,6 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
-	'regexp/no-unused-capturing-group': 'warn',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'arrow-parens': 'off',
@@ -126,6 +125,7 @@ const baseRules = {
 	'ramda/set-simplification': 'warn',
 	'ramda/unless-simplification': 'warn',
 	'ramda/when-simplification': 'warn',
+	'regexp/no-unused-capturing-group': 'warn',
 	semi: ['warn', 'never'],
 	'semi-style': 'off',
 	'sonarjs/call-argument-line': 'off',
