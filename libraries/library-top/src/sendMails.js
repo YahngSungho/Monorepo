@@ -1,3 +1,4 @@
+import { replaceImageTag } from './replaceImageTag'
 import { createMessage_action } from '@library/backends/mailgun'
 import { getFrontmatterObject, removeMDAndTags } from '@library/helpers/markdown'
 import { R } from '@library/helpers/R'
@@ -41,7 +42,7 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
 		throw new Error('title is required')
 	}
 
-	const markdownText_preprocessed = preprocessMarkdownText(markdownText)
+	const markdownText_preprocessed = replaceImageTag(preprocessMarkdownText(markdownText))
 	let result
 	try {
 		result = await createMessage_action(domain)({

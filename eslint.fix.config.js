@@ -6,6 +6,7 @@ import defaultConfig from './eslint.config.js'
 const overrideConfig = [
 	{
 		rules: {
+			'unicorn/no-array-push-push': 'warn',
 			'functional/readonly-type': 'warn',
 			'svelte/first-attribute-linebreak': 'warn',
 			'svelte/html-closing-bracket-new-line': 'warn',

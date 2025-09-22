@@ -52,6 +52,7 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'unicorn/no-array-push-push': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'arrow-parens': 'off',
