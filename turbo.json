@@ -21,8 +21,11 @@
 	],
 	"globalPassThroughEnv": ["WATCH"],
 	"tasks": {
-		"deploy": {
+		"deploy:app": {
 			"dependsOn": ["build"],
+			"cache": false
+		},
+		"deploy:env-vars": {
 			"cache": false
 		},
 		"build": {
