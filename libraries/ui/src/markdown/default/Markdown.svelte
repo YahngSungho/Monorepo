@@ -35,11 +35,12 @@ import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 
+import remarkCustomHeaderId from 'remark-custom-header-id'
+
 let { plugins = [], value } = $props()
 </script>
 
-<div class="boxed">
-	<Markdown
+<Markdown
 		md={removeFrontmatter(value)}
 		plugins={[
 			gfmPlugin(),
@@ -51,6 +52,9 @@ let { plugins = [], value } = $props()
 			},
 			{
 				remarkPlugin: smartypants,
+			},
+			{
+				remarkPlugin: remarkCustomHeaderId,
 			},
 			{
 				renderer: {
@@ -90,4 +94,3 @@ let { plugins = [], value } = $props()
 			...plugins,
 		]}
 	/>
-</div>

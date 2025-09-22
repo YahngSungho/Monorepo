@@ -1,11 +1,9 @@
 <script module>
 import './style.css'
 
-import { removeFrontmatter } from '@library/helpers/markdown'
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
 import { createHighlighterCoreSync } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import langCss from 'shiki/langs/css.mjs'
@@ -39,20 +37,17 @@ const shikiPlugin = {
 
 const addedPlugins = [
 	{
-		rehypePlugin: rehypeRaw,
-	},
-	{
 		renderer: {
 			mermaid: Mermaid,
 		},
 	},
 	{
-		rehypePlugin: rehypeSlug,
-	},
-	{
 		rehypePlugin: [rehypeAutolinkHeadings, { behavior: 'append' }],
 	},
 	shikiPlugin,
+	{
+		rehypePlugin: rehypeRaw,
+	},
 ]
 </script>
 
@@ -78,4 +73,4 @@ $effect(() => {
 })
 </script>
 
-<Markdown plugins={[...addedPlugins, ...plugins]} value={removeFrontmatter(value)} />
+<Markdown plugins={[...addedPlugins, ...plugins]} value={value} />
