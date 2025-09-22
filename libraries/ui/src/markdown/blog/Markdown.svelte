@@ -61,16 +61,16 @@ let mermaidContext = $state({})
 setContext('mermaidSVGObject', mermaidContext)
 
 $effect(() => {
-	const src = mermaidSVGObject ?? {}
+	const source = mermaidSVGObject ?? {}
 	for (const key of Object.keys(mermaidContext)) {
-		if (!(key in src)) {
+		if (!(key in source)) {
 			delete mermaidContext[key]
 		}
 	}
-	for (const key in src) {
-		mermaidContext[key] = src[key]
+	for (const key in source) {
+		mermaidContext[key] = source[key]
 	}
 })
 </script>
 
-<Markdown plugins={[...addedPlugins, ...plugins]} value={value} />
+<Markdown plugins={[...addedPlugins, ...plugins]} {value} />

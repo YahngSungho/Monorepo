@@ -52,9 +52,9 @@ export async function getMermaidSVGObject(markdownText) {
 			containerStyle: { fontSize: '18px' },
 		})
 
-		for (let i = 0; i < uniqueValues.length; i++) {
-			const key = `${theme}:${hashKeys[i]}`
-			const item = results[i]
+		for (let index = 0; index < uniqueValues.length; index++) {
+			const key = `${theme}:${hashKeys[index]}`
+			const item = results[index]
 			let svg = ''
 			/** @type {any} */
 			const itemAny = item

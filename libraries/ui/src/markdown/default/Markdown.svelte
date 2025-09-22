@@ -4,6 +4,7 @@ import './style.css'
 import { removeFrontmatter } from '@library/helpers/markdown'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
+import remarkCustomHeaderId from 'remark-custom-header-id'
 import smartypants from 'remark-smartypants'
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
@@ -35,62 +36,60 @@ import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 
-import remarkCustomHeaderId from 'remark-custom-header-id'
-
 let { plugins = [], value } = $props()
 </script>
 
 <Markdown
-		md={removeFrontmatter(value)}
-		plugins={[
-			gfmPlugin(),
-			{
-				remarkPlugin: remarkCjkFriendly,
+	md={removeFrontmatter(value)}
+	plugins={[
+		gfmPlugin(),
+		{
+			remarkPlugin: remarkCjkFriendly,
+		},
+		{
+			remarkPlugin: remarkCjkFriendlyGfmStrikethrough,
+		},
+		{
+			remarkPlugin: smartypants,
+		},
+		{
+			remarkPlugin: remarkCustomHeaderId,
+		},
+		{
+			renderer: {
+				Cloudinaryimage: CloudinaryImage,
 			},
-			{
-				remarkPlugin: remarkCjkFriendlyGfmStrikethrough,
+		},
+		{
+			renderer: {
+				// text: Text, <- 안됨
+				a: Link,
+				blockquote: Blockquote,
+				code: InlineCode,
+				del: Delete,
+				em: Emphasis,
+				h1: Heading1,
+				h2: Heading2,
+				h3: Heading3,
+				h4: Heading4,
+				h5: Heading5,
+				h6: Heading6,
+				hr: HorizontalRule,
+				img: Image,
+				li: ListItem,
+				ol: OrderedList,
+				p: Paragraph,
+				pre: CodeBlock,
+				strong: Strong,
+				table: Table,
+				tbody: TableBody,
+				td: TableCell,
+				th: TableHead,
+				thead: TableHeader,
+				tr: TableRow,
+				ul: UnorderedList,
 			},
-			{
-				remarkPlugin: smartypants,
-			},
-			{
-				remarkPlugin: remarkCustomHeaderId,
-			},
-			{
-				renderer: {
-					Cloudinaryimage: CloudinaryImage,
-				},
-			},
-			{
-				renderer: {
-					// text: Text, <- 안됨
-					a: Link,
-					blockquote: Blockquote,
-					code: InlineCode,
-					del: Delete,
-					em: Emphasis,
-					h1: Heading1,
-					h2: Heading2,
-					h3: Heading3,
-					h4: Heading4,
-					h5: Heading5,
-					h6: Heading6,
-					hr: HorizontalRule,
-					img: Image,
-					li: ListItem,
-					ol: OrderedList,
-					p: Paragraph,
-					pre: CodeBlock,
-					strong: Strong,
-					table: Table,
-					tbody: TableBody,
-					td: TableCell,
-					th: TableHead,
-					thead: TableHeader,
-					tr: TableRow,
-					ul: UnorderedList,
-				},
-			},
-			...plugins,
-		]}
-	/>
+		},
+		...plugins,
+	]}
+/>

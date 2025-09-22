@@ -11,10 +11,9 @@ export function removeFrontmatter(string) {
 	return string.trim().replace(/^---.*?---/s, '')
 }
 
-
 export function removeTagsAll(string) {
 	// 입력 문자열에서 모든 태그명 추출 (정규식은 태그명만 가볍게 매칭)
-	const rawMatches = string.matchAll(/<\/?([a-zA-Z][\d:a-z-]*)\b/gi)
+	const rawMatches = string.matchAll(/<\/?([a-z][\d:a-z-]*)\b/gi)
 	const tagNames = []
 	for (const match of rawMatches) {
 		const startIndex = match.index ?? 0
@@ -60,9 +59,12 @@ export function removeMarkdownFormat(string) {
  * @returns {string} 마크다운과 태그 제거된 문자열
  */
 export function removeMDAndTags(string) {
-	return removeMarkdownFormat(removeTagsAll(removeFrontmatter(string)))
-	// eslint-disable-next-line regexp/no-unused-capturing-group
-	.trim().replaceAll(/(\r?\n){2,}/g, '\n')
+	return (
+		removeMarkdownFormat(removeTagsAll(removeFrontmatter(string)))
+			// eslint-disable-next-line regexp/no-unused-capturing-group
+			.trim()
+			.replaceAll(/(\r?\n){2,}/g, '\n')
+	)
 }
 
 /**
@@ -74,7 +76,7 @@ export function getDescriptionFromMD(string) {
 	result = result
 		.replaceAll(/\s/g, ' ') // 여러 공백을 하나로
 		.trim()
-	result = `${result.slice(0, 155)  }...` // 155자로 자르고 말줄임표 추가
+	result = `${result.slice(0, 155)}...` // 155자로 자르고 말줄임표 추가
 
 	return result
 }

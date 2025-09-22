@@ -6,14 +6,14 @@ const ATTR_SRC_REGEX = /\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)')/
 const ATTR_ALT_REGEX = /\balt\s*=\s*(?:"([^"]*)"|'([^']*)')/
 
 export function replaceImageTag(markdownText) {
-/**
- * Replace <Cloudinaryimage ...> tags with Markdown image syntax ![alt](src)
- * - Supports paired and self-closing tags
- * - Case-insensitive tag name match
- * - If src is missing, leaves the original tag unchanged
- * @param {string} markdownText
- * @returns {string}
- */
+	/**
+	 * Replace <Cloudinaryimage ...> tags with Markdown image syntax ![alt](src)
+	 * - Supports paired and self-closing tags
+	 * - Case-insensitive tag name match
+	 * - If src is missing, leaves the original tag unchanged
+	 * @param {string} markdownText
+	 * @returns {string}
+	 */
 	if (typeof markdownText !== 'string') return markdownText
 
 	let resultParts = []
@@ -33,27 +33,27 @@ export function replaceImageTag(markdownText) {
 		const isSelfClosing = /\/\s*>$/.test(openTagText)
 		// Extract attributes text without using regex replace (to satisfy linter rule)
 		const lowerOpen = openTagText.toLowerCase()
-		const nameIdx = lowerOpen.indexOf('cloudinaryimage')
-		let attrsText = ''
-		if (nameIdx !== -1) {
-			const afterNameIdx = nameIdx + 'cloudinaryimage'.length
-			attrsText = openTagText.slice(afterNameIdx, -1) // drop closing '>'
+		const nameIndex = lowerOpen.indexOf('cloudinaryimage')
+		let attributesText = ''
+		if (nameIndex !== -1) {
+			const afterNameIndex = nameIndex + 'cloudinaryimage'.length
+			attributesText = openTagText.slice(afterNameIndex, -1) // drop closing '>'
 			// trim and remove trailing '/'
-			attrsText = attrsText.trim()
-			if (attrsText.endsWith('/')) {
-				attrsText = attrsText.slice(0, -1).trim()
+			attributesText = attributesText.trim()
+			if (attributesText.endsWith('/')) {
+				attributesText = attributesText.slice(0, -1).trim()
 			}
 		}
 
-		const srcMatch = ATTR_SRC_REGEX.exec(attrsText)
-		if (!srcMatch) {
+		const sourceMatch = ATTR_SRC_REGEX.exec(attributesText)
+		if (!sourceMatch) {
 			openRe.lastIndex = endOfOpen + 1
 			continue
 		}
-		const altMatch = ATTR_ALT_REGEX.exec(attrsText)
-		const src = srcMatch[1] || srcMatch[2] || ''
+		const altMatch = ATTR_ALT_REGEX.exec(attributesText)
+		const source = sourceMatch[1] || sourceMatch[2] || ''
 		const alt = (altMatch && (altMatch[1] || altMatch[2])) || ''
-		const replacement = `![${alt}](${src})`
+		const replacement = `![${alt}](${source})`
 
 		let replaceEnd
 		if (isSelfClosing) {
@@ -69,8 +69,7 @@ export function replaceImageTag(markdownText) {
 			replaceEnd = closeMatch.index + closeMatch[0].length
 		}
 
-		resultParts.push(markdownText.slice(cursor, start))
-		resultParts.push(replacement)
+		resultParts.push(markdownText.slice(cursor, start), replacement)
 		cursor = replaceEnd
 		openRe.lastIndex = replaceEnd
 	}
