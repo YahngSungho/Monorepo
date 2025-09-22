@@ -54,7 +54,7 @@ let { plugins = [], value } = $props()
 			},
 			{
 				renderer: {
-					cloudinaryimage: CloudinaryImage,
+					Cloudinaryimage: CloudinaryImage,
 				},
 			},
 			{

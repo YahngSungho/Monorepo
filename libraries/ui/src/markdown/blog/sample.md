@@ -10,13 +10,13 @@
 
 ###### 이것은 H6 제목입니다
 
-<mermaid>
+<Mermaid>
 flowchart TD
     A[Start] -- "라벨" --> B{Middle}
     B --> C[End]
 </mermaid>
 
-<mermaid>
+<Mermaid>
 journey
     title My working day
     section Go to work
@@ -28,7 +28,7 @@ journey
       Sit down: 5: Me
 </mermaid>
 
-<mermaid>
+<Mermaid>
 graph TD
     A["testUIComponent 시작"] --> B{"테스트 반복 (iterationCount 만큼)"};
     B -- "반복" --> C["runSingleIteration 실행"];

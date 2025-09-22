@@ -8,10 +8,10 @@ export async function getMermaidSVGObject(markdownText) {
 
 	if (!markdownText || typeof markdownText !== 'string') return result
 
-	// 안전한 수동 파싱으로 <mermaid>...</mermaid> 블록 추출
+	// 안전한 수동 파싱으로 <Mermaid>...</mermaid> 블록 추출
 	const mermaidValues = []
 	// eslint-disable-next-line github/unescaped-html-literal
-	const openTag = '<mermaid>'
+	const openTag = '<Mermaid>'
 	const closeTag = '</mermaid>'
 	let fromIndex = 0
 	while (fromIndex < markdownText.length) {

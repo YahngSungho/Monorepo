@@ -1,4 +1,4 @@
-<mermaid>
+<Mermaid>
 flowchart TD
     A[Start] -- "라벨" --> B{Middle}
     B --> C[End]

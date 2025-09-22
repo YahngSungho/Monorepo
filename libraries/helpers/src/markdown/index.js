@@ -14,7 +14,7 @@ export function removeFrontmatter(string) {
 
 export function removeTagsAll(string) {
 	// 입력 문자열에서 모든 태그명 추출 (정규식은 태그명만 가볍게 매칭)
-	const rawMatches = string.matchAll(/<\/?([a-z][\d:a-z-]*)\b/gi)
+	const rawMatches = string.matchAll(/<\/?([a-zA-Z][\d:a-z-]*)\b/gi)
 	const tagNames = []
 	for (const match of rawMatches) {
 		const startIndex = match.index ?? 0
