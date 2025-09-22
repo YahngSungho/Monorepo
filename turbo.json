@@ -16,9 +16,10 @@
 		"VITE_PUBLIC_SUPABASE_ANON_KEY",
 		"SUPABASE_ADMIN_KEY",
 		"PUBLIC_SUPABASE_PUBLISHABLE_KEY",
-		"GITHUB_ACTIONS"
+		"GITHUB_ACTIONS",
+		"CI"
 	],
-	"globalPassThroughEnv": ["CI", "WATCH"],
+	"globalPassThroughEnv": ["WATCH"],
 	"tasks": {
 		"deploy": {
 			"dependsOn": ["build"],
