@@ -33,6 +33,12 @@
 		},
 		"@tool/storybook#build": {
 			"dependsOn": ["^build"],
+			"inputs": [
+        "$TURBO_DEFAULT$",
+        "../../*/*/src/**/*.stories.*",
+        "../../apps/*/src/**/*.{js,svelte}",
+        "../../libraries/ui/src/**/*.{js,svelte}"
+      ],
 			"outputs": ["storybook-static/**"]
 		},
 		"change-base-locale:en": {

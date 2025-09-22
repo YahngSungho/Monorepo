@@ -1,10 +1,4 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
-	"extends": ["//"],
-	"tasks": {
-		"build": {
-			"inputs": ["$TURBO_DEFAULT$", "!**/*.stories.*"],
-			"outputs": [".svelte-kit/**"]
-		}
-	}
+	"extends": ["/"]
 }
