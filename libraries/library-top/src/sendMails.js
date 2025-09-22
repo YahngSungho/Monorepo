@@ -5,6 +5,8 @@ import { R } from '@library/helpers/R'
 import MarkdownComponent from '@library/ui/markdown-email'
 import { render } from 'svelte/server'
 
+import { replaceImageTag } from './replaceImageTag'
+
 const EMAIL_MINIMAL_STYLES = `
   ul, ol { padding-inline: 1em !important; padding-left: 1em !important; padding-right: 1em !important; }
   pre { padding: 1em; }
@@ -41,7 +43,7 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
 		throw new Error('title is required')
 	}
 
-	const markdownText_preprocessed = preprocessMarkdownText(markdownText)
+	const markdownText_preprocessed = replaceImageTag(preprocessMarkdownText(markdownText))
 	let result
 	try {
 		result = await createMessage_action(domain)({
@@ -70,8 +72,8 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
  * @param {Array<string>} arr - 키로 사용할 값들이 담긴 배열
  * @returns {Object} 변환된 객체
  */
-const toObject = (arr) => {
-	return arr.reduce((accumulator, currentKey) => {
+const toObject = (array) => {
+	return array.reduce((accumulator, currentKey) => {
 		// accumulator는 최종적으로 반환될 객체입니다.
 		// currentKey는 배열의 현재 요소입니다.
 		accumulator[currentKey] = {}

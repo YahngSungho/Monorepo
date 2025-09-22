@@ -1,11 +1,9 @@
 <script module>
 import './style.css'
 
-import { removeFrontmatter } from '@library/helpers/markdown'
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
 import { createHighlighterCoreSync } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import langCss from 'shiki/langs/css.mjs'
@@ -39,20 +37,17 @@ const shikiPlugin = {
 
 const addedPlugins = [
 	{
-		rehypePlugin: rehypeRaw,
-	},
-	{
 		renderer: {
 			mermaid: Mermaid,
 		},
 	},
 	{
-		rehypePlugin: rehypeSlug,
-	},
-	{
 		rehypePlugin: [rehypeAutolinkHeadings, { behavior: 'append' }],
 	},
 	shikiPlugin,
+	{
+		rehypePlugin: rehypeRaw,
+	},
 ]
 </script>
 
@@ -66,16 +61,16 @@ let mermaidContext = $state({})
 setContext('mermaidSVGObject', mermaidContext)
 
 $effect(() => {
-	const src = mermaidSVGObject ?? {}
+	const source = mermaidSVGObject ?? {}
 	for (const key of Object.keys(mermaidContext)) {
-		if (!(key in src)) {
+		if (!(key in source)) {
 			delete mermaidContext[key]
 		}
 	}
-	for (const key in src) {
-		mermaidContext[key] = src[key]
+	for (const key in source) {
+		mermaidContext[key] = source[key]
 	}
 })
 </script>
 
-<Markdown plugins={[...addedPlugins, ...plugins]} value={removeFrontmatter(value)} />
+<Markdown plugins={[...addedPlugins, ...plugins]} {value} />
