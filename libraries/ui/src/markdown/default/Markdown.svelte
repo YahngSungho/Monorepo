@@ -10,7 +10,7 @@ import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
 import Blockquote from './Blockquote.svelte'
-import CloudinaryImage from './CloudinaryImage.svelte'
+import WebImage from './WebImage.svelte'
 import CodeBlock from './CodeBlock.svelte'
 import Delete from './Delete.svelte'
 import Emphasis from './Emphasis.svelte'
@@ -57,7 +57,7 @@ let { plugins = [], value } = $props()
 		},
 		{
 			renderer: {
-				Cloudinaryimage: CloudinaryImage,
+				Web_Image: WebImage,
 			},
 		},
 		{
