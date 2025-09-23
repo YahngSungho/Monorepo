@@ -6,6 +6,11 @@ import defaultConfig from './eslint.config.js'
 const overrideConfig = [
 	{
 		rules: {
+			'array-func/from-map': 'warn',
+'array-func/prefer-array-from': 'warn',
+'array-func/avoid-reverse': 'warn',
+'array-func/prefer-flat-map': 'warn',
+'array-func/prefer-flat': 'warn',
 			'functional/readonly-type': 'warn',
 			'svelte/first-attribute-linebreak': 'warn',
 			'svelte/html-closing-bracket-new-line': 'warn',
