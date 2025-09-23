@@ -24,7 +24,7 @@ const overrideConfig = [
 'unicorn/no-nested-ternary': 'warn',
 'unicorn/no-new-array': 'warn',
 'unicorn/no-new-buffer': 'warn',
-'unicorn/Disallow classes that only have static members': 'warn',
+'unicorn/no-static-only-class': 'warn',
 'unicorn/no-unreadable-array-destructuring': 'warn',
 'unicorn/no-useless-fallback-in-spread': 'warn',
 'unicorn/no-useless-length-check': 'warn',
