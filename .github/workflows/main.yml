@@ -5,6 +5,10 @@ on:
     types:
       - labeled
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 # explicitly configure permissions, in case your GITHUB_TOKEN workflow permissions are set to read-only in repository settings
 permissions:
   pull-requests: write # Necessary to comment on PRs
