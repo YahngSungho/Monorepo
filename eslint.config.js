@@ -77,7 +77,7 @@ const baseRules = {
 'unicorn/no-nested-ternary': 'off',
 'unicorn/no-new-array': 'off',
 'unicorn/no-new-buffer': 'off',
-'unicorn/Disallow classes that only have static members': 'off',
+'unicorn/no-static-only-class': 'off',
 'unicorn/no-unreadable-array-destructuring': 'off',
 'unicorn/no-useless-fallback-in-spread': 'off',
 'unicorn/no-useless-length-check': 'off',
