@@ -7,8 +7,9 @@
 		"GITHUB_ACTIONS",
 		"CI"
 	],
-	"globalPassThroughEnv": ["WATCH",
-"SENTRY_ORG",
+	"globalPassThroughEnv": [
+		"WATCH",
+		"SENTRY_ORG",
 		"SENTRY_PROJECT",
 		"NODE_ENV",
 		"MAILGUN",
@@ -17,7 +18,7 @@
 		"GOOGLE_GENERATIVE_AI_API_KEY",
 		"SENTRY_AUTH_TOKEN",
 		"SUPABASE_ADMIN_KEY"
-],
+	],
 	"tasks": {
 		"deploy": {
 			"dependsOn": ["^deploy", "build"],
