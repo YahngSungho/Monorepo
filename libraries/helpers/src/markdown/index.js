@@ -26,7 +26,7 @@ export function removeTagsAll(string) {
 			}
 		}
 	}
-	const uniqueTagNames = [...new Set(tagNames)]
+	const uniqueTagNames = Array.from(new Set(tagNames))
 
 	return sanitizeHtml(string, {
 		allowedAttributes: {},
