@@ -7,7 +7,7 @@ const overrideConfig = [
 	{
 		rules: {
 			'unicorn/throw-new-error': 'warn',
-'unicorn/catch-error-name': 'warn',
+		'unicorn/catch-error-name': 'warn',
 'unicorn/consistent-assert': 'warn',
 'unicorn/consistent-date-clone': 'warn',
 'unicorn/consistent-destructuring': 'warn',

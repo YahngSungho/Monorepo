@@ -53,7 +53,7 @@ import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
 	'unicorn/new-for-builtins': 'off',
-'unicorn/no-single-promise-in-promise-methods': 'off',
+		'unicorn/no-single-promise-in-promise-methods': 'off',
 'unicorn/no-typeof-undefined': 'off',
 'unicorn/prefer-add-event-listener': 'off',
 'unicorn/prefer-default-parameters': 'off',

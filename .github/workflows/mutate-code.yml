@@ -93,7 +93,6 @@ jobs:
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
       package-json: ${{ steps.filter.outputs.package-json }}
-      projects: ${{ steps.filter.outputs.projects }}
       translation-targets: ${{ steps.filter.outputs.translation-targets }}
     needs: initiate
     steps:
@@ -104,10 +103,6 @@ jobs:
             libraries_backends:
               - 'libraries/backends/**'
               - '**/wrangler.override.*'
-            projects:
-              - 'apps/**'
-              - 'libraries/**'
-              - 'tools/**'
             images:
               - '**/**.jpg'
               - '**/**.jpeg'
@@ -863,7 +858,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [path-filter, fix-package-json, update-translation, fix-markdown, update-backend-config]
     if: |
-      needs.path-filter.outputs.projects == 'true' && !failure() && !cancelled()
+      !failure() && !cancelled()
     env:
       HUSKY: 0
     steps:
