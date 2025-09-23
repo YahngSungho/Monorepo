@@ -1,25 +1,23 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
-	"globalDependencies": [".env", ".env.*", "**/.env", "**/.env.*"],
 	"globalEnv": [
-		"SENTRY_ORG",
-		"SENTRY_PROJECT",
-		"NODE_ENV",
-		"MAILGUN",
-		"MAILGUN_SENDING",
 		"PUBLIC_SUPABASE_URL",
 		"PUBLIC_SUPABASE_ANON_KEY",
-		"OPENAI_API_KEY",
-		"GOOGLE_GENERATIVE_AI_API_KEY",
-		"SENTRY_AUTH_TOKEN",
-		"VITE_PUBLIC_SUPABASE_URL",
-		"VITE_PUBLIC_SUPABASE_ANON_KEY",
-		"SUPABASE_ADMIN_KEY",
 		"PUBLIC_SUPABASE_PUBLISHABLE_KEY",
 		"GITHUB_ACTIONS",
 		"CI"
 	],
-	"globalPassThroughEnv": ["WATCH"],
+	"globalPassThroughEnv": ["WATCH",
+"SENTRY_ORG",
+		"SENTRY_PROJECT",
+		"NODE_ENV",
+		"MAILGUN",
+		"MAILGUN_SENDING",
+		"OPENAI_API_KEY",
+		"GOOGLE_GENERATIVE_AI_API_KEY",
+		"SENTRY_AUTH_TOKEN",
+		"SUPABASE_ADMIN_KEY"
+],
 	"tasks": {
 		"deploy": {
 			"dependsOn": ["^deploy", "build"],
