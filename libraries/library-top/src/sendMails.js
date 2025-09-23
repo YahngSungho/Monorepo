@@ -69,7 +69,7 @@ export const sendMails_base_action = R.curry(async (info, config, content, email
 
 /**
  * 배열을 인자로 받아, 각 요소를 key로, 빈 객체를 value로 가지는 객체를 반환합니다.
- * @param {Array<string>} arr - 키로 사용할 값들이 담긴 배열
+ * @param {Array<string>} arrary - 키로 사용할 값들이 담긴 배열
  * @returns {Object} 변환된 객체
  */
 const toObject = (array) => {

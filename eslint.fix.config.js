@@ -115,7 +115,6 @@ const overrideConfig = [
 			'unicorn/prefer-regexp-test': 'warn',
 			'unicorn/prefer-set-has': 'warn',
 			'unicorn/prefer-set-size': 'warn',
-			'unicorn/prefer-spread': 'warn',
 			'unicorn/prefer-string-replace-all': 'warn',
 			'unicorn/prefer-string-slice': 'warn',
 			'unicorn/prefer-string-trim-start-end': 'warn',
