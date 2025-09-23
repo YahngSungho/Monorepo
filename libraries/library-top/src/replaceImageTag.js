@@ -1,13 +1,13 @@
 /* eslint-disable no-secrets/no-secrets */
 
-const OPEN_TAG_RE = /<\s*cloudinaryimage\b/gi
-const CLOSE_TAG_RE = /<\/\s*cloudinaryimage\s*>/gi
+const OPEN_TAG_RE = /<\s*web_image\b/gi
+const CLOSE_TAG_RE = /<\/\s*web_image\s*>/gi
 const ATTR_SRC_REGEX = /\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)')/
 const ATTR_ALT_REGEX = /\balt\s*=\s*(?:"([^"]*)"|'([^']*)')/
 
 export function replaceImageTag(markdownText) {
 	/**
-	 * Replace <Cloudinaryimage ...> tags with Markdown image syntax ![alt](src)
+	 * Replace <Web_Image ...> tags with Markdown image syntax ![alt](src)
 	 * - Supports paired and self-closing tags
 	 * - Case-insensitive tag name match
 	 * - If src is missing, leaves the original tag unchanged
@@ -33,10 +33,10 @@ export function replaceImageTag(markdownText) {
 		const isSelfClosing = /\/\s*>$/.test(openTagText)
 		// Extract attributes text without using regex replace (to satisfy linter rule)
 		const lowerOpen = openTagText.toLowerCase()
-		const nameIndex = lowerOpen.indexOf('cloudinaryimage')
+		const nameIndex = lowerOpen.indexOf('web_image')
 		let attributesText = ''
 		if (nameIndex !== -1) {
-			const afterNameIndex = nameIndex + 'cloudinaryimage'.length
+			const afterNameIndex = nameIndex + 'web_image'.length
 			attributesText = openTagText.slice(afterNameIndex, -1) // drop closing '>'
 			// trim and remove trailing '/'
 			attributesText = attributesText.trim()
@@ -83,7 +83,7 @@ export function replaceImageTag(markdownText) {
 
 // 	[다른 포스트](/posts/second-post)로 이동하는 링크를 만들 수 있습니다.
 
-// 	<Cloudinaryimage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></Cloudinaryimage>
+// 	<Web_Image alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></Web_Image>
 
 // 	여기에 각주[^1]가 있습니다.
 

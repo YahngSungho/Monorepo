@@ -61,8 +61,8 @@ export function removeMarkdownFormat(string) {
 export function removeMDAndTags(string) {
 	return (
 		removeMarkdownFormat(removeTagsAll(removeFrontmatter(string)))
-			// eslint-disable-next-line regexp/no-unused-capturing-group
 			.trim()
+			// eslint-disable-next-line regexp/no-unused-capturing-group
 			.replaceAll(/(\r?\n){2,}/g, '\n')
 	)
 }

@@ -1,7 +1,7 @@
 <script>
 import { Image } from '@unpic/svelte'
 
-let { src, width, height, alt, ...rest } = $props()
+let { alt, height, src, width, ...rest } = $props()
 </script>
 
 <Image

@@ -10,7 +10,6 @@ import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
 import Blockquote from './Blockquote.svelte'
-import CloudinaryImage from './CloudinaryImage.svelte'
 import CodeBlock from './CodeBlock.svelte'
 import Delete from './Delete.svelte'
 import Emphasis from './Emphasis.svelte'
@@ -35,6 +34,7 @@ import TableHead from './TableHead.svelte'
 import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
+import WebImage from './WebImage.svelte'
 
 let { plugins = [], value } = $props()
 </script>
@@ -57,7 +57,7 @@ let { plugins = [], value } = $props()
 		},
 		{
 			renderer: {
-				Cloudinaryimage: CloudinaryImage,
+				Web_Image: WebImage,
 			},
 		},
 		{
