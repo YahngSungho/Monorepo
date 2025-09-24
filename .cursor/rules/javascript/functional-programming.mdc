@@ -28,7 +28,6 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
    ### MUST-FOLLOW RULES (Data/Calculation/Action separation and minimization)
 
    #### Extract Data from Calculations
-
    - Non-trivial literal Data must not live inside function bodies. Extract to module-level constants (Data).
    - Non-trivial includes:
      - Multi-line template strings
@@ -38,7 +37,6 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
    - Calculations must use only their inputs and module-level Data. No environment access or mutable globals.
 
    #### Move all Calculations out of Actions
-
    - `_action` functions (with side effects) must only orchestrate.
    - Disallow inside `_action`: template construction, `map/filter/reduce`, validation, serialization/parsing, data shaping, complex branching.
    - Allowed inside `_action`: calling pure Calculations and performing boundary (I/O) calls.
@@ -51,10 +49,10 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
    ```js
    // Data
    export const EMAIL_MINIMAL_STYLES = `...`
-
+   
    // Calculation: serialization
    export const toMailgunParams = (payload) => new URLSearchParams(/* ... */)
-
+   
    // Action: boundary call only
    export const createMessage_action = R.curry(async (domain, payload) => {
    	const body = toMailgunParams(payload)
@@ -125,14 +123,14 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-
+  
   const result = R.applyPipe(
   	{ a: 1, b: 2 }, // Argument
   	R.prop('a'), // First Apply
   	R.add(10),
   ) // Second Apply
   // result === 11
-
+  
   // Async pipeline
   const asyncResult = await R.applyPipeAsync(
   	[1, 2, 3], // Argument
@@ -146,12 +144,12 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-
+  
   const transform = R.getPipedFunction(
   	R.filter((x) => x > 2),
   	R.map((x) => x * 10),
   )
-
+  
   const out1 = transform([1, 2, 3, 4]) // [30, 40]
   const out2 = transform([3, 5]) // [30, 50]
   ```
@@ -164,7 +162,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-
+  
   const src = { a: 1, b: 2 }
   const doubled = R.mapObject((value, key) => value * 2)(src)
   // doubled === { a: 2, b: 4 }
@@ -174,7 +172,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-
+  
   const users = { a: 1, b: 2 }
   const withProfiles = await R.mapObjectParallel(async (id, key) => {
   	return await fetch(`/api/profile/${id}`).then((r) => r.json())
@@ -190,7 +188,7 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { create } from '@library/helpers/mutative'
-
+  
   const baseState = { count: 0, items: [] }
   const nextState = create(baseState, (draft) => {
   	draft.count++
@@ -205,9 +203,9 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
 
   ```javascript
   import { R } from '@library/helpers/R'
-
+  
   const numbers = [1, 2, 3, 4, 5]
-
+  
   // Example: Filter numbers greater than 2, then multiply each by 10
   const processNumbers = R.applyPipe(
   	numbers, // Initial data
