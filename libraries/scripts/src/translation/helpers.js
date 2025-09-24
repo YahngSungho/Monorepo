@@ -1,7 +1,11 @@
 import fs from 'node:fs'
 
 import { getAbsolutePath } from '@library/helpers/fs-sync'
-import { generateKeyNumberFunctions, normalizeString, getSimpleHash } from '@library/helpers/functions'
+import {
+	generateKeyNumberFunctions,
+	getSimpleHash,
+	normalizeString,
+} from '@library/helpers/functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
@@ -27,7 +31,7 @@ export function getValidLocales() {
 		import.meta.url,
 		'../../../paraglide/project.inlang/settings.json',
 	)
-	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
+	const settings = JSON.parse(fs.readFileSync(settingPath))
 
 	return settings.locales
 }
@@ -87,7 +91,10 @@ export function calculateInitialTranslationStateByBaseLanguages(
 			const cacheVersionCurrent = getCacheVersionCombinedMessage(combinedMessage)
 			const cacheCurrent = combinedMessages_cached[messageKey]
 			const isMessageChanged = !R.equals(cacheVersionCurrent)(cacheCurrent)
-			console.log('💬 ~ calculateInitialTranslationStateByBaseLanguages ~ isMessageChanged:', isMessageChanged)
+			console.log(
+				'💬 ~ calculateInitialTranslationStateByBaseLanguages ~ isMessageChanged:',
+				isMessageChanged,
+			)
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
@@ -109,7 +116,9 @@ export function calculateInitialTranslationStateByBaseLanguages(
 function getCacheVersionCombinedMessage(combinedMessage) {
 	if (!combinedMessage) return combinedMessage
 
-	const mapped = R.mapObject((value) => (value ? getNewCache_forString(value) : value))(combinedMessage)
+	const mapped = R.mapObject((value) => (value ? getNewCache_forString(value) : value))(
+		combinedMessage,
+	)
 	// 값이 undefined인 키는 제거하여, 키가 없는 것과 동일하게 취급
 	return R.pickBy((v) => v !== undefined)(mapped)
 }
@@ -174,6 +183,10 @@ export function prepareTranslationPayload(languageMessageObject, combinedMessage
  * @param {function} restoreFromNumberKeys - 번호 키를 원래 메시지 키로 변환하는 함수
  * @returns {object} - 번역된 메시지가 통합된 새로운 언어 메시지 정보 객체
  */
+export function getNewCache_forString(string) {
+	return getSimpleHash(normalizeString(string))
+}
+
 export function integrateTranslatedMessages(
 	languageMessageObject,
 	translatedMessages_numbers,
@@ -194,10 +207,6 @@ export function integrateTranslatedMessages(
 		draft.translatedMessages = translatedMessages
 		draft.newMessages = newMessages
 	})
-}
-
-export function getNewCache_forString (string) {
-	return getSimpleHash(normalizeString(string))
 }
 
 /**
