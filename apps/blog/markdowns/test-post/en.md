@@ -2,7 +2,7 @@
 title: 제목 1
 ---
 
-# 마크다운 테스트 문서 {#NDyc25kGredMenpob2a4x}
+# 마크다운 테스트 문서 {#5j0}
 
 [다른 포스트](/posts/second-post)로 이동하는 링크를 만들 수 있습니다.
 
@@ -14,15 +14,15 @@ title: 제목 1
 
 [^1]: 이것은 각주의 내용입니다.
 
-## title {#EYqX98Z27-nwjpNO7P4vo}
+## title {#mnY}
 
-### 이것은 H3 제목입니다 {#7fGali4HTfke3mkx56Hq8}
+### 이것은 H3 제목입니다 {#oim}
 
-#### 이것은 H4 제목입니다 {#xaw7i-ASbbVTFzLAy6oeb}
+#### 이것은 H4 제목입니다 {#dH4}
 
-##### 이것은 H5 제목입니다 {#RuHpXwBEM2pYU0ghD3iGD}
+##### 이것은 H5 제목입니다 {#ZmU}
 
-###### 이것은 H6 제목입니다 {#71VjsWkEa5Y75zhfUA_-z}
+###### 이것은 H6 제목입니다 {#me_}
 
 <Mermaid>
 flowchart TD
@@ -76,14 +76,14 @@ graph TD
     X --> Y["testUIComponent 종료"];
 </Mermaid>
 
-## 2. 텍스트 서식 {#h7sdX98vrkf-Cq2_Biymy}
+## 2. 텍스트 서식 {#Aim}
 
 일반 '텍스트'와 **굵은 텍스트**, _기울임 텍스트_, **_굵은 기울임 텍스트_**를 혼합할 수 있습니다.
 또한 ~~취소선~~도 사용할 수 있습니다.
 
-## 3. 목록 {#DaStWC1Yw6vaEDbkazbyY}
+## 3. 목록 {#9ia}
 
-### 순서 없는 목록 {#I4DD_WF7P31A0-Piyvgff}
+### 순서 없는 목록 {#L2J}
 
 - 항목 1
 - 항목 2
@@ -91,7 +91,7 @@ graph TD
   - 중첩 항목 2.2
 - 항목 3
 
-### 순서 있는 목록 {#B8FZSBlaV5qrsBvRbGaXq}
+### 순서 있는 목록 {#NrV}
 
 1. 첫 번째 항목
 2. 두 번째 항목
@@ -99,21 +99,21 @@ graph TD
    1. 중첩된 항목 3.1
    2. 중첩된 항목 3.2
 
-### 작업 목록 {#R5fW_o0TEMn97s6_4weBy}
+### 작업 목록 {#648}
 
 - [x] 완료된 작업
 
 - [ ] 진행 중인 작업
 - [ ] 아직 시작하지 않은 작업
 
-## 4. 링크 {#pQaN6fT7HjkguYYfAnSyO}
+## 4. 링크 {#1Ql}
 
 [GitHub](https://github.com)에 방문하세요.
-[내부 링크](#title)를 사용하여 문서 내에서 이동할 수 있습니다.
+[내부 링크](#mnY)를 사용하여 문서 내에서 이동할 수 있습니다.
 
-## 5. 이미지 {#XS0BJt9fky4ePjWvZw1bv}
+## 5. 이미지 {#ZxZ}
 
-## 6. 코드 {#kro1mp-caCCpIbFnQPiro}
+## 6. 코드 {#SAt}
 
 인라인 `코드`를 사용할 수 있습니다.
 
@@ -125,14 +125,14 @@ function hello() {
 ```
 
 ```python
-# 파이썬 코드 예시 {#pO5ln63gDYoZbIfcb4yHl}
+# 파이썬 코드 예시 {#AJM}
 def greet(name):
     return f"안녕하세요, {name}님!"
 
 print(greet("사용자"))
 ```
 
-## 7. 인용문 {#JmTBbuinnDAZMob_2t1jn}
+## 7. 인용문 {#aA4}
 
 > 이것은 인용문입니다.
 >
@@ -140,11 +140,11 @@ print(greet("사용자"))
 >
 > > 중첩된 인용문도 가능합니다.
 
-## 8. 수평선 {#I_e-RfN0lT5XDzdma3yK8}
+## 8. 수평선 {#tWq}
 
 ---
 
-## 9. 표 {#KYjpdHUrvbNtYQ2XeeDXq}
+## 9. 표 {#F2d}
 
 | 이름   | 나이 | 직업     |
 | ------ | ---- | -------- |
@@ -159,7 +159,7 @@ print(greet("사용자"))
 | 텍스트       |    텍스트    |       텍스트 |
 | 더 긴 텍스트 | 더 긴 텍스트 | 더 긴 텍스트 |
 
-## 10. 수식 (일부 마크다운 엔진에서 지원) {#nxjdsIEOuh6d52q8cNvPx}
+## 10. 수식 (일부 마크다운 엔진에서 지원) {#rFs}
 
 인라인 수식: $E = mc^2$
 
@@ -169,7 +169,7 @@ $$
 \frac{d}{dx}(e^x) = e^x
 $$
 
-## 11. HTML 요소 포함 {#kMciqJM0KkRijHlCMsbON}
+## 11. HTML 요소 포함 {#SI5}
 
 <details>
 <summary>클릭하여 더 보기</summary>
@@ -180,13 +180,13 @@ $$
 이것은 파란색 텍스트입니다.
 </div>
 
-## 12. 각주 {#OFlcBU88NuBn49hUKoSOe}
+## 12. 각주 {#u0u}
 
 여기에 각주[^2]가 있습니다.
 
 [^2]: 이것은 각주의 내용입니다.
 
-## 13. 정의 목록 {#AsBJkLQLcOng5QLsH0qzO}
+## 13. 정의 목록 {#Olq}
 
 마크다운
 : 텍스트를 HTML로 변환하는 가벼운 마크업 언어
