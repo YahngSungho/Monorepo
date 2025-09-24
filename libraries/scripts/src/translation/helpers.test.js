@@ -2,7 +2,11 @@
 import fs from 'node:fs' // fs 모의 위해 임포트
 
 import { getAbsolutePath } from '@library/helpers/fs-sync' // 경로 헬퍼 모의 위해 임포트
-import { generateKeyNumberFunctions, normalizeString, getSimpleHash } from '@library/helpers/functions'
+import {
+	generateKeyNumberFunctions,
+	getSimpleHash,
+	normalizeString,
+} from '@library/helpers/functions'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -49,9 +53,9 @@ vi.mock('@library/helpers/fs-sync', () => ({
 const mockRestoreSimple = (data) => data
 const mockConvertToNumberSimple = (data) => {
 	const numbered = {}
-	let i = 1
+	let index = 1
 	for (const key in data) {
-		numbered[i++] = data[key]
+		numbered[index++] = data[key]
 	}
 	return numbered
 }
@@ -79,9 +83,9 @@ describe('Translation Helpers', () => {
 			const mockFileContent = JSON.stringify(mockSettings)
 			vi.mocked(fs.readFileSync).mockReturnValue(mockFileContent)
 			const expectedMap = {
-				ko: {},
 				en: {},
 				ja: {},
+				ko: {},
 			}
 
 			// 실행(Act)
@@ -134,22 +138,22 @@ describe('Translation Helpers', () => {
 			// 준비(Arrange)
 			const baseLanguages = ['ko']
 			const messageMap = {
-				ko: { greeting: '안녕하세요', farewell: '안녕히 가세요' },
 				en: { greeting: 'Hello' }, // farewell 누락
 				ja: {}, // 비어 있음
+				ko: { farewell: '안녕히 가세요', greeting: '안녕하세요' },
 			}
 			const explanations = {
 				greeting: '인사말',
 			}
 			const combinedMessages_cached = {
-				greeting: { ko: '안녕하세요_이전', explanation: '인사말_이전' }, // ko, 설명 변경됨
 				extra: { ko: '추가 메시지' }, // 캐시에만 존재
+				greeting: { explanation: '인사말_이전', ko: '안녕하세요_이전' }, // ko, 설명 변경됨
 			}
 			// 계산 로직:
 			// 1. combinedMessages_latest 생성: baseLanguages ('ko') 와 explanations 기반
 			const expectedCombinedMessages_latest = {
-				greeting: { ko: '안녕하세요', explanation: '인사말' },
 				farewell: { ko: '안녕히 가세요' },
+				greeting: { explanation: '인사말', ko: '안녕하세요' },
 			}
 			// 2. initialTargetLanguageMap 생성: baseLanguages 제외하고 value, 빈 missingMessageKeys 추가
 			// 3. missingMessageKeys 계산:
@@ -161,8 +165,8 @@ describe('Translation Helpers', () => {
 			//    - ja: greeting 변경됨 -> 추가. farewell 없음 -> 추가. 결과: ['greeting', 'farewell']
 			// 4. missingMessageKeys 계산 결과를 targetLanguageMap에 추가
 			const expectedTargetLanguageMap = {
-				en: { value: { greeting: 'Hello' }, missingMessageKeys: ['greeting', 'farewell'] },
-				ja: { value: {}, missingMessageKeys: ['greeting', 'farewell'] },
+				en: { missingMessageKeys: ['greeting', 'farewell'], value: { greeting: 'Hello' } },
+				ja: { missingMessageKeys: ['greeting', 'farewell'], value: {} },
 			}
 
 			// 실행(Act)
@@ -179,13 +183,13 @@ describe('Translation Helpers', () => {
 			expect(targetLanguageMap).toEqual(expectedTargetLanguageMap)
 			// 불변성 검증 (입력 객체가 변경되지 않았는지)
 			expect(messageMap).toEqual({
-				ko: { greeting: '안녕하세요', farewell: '안녕히 가세요' },
 				en: { greeting: 'Hello' },
 				ja: {},
+				ko: { farewell: '안녕히 가세요', greeting: '안녕하세요' },
 			})
 			expect(combinedMessages_cached).toEqual({
-				greeting: { ko: '안녕하세요_이전', explanation: '인사말_이전' },
 				extra: { ko: '추가 메시지' },
+				greeting: { explanation: '인사말_이전', ko: '안녕하세요_이전' },
 			})
 		})
 
@@ -248,19 +252,19 @@ describe('Translation Helpers', () => {
 		it('번역된 영어 메시지를 최신 결합 메시지에 올바르게 통합해야 한다', () => {
 			// 준비(Arrange)
 			const combinedMessages_latest = {
-				greeting: { ko: '안녕하세요', explanation: '인사말' },
 				farewell: { ko: '안녕히 가세요' },
+				greeting: { explanation: '인사말', ko: '안녕하세요' },
 			}
 			const englishMessageObject_translated = {
 				newMessages: {
-					greeting: 'Hello',
 					farewell: 'Goodbye',
+					greeting: 'Hello',
 				},
 				// 다른 속성들은 이 함수에서 사용되지 않음
 			}
 			const expectedCombinedMessages = {
-				greeting: { en: 'Hello', ko: '안녕하세요', explanation: '인사말' },
 				farewell: { en: 'Goodbye', ko: '안녕히 가세요' },
+				greeting: { en: 'Hello', explanation: '인사말', ko: '안녕하세요' },
 			}
 
 			// 실행(Act)
@@ -273,8 +277,8 @@ describe('Translation Helpers', () => {
 			expect(result).toEqual(expectedCombinedMessages)
 			// 불변성 확인
 			expect(combinedMessages_latest).toEqual({
-				greeting: { ko: '안녕하세요', explanation: '인사말' },
 				farewell: { ko: '안녕히 가세요' },
+				greeting: { explanation: '인사말', ko: '안녕하세요' },
 			})
 		})
 
@@ -301,8 +305,8 @@ describe('Translation Helpers', () => {
 		it('번역 결과에 없는 키는 combinedMessages_latest에서 제외되어야 한다', () => {
 			// 준비(Arrange)
 			const combinedMessages_latest = {
-				greeting: { ko: '안녕하세요', explanation: '인사말' },
 				farewell: { ko: '안녕히 가세요' },
+				greeting: { explanation: '인사말', ko: '안녕하세요' },
 			}
 			const englishMessageObject_translated = {
 				newMessages: {
@@ -326,8 +330,8 @@ describe('Translation Helpers', () => {
 			// ---> 소스 코드 확인 결과: en: englishMessageObject_translated.newMessages[messageKey] 이므로 없는 키는 en: undefined가 맞음.
 			// ---> 재확인: newMessages에 없는 key는 en에 undefined가 할당됨.
 			const expectedFinal = {
-				greeting: { en: 'Hello', ko: '안녕하세요', explanation: '인사말' },
 				farewell: { en: undefined, ko: '안녕히 가세요' },
+				greeting: { en: 'Hello', explanation: '인사말', ko: '안녕하세요' },
 			}
 
 			// 실행(Act)
@@ -357,24 +361,24 @@ describe('Translation Helpers', () => {
 		it('번역 페이로드와 복원 함수를 올바르게 준비해야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageObject = {
-				value: { msg1: 'old msg1', msg3: 'old msg3' }, // msg1은 missing 이지만 이전 값 존재
 				missingMessageKeys: ['msg1', 'msg2'],
+				value: { msg1: 'old msg1', msg3: 'old msg3' }, // msg1은 missing 이지만 이전 값 존재
 			}
 			const combinedMessages_latest = {
-				msg1: { ko: '메시지1', explanation: '설명1' },
+				msg1: { explanation: '설명1', ko: '메시지1' },
 				msg2: { ko: '메시지2' },
 				msg3: { ko: '메시지3' }, // 이건 missing 아님
 			}
 			const expectedTarget = {
 				// missingMessageKeys 에 해당하는 것들만 combined_latest 에서 가져옴
-				msg1: { ko: '메시지1', explanation: '설명1' },
+				msg1: { explanation: '설명1', ko: '메시지1' },
 				msg2: { ko: '메시지2' },
 			}
 			const expectedNumberedTarget = mockConvertToNumberSimple(expectedTarget)
 			const expectedOlderMessages = ['old msg3'] // missing 아니면서 value에 있는 것만
 
 			// 실행(Act)
-			const { combinedMessages_target_numbers, restoreFromNumberKeys, olderMessages } =
+			const { combinedMessages_target_numbers, olderMessages, restoreFromNumberKeys } =
 				prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 
 			// 검증(Assert)
@@ -388,8 +392,8 @@ describe('Translation Helpers', () => {
 		it('missingMessageKeys가 비어 있을 때 올바르게 처리해야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageObject = {
-				value: { msg1: 'old msg1', msg3: 'old msg3' },
 				missingMessageKeys: [],
+				value: { msg1: 'old msg1', msg3: 'old msg3' },
 			}
 			const combinedMessages_latest = {
 				msg1: { ko: '메시지1' },
@@ -400,7 +404,7 @@ describe('Translation Helpers', () => {
 			const expectedOlderMessages = ['old msg1', 'old msg3'] // missing 키가 없으므로 value의 모든 값이 older
 
 			// 실행(Act)
-			const { combinedMessages_target_numbers, restoreFromNumberKeys, olderMessages } =
+			const { combinedMessages_target_numbers, olderMessages, restoreFromNumberKeys } =
 				prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 
 			// 검증(Assert)
@@ -414,8 +418,8 @@ describe('Translation Helpers', () => {
 		it('languageMessageObject.value가 비어 있을 때 olderMessages가 비어 있어야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageObject = {
-				value: {},
 				missingMessageKeys: ['msg1'],
+				value: {},
 			}
 			const combinedMessages_latest = {
 				msg1: { ko: '메시지1' },
@@ -425,7 +429,7 @@ describe('Translation Helpers', () => {
 			const expectedOlderMessages = [] // value가 비었으므로 older도 비어야 함
 
 			// 실행(Act)
-			const { combinedMessages_target_numbers, restoreFromNumberKeys, olderMessages } =
+			const { combinedMessages_target_numbers, olderMessages, restoreFromNumberKeys } =
 				prepareTranslationPayload(languageMessageObject, combinedMessages_latest)
 
 			// 검증(Assert)
@@ -442,8 +446,8 @@ describe('Translation Helpers', () => {
 		it('번호 매겨진 번역 메시지를 기존 객체에 올바르게 통합하고 불변성을 유지해야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageObject = {
-				value: { msg1: 'old msg1', msg3: 'old msg3' },
 				missingMessageKeys: ['msg1', 'msg2'], // 테스트 자체에는 영향 X
+				value: { msg1: 'old msg1', msg3: 'old msg3' },
 			}
 			const translatedMessages_numbers = {
 				1: 'translated msg1', // key: msg1 가정
@@ -469,8 +473,8 @@ describe('Translation Helpers', () => {
 			}
 			const expectedResultObject = {
 				...languageMessageObject, // 원본 속성 복사
-				translatedMessages: expectedTranslatedMessages,
 				newMessages: expectedNewMessages,
+				translatedMessages: expectedTranslatedMessages,
 			}
 			const originalLanguageMessageObject = structuredClone(languageMessageObject) // 불변성 검증용
 
@@ -495,8 +499,8 @@ describe('Translation Helpers', () => {
 		it('빈 translatedMessages_numbers를 올바르게 처리해야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageObject = {
-				value: { msg1: 'old msg1' },
 				missingMessageKeys: ['msg1'],
+				value: { msg1: 'old msg1' },
 			}
 			const translatedMessages_numbers = {}
 			const mockRestoreFromNumberKeys = vi.fn((numberedData) => ({})) // 빈 객체 반환
@@ -504,8 +508,8 @@ describe('Translation Helpers', () => {
 			const expectedNewMessages = { msg1: 'old msg1' } // 변경 없음
 			const expectedResultObject = {
 				...languageMessageObject,
-				translatedMessages: expectedTranslatedMessages,
 				newMessages: expectedNewMessages,
+				translatedMessages: expectedTranslatedMessages,
 			}
 			const originalLanguageMessageObject = structuredClone(languageMessageObject)
 
@@ -556,19 +560,19 @@ describe('Translation Helpers', () => {
 			// 준비(Arrange)
 			const language = 'en'
 			const languageMessageObject = {
-				value: { key3: 'old val3' },
 				missingMessageKeys: ['key1', 'key2'],
+				value: { key3: 'old val3' },
 			}
 			const dictionary = { wordA: 'defA', wordB: 'defB' }
 			const combinedMessages_latest = {
 				key1: { ko: '키1 값' },
-				key2: { ko: '키2 값', explanation: '설명2' },
+				key2: { explanation: '설명2', ko: '키2 값' },
 				key3: { ko: '키3 값' },
 			}
 			const expectedTarget = {
 				// prepareTranslationPayload 내부에서 계산됨
 				key1: { ko: '키1 값' },
-				key2: { ko: '키2 값', explanation: '설명2' },
+				key2: { explanation: '설명2', ko: '키2 값' },
 			}
 			const expectedNumberedPayload = mockConvertToNumberSimple(expectedTarget) // { 1: {ko...}, 2: {ko...}}
 			const expectedOlderMessages = ['old val3']
@@ -594,20 +598,20 @@ describe('Translation Helpers', () => {
 			}
 			const expectedFinalResult = {
 				...languageMessageObject, // value, missingMessageKeys 유지
-				translatedMessages: expectedRestoredMessages,
-				newMessages: expectedNewMessages,
 				newDictionary: {
 					// 원본 사전과 새 항목 병합
 					...dictionary,
 					...mockApiNewDictionary,
 				},
+				newMessages: expectedNewMessages,
+				translatedMessages: expectedRestoredMessages,
 			}
 			const originalLanguageMessageObject = structuredClone(languageMessageObject) // 불변성 검증용
 
 			// getTranslatedMessages 모의 설정 (Promise 와 올바른 구조 반환)
 			mockGetTranslatedMessages.mockResolvedValue({
-				translatedMessages: mockApiTranslatedMessages,
 				newDictionary: mockApiNewDictionary,
+				translatedMessages: mockApiTranslatedMessages,
 			})
 
 			// 실행(Act)
@@ -647,8 +651,8 @@ describe('Translation Helpers', () => {
 			// 준비(Arrange)
 			const language = 'en'
 			const languageMessageObject = {
-				value: {},
 				missingMessageKeys: ['key1'],
+				value: {},
 			}
 			const dictionary = { wordA: 'defA' }
 			const combinedMessages_latest = {
@@ -692,26 +696,26 @@ describe('Translation Helpers', () => {
 		it('언어 메시지 맵과 설명을 기반으로 새로운 캐시 객체를 올바르게 생성해야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageMaps = {
-				ko: { greeting: '안녕', farewell: '잘가' },
 				en: { greeting: 'Hello' }, // farewell 없음
-				ja: { greeting: 'こんにちは', farewell: 'さようなら' },
+				ja: { farewell: 'さようなら', greeting: 'こんにちは' },
+				ko: { farewell: '잘가', greeting: '안녕' },
 			}
 			const explanations = {
-				greeting: '인사말',
-				farewell: '작별인사',
 				extra: '추가 설명', // 캐시에는 영향 X
+				farewell: '작별인사',
+				greeting: '인사말',
 			}
 			const expectedNewCache = {
-				greeting: {
-					ko: getSimpleHash(normalizeString('안녕')),
-					en: getSimpleHash(normalizeString('Hello')),
-					ja: getSimpleHash(normalizeString('こんにちは')),
-					explanation: getSimpleHash(normalizeString('인사말')),
-				},
 				farewell: {
-					ko: getSimpleHash(normalizeString('잘가')),
-					ja: getSimpleHash(normalizeString('さようなら')),
 					explanation: getSimpleHash(normalizeString('작별인사')),
+					ja: getSimpleHash(normalizeString('さようなら')),
+					ko: getSimpleHash(normalizeString('잘가')),
+				},
+				greeting: {
+					en: getSimpleHash(normalizeString('Hello')),
+					explanation: getSimpleHash(normalizeString('인사말')),
+					ja: getSimpleHash(normalizeString('こんにちは')),
+					ko: getSimpleHash(normalizeString('안녕')),
 				},
 			}
 
@@ -740,14 +744,14 @@ describe('Translation Helpers', () => {
 		it('explanations 객체가 비어 있거나 키에 대한 설명이 없으면 explanation 필드를 추가하지 않아야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageMaps = {
-				ko: { greeting: '안녕' },
 				en: { greeting: 'Hello' },
+				ko: { greeting: '안녕' },
 			}
 			const explanations = {} // 설명 없음
 			const expectedNewCache = {
 				greeting: {
-					ko: getSimpleHash(normalizeString('안녕')),
 					en: getSimpleHash(normalizeString('Hello')),
+					ko: getSimpleHash(normalizeString('안녕')),
 					// explanation 필드 없음
 				},
 			}
@@ -761,11 +765,14 @@ describe('Translation Helpers', () => {
 			// --- 설명이 일부만 있는 경우 ---
 			const explanationsPartial = { farewell: '작별인사' }
 			const languageMessageMapsPartial = {
-				ko: { greeting: '안녕', farewell: '잘가' },
+				ko: { farewell: '잘가', greeting: '안녕' },
 			}
 			const expectedNewCachePartial = {
+				farewell: {
+					explanation: getSimpleHash(normalizeString('작별인사')),
+					ko: getSimpleHash(normalizeString('잘가')),
+				}, // 설명 있음
 				greeting: { ko: getSimpleHash(normalizeString('안녕')) }, // 설명 없음
-				farewell: { ko: getSimpleHash(normalizeString('잘가')), explanation: getSimpleHash(normalizeString('작별인사')) }, // 설명 있음
 			}
 			const newCachePartial = getNewCache(languageMessageMapsPartial, explanationsPartial)
 			expect(newCachePartial).toEqual(expectedNewCachePartial)
@@ -775,12 +782,15 @@ describe('Translation Helpers', () => {
 		it('단일 언어만 있는 경우에도 올바르게 동작해야 한다', () => {
 			// 준비(Arrange)
 			const languageMessageMaps = {
-				ko: { greeting: '안녕', farewell: '잘가' },
+				ko: { farewell: '잘가', greeting: '안녕' },
 			}
 			const explanations = { greeting: '인사말' }
 			const expectedNewCache = {
-				greeting: { ko: getSimpleHash(normalizeString('안녕')), explanation: getSimpleHash(normalizeString('인사말')) },
 				farewell: { ko: getSimpleHash(normalizeString('잘가')) },
+				greeting: {
+					explanation: getSimpleHash(normalizeString('인사말')),
+					ko: getSimpleHash(normalizeString('안녕')),
+				},
 			}
 
 			// 실행(Act)
