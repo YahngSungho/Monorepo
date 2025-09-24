@@ -24,6 +24,7 @@
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"translate": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/scripts/translation-scripts.js",
+		"fix-markdown-text": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/scripts/fix-markdown-text.js",
 		"type-sync": "svelte-kit sync",
 		"preview": "pnpm run generate-env && wrangler dev --port 5002",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"

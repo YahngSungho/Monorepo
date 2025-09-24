@@ -8,7 +8,9 @@ import {
 	getFiles,
 	getTranslatedLanguageMap_action,
 } from '../translation/markdown/translation.js'
-import { saveFiles_action } from './saveFiles_action.js'
+import { saveFiles_action } from './saveFiles.js'
+
+export { fixMarkdownText_action } from './fixMarkdownText.js'
 
 // dummy function for test
 async function getTranslatedMessages_forTest(
@@ -27,9 +29,7 @@ async function getTranslatedMessages_forTest(
 	}
 }
 
-const baseLocales = ['ko', 'en']
-
-export async function translationScript_action(projectName, rootPath, helperPath) {
+export async function translationScript_action(projectName, baseLocales, rootPath, helperPath) {
 	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
 
 	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, baseLocales)
