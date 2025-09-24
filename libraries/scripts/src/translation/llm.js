@@ -50,14 +50,15 @@ export const generateTranslation_paraglide = async (
 	// Paraglide 변형 객체 (매칭 또는 복수형)에 대한 기본 스키마
 	const ParaglideVariantSchema = z
 		.object({
-			match: z.record(z.string(), z.string()), // match는 필수
 			declarations: z.array(z.string()).optional(), // declarations는 선택적
+			match: z.record(z.string(), z.string()), // match는 필수
 			selectors: z.array(z.string()).optional(), // selectors는 선택적
 		})
 		.passthrough() // 다른 잠재적 키 허용 (유연성 위해)
 
 	// 스키마 정의
 	const schema = z.object({
+		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 		translatedMessages: z
 			.record(z.string(), z.union([z.string(), ParaglideVariantSchema]))
 			.refine(validateNumbers(targetMessages), {
@@ -65,7 +66,6 @@ export const generateTranslation_paraglide = async (
 					"TranslatedMessages keys must be sequential positive integer strings starting from '1'",
 				// path: ['translatedMessages'] // 필요시 에러 경로 지정
 			}),
-		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
 	const object = await generateObjectWithRetry_flashModel(cacheForParaglide, schema, target)
@@ -97,12 +97,12 @@ export const generateTranslation_markdown = async (
 
 	// 스키마 정의
 	const schema = z.object({
+		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 		translatedMessages: z.record(z.string(), z.string()).refine(validateNumbers(targetMessages), {
 			message:
 				"TranslatedMessages keys must be sequential positive integer strings starting from '1'",
 			// path: ['translatedMessages'] // 필요시 에러 경로 지정
 		}),
-		newDictionary: z.record(z.string(), z.string()), // 키: 원본 용어, 값: 번역된 용어
 	})
 
 	const object = await generateObjectWithRetry_flashModel(cacheForMarkdown, schema, target)

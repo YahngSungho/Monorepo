@@ -60,7 +60,7 @@ export async function getFiles() {
 			dictFiles[`${language}.json`] ? R.omit(['$schema'])(dictFiles[`${language}.json`]) : {}
 	}
 
-	return { languageMessageMap, dictPerLanguage, explanations, cache }
+	return { cache, dictPerLanguage, explanations, languageMessageMap }
 }
 
 // const dictPerLanguage_forTest = {
