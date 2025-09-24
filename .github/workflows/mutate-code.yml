@@ -204,7 +204,7 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
-      # 1. package-json 패치 다운로드/적용 (fix-package-json 산출물 연동)
+      # package-json 패치 다운로드/적용 (fix-package-json 산출물 연동)
       - name: package-json 패치 존재 여부 확인 (backend)
         id: check_package-json_patch_backend
         uses: actions/github-script@v7
@@ -316,7 +316,7 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0
 
-      # 1. package-json 패치 다운로드
+      # package-json 패치 다운로드
       - name: package-json 패치 존재 여부 확인
         id: check_package-json_patch_fix_md
         uses: actions/github-script@v7
@@ -339,7 +339,7 @@ jobs:
           name: package-json-patch
           path: .
 
-      # 2. package-json 패치 적용
+      # package-json 패치 적용
       - name: package-json 패치 적용
         if: steps.check_package-json_patch_fix_md.outputs.result == 'true'
         run: |
@@ -356,7 +356,7 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-      # 2.5. backend-config 패치 다운로드/적용
+      # backend-config 패치 다운로드/적용
       - name: backend-config 패치 존재 여부 확인
         id: check_backend_patch_fix_md
         uses: actions/github-script@v7
@@ -395,7 +395,7 @@ jobs:
             echo "적용할 backend-config 변경사항이 없습니다."
           fi
 
-      # 5. pnpm 설치 및 의존성 설치 (패치 적용 후)
+      # pnpm 설치 및 의존성 설치 (패치 적용 후)
       - name: pnpm 설정
         uses: pnpm/action-setup@v4
         with:
@@ -408,7 +408,7 @@ jobs:
       - name: 의존성 설치
         run: pnpm install --prefer-offline # 패치 적용된 package.json/lock 기준
 
-      # 6. 임시 커밋 생성 (패치 + 설치 후 상태 기준)
+      # 임시 커밋 생성 (패치 + 설치 후 상태 기준)
       - name: diff 비교를 위한 임시 커밋 생성
         run: |
           echo "--- 임시 커밋 생성 중 (마크다운 수정 전) ---"
@@ -423,7 +423,7 @@ jobs:
           fi
           echo "--- 임시 커밋 (마크다운 수정 전) 완료 ---"
 
-      # 7. 마크다운 수정 도구 실행
+      # 마크다운 수정 도구 실행
       - name: 마크다운 수정 (markdownlint)
         uses: DavidAnson/markdownlint-cli2-action@v19
         with:
@@ -526,7 +526,7 @@ jobs:
           printf '%s\0' "${filtered[@]}" | xargs -0 -r pnpm exec prettier --write --ignore-unknown --ignore-path .prettierignore || true
         continue-on-error: true
 
-      # 8. 마크다운 변경사항 패치 생성 (임시 커밋 기준)
+      # 마크다운 변경사항 패치 생성 (임시 커밋 기준)
       - name: 마크다운 변경사항 확인 및 패치 생성
         id: check_markdown_changes
         run: |
@@ -550,7 +550,7 @@ jobs:
           fi
           echo "--- 마크다운 패치 생성 완료 ---"
 
-      # 9. 마크다운 패치 업로드
+      # 마크다운 패치 업로드
       - name: 마크다운 패치 아티팩트 업로드
         if: steps.check_markdown_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
@@ -577,16 +577,16 @@ jobs:
       - name: Load and mask only .env keys into job env
         shell: bash
         run: |
-          # 1) .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
+          # .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
           awk -F= '!/^#/ && NF { gsub(/^[ \t]+|[ \t]+$/,"",$1); print $1 }' .env.public .env.private \
             | sort -u > .env.masklist
 
-          # 1.5) DOTENV_PRIVATE_KEY_PRIVATE 키도 목록에 포함(중복 방지)
+          # DOTENV_PRIVATE_KEY_PRIVATE 키도 목록에 포함(중복 방지)
           if [ -n "$DOTENV_PRIVATE_KEY_PRIVATE" ]; then
             grep -qxF DOTENV_PRIVATE_KEY_PRIVATE .env.masklist || echo DOTENV_PRIVATE_KEY_PRIVATE >> .env.masklist
           fi
 
-          # 2) dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
+          # dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
           dotenvx run -f .env.private -f .env.public -- bash -lc '
             while IFS= read -r key; do
               v="${!key}"
@@ -605,7 +605,7 @@ jobs:
         env:
           DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 
-      # 1. package-json 패치 다운로드
+      # package-json 패치 다운로드
       - name: package-json 패치 존재 여부 확인
         id: check_package-json_patch
         uses: actions/github-script@v7
@@ -628,7 +628,7 @@ jobs:
           name: package-json-patch
           path: .
 
-      # 2. package-json 패치 적용
+      # package-json 패치 적용
       - name: package-json 패치 적용
         if: steps.check_package-json_patch.outputs.result == 'true'
         run: |
@@ -648,7 +648,7 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-      # 2.5. backend-config 패치 다운로드
+      # backend-config 패치 다운로드
       - name: backend-config 패치 존재 여부 확인
         id: check_backend_patch_translate
         uses: actions/github-script@v7
@@ -671,7 +671,7 @@ jobs:
           name: backend-config-patch
           path: .
 
-      # 2.6. backend-config 패치 적용
+      # backend-config 패치 적용
       - name: backend-config 패치 적용
         if: steps.check_backend_patch_translate.outputs.result == 'true'
         run: |
@@ -688,7 +688,7 @@ jobs:
             echo "적용할 backend-config 변경사항이 없습니다."
           fi
 
-      # 5. markdown patch 다운로드
+      # markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint-format
         uses: actions/github-script@v7
@@ -711,7 +711,7 @@ jobs:
           name: markdown-patch
           path: .
 
-      # 6. markdown patch 적용
+      # markdown patch 적용
       - name: 마크다운 패치 적용
         if: steps.check_markdown_patch_lint-format.outputs.result == 'true'
         run: |
@@ -728,7 +728,7 @@ jobs:
             echo "적용할 markdown 변경사항이 없습니다."
           fi
 
-      # 3. pnpm 설치 및 의존성 설치 (패치 적용 후)
+      # pnpm 설치 및 의존성 설치 (패치 적용 후)
       - name: pnpm 설정
         uses: pnpm/action-setup@v4
         with:
@@ -741,7 +741,7 @@ jobs:
       - name: 의존성 설치
         run: pnpm install --prefer-offline # 패치 적용된 package.json/lock 기준
 
-      # 4. 임시 커밋 생성 (패치 + 설치 후 상태 기준)
+      # 임시 커밋 생성 (패치 + 설치 후 상태 기준)
       - name: diff 비교를 위한 임시 커밋 생성
         run: |
           echo "--- 임시 커밋 생성 중 (번역 전) ---"
@@ -762,7 +762,7 @@ jobs:
           fi
           echo "--- 임시 커밋 완료 ---"
 
-      # 5. 번역 실행 및 새 파일 목록 생성
+      # 번역 실행 및 새 파일 목록 생성
       - name: 번역 실행 및 새 파일 목록 생성
         id: run_translation
         run: |
@@ -787,7 +787,7 @@ jobs:
             echo "all_changed_markdown_files=" >> $GITHUB_OUTPUT
           fi
 
-      # 6. 기본 린트 및 포맷팅 실행
+      # 기본 린트 및 포맷팅 실행
       - name: 기본 린트 및 포맷팅 실행
         if: steps.run_translation.outputs.all_changed_files != ''
         run: |
@@ -812,7 +812,7 @@ jobs:
           echo "--- 기본 린트 및 포맷팅 완료 ---"
         continue-on-error: true
 
-      # 6. 번역 변경사항 패치 생성 (임시 커밋 기준)
+      # 번역 변경사항 패치 생성 (임시 커밋 기준)
       - name: 번역 변경사항 확인 및 패치 생성
         id: check_translation_changes
         run: |
@@ -846,7 +846,7 @@ jobs:
           fi
           echo "--- 번역 패치 생성 완료 ---"
 
-      # 7. 번역 패치 업로드
+      # 번역 패치 업로드
       - name: 번역 패치 아티팩트 업로드
         if: steps.check_translation_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
@@ -875,16 +875,16 @@ jobs:
       - name: Load and mask only .env keys into job env
         shell: bash
         run: |
-          # 1) .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
+          # .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
           awk -F= '!/^#/ && NF { gsub(/^[ \t]+|[ \t]+$/,"",$1); print $1 }' .env.public .env.private \
             | sort -u > .env.masklist
 
-          # 1.5) DOTENV_PRIVATE_KEY_PRIVATE 키도 목록에 포함(중복 방지)
+          # DOTENV_PRIVATE_KEY_PRIVATE 키도 목록에 포함(중복 방지)
           if [ -n "$DOTENV_PRIVATE_KEY_PRIVATE" ]; then
             grep -qxF DOTENV_PRIVATE_KEY_PRIVATE .env.masklist || echo DOTENV_PRIVATE_KEY_PRIVATE >> .env.masklist
           fi
 
-          # 2) dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
+          # dotenvx 컨텍스트에서 해당 키들만 값을 읽어 마스킹 + GITHUB_ENV 등록
           dotenvx run -f .env.private -f .env.public -- bash -lc '
             while IFS= read -r key; do
               v="${!key}"
@@ -903,7 +903,7 @@ jobs:
         env:
           DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 
-      # 1. package-json 패치 다운로드
+      # package-json 패치 다운로드
       - name: package-json 패치 존재 여부 확인
         id: check_package-json_patch_lint-format
         uses: actions/github-script@v7
@@ -926,7 +926,7 @@ jobs:
           name: package-json-patch
           path: .
 
-      # 2. package-json 패치 적용
+      # package-json 패치 적용
       - name: package-json 패치 적용
         if: steps.check_package-json_patch_lint-format.outputs.result == 'true'
         run: |
@@ -943,7 +943,7 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-      # 2.5. backend-config 패치 다운로드 (lint-format)
+      # backend-config 패치 다운로드 (lint-format)
       - name: 백엔드 패치 존재 여부 확인
         id: check_backend_patch_lint-format
         uses: actions/github-script@v7
@@ -966,7 +966,7 @@ jobs:
           name: backend-config-patch
           path: .
 
-      # 2.6. backend-config 패치 적용 (lint-format)
+      # backend-config 패치 적용 (lint-format)
       - name: 백엔드 패치 적용
         if: steps.check_backend_patch_lint-format.outputs.result == 'true'
         run: |
@@ -983,7 +983,7 @@ jobs:
             echo "적용할 백엔드 변경사항이 없습니다."
           fi
 
-      # 5. markdown patch 다운로드
+      # markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
         id: check_markdown_patch_lint-format
         uses: actions/github-script@v7
@@ -1006,7 +1006,7 @@ jobs:
           name: markdown-patch
           path: .
 
-      # 6. markdown patch 적용
+      # markdown patch 적용
       - name: 마크다운 패치 적용
         if: steps.check_markdown_patch_lint-format.outputs.result == 'true'
         run: |
@@ -1023,7 +1023,7 @@ jobs:
             echo "적용할 markdown 변경사항이 없습니다."
           fi
 
-      # 3. translation patch 다운로드
+      # translation patch 다운로드
       - name: 번역 패치 존재 여부 확인
         id: check_translation_patch_lint-format
         uses: actions/github-script@v7
@@ -1046,7 +1046,7 @@ jobs:
           name: translation-patch
           path: .
 
-      # 4. translation patch 적용
+      # translation patch 적용
       - name: 번역 패치 적용
         if: steps.check_translation_patch_lint-format.outputs.result == 'true'
         run: |
@@ -1063,7 +1063,7 @@ jobs:
             echo "적용할 번역 변경사항이 없습니다."
           fi
 
-      # 5. backend-config patch 다운로드
+      # backend-config patch 다운로드
 
       # Node.js 및 pnpm 설정
       - name: pnpm 설정
@@ -1291,7 +1291,7 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0 # diff를 위해 전체 히스토리 가져오기
 
-      # 1) images → 2) package-json → 3) backend → 4) markdown → 5) translation → 6) changes
+      # images → 2) package-json → 3) backend → 4) markdown → 5) translation → 6) changes
 
       - name: 이미지 패치 존재 여부 확인
         id: check_images_patch_push
