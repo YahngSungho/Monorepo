@@ -47,6 +47,7 @@
 		"rehype-katex": "^7.0.1",
 		"rehype-mermaid": "^3.0.0",
 		"rehype-raw": "^7.0.0",
+		"remark-breaks": "^4.0.0",
 		"remark-cjk-friendly": "^1.1.0",
 		"remark-cjk-friendly-gfm-strikethrough": "^1.1.0",
 		"remark-custom-header-id": "^1.0.0",

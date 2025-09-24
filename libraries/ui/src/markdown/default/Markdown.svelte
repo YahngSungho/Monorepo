@@ -36,6 +36,8 @@ import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 import WebImage from './WebImage.svelte'
 
+import remarkBreaks from 'remark-breaks'
+
 let { plugins = [], value } = $props()
 </script>
 
@@ -54,6 +56,9 @@ let { plugins = [], value } = $props()
 		},
 		{
 			remarkPlugin: remarkCustomHeaderId,
+		},
+		{
+			remarkPlugin: remarkBreaks,
 		},
 		{
 			renderer: {
