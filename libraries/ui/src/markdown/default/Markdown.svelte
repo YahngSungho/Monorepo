@@ -2,6 +2,7 @@
 import './style.css'
 
 import { removeFrontmatter } from '@library/helpers/markdown'
+import remarkBreaks from 'remark-breaks'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import remarkCustomHeaderId from 'remark-custom-header-id'
@@ -54,6 +55,9 @@ let { plugins = [], value } = $props()
 		},
 		{
 			remarkPlugin: remarkCustomHeaderId,
+		},
+		{
+			remarkPlugin: remarkBreaks,
 		},
 		{
 			renderer: {
