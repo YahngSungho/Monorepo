@@ -90,6 +90,8 @@
 		"**/*.svelte",
 		"**/*.cjs",
 		"**/*.mjs",
-		"src/types/*.ts"
-, "scripts", "scripts/**/*"	]
+		"src/types/*.ts",
+		"scripts",
+		"scripts/**/*"
+	]
 }

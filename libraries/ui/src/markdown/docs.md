@@ -2,7 +2,7 @@
 
 ## 추가
 
-https://github.com/ssssota/svelte-exmarkdown/issues/36
+<https://github.com/ssssota/svelte-exmarkdown/issues/36>
 
 `plugins`에 `{ renderer: { customcomponent  } }` 식으로 추가
 

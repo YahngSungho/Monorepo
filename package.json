@@ -13,6 +13,7 @@
 		"dev": "turbo run dev --affected",
 		"dev:boiler_plates": "turbo run dev --filter=@app/boiler_plates --filter=@tool/storybook --affected",
 		"eslint-md": "eslint --fix **/*.{md,mdx,mdc} --config eslint.fix.config.js",
+		"fix-markdown-text": "turbo run fix-markdown-text --affected",
 		"fix-mismatches": "syncpack fix-mismatches",
 		"format": "turbo run format --affected",
 		"format-all": "pnpm run format-all-path .",
@@ -27,9 +28,8 @@
 		"test": "turbo run test:unit test:e2e --affected",
 		"test:e2e": "turbo run test:e2e --affected",
 		"test:unit": "turbo run test:unit --affected",
-		"update-translations": "turbo run update-translations --affected --concurrency=1",
-		"fix-markdown-text": "turbo run fix-markdown-text --affected",
-		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
+		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches",
+		"update-translations": "turbo run update-translations --affected --concurrency=1"
 	},
 	"dependencies": {
 		"@emotion/css": "^11.13.5",

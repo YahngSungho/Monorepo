@@ -13,22 +13,6 @@ import { saveFiles_action } from './saveFiles.js'
 export { fixMarkdownText_action } from './fixMarkdownText.js'
 
 // dummy function for test
-async function getTranslatedMessages_forTest(
-	language,
-	combinedMessages,
-	olderMessages,
-	dictionary,
-) {
-	const translatedMessages = {}
-	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지 5'
-	}
-	return {
-		newDictionary: {},
-		translatedMessages,
-	}
-}
-
 export async function updateTranslations_action(projectName, baseLocales, rootPath, helperPath) {
 	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
 
@@ -67,4 +51,20 @@ export async function updateTranslations_action(projectName, baseLocales, rootPa
 		explanations,
 		languageMessageMap_baseLocales,
 	)
+}
+
+async function getTranslatedMessages_forTest(
+	language,
+	combinedMessages,
+	olderMessages,
+	dictionary,
+) {
+	const translatedMessages = {}
+	for (const messageKey of Object.keys(combinedMessages)) {
+		translatedMessages[messageKey] = '번역된 메시지 5'
+	}
+	return {
+		newDictionary: {},
+		translatedMessages,
+	}
 }
