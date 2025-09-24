@@ -1,9 +1,9 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "antsy_aloof_barbel_read": "ഐക്കൺ",
-  "deft_east_mouse_hope": "ഹലോ",
-  "hello_world": "ഹലോ, {name}!",
-  "tangy_late_wallaby_grip": "SvelteKit-ലേക്ക് സ്വാഗതം",
-  "welcome": "SvelteKit-ലേക്ക് സ്വാഗതം",
-  "region": "പ്രദേശം"
+  "antsy_aloof_barbel_read": "번역된 메시지",
+  "deft_east_mouse_hope": "번역된 메시지",
+  "hello_world": "번역된 메시지",
+  "tangy_late_wallaby_grip": "번역된 메시지",
+  "welcome": "번역된 메시지",
+  "region": "번역된 메시지"
 }
