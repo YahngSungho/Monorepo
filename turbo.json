@@ -80,6 +80,9 @@
 		},
 		"update-translations": {
 			"cache": false
+		},
+		"fix-markdown-text": {
+			"cache": false
 		}
 	}
 }

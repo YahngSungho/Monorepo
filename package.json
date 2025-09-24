@@ -27,7 +27,8 @@
 		"test": "turbo run test:unit test:e2e --affected",
 		"test:e2e": "turbo run test:e2e --affected",
 		"test:unit": "turbo run test:unit --affected",
-		"translate": "turbo run translate --affected --concurrency=1",
+		"update-translations": "turbo run update-translations --affected --concurrency=1",
+		"fix-markdown-text": "turbo run fix-markdown-text --affected",
 		"update-and-fix": "pnpm run all-packages-update && pnpm run fix-mismatches"
 	},
 	"dependencies": {
