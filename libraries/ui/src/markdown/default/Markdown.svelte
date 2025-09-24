@@ -2,6 +2,7 @@
 import './style.css'
 
 import { removeFrontmatter } from '@library/helpers/markdown'
+import remarkBreaks from 'remark-breaks'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import remarkCustomHeaderId from 'remark-custom-header-id'
@@ -35,8 +36,6 @@ import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 import WebImage from './WebImage.svelte'
-
-import remarkBreaks from 'remark-breaks'
 
 let { plugins = [], value } = $props()
 </script>

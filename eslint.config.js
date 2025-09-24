@@ -52,13 +52,13 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
-	'array-func/from-map': 'off',
-'array-func/prefer-array-from': 'off',
-'array-func/avoid-reverse': 'off',
-'array-func/prefer-flat-map': 'off',
-'array-func/prefer-flat': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
+	'array-func/avoid-reverse': 'off',
+	'array-func/from-map': 'off',
+	'array-func/prefer-array-from': 'off',
+	'array-func/prefer-flat': 'off',
+	'array-func/prefer-flat-map': 'off',
 	'arrow-parens': 'off',
 	camelcase: 'off',
 	'capitalized-comments': 'off',

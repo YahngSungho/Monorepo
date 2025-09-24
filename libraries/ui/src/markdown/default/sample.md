@@ -10,10 +10,10 @@ plain text
 '**따옴표**'
 
 _기울임 텍스트_ 안녕
-_기울임 텍스트_를
-_기울임 텍스트text_를
+*기울임 텍스트*를
+*기울임 텍스트text*를
 _text_ of
-_text_of
+\_text_of
 
 A
 B
