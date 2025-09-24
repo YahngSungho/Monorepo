@@ -2,33 +2,33 @@
 title: 제목 1
 ---
 
-# 마크다운 테스트 문서
+# 마크다운 테스트 문서 {#uIDIzp9o6cxzhpKeAaqcq}
 
 [다른 포스트](/posts/second-post)로 이동하는 링크를 만들 수 있습니다.
 
-![img](/cornerless.png)
+<WebImage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></WebImage>
 
 여기에 각주[^1]가 있습니다.
 
 [^1]: 이것은 각주의 내용입니다.
 
-## title
+## title {#QE8nkwAQZwdNib118jpkE}
 
-### 이것은 H3 제목입니다
+### 이것은 H3 제목입니다 {#u52YR0iw7yufRklgc_t0E}
 
-#### 이것은 H4 제목입니다
+#### 이것은 H4 제목입니다 {#fcIbNItnsp9hS3IKYE0Zt}
 
-##### 이것은 H5 제목입니다
+##### 이것은 H5 제목입니다 {#GvdrRWgb4skxe6w9zlYGj}
 
-###### 이것은 H6 제목입니다
+###### 이것은 H6 제목입니다 {#0O8OVayvGbXf-hQRcQ94v}
 
-<mermaid>
+<Mermaid>
 flowchart TD
     A[Start] -- "라벨" --> B{Middle}
     B --> C[End]
 </mermaid>
 
-<mermaid>
+<Mermaid>
 journey
     title My working day
     section Go to work
@@ -38,9 +38,9 @@ journey
     section Go home
       Go downstairs: 5: Me
       Sit down: 5: Me
-</mermaid>
+</Mermaid>
 
-<mermaid>
+<Mermaid>
 graph TD
     A["testUIComponent 시작"] --> B{"테스트 반복 (iterationCount 만큼)"};
     B -- "반복" --> C["runSingleIteration 실행"];
@@ -74,14 +74,14 @@ graph TD
     X --> Y["testUIComponent 종료"];
 </mermaid>
 
-## 2. 텍스트 서식
+## 2. 텍스트 서식 {#S13eFxNmLCjx_s9Ep5few}
 
 일반 '텍스트'와 **굵은 텍스트**, _기울임 텍스트_, **_굵은 기울임 텍스트_**를 혼합할 수 있습니다.
 또한 ~~취소선~~도 사용할 수 있습니다.
 
-## 3. 목록
+## 3. 목록 {#8Ilm0UDkVi2fv7Vla834G}
 
-### 순서 없는 목록
+### 순서 없는 목록 {#2ClEUrOAeJQ3p5JSOAri2}
 
 - 항목 1
 - 항목 2
@@ -89,7 +89,7 @@ graph TD
   - 중첩 항목 2.2
 - 항목 3
 
-### 순서 있는 목록
+### 순서 있는 목록 {#UfwVdFLaB8JQngcmOz8W0}
 
 1. 첫 번째 항목
 2. 두 번째 항목
@@ -97,21 +97,21 @@ graph TD
    1. 중첩된 항목 3.1
    2. 중첩된 항목 3.2
 
-### 작업 목록
+### 작업 목록 {#OKcaNT1tbC4L-H6-pQR_f}
 
 - [x] 완료된 작업
 
 - [ ] 진행 중인 작업
 - [ ] 아직 시작하지 않은 작업
 
-## 4. 링크
+## 4. 링크 {#nEo6GVWfDSqL_Z4wv3bOr}
 
 [GitHub](https://github.com)에 방문하세요.
 [내부 링크](#title)를 사용하여 문서 내에서 이동할 수 있습니다.
 
-## 5. 이미지
+## 5. 이미지 {#kQa67A8imd72dKtBZNWVu}
 
-## 6. 코드
+## 6. 코드 {#3dfnrZynH_vfZozA4CevM}
 
 인라인 `코드`를 사용할 수 있습니다.
 
@@ -123,14 +123,14 @@ function hello() {
 ```
 
 ```python
-# 파이썬 코드 예시
+# 파이썬 코드 예시 {#8X9xFPaJcOZ-Q1Ys5YPQ8}
 def greet(name):
     return f"안녕하세요, {name}님!"
 
 print(greet("사용자"))
 ```
 
-## 7. 인용문
+## 7. 인용문 {#WPhrv_3HAGOAFZWvpZv_K}
 
 > 이것은 인용문입니다.
 >
@@ -138,11 +138,11 @@ print(greet("사용자"))
 >
 > > 중첩된 인용문도 가능합니다.
 
-## 8. 수평선
+## 8. 수평선 {#Jy3DBy19XeED_CBfs2uys}
 
 ---
 
-## 9. 표
+## 9. 표 {#j7bEy2W7Q_gdBSufAPVEp}
 
 | 이름   | 나이 | 직업     |
 | ------ | ---- | -------- |
@@ -157,7 +157,7 @@ print(greet("사용자"))
 | 텍스트       |    텍스트    |       텍스트 |
 | 더 긴 텍스트 | 더 긴 텍스트 | 더 긴 텍스트 |
 
-## 10. 수식 (일부 마크다운 엔진에서 지원)
+## 10. 수식 (일부 마크다운 엔진에서 지원) {#NpJlkH8XNS_LSKO2osmaT}
 
 인라인 수식: $E = mc^2$
 
@@ -167,7 +167,7 @@ $$
 \frac{d}{dx}(e^x) = e^x
 $$
 
-## 11. HTML 요소 포함
+## 11. HTML 요소 포함 {#TgfCQbCuZ0pPT99RPqFCX}
 
 <details>
 <summary>클릭하여 더 보기</summary>
@@ -178,13 +178,13 @@ $$
 이것은 파란색 텍스트입니다.
 </div>
 
-## 12. 각주
+## 12. 각주 {#3BQa_OaHepDZOsKQdNlca}
 
 여기에 각주[^2]가 있습니다.
 
 [^2]: 이것은 각주의 내용입니다.
 
-## 13. 정의 목록
+## 13. 정의 목록 {#gny4hUtHOFZJam34iEXJ8}
 
 마크다운
 : 텍스트를 HTML로 변환하는 가벼운 마크업 언어

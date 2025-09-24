@@ -24,7 +24,6 @@ const getOneMarkdown_base0 = getOneMarkdown_base(APP_NAME, getLocale())
 /** @type {GetOneMarkdown} */
 export const getOneMarkdown = getOneMarkdown_base0('body, mermaid_svg_object')
 
-
 /**
  * @callback GetOneMarkdownBody
  * @param {string} key

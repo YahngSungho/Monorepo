@@ -8,37 +8,22 @@ import {
 	getFiles,
 	getTranslatedLanguageMap_action,
 } from '../translation/markdown/translation.js'
-import { saveFiles_action } from './saveFiles_action.js'
+import { saveFiles_action } from './saveFiles.js'
+
+export { fixMarkdownText_action } from './fixMarkdownText.js'
 
 // dummy function for test
-async function getTranslatedMessages_forTest(
-	language,
-	combinedMessages,
-	olderMessages,
-	dictionary,
-) {
-	const translatedMessages = {}
-	for (const messageKey of Object.keys(combinedMessages)) {
-		translatedMessages[messageKey] = '번역된 메시지 5'
-	}
-	return {
-		newDictionary: {},
-		translatedMessages,
-	}
-}
-
-const basicLangs = ['ko', 'en']
-
-export async function markdownScript_action(projectName, rootPath, helperPath) {
+export async function updateTranslations_action(projectName, baseLocales, rootPath, helperPath) {
 	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
-	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, basicLangs)
+
+	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, baseLocales)
 	const { explanations, languageMessageMap } = convertMarkdownFiles(
 		initialMarkdownFiles,
 		rootPath,
 		markdownListFromSupabase,
 	)
 	const translatedLanguageMap = await getTranslatedLanguageMap_action(
-		basicLangs,
+		baseLocales,
 		languageMessageMap,
 		explanations,
 		dictPerLanguage,
@@ -47,9 +32,9 @@ export async function markdownScript_action(projectName, rootPath, helperPath) {
 		getTranslatedMessages_forTest,
 	)
 
-	const languageMessageMap_basicLangs = R.pick(basicLangs)(languageMessageMap)
+	const languageMessageMap_baseLocales = R.pick(baseLocales)(languageMessageMap)
 	const updatedMessagesPerLang = {}
-	for (const [lang, messageMap] of Object.entries(languageMessageMap_basicLangs)) {
+	for (const [lang, messageMap] of Object.entries(languageMessageMap_baseLocales)) {
 		updatedMessagesPerLang[lang] = {}
 		for (const [messageKey, messageValue] of Object.entries(messageMap)) {
 			if (!isSameNormalizedString(messageValue, cache[messageKey]?.[lang] || '')) {
@@ -64,6 +49,22 @@ export async function markdownScript_action(projectName, rootPath, helperPath) {
 		translatedLanguageMap,
 		updatedMessagesPerLang,
 		explanations,
-		languageMessageMap_basicLangs,
+		languageMessageMap_baseLocales,
 	)
+}
+
+async function getTranslatedMessages_forTest(
+	language,
+	combinedMessages,
+	olderMessages,
+	dictionary,
+) {
+	const translatedMessages = {}
+	for (const messageKey of Object.keys(combinedMessages)) {
+		translatedMessages[messageKey] = '번역된 메시지 5'
+	}
+	return {
+		newDictionary: {},
+		translatedMessages,
+	}
 }

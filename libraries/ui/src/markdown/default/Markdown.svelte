@@ -61,7 +61,7 @@ let { plugins = [], value } = $props()
 		},
 		{
 			renderer: {
-				Web_Image: WebImage,
+				webimage: WebImage,
 			},
 		},
 		{

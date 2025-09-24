@@ -145,11 +145,11 @@ export function convertMarkdownFiles(
 	for (const fileObject of initialMarkdownFiles) {
 		const relativePath = path.relative(rootAbsolutePath, fileObject.path)
 		const pathSegments = relativePath.split(path.sep)
-		const fileNameWithExt = R.last(pathSegments)
-		if (!fileNameWithExt || !fileNameWithExt.endsWith('.md')) {
+		const fileNameWithExtension = R.last(pathSegments)
+		if (!fileNameWithExtension || !fileNameWithExtension.endsWith('.md')) {
 			continue
 		}
-		const lang = path.basename(fileNameWithExt, '.md')
+		const lang = path.basename(fileNameWithExtension, '.md')
 
 		const fileKey = R.init(pathSegments).join('/')
 
@@ -186,7 +186,7 @@ export function convertMarkdownFiles(
 // }
 
 export async function getTranslatedLanguageMap_action(
-	basicLangs,
+	baseLocales,
 	messageMap,
 	explanations,
 	dictPerLang,
@@ -196,7 +196,7 @@ export async function getTranslatedLanguageMap_action(
 	// 순수 함수: 초기 상태 계산
 	const { combinedMessages_latest, targetLanguageMap } =
 		calculateInitialTranslationStateByBaseLanguages(
-			basicLangs,
+			baseLocales,
 			messageMap,
 			explanations,
 			combinedMessages_cached,

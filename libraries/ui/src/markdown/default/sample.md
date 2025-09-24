@@ -1,5 +1,7 @@
 # 마크다운 테스트 문서 {#a9f3}
 
+<WebImage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></WebImage>
+
 **괄호(괄호)**
 **괄호**(**괄호**)
 _괄호_(_괄호_)

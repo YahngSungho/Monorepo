@@ -102,6 +102,7 @@ const baseRules = {
 	'no-use-before-define': 'off',
 	'no-warning-comments': 'off',
 	'object-curly-spacing': 'off',
+	'object-shorthand': 'off',
 	'optimize-regex/optimize-regex': 'warn',
 	'prefer-const': 'off',
 	'promise/always-return': 'off',

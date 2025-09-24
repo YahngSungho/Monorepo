@@ -14,7 +14,7 @@ export async function saveFiles_action(
 	translatedLanguageMap,
 	updatedMessagesPerLang,
 	explanations,
-	languageMessageMap_basicLangs,
+	languageMessageMap_baseLocales,
 ) {
 	const markdownPromiseListForSave = []
 
@@ -78,7 +78,7 @@ export async function saveFiles_action(
 
 	await saveMarkdownList_action(await Promise.all(markdownPromiseListForSave))
 
-	const newCache = getNewCache(languageMessageMap_basicLangs, explanations)
+	const newCache = getNewCache(languageMessageMap_baseLocales, explanations)
 	await writeFile_async(
 		path.join(helperFolderPath, 'cache.json'),
 		JSON.stringify(newCache, undefined, 2),

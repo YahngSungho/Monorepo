@@ -6,8 +6,8 @@ import { getLocale } from '@library/paraglide/helpers'
 import { json } from '@sveltejs/kit'
 
 import { URL } from '$lib/info.js'
-import { getOneMarkdownBody } from '$lib/markdown-helpers/getMarkdown.js'
-import { getAllMetadataObject } from '$lib/markdown-helpers/getMetadata.js'
+import { getOneMarkdownBody } from '$lib/wrappers/markdown/getMarkdown.js'
+import { getAllMetadataObject } from '$lib/wrappers/markdown/getMetadata.js'
 import { sendMails_immediate_action } from '$lib/wrappers/sendMails.js'
 
 const urlPost = `https://${URL}/posts/`
