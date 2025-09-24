@@ -165,8 +165,8 @@ describe('Translation Helpers', () => {
 			//    - ja: greeting 변경됨 -> 추가. farewell 없음 -> 추가. 결과: ['greeting', 'farewell']
 			// 4. missingMessageKeys 계산 결과를 targetLanguageMap에 추가
 			const expectedTargetLanguageMap = {
-				en: { missingMessageKeys: ['greeting', 'farewell'], value: { greeting: 'Hello' } },
-				ja: { missingMessageKeys: ['greeting', 'farewell'], value: {} },
+				en: { missingMessageKeys: ['farewell', 'greeting'], value: { greeting: 'Hello' } },
+				ja: { missingMessageKeys: ['farewell', 'greeting'], value: {} },
 			}
 
 			// 실행(Act)
@@ -197,8 +197,11 @@ describe('Translation Helpers', () => {
 		it('빈 messageMap으로 호출 시 올바르게 처리해야 한다', () => {
 			// 준비(Arrange)
 			const baseLanguages = ['ko']
+			/** @type {Object.<string, Object.<string, string>>} */
 			const messageMap = {}
+			/** @type {Object.<string, string>} */
 			const explanations = {}
+			/** @type {Object.<string, Object>} */
 			const combinedMessages_cached = {}
 			const expectedCombinedMessages_latest = {}
 			const expectedTargetLanguageMap = {}
@@ -224,7 +227,9 @@ describe('Translation Helpers', () => {
 			const messageMap = {
 				ko: { greeting: '안녕' },
 			}
+			/** @type {Object.<string, string>} */
 			const explanations = {}
+			/** @type {Object.<string, Object>} */
 			const combinedMessages_cached = {}
 			const expectedCombinedMessages_latest = {
 				greeting: { ko: '안녕' },
@@ -667,7 +672,7 @@ describe('Translation Helpers', () => {
 			mockGetTranslatedMessages.mockRejectedValue(expectedError)
 
 			// 실행(Act) & 검증(Assert)
-			// 원칙: 특정 에러 발생 검증
+			// 원치 특정 에러 발생 검증
 			await expect(
 				translateOneLanguageMessages(
 					language,
@@ -729,6 +734,7 @@ describe('Translation Helpers', () => {
 		// 원칙: 엣지 케이스 (빈 입력)
 		it('빈 languageMessageMaps 입력 시 빈 객체를 반환해야 한다', () => {
 			// 준비(Arrange)
+			/** @type {Record<string, Record<string, string>>} */
 			const languageMessageMaps = {}
 			const explanations = { greeting: '인사말' }
 			const expectedNewCache = {}
@@ -747,6 +753,7 @@ describe('Translation Helpers', () => {
 				en: { greeting: 'Hello' },
 				ko: { greeting: '안녕' },
 			}
+			/** @type {Record<string, string>} */
 			const explanations = {} // 설명 없음
 			const expectedNewCache = {
 				greeting: {
