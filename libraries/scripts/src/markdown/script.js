@@ -29,7 +29,7 @@ async function getTranslatedMessages_forTest(
 	}
 }
 
-export async function translationScript_action(projectName, baseLocales, rootPath, helperPath) {
+export async function updateTranslations_action(projectName, baseLocales, rootPath, helperPath) {
 	const { cache, dictPerLanguage, initialMarkdownFiles } = await getFiles(rootPath, helperPath)
 
 	const markdownListFromSupabase = await getMarkdownListByProjectName(projectName, baseLocales)

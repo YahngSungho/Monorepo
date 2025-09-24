@@ -6,7 +6,7 @@ import { getLocale } from '@library/paraglide/helpers'
 
 import { APP_NAME } from '$lib/info.js'
 
-import { metadata } from './metadata.js'
+import { metadata } from '../../markdown-helpers/metadata.js'
 
 export async function getAllMetadataObject() {
 	const lang = getLocale()

@@ -1,7 +1,7 @@
 import { getDescriptionFromMD } from '@library/helpers/markdown'
 import { redirect } from '@sveltejs/kit'
 
-import { getOneMarkdown } from '$lib/markdown-helpers/getMarkdown'
+import { getOneMarkdown } from '$lib/wrappers/markdown/getMarkdown'
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ params, parent }) => {

@@ -14,7 +14,7 @@
 		"compile": "node ./src/compile.js",
 		"explanation-ready": "node ./src/readyMissingExplanations.js",
 		"get-all-language-info": "node ./src/getAllLanguageInfo.js",
-		"translate": "pnpm run check-no-missing-explanations && node ./src/translation.js",
+		"update-translations": "pnpm run check-no-missing-explanations && dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/translation.js",
 		"translate-machine": "npx @inlang/cli machine translate --project ./project.inlang",
 		"translate:env": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./src/translation.js"
 	},

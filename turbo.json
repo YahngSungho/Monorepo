@@ -78,7 +78,7 @@
 		"transit": {
 			"dependsOn": ["^transit"]
 		},
-		"translate": {
+		"update-translations": {
 			"cache": false
 		}
 	}

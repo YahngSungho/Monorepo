@@ -1,4 +1,4 @@
-import { getAllMetadataObject } from '$lib/markdown-helpers/getMetadata'
+import { getAllMetadataObject } from '$lib/wrappers/markdown/getMetadata'
 
 export const load = async () => {
 	const allMetadataObject = await getAllMetadataObject()
