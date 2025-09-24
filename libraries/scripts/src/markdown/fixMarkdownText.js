@@ -24,11 +24,11 @@ function extractTrailingId(line) {
 	for (let index = 0; index < idText.length; index++) {
 		const c = idText.codePointAt(index)
 		if (
-			c === 0x7d /* } */ ||
+			c === 0x7D /* } */ ||
 			c === 0x20 /* space */ ||
 			c === 0x09 /* tab */ ||
-			c === 0x0a ||
-			c === 0x0d
+			c === 0x0A ||
+			c === 0x0D
 		) {
 			return null
 		}

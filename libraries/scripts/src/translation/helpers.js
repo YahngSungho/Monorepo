@@ -31,7 +31,7 @@ export function getValidLocales() {
 		import.meta.url,
 		'../../../paraglide/project.inlang/settings.json',
 	)
-	const settings = JSON.parse(fs.readFileSync(settingPath))
+	const settings = JSON.parse(fs.readFileSync(settingPath, 'utf8'))
 
 	return settings.locales
 }
@@ -183,10 +183,6 @@ export function prepareTranslationPayload(languageMessageObject, combinedMessage
  * @param {function} restoreFromNumberKeys - 번호 키를 원래 메시지 키로 변환하는 함수
  * @returns {object} - 번역된 메시지가 통합된 새로운 언어 메시지 정보 객체
  */
-export function getNewCache_forString(string) {
-	return getSimpleHash(normalizeString(string))
-}
-
 export function integrateTranslatedMessages(
 	languageMessageObject,
 	translatedMessages_numbers,
@@ -207,6 +203,10 @@ export function integrateTranslatedMessages(
 		draft.translatedMessages = translatedMessages
 		draft.newMessages = newMessages
 	})
+}
+
+export function getNewCache_forString(string) {
+	return getSimpleHash(normalizeString(string))
 }
 
 /**

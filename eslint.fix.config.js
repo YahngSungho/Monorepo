@@ -103,7 +103,6 @@ const overrideConfig = [
 			'unicorn/prefer-dom-node-remove': 'warn',
 			'unicorn/prefer-global-this': 'warn',
 			'unicorn/prefer-includes': 'warn',
-			'unicorn/prefer-json-parse-buffer': 'warn',
 			'unicorn/prefer-keyboard-event-key': 'warn',
 			'unicorn/prefer-math-min-max': 'warn',
 			'unicorn/prefer-math-trunc': 'warn',
@@ -159,6 +158,7 @@ const overrideConfig = [
 				'warn',
 				{
 					partitionByComment: true,
+					partitionByNewLine: true,
 				},
 			],
 			'perfectionist/sort-objects': [
