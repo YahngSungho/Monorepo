@@ -2,7 +2,7 @@
 import fs from 'node:fs' // fs 모의 위해 임포트
 
 import { getAbsolutePath } from '@library/helpers/fs-sync' // 경로 헬퍼 모의 위해 임포트
-import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/functions'
+import { generateKeyNumberFunctions, normalizeString, getSimpleHash } from '@library/helpers/functions'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -703,15 +703,15 @@ describe('Translation Helpers', () => {
 			}
 			const expectedNewCache = {
 				greeting: {
-					ko: normalizeString('안녕'),
-					en: normalizeString('Hello'),
-					ja: normalizeString('こんにちは'),
-					explanation: normalizeString('인사말'),
+					ko: getSimpleHash(normalizeString('안녕')),
+					en: getSimpleHash(normalizeString('Hello')),
+					ja: getSimpleHash(normalizeString('こんにちは')),
+					explanation: getSimpleHash(normalizeString('인사말')),
 				},
 				farewell: {
-					ko: normalizeString('잘가'),
-					ja: normalizeString('さようなら'),
-					explanation: normalizeString('작별인사'),
+					ko: getSimpleHash(normalizeString('잘가')),
+					ja: getSimpleHash(normalizeString('さようなら')),
+					explanation: getSimpleHash(normalizeString('작별인사')),
 				},
 			}
 
@@ -746,8 +746,8 @@ describe('Translation Helpers', () => {
 			const explanations = {} // 설명 없음
 			const expectedNewCache = {
 				greeting: {
-					ko: normalizeString('안녕'),
-					en: normalizeString('Hello'),
+					ko: getSimpleHash(normalizeString('안녕')),
+					en: getSimpleHash(normalizeString('Hello')),
 					// explanation 필드 없음
 				},
 			}
@@ -764,8 +764,8 @@ describe('Translation Helpers', () => {
 				ko: { greeting: '안녕', farewell: '잘가' },
 			}
 			const expectedNewCachePartial = {
-				greeting: { ko: normalizeString('안녕') }, // 설명 없음
-				farewell: { ko: normalizeString('잘가'), explanation: normalizeString('작별인사') }, // 설명 있음
+				greeting: { ko: getSimpleHash(normalizeString('안녕')) }, // 설명 없음
+				farewell: { ko: getSimpleHash(normalizeString('잘가')), explanation: getSimpleHash(normalizeString('작별인사')) }, // 설명 있음
 			}
 			const newCachePartial = getNewCache(languageMessageMapsPartial, explanationsPartial)
 			expect(newCachePartial).toEqual(expectedNewCachePartial)
@@ -779,8 +779,8 @@ describe('Translation Helpers', () => {
 			}
 			const explanations = { greeting: '인사말' }
 			const expectedNewCache = {
-				greeting: { ko: normalizeString('안녕'), explanation: normalizeString('인사말') },
-				farewell: { ko: normalizeString('잘가') },
+				greeting: { ko: getSimpleHash(normalizeString('안녕')), explanation: getSimpleHash(normalizeString('인사말')) },
+				farewell: { ko: getSimpleHash(normalizeString('잘가')) },
 			}
 
 			// 실행(Act)

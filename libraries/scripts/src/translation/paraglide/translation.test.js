@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { normalizeString } from '@library/helpers/functions'
+import { normalizeString, getSimpleHash } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -476,10 +476,10 @@ describe('Paraglide 번역 스크립트', () => {
 		// 원칙: 동작 테스트
 		it('새로운 캐시 파일을 올바르게 저장해야 한다', async () => {
 			// 준비 (Arrange)
-			// getNewCache는 { ko: languageMessageMap_ko }, explanations 를 기반으로 캐시를 생성
+			// getNewCache는 { ko: languageMessageMap_ko }, explanations 를 기반으로 해시된 캐시를 생성
 			const expectedNewCache = {
-				msg1: { ko: normalizeString('한글1'), explanation: normalizeString('Expl1') },
-				msg2: { ko: normalizeString('한글2'), explanation: normalizeString('Expl2') },
+				msg1: { ko: getSimpleHash(normalizeString('한글1')), explanation: getSimpleHash(normalizeString('Expl1')) },
+				msg2: { ko: getSimpleHash(normalizeString('한글2')), explanation: getSimpleHash(normalizeString('Expl2')) },
 				// msg3은 languageMessageMapKo에 없으므로 캐시에 포함되지 않음
 			}
 

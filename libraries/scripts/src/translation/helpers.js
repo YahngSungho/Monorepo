@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 
 import { getAbsolutePath } from '@library/helpers/fs-sync'
-import { generateKeyNumberFunctions, normalizeString } from '@library/helpers/functions'
+import { generateKeyNumberFunctions, normalizeString, getSimpleHash } from '@library/helpers/functions'
 import { create } from '@library/helpers/mutative'
 import { R } from '@library/helpers/R'
 
@@ -84,9 +84,10 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	// missingMessageKeys 계산 (순수, 불변성 유지)
 	const finalTargetLanguageMap = create(initialTargetLanguageMap, (draft) => {
 		for (const [messageKey, combinedMessage] of Object.entries(combinedMessages_latest)) {
-			const normalizedCurrent = normalizeCombinedMessage(combinedMessage)
-			const normalizedCached = normalizeCombinedMessage(combinedMessages_cached[messageKey])
-			const isMessageChanged = !R.equals(normalizedCurrent)(normalizedCached)
+			const cacheVersionCurrent = getCacheVersionCombinedMessage(combinedMessage)
+			const cacheCurrent = combinedMessages_cached[messageKey]
+			const isMessageChanged = !R.equals(cacheVersionCurrent)(cacheCurrent)
+			console.log('💬 ~ calculateInitialTranslationStateByBaseLanguages ~ isMessageChanged:', isMessageChanged)
 
 			for (const language of Object.keys(draft)) {
 				const languageMessage = draft[language]
@@ -105,10 +106,10 @@ export function calculateInitialTranslationStateByBaseLanguages(
 	return { combinedMessages_latest, targetLanguageMap: finalTargetLanguageMap }
 }
 
-function normalizeCombinedMessage(combinedMessage) {
+function getCacheVersionCombinedMessage(combinedMessage) {
 	if (!combinedMessage) return combinedMessage
 
-	const mapped = R.mapObject((value) => (value ? normalizeString(value) : value))(combinedMessage)
+	const mapped = R.mapObject((value) => (value ? getNewCache_forString(value) : value))(combinedMessage)
 	// 값이 undefined인 키는 제거하여, 키가 없는 것과 동일하게 취급
 	return R.pickBy((v) => v !== undefined)(mapped)
 }
@@ -195,6 +196,10 @@ export function integrateTranslatedMessages(
 	})
 }
 
+export function getNewCache_forString (string) {
+	return getSimpleHash(normalizeString(string))
+}
+
 /**
  * 여러 언어의 메시지 맵과 설명 객체를 받아, 각 메시지 키별로 언어별 메시지와 설명을 포함하는 새 캐시 객체를 반환하는 함수.
  *
@@ -207,10 +212,10 @@ export function getNewCache(languageMessageMaps, explanations) {
 	for (const [language, languageMessageMap] of Object.entries(languageMessageMaps)) {
 		for (const [messageKey, messageValue] of Object.entries(languageMessageMap)) {
 			if (newCache[messageKey]) {
-				newCache[messageKey][language] = normalizeString(messageValue)
+				newCache[messageKey][language] = getNewCache_forString(messageValue)
 			} else {
 				newCache[messageKey] = {
-					[language]: normalizeString(messageValue),
+					[language]: getNewCache_forString(messageValue),
 				}
 			}
 		}
@@ -218,7 +223,7 @@ export function getNewCache(languageMessageMaps, explanations) {
 
 	for (const messageKey of Object.keys(newCache)) {
 		if (explanations[messageKey]) {
-			newCache[messageKey].explanation = normalizeString(explanations[messageKey])
+			newCache[messageKey].explanation = getNewCache_forString(explanations[messageKey])
 		}
 	}
 

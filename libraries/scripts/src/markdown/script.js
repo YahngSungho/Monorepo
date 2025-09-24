@@ -1,5 +1,4 @@
 import { getMarkdownListByProjectName } from '@library/backends/supabase'
-import { isSameNormalizedString } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 
 // import { getTranslatedMessages_markdown } from '../translation/llm.js'
@@ -8,6 +7,7 @@ import {
 	getFiles,
 	getTranslatedLanguageMap_action,
 } from '../translation/markdown/translation.js'
+import { getNewCache_forString } from '../translation/helpers.js'
 import { saveFiles_action } from './saveFiles.js'
 
 export { fixMarkdownText_action } from './fixMarkdownText.js'
@@ -37,7 +37,7 @@ export async function updateTranslations_action(projectName, baseLocales, rootPa
 	for (const [lang, messageMap] of Object.entries(languageMessageMap_baseLocales)) {
 		updatedMessagesPerLang[lang] = {}
 		for (const [messageKey, messageValue] of Object.entries(messageMap)) {
-			if (!isSameNormalizedString(messageValue, cache[messageKey]?.[lang] || '')) {
+			if (getNewCache_forString(messageValue) !== cache[messageKey]?.[lang]) {
 				updatedMessagesPerLang[lang][messageKey] = messageValue
 			}
 		}
