@@ -12,7 +12,6 @@ export async function getMermaidSVGObject(markdownText) {
 	const mermaidValues = []
 	// eslint-disable-next-line github/unescaped-html-literal
 	const openTagLower = '<mermaid>'
-	 
 	const closeTagLower = '</mermaid>'
 	const lowerText = markdownText.toLowerCase()
 	let fromIndex = 0

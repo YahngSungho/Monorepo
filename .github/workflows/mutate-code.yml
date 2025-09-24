@@ -731,6 +731,15 @@ jobs:
             echo "적용할 markdown 변경사항이 없습니다."
           fi
 
+      - name: Cache Playwright Page State
+        uses: actions/cache@v4
+        id: playwright-page-cache
+        with:
+          path: storybook/.cache
+          key: ${{ runner.os }}-playwright-page-cache-${{ hashFiles('tools/storybook/e2e/**') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-page-cache-
+
       # pnpm 설치 및 의존성 설치 (패치 적용 후)
       - name: pnpm 설정
         uses: pnpm/action-setup@v4
@@ -743,6 +752,29 @@ jobs:
           cache: pnpm
       - name: 의존성 설치
         run: pnpm install --prefer-offline # 패치 적용된 package.json/lock 기준
+
+      - name: Get installed Playwright version
+        id: playwright-version
+        # pnpm list 명령어를 사용하여 설치된 @playwright/test 버전을 가져옵니다.
+        # --json 옵션으로 JSON 출력을 받고, jq를 사용하여 버전 번호만 추출합니다.
+        # jq '.[] | select(.name == "@playwright/test") | .version' 패턴은 JSON 배열에서 name이 "@playwright/test"인 객체를 찾아 version 값을 추출합니다.
+        # 결과는 PLAYWRIGHT_VERSION 환경 변수에 저장됩니다.
+        run: echo "PLAYWRIGHT_VERSION=$(pnpm list --depth=0 --json @playwright/test | jq -r '.[] | select(.name == "@playwright/test") | .version')" >> $GITHUB_ENV
+
+      - name: Cache Playwright binaries
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          # Playwright 브라우저가 설치되는 기본 경로입니다. (Linux 기준)
+          path: ~/.cache/ms-playwright
+          # 캐시 키는 운영체제와 Playwright 버전으로 구성하여 버전 변경 시 캐시를 무효화합니다.
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+          # 정확한 버전 키가 없을 경우 이전 버전의 캐시를 복원하도록 설정합니다.
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Ensure Playwright Browsers and Dependencies
+        run: pnpm exec playwright install --with-deps
 
       # 임시 커밋 생성 (패치 + 설치 후 상태 기준)
       - name: diff 비교를 위한 임시 커밋 생성
