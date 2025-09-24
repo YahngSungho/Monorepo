@@ -362,7 +362,7 @@ describe('getTranslatedLanguageMap 함수', () => {
 
 		// 실행 (Act)
 		const result = await getTranslatedLanguageMap_action(
-			['ko', 'en'], // basicLangs 매개변수 추가
+			['ko', 'en'], // baseLocales 매개변수 추가
 			messageMap,
 			explanations,
 			dictPerLanguage,
@@ -411,7 +411,7 @@ describe('getTranslatedLanguageMap 함수', () => {
 
 		// 실행 (Act)
 		const result = await getTranslatedLanguageMap_action(
-			['ko', 'en'], // basicLangs 매개변수 추가
+			['ko', 'en'], // baseLocales 매개변수 추가
 			messageMap,
 			explanations,
 			dictPerLanguage,

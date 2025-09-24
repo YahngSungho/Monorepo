@@ -186,7 +186,7 @@ export function convertMarkdownFiles(
 // }
 
 export async function getTranslatedLanguageMap_action(
-	basicLangs,
+	baseLocales,
 	messageMap,
 	explanations,
 	dictPerLang,
@@ -196,7 +196,7 @@ export async function getTranslatedLanguageMap_action(
 	// 순수 함수: 초기 상태 계산
 	const { combinedMessages_latest, targetLanguageMap } =
 		calculateInitialTranslationStateByBaseLanguages(
-			basicLangs,
+			baseLocales,
 			messageMap,
 			explanations,
 			combinedMessages_cached,
