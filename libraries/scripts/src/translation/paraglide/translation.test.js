@@ -327,12 +327,12 @@ describe('Paraglide 번역 스크립트', () => {
 			// 각 언어의 메시지 파일(.json)에 모든 키가 존재하면 missingMessageKeys는 비어있게 됨.
 			const cachedMessagesForNoMissing = {
 				msg1: {
-					ko: getSimpleHash(normalizeString('한글1')),
 					explanation: getSimpleHash(normalizeString('Expl1')),
+					ko: getSimpleHash(normalizeString('한글1')),
 				},
 				msg2: {
-					ko: getSimpleHash(normalizeString('한글2')),
 					explanation: getSimpleHash(normalizeString('Expl2')),
+					ko: getSimpleHash(normalizeString('한글2')),
 				},
 			}
 
@@ -485,12 +485,12 @@ describe('Paraglide 번역 스크립트', () => {
 			// getNewCache는 { ko: languageMessageMap_ko }, explanations 를 기반으로 해시된 캐시를 생성
 			const expectedNewCache = {
 				msg1: {
-					ko: getSimpleHash(normalizeString('한글1')),
 					explanation: getSimpleHash(normalizeString('Expl1')),
+					ko: getSimpleHash(normalizeString('한글1')),
 				},
 				msg2: {
-					ko: getSimpleHash(normalizeString('한글2')),
 					explanation: getSimpleHash(normalizeString('Expl2')),
+					ko: getSimpleHash(normalizeString('한글2')),
 				},
 				// msg3은 languageMessageMapKo에 없으므로 캐시에 포함되지 않음
 			}

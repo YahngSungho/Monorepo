@@ -52,7 +52,6 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
-	'unicorn/no-process-exit': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'array-func/avoid-reverse': 'off',
@@ -213,6 +212,7 @@ const baseRules = {
 	'unicorn/no-new-array': 'off',
 	'unicorn/no-new-buffer': 'off',
 	'unicorn/no-null': 'off',
+	'unicorn/no-process-exit': 'off',
 	'unicorn/no-single-promise-in-promise-methods': 'off',
 	'unicorn/no-static-only-class': 'off',
 	'unicorn/no-typeof-undefined': 'off',
