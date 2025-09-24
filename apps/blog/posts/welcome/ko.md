@@ -6,7 +6,7 @@ title: 제목 1
 
 [다른 포스트](/posts/second-post)로 이동하는 링크를 만들 수 있습니다.
 
-<Cloudinaryimage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></Cloudinaryimage>
+<WebImage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></WebImage>
 
 여기에 각주[^1]가 있습니다.
 

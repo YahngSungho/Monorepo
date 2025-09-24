@@ -1,5 +1,7 @@
 # 마크다운 테스트 문서
 
+<WebImage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></WebImage>
+
 ## 1. 제목 스타일
 
 ### 이것은 H3 제목입니다

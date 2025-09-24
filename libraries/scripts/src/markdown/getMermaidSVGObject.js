@@ -11,18 +11,20 @@ export async function getMermaidSVGObject(markdownText) {
 	// 안전한 수동 파싱으로 <Mermaid>...</mermaid> 블록 추출
 	const mermaidValues = []
 	// eslint-disable-next-line github/unescaped-html-literal
-	const openTag = '<Mermaid>'
-	const closeTag = '</mermaid>'
+	const openTagLower = '<mermaid>'
+	 
+	const closeTagLower = '</mermaid>'
+	const lowerText = markdownText.toLowerCase()
 	let fromIndex = 0
-	while (fromIndex < markdownText.length) {
-		const start = markdownText.indexOf(openTag, fromIndex)
+	while (fromIndex < lowerText.length) {
+		const start = lowerText.indexOf(openTagLower, fromIndex)
 		if (start === -1) break
-		const contentStart = start + openTag.length
-		const end = markdownText.indexOf(closeTag, contentStart)
+		const contentStart = start + openTagLower.length
+		const end = lowerText.indexOf(closeTagLower, contentStart)
 		if (end === -1) break
 		const captured = markdownText.slice(contentStart, end).trim()
 		if (captured) mermaidValues.push(captured)
-		fromIndex = end + closeTag.length
+		fromIndex = end + closeTagLower.length
 	}
 
 	if (mermaidValues.length === 0) return result

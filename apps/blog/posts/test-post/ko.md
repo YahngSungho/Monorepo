@@ -6,6 +6,8 @@ title: 제목 1
 
 [다른 포스트](/posts/second-post)로 이동하는 링크를 만들 수 있습니다.
 
+<WebImage alt="테스트 이미지" width="680" height="590" src="https://res.cloudinary.com/dykp9yauv/image/upload/v1753871059/justWalkOut_knb7po.jpg"></WebImage>
+
 ![img](/cornerless.png)
 
 여기에 각주[^1]가 있습니다.
@@ -22,13 +24,13 @@ title: 제목 1
 
 ###### 이것은 H6 제목입니다
 
-<mermaid>
+<Mermaid>
 flowchart TD
     A[Start] -- "라벨" --> B{Middle}
     B --> C[End]
-</mermaid>
+</Mermaid>
 
-<mermaid>
+<Mermaid>
 journey
     title My working day
     section Go to work
@@ -38,9 +40,9 @@ journey
     section Go home
       Go downstairs: 5: Me
       Sit down: 5: Me
-</mermaid>
+</Mermaid>
 
-<mermaid>
+<Mermaid>
 graph TD
     A["testUIComponent 시작"] --> B{"테스트 반복 (iterationCount 만큼)"};
     B -- "반복" --> C["runSingleIteration 실행"];
@@ -72,7 +74,7 @@ graph TD
     V -- "No" --> I;
     B -- "모든 반복 완료" --> X("최종 결과 반환 및 Playwright 단언");
     X --> Y["testUIComponent 종료"];
-</mermaid>
+</Mermaid>
 
 ## 2. 텍스트 서식
 
