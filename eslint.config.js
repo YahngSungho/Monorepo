@@ -121,6 +121,7 @@ const baseRules = {
 	'ramda/merge-simplification': 'warn',
 	'ramda/no-redundant-and': 'warn',
 	'ramda/no-redundant-not': 'warn',
+	'sonarjs/no-nested-template-literals': 'off',
 	'ramda/no-redundant-or': 'warn',
 	'ramda/pipe-simplification': 'warn',
 	'ramda/prefer-both-either': 'warn',

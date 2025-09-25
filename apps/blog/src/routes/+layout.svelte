@@ -233,11 +233,21 @@ $effect(() => {
 	})
 })
 
-afterNavigate(() => {
-	// 3. window 전체 스크롤을 맨 위로 올립니다.
+afterNavigate(({ from, to}) => {
+	const isInitial = !from
+	const toHash = to?.url?.hash || globalThis.location.hash
+	const hasHash = !!toHash
+
+	// 초기 진입 + 해시가 있으면(앵커 진입) 리셋 금지
+	if (isInitial && hasHash) return
+
+	// 동일 경로 내 해시 변경(인페이지 앵커 이동)도 리셋 금지
+	if (from && hasHash && from.url.pathname === to?.url.pathname) return
+
+	// window 전체 스크롤을 맨 위로 올립니다.
 	window.scrollTo(0, 0)
 
-	// 4. (만약 특정 요소가 스크롤 컨테이너라면) 그 요소의 스크롤을 맨 위로 올립니다.
+	// (만약 특정 요소가 스크롤 컨테이너라면) 그 요소의 스크롤을 맨 위로 올립니다.
 	// scrollableContainer가 마운트된 후에만 실행되도록 확인합니다.
 	if (withSidebarElement) {
 		withSidebarElement.scrollTop = 0

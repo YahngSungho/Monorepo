@@ -50,6 +50,10 @@ label:focus-within,
 	outline-offset: 2px;
 }
 
+*:target {
+	outline-style: groove;
+}
+
 input:focus {
 	outline: transparent;
 }
