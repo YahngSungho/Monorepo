@@ -155,6 +155,5 @@
 		"$daisy/*": "./src/daisyui/*",
 		"$miscellaneous": "./src/miscellaneous",
 		"$miscellaneous/*": "./src/miscellaneous/*"
-	},
-	"svelte": "./dist/index.js"
+	}
 }
