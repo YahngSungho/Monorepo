@@ -462,14 +462,14 @@ let jsonLd = $derived({
 								<input
 									id="email"
 									name="email"
-									autocomplete="email"
 									autocapitalize="none"
-					autocorrect="off"
-					spellcheck="false"
+									autocomplete="email"
+									autocorrect="off"
 									disabled={isSubmitting}
 									oninput={handleInput_action}
 									placeholder="나의@이메일.com"
 									required
+									spellcheck="false"
 									type="email"
 									bind:value={emailValue}
 								/>
