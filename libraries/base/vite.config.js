@@ -56,9 +56,9 @@ const baseConfig = defineConfig({
 		},
 		watch: isDev ? { interval: 150, usePolling: true } : undefined,
 	},
-	ssr: {
-		noExternal: ['bits-ui'],
-	},
+	// ssr: {
+	// 	noExternal: ['bits-ui'],
+	// },
 	test: {
 		exclude: ['**/e2e/**'],
 		include: ['src/**/*.{test,spec}.{js,ts}'],
