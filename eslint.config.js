@@ -72,6 +72,7 @@ const baseRules = {
 	'eslint-comments/no-unlimited-disable': 'off',
 	'eslint-comments/no-use': 'off',
 	'ex/no-unhandled': 'off',
+	'prefer-template': 'off',
 	'functional/functional-parameters': 'off',
 	'functional/immutable-data': 'off',
 	'functional/no-class-inheritance': 'off',
