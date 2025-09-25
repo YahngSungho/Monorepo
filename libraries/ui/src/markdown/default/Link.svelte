@@ -29,11 +29,9 @@ let isFootnoteLink = $derived(href?.startsWith('#note-'))
 		{#if isFootnoteLink}
 			{@render children?.()}
 		{:else}
-			<span class="headingLink">
-				<IconText iconName="mdi:hashtag" noMargin right small>
-					{@render children?.()}
-				</IconText>
-			</span>
+		<IconText iconName="mdi:hashtag" noMargin right small>
+			{@render children?.()}
+		</IconText>
 		{/if}
 	</a>
 {:else if isInternalLink}
