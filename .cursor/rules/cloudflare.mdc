@@ -12,9 +12,8 @@ This codebase is a monorepo and manages multiple web projects.
 
 ### Build
 
-- All web projects are built by SvelteKit with `@sveltejs/adapter-cloudflare`. And `@cloudflare/vite-plugin` is using only when running by `vite dev`.
+- All web projects are built by SvelteKit with `@sveltejs/adapter-cloudflare`.
 - `@sveltejs/adapter-cloudflare` is used in `libraries/base/svelte.config.js` and shared with all other projects.
-- `@cloudflare/vite-plugin` is used in each `apps/*/vite.config.js`.
 
 ### Deploy
 
