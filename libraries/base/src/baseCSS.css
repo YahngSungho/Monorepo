@@ -209,6 +209,12 @@ h6 {
 	scroll-margin-block-start: var(--font-size-fluid-em-cqi-5);
 }
 
+/* Show outline on in-page navigation target without JS */
+[id]:target {
+	outline: 2px dashed color-mix(in srgb, var(--gray-6) 80%, transparent 20%);
+	outline-offset: 2px;
+}
+
 code {
 	padding: 0;
 }
