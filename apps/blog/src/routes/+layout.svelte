@@ -233,7 +233,7 @@ $effect(() => {
 	})
 })
 
-afterNavigate(({ from, to}) => {
+afterNavigate(({ from, to }) => {
 	const isInitial = !from
 	const toHash = to?.url?.hash || globalThis.location.hash
 	const hasHash = !!toHash
