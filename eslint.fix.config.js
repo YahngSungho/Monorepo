@@ -12,6 +12,7 @@ const overrideConfig = [
 			'array-func/prefer-flat': 'warn',
 			'array-func/prefer-flat-map': 'warn',
 			'functional/readonly-type': 'warn',
+			'prefer-template': 'warn',
 			'svelte/first-attribute-linebreak': 'warn',
 			'svelte/html-closing-bracket-new-line': 'warn',
 			'svelte/html-closing-bracket-spacing': 'warn',

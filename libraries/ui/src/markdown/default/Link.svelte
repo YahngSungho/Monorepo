@@ -4,7 +4,7 @@ import { localizeHref } from '@library/paraglide/helpers'
 
 import IconText from '../../miscellaneous/icon-text.svelte'
 
-const newTabProps = {
+const newTabProperties = {
 	rel: 'noopener noreferrer',
 	target: '_blank',
 }
@@ -17,11 +17,11 @@ const linkStyle = css`
 </script>
 
 <script>
-let { href = '', children, ...rest } = $props()
+let { children, href = '', ...rest } = $props()
 
 let isHeadingLink = $derived(href.startsWith('#'))
 let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
-let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
+let isFootnoteLink = $derived(href?.startsWith('#note-'))
 </script>
 
 {#if isHeadingLink}
@@ -29,18 +29,16 @@ let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 		{#if isFootnoteLink}
 			{@render children?.()}
 		{:else}
-			<span class="headingLink">
-				<IconText iconName="mdi:hashtag" noMargin right small>
-					{@render children?.()}
-				</IconText>
-			</span>
+			<IconText iconName="mdi:hashtag" noMargin right small>
+				{@render children?.()}
+			</IconText>
 		{/if}
 	</a>
 {:else if isInternalLink}
 	<a
 		class={linkStyle}
 		href={isInternalLink ? localizeHref(href) : href}
-		{...isInternalLink ? {} : newTabProps}
+		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
 	>
 		<IconText iconName="mdi:file-document-arrow-right-outline" noMargin right small>
@@ -51,7 +49,7 @@ let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
 	<a
 		class={linkStyle}
 		href={isInternalLink ? localizeHref(href) : href}
-		{...isInternalLink ? {} : newTabProps}
+		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
 	>
 		<IconText iconName="mdi:external-link" noMargin right small>

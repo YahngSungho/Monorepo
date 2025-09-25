@@ -858,6 +858,9 @@ importers:
       tw-animate-css:
         specifier: ^1.3.6
         version: 1.3.7
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
       vaul-svelte:
         specifier: 1.0.0-next.7
         version: 1.0.0-next.7(svelte@5.38.3)

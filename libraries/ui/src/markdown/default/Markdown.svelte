@@ -10,6 +10,7 @@ import smartypants from 'remark-smartypants'
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
+import { rehypeRenameFootnotePrefix } from '../plugins/rehypeRenameFootnotePrefix'
 import Blockquote from './Blockquote.svelte'
 import CodeBlock from './CodeBlock.svelte'
 import Delete from './Delete.svelte'
@@ -44,6 +45,9 @@ let { plugins = [], value } = $props()
 	md={removeFrontmatter(value)}
 	plugins={[
 		gfmPlugin(),
+		{
+			rehypePlugin: [rehypeRenameFootnotePrefix, 'note-'],
+		},
 		{
 			remarkPlugin: remarkCjkFriendly,
 		},
