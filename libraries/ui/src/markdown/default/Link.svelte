@@ -21,7 +21,7 @@ let { href = '', children, ...rest } = $props()
 
 let isHeadingLink = $derived(href.startsWith('#'))
 let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
-let isFootnoteLink = $derived(href?.startsWith('#user-content-fn'))
+let isFootnoteLink = $derived(href?.startsWith('#note-'))
 </script>
 
 {#if isHeadingLink}

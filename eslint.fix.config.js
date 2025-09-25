@@ -6,6 +6,7 @@ import defaultConfig from './eslint.config.js'
 const overrideConfig = [
 	{
 		rules: {
+			'prefer-template': 'warn',
 			'array-func/avoid-reverse': 'warn',
 			'array-func/from-map': 'warn',
 			'array-func/prefer-array-from': 'warn',
