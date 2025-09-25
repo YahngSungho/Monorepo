@@ -43,7 +43,8 @@ body {
 }
 
 *:focus,
-label:focus-within, *:target {
+label:focus-within,
+*:target {
 	z-index: var(--layer-important);
 	outline: 2px dashed color-mix(in srgb, var(--gray-6) 80%, transparent 20%);
 	outline-offset: 2px;

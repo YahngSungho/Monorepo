@@ -10,6 +10,7 @@ import smartypants from 'remark-smartypants'
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
+import { rehypeRenameFootnotePrefix } from '../plugins/rehypeRenameFootnotePrefix'
 import Blockquote from './Blockquote.svelte'
 import CodeBlock from './CodeBlock.svelte'
 import Delete from './Delete.svelte'
@@ -36,8 +37,6 @@ import TableHeader from './TableHeader.svelte'
 import TableRow from './TableRow.svelte'
 import UnorderedList from './UnorderedList.svelte'
 import WebImage from './WebImage.svelte'
-
-import { rehypeRenameFootnotePrefix } from '../plugins/rehypeRenameFootnotePrefix'
 
 let { plugins = [], value } = $props()
 </script>
