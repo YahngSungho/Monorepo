@@ -77,7 +77,7 @@
 	"exports": {
 		"./mermaid-helpers": "./src/miscellaneous/mermaid/helpers.js",
 		"./base.js": "./src/layouts/base.js",
-		"./confettiButton": "./src/miscellaneous/confettiButton.svelte",
+		"./confettiButtonDecorator": "./src/miscellaneous/confettiButtonDecorator.svelte",
 		"./sharingButtons": "./src/miscellaneous/sharingButtons.svelte",
 		"./storybookDecorator": "./src/miscellaneous/storybookDecorator.svelte",
 		"./markdown-default": "./src/markdown/default/Markdown.svelte",
