@@ -2,7 +2,7 @@
 import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 
-import IconText from '../miscellaneous/icon-text.svelte'
+import IconText from '@library/ui/icon-text'
 
 const newTabProps = {
 	rel: 'noopener noreferrer',

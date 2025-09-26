@@ -3,7 +3,7 @@
 
 import { defineMeta } from '@storybook/addon-svelte-csf'
 
-import Button from './button.svelte'
+import Button from '../daisyui/button.svelte'
 
 const { Story } = defineMeta({
 	component: Button,
