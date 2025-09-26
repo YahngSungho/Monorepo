@@ -1,11 +1,6 @@
 {
 	"name": "@library/helpers",
-	"version": "1.0.0",
-	"description": "",
-	"license": "ISC",
-	"author": "",
 	"type": "module",
-	"main": "index.js",
 	"scripts": {
 		"depCheck": "npx depcheck",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
@@ -25,7 +20,6 @@
 		"tinyglobby": "^0.2.13",
 		"zod": "^3.25.36"
 	},
-	"keywords": [],
 	"exports": {
 		"./zod-schemas": "./src/zod-schemas/index.js",
 		"./svgo": "./src/library-wrappers/svgo.js",

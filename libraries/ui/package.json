@@ -1,12 +1,6 @@
 {
 	"name": "@library/ui",
-	"version": "0.0.1",
 	"type": "module",
-	"files": [
-		"dist",
-		"!dist/**/*.spec.*",
-		"!dist/**/*.test.*"
-	],
 	"scripts": {
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "pnpm run check -- --watch",
@@ -21,8 +15,6 @@
 		"stylelint-fix": "stylelint --fix --allow-empty-input \"**/*.{css,svelte}\" \"!**/*.md\" \"!**/*.mdx\" --ignore-path ../../.stylelintignore",
 		"test:unit": "vitest run"
 	},
-	"sideEffects": [],
-	"types": "./dist/index.d.ts",
 	"dependencies": {
 		"@dnd-kit-svelte/core": "^0.0.8",
 		"@dnd-kit-svelte/modifiers": "^0.0.8",
@@ -149,7 +141,7 @@
 		"./toggle-group": "./src/shadcn/components/ui/toggle-group/index.ts",
 		"./tooltip": "./src/shadcn/components/ui/tooltip/index.ts"
 	},
-	"import": {
+	"imports": {
 		"$shadcn": "./src/shadcn",
 		"$shadcn/*": "./src/shadcn/*",
 		"$daisy": "./src/daisyui",

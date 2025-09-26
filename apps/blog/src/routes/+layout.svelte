@@ -238,8 +238,8 @@ afterNavigate(({ from, to }) => {
 	const toHash = to?.url?.hash || globalThis.location.hash
 	const hasHash = !!toHash
 
-	// 초기 진입 + 해시가 있으면(앵커 진입) 리셋 금지
-	if (isInitial && hasHash) return
+	// 초기 진입 or 해시가 있으면(앵커 진입) 리셋 금지
+	if (isInitial || hasHash) return
 
 	// 동일 경로 내 해시 변경(인페이지 앵커 이동)도 리셋 금지
 	if (from && hasHash && from.url.pathname === to?.url.pathname) return
