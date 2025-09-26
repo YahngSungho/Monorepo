@@ -34,7 +34,7 @@
 		"@library/helpers": "workspace:*",
 		"@library/library-bottom": "workspace:*",
 		"@library/paraglide": "workspace:*",
-		"@shikijs/rehype": "^3.12.2",
+		"@shikijs/rehype": "^3.13.0",
 		"@tabler/icons-svelte": "^3.33.0",
 		"@tanstack/table-core": "^8.21.3",
 		"@unpic/svelte": "^1.0.0",
