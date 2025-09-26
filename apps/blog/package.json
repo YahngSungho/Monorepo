@@ -38,7 +38,7 @@
 		"@library/library-top": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
-		"nanoid": "^5.1.5",
+		"nanoid": "^5.1.6",
 		"store": "^2.0.12",
 		"svelte-sonner": "^1.0.3",
 		"zod": "^3.25.36"

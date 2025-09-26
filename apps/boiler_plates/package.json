@@ -11,7 +11,7 @@
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
 		"luxon": "^3.6.1",
-		"nanoid": "^5.1.5",
+		"nanoid": "^5.1.6",
 		"ramda": "^0.31.3",
 		"store": "^2.0.12",
 		"svelte-sonner": "^1.0.3",

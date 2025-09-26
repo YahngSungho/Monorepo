@@ -18,7 +18,7 @@
 		"ai": "^4.3.9",
 		"mermaid": "^11.10.0",
 		"mermaid-isomorphic": "^3.0.4",
-		"nanoid": "^5.1.5",
+		"nanoid": "^5.1.6",
 		"playwright": "^1.55.0",
 		"zod": "^3.25.36"
 	},
