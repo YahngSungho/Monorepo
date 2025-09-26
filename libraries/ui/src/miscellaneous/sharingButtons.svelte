@@ -1,7 +1,7 @@
 <script>
 import { page } from '$app/state'
 
-import Button from '../daisyui/button.svelte'
+import Button from '@library/ui/button'
 
 let { title = '', url = page.url.href } = $props()
 

@@ -1,23 +1,54 @@
 <script module>
-import { localizeHref } from '@library/paraglide/helpers'
+	import { css } from '@emotion/css'
+	import { localizeHref } from '@library/paraglide/helpers'
 
-const newTabProps = {
-	rel: 'noopener noreferrer',
-	target: '_blank',
-}
-</script>
+	import IconText from '@library/ui/icon-text'
 
-<script>
-let { href = '', children, class: incomingClass = '', ...rest } = $props()
+	const newTabProperties = {
+		rel: 'noopener noreferrer',
+		target: '_blank',
+	}
 
-let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
-</script>
+	const linkStyle = css`
+		&:visited iconify-icon {
+			color: var(--link-visited) !important;
+		}
+	`
+	</script>
 
-<a
-	class={incomingClass}
-	href={isInternalLink ? localizeHref(href) : href}
-	{...isInternalLink ? {} : newTabProps}
-	{...rest}
->
-	{@render children?.()}
-</a>
+	<script>
+	let { children, href = '', ...rest } = $props()
+
+	let isHeadingLink = $derived(href.startsWith('#'))
+	let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
+	</script>
+
+	{#if isHeadingLink}
+		<a class={linkStyle} {href} {...rest}>
+			<IconText iconName="mdi:hashtag" noMargin right small>
+				{@render children?.()}
+			</IconText>
+		</a>
+	{:else if isInternalLink}
+		<a
+			class={linkStyle}
+			href={isInternalLink ? localizeHref(href) : href}
+			{...isInternalLink ? {} : newTabProperties}
+			{...rest}
+		>
+			<IconText iconName="mdi:file-document-arrow-right-outline" noMargin right small>
+				{@render children?.()}
+			</IconText>
+		</a>
+	{:else}
+		<a
+			class={linkStyle}
+			href={isInternalLink ? localizeHref(href) : href}
+			{...isInternalLink ? {} : newTabProperties}
+			{...rest}
+		>
+			<IconText iconName="mdi:external-link" noMargin right small>
+				{@render children?.()}
+			</IconText>
+		</a>
+	{/if}

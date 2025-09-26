@@ -34,10 +34,10 @@ const { Story } = defineMeta({
 {/snippet}
 
 <!-- 1) 해피 패스: 기본 텍스트 + 왼쪽 아이콘 -->
-<Story name="기본:왼쪽아이콘" args={{ text: '저장', iconName: 'mdi:content-save' }} {template} />
+<Story name="<해피 패스> 왼쪽아이콘" args={{ text: '저장', iconName: 'mdi:content-save' }} {template} />
 
 <!-- 2) 해피 패스: 오른쪽 아이콘 -->
-<Story name="기본:오른쪽아이콘" args={{ text: '다음', iconName: 'mdi:chevron-right', right: true }} {template} />
+<Story name="<해피 패스> 오른쪽아이콘" args={{ text: '다음', iconName: 'mdi:chevron-right', right: true }} {template} />
 
 <!-- 3) 해피 패스: children 사용(슬롯) -->
 <Story name="children_슬롯_사용">
