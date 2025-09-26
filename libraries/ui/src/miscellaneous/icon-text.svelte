@@ -9,6 +9,7 @@ let {
 	right = false,
 	noMargin = false,
 	small = false,
+	bottom = false,
 	alone = false,
 	class: incomingClass = '',
 	...restProps
@@ -16,7 +17,7 @@ let {
 </script>
 
 {#snippet iconElement()}
-	<span class="icon-container" class:alone={alone || (!children && !text)} class:noMargin class:right class:small>
+	<span class="icon-container" class:alone={alone || (!children && !text)} class:noMargin class:right class:small class:bottom>
 		<span>
 			{#if iconName}
 				<iconify-icon icon={iconName} {...iconProps}></iconify-icon>
@@ -79,6 +80,10 @@ let {
 		&.small {
 			inset-block-start: -0.4ex;
 			font-size: 0.8em;
+
+			&.bottom {
+				inset-block-start: 0;
+			}
 		}
 
 		& > span {

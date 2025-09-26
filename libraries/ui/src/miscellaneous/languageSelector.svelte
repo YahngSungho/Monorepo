@@ -2,7 +2,7 @@
 import { R } from '@library/helpers/R'
 import { allLanguages } from '@library/paraglide/getAllActiveLanguageInfo'
 
-import Button from '$daisy/button.svelte'
+import Button from '@library/ui/button'
 import * as Command from '$shadcn/components/ui/command/index.js'
 import * as Popover from '$shadcn/components/ui/popover/index.js'
 
