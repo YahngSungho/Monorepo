@@ -1,6 +1,5 @@
 {
 	"name": "@library/backends",
-	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
 		"build:cloudflare": "pnpm run build:wrangler && pnpm run build:headers",
