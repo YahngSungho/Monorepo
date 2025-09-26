@@ -4,7 +4,7 @@ import { getLocale, localizeHref, setLocale } from '@library/paraglide/helpers'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
 import { Badge } from '@library/ui/badge'
-import Button2 from '@library/ui/button_daisy'
+import Button2 from '@library/ui/button'
 import { Button as Button1 } from '@library/ui/button_shadcn'
 import IconText from '@library/ui/icon-text'
 import VariationSetter from '@library/ui/variationSetter'
