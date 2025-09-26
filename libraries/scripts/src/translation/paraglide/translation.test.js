@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { normalizeString } from '@library/helpers/functions'
+import { getSimpleHash, normalizeString } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -59,8 +59,8 @@ const helpersMocks = vi.hoisted(() => {
 	return {
 		mockGetInitialLanguageMap: vi.fn(() => ({
 			en: {},
-			ko: {},
 			ja: {},
+			ko: {},
 		})),
 	}
 })
@@ -95,8 +95,8 @@ describe('Paraglide 번역 스크립트', () => {
 					translatedMessages[key] = `translated_${key}_for_${language}`
 				}
 				return {
-					translatedMessages,
 					newDictionary: { ...dictionary }, // 입력 사전 복사 또는 수정
+					translatedMessages,
 					// newMessages는 translateOneLanguageMessages 내부에서 계산되므로 여기서는 반환 안 함
 				}
 			},
@@ -114,20 +114,20 @@ describe('Paraglide 번역 스크립트', () => {
 			helpersMocks.mockGetInitialLanguageMap.mockReturnValueOnce({
 				// 이 테스트를 위한 특정 반환 값 설정
 				en: {},
-				ko: {},
 				ja: {},
+				ko: {},
 				// 필요한 경우 더 많은 언어 추가
 			})
 			readFilesToObjects
 				.mockResolvedValueOnce({
 					// messageFolderPath
-					'ko.json': { $schema: 'schema', a: '안녕', b: '세계' },
 					'en.json': { $schema: 'schema', a: 'Hello' },
+					'ko.json': { $schema: 'schema', a: '안녕', b: '세계' },
 				})
 				.mockResolvedValueOnce({
 					// helperFolderPath
-					'explanations.json': { $schema: 'schema', a: 'Greeting' },
 					'cache.json': { $schema: 'schema', c: 'Cached' },
+					'explanations.json': { $schema: 'schema', a: 'Greeting' },
 				})
 				.mockResolvedValueOnce({
 					// dictFolderPath
@@ -162,8 +162,8 @@ describe('Paraglide 번역 스크립트', () => {
 			helpersMocks.mockGetInitialLanguageMap.mockReturnValueOnce({
 				// 이 테스트를 위한 특정 반환 값 설정
 				en: {},
-				ko: {},
 				ja: {}, // 'ja' 속성 추가하여 린터 오류 해결
+				ko: {},
 			})
 			readFilesToObjects
 				.mockResolvedValueOnce({ 'ko.json': { a: '안녕' } }) // messages
@@ -184,18 +184,18 @@ describe('Paraglide 번역 스크립트', () => {
 
 	describe('getTranslatedLanguageMap 함수', () => {
 		const baseLanguageMessageMap = {
-			ko: { msg1: '한글1', msg2: '한글2' },
 			en: { msg1: 'English1' },
 			ja: { msg1: '日本語1' },
+			ko: { msg1: '한글1', msg2: '한글2' },
 		}
 		const baseExplanations = { msg1: 'Expl1', msg2: 'Expl2' }
 		const baseDictPerLanguage = {
-			ko: { term1: '용어1' },
 			en: { term1: 'Term1' },
 			ja: {},
+			ko: { term1: '용어1' },
 		}
 		const baseCombinedMessagesCached = {
-			msg_cached: { ko: '캐시된 한글', explanation: '캐시설명' },
+			msg_cached: { explanation: '캐시설명', ko: '캐시된 한글' },
 		}
 
 		// 원칙: 동작 테스트 (공개 API), 모의 최소화 (getTranslatedMessages만 모의)
@@ -240,17 +240,17 @@ describe('Paraglide 번역 스크립트', () => {
 					// numberedPayload = { 1: {ko:'한글1',exp:'Expl1'}, 2: {ko:'한글2',exp:'Expl2'} } (msg1, msg2 순서 가정)
 					// olderMsgs = [] (targetLanguageMap.en.value.msg1이 missingKey 'msg1'에 해당하므로 older가 아님)
 					expect(numberedPayload).toEqual({
-						1: { ko: '한글1', explanation: 'Expl1' },
-						2: { ko: '한글2', explanation: 'Expl2' },
+						1: { explanation: 'Expl1', ko: '한글1' },
+						2: { explanation: 'Expl2', ko: '한글2' },
 					})
 					expect(olderMsgs).toEqual([])
 					// translatedMessages는 숫자키로 반환
 					return {
+						newDictionary: { ...dict, newEnTerm: 'NewEn' },
 						translatedMessages: {
 							1: 'Translated_English_msg1_#KEY#',
 							2: 'Translated_English_msg2_#KEY#',
 						},
-						newDictionary: { ...dict, newEnTerm: 'NewEn' },
 					}
 				})
 				.mockImplementationOnce(async (lang, numberedPayload, olderMsgs, dict) => {
@@ -262,13 +262,13 @@ describe('Paraglide 번역 스크립트', () => {
 					// numberedPayload = { 1: {ko:'한글1',exp:'Expl1'}, 2: {ko:'한글2',exp:'Expl2', en: 'Translated_English_msg2_#KEY#'} }
 					// olderMsgs = []
 					expect(numberedPayload).toEqual({
-						1: { ko: '한글1', explanation: 'Expl1', en: 'Translated_English_msg1_#KEY#' },
-						2: { ko: '한글2', explanation: 'Expl2', en: 'Translated_English_msg2_#KEY#' },
+						1: { en: 'Translated_English_msg1_#KEY#', explanation: 'Expl1', ko: '한글1' },
+						2: { en: 'Translated_English_msg2_#KEY#', explanation: 'Expl2', ko: '한글2' },
 					})
 					expect(olderMsgs).toEqual([])
 					return {
-						translatedMessages: { 1: '翻訳された_msg1_#KEY#', 2: '翻訳された_msg2_#KEY#' },
 						newDictionary: { ...dict, newJaTerm: 'NewJa' },
+						translatedMessages: { 1: '翻訳された_msg1_#KEY#', 2: '翻訳された_msg2_#KEY#' },
 					}
 				})
 
@@ -290,7 +290,7 @@ describe('Paraglide 번역 스크립트', () => {
 				msg2: 'Translated_English_msg2_#KEY#',
 			})
 			console.log('💬 it result:', result)
-			expect(result.en.newDictionary).toEqual({ term1: 'Term1', newEnTerm: 'NewEn' })
+			expect(result.en.newDictionary).toEqual({ newEnTerm: 'NewEn', term1: 'Term1' })
 			expect(result.en.newMessages).toEqual({
 				msg1: 'Translated_English_msg1_#KEY#',
 				msg2: 'Translated_English_msg2_#KEY#',
@@ -318,16 +318,22 @@ describe('Paraglide 번역 스크립트', () => {
 			// targetLanguageMap.en.missingMessageKeys = []
 			// targetLanguageMap.ja.missingMessageKeys = []
 			const languageMessageMapForNoMissing = {
-				ko: { msg1: '한글1', msg2: '한글2' },
 				en: { msg1: 'English1', msg2: 'English2' },
 				ja: { msg1: '日本語1', msg2: '日本語2' },
+				ko: { msg1: '한글1', msg2: '한글2' },
 			}
 			const explanationsForNoMissing = { msg1: 'Expl1', msg2: 'Expl2' }
 			// 캐시된 메시지가 최신 메시지 및 설명과 완전히 일치하고,
 			// 각 언어의 메시지 파일(.json)에 모든 키가 존재하면 missingMessageKeys는 비어있게 됨.
 			const cachedMessagesForNoMissing = {
-				msg1: { ko: '한글1', explanation: 'Expl1' },
-				msg2: { ko: '한글2', explanation: 'Expl2' },
+				msg1: {
+					explanation: getSimpleHash(normalizeString('Expl1')),
+					ko: getSimpleHash(normalizeString('한글1')),
+				},
+				msg2: {
+					explanation: getSimpleHash(normalizeString('Expl2')),
+					ko: getSimpleHash(normalizeString('한글2')),
+				},
 			}
 
 			mockGetTranslatedMessages.mockImplementation(
@@ -342,7 +348,7 @@ describe('Paraglide 번역 스크립트', () => {
 						expect(olderMsgs).toEqual(['日本語1', '日本語2'])
 					}
 
-					return { translatedMessages: {}, newDictionary: { ...dict } } // 번역된 내용 없음
+					return { newDictionary: { ...dict }, translatedMessages: {} } // 번역된 내용 없음
 				},
 			)
 
@@ -384,53 +390,53 @@ describe('Paraglide 번역 스크립트', () => {
 	describe('saveFiles 함수', () => {
 		const mockTranslatedLanguageMap = {
 			en: {
-				value: { msg1: 'English1' },
 				missingMessageKeys: ['msg2'], // 저장 대상
-				translatedMessages: { msg2: 'Translated_English_msg2' },
+				newDictionary: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					term_en: 'TermEN',
+				},
 				newMessages: {
 					$schema: 'https://inlang.com/schema/inlang-message-format',
 					msg1: 'English1',
 					msg2: 'Translated_English_msg2',
 				},
-				newDictionary: {
-					$schema: 'https://inlang.com/schema/inlang-message-format',
-					term_en: 'TermEN',
-				},
+				translatedMessages: { msg2: 'Translated_English_msg2' },
+				value: { msg1: 'English1' },
 			},
 			ja: {
-				value: { msg1: '日本語1' },
 				missingMessageKeys: [], // 저장 안 함
-				translatedMessages: {},
-				newMessages: {
-					$schema: 'https://inlang.com/schema/inlang-message-format',
-					msg1: '日本語1',
-				},
 				newDictionary: {
 					$schema: 'https://inlang.com/schema/inlang-message-format',
 					term_ja: 'TermJA',
 				},
+				newMessages: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					msg1: '日本語1',
+				},
+				translatedMessages: {},
+				value: { msg1: '日本語1' },
 			},
 			ko: {
-				value: { msg1: '한글1', msg2: '한글2' },
 				missingMessageKeys: ['msg3'], // 저장 대상
-				translatedMessages: { msg3: '번역된_한글3' },
+				newDictionary: {
+					$schema: 'https://inlang.com/schema/inlang-message-format',
+					term_ko: 'TermKO',
+				},
 				newMessages: {
 					$schema: 'https://inlang.com/schema/inlang-message-format',
 					msg1: '한글1',
 					msg2: '한글2',
 					msg3: '번역된_한글3',
 				},
-				newDictionary: {
-					$schema: 'https://inlang.com/schema/inlang-message-format',
-					term_ko: 'TermKO',
-				},
+				translatedMessages: { msg3: '번역된_한글3' },
+				value: { msg1: '한글1', msg2: '한글2' },
 			},
 		}
 		const mockExplanations = { msg1: 'Expl1', msg2: 'Expl2', msg3: 'Expl3' }
 		const mockLanguageMessageMapKo = { msg1: '한글1', msg2: '한글2' }
 
 		beforeEach(() => {
-			writeFile_async.mockResolvedValue(undefined) // 기본적으로 성공으로 설정
+			writeFile_async.mockResolvedValue() // 기본적으로 성공으로 설정
 		})
 
 		// 원칙: 동작 테스트 (공개 API), 모의 최소화 (fs-async만 모의)
@@ -476,10 +482,16 @@ describe('Paraglide 번역 스크립트', () => {
 		// 원칙: 동작 테스트
 		it('새로운 캐시 파일을 올바르게 저장해야 한다', async () => {
 			// 준비 (Arrange)
-			// getNewCache는 { ko: languageMessageMap_ko }, explanations 를 기반으로 캐시를 생성
+			// getNewCache는 { ko: languageMessageMap_ko }, explanations 를 기반으로 해시된 캐시를 생성
 			const expectedNewCache = {
-				msg1: { ko: normalizeString('한글1'), explanation: normalizeString('Expl1') },
-				msg2: { ko: normalizeString('한글2'), explanation: normalizeString('Expl2') },
+				msg1: {
+					explanation: getSimpleHash(normalizeString('Expl1')),
+					ko: getSimpleHash(normalizeString('한글1')),
+				},
+				msg2: {
+					explanation: getSimpleHash(normalizeString('Expl2')),
+					ko: getSimpleHash(normalizeString('한글2')),
+				},
 				// msg3은 languageMessageMapKo에 없으므로 캐시에 포함되지 않음
 			}
 
