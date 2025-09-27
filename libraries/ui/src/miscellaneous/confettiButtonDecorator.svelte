@@ -4,7 +4,7 @@ import { Confetti } from 'svelte-confetti'
 </script>
 
 <script>
-let { children, isConfettiActivated = false, ...props } = $props()
+let { children, isConfettiActivated = false, ...properties } = $props()
 
 let clicked = $state(false)
 </script>
@@ -12,7 +12,8 @@ let clicked = $state(false)
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <span
-	style="position: relative; z-index: 1;"
+	style:position="relative"
+	style:z-index="1"
 	onclick={async () => {
 		clicked = false
 		await tick()
@@ -21,13 +22,16 @@ let clicked = $state(false)
 >
 	{#if isConfettiActivated && clicked}
 		<span
-			style="position: absolute; z-index: 100; inset-block-start: 50%; inset-inline-start: 50%;"
+			style:position="absolute"
+			style:inset-block-start="50%"
+			style:inset-inline-start="50%"
+			style:z-index="100"
 		>
-			<Confetti {...props} />
+			<Confetti {...properties} />
 		</span>
 	{/if}
 
-	<span style=" position: relative;z-index: 1;">
+	<span style:position="relative" style:z-index="1">
 		{@render children()}
 	</span>
 </span>

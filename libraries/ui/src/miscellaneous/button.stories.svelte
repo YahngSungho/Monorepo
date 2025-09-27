@@ -41,61 +41,61 @@ const { Story } = defineMeta({
 </Story>
 
 <Story name="Secondary" args={{ variant: 'secondary' }}>
-	{#snippet template(args)}
-		<Button {...args}>Secondary Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Secondary Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Outline" args={{ variant: 'outline' }}>
-	{#snippet template(args)}
-		<Button {...args}>Outline Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Outline Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Text" args={{ variant: 'text' }}>
-	{#snippet template(args)}
-		<Button {...args}>Text Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Text Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Accent" args={{ variant: 'accent' }}>
-	{#snippet template(args)}
-		<Button {...args}>Accent Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Accent Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Info" args={{ variant: 'info' }}>
-	{#snippet template(args)}
-		<Button {...args}>Info Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Info Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Success" args={{ variant: 'success' }}>
-	{#snippet template(args)}
-		<Button {...args}>Success Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Success Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Warning" args={{ variant: 'warning' }}>
-	{#snippet template(args)}
-		<Button {...args}>Warning Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Warning Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Error" args={{ variant: 'error' }}>
-	{#snippet template(args)}
-		<Button {...args}>Error Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Error Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Disabled" args={{ disabled: true, variant: 'primary' }}>
-	{#snippet template(args)}
-		<Button {...args}>Disabled Primary Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Disabled Primary Button</Button>
 	{/snippet}
 </Story>
 
 <Story name="Disabled / Secondary" args={{ disabled: true, variant: 'secondary' }}>
-	{#snippet template(args)}
-		<Button {...args}>Disabled Secondary Button</Button>
+	{#snippet template(arguments_)}
+		<Button {...arguments_}>Disabled Secondary Button</Button>
 	{/snippet}
 </Story>
