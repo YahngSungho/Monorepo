@@ -3,18 +3,12 @@
 // 자바스크립트 전용 - lang="ts" 사용 금지
 import { defineMeta } from '@storybook/addon-svelte-csf'
 import IconText from './icon-text.svelte'
-import StorybookDecorator from '@library/ui/storybookDecorator'
-
+import { storybookDecoratorArray } from '@library/ui/storybookDecorator'
 // 메타데이터 정의: 컴포넌트, 경로(사이드바), 전역 데코레이터, 컨트롤 설정
 const { Story } = defineMeta({
 	title: 'Miscellaneous/IconText',
 	component: IconText,
-	    decorators: [
-      (StoryElement) => ({
-        Component: StorybookDecorator,
-        props: { children: StoryElement },
-      }),
-    ],
+	    decorators: storybookDecoratorArray,
 	argTypes: {
 		text: { control: 'text', description: '텍스트 콘텐츠' },
 		iconName: { control: 'text', description: 'Iconify 아이콘 이름' },

@@ -1,17 +1,12 @@
 <script module>
 import { defineMeta } from '@storybook/addon-svelte-csf'
 import ConfettiButtonDecorator from './confettiButtonDecorator.svelte'
-import StorybookDecorator from '@library/ui/storybookDecorator'
+import { storybookDecoratorArray } from '@library/ui/storybookDecorator'
 
 const { Story } = defineMeta({
 	title: 'Miscellaneous/ConfettiButtonDecorator',
 	component: ConfettiButtonDecorator,
-	    decorators: [
-      (StoryElement) => ({
-        Component: StorybookDecorator,
-        props: { children: StoryElement },
-      }),
-    ],
+	    decorators: storybookDecoratorArray,
 	parameters: {
 		layout: 'centered',
 	},
