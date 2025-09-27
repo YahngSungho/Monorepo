@@ -79,7 +79,7 @@
 		"./base.js": "./src/layouts/base.js",
 		"./confettiButtonDecorator": "./src/miscellaneous/confettiButtonDecorator.svelte",
 		"./sharingButtons": "./src/miscellaneous/sharingButtons.svelte",
-		"./storybookDecorator": "./src/miscellaneous/storybookDecorator.svelte",
+		"./storybookDecorator": "./src/miscellaneous/storybookDecorator.svelte.js",
 		"./markdown-default": "./src/markdown/default/Markdown.svelte",
 		"./markdown-email": "./src/markdown/email/Markdonw.svelte",
 		"./markdown-blog": "./src/markdown/blog/Markdown.svelte",

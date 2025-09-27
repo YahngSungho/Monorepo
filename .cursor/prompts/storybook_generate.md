@@ -52,7 +52,7 @@
     	**4. Generate `.stories.svelte` Code:**
     			- Write the complete content for the `.stories.svelte` file.
     			- **`<script module>` Section:**
-    				- Include necessary imports (`defineMeta` from `@storybook/addon-svelte-csf`, the target component, and `import StorybookDecorator from '@library/ui/storybookDecorator'`).
+    				- Include necessary imports (`defineMeta` from `@storybook/addon-svelte-csf`, the target component, and `import { storybookDecoratorArray } from '@library/ui/storybookDecorator'`).
     				- Call `defineMeta`, providing `title` (e.g., `경로/컴포넌트명`), `component` (the imported component), `decorators: [() => StorybookDecorator]`, and potentially basic `argTypes` to enable controls for common props if helpful.
     				- **USE JAVASCRIPT ONLY.**
     			- **Snippets:**
@@ -81,17 +81,12 @@
 			// 자바스크립트 전용 - lang="ts" 사용 금지
 			import { defineMeta } from '@storybook/addon-svelte-csf';
 			import MyExampleComponent from './MyExampleComponent.svelte'; // 임포트 경로 조정
-			import StorybookDecorator from '@library/ui/storybookDecorator'; // 데코레이터 임포트
+			import { storybookDecoratorArray } from '@library/ui/storybookDecorator'; // 데코레이터 임포트
 			// defineMeta는 컴포넌트 메타데이터를 정의합니다
 			const { Story } = defineMeta({
 				title: '예시/MyExampleComponent', // 제목 조정
 				component: MyExampleComponent,
-				    decorators: [
-      (StoryElement) => ({
-        Component: StorybookDecorator,
-        props: { children: StoryElement },
-      }),
-    ], // 모든 스토리에 데코레이터 적용
+				    decorators: storybookDecoratorArray, // 모든 스토리에 데코레이터 적용
 				argTypes: { // 컨트롤을 위한 선택적 기본 argTypes
 					labelText: { control: 'text' },
 					isDisabled: { control: 'boolean' },
