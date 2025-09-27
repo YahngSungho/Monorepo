@@ -1,6 +1,8 @@
-import StorybookDecorator from './storybookDecorator.svelte';
+import StorybookDecorator from './storybookDecorator.svelte'
 
-export const storybookDecoratorArray =[(StoryElement) => ({
-	Component: StorybookDecorator,
-	props: { children: StoryElement },
-})]
+export const storybookDecoratorArray = [
+	(StoryElement) => ({
+		Component: StorybookDecorator,
+		props: { children: StoryElement },
+	}),
+]

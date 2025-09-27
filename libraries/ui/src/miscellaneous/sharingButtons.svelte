@@ -1,7 +1,7 @@
 <script>
-import { page } from '$app/state'
-
 import Button from '@library/ui/button'
+
+import { page } from '$app/state'
 
 let { title = '', url = page.url.href } = $props()
 
