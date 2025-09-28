@@ -1,0 +1,11 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Strict-Transport-Security: max-age=31536000; includeSubDomains;
+  Permissions-Policy: document-domain=()
+
+https://:version.:subdomain.workers.dev/*
+  X-Robots-Tag: noindex
+
+/_app/immutable/*
+  Cache-Control: public, max-age=31536000, immutable
