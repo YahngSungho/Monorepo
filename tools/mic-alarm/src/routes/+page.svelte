@@ -52,7 +52,6 @@ const statusText = $derived.by(() => {
 })
 
 // Calculations (pure)
-/** @param {ArrayLike<number>} buffer */
 function calculateRms(buffer) {
 	let sumSquares = 0
 	for (const v of buffer) {
@@ -153,7 +152,7 @@ function sample_action() {
 	nowMs = Date.now()
 	if (!analyser || !dataArray || isPaused) return
 	analyser.getFloatTimeDomainData(/** @type {any} */ (dataArray))
-	const rms = calculateRms(/** @type {ArrayLike<number>} */ (dataArray))
+	const rms = calculateRms((dataArray))
 	const database = rmsToDatabase(rms)
 	currentDatabase =
 		Number.isFinite(database) ? Number(Math.max(-100, Math.min(0, database)).toFixed(0)) : -100
@@ -417,15 +416,6 @@ $effect(() => {
 	max-inline-size: 780px;
 	margin: 0 auto;
 	padding: var(--space-l, 2rem);
-
-	font-family:
-		system-ui,
-		-apple-system,
-		'Segoe UI',
-		Roboto,
-		Helvetica,
-		Arial,
-		sans-serif;
 	color: var(--foreground, rgb(17 17 17));
 }
 
@@ -453,6 +443,7 @@ $effect(() => {
 .label {
 	opacity: 0.75;
 }
+
 .value {
 	font-size: 1.125rem;
 }
@@ -475,6 +466,7 @@ $effect(() => {
 
 	font-size: 1.25rem;
 }
+
 .range {
 	inline-size: 100%;
 }
@@ -499,6 +491,7 @@ $effect(() => {
 		background: var(--accent, rgb(238 238 238));
 	}
 }
+
 .hint {
 	opacity: 0.7;
 }
