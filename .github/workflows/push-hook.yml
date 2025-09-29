@@ -5,6 +5,8 @@ on:
 
 jobs:
   comment:
+    permissions:
+      issues: write
     runs-on: ubuntu-latest
     steps:
       - name: /gemini review
