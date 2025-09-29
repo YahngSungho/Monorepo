@@ -1,0 +1,10 @@
+---
+globs: **/server/**,+server.*,*.server.*
+alwaysApply: false
+---
+This codebase's web projects will be built by Sveltekit and deployed to Cloudflare Workers. Files with paths matching `**/server/**`, `+server.*`, or `*.server.*` will be processed as Serverless Functions running on Workers, subject to the following constraints:
+
+Execution Environment: Use only ‘Web Standard APIs’ (not Node.js or browser UI)
+MUST: Use Web Standard APIs such as `fetch`, `Request`, `Response`, `URL`, `crypto`, etc.
+NEVER: Absolutely do not use Node.js-specific modules (such as `fs`, `os`, `path`, etc.).
+NEVER: Absolutely do not use browser UI/Device APIs (such as `document`, `window`, `alert`, `localStorage`, `navigator.geolocation`, etc.).
