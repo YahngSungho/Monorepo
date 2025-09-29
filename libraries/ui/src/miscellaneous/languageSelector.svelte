@@ -1,14 +1,14 @@
 <script lang="ts">
 import { R } from '@library/helpers/R'
 import { allLanguages } from '@library/paraglide/getAllActiveLanguageInfo'
+import Button from '@library/ui/button'
 
-import Button from '$daisy/button.svelte'
 import * as Command from '$shadcn/components/ui/command/index.js'
 import * as Popover from '$shadcn/components/ui/popover/index.js'
 
 import IconText from './icon-text.svelte'
 
-let { getLocale, setLocale, buttonClass = '', size = 'sm' } = $props()
+let { buttonClass = '', getLocale, setLocale, size = 'sm' } = $props()
 
 const preferredLocales = (() => {
 	if (typeof navigator !== 'undefined') {
@@ -79,7 +79,7 @@ async function closeAndFocusTrigger() {
 const LOADING_VALUE = '$loading'
 </script>
 
-<div style="inline-size: fit-content;">
+<div style:inline-size="fit-content">
 	<Popover.Root bind:open>
 		<Popover.Trigger>
 			{#snippet child({ props })}
@@ -93,7 +93,7 @@ const LOADING_VALUE = '$loading'
 					variant="outline"
 				>
 					{#if value === LOADING_VALUE}
-						<span style="margin-inline: 1em;" class="loading loading-dots loading-sm"></span>
+						<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
 					{:else}
 						<IconText
 							iconName="mdi:chevron-up-down"

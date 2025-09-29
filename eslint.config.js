@@ -69,6 +69,7 @@ const baseRules = {
 			presets: ['native', 'preferred'],
 		},
 	],
+	'dot-notation': 'off',
 	'eslint-comments/no-unlimited-disable': 'off',
 	'eslint-comments/no-use': 'off',
 	'ex/no-unhandled': 'off',
@@ -204,6 +205,7 @@ const baseRules = {
 	'unicorn/no-array-reduce': 'off',
 	'unicorn/no-console-spaces': 'off',
 	'unicorn/no-empty-file': 'off',
+	'unicorn/no-for-loop': 'off',
 	'unicorn/no-hex-escape': 'off',
 	'unicorn/no-instanceof-builtins': 'off',
 	'unicorn/no-nested-ternary': 'off',
@@ -451,6 +453,7 @@ export default defineFlatConfig([
 			'**/e2e/*.js',
 			'*.test.js',
 			'**/*.tests.js',
+			'tools/**',
 		],
 
 		rules: {

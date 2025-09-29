@@ -78,6 +78,7 @@ const overrideConfig = [
 			'unicorn/no-array-for-each': 'warn',
 			'unicorn/no-array-push-push': 'warn',
 			'unicorn/no-console-spaces': 'warn',
+			'unicorn/no-for-loop': 'warn',
 			'unicorn/no-hex-escape': 'warn',
 			'unicorn/no-instanceof-builtins': 'warn',
 			'unicorn/no-nested-ternary': 'warn',
@@ -89,7 +90,6 @@ const overrideConfig = [
 			'unicorn/no-useless-length-check': 'warn',
 			'unicorn/no-useless-promise-resolve-reject': 'warn',
 			'unicorn/no-useless-spread': 'warn',
-			'unicorn/no-useless-undefined': 'warn',
 			'unicorn/number-literal-case': 'warn',
 			'unicorn/numeric-separators-style': 'warn',
 			'unicorn/prefer-array-find': 'warn',
@@ -126,7 +126,15 @@ const overrideConfig = [
 			'unicorn/prefer-string-trim-start-end': 'warn',
 			'unicorn/prefer-switch': 'warn',
 			'unicorn/prefer-type-error': 'warn',
-			'unicorn/prevent-abbreviations': 'warn',
+			'unicorn/prevent-abbreviations': [
+				'warn',
+				{
+					replacements: {
+						prop: false,
+						props: false,
+					},
+				},
+			],
 			'unicorn/relative-url-style': 'warn',
 			'unicorn/switch-case-braces': 'warn',
 			'unicorn/text-encoding-identifier-case': 'warn',

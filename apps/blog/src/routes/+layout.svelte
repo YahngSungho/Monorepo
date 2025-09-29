@@ -5,8 +5,8 @@ import { idleRun_action } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 import { emailSchema } from '@library/helpers/zod-schemas'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
-import Button from '@library/ui/button_daisy'
-import ConfettiButton from '@library/ui/confettiButton'
+import Button from '@library/ui/button'
+import ConfettiButtonDecorator from '@library/ui/confettiButtonDecorator'
 import BaseLayout from '@library/ui/layouts/root'
 import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
@@ -445,7 +445,7 @@ let jsonLd = $derived({
 					style:flex-direction="column"
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-size: min(calc(100cqi / 6.4), 5em); font-weight: 900;" href="/">
+					<Link style="font-size: min(calc(100cqi / 7), 5em); font-weight: 900;" href="/">
 						{URL}
 					</Link>
 				</div>
@@ -486,7 +486,8 @@ let jsonLd = $derived({
 								<span>이메일</span>
 							</label>
 						</div>
-						<ConfettiButton
+
+						<ConfettiButtonDecorator
 							class="join-item"
 							amount={10}
 							colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
@@ -499,7 +500,7 @@ let jsonLd = $derived({
 							<Button class="join-item" loading={isSubmitting} size="sm" type="submit">
 								{isSubscribed ? '구독 됨!' : '구독하기'}
 							</Button>
-						</ConfettiButton>
+						</ConfettiButtonDecorator>
 					</div>
 
 					<div

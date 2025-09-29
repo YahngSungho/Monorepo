@@ -2,30 +2,38 @@
 import { cx } from '@emotion/css'
 
 let {
-	children = null,
-	text = '',
-	iconName = '',
-	iconProps = {},
-	right = false,
-	noMargin = false,
-	small = false,
 	alone = false,
+	bottom = false,
+	children = null,
 	class: incomingClass = '',
-	...restProps
+	iconName = '',
+	iconProps: iconProperties = {},
+	noMargin = false,
+	right = false,
+	small = false,
+	text = '',
+	...restProperties
 } = $props()
 </script>
 
 {#snippet iconElement()}
-	<span class="icon-container" class:alone={alone || (!children && !text)} class:noMargin class:right class:small>
+	<span
+		class="icon-container"
+		class:alone={alone || (!children && !text)}
+		class:bottom
+		class:noMargin
+		class:right
+		class:small
+	>
 		<span>
 			{#if iconName}
-				<iconify-icon icon={iconName} {...iconProps}></iconify-icon>
+				<iconify-icon icon={iconName} {...iconProperties}></iconify-icon>
 			{/if}
 		</span>
 	</span>
 {/snippet}
 
-<span class={cx("with-icon", incomingClass)} {...restProps}>
+<span class={cx('with-icon', incomingClass)} {...restProperties}>
 	{#if right}
 		{#if children}
 			{@render children()}
@@ -79,6 +87,10 @@ let {
 		&.small {
 			inset-block-start: -0.4ex;
 			font-size: 0.8em;
+
+			&.bottom {
+				inset-block-start: 0;
+			}
 		}
 
 		& > span {
@@ -88,5 +100,4 @@ let {
 		}
 	}
 }
-
 </style>
