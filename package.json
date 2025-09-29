@@ -35,7 +35,7 @@
 		"@emotion/css": "^11.13.5",
 		"@emotion/server": "^11.11.0",
 		"@sentry/sveltekit": "^10.15.0",
-		"daisyui": "5.0.35",
+		"daisyui": "5.1.25",
 		"zod": "^3.25.36"
 	},
 	"devDependencies": {
