@@ -1,6 +1,6 @@
 # Args
 
-A story is a component with a set of arguments that define how the component should render. "Args" are Storybook's mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. It allows Storybook and its addons to live edit components. You _do not_ need to modify your underlying component code to use args.
+A story is a component with a set of arguments that define how the component should render. "Args" are Storybook's mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. It allows Storybook and its addons to live edit components. You *do not* need to modify your underlying component code to use args.
 
 When an arg's value changes, the component re-renders, allowing you to interact with components in Storybook's UI via addons that affect args.
 
@@ -17,7 +17,7 @@ To define the args of a single story, use the `args` property in the `Story`�
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    label: 'Button',    primary: true  }}/>
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    label: 'Button',    primary: true  }} />
 ```
 
 These args will only apply to the story for which they are attached, although you can reuse them via JavaScript object reuse:
@@ -25,7 +25,7 @@ These args will only apply to the story for which they are attached, although yo
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArgs} /><Story name="PrimaryLongName"  args={{    ...primaryArgs,    label: 'Primary with a really long name'  }} />
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArguments = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArguments} /><Story name="PrimaryLongName"  args={{    ...primaryArguments,    label: 'Primary with a really long name'  }} />
 ```
 
 In the above example, we use the object spread feature of ES 2015.
@@ -45,8 +45,8 @@ You can also define args at the global level; they will apply to every component
 .storybook/preview.js
 
 export default { // The default value of the theme arg for all stories
-  tags: ['autodocs'],
-  args: { theme: 'light' },
+tags: ['autodocs'],
+args: { theme: 'light' },
 };
 
 For most uses of global args, globals are a better tool for defining globally-applied settings, such as a theme. Using globals enables users to change the value with the toolbar menu.
@@ -56,10 +56,10 @@ For most uses of global args, globals are a better tool for defining globally-
 You can separate the arguments to a story to compose in other stories. Here's how you can combine args for multiple stories of the same component.
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArgs} /><Story name="Secondary" args={{...primaryArgs, primary: false}} />
-````
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArguments = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArguments} /><Story name="Secondary" args={{...primaryArguments, primary: false}} />
+```
 
 If you find yourself re-using the same args for most of a component's stories, you should consider using component-level args.
 
@@ -79,7 +79,7 @@ You can use args in your stories to configure the component's appearance, simila
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
+import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(arguments_)}    <Page {...arguments_}>      <footer>{arguments_.footer}</footer>    </Page>  {/snippet}</Story>
 ```
 
 ## Setting args through the URL
@@ -111,7 +111,7 @@ Complex values such as JSX elements cannot be serialized to the manager (e.g., t
 import { Example } from './Example';export default {  component: Example,  argTypes: {    label: {      options: ['Normal', 'Bold', 'Italic'],      mapping: {        Bold: <b>Bold</b>,        Italic: <i>Italic</i>,      },    },  },};
 ```
 
-Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg _values_, not their index in the `options` array.
+Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg *values*, not their index in the `options` array.
 
 # Parameters
 
@@ -128,7 +128,7 @@ With Svelte, we can set the `parameters` property in the `Story` component t
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="OnDark"  parameters={{    backgrounds: { default: 'dark' }  }}/>
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="OnDark"  parameters={{    backgrounds: { default: 'dark' }  }} />
 ```
 
 ## Component parameters
@@ -308,7 +308,7 @@ Note that by adding a `subcomponents` property to the default export, we get a
 Subcomponents are only intended for documentation purposes and have some limitations:
 
 1. The argTypes of subcomponents are inferred (for the renderers that support that feature) and cannot be manually defined or overridden.
-2. The table for each documented subcomponent does _not_ include controls to change the value of the props, because controls always apply to the main component's args.
+2. The table for each documented subcomponent does *not* include controls to change the value of the props, because controls always apply to the main component's args.
 
 Let's talk about some techniques you can use to mitigate the above, which are especially useful in more complicated situations.
 
@@ -433,7 +433,7 @@ Exports
 This addon contributes the following exports to Storybook:
 
 ```svelte
-import { action } from '@storybook/addon-actions';
+import {action} from '@storybook/addon-actions';
 ```
 
 ####
@@ -533,7 +533,7 @@ Until now, we only used auto-generated controls based on the component for which
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
+import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(arguments_)}    <Page {...arguments_}>      <footer>{arguments_.footer}</footer>    </Page>  {/snippet}</Story>
 ```
 
 By default, Storybook will add controls for all args that:
@@ -681,7 +681,7 @@ Consider the following story snippets:
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,  });</script><Story  name="ArrayInclude"  parameters={{    controls: { include: ['foo', 'bar'] },  }}/><Story  name="RegexInclude"  parameters={{    controls: { include: /^hello*/ },  }}/><Story  name="ArrayExclude"  parameters={{    controls: { exclude: ['foo', 'bar'] },  }}/><Story  name="RegexExclude"  parameters={{    controls: { exclude: /^hello*/ },  }}/>
+import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,  });</script><Story  name="ArrayInclude"  parameters={{    controls: { include: ['foo', 'bar'] },  }} /><Story  name="RegexInclude"  parameters={{    controls: { include: /^hello*/ },  }} /><Story  name="ArrayExclude"  parameters={{    controls: { exclude: ['foo', 'bar'] },  }} /><Story  name="RegexExclude"  parameters={{    controls: { exclude: /^hello*/ },  }} />
 ```
 
 ####

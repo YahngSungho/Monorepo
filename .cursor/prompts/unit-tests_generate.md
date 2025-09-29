@@ -11,7 +11,6 @@
 You MUST adhere to the following principles when writing tests. These principles are derived from established best practices to ensure tests are valuable, reliable, and maintainable:
 
 1. **Test Behavior, NOT Implementation Details (CRITICAL PRINCIPLE & EXTREME MOCK MINIMIZATION)**:
-
    - **Focus**: Test the public API and observable outcomes (WHAT it does), ideally through integration with its real dependencies.
    - **Avoid**: DO NOT test private methods or internal implementation details.
    - **EXTREME MOCK MINIMIZATION**: **Strongly prefer testing with REAL dependencies**. Mocks (`vi.fn()`, `vi.spyOn()`) are a **last resort** and should ONLY be used for:
@@ -23,39 +22,31 @@ You MUST adhere to the following principles when writing tests. These principles
    - **Goal**: Create tests that verify the integrated behavior of the unit with its essential collaborators, ensuring the system works together as expected. Mock only to isolate from true external boundaries or non-determinism.
 
 2. **Clarity and Simplicity**:
-
    - **Focus**: Tests MUST be easy to read and understand in isolation. Prioritize OBVIOUSNESS over cleverness or complex abstractions within tests.
    - **Goal**: Another developer (or your future self) should grasp the test\'s purpose, setup, action, and expected outcome quickly without needing deep dives into other files or complex helper logic.
 
 3. **Readability and Structure**:
-
    - **Naming**: **한국어**로 된, 길고 **설명적인** 테스트 이름을 사용하여 테스트 중인 시나리오를 명확하게 설명하세요 (예: `it(\'입금액이 음수일 경우 RangeError를 발생시켜야 한다\')`).
    - **AAA Pattern**: Strictly follow the **Arrange-Act-Assert (AAA)** pattern within each _example-based_ test body. Clearly separate the setup (Arrange), execution of the code under test (Act), and verification of the outcome (Assert) with comments or spacing.
 
 4. **Keep Relevant Setup Visible**:
-
    - **Focus**: Inline necessary setup code (variable declarations, simple mock setups) directly within the test function where it significantly enhances clarity about what that specific test is doing.
    - **Avoid**: Avoid hiding critical setup details in `beforeEach` or complex helper functions if doing so makes the individual test harder to understand on its own. Accept _some_ redundancy if it greatly improves the clarity and isolation of a test case. PRIORITIZE CLARITY OVER STRICT DRY for test setup.
 
 5. **Use Literal Values**:
-
    - **Focus**: Use explicit "magic" numbers and strings directly in tests for inputs and expected outputs when it makes the specific scenario crystal clear (e.g., `expect(sum(2, 3)).toBe(5);`).
    - **Avoid**: Avoid defining test-specific constants unless they represent a shared, meaningful concept used across _multiple_ tests AND defining them clarifies intent rather than obscuring the specific values being tested. Referencing constants exported from PRODUCTION code is generally acceptable.
 
 6. **Focused Tests**:
-
    - **Focus**: Each `test` or `it` block should ideally verify ONE specific behavior, condition, branch, or outcome. Avoid testing multiple unrelated things in a single test block.
 
 7. **Helper Functions**:
-
    - **Use Sparingly**: If used, helper functions MUST NOT obscure the core logic or critical values of the test. Interactions with the code under test (the \'Act\' phase) should generally happen directly within the main test function. Helpers are best for complex, shared _setup_ (Arrange) that doesn\'t hide essential test parameters.
 
 8. **Vitest Syntax & Mocking Best Practices (NEW EMPHASIS)**:
-
    - **Use Correctly**: Employ correct Vitest imports and matchers.
    - **Minimize Mocks (Strictly)**: (As per Principle #1)
    - **`vi.mock` Hoisting & Scope (CRITICAL - Use `vi.hoisted`)**:
-
      - **Hoisting Awareness**: `vi.mock(path, factory)` calls are hoisted to the top of the file, executing before any `import` statements and before module-level variable initializations in the test file.
      - **No External Vars in Factory**: The shallow factory function `() => { ... }` for `vi.mock` **CANNOT directly reference variables defined outside its own immediate scope** (e.g., module-scoped variables in the test file like `const myMockFn = vi.fn();`). This is because those variables will not be initialized when the hoisted factory executes, leading to `ReferenceError: Cannot access 'variable' before initialization` or other "error when mocking a module" issues.
      - **Utilize `vi.hoisted` (MANDATORY for External/Dynamic Mock Dependencies)**: If your mock factory needs to use externally defined values, dynamically created mock functions (e.g., `vi.fn()`), or complex setup logic that relies on variables from the test file's module scope, **YOU MUST** define these dependencies using `vi.hoisted(() => { /* define mocks and values here */ return { mockFn: vi.fn(), mockValue: 'value' }; });`. The `vi.mock` factory should then reliably access these dependencies via the object returned by `vi.hoisted`.
@@ -72,9 +63,9 @@ You MUST adhere to the following principles when writing tests. These principles
        const hoistedMocks = vi.hoisted(() => {
        	// This block executes early, before other module-level code in this test file.
        	console.log('vi.hoisted: Defining mockUtilityFn and initial values.')
-       	const mockUtilityFn = vi.fn((input) => `mocked_value_for_${input}`)
+       	const mockUtilityFunction = vi.fn((input) => `mocked_value_for_${input}`)
        	const somePredefinedValue = 'initial_mock_state'
-       	return { mockUtilityFn, somePredefinedValue } // Expose mocks and values
+       	return { mockUtilityFn: mockUtilityFunction, somePredefinedValue } // Expose mocks and values
        })
        
        vi.mock('./utilityModule', async () => {
@@ -82,10 +73,10 @@ You MUST adhere to the following principles when writing tests. These principles
        	// It can safely access `hoistedMocks` because `vi.hoisted` also runs early.
        	console.log('vi.mock factory: Referencing hoistedMocks.mockUtilityFn.')
        	// For partial mocking, you can import the actual module inside the factory:
-       	const actualUtils = await vi.importActual('./utilityModule')
+       	const actualUtilities = await vi.importActual('./utilityModule')
        	return {
        		// __esModule: true, // If utilityModule is an ES module with named exports
-       		...actualUtils, // Spread actual implementations first for partial mock
+       		...actualUtilities, // Spread actual implementations first for partial mock
        		utilityBeingMocked: hoistedMocks.mockUtilityFn, // Then override specific parts
        		// default: hoistedMocks.mockUtilityFn, // If utilityModule has a default export to be mocked
        		// Or, if default is an object and you want to partially mock it:
@@ -139,17 +130,14 @@ You MUST adhere to the following principles when writing tests. These principles
    - **`vi.mock` Factory Implementation vs. `vi.mocked`**: If a `vi.mock('module', () => { ... })` factory provides a complete mock implementation (e.g., by returning an object with `vi.fn()` instances), **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` or `vi.mocked(...).mockReturnValue(...)` for the _same mock functions_ in `beforeEach` or individual tests _unless you are intentionally overriding the factory's default mock behavior for a specific test case_. The factory already sets the initial implementation. For test-specific overrides, using `mockReturnValueOnce`, `mockImplementationOnce`, or re-assigning properties on a mocked object (if the factory returned a plain object for a default export) is appropriate.
 
 9. **Principle Justification Comments**:
-
-   - **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 _이유_를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`, `// 원칙: 최후 수단 모의 (네트워크 I/O 격리)`, `// 원칙: vi.hoisted 사용 (모의 범위 및 초기화 보장)`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
+   - **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 *이유*를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`, `// 원칙: 최후 수단 모의 (네트워크 I/O 격리)`, `// 원칙: vi.hoisted 사용 (모의 범위 및 초기화 보장)`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
 
 10. **Property-Based Testing (PBT) with fast-check**:
-
     - **Leverage Power**: Where applicable (e.g., functions processing diverse inputs, complex logical conditions, algorithms, state machines, potential edge cases), proactively use property-based testing via `@fast-check/vitest`. PBT automatically generates a wide range of inputs, often finding edge cases missed by traditional example-based tests.
     - **Focus on Invariants**: Define properties using `test.prop` or `it.prop` and `fc` arbitraries. Focus on defining the _invariant_ (the property or rule that should always hold true for any valid input) rather than specific input/output pairs. (e.g., "for any two numbers a and b, sum(a, b) should equal sum(b, a)").
     - **Integration**: Combine PBT with example-based tests for comprehensive coverage. Use examples for specific known edge cases or core happy paths, and PBT for broader correctness.
 
 11. **Mock Function Call Record Initialization**:
-
     - Ensure that mock function calls are reset before each test.
     - Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`). Ensure mock implementations use correct control flow (e.g., `if/else if/else`).
     - PRIORITIZE CLARITY OVER STRICT DRY for test setup.
@@ -362,12 +350,12 @@ function sumArray(numbers) {
 	if (!Array.isArray(numbers)) {
 		throw new TypeError('Input must be an array')
 	}
-	return numbers.reduce((sum, num) => {
-		if (typeof num !== 'number' || !Number.isFinite(num)) {
+	return numbers.reduce((sum, number_) => {
+		if (typeof number_ !== 'number' || !Number.isFinite(number_)) {
 			// For simplicity in this example, non-finite numbers are skipped
 			return sum
 		}
-		return sum + num
+		return sum + number_
 	}, 0)
 }
 
@@ -383,7 +371,7 @@ describe('sumArray 함수', () => {
 			const result = sumArray(finiteNums)
 
 			// 검증(Assert): 직접 계산한 합계와 비교 (동작 검증)
-			const expectedSum = finiteNums.reduce((acc, val) => acc + val, 0)
+			const expectedSum = finiteNums.reduce((accumulator, value) => accumulator + value, 0)
 			// 부동 소수점 비교를 위해 toBeCloseTo 사용
 			expect(result).toBeCloseTo(expectedSum)
 		},
@@ -410,7 +398,7 @@ describe('sumArray 함수', () => {
 		const numbersOnly = mixedArray.filter(
 			(item) => typeof item === 'number' && Number.isFinite(item),
 		)
-		const expectedSum = numbersOnly.reduce((acc, val) => acc + val, 0)
+		const expectedSum = numbersOnly.reduce((accumulator, value) => accumulator + value, 0)
 
 		// 실행(Act)
 		const result = sumArray(mixedArray)

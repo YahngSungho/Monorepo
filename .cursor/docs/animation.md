@@ -13,40 +13,40 @@
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-	import { browser } from '$app/environment';
-	import { onNavigate } from '$app/navigation';
+import { browser } from '$app/environment';
+import { onNavigate } from '$app/navigation';
 
-	// Svelte 5에서는 전역적인 클라이언트 사이드 로직을 <script> 블록 최상단에 배치합니다.
+// Svelte 5에서는 전역적인 클라이언트 사이드 로직을 <script> 블록 최상단에 배치합니다.
 	// `browser` 환경 변수는 이 코드가 서버에서 실행되는 것을 방지합니다.
-	if (browser) {
-		// onNavigate 훅은 SvelteKit의 클라이언트 사이드 라우팅이 발생할 때마다 실행됩니다.
-		onNavigate((navigation) => {
-			// 점진적 향상: 브라우저가 View Transitions API를 지원하지 않으면,
+if (browser) {
+	// onNavigate 훅은 SvelteKit의 클라이언트 사이드 라우팅이 발생할 때마다 실행됩니다.
+	onNavigate((navigation) => {
+		// 점진적 향상: 브라우저가 View Transitions API를 지원하지 않으면,
 			// 아무것도 하지 않고 기본 라우팅을 따릅니다.
-			if (!document.startViewTransition) {
-				return;
-			}
+		if (!document.startViewTransition) {
+			return;
+		}
 
-			// API를 지원하면, SvelteKit 라우팅을 잠시 보류하고 Promise를 반환합니다.
-			return new Promise((resolve) => {
-				// View Transitions API를 시작합니다.
-				document.startViewTransition(async () => {
-					// Promise를 즉시 resolve하여 SvelteKit이 다음 페이지로의 DOM 업데이트를 시작하도록 허용합니다.
-					resolve();
-					// navigation.complete를 기다려 DOM 업데이트가 완전히 끝난 후,
+		// API를 지원하면, SvelteKit 라우팅을 잠시 보류하고 Promise를 반환합니다.
+		return new Promise((resolve) => {
+			// View Transitions API를 시작합니다.
+			document.startViewTransition(async () => {
+				// Promise를 즉시 resolve하여 SvelteKit이 다음 페이지로의 DOM 업데이트를 시작하도록 허용합니다.
+				resolve();
+				// navigation.complete를 기다려 DOM 업데이트가 완전히 끝난 후,
 					// 브라우저가 최종 상태의 스냅샷을 찍도록 보장합니다.
-					await navigation.complete;
-				});
+				await navigation.complete;
 			});
 		});
-	}
+	});
+}
 
-	// SvelteKit의 load 함수로부터 전달받은 `data` 객체입니다.
+// SvelteKit의 load 함수로부터 전달받은 `data` 객체입니다.
 	// 현재 페이지의 경로(`data.url.pathname`)는 {#key} 블록에서 사용됩니다.
-	export let data;
+export let data;
 
-	// <slot />을 대체하는 Svelte 5의 새로운 스니펫(Snippet) 문법입니다.
-	let { children } = $props();
+// <slot />을 대체하는 Svelte 5의 새로운 스니펫(Snippet) 문법입니다.
+let { children } = $props();
 </script>
 
 <div class="global-container">
@@ -93,26 +93,26 @@
 ```svelte
 <!-- src/routes/services/+page.svelte -->
 <script>
-	import { fly } from 'svelte/transition';
-	const services = [
-		{ id: 1, title: 'Web Development', icon: '💻' },
-		{ id: 2, title: 'UI/UX Design', icon: '🎨' },
-		{ id: 3, title: 'Consulting', icon: '📈' }
-	];
+import { fly } from 'svelte/transition';
+const services = [
+	{ icon: '💻', id: 1, title: 'Web Development' },
+	{ icon: '🎨', id: 2, title: 'UI/UX Design' },
+	{ icon: '📈', id: 3, title: 'Consulting' }
+];
 </script>
 
 <div class="services-page">
-	<h1 style="view-transition-name: page-title">Our Services</h1>
-	<p class="subtitle" in:fly={{ y: 20, duration: 500, delay: 200 }}>
+	<h1 style:view-transition-name="page-title">Our Services</h1>
+	<p class="subtitle" in:fly={{ delay: 200, duration: 500, y: 20 }}>
 		We offer a wide range of services to help your business grow.
 	</p>
 
 	<div class="services-grid">
-		{#each services as service, i}
+		{#each services as service, index}
 			<!-- Svelte의 `in:` 지시어를 사용하여 순차적 애니메이션 구현 -->
 			<div
 				class="service-card"
-				in:fly={{ y: 30, duration: 400, delay: 300 + i * 100 }}
+				in:fly={{ delay: 300 + index * 100, duration: 400, y: 30 }}
 			>
 				<span class="icon">{service.icon}</span>
 				<h3>{service.title}</h3>
@@ -124,20 +124,21 @@
 <style>
 	/* [핵심] view-transition-name을 지정하면, 해당 요소는 페이지 전환 시 특별하게 제어됩니다. */
 	h1 {
-		view-transition-name: page-title;
 		/* contain: layout; 은 전환 시 브라우저의 렌더링 계산을 최적화하는 데 도움이 됩니다. */
 		contain: layout;
+		view-transition-name: page-title;
 	}
 
 	/* CSS만으로 정교한 애니메이션 정의 */
 	@keyframes slide-and-fade-in {
 		from {
-			opacity: 0;
 			transform: translateY(20px) scale(0.98);
+			opacity: 0;
 		}
+
 		to {
-			opacity: 1;
 			transform: translateY(0) scale(1);
+			opacity: 1;
 		}
 	}
 
@@ -193,8 +194,8 @@ Part 1에서 설정한 `+layout.svelte`가 모든 준비를 마쳤습니다. 추
 <style>
 	.portfolio-item img {
 		aspect-ratio: 16 / 9;
-		object-fit: cover;
 		border-radius: 8px;
+		object-fit: cover;
 	}
 </style>
 ```
@@ -204,9 +205,9 @@ Part 1에서 설정한 `+layout.svelte`가 모든 준비를 마쳤습니다. 추
 ```svelte
 <!-- src/routes/portfolio/[slug]/+page.svelte -->
 <script>
-	// `load` 함수에서 `slug`에 해당하는 `project` 데이터를 가져왔다고 가정합니다.
-	export let data;
-	const { project } = data;
+// `load` 함수에서 `slug`에 해당하는 `project` 데이터를 가져왔다고 가정합니다.
+export let data;
+const { project } = data;
 </script>
 
 <div class="project-detail">
@@ -214,8 +215,9 @@ Part 1에서 설정한 `+layout.svelte`가 모든 준비를 마쳤습니다. 추
 		<img
 			--
 			<!--
-			alt={project.title} src={project.imageUrl} 것과 규칙으로 동일한 목록 부여합니다. 사용한 이름을 정확히 페이지에서>
-			style="view-transition-name: project-image-{project.slug}"
+			alt={project.title} src={project.imageUrl} 것과 규칙으로 동일한 목록 부여합니다. 사용한 이름을 정확히 페이지에서
+		/>
+		style="view-transition-name: project-image-{project.slug}"
 		/>
 	</div>
 	<h1>{project.title}</h1>
@@ -226,10 +228,10 @@ Part 1에서 설정한 `+layout.svelte`가 모든 준비를 마쳤습니다. 추
 
 <style>
 	.hero-image-container img {
-		width: 100%;
 		aspect-ratio: 16 / 9;
-		object-fit: cover;
+		inline-size: 100%;
 		border-radius: 16px;
+		object-fit: cover;
 	}
 </style>
 ```
@@ -272,34 +274,34 @@ export function useNavigationDirection() {
 
 ```svelte
 <script>
-	import { browser } from '$app/environment';
-	import { onNavigate } from '$app/navigation';
-	import { useNavigationDirection } from '$lib/navigationDirection.svelte.js';
+import { browser } from '$app/environment';
+import { onNavigate } from '$app/navigation';
+import { useNavigationDirection } from '$lib/navigationDirection.svelte.js';
 
-	// 1. 룬 모듈을 인스턴스화합니다.
-	const navDirection = useNavigationDirection();
+// 1. 룬 모듈을 인스턴스화합니다.
+const navDirection = useNavigationDirection();
 
-	if (browser) {
-		onNavigate((navigation) => {
-			// 2. 네비게이션 타입에 따라 상태를 업데이트합니다.
-			if (navigation.type === 'popstate') {
-				navDirection.setBack();
-			} else {
-				navDirection.setForward();
-			}
+if (browser) {
+	onNavigate((navigation) => {
+		// 2. 네비게이션 타입에 따라 상태를 업데이트합니다.
+		if (navigation.type === 'popstate') {
+			navDirection.setBack();
+		} else {
+			navDirection.setForward();
+		}
 
-			// ... View Transition 시작 로직 (이전과 동일) ...
-		});
+	// ... View Transition 시작 로직 (이전과 동일) ...
+	});
 
-		// 3. $effect 룬을 사용하여 상태 변화에 자동으로 반응합니다.
-		$effect(() => {
-			// `navDirection.isBack` 값이 바뀔 때마다 이 코드가 실행됩니다.
-			document.documentElement.classList.toggle('is-back-navigation', navDirection.isBack);
-		});
-	}
+	// 3. $effect 룬을 사용하여 상태 변화에 자동으로 반응합니다.
+	$effect(() => {
+		// `navDirection.isBack` 값이 바뀔 때마다 이 코드가 실행됩니다.
+		document.documentElement.classList.toggle('is-back-navigation', navDirection.isBack);
+	});
+}
 
-	export let data;
-	let { children } = $props();
+export let data;
+let { children } = $props();
 </script>
 ```
 
@@ -316,18 +318,21 @@ export function useNavigationDirection() {
 		opacity: 0;
 	}
 }
+
 @keyframes slide-out-to-left {
 	to {
 		transform: translateX(-30px);
 		opacity: 0;
 	}
 }
+
 @keyframes slide-in-from-left {
 	from {
 		transform: translateX(-30px);
 		opacity: 0;
 	}
 }
+
 @keyframes slide-out-to-right {
 	to {
 		transform: translateX(30px);
@@ -339,6 +344,7 @@ export function useNavigationDirection() {
 ::view-transition-old(root) {
 	animation: 0.3s ease-out both slide-out-to-left;
 }
+
 ::view-transition-new(root) {
 	animation: 0.3s ease-in both slide-in-from-right;
 }
@@ -347,6 +353,7 @@ export function useNavigationDirection() {
 html.is-back-navigation::view-transition-old(root) {
 	animation: 0.3s ease-out both slide-out-to-right;
 }
+
 html.is-back-navigation::view-transition-new(root) {
 	animation: 0.3s ease-in both slide-in-from-left;
 }
@@ -389,7 +396,7 @@ View Transitions API는 전환 그룹에 타입을 추가하여 더 세밀한 �
 
 ```svelte
 <script>
-    import { trigger } from '$app/navigation';
+import { trigger } from '$app/navigation';
 </script>
 
 <!-- 일반 페이지 이동 -->
@@ -397,7 +404,7 @@ View Transitions API는 전환 그룹에 타입을 추가하여 더 세밀한 �
 
 <!-- 모달을 여는 특별한 전환 -->
 <button on:click={() => trigger('show-modal', { target: '/photos/123' })}>
-    Show Photo
+	Show Photo
 </button>
 ```
 

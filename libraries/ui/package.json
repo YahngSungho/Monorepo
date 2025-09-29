@@ -7,7 +7,7 @@
 		"depCheck": "npx depcheck",
 		"eslint": "eslint . --ignore-pattern ./src/shadcn/components/**/*.* --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-all": "eslint .",
-		"eslint-check-fixable": "eslint --fix --dry-run . --config ../../eslint.fix.config.js || true",
+		"eslint-check-fixable": "eslint . --config ../../eslint.fix.config.js || true",
 		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"shadcn": "pnpm dlx shadcn-svelte@next add",

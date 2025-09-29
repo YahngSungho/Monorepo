@@ -48,7 +48,7 @@ You can persist and rehydrate state with `useMachine(...)` via `options.snapshot
 // Get the persisted state config object from somewhere, e.g. localStorage
 const persistedState = JSON.parse(localStorage.getItem('some-persisted-state-key'))
 
-const { snapshot, send } = useMachine(someMachine, {
+const { send, snapshot } = useMachine(someMachine, {
 	snapshot: persistedState,
 })
 // state will initially be that persisted state, not the machine's initialState

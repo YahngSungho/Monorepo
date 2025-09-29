@@ -16,7 +16,7 @@
 - Use `getNextSnapshot(…)` instead of `machine.transition(…)`
   - The `machine.transition(...)` method now requires an "actor scope" for the 3rd argument, which is internally created by `createActor(...)`. Instead, use `getNextSnapshot(...)` to get the next snapshot from some actor logic based on the current snapshot and event:
 - Send events explictly instead of using `autoForward`
-  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's _not_ recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
+  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's *not* recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
 - The `state.toStrings()` method has been removed
 
 #### states
@@ -161,7 +161,6 @@
 
 - The dynamic, extended state of the machine.
 - **Changing Context**:
-
   - Must be done immutably via an **action**. Use the `assign` action.
   - Static update: `assign({ key: newValue, anotherKey: 'literal' })`.
   - Dynamic update:
@@ -199,7 +198,6 @@
   ```
 
 - **Fallback Event (`*`)**: Handles any event not explicitly defined in the `on` object.
-
   - `on: { '*': { target: 'someState', /* ... */ } }`
 
 - **Prefix Wildcard Event**: Handles any event starting with a specific prefix.
@@ -210,7 +208,6 @@
 - **Self-Transition**: A transition that doesn't change the state but can execute actions. Defined by omitting the `target` property.
   - `on: { myEvent: { actions: [ /* ... */ ] /* no target here */ } }`
 - **Relative Targeting**:
-
   - Target Sibling State: Use a dot prefix (`.`). Defined in the _parent_ state's `on` object.
 
     ```js
@@ -232,7 +229,6 @@
 - **`always` Transitions (Transient Transitions)**: Automatically taken if the condition (guard) is met upon entering the state. Evaluated _after_ entry actions.
   - `myState: { always: { guard: 'someCondition', target: 'nextState', actions: [/* ... */] } }` (Can be an array for multiple conditions).
 - **`after` Transitions (Delayed Transitions)**: Transition after a specified delay.
-
   - `myState: { after: { 5000: { target: 'nextState', actions: [/* ... */] } } }` (Delay in milliseconds)
   - Using Named Delays (defined in `setup`):
 
@@ -251,7 +247,6 @@
   - `entry: [ action ]` (On state entry)
   - `exit: [ action ]` (On state exit)
 - **Action Object**: Reference a predefined action (from `setup`).
-
   - `{ type: 'actionName', params: { key: 'value' } }`
   - **Dynamic Parameters**: Calculate params based on context/event.
 
@@ -263,7 +258,6 @@
     ```
 
 - **Inline Action**: Define the action function directly.
-
   - `({ context, event, action }) => { /* side effect logic here */ }`
 
 - **Context Update (`assign`)**: The primary action for updating context.
@@ -271,13 +265,12 @@
   ```js
   assign({
   	count: 10, // Static assignment
-  	user: ({ event }) => event.user, // Dynamic assignment
   	counter: ({ context }) => context.counter + 1, // Based on previous context
+  	user: ({ event }) => event.user, // Dynamic assignment
   })
   ```
 
 - **`raise` Action**: Send an event to the machine itself (internal event).
-
   - `raise({ type: 'INTERNAL_EVENT', value: 42 })`
   - `raise(({ context, event }) => ({ type: 'DYNAMIC_EVENT', data: context.someData }))`
   - Can include options: `raise(eventObj, { id: 'myRaiseId', delay: 100 })`
@@ -290,7 +283,7 @@
 - **`enqueueActions` Action**: Define a sequence of actions to be executed one after another, potentially conditionally.
 
   ```js
-  enqueueActions(({ context, event, enqueue, check }) => {
+  enqueueActions(({ check, context, enqueue, event }) => {
   	// enqueue an action object or inline function
   	enqueue({ type: 'action1' })
   	enqueue.assign({ counter: ({ context }) => context.counter + 1 })
@@ -307,7 +300,6 @@
   ```
 
 - **`log` Action**: Log a message or expression.
-
   - `log('Entering state X')`
   - `log(({ context, event }) =>`Event ${event.type} received with context ${context.value}`)`
 
@@ -432,7 +424,6 @@
 - **`createMachine`**: (Already covered) Creates state machine logic.
   - _Snapshot Spec_: `{ value: string | object, context: any }`
 - **`fromTransition`**: Simple logic that only determines the next state based on the current state and received event. No actions, context changes built-in.
-
   - ```js
     const actorLogic = fromTransition(
     	(currentState, event) => {
@@ -450,7 +441,6 @@
   - _Snapshot Spec_: `{ context: currentState }` (The state _is_ the context).
 
 - **`fromObservable`**: Logic driven by an external Observable stream.
-
   - **Implementation**:
 
     ```js
@@ -466,12 +456,11 @@
   - **Note**: All XState actors are themselves `observable`.
 
 - **`fromCallback`**: Intended for invoking callback-based services. Sends events back to the parent/invoker.
-
   - **Intent**: Receive event -> Run callback -> Send event back to parent. Like a callback attached to the parent's event.
   - **Implementation**:
 
     ```js
-    const actorLogic = fromCallback(({ sendBack, receive, input }) => {
+    const actorLogic = fromCallback(({ input, receive, sendBack }) => {
     	// sendBack(event): Sends an event back to the invoker (parent by default)
     	// receive(callback): Registers a listener for events sent TO this callback actor
     
@@ -479,7 +468,7 @@
     		console.log('Callback actor received:', event)
     		// Example: Perform task and send result back
     		const result = performTask(event.data)
-    		sendBack({ type: 'CALLBACK_RESULT', result })
+    		sendBack({ result, type: 'CALLBACK_RESULT' })
     	})
     
     	// Optional: Perform initial action
@@ -495,7 +484,6 @@
   - **Specifying `sendBack` Target**: (Original text didn't specify how, typically handled by the system/invoker relationship).
 
 - **`fromPromise`**: Logic based on a Promise.
-
   - **Implementation**:
 
     ```js
@@ -522,7 +510,7 @@
   	const newLogic = {
   		...originalLogic,
   		// Override or add properties/methods
-  		transition: (state, event, ctx) => {
+  		transition: (state, event, context) => {
   			/* ... */
   		},
   	}
@@ -552,7 +540,6 @@
   - **Error**: Rejects if the actor reaches an 'error' state or is stopped prematurely.
   - **Implementation**: `const output = await toPromise(myActor);`
 - **Wait for Condition**: Create a Promise that resolves when the actor's snapshot satisfies a specific condition.
-
   - **Implementation**:
 
     ```js
@@ -583,7 +570,6 @@
 
 - Saving and restoring actor state.
 - **Pattern Code**:
-
   - **Save Current State**:
 
     ```js
@@ -681,16 +667,15 @@
 
 - Creating actors dynamically via actions.
 - **Creation Methods**:
-
   - `spawnChild(actorLogic, options)`: Action creator for spawning. Options: `{ input, id, systemId }`.
   - Using `assign` with the `spawn` action creator (available in `assign`'s callback) to store the reference (`ActorRef`) in context:
 
     ```js
     assign({
-    	spawnedActorRef: ({ spawn, context, event }) =>
+    	spawnedActorRef: ({ context, event, spawn }) =>
     		spawn(someActorLogic, {
     			id: `item-${event.id}`,
-    			input: { parentData: context.value, itemData: event.data },
+    			input: { itemData: event.data, parentData: context.value },
     			systemId: `worker-${event.id}`, // Optional system registration
     		}),
     })
@@ -847,19 +832,19 @@ actor.start()
 import { createActor, fromCallback } from 'xstate'
 
 const callbackLogic = fromCallback(({ receive, sendBack }) => {
-	const i = setTimeout(() => {
+	const index = setTimeout(() => {
 		sendBack({ type: 'timeout' })
 	}, 1000)
 
 	receive((event) => {
 		if (event.type === 'cancel') {
 			console.log('canceled')
-			clearTimeout(i)
+			clearTimeout(index)
 		}
 	})
 
 	return () => {
-		clearTimeout(i)
+		clearTimeout(index)
 	}
 })
 
@@ -925,7 +910,7 @@ const machine = setup({
   actions: {
     activate: () => {/* ... */},
     deactivate: () => {/* ... */},
-    notify: (_, params: { message: string }) => {/* ... */},
+    notify: (_, parameters: { message: string }) => {/* ... */},
   }
 }).createMachine({
   id: 'toggle',
@@ -952,10 +937,10 @@ const machine = setup({
           actions: [
             // action with params
             {
-              type: 'notify',
               params: {
                 message: 'Some notification',
               },
+              type: 'notify',
             },
           ],
           // highlight-end
@@ -968,14 +953,14 @@ const machine = setup({
 const actor = createActor(
   machine.provide({
     actions: {
-      notify: (_, params) => {
-        console.log(params.message ?? 'Default message');
-      },
       activate: () => {
         console.log('Activating');
       },
       deactivate: () => {
         console.log('Deactivating');
+      },
+      notify: (_, parameters) => {
+        console.log(parameters.message ?? 'Default message');
       },
     },
   }),
@@ -1008,8 +993,8 @@ const machine = setup({
 	// highlight-start
 	guards: {
 		canBeToggled: ({ context }) => context.canActivate,
-		isAfterTime: (_, params) => {
-			const { time } = params
+		isAfterTime: (_, parameters) => {
+			const { time } = parameters
 			const [hour, minute] = time.split(':')
 			const now = new Date()
 			return now.getHours() > hour && now.getMinutes() > minute

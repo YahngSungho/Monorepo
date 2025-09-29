@@ -4,21 +4,21 @@ All stories files must have a "meta" (aka. "default export") defined, and its st
 
 ```svelte
 <script module>
-  //    👆 notice the module context, defineMeta does not work in a regular <script> tag - instance
-  import { defineMeta } from '@storybook/addon-svelte-csf';
+//    👆 notice the module context, defineMeta does not work in a regular <script> tag - instance
+import { defineMeta } from '@storybook/addon-svelte-csf';
 
-  import MyComponent from './MyComponent.svelte';
-  //      👇 Get the Story component from the return value
-  const { Story } = defineMeta({
-    component: MyComponent,
-    decorators: [
-      /* ... */
-    ],
-    parameters: {
-      /* ... */
-    },
-    title: 'Path/To/MyComponent',
-  });
+import MyComponent from './MyComponent.svelte';
+//      👇 Get the Story component from the return value
+const { Story } = defineMeta({
+	component: MyComponent,
+	decorators: [
+	/* ... */
+	],
+	parameters: {
+	/* ... */
+	},
+	title: 'Path/To/MyComponent',
+});
 </script>
 ```
 
@@ -57,9 +57,9 @@ If you need more customization of the story, like composing components or defini
 
 ```svelte
 <Story name="Composed" asChild>
-  <MyComponent>
-    <AChild label="Hello world!" />
-  </MyComponent>
+	<MyComponent>
+		<AChild label="Hello world!" />
+	</MyComponent>
 </Story>
 ```
 
@@ -72,9 +72,9 @@ If you need composition/snippets but also want a dynamic story that reacts to ar
 
 ```svelte
 <Story name="Simple Template" args={{ simpleChild: true }}>
-  {#snippet template(args)}
-    <MyComponent {...args}>Component with args</MyComponent>
-  {/snippet}
+	{#snippet template(arguments_)}
+		<MyComponent {...arguments_}>Component with args</MyComponent>
+	{/snippet}
 </Story>
 ```
 
@@ -83,20 +83,20 @@ If you need composition/snippets but also want a dynamic story that reacts to ar
 Often your stories are very similar and their only differences are args or play-functions. In this case it can be cumbersome to define the same `template` snippet over and over again. You can share snippets by defining them at the top-level and passing them as props to `Story`:
 
 ```svelte
-{#snippet template(args)}
-  <MyComponent {...args}>
-    {#if args.simpleChild}
-      <AChild data={args.childProps} />
-    {:else}
-      <ComplexChildA data={args.childProps} />
-      <ComplexChildB data={args.childProps} />
-    {/if}
-  </MyComponent>
+{#snippet template(arguments_)}
+	<MyComponent {...arguments_}>
+		{#if arguments_.simpleChild}
+			<AChild data={arguments_.childProps} />
+		{:else}
+			<ComplexChildA data={arguments_.childProps} />
+			<ComplexChildB data={arguments_.childProps} />
+		{/if}
+	</MyComponent>
 {/snippet}
 
-<Story name="Simple Template" args={{ simpleChild: true }} {template} />
+<Story name="Simple Template" args={{ simpleChild: true }} template={template} />
 
-<Story name="Complex Template" args={{ simpleChild: false }} {template} />
+<Story name="Complex Template" args={{ simpleChild: false }} template={template} />
 ```
 
 You can also use this pattern to define multiple templates and share the different templates among different stories.
@@ -106,35 +106,35 @@ You can also use this pattern to define multiple templates and share the differe
 If you only need a single template that you want to share, it can be tedious to include `{template}` in each `Story` component. Like in th example below:
 
 ```svelte
-<Story name="Primary" args={{ variant: 'primary' }} {template} />
-<Story name="Secondary" args={{ variant: 'secondary' }} {template} />
-<Story name="Tertiary" args={{ variant: 'tertiary' }} {template} />
+<Story name="Primary" args={{ variant: 'primary' }} template={template} />
+<Story name="Secondary" args={{ variant: 'secondary' }} template={template} />
+<Story name="Tertiary" args={{ variant: 'tertiary' }} template={template} />
 
-<Story name="Denary" args={{ variant: 'denary' }} {template} />
+<Story name="Denary" args={{ variant: 'denary' }} template={template} />
 ```
 
 Similar to regular CSF, you can define a meta-level `render`-function, by referencing your default snippet in the `render` property of your `defineMeta` call:
 
 ```svelte
 <script module>
-  import { defineMeta } from '@storybook/addon-svelte-csf';
+import { defineMeta } from '@storybook/addon-svelte-csf';
 
-  import MyComponent from './MyComponent.svelte';
-  const { Story } = defineMeta({
-    render: template,
-    //      👆 the name of the snippet as defined below (can be any name)
-  });
+import MyComponent from './MyComponent.svelte';
+const { Story } = defineMeta({
+	render: template,
+//      👆 the name of the snippet as defined below (can be any name)
+});
 </script>
 
-{#snippet template(args)}
-  <MyComponent {...args}>
-    {#if args.simpleChild}
-      <AChild data={args.childProps} />
-    {:else}
-      <ComplexChildA data={args.childProps} />
-      <ComplexChildB data={args.childProps} />
-    {/if}
-  </MyComponent>
+{#snippet template(arguments_)}
+	<MyComponent {...arguments_}>
+		{#if arguments_.simpleChild}
+			<AChild data={arguments_.childProps} />
+		{:else}
+			<ComplexChildA data={arguments_.childProps} />
+			<ComplexChildB data={arguments_.childProps} />
+		{/if}
+	</MyComponent>
 {/snippet}
 
 <Story name="Simple Children" args={{ simpleChild: true }} />
@@ -151,7 +151,7 @@ Svelte has the limitation, that you can't reference a snippet from a `<script m
 
 Behind-the-scenes, each `<Story />` definition is compiled to a variable export like `export const MyStory = ...;`. In most cases you don't have to care about this detail, however sometimes naming conflicts can arise from this. The variable names are simplifications of the story names - to make them valid JavaScript variables.
 
-This can cause conflicts, eg. two stories with the names _"my story!"_ and _"My Story"_ will both be simplified to `MyStory`.
+This can cause conflicts, eg. two stories with the names *"my story!"* and *"My Story"* will both be simplified to `MyStory`.
 
 You can explicitly define the variable name of any story by passing the `exportName` prop:
 
@@ -164,7 +164,7 @@ At least one of the `name` or `exportName` props must be passed to the `Sto
 
 ## Accessing Story context
 
-If for some reason you need to access the [Story context](https://storybook.js.org/docs/writing-stories/decorators#context-for-mocking) _(e.g. for mocking)_ while rendering the story, then `<Story />`'s attribute `template` snippet provides an optional second argument.
+If for some reason you need to access the [Story context](https://storybook.js.org/docs/writing-stories/decorators#context-for-mocking) *(e.g. for mocking)* while rendering the story, then `<Story />`'s attribute `template` snippet provides an optional second argument.
 
 ```svelte
 <Story name="Default">
@@ -183,18 +183,18 @@ If you're just rendering the component directly without a custom template, you c
 
 ```svelte
 <script lang="ts" module>
-  import { defineMeta, type StoryContext } from '@storybook/addon-svelte-csf';
-  import { type ComponentProps } from 'svelte';
+import { defineMeta, type StoryContext } from '@storybook/addon-svelte-csf';
+import { type ComponentProps } from 'svelte';
 
-  import MyComponent from './MyComponent.svelte';
-  const { Story } = defineMeta({
-    component: MyComponent,
-  });
-  type Args = ComponentProps<MyComponent>;
+import MyComponent from './MyComponent.svelte';
+const { Story } = defineMeta({
+	component: MyComponent,
+});
+type Arguments = ComponentProps<MyComponent>;
 </script>
 
-{#snippet template(args: Args, context: StoryContext<typeof Layout>)}
-  <MyComponent {...args} />
+{#snippet template(arguments_: Arguments, context: StoryContext<typeof Layout>)}
+	<MyComponent {...arguments_} />
 {/snippet}
 ```
 
@@ -202,44 +202,44 @@ If you use the `render`-property to define a custom template that might use cus
 
 ```svelte
 <script lang="ts" module>
-  import { defineMeta, type StoryContext } from '@storybook/addon-svelte-csf';
-  import { type ComponentProps } from 'svelte';
+import { defineMeta, type StoryContext } from '@storybook/addon-svelte-csf';
+import { type ComponentProps } from 'svelte';
 
-  import MyComponent from './MyComponent.svelte';
-  const { Story } = defineMeta({
-    argTypes: {
-      children: {
-        control: 'text',
-      },
-      footer: {
-        control: 'text',
-      },
-    },
-    component: MyComponent,
-    render: template, // 👈 args will be inferred from this, which is the Args type below
-  });
-  type Args = Omit<ComponentProps<MyComponent>, 'children' | 'footer'> & {
-    children: string;
-    footer?: string;
-  };
-  // OR use the Merge helper from the 'type-fest' package:
-  type Args = Merge<
-    ComponentProps<MyComponent>,
-    {
-      children: string;
-      footer?: string;
-    }
-  >;
+import MyComponent from './MyComponent.svelte';
+const { Story } = defineMeta({
+	argTypes: {
+		children: {
+			control: 'text',
+		},
+		footer: {
+			control: 'text',
+		},
+	},
+	component: MyComponent,
+	render: template, // 👈 args will be inferred from this, which is the Args type below
+});
+type Arguments = Omit<ComponentProps<MyComponent>, 'children' | 'footer'> & {
+	children: string;
+	footer?: string;
+};
+// OR use the Merge helper from the 'type-fest' package:
+type Arguments = Merge<
+	ComponentProps<MyComponent>,
+	{
+		children: string;
+		footer?: string;
+	}
+>;
 </script>
 
 
-{#snippet template({ children, ...args }: Args, context: StoryContext<typeof MyComponent>)}
-  <MyComponent {...args}>
-    {children}
-    {#snippet footer()}
-      {args.footer}
-    {/snippet}
-  </MyComponent>
+{#snippet template({ children, ...arguments_ }: Arguments, context: StoryContext<typeof MyComponent>)}
+	<MyComponent {...arguments_}>
+		{children}
+		{#snippet footer()}
+			{arguments_.footer}
+		{/snippet}
+	</MyComponent>
 {/snippet}
 ```
 

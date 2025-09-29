@@ -23,7 +23,6 @@ You will be provided with the content or paths to:
 You MUST strictly adhere to the following principles when updating or writing tests. These are critical for valuable, reliable, and maintainable tests:
 
 1. **Test Behavior, NOT Implementation Details (CRITICAL PRINCIPLE & EXTREME MOCK MINIMIZATION)**:
-
    - **Focus**: Test the public API and observable outcomes (WHAT it does), ideally through integration with its real dependencies.
    - **Avoid**: DO NOT test private methods or internal implementation details.
    - **EXTREME MOCK MINIMIZATION**: **Strongly prefer testing with REAL dependencies**. Mocks (`vi.fn()`, `vi.spyOn()`) are a **last resort** and should ONLY be used for:
@@ -35,35 +34,28 @@ You MUST strictly adhere to the following principles when updating or writing te
    - **Goal**: Create tests that verify the integrated behavior of the unit with its essential collaborators, ensuring the system works together as expected. Mock only to isolate from true external boundaries or non-determinism.
 
 2. **Clarity and Simplicity**:
-
    - **Focus**: Tests MUST be easy to read and understand in isolation. Prioritize OBVIOUSNESS over cleverness or complex abstractions within tests.
    - **Goal**: Another developer should grasp the test's purpose, setup, action, and expected outcome quickly.
 
 3. **Readability and Structure**:
-
    - **Naming**: Use descriptive **Korean** test names (`it('입금액이 음수일 경우 RangeError를 발생시켜야 한다')`).
    - **AAA Pattern**: Strictly follow Arrange-Act-Assert within each example-based test. Clearly separate setup, action, and assertion.
 
 4. **Keep Relevant Setup Visible**:
-
    - **Focus**: Inline necessary setup where it enhances clarity for that specific test.
    - **Avoid**: Hiding critical setup in `beforeEach` or complex helpers if it obscures the test's purpose. PRIORITIZE CLARITY OVER STRICT DRY for test setup.
 
 5. **Use Literal Values**:
-
    - **Focus**: Use explicit numbers/strings directly in tests for clarity.
    - **Avoid**: Test-specific constants unless they represent a shared, meaningful concept AND clarify intent.
 
 6. **Focused Tests**:
-
    - **Focus**: Each `it` block should ideally verify ONE specific behavior or outcome.
 
 7. **Helper Functions**:
-
    - **Use Sparingly**: Best for complex, shared _setup_ (Arrange) that doesn't hide essential test parameters or logic. The 'Act' phase should generally be within the test.
 
 8. **Vitest Syntax & Mocking Best Practices (NEW EMPHASIS)**:
-
    - **Use Correctly**: Employ correct Vitest imports and matchers.
    - **Minimize Mocks (Strictly)**: (As per Principle #1) **Testing with real dependencies is the default**. Mocks are the EXCEPTION. Adhere strictly to Principle #1 criteria. Justify any necessary mocking clearly in comments. Ensure mocks are cleaned up (`vi.restoreAllMocks()` is a good general practice in `afterEach` if any mocks/spies were used).
    - **`vi.mock` Hoisting & Scope (CRITICAL - Use `vi.hoisted`)**:
@@ -85,11 +77,9 @@ You MUST strictly adhere to the following principles when updating or writing te
      - **`vi.mock` Factory Implementation vs. `vi.mocked`**: If a `vi.mock('module', () => { ... })` factory provides a complete mock implementation, **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` or `vi.mocked(...).mockReturnValue(...)` for the _same mock functions_ in `beforeEach` or individual tests _unless intentionally overriding the factory's default behavior for a specific test case_.
 
 9. **Principle Justification Comments**:
-
    - **Explain WHY (in Korean)**: Add concise **Korean** comments explaining _why_ a specific approach was chosen, referencing these principles (e.g., `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`).
 
 10. **Property-Based Testing (PBT) with fast-check**:
-
     - **Leverage Power**: Where applicable (diverse inputs, complex logic), proactively use `@fast-check/vitest` (`test.prop`, `fc`) to test _invariants_.
     - **Integration**: Combine PBT with example-based tests for comprehensive coverage.
 
@@ -293,7 +283,8 @@ import { describe, expect } from 'vitest'
 function sumArray(numbers) {
 	// ... implementation ...
 	return numbers.reduce(
-		(sum, num) => (typeof num === 'number' && Number.isFinite(num) ? sum + num : sum),
+		(sum, number_) =>
+			typeof number_ === 'number' && Number.isFinite(number_) ? sum + number_ : sum,
 		0,
 	)
 }
@@ -308,7 +299,7 @@ describe('sumArray 함수', () => {
 			// 실행(Act)
 			const result = sumArray(finiteNums)
 			// 검증(Assert): 직접 계산한 합계와 비교 (동작 검증)
-			const expectedSum = finiteNums.reduce((acc, val) => acc + val, 0)
+			const expectedSum = finiteNums.reduce((accumulator, value) => accumulator + value, 0)
 			expect(result).toBeCloseTo(expectedSum)
 		},
 	)
@@ -334,7 +325,7 @@ describe('sumArray 함수', () => {
 		const numbersOnly = mixedArray.filter(
 			(item) => typeof item === 'number' && Number.isFinite(item),
 		)
-		const expectedSum = numbersOnly.reduce((acc, val) => acc + val, 0)
+		const expectedSum = numbersOnly.reduce((accumulator, value) => accumulator + value, 0)
 		// 실행(Act)
 		const result = sumArray(mixedArray)
 		// 검증(Assert)

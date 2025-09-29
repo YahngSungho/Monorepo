@@ -124,6 +124,7 @@
 		"*.mdx": "markdown",
 		"*.svelte": "svelte"
 	},
+	"files.eol": "\n",
 	"json.schemas": [
 		{
 			"fileMatch": ["*.jsonc"],
