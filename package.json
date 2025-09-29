@@ -120,7 +120,7 @@
 		"prettier-plugin-sql": "^0.19.1",
 		"prettier-plugin-svelte": "^3.4.0",
 		"simple-git-hooks": "^2.12.1",
-		"stylelint": "^16.23.1",
+		"stylelint": "^16.24.0",
 		"stylelint-color-format": "^1.1.0",
 		"stylelint-config-clean-order": "^7.0.0",
 		"stylelint-config-html": "^1.1.0",
