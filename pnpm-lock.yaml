@@ -875,6 +875,64 @@ importers:
         specifier: ^3.1.7
         version: 3.1.7
 
+  tools/mic-alarm:
+    dependencies:
+      '@formkit/auto-animate':
+        specifier: ^0.8.2
+        version: 0.8.2
+      '@library/backends':
+        specifier: workspace:*
+        version: link:../../libraries/backends
+      '@library/base':
+        specifier: workspace:*
+        version: link:../../libraries/base
+      '@library/helpers':
+        specifier: workspace:*
+        version: link:../../libraries/helpers
+      '@library/library-bottom':
+        specifier: workspace:*
+        version: link:../../libraries/library-bottom
+      '@library/library-top':
+        specifier: workspace:*
+        version: link:../../libraries/library-top
+      '@library/paraglide':
+        specifier: workspace:*
+        version: link:../../libraries/paraglide
+      '@library/ui':
+        specifier: workspace:*
+        version: link:../../libraries/ui
+      nanoid:
+        specifier: ^5.1.5
+        version: 5.1.5
+      store:
+        specifier: ^2.0.12
+        version: 2.0.12
+      svelte-sonner:
+        specifier: ^1.0.3
+        version: 1.0.5(svelte@5.38.6)
+      zod:
+        specifier: ^3.25.36
+        version: 3.25.76
+    devDependencies:
+      '@cloudflare/vite-plugin':
+        specifier: ^1.13.1
+        version: 1.13.1(vite@6.3.6(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.1))(workerd@1.20250917.0)(wrangler@4.38.0)
+      '@library/scripts':
+        specifier: workspace:*
+        version: link:../../libraries/scripts
+      daisyui:
+        specifier: 5.0.35
+        version: 5.0.35
+      tailwindcss:
+        specifier: 4.1.8
+        version: 4.1.8
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
+      wrangler:
+        specifier: ^4.38.0
+        version: 4.38.0
+
   tools/storybook:
     dependencies:
       '@library/base':
