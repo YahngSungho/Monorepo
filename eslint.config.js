@@ -100,6 +100,7 @@ const baseRules = {
 	'no-unused-expressions': 1,
 	'no-unused-vars': 1,
 	'no-use-before-define': 'off',
+	'dot-notation': 'off',
 	'no-warning-comments': 'off',
 	'object-curly-spacing': 'off',
 	'object-shorthand': 'off',
@@ -125,6 +126,7 @@ const baseRules = {
 	'ramda/pipe-simplification': 'warn',
 	'ramda/prefer-both-either': 'warn',
 	'ramda/prefer-complement': 'warn',
+	'unicorn/no-for-loop': 'off',
 	'ramda/prefer-ramda-boolean': 'warn',
 	'ramda/prop-satisfies-simplification': 'warn',
 	'ramda/reduce-simplification': 'warn',
@@ -451,6 +453,7 @@ export default defineFlatConfig([
 			'**/e2e/*.js',
 			'*.test.js',
 			'**/*.tests.js',
+			'tools/**'
 		],
 
 		rules: {

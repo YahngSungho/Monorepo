@@ -1,9 +1,10 @@
 <script module>
 import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
+
 import IconText from '@library/ui/icon-text'
 
-const newTabProperties = {
+const newTabProps = {
 	rel: 'noopener noreferrer',
 	target: '_blank',
 }
@@ -42,23 +43,23 @@ const newTabProperties = {
  * @property {string} [href]
  */
 let {
-	children,
+	children = undefined,
 	class: incomingClass = '',
 	clearBackground = false,
 	dimBackground = false,
-	href,
+	href = undefined,
 	iconName = '',
-	iconProps: iconProperties = {},
+	iconProps = {},
 	loading: loadingButton = false,
 	shape = '',
 	size = 'md',
 	variant = 'primary',
 	visibilityHidden = false,
-	...restProperties
+	...restProps
 } = $props()
 
-const buttonShape = shape ? `btn-${shape}` : ''
-const buttonClass = `btn btn-${variant} btn-${size} ${buttonShape}`
+const btnShape = shape ? `btn-${shape}` : ''
+const buttonClass = `btn btn-${variant} btn-${size} ${btnShape}`
 const extraStyles1 = css`
 	position: relative;
 	inset-block-end: 0.15em;
@@ -75,16 +76,20 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {#snippet content()}
 	{#if loadingButton}
 		<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
-	{:else if iconName}
-		<IconText
-			class={children ? extStyles1 : extraStyles2} {icname}
-			{...iconProperties}
-			alone={!children}
-		>
-			{@render children?.()}
-		</IconText>
 	{:else}
-		{@render children?.()}
+		{#if iconName}
+			<IconText
+				class={children ? extraStyles1 : extraStyles2}
+				{iconName}
+				{...iconProps}
+				alone={!children}
+			>
+
+				{@render children?.()}
+			</IconText>
+		{:else}
+			{@render children?.()}
+		{/if}
 	{/if}
 {/snippet}
 
@@ -100,8 +105,8 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		href={isInternalLink ? localizeHref(href) : href}
 		role="button"
 		type="button"
-		{...isInternalLink ? {} : newTabProperties}
-		{...restProperties}
+		{...isInternalLink ? {} : newTabProps}
+		{...restProps}
 	>
 		{@render content()}
 	</a>
@@ -115,7 +120,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		class:loadingButton
 		class:visibilityHidden
 		type="button"
-		{...restProperties}
+		{...restProps}
 	>
 		{@render content()}
 	</button>
