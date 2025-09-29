@@ -124,6 +124,7 @@
 		"*.mdx": "markdown",
 		"*.svelte": "svelte"
 	},
+	"files.eol": "\n",
 	"json.schemas": [
 		{
 			"fileMatch": ["*.jsonc"],
@@ -192,6 +193,5 @@
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#79021b99",
 		"titleBar.inactiveForeground": "#e7e7e799"
-	},
-	"files.eol": "\n"
+	}
 }

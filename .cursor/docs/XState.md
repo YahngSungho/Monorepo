@@ -16,7 +16,7 @@
 - Use `getNextSnapshot(…)` instead of `machine.transition(…)`
   - The `machine.transition(...)` method now requires an "actor scope" for the 3rd argument, which is internally created by `createActor(...)`. Instead, use `getNextSnapshot(...)` to get the next snapshot from some actor logic based on the current snapshot and event:
 - Send events explictly instead of using `autoForward`
-  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's _not_ recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
+  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's *not* recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
 - The `state.toStrings()` method has been removed
 
 #### states
@@ -161,7 +161,6 @@
 
 - The dynamic, extended state of the machine.
 - **Changing Context**:
-
   - Must be done immutably via an **action**. Use the `assign` action.
   - Static update: `assign({ key: newValue, anotherKey: 'literal' })`.
   - Dynamic update:
@@ -199,7 +198,6 @@
   ```
 
 - **Fallback Event (`*`)**: Handles any event not explicitly defined in the `on` object.
-
   - `on: { '*': { target: 'someState', /* ... */ } }`
 
 - **Prefix Wildcard Event**: Handles any event starting with a specific prefix.
@@ -210,7 +208,6 @@
 - **Self-Transition**: A transition that doesn't change the state but can execute actions. Defined by omitting the `target` property.
   - `on: { myEvent: { actions: [ /* ... */ ] /* no target here */ } }`
 - **Relative Targeting**:
-
   - Target Sibling State: Use a dot prefix (`.`). Defined in the _parent_ state's `on` object.
 
     ```js
@@ -232,7 +229,6 @@
 - **`always` Transitions (Transient Transitions)**: Automatically taken if the condition (guard) is met upon entering the state. Evaluated _after_ entry actions.
   - `myState: { always: { guard: 'someCondition', target: 'nextState', actions: [/* ... */] } }` (Can be an array for multiple conditions).
 - **`after` Transitions (Delayed Transitions)**: Transition after a specified delay.
-
   - `myState: { after: { 5000: { target: 'nextState', actions: [/* ... */] } } }` (Delay in milliseconds)
   - Using Named Delays (defined in `setup`):
 
@@ -251,7 +247,6 @@
   - `entry: [ action ]` (On state entry)
   - `exit: [ action ]` (On state exit)
 - **Action Object**: Reference a predefined action (from `setup`).
-
   - `{ type: 'actionName', params: { key: 'value' } }`
   - **Dynamic Parameters**: Calculate params based on context/event.
 
@@ -263,7 +258,6 @@
     ```
 
 - **Inline Action**: Define the action function directly.
-
   - `({ context, event, action }) => { /* side effect logic here */ }`
 
 - **Context Update (`assign`)**: The primary action for updating context.
@@ -277,7 +271,6 @@
   ```
 
 - **`raise` Action**: Send an event to the machine itself (internal event).
-
   - `raise({ type: 'INTERNAL_EVENT', value: 42 })`
   - `raise(({ context, event }) => ({ type: 'DYNAMIC_EVENT', data: context.someData }))`
   - Can include options: `raise(eventObj, { id: 'myRaiseId', delay: 100 })`
@@ -307,7 +300,6 @@
   ```
 
 - **`log` Action**: Log a message or expression.
-
   - `log('Entering state X')`
   - `log(({ context, event }) =>`Event ${event.type} received with context ${context.value}`)`
 
@@ -432,7 +424,6 @@
 - **`createMachine`**: (Already covered) Creates state machine logic.
   - _Snapshot Spec_: `{ value: string | object, context: any }`
 - **`fromTransition`**: Simple logic that only determines the next state based on the current state and received event. No actions, context changes built-in.
-
   - ```js
     const actorLogic = fromTransition(
     	(currentState, event) => {
@@ -450,7 +441,6 @@
   - _Snapshot Spec_: `{ context: currentState }` (The state _is_ the context).
 
 - **`fromObservable`**: Logic driven by an external Observable stream.
-
   - **Implementation**:
 
     ```js
@@ -466,7 +456,6 @@
   - **Note**: All XState actors are themselves `observable`.
 
 - **`fromCallback`**: Intended for invoking callback-based services. Sends events back to the parent/invoker.
-
   - **Intent**: Receive event -> Run callback -> Send event back to parent. Like a callback attached to the parent's event.
   - **Implementation**:
 
@@ -495,7 +484,6 @@
   - **Specifying `sendBack` Target**: (Original text didn't specify how, typically handled by the system/invoker relationship).
 
 - **`fromPromise`**: Logic based on a Promise.
-
   - **Implementation**:
 
     ```js
@@ -552,7 +540,6 @@
   - **Error**: Rejects if the actor reaches an 'error' state or is stopped prematurely.
   - **Implementation**: `const output = await toPromise(myActor);`
 - **Wait for Condition**: Create a Promise that resolves when the actor's snapshot satisfies a specific condition.
-
   - **Implementation**:
 
     ```js
@@ -583,7 +570,6 @@
 
 - Saving and restoring actor state.
 - **Pattern Code**:
-
   - **Save Current State**:
 
     ```js
@@ -681,7 +667,6 @@
 
 - Creating actors dynamically via actions.
 - **Creation Methods**:
-
   - `spawnChild(actorLogic, options)`: Action creator for spawning. Options: `{ input, id, systemId }`.
   - Using `assign` with the `spawn` action creator (available in `assign`'s callback) to store the reference (`ActorRef`) in context:
 

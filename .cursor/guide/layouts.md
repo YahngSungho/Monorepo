@@ -11,7 +11,7 @@ We are in the habit of styling elements, or classes of elements, directly: we ma
 
 ```css
 p {
-	margin-bottom: 1.5rem;
+	margin-block-end: 1.5rem;
 }
 ```
 
@@ -66,9 +66,11 @@ Recursion applies the same margin no matter the nesting depth. A more deliberate
 	/* top and bottom margins in horizontal-tb writing mode */
 	margin-block: 0;
 }
+
 .stack-large > * + * {
 	margin-block-start: 3rem;
 }
+
 .stack-small > * + * {
 	margin-block-start: 0.5rem;
 }
@@ -90,6 +92,7 @@ CSS works best as an exception-based language. You write far-reaching rules, the
 .stack > * + * {
 	margin-block-start: var(--space, 1.5em);
 }
+
 .stack-exception,
 .stack-exception + * {
 	--space: 3rem;
@@ -111,12 +114,14 @@ In the following example, we've chosen to group elements _after_ the second elem
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-}
-.stack > * + * {
-	margin-block-start: var(--space, 1.5rem);
-}
-.stack > :nth-child(2) {
-	margin-block-end: auto;
+
+	& > * + * {
+		margin-block-start: var(--space, 1.5rem);
+	}
+
+	& > :nth-child(2) {
+		margin-block-end: auto;
+	}
 }
 ```
 
@@ -163,6 +168,7 @@ Not necessarily. While some approaches to CSS give you the power (or the _pain_,
 :root {
 	font-family: sans-serif;
 }
+
 .box {
 	/* ↓ Not needed because the style is inherited */
 	/* font-family: sans-serif; */
@@ -224,9 +230,10 @@ If you've written CSS before, you've no doubt used `background-color` to create 
 ```css
 .box {
 	padding: var(--s1);
-}
-.box * {
-	color: inherit;
+
+	& * {
+		color: inherit;
+	}
 }
 ```
 
@@ -234,19 +241,22 @@ By forcing inheritance, you can change the `color`---along with the `background-
 
 ```css
 .box {
-	--color-light: #eee;
-	--color-dark: #222;
+	--color-light: rgb(238 238 238);
+	--color-dark: rgb(34 34 34);
+
+	padding: var(--s1);
 	color: var(--color-dark);
 	background-color: var(--color-light);
-	padding: var(--s1);
-}
-.box * {
-	color: inherit;
-}
-.box.invert {
-	/* ↓ Dark becomes light, and light becomes dark */
-	color: var(--color-light);
-	background-color: var(--color-dark);
+
+	& * {
+		color: inherit;
+	}
+
+	&.invert {
+		/* ↓ Dark becomes light, and light becomes dark */
+		color: var(--color-light);
+		background-color: var(--color-dark);
+	}
 }
 ```
 
@@ -256,13 +266,15 @@ In a greyscale design, it is possible to switch between dark-on-light and light-
 
 ```css
 .box {
-	--color-light: hsl(0, 0%, 80%);
-	--color-dark: hsl(0, 0%, 20%);
+	--color-light: hsl(0deg 0% 80%);
+	--color-dark: hsl(0deg 0% 20%);
+
 	color: var(--color-dark);
 	background-color: var(--color-light);
-}
-.box.invert {
-	filter: invert(100%);
+
+	&.invert {
+		filter: invert(100%);
+	}
 }
 ```
 
@@ -276,11 +288,14 @@ In the absence of a border, a `background-color` is insufficient for describing 
 
 ```css
 .box {
-	--color-light: #eee;
-	--color-dark: #222;
-	color: var(--color-dark);
-	background-color: var(--color-light);
+	--color-light: rgb(238 238 238);
+	--color-dark: rgb(34 34 34);
+
 	padding: var(--s1);
+
+	color: var(--color-dark);
+
+	background-color: var(--color-light);
 	outline: 0.125rem solid transparent;
 	outline-offset: -0.125rem;
 }
@@ -344,7 +359,7 @@ My first centered columns would use the `margin` shorthand, often on the `<body>
 
 ```css
 .center {
-	max-width: 60ch;
+	max-inline-size: 60ch;
 	margin: 0 auto;
 }
 ```
@@ -359,9 +374,8 @@ Instead, I could use the explicit `margin-left` and `margin-right` properties. T
 
 ```css
 .center {
-	max-width: 60ch;
-	margin-left: auto;
-	margin-right: auto;
+	max-inline-size: 60ch;
+	margin-inline: auto;
 }
 ```
 
@@ -397,8 +411,7 @@ Here's a version that preserves the `60ch` `max-width`, but ensures there are, a
 	box-sizing: content-box;
 	max-inline-size: 60ch;
 	margin-inline: auto;
-	padding-inline-start: var(--s1);
-	padding-inline-end: var(--s1);
+	padding-inline: var(--s1) var(--s1);
 }
 ```
 
@@ -408,12 +421,13 @@ The `auto` margin solution is time-honoured and perfectly serviceable. But there
 
 ```css
 .center {
-	box-sizing: content-box;
-	max-inline-size: 60ch;
-	margin-inline: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	box-sizing: content-box;
+	max-inline-size: 60ch;
+	margin-inline: auto;
 }
 ```
 
@@ -453,9 +467,10 @@ However, like words, `inline-block` elements are still separated by space charac
 ```css
 .parent {
 	font-size: 0;
-}
-.parent > * {
-	font-size: 1rem;
+
+	& > * {
+		font-size: 1rem;
+	}
 }
 ```
 
@@ -503,17 +518,20 @@ We can make authoring space in the **Cluster** component easier by using custom 
 .cluster-wrapper {
 	/* Added wrapper */
 	--space: 1rem;
+
 	overflow: hidden; /* Contain negative margin */
 }
+
 .cluster {
 	display: flex;
 	flex-wrap: wrap;
 	/* ↓ multiply by -1 to negate the halved value */
 	margin: calc(var(--space) / 2 * -1);
-}
-.cluster > * {
-	/* ↓ half the value, because of the 'doubling up' */
-	margin: calc(var(--space) / 2);
+
+	& > * {
+		/* ↓ half the value, because of the 'doubling up' */
+		margin: calc(var(--space) / 2);
+	}
 }
 ```
 
@@ -545,16 +563,18 @@ In browsers where `gap` is only supported for the Grid module, the following wou
 .cluster {
 	display: flex;
 	flex-wrap: wrap;
-}
-.cluster > * {
-	margin: 0.5rem; /* Attempt fallback */
-}
-@supports (gap: 1rem) {
-	.cluster > * {
-		margin: 0; /* Remove margin if gap supported */
+
+	& > * {
+		margin: 0.5rem; /* Attempt fallback */
 	}
+}
+
+@supports (gap: 1rem) {
 	.cluster {
 		gap: var(--space, 1rem); /* Apply gap */
+		& > * {
+			margin: 0; /* Remove margin if gap supported */
+		}
 	}
 }
 ```
@@ -616,11 +636,10 @@ In some respects, the CSS Flexbox module, with its provision of `flex-basis`, ca
 .parent {
 	display: flex;
 	flex-wrap: wrap;
-}
-.parent > * {
-	flex-grow: 1;
-	flex-shrink: 1;
-	flex-basis: 30ch;
+
+	& > * {
+		flex: 1 1 30ch;
+	}
 }
 ```
 
@@ -653,10 +672,12 @@ How to force wrapping at a certain point, we will come to shortly. First, we nee
 	display: flex;
 	flex-wrap: wrap;
 }
+
 .sidebar {
 	flex-basis: 20rem;
 	flex-grow: 1;
 }
+
 .not-sidebar {
 	flex-basis: 0;
 	flex-grow: 999;
@@ -693,11 +714,13 @@ For a gutter of `1rem`, the CSS now looks like the following.
 	flex-wrap: wrap;
 	gap: 1rem;
 }
+
 .sidebar {
 	/* ↓ The width when the sidebar _is_ a sidebar */
 	flex-basis: 20rem;
 	flex-grow: 1;
 }
+
 .not-sidebar {
 	/* ↓ Grow from nothing */
 	flex-basis: 0;
@@ -743,18 +766,21 @@ Consider the following code.
 .grid {
 	display: flex;
 	flex-wrap: wrap;
-}
-.grid > * {
-	width: 33.333%;
-}
-@media (max-width: 60rem) {
-	.grid > * {
-		width: 50%;
+
+	& > * {
+		inline-size: 33.333%;
 	}
 }
-@media (max-width: 30rem) {
+
+@media (width <= 60rem) {
 	.grid > * {
-		width: 100%;
+		inline-size: 50%;
+	}
+}
+
+@media (width <= 30rem) {
+	.grid > * {
+		inline-size: 100%;
 	}
 }
 ```
@@ -767,9 +793,10 @@ With `flex-basis`, it's easy to make a responsive Grid-like layout which is in n
 .grid {
 	display: flex;
 	flex-wrap: wrap;
-}
-.grid > * {
-	flex: 1 1 20rem;
+
+	& > * {
+		flex: 1 1 20rem;
+	}
 }
 ```
 
@@ -802,9 +829,10 @@ In order to achieve this switch, first a basic horizontal layout is instated, wi
 .switcher > * {
 	display: flex;
 	flex-wrap: wrap;
-}
-.switcher > * > * {
-	flex-grow: 1;
+
+	& > * {
+		flex-grow: 1;
+	}
 }
 ```
 
@@ -826,10 +854,11 @@ Here is the `flex-basis` declaration in situ:
 .switcher > * {
 	display: flex;
 	flex-wrap: wrap;
-}
-.switcher > * > * {
-	flex-grow: 1;
-	flex-basis: calc((30rem - 100%) * 999);
+
+	& > * {
+		flex-basis: calc((30rem - 100%) * 999);
+		flex-grow: 1;
+	}
 }
 ```
 
@@ -853,18 +882,20 @@ To support margins ('gutters'; 'gaps') between the subject elements, we could ad
 .switcher {
 	--threshold: 30rem;
 	--space: 1rem;
-}
-.switcher > * {
-	display: flex;
-	flex-wrap: wrap;
-	/* ↓ Multiply by -1 to make negative */
-	margin: calc(var(--space) / 2 * -1);
-}
-.switcher > * > * {
-	flex-grow: 1;
-	flex-basis: calc((var(--threshold) - (100% - var(--space))) * 999);
-	/* ↓ Half the value to each element, combining to make the whole */
-	margin: calc(var(--space) / 2);
+
+	& > * {
+		display: flex;
+		flex-wrap: wrap;
+		/* ↓ Multiply by -1 to make negative */
+		margin: calc(var(--space) / 2 * -1);
+
+		& > * {
+			flex-basis: calc((var(--threshold) - (100% - var(--space))) * 999);
+			flex-grow: 1;
+			/* ↓ Half the value to each element, combining to make the whole */
+			margin: calc(var(--space) / 2);
+		}
+	}
 }
 ```
 
@@ -872,14 +903,16 @@ Instead, since `gap` is now supported in all major browsers, we don't have to wo
 
 ```css
 .switcher {
+	--threshold: 30rem;
+
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
-	--threshold: 30rem;
-}
-.switcher > * {
-	flex-grow: 1;
-	flex-basis: calc((var(--threshold) - 100%) * 999);
+
+	& > * {
+		flex-basis: calc((var(--threshold) - 100%) * 999);
+		flex-grow: 1;
+	}
 }
 ```
 
@@ -940,14 +973,15 @@ The truth is, there are numerous ways to center content with CSS. However, there
 ```css
 .parent {
 	/* ↓ Give the parent the height of the viewport */
-	block-size: 100vh;
-}
-.parent > .child {
-	position: relative;
-	/* ↓ Push the element down 50% of the parent */
-	inset-block-start: 50%;
-	/* ↓ Then adjust it by 50% of its own height */
-	transform: translateY(-50%);
+	block-size: 100vb;
+
+	& > .child {
+		position: relative;
+		/* ↓ Push the element down 50% of the parent */
+		inset-block-start: 50%;
+		/* ↓ Then adjust it by 50% of its own height */
+		transform: translateY(-50%);
+	}
 }
 ```
 
@@ -960,8 +994,8 @@ Perhaps the most robust method is to combine Flexbox's `justify-content: center`
 ```css
 .centered {
 	display: flex;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
 }
 ```
 
@@ -1015,9 +1049,10 @@ How do we manage all these cases without having to adapt the CSS? First, we give
 .cover {
 	display: flex;
 	flex-direction: column;
-}
-.cover > h1 {
-	margin-block: auto;
+
+	& > h1 {
+		margin-block: auto;
+	}
 }
 ```
 
@@ -1035,12 +1070,15 @@ Currently, the `auto` margins simply collapse down to nothing. Since we can't en
 .cover > * {
 	margin-block: 1rem;
 }
+
 .cover > h1 {
 	margin-block: auto;
 }
+
 .cover > :first-child:not(h1) {
 	margin-block-start: 0;
 }
+
 .cover > :last-child:not(h1) {
 	margin-block-end: 0;
 }
@@ -1058,8 +1096,8 @@ Now it is safe to add spacing around the inside of the **Cover** container using
 
 ```css
 .cover {
+	min-block-size: 100vb;
 	padding: 1rem;
-	min-block-size: 100vh;
 }
 ```
 
@@ -1124,9 +1162,10 @@ Using Flexbox, I can create a grid formation using `flex-basis` to determine an 
 .flex-grid {
 	display: flex;
 	flex-wrap: wrap;
-}
-.flex-grid > * {
-	flex: 1 1 30ch;
+
+	& > * {
+		flex: 1 1 30ch;
+	}
 }
 ```
 
@@ -1157,7 +1196,7 @@ This behavior is closer to the archetypal responsive grid I have in mind, and wi
 ```css
 .grid {
 	display: grid;
-	grid-gap: 1rem;
+	gap: 1rem;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 ```
@@ -1188,10 +1227,11 @@ Consider the following code:
 ```css
 .grid {
 	display: grid;
-	grid-gap: 1rem;
-}
-.grid.aboveMin {
-	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	gap: 1rem;
+
+	&.aboveMin {
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
 }
 ```
 
@@ -1250,8 +1290,9 @@ As a fallback, we configure the grid into a single column. Then we use `@support
 ```css
 .grid {
 	display: grid;
-	grid-gap: 1rem;
+	gap: 1rem;
 }
+
 @supports (width: min(250px, 100%)) {
 	.grid {
 		grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
@@ -1297,11 +1338,10 @@ In some respects, the CSS Flexbox module, with its provision of `flex-basis`, ca
 .parent {
 	display: flex;
 	flex-wrap: wrap;
-}
-.parent > * {
-	flex-grow: 1;
-	flex-shrink: 1;
-	flex-basis: 30ch;
+
+	& > * {
+		flex: 1 1 30ch;
+	}
 }
 ```
 
@@ -1334,10 +1374,12 @@ How to force wrapping at a certain point, we will come to shortly. First, we nee
 	display: flex;
 	flex-wrap: wrap;
 }
+
 .sidebar {
 	flex-basis: 20rem;
 	flex-grow: 1;
 }
+
 .not-sidebar {
 	flex-basis: 0;
 	flex-grow: 999;
@@ -1374,11 +1416,13 @@ For a gutter of `1rem`, the CSS now looks like the following.
 	flex-wrap: wrap;
 	gap: 1rem;
 }
+
 .sidebar {
 	/* ↓ The width when the sidebar _is_ a sidebar */
 	flex-basis: 20rem;
 	flex-grow: 1;
 }
+
 .not-sidebar {
 	/* ↓ Grow from nothing */
 	flex-basis: 0;
@@ -1424,18 +1468,21 @@ Consider the following code.
 .grid {
 	display: flex;
 	flex-wrap: wrap;
-}
-.grid > * {
-	width: 33.333%;
-}
-@media (max-width: 60rem) {
-	.grid > * {
-		width: 50%;
+
+	& > * {
+		inline-size: 33.333%;
 	}
 }
-@media (max-width: 30rem) {
+
+@media (width <= 60rem) {
 	.grid > * {
-		width: 100%;
+		inline-size: 50%;
+	}
+}
+
+@media (width <= 30rem) {
+	.grid > * {
+		inline-size: 100%;
 	}
 }
 ```
@@ -1448,9 +1495,10 @@ With `flex-basis`, it's easy to make a responsive Grid-like layout which is in n
 .grid {
 	display: flex;
 	flex-wrap: wrap;
-}
-.grid > * {
-	flex: 1 1 20rem;
+
+	& > * {
+		flex: 1 1 20rem;
+	}
 }
 ```
 
@@ -1483,9 +1531,10 @@ In order to achieve this switch, first a basic horizontal layout is instated, wi
 .switcher > * {
 	display: flex;
 	flex-wrap: wrap;
-}
-.switcher > * > * {
-	flex-grow: 1;
+
+	& > * {
+		flex-grow: 1;
+	}
 }
 ```
 
@@ -1507,10 +1556,11 @@ Here is the `flex-basis` declaration in situ:
 .switcher > * {
 	display: flex;
 	flex-wrap: wrap;
-}
-.switcher > * > * {
-	flex-grow: 1;
-	flex-basis: calc((30rem - 100%) * 999);
+
+	& > * {
+		flex-basis: calc((30rem - 100%) * 999);
+		flex-grow: 1;
+	}
 }
 ```
 
@@ -1534,18 +1584,20 @@ To support margins ('gutters'; 'gaps') between the subject elements, we could ad
 .switcher {
 	--threshold: 30rem;
 	--space: 1rem;
-}
-.switcher > * {
-	display: flex;
-	flex-wrap: wrap;
-	/* ↓ Multiply by -1 to make negative */
-	margin: calc(var(--space) / 2 * -1);
-}
-.switcher > * > * {
-	flex-grow: 1;
-	flex-basis: calc((var(--threshold) - (100% - var(--space))) * 999);
-	/* ↓ Half the value to each element, combining to make the whole */
-	margin: calc(var(--space) / 2);
+
+	& > * {
+		display: flex;
+		flex-wrap: wrap;
+		/* ↓ Multiply by -1 to make negative */
+		margin: calc(var(--space) / 2 * -1);
+
+		& > * {
+			flex-basis: calc((var(--threshold) - (100% - var(--space))) * 999);
+			flex-grow: 1;
+			/* ↓ Half the value to each element, combining to make the whole */
+			margin: calc(var(--space) / 2);
+		}
+	}
 }
 ```
 
@@ -1553,14 +1605,16 @@ Instead, since `gap` is now supported in all major browsers, we don't have to wo
 
 ```css
 .switcher {
+	--threshold: 30rem;
+
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
-	--threshold: 30rem;
-}
-.switcher > * {
-	flex-grow: 1;
-	flex-basis: calc((var(--threshold) - 100%) * 999);
+
+	& > * {
+		flex-basis: calc((var(--threshold) - 100%) * 999);
+		flex-grow: 1;
+	}
 }
 ```
 
@@ -1621,14 +1675,15 @@ The truth is, there are numerous ways to center content with CSS. However, there
 ```css
 .parent {
 	/* ↓ Give the parent the height of the viewport */
-	block-size: 100vh;
-}
-.parent > .child {
-	position: relative;
-	/* ↓ Push the element down 50% of the parent */
-	inset-block-start: 50%;
-	/* ↓ Then adjust it by 50% of its own height */
-	transform: translateY(-50%);
+	block-size: 100vb;
+
+	& > .child {
+		position: relative;
+		/* ↓ Push the element down 50% of the parent */
+		inset-block-start: 50%;
+		/* ↓ Then adjust it by 50% of its own height */
+		transform: translateY(-50%);
+	}
 }
 ```
 
@@ -1641,8 +1696,8 @@ Perhaps the most robust method is to combine Flexbox's `justify-content: center`
 ```css
 .centered {
 	display: flex;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
 }
 ```
 
@@ -1696,9 +1751,10 @@ How do we manage all these cases without having to adapt the CSS? First, we give
 .cover {
 	display: flex;
 	flex-direction: column;
-}
-.cover > h1 {
-	margin-block: auto;
+
+	& > h1 {
+		margin-block: auto;
+	}
 }
 ```
 
@@ -1716,12 +1772,15 @@ Currently, the `auto` margins simply collapse down to nothing. Since we can't en
 .cover > * {
 	margin-block: 1rem;
 }
+
 .cover > h1 {
 	margin-block: auto;
 }
+
 .cover > :first-child:not(h1) {
 	margin-block-start: 0;
 }
+
 .cover > :last-child:not(h1) {
 	margin-block-end: 0;
 }
@@ -1739,8 +1798,8 @@ Now it is safe to add spacing around the inside of the **Cover** container using
 
 ```css
 .cover {
+	min-block-size: 100vb;
 	padding: 1rem;
-	min-block-size: 100vh;
 }
 ```
 
@@ -1805,9 +1864,10 @@ Using Flexbox, I can create a grid formation using `flex-basis` to determine an 
 .flex-grid {
 	display: flex;
 	flex-wrap: wrap;
-}
-.flex-grid > * {
-	flex: 1 1 30ch;
+
+	& > * {
+		flex: 1 1 30ch;
+	}
 }
 ```
 
@@ -1838,7 +1898,7 @@ This behavior is closer to the archetypal responsive grid I have in mind, and wi
 ```css
 .grid {
 	display: grid;
-	grid-gap: 1rem;
+	gap: 1rem;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 ```
@@ -1869,10 +1929,11 @@ Consider the following code:
 ```css
 .grid {
 	display: grid;
-	grid-gap: 1rem;
-}
-.grid.aboveMin {
-	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	gap: 1rem;
+
+	&.aboveMin {
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
 }
 ```
 
@@ -1931,8 +1992,9 @@ As a fallback, we configure the grid into a single column. Then we use `@support
 ```css
 .grid {
 	display: grid;
-	grid-gap: 1rem;
+	gap: 1rem;
 }
+
 @supports (width: min(250px, 100%)) {
 	.grid {
 		grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
@@ -2025,7 +2087,7 @@ Using custom properties and `calc()`, we can create an interface that accepts an
 
 ```css
 .frame {
-	padding-bottom: calc(var(--n) / var(--d) * 100%);
+	padding-block-end: calc(var(--n) / var(--d) * 100%);
 }
 ```
 
@@ -2040,12 +2102,13 @@ So how does the cropping work? For replaced elements, like `<img />` and `<video
 ```css
 .frame {
 	aspect-ratio: 16 / 9;
-}
-.frame > img,
-.frame > video {
-	inline-size: 100%;
-	block-size: 100%;
-	object-fit: cover;
+
+	& > img,
+	& > video {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+	}
 }
 ```
 
@@ -2057,17 +2120,19 @@ The `object-fit` property is not designed for normal, non-replaced elements, so 
 
 ```css
 .frame {
-	aspect-ratio: 16 / 9;
 	overflow: hidden;
 	display: flex;
-	justify-content: center;
 	align-items: center;
-}
-.frame > img,
-.frame > video {
-	inline-size: 100%;
-	block-size: 100%;
-	object-fit: cover;
+	justify-content: center;
+
+	aspect-ratio: 16 / 9;
+
+	& > img,
+	& > video {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+	}
 }
 ```
 
@@ -2129,9 +2194,9 @@ By omitting the often complementary `flex-wrap: wrap` declaration, elements are 
 
 ```css
 .reel {
-	display: flex;
 	/* ↓ We only want horizontal scrolling */
-	overflow-x: auto;
+	overflow-inline: auto;
+	display: flex;
 }
 ```
 
@@ -2151,16 +2216,22 @@ Some operating systems and browsers hide the scrollbar by default, but there are
 ```css
 ::-webkit-scrollbar {
 }
+
 ::-webkit-scrollbar-button {
 }
+
 ::-webkit-scrollbar-track {
 }
+
 ::-webkit-scrollbar-track-piece {
 }
+
 ::-webkit-scrollbar-thumb {
 }
+
 ::-webkit-scrollbar-corner {
 }
+
 ::-webkit-resizer {
 }
 ```
@@ -2171,27 +2242,30 @@ Setting scrollbar colors is a question of aesthetics, which is not really what *
 
 ```css
 .reel {
-	display: flex;
-	/* ↓ We only want horizontal scrolling */
-	overflow-x: auto;
 	/* ↓ First value: thumb; second value: track */
 	scrollbar-color: var(--color-light) var(--color-dark);
-}
-.reel::-webkit-scrollbar {
-	block-size: 1rem;
-}
-.reel::-webkit-scrollbar-track {
-	background-color: var(--color-dark);
-}
-.reel::-webkit-scrollbar-thumb {
-	background-color: var(--color-dark);
-	background-image: linear-gradient(
-		var(--color-dark) 0,
-		var(--color-dark) 0.25rem,
-		var(--color-light) 0.25rem,
-		var(--color-light) 0.75rem,
-		var(--color-dark) 0.75rem
-	);
+	/* ↓ We only want horizontal scrolling */
+	overflow-inline: auto;
+	display: flex;
+
+	&::-webkit-scrollbar {
+		block-size: 1rem;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: var(--color-dark);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--color-dark);
+		background-image: linear-gradient(
+			var(--color-dark) 0,
+			var(--color-dark) 0.25rem,
+			var(--color-light) 0.25rem,
+			var(--color-light) 0.75rem,
+			var(--color-dark) 0.75rem
+		);
+	}
 }
 ```
 
@@ -2209,11 +2283,12 @@ For images, which may be very large or use differing aspect ratios, we may want 
 
 ```css
 .reel {
-	block-size: 50vh;
-}
-.reel > img {
-	block-size: 100%;
-	width: auto;
+	block-size: 50vb;
+
+	& > img {
+		inline-size: auto;
+		block-size: 100%;
+	}
 }
 ```
 
@@ -2252,16 +2327,18 @@ So, if we want spacing around the children, we take a different approach. We add
 ```css
 .reel {
 	border-width: var(--border-thin);
-}
-.reel > * {
-	margin: var(--s0);
-	margin-inline-end: 0;
-}
-.reel::after {
-	content: '';
-	flex-basis: var(--s0);
-	/* ↓ Default is 1 so needs to be overridden */
-	flex-shrink: 0;
+
+	&::after {
+		content: '';
+		flex-basis: var(--s0);
+		/* ↓ Default is 1 so needs to be overridden */
+		flex-shrink: 0;
+	}
+
+	& > * {
+		margin: var(--s0);
+		margin-inline-end: 0;
+	}
 }
 ```
 
@@ -2518,6 +2595,7 @@ The answer, instead, is to adjust the `max-width` and `max-height` values. The `
 	inset-block-start: 50%;
 	inset-inline-start: 50%;
 	transform: translate(-50%, -50%);
+
 	max-inline-size: calc(100% - 2rem);
 	max-block-size: calc(100% - 2rem);
 }
@@ -2539,6 +2617,7 @@ In the following example, the **Imposter** element has a `--positioning` custom 
 	inset-block-start: 50%;
 	inset-inline-start: 50%;
 	transform: translate(-50%, -50%);
+
 	max-inline-size: calc(100% - 2rem);
 	max-block-size: calc(100% - 2rem);
 }
@@ -2586,11 +2665,13 @@ Primarily, **Every Layout** is an exposition of the benefit of automatic, self-g
 .layout {
 	display: flex;
 	flex-wrap: wrap;
+
+	& > * {
+		flex-basis: 50%; /* two columns */
+	}
 }
-.layout > * {
-	flex-basis: 50%; /* two columns */
-}
-@media (max-width: 360px) {
+
+@media (width <= 360px) {
 	.layout > * {
 		flex-basis: 100%; /* one column */
 	}
@@ -2605,13 +2686,15 @@ As the name suggests, container queries pertain to a containing element. It is t
 
 ```css
 .layout {
+	container-type: inline-size;
 	display: flex;
 	flex-wrap: wrap;
-	container-type: inline-size;
+
+	& > * {
+		flex-basis: 50%; /* two columns */
+	}
 }
-.layout > * {
-	flex-basis: 50%; /* two columns */
-}
+
 @container (width < 360px) {
 	.layout > * {
 		flex-basis: 100%; /* one column */
@@ -2629,10 +2712,11 @@ What if we took this approach instead?
 .layout {
 	display: flex;
 	flex-wrap: wrap;
-}
-.layout > * {
-	flex-basis: 180px; /* half of 360px */
-	flex-grow: 1;
+
+	& > * {
+		flex-basis: 180px; /* half of 360px */
+		flex-grow: 1;
+	}
 }
 ```
 
@@ -2650,11 +2734,13 @@ This is not something container queries are capable of because they only know th
 .with-sidebar {
 	container-type: inline-size;
 }
+
 @container (width < 640px) {
 	.with-sidebar:has(.sidebar--large) > * {
 		flex-basis: 100%;
 	}
 }
+
 @container (width < 360px) {
 	.with-sidebar:has(.sidebar--small) > * {
 		flex-basis: 100%;
@@ -2717,7 +2803,7 @@ You can name a container using the following shorthand syntax, which combines th
 
 ```css
 .container {
-	container: myContainer / inline-size;
+	container: mycontainer / inline-size;
 }
 ```
 
@@ -2725,8 +2811,9 @@ Now you can query any container, _at any ancestral level_, by referencing its na
 
 ```css
 .layout {
-	container: myContainer / inline-size;
+	container: mycontainer / inline-size;
 }
+
 @container myContainer (width < 360px) {
 	.layout > * {
 		/* fill your boots */

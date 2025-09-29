@@ -124,20 +124,21 @@ const services = [
 <style>
 	/* [핵심] view-transition-name을 지정하면, 해당 요소는 페이지 전환 시 특별하게 제어됩니다. */
 	h1 {
-		view-transition-name: page-title;
 		/* contain: layout; 은 전환 시 브라우저의 렌더링 계산을 최적화하는 데 도움이 됩니다. */
 		contain: layout;
+		view-transition-name: page-title;
 	}
 
 	/* CSS만으로 정교한 애니메이션 정의 */
 	@keyframes slide-and-fade-in {
 		from {
-			opacity: 0;
 			transform: translateY(20px) scale(0.98);
+			opacity: 0;
 		}
+
 		to {
-			opacity: 1;
 			transform: translateY(0) scale(1);
+			opacity: 1;
 		}
 	}
 
@@ -193,8 +194,8 @@ Part 1에서 설정한 `+layout.svelte`가 모든 준비를 마쳤습니다. 추
 <style>
 	.portfolio-item img {
 		aspect-ratio: 16 / 9;
-		object-fit: cover;
 		border-radius: 8px;
+		object-fit: cover;
 	}
 </style>
 ```
@@ -227,10 +228,10 @@ const { project } = data;
 
 <style>
 	.hero-image-container img {
-		width: 100%;
 		aspect-ratio: 16 / 9;
-		object-fit: cover;
+		inline-size: 100%;
 		border-radius: 16px;
+		object-fit: cover;
 	}
 </style>
 ```
@@ -317,18 +318,21 @@ let { children } = $props();
 		opacity: 0;
 	}
 }
+
 @keyframes slide-out-to-left {
 	to {
 		transform: translateX(-30px);
 		opacity: 0;
 	}
 }
+
 @keyframes slide-in-from-left {
 	from {
 		transform: translateX(-30px);
 		opacity: 0;
 	}
 }
+
 @keyframes slide-out-to-right {
 	to {
 		transform: translateX(30px);
@@ -340,6 +344,7 @@ let { children } = $props();
 ::view-transition-old(root) {
 	animation: 0.3s ease-out both slide-out-to-left;
 }
+
 ::view-transition-new(root) {
 	animation: 0.3s ease-in both slide-in-from-right;
 }
@@ -348,6 +353,7 @@ let { children } = $props();
 html.is-back-navigation::view-transition-old(root) {
 	animation: 0.3s ease-out both slide-out-to-right;
 }
+
 html.is-back-navigation::view-transition-new(root) {
 	animation: 0.3s ease-in both slide-in-from-left;
 }
