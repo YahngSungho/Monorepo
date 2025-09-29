@@ -15,7 +15,6 @@
 		"dev": "dotenvx run -f ../../.env.public -f ../../.env.private -- vite dev --port 6002",
 		"eslint": "eslint . --ignore-pattern **/*.md --ignore-pattern **/*.mdx",
 		"eslint-fix": "eslint --fix . --config ../../eslint.fix.config.js || true",
-		"fix-markdown-text": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./scripts/fix-markdown-text.js",
 		"format": "prettier . \"!**/*.md\" \"!**/*.mdx\" --write --ignore-unknown --ignore-path ../../.prettierignore",
 		"generate-env": "dotenvx decrypt -f ../../.env.public -f ../../.env.private  --stdout > .dev.vars",
 		"playwright-install-env": "pnpm exec playwright install --with-deps",
@@ -25,7 +24,6 @@
 		"test:e2e": "pnpm exec playwright test",
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
-		"update-translations": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./scripts/update-translations-scripts.js",
 		"preview": "pnpm run generate-env && wrangler dev --port 6002",
 		"preview:vite": "vite preview --port 6002",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
