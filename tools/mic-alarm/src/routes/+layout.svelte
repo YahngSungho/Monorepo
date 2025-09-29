@@ -9,3 +9,5 @@ let { children } = $props()
 <BaseLayout appName={APP_NAME}>
 	{@render children()}
 </BaseLayout>
+
+<div id="Top2_Layout_Check"></div>
