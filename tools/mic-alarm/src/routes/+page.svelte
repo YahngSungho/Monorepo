@@ -409,6 +409,8 @@ $effect(() => {
 	</section>
 
 	<audio bind:this={alarmElement} style:display="none" preload="auto" src="/alert-1.mp3"></audio>
+
+	<div id="Page_Check"></div>
 </main>
 
 <style>
