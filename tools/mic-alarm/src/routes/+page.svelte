@@ -35,8 +35,9 @@ let analyser = /** @type {AnalyserNode|undefined} */ ($state());
 let micStream = /** @type {MediaStream|undefined} */ ($state());
 let dataArray = /** @type {Float32Array|undefined} */ ($state());
 // Non-reactive timer handle to avoid effect loops
-let intervalId);
+
 let alarmElement; // <audio>
+let intervalId;
 
 	// Derived
 	let nowMs = $state(Date.now());
@@ -157,13 +158,13 @@ function sample_action() {
 
 	const speaking = currentDatabase >= thresholdDatabase;
 	if (speaking) {
-		lastHeardAt = Date.now();
+		lastHeardAt = nowMs;
 		if (isAlarmPlaying) stopAlarm_action();
 	}
 
 	// Alarm logic
 	if (!isPaused && isMonitoring) {
-		const silentForMs = Date.now() - lastHeardAt;
+		const silentForMs = nowMs - lastHeardAt;
 		if (silentForMs >= thresholdSeconds * 1000 && !isAlarmPlaying) playAlarm_action();
 	}
 

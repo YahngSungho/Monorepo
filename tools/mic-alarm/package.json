@@ -1,6 +1,6 @@
 {
 	"private": true,
-	"name": "@app/blog",
+	"name": "@tool/mic-alarm",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
