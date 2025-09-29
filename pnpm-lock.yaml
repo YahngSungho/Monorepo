@@ -379,8 +379,8 @@ importers:
         specifier: ^1.1.0
         version: 1.2.0
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^5.1.6
+        version: 5.1.6
       ramda:
         specifier: ^0.31.3
         version: 0.31.3
@@ -421,8 +421,8 @@ importers:
         specifier: workspace:*
         version: link:../../libraries/ui
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^5.1.6
+        version: 5.1.6
       store:
         specifier: ^2.0.12
         version: 2.0.12
@@ -473,8 +473,8 @@ importers:
         specifier: ^3.6.1
         version: 3.7.1
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^5.1.6
+        version: 5.1.6
       ramda:
         specifier: ^0.31.3
         version: 0.31.3
@@ -697,8 +697,8 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4(playwright@1.55.0)
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^5.1.6
+        version: 5.1.6
       playwright:
         specifier: ^1.55.0
         version: 1.55.0
@@ -784,8 +784,8 @@ importers:
         specifier: ^1.0.7
         version: 1.1.0(svelte@5.38.3)
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^5.1.6
+        version: 5.1.6
       open-props:
         specifier: ^1.7.15
         version: 1.7.16
@@ -902,8 +902,8 @@ importers:
         specifier: workspace:*
         version: link:../../libraries/ui
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^5.1.6
+        version: 5.1.6
       store:
         specifier: ^2.0.12
         version: 2.0.12
@@ -942,8 +942,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^5.1.6
+        version: 5.1.6
     devDependencies:
       '@library/helpers':
         specifier: workspace:*
@@ -7446,8 +7446,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@5.1.5:
-    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
+  nanoid@5.1.6:
+    resolution: {integrity: sha512-c7+7RQ+dMB5dPwwCp4ee1/iV/q2P6aK1mTZcfr1BTuVlyW9hJYiMPybJCcnBlQtuSmTIWNeazm/zqNoZSSElBg==}
     engines: {node: ^18 || >=20}
     hasBin: true
 
@@ -17656,7 +17656,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanoid@5.1.5: {}
+  nanoid@5.1.6: {}
 
   napi-postinstall@0.3.3: {}
 

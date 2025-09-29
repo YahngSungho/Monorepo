@@ -12,7 +12,7 @@
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"mutative": "^1.1.0",
-		"nanoid": "^5.1.5",
+		"nanoid": "^5.1.6",
 		"ramda": "^0.31.3",
 		"random-js": "^2.1.0",
 		"store": "^2.0.12",
