@@ -65,7 +65,7 @@ jobs:
               }
             }
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN1 }}
 
       - name: 라벨 제거
         if: github.event.label.name == 'restart'
@@ -1255,7 +1255,7 @@ jobs:
       - name: 이미지 압축
         uses: calibreapp/image-actions@main
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          githubToken: ${{ secrets.TOKEN1 }}
           compressOnly: true
 
       # 추가: 이미지 압축 후 수정사항을 patch 파일로 생성
