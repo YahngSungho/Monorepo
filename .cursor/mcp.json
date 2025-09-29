@@ -1,26 +1,25 @@
 {
-  "mcpServers": {
-    "Context7": {
-      "url": "https://mcp.context7.com/mcp",
-      "headers": {}
-    },
-    "Chrome DevTools": {
-      "command": "npx chrome-devtools-mcp@latest",
-      "env": {},
-      "args": []
-    },
-    "Playwright": {
-      "command": "npx -y @playwright/mcp@latest"
-    },
+	"mcpServers": {
+		"Context7": {
+			"url": "https://mcp.context7.com/mcp",
+			"headers": {}
+		},
+		"Chrome DevTools": {
+			"command": "npx chrome-devtools-mcp@latest",
+			"env": {},
+			"args": []
+		},
+		"Playwright": {
+			"command": "npx -y @playwright/mcp@latest"
+		},
 		"Sentry": {
-      "url": "https://mcp.sentry.dev/mcp",
-      "headers": {}
-    },
-    "snyk": {
-      "command": "npx -y snyk@latest mcp -t stdio",
-      "env": {},
-      "args": []
-    }
-
-  }
+			"url": "https://mcp.sentry.dev/mcp",
+			"headers": {}
+		},
+		"snyk": {
+			"command": "npx -y snyk@latest mcp -t stdio",
+			"env": {},
+			"args": []
+		}
+	}
 }

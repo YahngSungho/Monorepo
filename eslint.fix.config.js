@@ -16,7 +16,6 @@ const overrideConfig = [
 			'svelte/first-attribute-linebreak': 'warn',
 			'svelte/html-closing-bracket-new-line': 'warn',
 			'svelte/html-closing-bracket-spacing': 'warn',
-			'unicorn/no-for-loop': 'warn',
 			'svelte/html-quotes': [
 				'warn',
 				{
@@ -79,6 +78,7 @@ const overrideConfig = [
 			'unicorn/no-array-for-each': 'warn',
 			'unicorn/no-array-push-push': 'warn',
 			'unicorn/no-console-spaces': 'warn',
+			'unicorn/no-for-loop': 'warn',
 			'unicorn/no-hex-escape': 'warn',
 			'unicorn/no-instanceof-builtins': 'warn',
 			'unicorn/no-nested-ternary': 'warn',
@@ -126,12 +126,15 @@ const overrideConfig = [
 			'unicorn/prefer-string-trim-start-end': 'warn',
 			'unicorn/prefer-switch': 'warn',
 			'unicorn/prefer-type-error': 'warn',
-			'unicorn/prevent-abbreviations': ['warn', {
-				replacements: {
-					props: false,
-					prop: false
-				}
-			}],
+			'unicorn/prevent-abbreviations': [
+				'warn',
+				{
+					replacements: {
+						prop: false,
+						props: false,
+					},
+				},
+			],
 			'unicorn/relative-url-style': 'warn',
 			'unicorn/switch-case-braces': 'warn',
 			'unicorn/text-encoding-identifier-case': 'warn',

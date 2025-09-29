@@ -5,7 +5,6 @@ import { idleRun_action } from '@library/helpers/functions'
 import { R } from '@library/helpers/R'
 import { emailSchema } from '@library/helpers/zod-schemas'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
-
 import Button from '@library/ui/button'
 import ConfettiButtonDecorator from '@library/ui/confettiButtonDecorator'
 import BaseLayout from '@library/ui/layouts/root'

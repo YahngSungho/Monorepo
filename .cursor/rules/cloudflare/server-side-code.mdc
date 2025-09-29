@@ -2,6 +2,7 @@
 globs: **/server/**,+server.*,*.server.*
 alwaysApply: false
 ---
+
 This codebase's web projects will be built by Sveltekit and deployed to Cloudflare Workers. Files with paths matching `**/server/**`, `+server.*`, or `*.server.*` will be processed as Serverless Functions running on Workers, subject to the following constraints:
 
 Execution Environment: Use only ‘Web Standard APIs’ (not Node.js or browser UI)

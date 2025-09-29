@@ -69,6 +69,7 @@ const baseRules = {
 			presets: ['native', 'preferred'],
 		},
 	],
+	'dot-notation': 'off',
 	'eslint-comments/no-unlimited-disable': 'off',
 	'eslint-comments/no-use': 'off',
 	'ex/no-unhandled': 'off',
@@ -100,7 +101,6 @@ const baseRules = {
 	'no-unused-expressions': 1,
 	'no-unused-vars': 1,
 	'no-use-before-define': 'off',
-	'dot-notation': 'off',
 	'no-warning-comments': 'off',
 	'object-curly-spacing': 'off',
 	'object-shorthand': 'off',
@@ -126,7 +126,6 @@ const baseRules = {
 	'ramda/pipe-simplification': 'warn',
 	'ramda/prefer-both-either': 'warn',
 	'ramda/prefer-complement': 'warn',
-	'unicorn/no-for-loop': 'off',
 	'ramda/prefer-ramda-boolean': 'warn',
 	'ramda/prop-satisfies-simplification': 'warn',
 	'ramda/reduce-simplification': 'warn',
@@ -206,6 +205,7 @@ const baseRules = {
 	'unicorn/no-array-reduce': 'off',
 	'unicorn/no-console-spaces': 'off',
 	'unicorn/no-empty-file': 'off',
+	'unicorn/no-for-loop': 'off',
 	'unicorn/no-hex-escape': 'off',
 	'unicorn/no-instanceof-builtins': 'off',
 	'unicorn/no-nested-ternary': 'off',
@@ -453,7 +453,7 @@ export default defineFlatConfig([
 			'**/e2e/*.js',
 			'*.test.js',
 			'**/*.tests.js',
-			'tools/**'
+			'tools/**',
 		],
 
 		rules: {
