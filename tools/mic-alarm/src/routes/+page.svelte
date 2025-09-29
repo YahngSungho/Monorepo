@@ -3,6 +3,7 @@
 	const DEFAULT_DB_THRESHOLD = -40; // dBFS, 0=max, typical speech ~ -20 to -40
 	const DEFAULT_TIME_THRESHOLD_SEC = 15; // seconds
 	const DEFAULT_PAUSE_MINUTES = 0; // minutes
+	const DEFAULT_INTERVAL_MS = 3000; // milliseconds
 
 	// LocalStorage keys (Data)
 	const LS_KEYS = {
@@ -10,6 +11,7 @@
 		thresholdSeconds: "micAlarm.thresholdSeconds",
 		pauseMinutes: "micAlarm.pauseMinutes",
 		alarmVolume: "micAlarm.alarmVolume",
+		sampleIntervalMs: "micAlarm.sampleIntervalMs",
 	};
 
 	// State
@@ -25,20 +27,22 @@
 	let pauseMinutesInput = $state(DEFAULT_PAUSE_MINUTES);
 	let pauseUntilTs = $state(0);
 	let alarmVolume = $state(60); // 0~100
+	let sampleIntervalMs = $state(DEFAULT_INTERVAL_MS);
 
 	// Audio internals
 	let audioCtx = /** @type {AudioContext|undefined} */ ($state());
 	let analyser = /** @type {AnalyserNode|undefined} */ ($state());
 	let micStream = /** @type {MediaStream|undefined} */ ($state());
 	let dataArray = /** @type {Float32Array|undefined} */ ($state());
-	let intervalId = /** @type {number|undefined} */ ($state());
+	// Non-reactive timer handle to avoid effect loops
+	let intervalId = /** @type {number|undefined} */ (undefined);
 	let alarmEl; // <audio>
 
 	// Derived
 	let nowMs = $state(Date.now());
 	const pausedRemainingMs = $derived(Math.max(0, pauseUntilTs - nowMs));
 	const isPaused = $derived(pausedRemainingMs > 0);
-	const secondsSinceHeard = $derived(Math.floor((nowMs - lastHeardAt) / 1000));
+	const secondsSinceHeard = $derived(Math.max(0, Math.floor((nowMs - lastHeardAt) / 1000)));
 	const statusText = $derived.by(() => {
 		if (permissionError) return `오류: ${permissionError}`;
 		if (!isReady) return "준비 중";
@@ -94,9 +98,9 @@
 			source.connect(analyser);
 			dataArray = new Float32Array(analyser.fftSize);
 
-			// Monitoring loop (100ms)
+			// Monitoring loop
 			if (intervalId) window.clearInterval(intervalId);
-			intervalId = window.setInterval(sample_action, 200);
+			intervalId = window.setInterval(sample_action, sampleIntervalMs);
 
 			isReady = true;
 			isMonitoring = true;
@@ -117,6 +121,8 @@
 			if (pm !== null) pauseMinutesInput = Math.max(0, Math.floor(Number(pm)) || DEFAULT_PAUSE_MINUTES);
 			const av = localStorage.getItem(LS_KEYS.alarmVolume);
 			if (av !== null) alarmVolume = clampNumber(Math.floor(Number(av)), 0, 100);
+			const sim = localStorage.getItem(LS_KEYS.sampleIntervalMs);
+			if (sim !== null) sampleIntervalMs = clampNumber(Math.floor(Number(sim)), 100, 60000);
 		} catch {}
 	}
 
@@ -239,6 +245,15 @@
 		try { localStorage.setItem(LS_KEYS.alarmVolume, String(alarmVolume)); } catch {}
 		if (alarmEl) alarmEl.volume = Math.max(0, Math.min(1, alarmVolume / 100));
 	});
+
+	// Persist and apply sampling interval changes
+	$effect(() => {
+		try { localStorage.setItem(LS_KEYS.sampleIntervalMs, String(sampleIntervalMs)); } catch {}
+		if (isMonitoring) {
+			if (intervalId) window.clearInterval(intervalId);
+			intervalId = window.setInterval(sample_action, sampleIntervalMs);
+		}
+	});
 </script>
 
 <main class="container">
@@ -295,9 +310,15 @@
 		</div>
 
 		<div class="control">
+			<label for="intervalMs">샘플링 간격 (ms)</label>
+			<input id="intervalMs" type="number" min="200" max="60000" step="100" bind:value={sampleIntervalMs} class="input" />
+			<small class="hint">마이크 측정 주기. 짧을수록 빠르지만 CPU 사용 증가</small>
+		</div>
+
+		<div class="control">
 			<label for="pauseMin">일시정지 (분)</label>
 			<div class="inline">
-				<input id="pauseMin" type="number" min="0" step="1" bind:value={pauseMinutesInput} class="input" />
+				<input id="pauseMin" type="number" min="0" max="100" step="1" bind:value={pauseMinutesInput} class="input" />
 				<button class="btn" onclick={applyPause_action}>적용</button>
 				{#if isPaused}
 				<button class="btn" onclick={() => { pauseUntilTs = 0; }}>해제</button>
@@ -320,7 +341,7 @@
 		</div>
 	</section>
 
-	<audio bind:this={alarmEl} src="/alarm.mp3" preload="auto" style="display:none"></audio>
+	<audio bind:this={alarmEl} src="/alert-1.mp3" preload="auto" style="display:none"></audio>
 </main>
 
 <style>
@@ -368,7 +389,7 @@
 	}
 
 	.input {
-		inline-size: 5ch;
+		inline-size: 8ch;
 		padding: 0.75rem 1rem;
 		border: var(--border-size-1, 1px) solid var(--input, rgb(204 204 204));
 		border-radius: var(--radius-2, 5px);
