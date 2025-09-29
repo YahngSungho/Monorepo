@@ -1,6 +1,7 @@
 <script>
-	import BaseLayout from '@library/ui/layouts/root'
-	import { APP_NAME } from '$lib/info.js'
+import BaseLayout from '@library/ui/layouts/root'
+
+import { APP_NAME } from '$lib/info.js'
 
 let { children } = $props()
 </script>
