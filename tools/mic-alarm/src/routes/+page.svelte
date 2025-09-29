@@ -152,7 +152,7 @@ function sample_action() {
 	nowMs = Date.now()
 	if (!analyser || !dataArray || isPaused) return
 	analyser.getFloatTimeDomainData(/** @type {any} */ (dataArray))
-	const rms = calculateRms((dataArray))
+	const rms = calculateRms(dataArray)
 	const database = rmsToDatabase(rms)
 	currentDatabase =
 		Number.isFinite(database) ? Number(Math.max(-100, Math.min(0, database)).toFixed(0)) : -100
