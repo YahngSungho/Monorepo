@@ -102,8 +102,8 @@ async function processData_target(rawData) {
 
 	// Pure computation: Transformation
 	const transformedData = {
-		internalId: `user-${rawData.id}`,
 		content: rawData.value.toUpperCase(),
+		internalId: `user-${rawData.id}`,
 		timestamp: Date.now(), // Impure (but often acceptable in transformation if needed like this) - let's treat Date.now() as an Action for strictness here.
 	}
 
@@ -179,8 +179,8 @@ function validateRawData(rawData) {
 function transformRawData(rawData) {
 	// Pure computation: Transformation
 	return {
-		internalId: `user-${rawData.id}`,
 		content: rawData.value.toUpperCase(),
+		internalId: `user-${rawData.id}`,
 		// timestamp is excluded as Date.now() is an Action
 	}
 }

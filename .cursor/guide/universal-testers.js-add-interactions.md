@@ -450,7 +450,7 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     // storybook/e2e/universal-testers.js 내 createInteractionSequenceArbitrary 함수 수정 예시 (doubleClick)
     
     // ... (1단계: 타입별 분류) ...
-    const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
+    const doubleClickInteractions = interactions.index) => index(i) => i.type === 'doubleClick')
     // ...
     
     // 2단계: 각 타입별 Arbitrary 생성
@@ -463,8 +463,7 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     		.record({
     			type: fc.constant('doubleClick'), // 타입 고정
     			// 대상 요소 인덱스 생성 및 Shrinking (0 ~ 목록길이-1)
-    			selectorIndex: fc.nat({ max: doubleClickInteractions.length - 1 }),
-    		})
+    			selectorIndex: fc.nat({ max: doubleClickInteractionselectorIndex, type 		})
     		.map(({ type, selectorIndex }) => ({
     			// 인덱스를 실제 Interaction 객체로 변환
     			...doubleClickInteractions[selectorIndex], // 해당 인덱스의 요소 정보 사용
@@ -585,9 +584,9 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    // 예시: tagName이 'button' 이거나 role이 'button'인 요소에 doubleClick 추가
    if (
    	(tagName === 'button' || role === 'button') && // 이미 click/hover가 추가되었을 수 있음. doubleClick 중복 체크 및 추가
-   	!interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)
+   	!interactions.some((index) => index.type === 'doubleClick' && index.selector === selector)
    ) {
-   	interactions.push({ type: 'doubleClick', selector })
+   	interactions.push({ selector, type: 'doubleClick' })
    	// console.log(`[Interaction Discovery] Added 'doubleClick' for: ${selector}`); // 디버깅용 로그
    }
    // ...
@@ -628,7 +627,7 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    // storybook/e2e/universal-testers.js
    // ... inside createInteractionSequenceArbitrary ...
    // 1단계: 타입별 분류
-   const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
+   const doubleClickInteractions = interactions.filter((index) => index.type === 'doubleClick')
    // ...
    
    // 2단계: Arbitrary 생성
@@ -643,7 +642,7 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    			// 대상 요소 인덱스 생성 및 Shrinking
    			selectorIndex: fc.nat({ max: doubleClickInteractions.length - 1 }),
    		})
-   		.map(({ type, selectorIndex }) => ({
+   		.map(({ selectorIndex, type }) => ({
    			// 인덱스를 실제 Interaction 객체로 변환
    			...doubleClickInteractions[selectorIndex], // 해당 인덱스의 요소 정보 사용
    			type,

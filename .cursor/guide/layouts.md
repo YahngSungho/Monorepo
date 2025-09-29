@@ -1078,10 +1078,10 @@ It might be that you treat each section of the page as a **Cover**, and use the 
 ```javascript
 if ('IntersectionObserver' in globalThis) {
 	const targets = Array.from(document.querySelectorAll('cover-l'))
-	for (const t of targets) t.setAttribute('data-observe', '')
+	for (const t of targets) t.dataset.observe = ''
 	const callback = (entries, observer) => {
 		for (const entry of entries) {
-			entry.target.setAttribute('data-visible', entry.isIntersecting)
+			entry.target.dataset.visible = entry.isIntersecting
 		}
 	}
 	const observer = new IntersectionObserver(callback)
@@ -1759,10 +1759,10 @@ It might be that you treat each section of the page as a **Cover**, and use the 
 ```javascript
 if ('IntersectionObserver' in globalThis) {
 	const targets = Array.from(document.querySelectorAll('cover-l'))
-	for (const t of targets) t.setAttribute('data-observe', '')
+	for (const t of targets) t.dataset.observe = ''
 	const callback = (entries, observer) => {
 		for (const entry of entries) {
-			entry.target.setAttribute('data-visible', entry.isIntersecting)
+			entry.target.dataset.visible = entry.isIntersecting
 		}
 	}
 	const observer = new IntersectionObserver(callback)
@@ -2289,8 +2289,8 @@ Ideally, there would be a pseudo-class for overflowing/scrolling elements. Then 
 
 ```javascript
 const reels = Array.from(document.querySelectorAll('.reel'))
-const toggleOverflowClass = (elem) => {
-	elem.classList.toggle('overflowing', elem.scrollWidth > elem.clientWidth)
+const toggleOverflowClass = (element) => {
+	element.classList.toggle('overflowing', element.scrollWidth > element.clientWidth)
 }
 for (let reel of reels) {
 	if ('ResizeObserver' in globalThis) {
@@ -2319,8 +2319,8 @@ We're not quite done yet, because we haven't dealt with the case of child elemen
 
 ```javascript
 const reels = Array.from(document.querySelectorAll('.reel'))
-const toggleOverflowClass = (elem) => {
-	elem.classList.toggle('overflowing', elem.scrollWidth > elem.clientWidth)
+const toggleOverflowClass = (element) => {
+	element.classList.toggle('overflowing', element.scrollWidth > element.clientWidth)
 }
 for (let reel of reels) {
 	if ('ResizeObserver' in globalThis) {
@@ -2370,8 +2370,8 @@ Use this tool to generate basic **Reel** CSS and HTML. You would want to include
 ;(function () {
 	const className = 'reel'
 	const reels = Array.from(document.querySelectorAll(`.${className}`))
-	const toggleOverflowClass = (elem) => {
-		elem.classList.toggle('overflowing', elem.scrollWidth > elem.clientWidth)
+	const toggleOverflowClass = (element) => {
+		element.classList.toggle('overflowing', element.scrollWidth > element.clientWidth)
 	}
 	for (let reel of reels) {
 		if ('ResizeObserver' in globalThis) {

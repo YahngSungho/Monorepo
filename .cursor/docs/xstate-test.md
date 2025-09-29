@@ -16,19 +16,19 @@ test('some actor', async () => {
 	// 1. Arrange
 	const machine = setup({
 		actions: {
-			notify: (_, params) => {
-				notifiedMessages.push(params.message)
+			notify: (_, parameters) => {
+				notifiedMessages.push(parameters.message)
 			},
 		},
 	}).createMachine({
 		initial: 'inactive',
 		states: {
+			active: {
+				entry: { params: { message: 'Active!' }, type: 'notify' },
+				on: { toggle: { target: 'inactive' } },
+			},
 			inactive: {
 				on: { toggle: { target: 'active' } },
-			},
-			active: {
-				entry: { type: 'notify', params: { message: 'Active!' } },
-				on: { toggle: { target: 'inactive' } },
 			},
 		},
 	})
@@ -64,14 +64,14 @@ The @xstate/test package contains utilities for facilitating model-based testing
    	id: 'toggle',
    	initial: 'inactive',
    	states: {
-   		inactive: {
-   			on: {
-   				TOGGLE: 'active',
-   			},
-   		},
    		active: {
    			on: {
    				TOGGLE: 'inactive',
+   			},
+   		},
+   		inactive: {
+   			on: {
+   				TOGGLE: 'active',
    			},
    		},
    	},
@@ -87,24 +87,24 @@ The @xstate/test package contains utilities for facilitating model-based testing
    	id: 'toggle',
    	initial: 'inactive',
    	states: {
-   		inactive: {
+   		active: {
+   			meta: {
+   				test: async (page) => {
+   					await page.waitFor('input:not(:checked)')
+   				},
+   			},
    			on: {
    				/* ... */
    			},
+   		},
+   		inactive: {
    			meta: {
    				test: async (page) => {
    					await page.waitFor('input:checked')
    				},
    			},
-   		},
-   		active: {
    			on: {
    				/* ... */
-   			},
-   			meta: {
-   				test: async (page) => {
-   					await page.waitFor('input:not(:checked)')
-   				},
    			},
    		},
    	},
@@ -300,11 +300,11 @@ const toggleMachine = createMachine({
 	id: 'toggle',
 	initial: 'inactive',
 	states: {
-		inactive: {
-			on: { TOGGLE: 'active' },
-		},
 		active: {
 			on: { TOGGLE: 'inactive' },
+		},
+		inactive: {
+			on: { TOGGLE: 'active' },
 		},
 	},
 })
@@ -331,18 +331,18 @@ Guards are essential for controlling state transitions based on conditions. Here
 // Machine with guards
 const paymentMachine = createMachine(
 	{
-		id: 'payment',
-		initial: 'idle',
 		context: {
 			amount: 0,
 		},
+		id: 'payment',
+		initial: 'idle',
 		states: {
 			idle: {
 				on: {
 					SUBMIT: [
 						{
-							target: 'processing',
 							cond: 'hasValidAmount',
+							target: 'processing',
 						},
 					],
 				},
@@ -371,7 +371,7 @@ test('should only process valid amounts', () => {
 	service.send('SUBMIT')
 	expect(service.state.value).toBe('idle') // Should not transition
 
-	service.send({ type: 'UPDATE', amount: 100 })
+	service.send({ amount: 100, type: 'UPDATE' })
 	service.send('SUBMIT')
 	expect(service.state.value).toBe('processing')
 })
@@ -384,17 +384,17 @@ Actions in state machines often produce side effects. Here's how to test them us
 ```javascript
 // Machine with actions
 const notificationMachine = createMachine({
-	id: 'notification',
-	initial: 'idle',
 	context: {
 		message: '',
 	},
+	id: 'notification',
+	initial: 'idle',
 	states: {
 		idle: {
 			on: {
 				SHOW: {
-					target: 'visible',
 					actions: 'displayNotification',
+					target: 'visible',
 				},
 			},
 		},
@@ -463,18 +463,18 @@ const fetchMachine = createMachine({
 	id: 'fetch',
 	initial: 'idle',
 	states: {
+		failure: {},
 		idle: {
 			on: { FETCH: 'loading' },
 		},
 		loading: {
 			invoke: {
-				src: 'fetchData',
 				onDone: 'success',
 				onError: 'failure',
+				src: 'fetchData',
 			},
 		},
 		success: {},
-		failure: {},
 	},
 })
 
@@ -520,17 +520,17 @@ import { createMachine } from 'xstate'
 
 // Create a simple counter machine
 const counterMachine = createMachine({
+	context: { count: 0 },
 	id: 'counter',
 	initial: 'active',
-	context: { count: 0 },
 	states: {
 		active: {
 			on: {
-				INCREMENT: {
-					actions: 'incrementCount',
-				},
 				DECREMENT: {
 					actions: 'decrementCount',
+				},
+				INCREMENT: {
+					actions: 'incrementCount',
 				},
 			},
 		},
@@ -576,11 +576,11 @@ import { createMachine, spawn } from 'xstate'
 import { counterMachine } from './counter.machine'
 
 const parentMachine = createMachine({
-	id: 'parent',
-	initial: 'idle',
 	context: {
 		counterRef: null,
 	},
+	id: 'parent',
+	initial: 'idle',
 	states: {
 		idle: {
 			entry: assign({
@@ -632,7 +632,7 @@ Sometimes we need to test actor interactions without spawning real child actors.
 // mock-testing.js
 import { createMachine } from 'xstate'
 
-const mockCounterRef = {
+const mockCounterReference = {
 	send: jest.fn(),
 	subscribe: jest.fn(),
 }
@@ -641,7 +641,7 @@ const testMachine = createMachine({
 	// Machine configuration
 }).withConfig({
 	services: {
-		counterActor: () => mockCounterRef,
+		counterActor: () => mockCounterReference,
 	},
 })
 ```
@@ -658,11 +658,11 @@ const toggleMachine = createMachine({
 	id: 'toggle',
 	initial: 'inactive',
 	states: {
-		inactive: {
-			on: { TOGGLE: 'active' },
-		},
 		active: {
 			on: { TOGGLE: 'inactive' },
+		},
+		inactive: {
+			on: { TOGGLE: 'active' },
 		},
 	},
 })
@@ -749,11 +749,11 @@ const toggleMachine = createMachine({
 	id: 'toggle',
 	initial: 'inactive',
 	states: {
-		inactive: {
-			on: { TOGGLE: 'active' },
-		},
 		active: {
 			on: { TOGGLE: 'inactive' },
+		},
+		inactive: {
+			on: { TOGGLE: 'active' },
 		},
 	},
 })
@@ -777,10 +777,14 @@ Implementing custom action tracing helps monitor specific behaviors within your 
 // Machine with traced actions
 const tracedMachine = createMachine(
 	{
+		context: { count: 0 },
 		id: 'traced',
 		initial: 'idle',
-		context: { count: 0 },
 		states: {
+			counting: {
+				entry: 'logEntry',
+				exit: 'logExit',
+			},
 			idle: {
 				on: {
 					INCREMENT: {
@@ -789,19 +793,15 @@ const tracedMachine = createMachine(
 					},
 				},
 			},
-			counting: {
-				entry: 'logEntry',
-				exit: 'logExit',
-			},
 		},
 	},
 	{
 		actions: {
+			logEntry: () => console.log('Entered counting state'),
+			logExit: () => console.log('Exited counting state'),
 			trackIncrement: (context, event) => {
 				console.log(`Increment tracked: ${context.count + 1}`)
 			},
-			logEntry: () => console.log('Entered counting state'),
-			logExit: () => console.log('Exited counting state'),
 		},
 	},
 )
@@ -815,22 +815,22 @@ Implementing state history tracking helps debug complex state transitions and un
 // Machine with history tracking
 const historyMachine = createMachine(
 	{
-		id: 'history',
-		initial: 'start',
 		context: {
 			history: [], // Stores state transition history
 		},
+		id: 'history',
+		initial: 'start',
 		states: {
-			start: {
-				on: { NEXT: 'middle' },
+			end: {
 				entry: 'recordHistory',
 			},
 			middle: {
+				entry: 'recordHistory',
 				on: { NEXT: 'end' },
-				entry: 'recordHistory',
 			},
-			end: {
+			start: {
 				entry: 'recordHistory',
+				on: { NEXT: 'middle' },
 			},
 		},
 	},
@@ -858,22 +858,22 @@ const errorHandlingMachine = createMachine(
 		id: 'errorHandling',
 		initial: 'operational',
 		states: {
-			operational: {
-				on: {
-					ERROR: 'error',
-				},
-				invoke: {
-					src: 'riskyOperation',
-					onError: {
-						target: 'error',
-						actions: 'logError',
-					},
-				},
-			},
 			error: {
 				entry: 'notifyError',
 				on: {
 					RETRY: 'operational',
+				},
+			},
+			operational: {
+				invoke: {
+					onError: {
+						actions: 'logError',
+						target: 'error',
+					},
+					src: 'riskyOperation',
+				},
+				on: {
+					ERROR: 'error',
 				},
 			},
 		},
@@ -957,15 +957,15 @@ Custom monitors provide granular control over what aspects of your actor system 
 ```typescript
 // Create a custom monitor service
 const customMonitor = {
-	onTransition: (state, event) => {
-		console.log('State transition:', {
-			value: state.value,
-			event: event.type,
-			timestamp: new Date().toISOString(),
-		})
-	},
 	onEvent: (event) => {
 		console.log('Event received:', event)
+	},
+	onTransition: (state, event) => {
+		console.log('State transition:', {
+			event: event.type,
+			timestamp: new Date().toISOString(),
+			value: state.value,
+		})
 	},
 }
 ```
@@ -999,10 +999,10 @@ Comprehensive event logging helps in debugging and understanding system behavior
 const eventLogger = {
 	logEvent: (event, metadata) => {
 		const logEntry = {
-			type: event.type,
+			metadata,
 			payload: event.data,
 			timestamp: Date.now(),
-			metadata,
+			type: event.type,
 		}
 
 		// Store or process log entry
@@ -1018,20 +1018,20 @@ Implement robust error handling mechanisms to catch and respond to issues within
 ```typescript
 // Set up error handling for actor system
 const errorHandlingConfig = {
-	guards: {
-		hasError: (context) => Boolean(context.error),
-	},
 	actions: {
 		logError: (context, event) => {
 			console.error('Actor system error:', {
 				error: context.error,
-				state: context.currentState,
 				event,
+				state: context.currentState,
 			})
 		},
 		notifyAdmin: (context) => {
 			// Send notification to system administrator
 		},
+	},
+	guards: {
+		hasError: (context) => Boolean(context.error),
 	},
 }
 ```
@@ -1048,17 +1048,17 @@ class ActorSystemDashboard {
 	// Get system statistics
 	getSystemStats() {
 		return {
-			totalActors: this.activeActors.size,
 			activeStates: Array.from(this.activeActors.values(), (a) => a.currentState),
+			totalActors: this.activeActors.size,
 		}
 	}
 
 	// Track actor lifecycle
 	registerActor(actor) {
 		this.activeActors.set(actor.id, {
-			startTime: Date.now(),
 			currentState: actor.state.value,
 			events: [],
+			startTime: Date.now(),
 		})
 	}
 

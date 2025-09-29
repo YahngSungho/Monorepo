@@ -271,8 +271,8 @@
   ```js
   assign({
   	count: 10, // Static assignment
-  	user: ({ event }) => event.user, // Dynamic assignment
   	counter: ({ context }) => context.counter + 1, // Based on previous context
+  	user: ({ event }) => event.user, // Dynamic assignment
   })
   ```
 
@@ -290,7 +290,7 @@
 - **`enqueueActions` Action**: Define a sequence of actions to be executed one after another, potentially conditionally.
 
   ```js
-  enqueueActions(({ context, event, enqueue, check }) => {
+  enqueueActions(({ check, context, enqueue, event }) => {
   	// enqueue an action object or inline function
   	enqueue({ type: 'action1' })
   	enqueue.assign({ counter: ({ context }) => context.counter + 1 })
@@ -471,7 +471,7 @@
   - **Implementation**:
 
     ```js
-    const actorLogic = fromCallback(({ sendBack, receive, input }) => {
+    const actorLogic = fromCallback(({ input, receive, sendBack }) => {
     	// sendBack(event): Sends an event back to the invoker (parent by default)
     	// receive(callback): Registers a listener for events sent TO this callback actor
     
@@ -479,7 +479,7 @@
     		console.log('Callback actor received:', event)
     		// Example: Perform task and send result back
     		const result = performTask(event.data)
-    		sendBack({ type: 'CALLBACK_RESULT', result })
+    		sendBack({ result, type: 'CALLBACK_RESULT' })
     	})
     
     	// Optional: Perform initial action
@@ -522,7 +522,7 @@
   	const newLogic = {
   		...originalLogic,
   		// Override or add properties/methods
-  		transition: (state, event, ctx) => {
+  		transition: (state, event, context) => {
   			/* ... */
   		},
   	}
@@ -687,10 +687,10 @@
 
     ```js
     assign({
-    	spawnedActorRef: ({ spawn, context, event }) =>
+    	spawnedActorRef: ({ context, event, spawn }) =>
     		spawn(someActorLogic, {
     			id: `item-${event.id}`,
-    			input: { parentData: context.value, itemData: event.data },
+    			input: { itemData: event.data, parentData: context.value },
     			systemId: `worker-${event.id}`, // Optional system registration
     		}),
     })
@@ -847,19 +847,19 @@ actor.start()
 import { createActor, fromCallback } from 'xstate'
 
 const callbackLogic = fromCallback(({ receive, sendBack }) => {
-	const i = setTimeout(() => {
+	const index = setTimeout(() => {
 		sendBack({ type: 'timeout' })
 	}, 1000)
 
 	receive((event) => {
 		if (event.type === 'cancel') {
 			console.log('canceled')
-			clearTimeout(i)
+			clearTimeout(index)
 		}
 	})
 
 	return () => {
-		clearTimeout(i)
+		clearTimeout(index)
 	}
 })
 
@@ -925,7 +925,7 @@ const machine = setup({
   actions: {
     activate: () => {/* ... */},
     deactivate: () => {/* ... */},
-    notify: (_, params: { message: string }) => {/* ... */},
+    notify: (_, parameters: { message: string }) => {/* ... */},
   }
 }).createMachine({
   id: 'toggle',
@@ -952,10 +952,10 @@ const machine = setup({
           actions: [
             // action with params
             {
-              type: 'notify',
               params: {
                 message: 'Some notification',
               },
+              type: 'notify',
             },
           ],
           // highlight-end
@@ -968,14 +968,14 @@ const machine = setup({
 const actor = createActor(
   machine.provide({
     actions: {
-      notify: (_, params) => {
-        console.log(params.message ?? 'Default message');
-      },
       activate: () => {
         console.log('Activating');
       },
       deactivate: () => {
         console.log('Deactivating');
+      },
+      notify: (_, parameters) => {
+        console.log(parameters.message ?? 'Default message');
       },
     },
   }),
@@ -1008,8 +1008,8 @@ const machine = setup({
 	// highlight-start
 	guards: {
 		canBeToggled: ({ context }) => context.canActivate,
-		isAfterTime: (_, params) => {
-			const { time } = params
+		isAfterTime: (_, parameters) => {
+			const { time } = parameters
 			const [hour, minute] = time.split(':')
 			const now = new Date()
 			return now.getHours() > hour && now.getMinutes() > minute

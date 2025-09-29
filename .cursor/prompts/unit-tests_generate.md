@@ -72,9 +72,9 @@ You MUST adhere to the following principles when writing tests. These principles
        const hoistedMocks = vi.hoisted(() => {
        	// This block executes early, before other module-level code in this test file.
        	console.log('vi.hoisted: Defining mockUtilityFn and initial values.')
-       	const mockUtilityFn = vi.fn((input) => `mocked_value_for_${input}`)
+       	const mockUtilityFunction = vi.fn((input) => `mocked_value_for_${input}`)
        	const somePredefinedValue = 'initial_mock_state'
-       	return { mockUtilityFn, somePredefinedValue } // Expose mocks and values
+       	return { mockUtilityFn: mockUtilityFunction, somePredefinedValue } // Expose mocks and values
        })
        
        vi.mock('./utilityModule', async () => {
@@ -82,10 +82,10 @@ You MUST adhere to the following principles when writing tests. These principles
        	// It can safely access `hoistedMocks` because `vi.hoisted` also runs early.
        	console.log('vi.mock factory: Referencing hoistedMocks.mockUtilityFn.')
        	// For partial mocking, you can import the actual module inside the factory:
-       	const actualUtils = await vi.importActual('./utilityModule')
+       	const actualUtilities = await vi.importActual('./utilityModule')
        	return {
        		// __esModule: true, // If utilityModule is an ES module with named exports
-       		...actualUtils, // Spread actual implementations first for partial mock
+       		...actualUtilities, // Spread actual implementations first for partial mock
        		utilityBeingMocked: hoistedMocks.mockUtilityFn, // Then override specific parts
        		// default: hoistedMocks.mockUtilityFn, // If utilityModule has a default export to be mocked
        		// Or, if default is an object and you want to partially mock it:
@@ -362,12 +362,12 @@ function sumArray(numbers) {
 	if (!Array.isArray(numbers)) {
 		throw new TypeError('Input must be an array')
 	}
-	return numbers.reduce((sum, num) => {
-		if (typeof num !== 'number' || !Number.isFinite(num)) {
+	return numbers.reduce((sum, number_) => {
+		if (typeof number_ !== 'number' || !Number.isFinite(number_)) {
 			// For simplicity in this example, non-finite numbers are skipped
 			return sum
 		}
-		return sum + num
+		return sum + number_
 	}, 0)
 }
 
@@ -383,7 +383,7 @@ describe('sumArray 함수', () => {
 			const result = sumArray(finiteNums)
 
 			// 검증(Assert): 직접 계산한 합계와 비교 (동작 검증)
-			const expectedSum = finiteNums.reduce((acc, val) => acc + val, 0)
+			const expectedSum = finiteNums.reduce((accumulator, value) => accumulator + value, 0)
 			// 부동 소수점 비교를 위해 toBeCloseTo 사용
 			expect(result).toBeCloseTo(expectedSum)
 		},
@@ -410,7 +410,7 @@ describe('sumArray 함수', () => {
 		const numbersOnly = mixedArray.filter(
 			(item) => typeof item === 'number' && Number.isFinite(item),
 		)
-		const expectedSum = numbersOnly.reduce((acc, val) => acc + val, 0)
+		const expectedSum = numbersOnly.reduce((accumulator, value) => accumulator + value, 0)
 
 		// 실행(Act)
 		const result = sumArray(mixedArray)

@@ -17,7 +17,7 @@ To define the args of a single story, use the `args` property in the `Story`�
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    label: 'Button',    primary: true  }}/>
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="Primary"  args={{    label: 'Button',    primary: true  }} />
 ```
 
 These args will only apply to the story for which they are attached, although you can reuse them via JavaScript object reuse:
@@ -25,7 +25,7 @@ These args will only apply to the story for which they are attached, although yo
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArgs} /><Story name="PrimaryLongName"  args={{    ...primaryArgs,    label: 'Primary with a really long name'  }} />
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArguments = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArguments} /><Story name="PrimaryLongName"  args={{    ...primaryArguments,    label: 'Primary with a really long name'  }} />
 ```
 
 In the above example, we use the object spread feature of ES 2015.
@@ -56,9 +56,9 @@ For most uses of global args, globals are a better tool for defining globally-
 You can separate the arguments to a story to compose in other stories. Here's how you can combine args for multiple stories of the same component.
 
 ```svelte
-<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';  
+<script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArgs = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArgs} /><Story name="Secondary" args={{...primaryArgs, primary: false}} />
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });  const primaryArguments = {    label: 'Button',    primary: true,  }</script><Story name="Primary" args={primaryArguments} /><Story name="Secondary" args={{...primaryArguments, primary: false}} />
 ````
 
 If you find yourself re-using the same args for most of a component's stories, you should consider using component-level args.
@@ -79,7 +79,7 @@ You can use args in your stories to configure the component's appearance, simila
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
+import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(arguments_)}    <Page {...arguments_}>      <footer>{arguments_.footer}</footer>    </Page>  {/snippet}</Story>
 ```
 
 ## Setting args through the URL
@@ -128,7 +128,7 @@ With Svelte, we can set the `parameters` property in the `Story` component t
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="OnDark"  parameters={{    backgrounds: { default: 'dark' }  }}/>
+import Button from './Button.svelte';  const { Story } = defineMeta({    component: Button,  });</script><Story  name="OnDark"  parameters={{    backgrounds: { default: 'dark' }  }} />
 ```
 
 ## Component parameters
@@ -433,7 +433,7 @@ Exports
 This addon contributes the following exports to Storybook:
 
 ```svelte
-import { action } from '@storybook/addon-actions';
+import {action} from '@storybook/addon-actions';
 ```
 
 ####
@@ -533,7 +533,7 @@ Until now, we only used auto-generated controls based on the component for which
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(args)}    <Page {...args} >      <footer>{args.footer}</footer>    </Page>  {/snippet}</Story>
+import Page from './Page.svelte';  const { Story } = defineMeta({    component: Page  });</script><Story name="CustomFooter" args={{ footer: 'Built with Storybook' }}>  {#snippet children(arguments_)}    <Page {...arguments_}>      <footer>{arguments_.footer}</footer>    </Page>  {/snippet}</Story>
 ```
 
 By default, Storybook will add controls for all args that:
@@ -681,7 +681,7 @@ Consider the following story snippets:
 ```svelte
 <script module>  import { defineMeta } from '@storybook/addon-svelte-csf';
 
-import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,  });</script><Story  name="ArrayInclude"  parameters={{    controls: { include: ['foo', 'bar'] },  }}/><Story  name="RegexInclude"  parameters={{    controls: { include: /^hello*/ },  }}/><Story  name="ArrayExclude"  parameters={{    controls: { exclude: ['foo', 'bar'] },  }}/><Story  name="RegexExclude"  parameters={{    controls: { exclude: /^hello*/ },  }}/>
+import YourComponent from './YourComponent.svelte';  const { Story } = defineMeta({    component: YourComponent,  });</script><Story  name="ArrayInclude"  parameters={{    controls: { include: ['foo', 'bar'] },  }} /><Story  name="RegexInclude"  parameters={{    controls: { include: /^hello*/ },  }} /><Story  name="ArrayExclude"  parameters={{    controls: { exclude: ['foo', 'bar'] },  }} /><Story  name="RegexExclude"  parameters={{    controls: { exclude: /^hello*/ },  }} />
 ```
 
 ####

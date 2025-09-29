@@ -293,7 +293,7 @@ import { describe, expect } from 'vitest'
 function sumArray(numbers) {
 	// ... implementation ...
 	return numbers.reduce(
-		(sum, num) => (typeof num === 'number' && Number.isFinite(num) ? sum + num : sum),
+		(sum, number_) => (typeof number_ === 'number' && Number.isFinite(number_) ? sum + number_ : sum),
 		0,
 	)
 }
@@ -308,7 +308,7 @@ describe('sumArray 함수', () => {
 			// 실행(Act)
 			const result = sumArray(finiteNums)
 			// 검증(Assert): 직접 계산한 합계와 비교 (동작 검증)
-			const expectedSum = finiteNums.reduce((acc, val) => acc + val, 0)
+			const expectedSum = finiteNums.reduce((accumulator, value) => accumulator + value, 0)
 			expect(result).toBeCloseTo(expectedSum)
 		},
 	)
@@ -334,7 +334,7 @@ describe('sumArray 함수', () => {
 		const numbersOnly = mixedArray.filter(
 			(item) => typeof item === 'number' && Number.isFinite(item),
 		)
-		const expectedSum = numbersOnly.reduce((acc, val) => acc + val, 0)
+		const expectedSum = numbersOnly.reduce((accumulator, value) => accumulator + value, 0)
 		// 실행(Act)
 		const result = sumArray(mixedArray)
 		// 검증(Assert)
