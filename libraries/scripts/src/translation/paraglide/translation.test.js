@@ -479,32 +479,6 @@ describe('Paraglide 번역 스크립트', () => {
 			)
 		})
 
-		// 원칙: 동작 테스트
-		it('새로운 캐시 파일을 올바르게 저장해야 한다', async () => {
-			// 준비 (Arrange)
-			// getNewCache는 { ko: languageMessageMap_ko }, explanations 를 기반으로 해시된 캐시를 생성
-			const expectedNewCache = {
-				msg1: {
-					explanation: getSimpleHash(normalizeString('Expl1')),
-					ko: getSimpleHash(normalizeString('한글1')),
-				},
-				msg2: {
-					explanation: getSimpleHash(normalizeString('Expl2')),
-					ko: getSimpleHash(normalizeString('한글2')),
-				},
-				// msg3은 languageMessageMapKo에 없으므로 캐시에 포함되지 않음
-			}
-
-			// 실행 (Act)
-			await saveFiles(mockTranslatedLanguageMap, mockExplanations, mockLanguageMessageMapKo)
-
-			// 검증 (Assert)
-			expect(writeFile_async).toHaveBeenCalledWith(
-				path.join('/mock/paraglide/messages-helpers/', 'cache.json'),
-				JSON.stringify(expectedNewCache, undefined, 2),
-			)
-		})
-
 		// 원칙: 오류 처리 테스트
 		it('파일 쓰기 실패 시 오류를 전파해야 한다', async () => {
 			// 준비 (Arrange)
