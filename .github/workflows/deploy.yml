@@ -17,13 +17,24 @@ permissions:
   contents: read # Necessary to access the repo content
 
 jobs:
+  skip_dependabot:
+    name: No-op for dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')
+    steps:
+      - name: Skip deploy for dependabot PR
+        run: echo "Dependabot PR detected; skipping deploy."
   main:
     name: Main
     timeout-minutes: 15
     runs-on: ubuntu-latest
     if: >
-      (inputs.called_by_main == true) ||
-      (github.event_name == 'pull_request' && github.event.action == 'labeled' && github.event.label.name == 'force-deploy')
+      (
+        (inputs.called_by_main == true) ||
+        (github.event_name == 'pull_request' && github.event.action == 'labeled' && github.event.label.name == 'force-deploy')
+      ) && !(
+        github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')
+      )
 
     steps:
       # 저장소 코드 체크아웃
