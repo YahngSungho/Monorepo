@@ -53,7 +53,7 @@
     			- Write the complete content for the `.stories.svelte` file.
     			- **`<script module>` Section:**
     				- Include necessary imports (`defineMeta` from `@storybook/addon-svelte-csf`, the target component, and `import { storybookDecoratorArray } from '@library/ui/storybookDecorator'`).
-    				- Call `defineMeta`, providing `title` (e.g., `경로/컴포넌트명`), `component` (the imported component), `decorators: [() => StorybookDecorator]`, and potentially basic `argTypes` to enable controls for common props if helpful.
+    				- Call `defineMeta`, providing `title` (e.g., `경로/컴포넌트명`), `component` (the imported component), `decorators: storybookDecoratorArray`, and potentially basic `argTypes` to enable controls for common props if helpful.
     				- **USE JAVASCRIPT ONLY.**
     			- **Snippets:**
     				- Define the shared snippet(s) (e.g., `{#snippet template(args)}...{/snippet}`) as planned. **The snippet MUST render the component directly, without wrapping it in other elements like `<div>`.** Ensure `args` are correctly passed down to the component within the snippet (typically using `{...args}`). Add comments **in KOREAN** if necessary.
