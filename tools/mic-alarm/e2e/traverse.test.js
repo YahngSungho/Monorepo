@@ -14,7 +14,7 @@ const projectRouteRoot = path.join(__dirname, '../src/routes')
 // You can extend this object with more routes and parameters
 
 /** @type {{ [key: string]: string[] }} dynamicRouteParams */
-const dynamicRouteParams = {
+const dynamicRouteParameters = {
 	// '/blog/[slug]': ['hello-world', 'sveltekit-example'],
 	// '/blog/[id]/[slug]': ['123/my-post', '456/another-post'], <- 이렇게 path에 param 여러개 넣기
 	// '/products/[id]': ['123', '456'],
@@ -22,4 +22,4 @@ const dynamicRouteParams = {
 	// Add more dynamic routes and parameter examples as needed
 }
 
-runTests(projectRouteRoot, dynamicRouteParams)
+runTests(projectRouteRoot, dynamicRouteParameters)

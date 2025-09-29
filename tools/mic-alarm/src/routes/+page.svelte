@@ -1,42 +1,42 @@
 <script>
-	// Data (constants)
-	const DEFAULT_DB_THRESHOLD = -40; // dBFS, 0=max, typical speech ~ -20 to -40
-	const DEFAULT_TIME_THRESHOLD_SEC = 15; // seconds
-	const DEFAULT_PAUSE_MINUTES = 0; // minutes
-	const DEFAULT_INTERVAL_MS = 3000; // milliseconds
+// Data (constants)
+const DEFAULT_DB_THRESHOLD = -40; // dBFS, 0=max, typical speech ~ -20 to -40
+const DEFAULT_TIME_THRESHOLD_SEC = 15; // seconds
+const DEFAULT_PAUSE_MINUTES = 0; // minutes
+const DEFAULT_INTERVAL_MS = 3000; // milliseconds
 
-	// LocalStorage keys (Data)
-	const LS_KEYS = {
-		thresholdDb: "micAlarm.thresholdDb",
-		thresholdSeconds: "micAlarm.thresholdSeconds",
-		pauseMinutes: "micAlarm.pauseMinutes",
-		alarmVolume: "micAlarm.alarmVolume",
-		sampleIntervalMs: "micAlarm.sampleIntervalMs",
-	};
+// LocalStorage keys (Data)
+const LS_KEYS = {
+	alarmVolume: "micAlarm.alarmVolume",
+	pauseMinutes: "micAlarm.pauseMinutes",
+	sampleIntervalMs: "micAlarm.sampleIntervalMs",
+	thresholdDb: "micAlarm.thresholdDb",
+	thresholdSeconds: "micAlarm.thresholdSeconds",
+};
 
-	// State
-	let permissionError = $state("");
-	let isReady = $state(false);
-	let isMonitoring = $state(false);
-	let isAlarmPlaying = $state(false);
-	let currentDb = $state(-100);
-	let lastHeardAt = $state(Date.now());
+// State
+let permissionError = $state("");
+let isReady = $state(false);
+let isMonitoring = $state(false);
+let isAlarmPlaying = $state(false);
+let currentDatabase = $state(-100);
+let lastHeardAt = $state(Date.now());
 
-	let thresholdDb = $state(DEFAULT_DB_THRESHOLD);
-	let thresholdSeconds = $state(DEFAULT_TIME_THRESHOLD_SEC);
-	let pauseMinutesInput = $state(DEFAULT_PAUSE_MINUTES);
-	let pauseUntilTs = $state(0);
-	let alarmVolume = $state(60); // 0~100
-	let sampleIntervalMs = $state(DEFAULT_INTERVAL_MS);
+let thresholdDatabase = $state(DEFAULT_DB_THRESHOLD);
+let thresholdSeconds = $state(DEFAULT_TIME_THRESHOLD_SEC);
+let pauseMinutesInput = $state(DEFAULT_PAUSE_MINUTES);
+let pauseUntilTs = $state(0);
+let alarmVolume = $state(60); // 0~100
+let sampleIntervalMs = $state(DEFAULT_INTERVAL_MS);
 
-	// Audio internals
-	let audioCtx = /** @type {AudioContext|undefined} */ ($state());
-	let analyser = /** @type {AnalyserNode|undefined} */ ($state());
-	let micStream = /** @type {MediaStream|undefined} */ ($state());
-	let dataArray = /** @type {Float32Array|undefined} */ ($state());
-	// Non-reactive timer handle to avoid effect loops
-	let intervalId = /** @type {number|undefined} */ (undefined);
-	let alarmEl; // <audio>
+// Audio internals
+let audioContext = /** @type {AudioContext|undefined} */ ($state());
+let analyser = /** @type {AnalyserNode|undefined} */ ($state());
+let micStream = /** @type {MediaStream|undefined} */ ($state());
+let dataArray = /** @type {Float32Array|undefined} */ ($state());
+// Non-reactive timer handle to avoid effect loops
+let intervalId);
+let alarmElement; // <audio>
 
 	// Derived
 	let nowMs = $state(Date.now());
@@ -90,9 +90,9 @@
 
 			// Create context & nodes
 			const AC = window.AudioContext || /** @type {any} */ (window).webkitAudioContext;
-			audioCtx = new AC();
-			const source = audioCtx.createMediaStreamSource(micStream);
-			analyser = audioCtx.createAnalyser();
+			audioContext = new AC();
+			const source = audioContext.createMediaStreamSource(micStream);
+			analyser = audioContext.createAnalyser();
 			analyser.fftSize = 2048;
 			analyser.smoothingTimeConstant = 0.2;
 			source.connect(analyser);
@@ -114,7 +114,7 @@
 	function loadSettings_action() {
 		try {
 			const td = localStorage.getItem(LS_KEYS.thresholdDb);
-			if (td !== null) thresholdDb = clampNumber(Number(td), -100, 0);
+			if (td !== null) thresholdDatabase = clampNumber(Number(td), -100, 0);
 			const ts = localStorage.getItem(LS_KEYS.thresholdSeconds);
 			if (ts !== null) thresholdSeconds = Math.max(1, Math.floor(Number(ts)) || DEFAULT_TIME_THRESHOLD_SEC);
 			const pm = localStorage.getItem(LS_KEYS.pauseMinutes);
@@ -134,126 +134,126 @@
 		}
 		if (analyser) analyser.disconnect();
 		analyser = undefined;
-		if (audioCtx) {
+		if (audioContext) {
 			// Do not close to allow resume later; suspend to save CPU
-			audioCtx.suspend?.();
+			audioContext.suspend?.();
+	}
+	if (micStream) {
+		for (const t of micStream.getTracks()) {
+			t.stop();
 		}
-		if (micStream) {
-			for (const t of micStream.getTracks()) {
-				t.stop();
-			}
-			micStream = undefined;
-		}
+		micStream = undefined;
+	}
+}
+
+function sample_action() {
+	// Tick clock for derived values
+	nowMs = Date.now();
+	if (!analyser || !dataArray || isPaused) return;
+	analyser.getFloatTimeDomainData(/** @type {any} */ (dataArray));
+	const rms = calculateRms(/** @type {ArrayLike<number>} */ (dataArray));
+	const database = rmsToDb(rms);
+		currentDatabase = Number.isFinite(database) ? Number((Math.max(-100, Math.min(0, database))).toFixed(0)) : -100;
+
+	const speaking = currentDatabase >= thresholdDatabase;
+	if (speaking) {
+		lastHeardAt = Date.now();
+		if (isAlarmPlaying) stopAlarm_action();
 	}
 
-	function sample_action() {
-		// Tick clock for derived values
-		nowMs = Date.now();
-		if (!analyser || !dataArray || isPaused) return;
-		analyser.getFloatTimeDomainData(/** @type {any} */ (dataArray));
-		const rms = calculateRms(/** @type {ArrayLike<number>} */ (dataArray));
-		const db = rmsToDb(rms);
-		currentDb = Number.isFinite(db) ? Number((Math.max(-100, Math.min(0, db))).toFixed(0)) : -100;
-
-		const speaking = currentDb >= thresholdDb;
-		if (speaking) {
-			lastHeardAt = Date.now();
-			if (isAlarmPlaying) stopAlarm_action();
-		}
-
-		// Alarm logic
-		if (!isPaused && isMonitoring) {
-			const silentForMs = Date.now() - lastHeardAt;
-			if (silentForMs >= thresholdSeconds * 1000 && !isAlarmPlaying) playAlarm_action();
-		}
-
-		// If paused, ensure alarm is stopped
-		if (isPaused && isAlarmPlaying) stopAlarm_action();
+	// Alarm logic
+	if (!isPaused && isMonitoring) {
+		const silentForMs = Date.now() - lastHeardAt;
+		if (silentForMs >= thresholdSeconds * 1000 && !isAlarmPlaying) playAlarm_action();
 	}
 
-	async function playAlarm_action() {
-		if (!alarmEl) return;
-		alarmEl.volume = Math.max(0, Math.min(1, alarmVolume / 100));
-		alarmEl.loop = true;
-		try {
-			await alarmEl.play();
-			isAlarmPlaying = true;
-		} catch {
-			// Likely user gesture required
-			isAlarmPlaying = false;
-		}
-	}
+	// If paused, ensure alarm is stopped
+	if (isPaused && isAlarmPlaying) stopAlarm_action();
+}
 
-	function stopAlarm_action() {
-		if (!alarmEl) return;
-		try { alarmEl.pause(); } catch {}
-		try { alarmEl.currentTime = 0; } catch {}
+async function playAlarm_action() {
+	if (!alarmElement) return;
+	alarmElement.volume = Math.max(0, Math.min(1, alarmVolume / 100));
+	alarmElement.loop = true;
+	try {
+		await alarmElement.play();
+		isAlarmPlaying = true;
+	} catch {
+		// Likely user gesture required
 		isAlarmPlaying = false;
 	}
+}
 
-	function applyPause_action() {
-		const minutes = Number(pauseMinutesInput) || 0;
-		if (minutes <= 0) {
-			pauseUntilTs = 0;
-			return;
-		}
-		pauseUntilTs = Date.now() + minutes * 60 * 1000;
-		stopAlarm_action();
+function stopAlarm_action() {
+	if (!alarmElement) return;
+	try { alarmElement.pause(); } catch {}
+	try { alarmElement.currentTime = 0; } catch {}
+	isAlarmPlaying = false;
+}
+
+function applyPause_action() {
+	const minutes = Number(pauseMinutesInput) || 0;
+	if (minutes <= 0) {
+		pauseUntilTs = 0;
+		return;
 	}
+	pauseUntilTs = Date.now() + minutes * 60 * 1000;
+	stopAlarm_action();
+}
 
-	function testAlarm_action() {
-		playAlarm_action();
-		// Auto stop after short burst to avoid being annoying
-		window.setTimeout(() => {
-			if (isAlarmPlaying) stopAlarm_action();
-		}, 1200);
-	}
+function testAlarm_action() {
+	playAlarm_action();
+	// Auto stop after short burst to avoid being annoying
+	window.setTimeout(() => {
+		if (isAlarmPlaying) stopAlarm_action();
+	}, 1200);
+}
 
-	function onVolumeChange_action(e) {
-		alarmVolume = Number(e.currentTarget.value);
-		if (alarmEl) alarmEl.volume = Math.max(0, Math.min(1, alarmVolume / 100));
-	}
+function onVolumeChange_action(e) {
+	alarmVolume = Number(e.currentTarget.value);
+	if (alarmElement) alarmElement.volume = Math.max(0, Math.min(1, alarmVolume / 100));
+}
 
-	function restart_action() {
+function restart_action() {
+	stopAlarm_action();
+	stopMic_action();
+	startMic_action();
+}
+
+// Lifecycle
+$effect(() => {
+	// Load saved settings, then start immediately on mount
+	loadSettings_action();
+	startMic_action();
+	return () => {
 		stopAlarm_action();
 		stopMic_action();
-		startMic_action();
+	};
+});
+
+// Persist settings when they change
+$effect(() => {
+	try { localStorage.setItem(LS_KEYS.thresholdDb, String(thresholdDatabase)); } catch {}
+});
+$effect(() => {
+	try { localStorage.setItem(LS_KEYS.thresholdSeconds, String(thresholdSeconds)); } catch {}
+});
+$effect(() => {
+	try { localStorage.setItem(LS_KEYS.pauseMinutes, String(pauseMinutesInput)); } catch {}
+});
+$effect(() => {
+	try { localStorage.setItem(LS_KEYS.alarmVolume, String(alarmVolume)); } catch {}
+	if (alarmElement) alarmElement.volume = Math.max(0, Math.min(1, alarmVolume / 100));
+});
+
+// Persist and apply sampling interval changes
+$effect(() => {
+	try { localStorage.setItem(LS_KEYS.sampleIntervalMs, String(sampleIntervalMs)); } catch {}
+	if (isMonitoring) {
+		if (intervalId) globalThis.clearInterval(intervalId);
+		intervalId = globalThis.setInterval(sample_action, sampleIntervalMs);
 	}
-
-	// Lifecycle
-	$effect(() => {
-		// Load saved settings, then start immediately on mount
-		loadSettings_action();
-		startMic_action();
-		return () => {
-			stopAlarm_action();
-			stopMic_action();
-		};
-	});
-
-	// Persist settings when they change
-	$effect(() => {
-		try { localStorage.setItem(LS_KEYS.thresholdDb, String(thresholdDb)); } catch {}
-	});
-	$effect(() => {
-		try { localStorage.setItem(LS_KEYS.thresholdSeconds, String(thresholdSeconds)); } catch {}
-	});
-	$effect(() => {
-		try { localStorage.setItem(LS_KEYS.pauseMinutes, String(pauseMinutesInput)); } catch {}
-	});
-	$effect(() => {
-		try { localStorage.setItem(LS_KEYS.alarmVolume, String(alarmVolume)); } catch {}
-		if (alarmEl) alarmEl.volume = Math.max(0, Math.min(1, alarmVolume / 100));
-	});
-
-	// Persist and apply sampling interval changes
-	$effect(() => {
-		try { localStorage.setItem(LS_KEYS.sampleIntervalMs, String(sampleIntervalMs)); } catch {}
-		if (isMonitoring) {
-			if (intervalId) window.clearInterval(intervalId);
-			intervalId = window.setInterval(sample_action, sampleIntervalMs);
-		}
-	});
+});
 </script>
 
 <main class="container">
@@ -270,7 +270,7 @@
 				{#if isPaused}
 					<strong> - </strong> dBFS
 				{:else}
-					<strong>{currentDb}</strong> dBFS
+					<strong>{currentDatabase}</strong> dBFS
 				{/if}
 
 			</div>
@@ -300,28 +300,28 @@
 	<section class="controls">
 		<div class="control">
 			<label for="thresholdDb">기준 소리 (dBFS)</label>
-			<input id="thresholdDb" type="number" min="-100" max="0" step="1" bind:value={thresholdDb} class="input" />
+			<input id="thresholdDb" max="0" min="-100" type="number" step="1" bind:value={thresholdDatabase} class="input" />
 			<small class="hint">말소리가 이 값 이상이어야 무음이 아님. 보통 -50 ~ -20</small>
 		</div>
 
 		<div class="control">
 			<label for="thresholdSec">기준 시간 (초)</label>
-			<input id="thresholdSec" type="number" min="1" step="1" bind:value={thresholdSeconds} class="input" />
+			<input id="thresholdSec" class="input" min="1" step="1" type="number" bind:value={thresholdSeconds} />
 		</div>
 
 		<div class="control">
 			<label for="intervalMs">샘플링 간격 (ms)</label>
-			<input id="intervalMs" type="number" min="200" max="60000" step="100" bind:value={sampleIntervalMs} class="input" />
+			<input id="intervalMs" class="input" max="60000" min="200" type="number" step="100" bind:value={sampleIntervalMs} />
 			<small class="hint">마이크 측정 주기. 짧을수록 빠르지만 CPU 사용 증가</small>
 		</div>
 
 		<div class="control">
 			<label for="pauseMin">일시정지 (분)</label>
 			<div class="inline">
-				<input id="pauseMin" type="number" min="0" max="100" step="1" bind:value={pauseMinutesInput} class="input" />
+				<input id="pauseMin" class="input" max="100" min="0" type="number" step="1" bind:value={pauseMinutesInput} />
 				<button class="btn" onclick={applyPause_action}>적용</button>
 				{#if isPaused}
-				<button class="btn" onclick={() => { pauseUntilTs = 0; }}>해제</button>
+					<button class="btn" onclick={() => { pauseUntilTs = 0; }}>해제</button>
 				{/if}
 
 			</div>
@@ -332,7 +332,7 @@
 
 		<div class="control">
 			<label for="alarmVolume">알람 볼륨</label>
-			<input id="alarmVolume" type="range" min="0" max="100" step="1" value={alarmVolume} oninput={onVolumeChange_action} class="range" />
+			<input id="alarmVolume" class="range" max="100" min="0" type="range" step="1" value={alarmVolume} oninput={onVolumeChange_action} />
 		</div>
 
 		<div class="buttons">
@@ -341,7 +341,7 @@
 		</div>
 	</section>
 
-	<audio bind:this={alarmEl} src="/alert-1.mp3" preload="auto" style="display:none"></audio>
+	<audio bind:this={alarmElement} style:display="none" preload="auto" src="/alert-1.mp3"></audio>
 </main>
 
 <style>
