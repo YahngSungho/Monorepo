@@ -436,24 +436,27 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     - `fc.tuple`은 특정 요소 `i`와 shrinking될 값들을 묶어주며, fast-check가 실패 시 **값**을 축소하도록 보장합니다.
   - 생성된 새 인터랙션 Arbitrary를 `arbitraries` 배열에 `push`하면, `fc.oneof`와 `fc.array`에 의해 자동으로 전체 시퀀스 생성 및 shrinking 과정에 포함됩니다.
 
-  - ```javascript
+  -
+
+  ```javascript
     // storybook/e2e/universal-testers.js 내 createInteractionSequenceArbitrary 함수 수정 예시 (doubleClick)
-    
+  
     // ... (1단계: 타입별 분류) ...
-    const doubleClickInteractions = interactions.index) => index(i) => i.type === 'doubleClick')
+    const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
     // ...
-    
+  
     // 2단계: 각 타입별 Arbitrary 생성
     const arbitraries = []
     // ... (기존 click, fill 등 Arbitrary 생성 로직) ...
-    
+  
     // doubleClick 인터랙션 Arbitrary 추가 (값 없는 인터랙션 패턴)
     if (doubleClickInteractions.length > 0) {
     	const doubleClickInteractionArb = fc
     		.record({
     			type: fc.constant('doubleClick'), // 타입 고정
     			// 대상 요소 인덱스 생성 및 Shrinking (0 ~ 목록길이-1)
-    			selectorIndex: fc.nat({ max: doubleClickInteractionselectorIndex, type 		})
+    			selectorIndex: fc.nat({ max: doubleClickIselectorIndex, type- 1 }),
+    		})
     		.map(({ type, selectorIndex }) => ({
     			// 인덱스를 실제 Interaction 객체로 변환
     			...doubleClickInteractions[selectorIndex], // 해당 인덱스의 요소 정보 사용
@@ -464,7 +467,7 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     		`[Arbitrary Gen] Added 'doubleClick' arbitrary for ${doubleClickInteractions.length} elements.`,
     	) // 디버깅 로그
     }
-    
+  
     // 예시: setValue(attr, value) 인터랙션 Arbitrary 추가 (값 있는 인터랙션 패턴)
     /*
       const setValueInteractions = interactions.filter((i) => i.type === 'setValue');
@@ -472,7 +475,7 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
           for (let i = 0; i < setValueInteractions.length; i++) {
               const attrArb = fc.constantFrom('id', 'class', 'data-testid'); // 예시 속성 이름 Arbitrary
               const valueArb = fc.string(1, 20); // 예시 값 Arbitrary
-    
+  
               const setValueInteractionArb = fc
                   .tuple(
                       fc.constant(i), // 요소 인덱스 고정
@@ -489,11 +492,11 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
           }
       }
       */
-    
+  
     // ... (3단계: fc.oneof, 4단계: fc.array) ...
     const interactionArb = fc.oneof(...arbitraries) // 모든 타입 중 하나 선택
     // ...
-    ```
+  ```
 
 ### 4. Shrinking 심층 탐구 및 유지 보수
 
@@ -572,7 +575,7 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    // 예시: tagName이 'button' 이거나 role이 'button'인 요소에 doubleClick 추가
    if (
    	(tagName === 'button' || role === 'button') && // 이미 click/hover가 추가되었을 수 있음. doubleClick 중복 체크 및 추가
-   	!interactions.some((index) => index.type === 'doubleClick' && index.selector === selector)
+   	!interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)
    ) {
    	interactions.push({ selector, type: 'doubleClick' })
    	// console.log(`[Interaction Discovery] Added 'doubleClick' for: ${selector}`); // 디버깅용 로그
@@ -615,7 +618,7 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    // storybook/e2e/universal-testers.js
    // ... inside createInteractionSequenceArbitrary ...
    // 1단계: 타입별 분류
-   const doubleClickInteractions = interactions.filter((index) => index.type === 'doubleClick')
+   const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
    // ...
    
    // 2단계: Arbitrary 생성

@@ -1,6 +1,6 @@
 # Args
 
-A story is a component with a set of arguments that define how the component should render. "Args" are Storybook's mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. It allows Storybook and its addons to live edit components. You *do not* need to modify your underlying component code to use args.
+A story is a component with a set of arguments that define how the component should render. "Args" are Storybook's mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. It allows Storybook and its addons to live edit components. You _do not_ need to modify your underlying component code to use args.
 
 When an arg's value changes, the component re-renders, allowing you to interact with components in Storybook's UI via addons that affect args.
 
@@ -111,7 +111,7 @@ Complex values such as JSX elements cannot be serialized to the manager (e.g., t
 import { Example } from './Example';export default {  component: Example,  argTypes: {    label: {      options: ['Normal', 'Bold', 'Italic'],      mapping: {        Bold: <b>Bold</b>,        Italic: <i>Italic</i>,      },    },  },};
 ```
 
-Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg *values*, not their index in the `options` array.
+Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg _values_, not their index in the `options` array.
 
 # Parameters
 
@@ -308,7 +308,7 @@ Note that by adding a `subcomponents` property to the default export, we get a
 Subcomponents are only intended for documentation purposes and have some limitations:
 
 1. The argTypes of subcomponents are inferred (for the renderers that support that feature) and cannot be manually defined or overridden.
-2. The table for each documented subcomponent does *not* include controls to change the value of the props, because controls always apply to the main component's args.
+2. The table for each documented subcomponent does _not_ include controls to change the value of the props, because controls always apply to the main component's args.
 
 Let's talk about some techniques you can use to mitigate the above, which are especially useful in more complicated situations.
 

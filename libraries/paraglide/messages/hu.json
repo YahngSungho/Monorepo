@@ -1,9 +1,9 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "antsy_aloof_barbel_read": "Ikon",
-  "deft_east_mouse_hope": "Helló",
-  "hello_world": "Helló, {name}!",
-  "tangy_late_wallaby_grip": "Üdvözöljük a SvelteKit-ben",
-  "welcome": "Üdvözöljük a SvelteKit-ben",
-  "region": "Régió"
+  "antsy_aloof_barbel_read": "번역된 메시지",
+  "deft_east_mouse_hope": "번역된 메시지",
+  "hello_world": "번역된 메시지",
+  "tangy_late_wallaby_grip": "번역된 메시지",
+  "welcome": "번역된 메시지",
+  "region": "번역된 메시지"
 }

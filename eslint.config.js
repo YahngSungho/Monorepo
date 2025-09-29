@@ -212,6 +212,7 @@ const baseRules = {
 	'unicorn/no-new-array': 'off',
 	'unicorn/no-new-buffer': 'off',
 	'unicorn/no-null': 'off',
+	'unicorn/no-process-exit': 'off',
 	'unicorn/no-single-promise-in-promise-methods': 'off',
 	'unicorn/no-static-only-class': 'off',
 	'unicorn/no-typeof-undefined': 'off',

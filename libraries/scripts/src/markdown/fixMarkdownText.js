@@ -85,7 +85,7 @@ function getHeadingLines(content) {
  */
 function collectHeadingIdsFromBase(baseContent) {
 	const headings = getHeadingLines(baseContent)
-	return headings.map((h) => h.id || nanoid(3))
+	return headings.map((h) => h.id || nanoid(4))
 }
 
 // Calculation: apply heading ids to a markdown content
