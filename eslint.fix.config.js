@@ -144,7 +144,7 @@ const overrideConfig = [
 		files: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 		rules: {
 			'unicorn/prevent-abbreviations': 'off',
-		}
+		},
 	},
 	{
 		plugins: {

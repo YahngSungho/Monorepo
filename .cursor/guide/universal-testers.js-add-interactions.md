@@ -42,7 +42,6 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
 새로운 인터랙션을 효과적으로 추가하려면 현재 시스템의 각 구성 요소가 어떻게 상호작용하는지 정확히 이해해야 합니다.
 
 - **`Interaction` 타입 정의 및 역할**:
-
   - 파일 상단 주석에 정의된 `@typedef`입니다. 인터랙션 수행에 필요한 모든 정보를 담는 객체의 구조를 정의합니다.
   - `type`: 인터랙션 종류 (문자열, 예: 'click', 'fill'). **새 인터랙션 추가 시 고유한 타입 문자열 정의 필요.**
   - `selector`: Playwright가 상호작용할 대상 요소를 찾는 CSS 셀렉터 (문자열).
@@ -65,10 +64,8 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     ```
 
 - **인터랙션 탐색 (`discoverInteractions`, `getInteractionsFromElementInfo`)**:
-
   - `discoverInteractions`: 현재 페이지의 컴포넌트(`componentSelector`) 내 모든 요소(`*`)를 대상으로 `page.evaluate`를 실행하여 각 요소의 기본 정보(태그명, 속성, 역할 등)와 고유 셀렉터를 추출합니다.
   - `getInteractionsFromElementInfo`: `discoverInteractions`에서 추출한 개별 요소 정보를 바탕으로, **어떤 인터랙션이 가능한지 판단**하고 `Interaction` 객체를 생성합니다.
-
     - **생성 기준**: 요소의 `tagName` (예: 'button', 'input'), `type` 속성 (예: 'checkbox', 'range'), `role` 속성 (예: 'tab'), 기타 속성 (`draggable`, `hasOnClick`), `disabled` 또는 `readonly` 상태 등을 조합하여 결정합니다.
     - **주의**: 이 단계에서 `disabled` 상태는 체크하지만, `isVisible`은 이후 `executeInteraction`에서 확인합니다. 탐색 시점과 실행 시점 사이의 상태 변화 가능성을 염두에 두어야 합니다.
 
@@ -149,7 +146,6 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     ```
 
 - **인터랙션 실행 (`executeInteraction`, `executeInteractionByType`)**:
-
   - `executeInteraction`: fast-check의 `fc.asyncProperty` 내부에서 각 인터랙션 객체를 받아 실행하는 함수입니다.
     - Playwright `locator` 생성 -> `isVisible`, `isDisabled` 재확인 (실행 시점 상태 체크).
     - `executeInteractionByType` 호출하여 실제 액션 수행.
@@ -158,7 +154,6 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     - 페이지 레벨 에러(`page.on('pageerror')`) 감지 및 로깅.
     - 성공/실패 및 상세 정보를 포함한 `InteractionResult` 객체 반환.
   - `executeInteractionByType`: `interaction.type`에 따라 `switch` 문으로 분기하여 적절한 Playwright 함수(예: `page.click`, `page.fill`, `page.dblclick`)를 호출합니다.
-
     - 복잡한 로직은 별도 함수(예: `executeFillInteraction`)로 분리되어 있습니다.
     - Playwright 함수 호출 시 `timeout` 옵션을 설정하여 무한 대기 방지.
 
@@ -234,7 +229,6 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     ```
 
 - **Fast-check 연동 및 시퀀스 생성 (`createInteractionSequenceArbitrary`)**:
-
   - PBT의 핵심: `discoverInteractions`로 찾은 모든 가능한 인터랙션들을 기반으로, fast-check가 실행할 **무작위 인터랙션 시퀀스**를 생성하는 `Arbitrary`를 정의합니다.
   - **Shrinking 보장 패턴**:
     - **값이 없는 인터랙션 (click, hover, drag 등)**:
@@ -336,16 +330,15 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
   - 새 인터랙션에 `selector`, `type` 외 추가 정보(예: 좌표, 속성명)가 필요하다면 `Interaction` `@typedef` 주석과 관련 로직에서 사용할 수 있도록 필드를 추가합니다.
   - 예: `setValue(attribute, value)` 인터랙션 -> `{ string } attributeName` 필드 추가. `doubleClick` -> 추가 필드 불필요.
 - **2단계: 인터랙션 탐색 로직 수정 (`getInteractionsFromElementInfo`)**:
-
   - `getInteractionsFromElementInfo` 함수 내에서 **새 인터랙션을 생성할 조건**을 결정하고 코드를 추가합니다.
   - 조건은 HTML 태그(`tagName`), 특정 속성 존재 여부(`elementInfo.hasAttribute('data-custom-attr')`), 역할(`role`), 혹은 이들의 조합이 될 수 있습니다.
   - 해당 조건 만족 시, 정의한 `type`과 `selector`, 그리고 필요한 다른 정보(1단계에서 추가한 필드 값 등)를 포함하는 `Interaction` 객체를 생성하여 `interactions` 배열에 `push`합니다.
 
   - ```javascript
     // storybook/e2e/universal-testers.js 내 getInteractionsFromElementInfo 함수 수정 예시 (doubleClick)
-
+    
     // ... (기존 switch 문 또는 if 문 내부) ...
-
+    
     // 예시: button 이거나 role='button' 인 요소에 doubleCl((tagName === 'button' || role === 'button') && // 기존 click, hover 외에 doubleClick 추가 (이미 추가되지 않았다면)
     !interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)) {
     	interactions.push({ type: 'doubleClick', selector })
@@ -353,23 +346,21 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     }`) // 디버깅 로그 추가
     	}
     }
-
+    
     // 예시: data-focusable 속성이 있는 요소에 customFocus 인터랙션 추가
     if (elementInfo.hasAttribute('data-focusable')) {
     	// 'hasAttribute' 사용은 page.evaluate 내 로직 필요
     	// page.evaluate 내에서 elementInfo 객체 생성 시 data-focusable 속성 포함 필요
     	// interactions.push({ type: 'customFocus', selector });
     }
-
+    
     // ...
     ```
 
 - **3단계: 인터랙션 실행 로직 구현 (`executeInteractionByType`)**:
-
   - `executeInteractionByType` 함수의 `switch` 문에 새로운 `type` 문자열에 대한 `case`를 추가합니다.
   - 해당 `case` 블록 내에서, 인터랙션을 수행하는 **적절한 Playwright 액션 함수** (예: `page.dblclick()`, `page.focus()`, `locator.dragTo()`, `page.evaluate()`)를 호출합니다.
   - **주의사항**:
-
     - Playwright 액션 호출 시 적절한 `timeout`을 설정하여 무한 대기를 방지합니다.
     - 액션 수행 중 발생할 수 있는 **특 специфичные 에러** (예: `dblclick` 중 요소가 사라짐, `dragTo` 대상이 없음)를 `try...catch`로 감싸고, 에러 발생 시 `result` 객체에 `errorMessage`, `errorStack`, `success = false`를 명확히 기록합니다.
     - 액션 성공 시 `result.message`에 성공 메시지를 기록하고 `result.success = true`를 설정합니다. (try 블록 마지막 또는 catch 이후 finally 블록 활용 가능)
@@ -377,12 +368,12 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
 
   - ```javascript
     // storybook/e2e/universal-testers.js 내 executeInteractionByType 함수 수정 예시 (doubleClick)
-
+    
     async function executeInteractionByType(page, interaction, result) {
     	try {
     		switch (interaction.type) {
     			// ... 기존 case들 ...
-
+    
     			case 'doubleClick': {
     				// 새로운 doubleClick case 추가
     				const locator = page.locator(interaction.selector)
@@ -402,9 +393,9 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     				}
     				break // switch case 종료
     			}
-
+    
     			// TODO: 다른 새로운 인터랙션 타입 case 추가
-
+    
     			default: {
     				// ... 지원하지 않는 타입 처리 ...
     				result.errorMessage = `지원하지 않는 인터랙션 타입: ${interaction.type}`
@@ -436,7 +427,6 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     ```
 
 - **4단계: Fast-check Arbitrary 생성 로직 통합 (`createInteractionSequenceArbitrary`)**:
-
   - `createInteractionSequenceArbitrary` 함수 내 **2단계**(타입별 Arbitrary 생성) 부분에 새 인터랙션 타입을 처리하는 로직을 추가합니다.
   - **값이 없는 인터랙션 (예: `doubleClick`, `customFocus`)**:
     - `click`, `hover`와 **동일한 패턴** (`fc.nat` + `fc.record` + `fc.map`)을 사용합니다. 이는 fast-check가 실패 시 **어떤 요소**에 대한 해당 인터랙션이 문제였는지 인덱스(대상)를 축소할 수 있도록 보장합니다.
@@ -446,25 +436,26 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     - `fc.tuple`은 특정 요소 `i`와 shrinking될 값들을 묶어주며, fast-check가 실패 시 **값**을 축소하도록 보장합니다.
   - 생성된 새 인터랙션 Arbitrary를 `arbitraries` 배열에 `push`하면, `fc.oneof`와 `fc.array`에 의해 자동으로 전체 시퀀스 생성 및 shrinking 과정에 포함됩니다.
 
-  - 
-	```javascript
-    // storybook/e2e/universal-testers.js 내 createInteractionSequenceArbitrary 함수 수정 예시 (doubleClick)
+  -
 
+  ```javascript
+    // storybook/e2e/universal-testers.js 내 createInteractionSequenceArbitrary 함수 수정 예시 (doubleClick)
+  
     // ... (1단계: 타입별 분류) ...
     const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
     // ...
-
+  
     // 2단계: 각 타입별 Arbitrary 생성
     const arbitraries = []
     // ... (기존 click, fill 등 Arbitrary 생성 로직) ...
-
+  
     // doubleClick 인터랙션 Arbitrary 추가 (값 없는 인터랙션 패턴)
     if (doubleClickInteractions.length > 0) {
     	const doubleClickInteractionArb = fc
     		.record({
     			type: fc.constant('doubleClick'), // 타입 고정
     			// 대상 요소 인덱스 생성 및 Shrinking (0 ~ 목록길이-1)
-    			selectorIndex: fc.nat({ max: doubleClickInteractions.length - 1 }),
+    			selectorIndex: fc.nat({ max: doubleClickIselectorIndex, type- 1 }),
     		})
     		.map(({ type, selectorIndex }) => ({
     			// 인덱스를 실제 Interaction 객체로 변환
@@ -476,7 +467,7 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
     		`[Arbitrary Gen] Added 'doubleClick' arbitrary for ${doubleClickInteractions.length} elements.`,
     	) // 디버깅 로그
     }
-
+  
     // 예시: setValue(attr, value) 인터랙션 Arbitrary 추가 (값 있는 인터랙션 패턴)
     /*
       const setValueInteractions = interactions.filter((i) => i.type === 'setValue');
@@ -484,7 +475,7 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
           for (let i = 0; i < setValueInteractions.length; i++) {
               const attrArb = fc.constantFrom('id', 'class', 'data-testid'); // 예시 속성 이름 Arbitrary
               const valueArb = fc.string(1, 20); // 예시 값 Arbitrary
-
+  
               const setValueInteractionArb = fc
                   .tuple(
                       fc.constant(i), // 요소 인덱스 고정
@@ -501,11 +492,11 @@ _(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인
           }
       }
       */
-
+  
     // ... (3단계: fc.oneof, 4단계: fc.array) ...
     const interactionArb = fc.oneof(...arbitraries) // 모든 타입 중 하나 선택
     // ...
-    ```
+  ```
 
 ### 4. Shrinking 심층 탐구 및 유지 보수
 
@@ -515,7 +506,6 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
   - Fast-check는 실패가 발생하면, 실패를 일으킨 입력값(Arbitrary가 생성한 값 또는 시퀀스)을 내부적으로 정의된 규칙에 따라 더 "단순한" 값으로 계속 대체하며 테스트를 반복합니다. 이 과정을 통해 여전히 실패를 유발하는 가장 작은 입력값(counterexample)을 찾아 제시합니다.
   - `fc.string()`은 빈 문자열("")로, `fc.integer()`는 0으로, `fc.array()`는 빈 배열([]) 또는 더 짧은 배열로 줄어들려는 경향이 있습니다. `fc.map`, `fc.tuple`, `fc.oneof` 등도 내부적으로 shrinking 로직을 포함하여 연계적으로 작동합니다.
 - **값(Value) Shrinking (`_getValueArbitraryForType`)**:
-
   - 인터랙션에 사용되는 값(텍스트, 숫자, 선택 옵션 등)의 shrinking은 이 함수에서 반환하는 **기본 Arbitrary**(`fc.string`, `fc.integer`, `fc.constantFrom` 등)에 의해 보장됩니다.
   - **핵심**: 새로운 값 타입을 추가할 때, 가능한 한 fast-check의 **기본 Arbitrary를 직접 사용하거나, 단순한 `.map()` 변환**을 통해 조합해야 합니다.
   - **주의**: `.map()` 내부에서 너무 복잡한 로직(예: 여러 단계의 계산, 외부 상태 의존)을 사용하면 fast-check가 원래 값으로 되돌아가며 shrinking 하는 경로를 찾기 어려워져 shrinking 효율이 떨어지거나 실패할 수 있습니다. `.filter()` 역시 shrinking 성능을 저하시킬 수 있으므로, 가능하면 원하는 값만 생성하는 Arbitrary를 직접 설계하는 것이 좋습니다 (첨부 자료 `playwright-with-fastCheck.mdc`의 Best Practice 3 참조).
@@ -533,7 +523,6 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
     ```
 
 - **대상(Target) 및 종류(Type) Shrinking (`createInteractionSequenceArbitrary`)**:
-
   - **대상 Shrinking (어떤 요소?)**:
     - 값 없는 인터랙션: `fc.nat({ max: ... })`가 인덱스를 0에 가깝게 줄여, 시퀀스 실패 시 어떤 요소에 대한 인터랙션이 문제인지 범위를 좁힙니다.
     - 값 있는 인터랙션: `fc.tuple([fc.constant(i), ...])` 패턴에서 요소 인덱스 `i`는 고정되지만, fast-check가 전체 시퀀스를 줄이는 과정(`fc.array`의 shrinking)에서 특정 요소 `i`에 대한 인터랙션 자체가 제거될 수 있습니다.
@@ -588,7 +577,7 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    	(tagName === 'button' || role === 'button') && // 이미 click/hover가 추가되었을 수 있음. doubleClick 중복 체크 및 추가
    	!interactions.some((i) => i.type === 'doubleClick' && i.selector === selector)
    ) {
-   	interactions.push({ type: 'doubleClick', selector })
+   	interactions.push({ selector, type: 'doubleClick' })
    	// console.log(`[Interaction Discovery] Added 'doubleClick' for: ${selector}`); // 디버깅용 로그
    }
    // ...
@@ -631,11 +620,11 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    // 1단계: 타입별 분류
    const doubleClickInteractions = interactions.filter((i) => i.type === 'doubleClick')
    // ...
-
+   
    // 2단계: Arbitrary 생성
    const arbitraries = []
    // ... (기존 타입들) ...
-
+   
    // doubleClick Arbitrary 추가 (값 없는 인터랙션 패턴 -> 대상 요소 Shrinking 보장)
    if (doubleClickInteractions.length > 0) {
    	const doubleClickInteractionArb = fc
@@ -644,7 +633,7 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    			// 대상 요소 인덱스 생성 및 Shrinking
    			selectorIndex: fc.nat({ max: doubleClickInteractions.length - 1 }),
    		})
-   		.map(({ type, selectorIndex }) => ({
+   		.map(({ selectorIndex, type }) => ({
    			// 인덱스를 실제 Interaction 객체로 변환
    			...doubleClickInteractions[selectorIndex], // 해당 인덱스의 요소 정보 사용
    			type,
@@ -652,7 +641,7 @@ Fast-check의 shrinking 기능은 PBT의 핵심적인 장점입니다. 실패를
    	arbitraries.push(doubleClickInteractionArb)
    	// console.log(`[Arbitrary Gen] Added 'doubleClick' arbitrary`); // 디버깅용 로그
    }
-
+   
    // ... (3단계: fc.oneof, 4단계: fc.array) ...
    const interactionArb = fc.oneof(...arbitraries) // 다른 타입들과 함께 랜덤 선택 대상이 됨
    // ...
