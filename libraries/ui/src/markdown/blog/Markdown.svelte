@@ -52,8 +52,8 @@ const addedPlugins = [
 </script>
 
 <script>
-import { setContext, tick } from 'svelte'
 import { idleRun_action } from '@library/helpers/functions'
+import { setContext, tick } from 'svelte'
 
 let { mermaidSVGObject = {}, plugins = [], value } = $props()
 
@@ -75,11 +75,11 @@ setContext('mermaidSVGObject', mermaidContext)
 
 function scheduleReanchor_action() {
 	const hash = typeof location === 'undefined' ? '' : location.hash.slice(1)
-			if (!hash) return
-			const id = decodeURIComponent(hash)
-			const target = typeof document === 'undefined' ? null : document.getElementById(id)
-			if (!target) return
-			target.scrollIntoView({ block: 'start' })
+	if (!hash) return
+	const id = decodeURIComponent(hash)
+	const target = typeof document === 'undefined' ? null : document.getElementById(id)
+	if (!target) return
+	target.scrollIntoView({ block: 'start' })
 }
 
 setContext('scheduleReanchor_action', scheduleReanchor_action)

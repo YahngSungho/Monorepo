@@ -23,13 +23,13 @@ $effect(() => {
 	}
 
 	const svgElement = element?.querySelector('svg') // 렌더링된 SVG 찾기 (element가 있을 때만)
-		if (svgElement) {
-			if (typeof scheduleReanchor_action === 'function') {
-				scheduleReanchor_action()
-			}
-
-			idleRun_action(() => initializeMermaidHover_action(svgElement))
+	if (svgElement) {
+		if (typeof scheduleReanchor_action === 'function') {
+			scheduleReanchor_action()
 		}
+
+		idleRun_action(() => initializeMermaidHover_action(svgElement))
+	}
 })
 </script>
 
