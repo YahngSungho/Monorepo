@@ -53,8 +53,13 @@ const addedPlugins = [
 
 <script>
 import { setContext } from 'svelte'
+<<<<<<< ours
+||||||| ancestor
+import { page } from '$app/state'
+=======
 
 import { page } from '$app/state'
+>>>>>>> theirs
 
 let { mermaidSVGObject = {}, plugins = [], value } = $props()
 
@@ -75,7 +80,7 @@ $effect(() => {
 setContext('mermaidSVGObject', mermaidContext)
 
 function scheduleReanchor_action() {
-	const hash = (page?.url?.hash ?? '').slice(1)
+	const hash = typeof location === 'undefined' ? '' : location.hash.slice(1)
 	if (!hash) return
 	const id = decodeURIComponent(hash)
 	const target = typeof document === 'undefined' ? null : document.getElementById(id)
