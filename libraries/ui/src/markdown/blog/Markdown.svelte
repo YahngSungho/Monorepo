@@ -53,6 +53,7 @@ const addedPlugins = [
 
 <script>
 import { setContext } from 'svelte'
+
 import { page } from '$app/state'
 
 let { mermaidSVGObject = {}, plugins = [], value } = $props()

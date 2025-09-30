@@ -415,12 +415,14 @@ $effect(() => {
 
 <style>
 .container-div {
+	overflow: auto;
+
 	max-inline-size: 780px;
+	block-size: 100vb;
 	margin: 0 auto;
 	padding: var(--space-l, 2rem);
+
 	color: var(--foreground, rgb(17 17 17));
-	height: 100vh;
-	overflow: auto;
 }
 
 .title {
