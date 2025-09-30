@@ -15,7 +15,9 @@ let { allMetadata } = $props()
 	style:inline-size="100%"
 >
 	{#each allMetadata as postMetadata (postMetadata.slug)}
-		<Link
+		<div style="display: flex;">
+			{#snippet link()}
+			<Link
 			class={css`
 				display: block;
 				inline-size: fit-content;
@@ -23,19 +25,23 @@ let { allMetadata } = $props()
 			active={postMetadata.current}
 			href={`/posts/${postMetadata.slug}`}
 		>
-			{#if postMetadata.current}
-				<IconText iconName="mdi:chevron-right">
-					{postMetadata.title}
-				</IconText>
-			{:else if postMetadata.visited}
-				<IconText iconName="mdi:check">
-					{postMetadata.title}
-				</IconText>
-			{:else}
-				<IconText>
-					{postMetadata.title}
-				</IconText>
-			{/if}
+			{postMetadata.title}
 		</Link>
+		{/snippet}
+
+		{#if postMetadata.current}
+		<IconText iconName="mdi:chevron-right">
+			{@render link()}
+		</IconText>
+	{:else if postMetadata.visited}
+		<IconText iconName="mdi:check">
+			{@render link()}
+		</IconText>
+	{:else}
+		<IconText>
+			{@render link()}
+		</IconText>
+	{/if}
+		</div>
 	{/each}
 </div>

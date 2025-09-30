@@ -1,5 +1,5 @@
 <script module>
-import { css } from '@emotion/css'
+import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 import IconText from '@library/ui/icon-text'
 
@@ -16,21 +16,21 @@ const linkStyle = css`
 </script>
 
 <script>
-let { children, href = '', ...rest } = $props()
+let { children, class: incomingClass = '', href = '', ...rest } = $props()
 
 let isHeadingLink = $derived(href.startsWith('#'))
 let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#if isHeadingLink}
-	<a class={linkStyle} {href} {...rest}>
+	<a class={cx(linkStyle, incomingClass)} {href} {...rest}>
 		<IconText iconName="mdi:hashtag" noMargin right small>
 			{@render children?.()}
 		</IconText>
 	</a>
 {:else if isInternalLink}
 	<a
-		class={linkStyle}
+		class={cx(linkStyle, incomingClass)}
 		href={isInternalLink ? localizeHref(href) : href}
 		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
@@ -41,7 +41,7 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	</a>
 {:else}
 	<a
-		class={linkStyle}
+		class={cx(linkStyle, incomingClass)}
 		href={isInternalLink ? localizeHref(href) : href}
 		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
