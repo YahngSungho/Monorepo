@@ -11,19 +11,16 @@ on:
     types:
       - labeled
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 permissions:
   pull-requests: write # Necessary to comment on PRs
   issues: read # Necessary to read issue comments
   contents: read # Necessary to access the repo content
 
 jobs:
-  skip_dependabot:
-    name: No-op for dependabot PRs
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')
-    steps:
-      - name: Skip deploy for dependabot PR
-        run: echo "Dependabot PR detected; skipping deploy."
   main:
     name: Main
     timeout-minutes: 15
@@ -32,13 +29,15 @@ jobs:
       (
         (inputs.called_by_main == true) ||
         (github.event_name == 'pull_request' && github.event.action == 'labeled' && github.event.label.name == 'force-deploy')
-      ) && !(
-        github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')
       )
 
     steps:
+      - name: Skip deploy for dependabot PR
+        if: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot') }}
+        run: echo "Dependabot PR detected; skipping deploy in main job."
       # 저장소 코드 체크아웃
       - name: Checkout repository
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -46,10 +45,12 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
 
       - name: Install dotenvx
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         run: curl -sfS https://dotenvx.sh/install.sh | sh
 
       - name: Load and mask only .env keys into job env
         shell: bash
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         run: |
           # 1) .env 파일들에서 "키 이름"만 추출(주석/공백 라인 무시)
           awk -F= '!/^#/ && NF { gsub(/^[ \t]+|[ \t]+$/,"",$1); print $1 }' .env.public .env.private \
@@ -80,6 +81,7 @@ jobs:
           DOTENV_PRIVATE_KEY_PRIVATE: ${{ secrets.DOTENV_PRIVATE_KEY_PRIVATE }}
 
       - name: Cache turbo build setup
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         uses: actions/cache@v4
         with:
           path: .turbo
@@ -89,12 +91,14 @@ jobs:
 
       # pnpm 설치 (packageManager 버전과 일치)
       - name: Setup pnpm
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         uses: pnpm/action-setup@v4
         with:
           run_install: false
 
       # Node.js 환경 설정 (package.json의 engines.node 버전과 일치)
       - name: Setup Node.js
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         uses: actions/setup-node@v4
         with:
           node-version-file: package.json
@@ -102,15 +106,19 @@ jobs:
 
       # 의존성 설치 최적화
       - name: Install dependencies
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         run: pnpm install --prefer-offline
 
       - name: Deploy Env Vars
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         run: pnpm run deploy:env-vars
 
       - name: Deploy
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         run: pnpm run deploy
 
       - name: Create Sentry release
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'dependabot')) }}
         uses: getsentry/action-release@v3
         with:
           environment: deployed
