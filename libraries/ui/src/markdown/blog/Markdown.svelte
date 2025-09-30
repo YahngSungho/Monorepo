@@ -52,8 +52,7 @@ const addedPlugins = [
 </script>
 
 <script>
-import { idleRun_action } from '@library/helpers/functions'
-import { setContext, tick } from 'svelte'
+import { setContext } from 'svelte'
 
 let { mermaidSVGObject = {}, plugins = [], value } = $props()
 

@@ -272,15 +272,15 @@ $effect(() => {
 })
 </script>
 
-<main class="container">
+<main class="container-div">
 	<h1 class="title">마이크 무음 경고</h1>
 
-	<section class="status">
-		<div class="row">
+	<section class="status-section">
+		<div class="row-div">
 			<div class="label">상태:</div>
 			<div class="value"><strong>{statusText}</strong></div>
 		</div>
-		<div class="row">
+		<div class="row-div">
 			<div class="label">현재 소리:</div>
 			<div class="value">
 				{#if isPaused}
@@ -292,7 +292,7 @@ $effect(() => {
 				{/if}
 			</div>
 		</div>
-		<div class="row">
+		<div class="row-div">
 			<div class="label">알람까지:</div>
 			<div class="value">
 				{#if isPaused}
@@ -304,7 +304,7 @@ $effect(() => {
 				{/if}
 			</div>
 		</div>
-		<div class="row">
+		<div class="row-div">
 			<div class="label">무음 경과:</div>
 			<div class="value">
 				{#if isPaused}
@@ -318,7 +318,7 @@ $effect(() => {
 		</div>
 	</section>
 
-	<section class="controls">
+	<section class="controls-section">
 		<div class="control">
 			<label for="thresholdDb">기준 소리 (dBFS)</label>
 			<input
@@ -414,10 +414,14 @@ $effect(() => {
 </main>
 
 <style>
-.container {
+.container-div {
+	overflow: auto;
+
 	max-inline-size: 780px;
+	block-size: 100vb;
 	margin: 0 auto;
 	padding: var(--space-l, 2rem);
+
 	color: var(--foreground, rgb(17 17 17));
 }
 
@@ -426,7 +430,7 @@ $effect(() => {
 	font-size: clamp(1.5rem, 1rem + 2vi, 2.25rem);
 }
 
-.status {
+.status-section {
 	margin-block-end: var(--space-l, 2rem);
 	padding: var(--space-m, 1rem);
 	border: var(--border-size-1, 1px) solid var(--border, rgb(221 221 221));
@@ -435,7 +439,7 @@ $effect(() => {
 	background: var(--card, rgb(255 255 255));
 }
 
-.row {
+.row-div {
 	display: flex;
 	gap: 0.5rem;
 	align-items: center;
@@ -450,7 +454,7 @@ $effect(() => {
 	font-size: 1.125rem;
 }
 
-.controls {
+.controls-section {
 	display: grid;
 	gap: var(--space-m, 1rem);
 }
