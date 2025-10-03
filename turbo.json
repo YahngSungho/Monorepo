@@ -6,7 +6,8 @@
 		"PUBLIC_SUPABASE_PUBLISHABLE_KEY",
 		"GITHUB_ACTIONS",
 		"CI",
-		"NODE_ENV"
+		"NODE_ENV",
+		"DOTENV_PRIVATE_KEY_PRIVATE"
 	],
 	"globalPassThroughEnv": [
 		"WATCH",
