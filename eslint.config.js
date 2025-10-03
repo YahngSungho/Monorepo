@@ -104,6 +104,7 @@ const baseRules = {
 	'no-warning-comments': 'off',
 	'object-curly-spacing': 'off',
 	'object-shorthand': 'off',
+	'one-var': 'off',
 	'optimize-regex/optimize-regex': 'warn',
 	'prefer-const': 'off',
 	'prefer-template': 'off',
