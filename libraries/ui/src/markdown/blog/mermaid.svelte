@@ -2,6 +2,7 @@
 import '../../miscellaneous/mermaid/mermaid.css'
 
 import { getSimpleHash, idleRun_action, normalizeString } from '@library/helpers/functions'
+import { convertSVGLight2Dark } from '@library/library-bottom/mermaid'
 import { mode } from 'mode-watcher'
 import { getContext } from 'svelte'
 
@@ -13,7 +14,10 @@ const scheduleReanchor_action = getContext('scheduleReanchor_action')
 const rawText = $derived(getRawText())
 const hashValue = $derived(getSimpleHash(normalizeString(rawText)))
 
-const svg = $derived(mermaid[`${mode.current}:${hashValue}`] ?? '')
+const svg = $derived.by(() => {
+	const original = mermaid[hashValue] ?? ''
+	return mode.current === 'dark' ? convertSVGLight2Dark(original) : original
+})
 
 let element = $state()
 

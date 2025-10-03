@@ -35,36 +35,34 @@ export async function getMermaidSVGObject(markdownText) {
 	// 렌더러는 한 번 생성하여 재사용
 	const renderer = createMermaidRenderer()
 
-	for (const theme of ['light', 'dark']) {
-		const mermaidInit = {
-			deterministicIds: true,
-			logLevel: 'fatal',
-			securityLevel: 'loose',
-			startOnLoad: false,
-			theme: 'base',
-			themeVariables: buildThemeVariables(theme),
+	const mermaidInit = {
+		deterministicIds: true,
+		logLevel: 'fatal',
+		securityLevel: 'loose',
+		startOnLoad: false,
+		theme: 'base',
+		themeVariables: buildThemeVariables('light'),
+	}
+
+	// 다이어그램 앞에 init 디렉티브를 주입하여 테마 적용
+	const diagrams = uniqueValues.map((v) => `%%{init: ${JSON.stringify(mermaidInit)} }%%\n${v}`)
+
+	// 다이어그램들을 한 번에 렌더 (입력 순서 보장 가정)
+	const results = await renderer(diagrams, {
+		containerStyle: { fontSize: '18px' },
+	})
+
+	for (let index = 0; index < uniqueValues.length; index++) {
+		const key = hashKeys[index]
+		const item = results[index]
+		let svg = ''
+		/** @type {any} */
+		const itemAny = item
+		if (itemAny && typeof itemAny === 'object') {
+			const value = itemAny.status === 'fulfilled' ? itemAny.value : itemAny
+			if (value && value.svg) svg = String(value.svg)
 		}
-
-		// 다이어그램 앞에 init 디렉티브를 주입하여 테마 적용
-		const diagrams = uniqueValues.map((v) => `%%{init: ${JSON.stringify(mermaidInit)} }%%\n${v}`)
-
-		// 다이어그램들을 한 번에 렌더 (입력 순서 보장 가정)
-		const results = await renderer(diagrams, {
-			containerStyle: { fontSize: '18px' },
-		})
-
-		for (let index = 0; index < uniqueValues.length; index++) {
-			const key = `${theme}:${hashKeys[index]}`
-			const item = results[index]
-			let svg = ''
-			/** @type {any} */
-			const itemAny = item
-			if (itemAny && typeof itemAny === 'object') {
-				const value = itemAny.status === 'fulfilled' ? itemAny.value : itemAny
-				if (value && value.svg) svg = String(value.svg)
-			}
-			result[key] = optimizeMermaidSvg(svg)
-		}
+		result[key] = optimizeMermaidSvg(svg)
 	}
 
 	return result
