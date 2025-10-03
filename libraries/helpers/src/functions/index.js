@@ -1,3 +1,4 @@
+export * from './color.js'
 export * from './convertToNumberKeys.js'
 export * from './getHash.js'
 export * from './processText.js'
