@@ -1,12 +1,12 @@
 ---
 description:
-globs: *.js,*.ts,*.mjs,*.cjs,*.mts,*.cts,*.svelte,*.svx,!*.test.js
+globs: *.js,*.ts,*.mjs,*.cjs,*.mts,*.cts,*.svelte
 alwaysApply: false
 ---
 
 # Functional Programming Principles & Guidelines
 
-FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES WHENEVER POSSIBLE.
+FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. ALWAYS USE FUNCTIONAL PROGRAMMING TECHNIQUES.
 
 ## Core Principles
 
@@ -28,7 +28,6 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
    ### MUST-FOLLOW RULES (Data/Calculation/Action separation and minimization)
 
    #### Extract Data from Calculations
-
    - Non-trivial literal Data must not live inside function bodies. Extract to module-level constants (Data).
    - Non-trivial includes:
      - Multi-line template strings
@@ -38,7 +37,6 @@ FOLLOW FUNCTIONAL PROGRAMMING PRINCIPLES. USE FUNCTIONAL PROGRAMMING TECHNIQUES 
    - Calculations must use only their inputs and module-level Data. No environment access or mutable globals.
 
    #### Move all Calculations out of Actions
-
    - `_action` functions (with side effects) must only orchestrate.
    - Disallow inside `_action`: template construction, `map/filter/reduce`, validation, serialization/parsing, data shaping, complex branching.
    - Allowed inside `_action`: calling pure Calculations and performing boundary (I/O) calls.
