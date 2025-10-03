@@ -18,7 +18,7 @@ let postsOpen = $state(true)
 	{JSON.stringify(allMetadata)}
 </p> -->
 
-<div style="display: flex; flex-flow: column wrap; gap: var(--space-em-cqi-xs-s);">
+<div style:display="flex" style:flex-flow="column wrap" style:gap="var(--space-em-cqi-xs-s)">
 	<div>
 		<h1><button onclick={() => (pinnedPostsOpen = !pinnedPostsOpen)}>고정된 포스트</button></h1>
 

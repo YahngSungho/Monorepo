@@ -10,8 +10,8 @@ let { children, ...rest } = $props()
 tr {
 	border-block-end: 1px solid var(--color-neutral);
 
-&:hover {
-	background-color: var(--color-base-200);
-}
+	&:hover {
+		background-color: var(--color-base-200);
+	}
 }
 </style>
