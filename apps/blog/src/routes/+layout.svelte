@@ -513,14 +513,14 @@ let jsonLd = $derived({
 							<div
 								style:color="var(--color-destructive)"
 								role="alert"
-								transition:slide={{ duration: 300 }}
+								transition:slide={{ duration: 250 }}
 							>
 								{emailErrorMessage}
 							</div>
 						{/if}
 
 						{#if isSubscribed && formResult?.submittedEmail && !emailErrorMessage}
-							<div role="status" transition:slide={{ duration: 300 }}>
+							<div role="status" transition:slide={{ duration: 250 }}>
 								{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}
 							</div>
 						{/if}
@@ -541,7 +541,7 @@ let jsonLd = $derived({
 						:	'이 블로그 공유하기...'}
 					</Button>
 					{#if sharingButtonsOpen}
-						<div style:cursor="default" transition:slide={{ duration: 300 }}>
+						<div style:cursor="default" transition:slide={{ duration: 250 }}>
 							<div
 								style:inline-size="100%"
 								style:padding="var(--space-em-cqi-xs-s)"

@@ -23,7 +23,7 @@ let postsOpen = $state(true)
 		<h1><button onclick={() => (pinnedPostsOpen = !pinnedPostsOpen)}>고정된 포스트</button></h1>
 
 		{#if pinnedPostsOpen}
-			<div transition:slide={{ duration: 300 }}>
+			<div transition:slide={{ duration: 250 }}>
 				<PostList allMetadata={allMetadata_pinned} />
 			</div>
 		{/if}
@@ -33,7 +33,7 @@ let postsOpen = $state(true)
 		<h1><button onclick={() => (postsOpen = !postsOpen)}>포스트</button></h1>
 
 		{#if postsOpen}
-			<div transition:slide={{ duration: 300 }}>
+			<div transition:slide={{ duration: 250 }}>
 				<PostList {allMetadata} />
 			</div>
 		{/if}
