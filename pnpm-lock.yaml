@@ -32,7 +32,7 @@ importers:
         version: 1.49.1
       '@double-great/stylelint-a11y':
         specifier: ^3.0.4
-        version: 3.4.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 3.4.0(stylelint@16.25.0(typescript@5.9.2))
       '@eslint/compat':
         specifier: ^1.2.9
         version: 1.3.2(eslint@9.34.0(jiti@2.6.0))
@@ -265,59 +265,59 @@ importers:
         specifier: ^2.12.1
         version: 2.13.1
       stylelint:
-        specifier: ^16.23.1
-        version: 16.23.1(typescript@5.9.2)
+        specifier: ^16.25.0
+        version: 16.25.0(typescript@5.9.2)
       stylelint-color-format:
         specifier: ^1.1.0
-        version: 1.1.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 1.1.0(stylelint@16.25.0(typescript@5.9.2))
       stylelint-config-clean-order:
         specifier: ^7.0.0
-        version: 7.0.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 7.0.0(stylelint@16.25.0(typescript@5.9.2))
       stylelint-config-html:
         specifier: ^1.1.0
-        version: 1.1.0(postcss-html@1.8.0)(stylelint@16.23.1(typescript@5.9.2))
+        version: 1.1.0(postcss-html@1.8.0)(stylelint@16.25.0(typescript@5.9.2))
       stylelint-config-prettier:
         specifier: ^9.0.5
-        version: 9.0.5(stylelint@16.23.1(typescript@5.9.2))
+        version: 9.0.5(stylelint@16.25.0(typescript@5.9.2))
       stylelint-config-standard:
         specifier: ^39.0.0
-        version: 39.0.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 39.0.0(stylelint@16.25.0(typescript@5.9.2))
       stylelint-declaration-block-no-ignored-properties:
         specifier: ^2.8.0
-        version: 2.8.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 2.8.0(stylelint@16.25.0(typescript@5.9.2))
       stylelint-gamut:
         specifier: ^1.3.4
-        version: 1.3.4(stylelint@16.23.1(typescript@5.9.2))
+        version: 1.3.4(stylelint@16.25.0(typescript@5.9.2))
       stylelint-high-performance-animation:
         specifier: ^1.11.0
-        version: 1.11.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 1.11.0(stylelint@16.25.0(typescript@5.9.2))
       stylelint-no-browser-hacks:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.9.2)
       stylelint-no-indistinguishable-colors:
         specifier: ^2.3.1
-        version: 2.3.1(stylelint@16.23.1(typescript@5.9.2))
+        version: 2.3.1(stylelint@16.25.0(typescript@5.9.2))
       stylelint-no-unresolved-module:
         specifier: ^2.3.0
-        version: 2.4.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 2.4.0(stylelint@16.25.0(typescript@5.9.2))
       stylelint-no-unsupported-browser-features:
         specifier: ^8.0.4
-        version: 8.0.4(stylelint@16.23.1(typescript@5.9.2))
+        version: 8.0.4(stylelint@16.25.0(typescript@5.9.2))
       stylelint-plugin-defensive-css:
         specifier: ^1.0.4
-        version: 1.0.4(stylelint@16.23.1(typescript@5.9.2))
+        version: 1.0.4(stylelint@16.25.0(typescript@5.9.2))
       stylelint-plugin-logical-css:
         specifier: ^1.2.3
-        version: 1.2.3(stylelint@16.23.1(typescript@5.9.2))
+        version: 1.2.3(stylelint@16.25.0(typescript@5.9.2))
       stylelint-use-nesting:
         specifier: ^6.0.0
-        version: 6.0.0(stylelint@16.23.1(typescript@5.9.2))
+        version: 6.0.0(stylelint@16.25.0(typescript@5.9.2))
       stylelint-value-no-exposed-custom-properties:
         specifier: ^2.3.1
-        version: 2.3.1(stylelint@16.23.1(typescript@5.9.2))
+        version: 2.3.1(stylelint@16.25.0(typescript@5.9.2))
       stylelint-value-no-unknown-custom-properties:
         specifier: ^6.0.1
-        version: 6.0.1(stylelint@16.23.1(typescript@5.9.2))
+        version: 6.0.1(stylelint@16.25.0(typescript@5.9.2))
       svelte:
         specifier: ^5.33.7
         version: 5.38.3
@@ -1179,6 +1179,15 @@ packages:
       openai: ^4.62.1
       zod: ^3.23.8
 
+  '@cacheable/memoize@2.0.3':
+    resolution: {integrity: sha512-hl9wfQgpiydhQEIv7fkjEzTGE+tcosCXLKFDO707wYJ/78FVOlowb36djex5GdbSyeHnG62pomYLMuV/OT8Pbw==}
+
+  '@cacheable/memory@2.0.3':
+    resolution: {integrity: sha512-R3UKy/CKOyb1LZG/VRCTMcpiMDyLH7SH3JrraRdK6kf3GweWCOU3sgvE13W3TiDRbxnDKylzKJvhUAvWl9LQOA==}
+
+  '@cacheable/utils@2.0.3':
+    resolution: {integrity: sha512-m7Rce68cMHlAUjvWBy9Ru1Nmw5gU0SjGGtQDdhpe6E0xnbcvrIY0Epy//JU1VYYBUTzrG9jvgmTauULGKzOkWA==}
+
   '@capsizecss/metrics@2.2.0':
     resolution: {integrity: sha512-DkFIser1KbGxWyG2hhQQeCit72TnOQDx5pr9bkA7+XlIy7qv+4lYtslH3bidVxm2qkY2guAgypSIPYuQQuk70A==}
 
@@ -1629,8 +1638,8 @@ packages:
     peerDependencies:
       stylelint: '>=16.0.0'
 
-  '@dual-bundle/import-meta-resolve@4.1.0':
-    resolution: {integrity: sha512-+nxncfwHM5SgAtrVzgpzJOI1ol0PkumhVo469KCf9lUi21IGcY90G98VuHm9VRrUypmAzawAHO9bs6hqeADaVg==}
+  '@dual-bundle/import-meta-resolve@4.2.1':
+    resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
 
   '@ecies/ciphers@0.2.4':
     resolution: {integrity: sha512-t+iX+Wf5nRKyNzk8dviW3Ikb/280+aEJAnw9YXvCp2tYGPSkMki+NRY+8aNLmVFv3eNtMdvViPNOPxS8SZNP+w==}
@@ -2327,8 +2336,12 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@keyv/serialize@1.1.0':
-    resolution: {integrity: sha512-RlDgexML7Z63Q8BSaqhXdCYNBy/JQnqYIwxofUrNLGCblOMHp+xux2Q8nLMLlPpgHQPoU0Do8Z6btCpRBEqZ8g==}
+  '@keyv/bigmap@1.0.2':
+    resolution: {integrity: sha512-KR03xkEZlAZNF4IxXgVXb+uNIVNvwdh8UwI0cnc7WI6a+aQcDp8GL80qVfeB4E5NpsKJzou5jU0r6yLSSbMOtA==}
+    engines: {node: '>= 18'}
+
+  '@keyv/serialize@1.1.1':
+    resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
   '@layerstack/svelte-actions@1.0.1-next.14':
     resolution: {integrity: sha512-MPBmVaB+GfNHvBkg5nJkPG18smoXKvsvJRpsdWnrUBfca+TieZLoaEzNxDH+9LG11dIXP9gghsXt1mUqbbyAsA==}
@@ -4123,8 +4136,8 @@ packages:
     resolution: {integrity: sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==}
     engines: {node: '>=10'}
 
-  ansi-styles@6.2.1:
-    resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
+  ansi-styles@6.2.3:
+    resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
     engines: {node: '>=12'}
 
   anymatch@3.1.3:
@@ -4360,8 +4373,8 @@ packages:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
 
-  cacheable@1.10.4:
-    resolution: {integrity: sha512-Gd7ccIUkZ9TE2odLQVS+PDjIvQCdJKUlLdJRVvZu0aipj07Qfx+XIej7hhDrKGGoIxV5m5fT/kOJNJPQhQneRg==}
+  cacheable@2.0.3:
+    resolution: {integrity: sha512-nZF80J3d8RMrroMSYm1E9pBllVDXWPuECZgEZxH+vusCY4MAXAJVrY0jutcHSgh3xYX3G2EUNnmtWGZVVjWCXw==}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -5170,8 +5183,8 @@ packages:
   emmet@2.4.11:
     resolution: {integrity: sha512-23QPJB3moh/U9sT4rQzGgeyyGIrcM+GH5uVYg2C6wZIxAIJq7Ng3QLT79tl8FUwDXhyq9SusfknOrofAKqvgyQ==}
 
-  emoji-regex@10.4.0:
-    resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
+  emoji-regex@10.5.0:
+    resolution: {integrity: sha512-lb49vf1Xzfx080OKA0o6l8DQQpV+6Vg95zyCJX9VB/BqKYlhG7N4wgROUUHRA+ZPUefLnteQOad7z1kT2bV7bg==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -5217,8 +5230,8 @@ packages:
   err-code@2.0.3:
     resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
 
-  error-ex@1.3.2:
-    resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
+  error-ex@1.3.4:
+    resolution: {integrity: sha512-sqQamAnR14VgCr1A618A3sGrygcpK+HEbenA/HiEAkkUwcZIIB/tgWqHFxWgOyDh4nB4JCRimh79dR5Ywc9MDQ==}
 
   error-stack-parser-es@1.0.5:
     resolution: {integrity: sha512-5qucVt2XcuGMcEGgWI7i+yZpmpByQ8J1lHhcL7PwqCwu9FPP3VUXzT4ltHe5i2z9dePwEHcDVOAfSnHsOlCXRA==}
@@ -5889,8 +5902,8 @@ packages:
     resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
     engines: {node: '>=16'}
 
-  flat-cache@6.1.13:
-    resolution: {integrity: sha512-gmtS2PaUjSPa4zjObEIn4WWliKyZzYljgxODBfxugpK6q6HU9ClXzgCJ+nlcPKY9Bt090ypTOLIFWkV0jbKFjw==}
+  flat-cache@6.1.17:
+    resolution: {integrity: sha512-Jzse4YoiUJBVYTwz5Bwl4h/2VQM7e2KK3MVAMlXzX9uamIHAH/TXUlRKU1AQGQOryQhN0EsmufiiF40G057YXA==}
 
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
@@ -5993,6 +6006,10 @@ packages:
 
   get-east-asian-width@1.3.0:
     resolution: {integrity: sha512-vpeMIQKxczTD/0s2CdEWHcb0eeJe6TFjxb+J5xgX7hScxqrGuyjmv4c1D4A/gelKfyox0gJJwIHF+fLjeaM8kQ==}
+    engines: {node: '>=18'}
+
+  get-east-asian-width@1.4.0:
+    resolution: {integrity: sha512-QZjmEOC+IT1uk6Rx0sX22V6uHWVwbdbxf1faPqJ1QhLdGgsRGCZoyaQBm/piRdJy/D2um6hM1UP7ZEeQ4EkP+Q==}
     engines: {node: '>=18'}
 
   get-intrinsic@1.3.0:
@@ -6214,8 +6231,8 @@ packages:
   hastscript@9.0.1:
     resolution: {integrity: sha512-g7df9rMFX/SPi34tyGCyUBREQoKkapwdY/T04Qn9TDWfHhAYt4/I0gMVirzK5wEzeUqIjEB+LXC/ypb7Aqno5w==}
 
-  hookified@1.12.0:
-    resolution: {integrity: sha512-hMr1Y9TCLshScrBbV2QxJ9BROddxZ12MX9KsCtuGGy/3SmmN5H1PllKerrVlSotur9dlE8hmUKAOSa3WDzsZmQ==}
+  hookified@1.12.1:
+    resolution: {integrity: sha512-xnKGl+iMIlhrZmGHB729MqlmPoWBznctSQTYCpFKqNsCgimJQmithcW0xSQMMFzYnV2iKUh25alswn6epgxS0Q==}
 
   hosted-git-info@7.0.2:
     resolution: {integrity: sha512-puUZAUKT5m8Zzvs72XWy3HtvVbTWljRE66cP60bxJzAqf2DgICo7lYTY2IHUmLnNpjYvw5bvmoHvPc0QO2a62w==}
@@ -6455,8 +6472,8 @@ packages:
     resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
     engines: {node: '>=8'}
 
-  is-fullwidth-code-point@5.0.0:
-    resolution: {integrity: sha512-OVa3u9kkBbw7b8Xw5F9P+D/T9X+Z4+JruYVNapTjPYZYUznQ5YfWeFkOj606XYYW8yugTfC8Pj0hYqvi4ryAhA==}
+  is-fullwidth-code-point@5.1.0:
+    resolution: {integrity: sha512-5XHYaSyiqADb4RnZ1Bdad6cPp8Toise4TzEjcOYDHZkTCbKgiUl7WTUCpNWHuxmDt91wnsZBc9xinNzopv3JMQ==}
     engines: {node: '>=18'}
 
   is-generator-function@1.1.0:
@@ -6782,8 +6799,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  keyv@5.5.0:
-    resolution: {integrity: sha512-QG7qR2tijh1ftOvClut4YKKg1iW6cx3GZsKoGyJPxHkGWK9oJhG9P3j5deP0QQOGDowBMVQFaP+Vm4NpGYvmIQ==}
+  keyv@5.5.3:
+    resolution: {integrity: sha512-h0Un1ieD+HUrzBH6dJXhod3ifSghk5Hw/2Y4/KHBziPlZecrFyE9YOTPU6eOs0V9pYl8gOs86fkr/KN8lUX39A==}
 
   khroma@2.1.0:
     resolution: {integrity: sha512-Ls993zuzfayK269Svk9hzpeGUKob/sIgZzyHYdjQoAdQetRKpOLj+k/QQQ/6Qi0Yz65mlROrfd+Ev+1+7dz9Kw==}
@@ -8821,8 +8838,8 @@ packages:
     resolution: {integrity: sha512-qMCMfhY040cVHT43K9BFygqYbUPFZKHOg7K73mtTWJRb8pyP3fzf4Ixd5SzdEJQ6MRUg/WBnOLxghZtKKurENQ==}
     engines: {node: '>=10'}
 
-  slice-ansi@7.1.0:
-    resolution: {integrity: sha512-bSiSngZ/jWeX93BqeIAbImyTbEihizcwNjFoRUIY/T1wWQsfsm2Vw1agPKylXvQTU7iASGdHhyqRlqQzfz+Htg==}
+  slice-ansi@7.1.2:
+    resolution: {integrity: sha512-iOBWFgUX7caIZiuutICxVgX1SdxwAVFFKwt1EvMYYec/NWO5meOJ6K5uQxhrYBdQJne4KxiqZc+KptFOWFSI9w==}
     engines: {node: '>=18'}
 
   sorcery@1.0.0:
@@ -8984,6 +9001,10 @@ packages:
 
   strip-ansi@7.1.0:
     resolution: {integrity: sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ==}
+    engines: {node: '>=12'}
+
+  strip-ansi@7.1.2:
+    resolution: {integrity: sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA==}
     engines: {node: '>=12'}
 
   strip-bom@3.0.0:
@@ -9152,8 +9173,8 @@ packages:
     peerDependencies:
       stylelint: '>=16'
 
-  stylelint@16.23.1:
-    resolution: {integrity: sha512-dNvDTsKV1U2YtiUDfe9d2gp902veFeo3ecCWdGlmLm2WFrAV0+L5LoOj/qHSBABQwMsZPJwfC4bf39mQm1S5zw==}
+  stylelint@16.25.0:
+    resolution: {integrity: sha512-Li0avYWV4nfv1zPbdnxLYBGq4z8DVZxbRgx4Kn6V+Uftz1rMoF1qiEI3oL4kgWqyYgCgs7gT5maHNZ82Gk03vQ==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -9167,8 +9188,8 @@ packages:
     resolution: {integrity: sha512-uV+TFRZdXsqXTL2pRvujROjdZQ4RAlBUS5BTh9IGm+jTqQntYThciG/qu57Gs69yjnVUSqdxF9YLmSnpupBW9A==}
     engines: {node: '>=14.0.0'}
 
-  supports-color@10.2.0:
-    resolution: {integrity: sha512-5eG9FQjEjDbAlI5+kdpdyPIBMRH4GfTVDGREVupaZHmVoppknhM29b/S9BkQz7cathp85BVgRi/As3Siln7e0Q==}
+  supports-color@10.2.2:
+    resolution: {integrity: sha512-SS+jx45GF1QjgEXQx4NJZV9ImqmO2NPz5FNsIHrsDjh2YsHnawpan7SNQ1o8NuhrbHZy9AZhIoCUiCeaW/C80g==}
     engines: {node: '>=18'}
 
   supports-color@7.2.0:
@@ -10509,6 +10530,20 @@ snapshots:
       - encoding
       - utf-8-validate
 
+  '@cacheable/memoize@2.0.3':
+    dependencies:
+      '@cacheable/utils': 2.0.3
+
+  '@cacheable/memory@2.0.3':
+    dependencies:
+      '@cacheable/memoize': 2.0.3
+      '@cacheable/utils': 2.0.3
+      '@keyv/bigmap': 1.0.2
+      hookified: 1.12.1
+      keyv: 5.5.3
+
+  '@cacheable/utils@2.0.3': {}
+
   '@capsizecss/metrics@2.2.0': {}
 
   '@capsizecss/unpack@2.4.0':
@@ -10964,12 +10999,12 @@ snapshots:
       picomatch: 4.0.3
       which: 4.0.0
 
-  '@double-great/stylelint-a11y@3.4.0(stylelint@16.23.1(typescript@5.9.2))':
+  '@double-great/stylelint-a11y@3.4.0(stylelint@16.25.0(typescript@5.9.2))':
     dependencies:
       postcss: 8.5.6
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  '@dual-bundle/import-meta-resolve@4.1.0': {}
+  '@dual-bundle/import-meta-resolve@4.2.1': {}
 
   '@ecies/ciphers@0.2.4(@noble/ciphers@1.3.0)':
     dependencies:
@@ -11529,7 +11564,7 @@ snapshots:
     dependencies:
       string-width: 5.1.2
       string-width-cjs: string-width@4.2.3
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
@@ -11572,7 +11607,11 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@keyv/serialize@1.1.0': {}
+  '@keyv/bigmap@1.0.2':
+    dependencies:
+      hookified: 1.12.1
+
+  '@keyv/serialize@1.1.1': {}
 
   '@layerstack/svelte-actions@1.0.1-next.14':
     dependencies:
@@ -12139,7 +12178,7 @@ snapshots:
     dependencies:
       '@poppinss/colors': 4.1.5
       '@sindresorhus/is': 7.0.2
-      supports-color: 10.2.0
+      supports-color: 10.2.2
 
   '@poppinss/exception@1.2.2': {}
 
@@ -13273,7 +13312,7 @@ snapshots:
       '@typescript-eslint/tsconfig-utils': 8.40.0(typescript@5.9.2)
       '@typescript-eslint/types': 8.40.0
       '@typescript-eslint/visitor-keys': 8.40.0
-      debug: 4.4.3
+      debug: 4.4.1
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -13549,7 +13588,7 @@ snapshots:
 
   ansi-styles@5.2.0: {}
 
-  ansi-styles@6.2.1: {}
+  ansi-styles@6.2.3: {}
 
   anymatch@3.1.3:
     dependencies:
@@ -13803,10 +13842,13 @@ snapshots:
 
   cac@6.7.14: {}
 
-  cacheable@1.10.4:
+  cacheable@2.0.3:
     dependencies:
-      hookified: 1.12.0
-      keyv: 5.5.0
+      '@cacheable/memoize': 2.0.3
+      '@cacheable/memory': 2.0.3
+      '@cacheable/utils': 2.0.3
+      hookified: 1.12.1
+      keyv: 5.5.3
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
@@ -14627,7 +14669,7 @@ snapshots:
       '@emmetio/abbreviation': 2.3.3
       '@emmetio/css-abbreviation': 2.1.8
 
-  emoji-regex@10.4.0: {}
+  emoji-regex@10.5.0: {}
 
   emoji-regex@8.0.0: {}
 
@@ -14661,7 +14703,7 @@ snapshots:
 
   err-code@2.0.3: {}
 
-  error-ex@1.3.2:
+  error-ex@1.3.4:
     dependencies:
       is-arrayish: 0.2.1
 
@@ -15646,7 +15688,7 @@ snapshots:
 
   file-entry-cache@10.1.4:
     dependencies:
-      flat-cache: 6.1.13
+      flat-cache: 6.1.17
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -15681,11 +15723,11 @@ snapshots:
       flatted: 3.3.3
       keyv: 4.5.4
 
-  flat-cache@6.1.13:
+  flat-cache@6.1.17:
     dependencies:
-      cacheable: 1.10.4
+      cacheable: 2.0.3
       flatted: 3.3.3
-      hookified: 1.12.0
+      hookified: 1.12.1
 
   flatted@3.3.3: {}
 
@@ -15807,6 +15849,8 @@ snapshots:
   get-caller-file@2.0.5: {}
 
   get-east-asian-width@1.3.0: {}
+
+  get-east-asian-width@1.4.0: {}
 
   get-intrinsic@1.3.0:
     dependencies:
@@ -16124,7 +16168,7 @@ snapshots:
       property-information: 7.1.0
       space-separated-tokens: 2.0.2
 
-  hookified@1.12.0: {}
+  hookified@1.12.1: {}
 
   hosted-git-info@7.0.2:
     dependencies:
@@ -16353,9 +16397,9 @@ snapshots:
 
   is-fullwidth-code-point@3.0.0: {}
 
-  is-fullwidth-code-point@5.0.0:
+  is-fullwidth-code-point@5.1.0:
     dependencies:
-      get-east-asian-width: 1.3.0
+      get-east-asian-width: 1.4.0
 
   is-generator-function@1.1.0:
     dependencies:
@@ -16684,9 +16728,9 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  keyv@5.5.0:
+  keyv@5.5.3:
     dependencies:
-      '@keyv/serialize': 1.1.0
+      '@keyv/serialize': 1.1.1
 
   khroma@2.1.0: {}
 
@@ -16858,8 +16902,8 @@ snapshots:
     dependencies:
       ansi-escapes: 7.0.0
       cli-cursor: 5.0.0
-      slice-ansi: 7.1.0
-      strip-ansi: 7.1.0
+      slice-ansi: 7.1.2
+      strip-ansi: 7.1.2
       wrap-ansi: 9.0.0
 
   longest-streak@3.1.0: {}
@@ -17970,14 +18014,14 @@ snapshots:
   parse-json@5.2.0:
     dependencies:
       '@babel/code-frame': 7.27.1
-      error-ex: 1.3.2
+      error-ex: 1.3.4
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4
 
   parse-json@7.1.1:
     dependencies:
       '@babel/code-frame': 7.27.1
-      error-ex: 1.3.2
+      error-ex: 1.3.4
       json-parse-even-better-errors: 3.0.2
       lines-and-columns: 2.0.4
       type-fest: 3.13.1
@@ -19340,10 +19384,10 @@ snapshots:
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
 
-  slice-ansi@7.1.0:
+  slice-ansi@7.1.2:
     dependencies:
-      ansi-styles: 6.2.1
-      is-fullwidth-code-point: 5.0.0
+      ansi-styles: 6.2.3
+      is-fullwidth-code-point: 5.1.0
 
   sorcery@1.0.0:
     dependencies:
@@ -19453,19 +19497,19 @@ snapshots:
     dependencies:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
 
   string-width@6.1.0:
     dependencies:
       eastasianwidth: 0.2.0
-      emoji-regex: 10.4.0
-      strip-ansi: 7.1.0
+      emoji-regex: 10.5.0
+      strip-ansi: 7.1.2
 
   string-width@7.2.0:
     dependencies:
-      emoji-regex: 10.4.0
+      emoji-regex: 10.5.0
       get-east-asian-width: 1.3.0
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
 
   string.prototype.includes@2.0.1:
     dependencies:
@@ -19540,6 +19584,10 @@ snapshots:
     dependencies:
       ansi-regex: 6.2.0
 
+  strip-ansi@7.1.2:
+    dependencies:
+      ansi-regex: 6.2.0
+
   strip-bom@3.0.0: {}
 
   strip-bom@4.0.0: {}
@@ -19582,64 +19630,64 @@ snapshots:
       postcss: 8.5.6
       postcss-selector-parser: 7.1.0
 
-  stylelint-color-format@1.1.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-color-format@1.1.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       color: 3.2.1
       style-search: 0.1.0
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-config-clean-order@7.0.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-config-clean-order@7.0.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
-      stylelint-order: 6.0.4(stylelint@16.23.1(typescript@5.9.2))
+      stylelint: 16.25.0(typescript@5.9.2)
+      stylelint-order: 6.0.4(stylelint@16.25.0(typescript@5.9.2))
 
-  stylelint-config-html@1.1.0(postcss-html@1.8.0)(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-config-html@1.1.0(postcss-html@1.8.0)(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       postcss-html: 1.8.0
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-config-prettier@9.0.5(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-config-prettier@9.0.5(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-config-recommended@17.0.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-config-recommended@17.0.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-config-standard@39.0.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-config-standard@39.0.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
-      stylelint-config-recommended: 17.0.0(stylelint@16.23.1(typescript@5.9.2))
+      stylelint: 16.25.0(typescript@5.9.2)
+      stylelint-config-recommended: 17.0.0(stylelint@16.25.0(typescript@5.9.2))
 
-  stylelint-declaration-block-no-ignored-properties@2.8.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-declaration-block-no-ignored-properties@2.8.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-gamut@1.3.4(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-gamut@1.3.4(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       colorjs.io: 0.4.5
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-high-performance-animation@1.11.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-high-performance-animation@1.11.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       postcss-value-parser: 4.2.0
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
   stylelint-no-browser-hacks@2.0.0(typescript@5.9.2):
     dependencies:
       postcss: 8.5.6
       stylehacks: 7.0.6(postcss@8.5.6)
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  stylelint-no-indistinguishable-colors@2.3.1(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-no-indistinguishable-colors@2.3.1(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       colorguard-processor: 2.0.36
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-no-unresolved-module@2.4.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-no-unresolved-module@2.4.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       ajv: 6.12.6
       is-url: 1.2.4
@@ -19647,55 +19695,55 @@ snapshots:
       p-waterfall: 2.1.1
       postcss-value-parser: 4.2.0
       scss-parser: 1.0.6
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-no-unsupported-browser-features@8.0.4(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-no-unsupported-browser-features@8.0.4(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       doiuse: 6.0.5
       postcss: 8.5.6
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-order@6.0.4(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-order@6.0.4(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       postcss: 8.5.6
       postcss-sorting: 8.0.2(postcss@8.5.6)
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-plugin-defensive-css@1.0.4(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-plugin-defensive-css@1.0.4(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-plugin-logical-css@1.2.3(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-plugin-logical-css@1.2.3(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-use-nesting@6.0.0(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-use-nesting@6.0.0(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-value-no-exposed-custom-properties@2.3.1(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-value-no-exposed-custom-properties@2.3.1(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint-value-no-unknown-custom-properties@6.0.1(stylelint@16.23.1(typescript@5.9.2)):
+  stylelint-value-no-unknown-custom-properties@6.0.1(stylelint@16.25.0(typescript@5.9.2)):
     dependencies:
       postcss-value-parser: 4.2.0
       resolve: 1.22.10
-      stylelint: 16.23.1(typescript@5.9.2)
+      stylelint: 16.25.0(typescript@5.9.2)
 
-  stylelint@16.23.1(typescript@5.9.2):
+  stylelint@16.25.0(typescript@5.9.2):
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
       '@csstools/media-query-list-parser': 4.0.3(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
       '@csstools/selector-specificity': 5.0.0(postcss-selector-parser@7.1.0)
-      '@dual-bundle/import-meta-resolve': 4.1.0
+      '@dual-bundle/import-meta-resolve': 4.2.1
       balanced-match: 2.0.0
       colord: 2.9.3
       cosmiconfig: 9.0.0(typescript@5.9.2)
       css-functions-list: 3.2.3
       css-tree: 3.1.0
-      debug: 4.4.1
+      debug: 4.4.3
       fast-glob: 3.3.3
       fastest-levenshtein: 1.0.16
       file-entry-cache: 10.1.4
@@ -19734,7 +19782,7 @@ snapshots:
   superstruct@2.0.2:
     optional: true
 
-  supports-color@10.2.0: {}
+  supports-color@10.2.2: {}
 
   supports-color@7.2.0:
     dependencies:
@@ -20892,15 +20940,15 @@ snapshots:
 
   wrap-ansi@8.1.0:
     dependencies:
-      ansi-styles: 6.2.1
+      ansi-styles: 6.2.3
       string-width: 5.1.2
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
 
   wrap-ansi@9.0.0:
     dependencies:
-      ansi-styles: 6.2.1
+      ansi-styles: 6.2.3
       string-width: 7.2.0
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
 
   wrappy@1.0.2: {}
 
