@@ -140,7 +140,7 @@
 		"svelte": "^5.33.7",
 		"svelte-check": "^4.2.1",
 		"svelte-eslint-parser": "^1.1.3",
-		"svelte-language-server": "^0.17.11",
+		"svelte-language-server": "^0.17.21",
 		"syncpack": "^13.0.3",
 		"toml-eslint-parser": "^0.10.0",
 		"ts-node": "^10.9.2",
