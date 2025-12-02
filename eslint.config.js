@@ -52,9 +52,6 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
-	'no-unused-labels': 'off',
-	'no-regex-spaces': 'off',
-	'no-extra-boolean-cast': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'array-func/avoid-reverse': 'off',
@@ -97,11 +94,14 @@ const baseRules = {
 	'n/no-missing-import': 'off',
 	'n/prefer-global/process': 'off',
 	'no-console': 'off',
+	'no-extra-boolean-cast': 'off',
 	'no-lonely-if': 'off',
 	'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
+	'no-regex-spaces': 'off',
 	'no-secrets/no-secrets': ['error', { tolerance: 4.3 }],
 	'no-shadow': 'warn',
 	'no-unused-expressions': 1,
+	'no-unused-labels': 'off',
 	'no-unused-vars': 1,
 	'no-use-before-define': 'off',
 	'no-warning-comments': 'off',
