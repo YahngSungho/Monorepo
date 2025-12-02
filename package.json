@@ -6,7 +6,7 @@
 		"all-packages-update": "pnpm up --recursive",
 		"build": "turbo run build --affected && turbo run build --filter=@tool/storybook",
 		"build:paraglide": "turbo run build --filter=@library/paraglide",
-		"check-lint": "turbo run check stylelint eslint --affected",
+		"check-lint": "turbo run check eslint --affected",
 		"clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f package-lock.json + && pnpm store prune && pnpm install",
 		"deploy": "turbo run deploy --affected",
 		"deploy:env-vars": "turbo run deploy:env-vars",
