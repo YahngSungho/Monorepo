@@ -6,6 +6,8 @@ import defaultConfig from './eslint.config.js'
 const overrideConfig = [
 	{
 		rules: {
+			'no-regex-spaces': 'warn',
+			'no-extra-boolean-cast': 'warn',
 			'array-func/avoid-reverse': 'warn',
 			'array-func/from-map': 'warn',
 			'array-func/prefer-array-from': 'warn',

@@ -52,6 +52,9 @@ import parser_yaml from 'yaml-eslint-parser'
 import svelteConfig from './libraries/base/svelte.config.js'
 
 const baseRules = {
+	'no-unused-labels': 'off',
+	'no-regex-spaces': 'off',
+	'no-extra-boolean-cast': 'off',
 	'@typescript-eslint/no-explicit-any': 'off',
 	'@typescript-eslint/no-unused-vars': 'off',
 	'array-func/avoid-reverse': 'off',
@@ -280,7 +283,6 @@ const gitignorePath = path.join(__dirname, '.gitignore')
 const flatCompat = new FlatCompat({
 	allConfig: js.configs.all,
 	baseDirectory: __dirname,
-	recommendedConfig: js.configs.recommended,
 })
 
 export default defineFlatConfig([
