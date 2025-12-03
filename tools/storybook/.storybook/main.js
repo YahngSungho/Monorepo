@@ -1,5 +1,10 @@
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { mergeConfig, searchForWorkspaceRoot } from 'vite'
+
+// Simulate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 /** @type {import('@storybook/sveltekit').StorybookConfig} */
 const config = {
