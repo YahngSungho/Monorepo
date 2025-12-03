@@ -13,7 +13,6 @@ import { init } from './base.js'
 
 let { appName, children } = $props()
 
-
 onMount(() => {
 	init(appName)
 

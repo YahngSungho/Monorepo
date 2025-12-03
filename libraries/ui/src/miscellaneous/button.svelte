@@ -2,6 +2,7 @@
 import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 import IconText from '@library/ui/icon-text'
+
 import { resolve } from '$app/paths'
 
 const newTabProps = {
