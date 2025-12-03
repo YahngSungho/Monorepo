@@ -47,11 +47,7 @@ const baseConfig = defineConfig({
 	],
 	server: {
 		fs: {
-			allow: [
-				'.',
-				path.resolve(__dirname, './static'),
-				searchForWorkspaceRoot(process.cwd()),
-			],
+			allow: ['.', path.resolve(__dirname, './static'), searchForWorkspaceRoot(process.cwd())],
 		},
 	},
 	// ssr: {

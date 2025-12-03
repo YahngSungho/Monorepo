@@ -1,5 +1,6 @@
 import '@library/base/base.css'
 import 'iconify-icon'
+
 import * as Sentry from '@sentry/sveltekit'
 
 export function init(appName) {

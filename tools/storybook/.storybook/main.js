@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
 import { mergeConfig, searchForWorkspaceRoot } from 'vite'
 
 // Simulate __dirname in ESM
@@ -8,10 +9,7 @@ const __dirname = path.dirname(__filename)
 
 /** @type {import('@storybook/sveltekit').StorybookConfig} */
 const config = {
-	addons: [
-		'@storybook/addon-svelte-csf',
-		'@storybook/addon-docs',
-	],
+	addons: ['@storybook/addon-svelte-csf', '@storybook/addon-docs'],
 
 	docs: {},
 
@@ -28,9 +26,9 @@ const config = {
 			server: {
 				fs: {
 					allow: [
-						...(baseConfig.server && baseConfig.server.fs && baseConfig.server.fs.allow
-							? baseConfig.server.fs.allow
-							: []),
+						...(baseConfig.server && baseConfig.server.fs && baseConfig.server.fs.allow ?
+							baseConfig.server.fs.allow
+						:	[]),
 						// Monorepo root
 						searchForWorkspaceRoot(process.cwd()),
 						// Shared base library static path (fonts 등)
