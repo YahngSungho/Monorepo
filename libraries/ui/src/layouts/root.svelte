@@ -11,10 +11,15 @@ import { Toaster } from '$shadcn/components/ui/sonner/index'
 import { init } from './base.js'
 // Warn: 여기서 default로 가져오는 게 늘면 emailContent/emialContent.svelte에도 추가해야 할 수 있음
 
-let { appName, children } = $props()
+let { appName, children, notStorybook = false } = $props()
 
 onMount(() => {
 	init(appName)
+	
+	if (!notStorybook) {
+		Sentry.setTag('App Name', appName)
+	}
+	
 
 	if (browser) {
 		onNavigate((navigation) => {

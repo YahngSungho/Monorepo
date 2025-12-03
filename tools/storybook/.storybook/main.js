@@ -2,7 +2,7 @@ import { createRequire } from 'node:module'
 import path from 'node:path'
 
 // @ts-ignore - `instrument` is a valid core feature, but not in the svelte-vite types
-/** @type {import('@storybook/svelte-vite').StorybookConfig} */
+/** @type {import('@storybook/sveltekit').StorybookConfig} */
 const config = {
 	addons: [
 		getAbsolutePath('@storybook/addon-svelte-csf'),
@@ -12,7 +12,7 @@ const config = {
 	docs: {},
 
 	framework: {
-		name: getAbsolutePath('@storybook/svelte-vite'),
+		name: getAbsolutePath('@storybook/sveltekit'),
 		options: {},
 	},
 
