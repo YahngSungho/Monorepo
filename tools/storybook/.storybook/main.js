@@ -1,18 +1,18 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
 import { createRequire } from 'node:module'
 import path from 'node:path'
 
-// @ts-ignore - `instrument` is a valid core feature, but not in the svelte-vite types
 /** @type {import('@storybook/sveltekit').StorybookConfig} */
 const config = {
 	addons: [
-		getAbsolutePath('@storybook/addon-svelte-csf'),
-		getAbsolutePath('@storybook/addon-docs'),
+		'@storybook/addon-svelte-csf',
+		'@storybook/addon-docs',
 	],
 
 	docs: {},
 
 	framework: {
-		name: getAbsolutePath('@storybook/sveltekit'),
+		name: '@storybook/sveltekit',
 		options: {},
 	},
 

@@ -1,4 +1,5 @@
 import './default.css'
+import '@library/base/fontStyle.css'
 
 import { init } from '@library/ui/base.js'
 

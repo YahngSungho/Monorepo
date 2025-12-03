@@ -51,10 +51,8 @@ const baseConfig = defineConfig({
 				'.',
 				path.resolve(__dirname, './static'),
 				searchForWorkspaceRoot(process.cwd()),
-				...(isDev ? [path.resolve(__dirname, '../../')] : []),
 			],
 		},
-		watch: isDev ? { interval: 150, usePolling: true } : undefined,
 	},
 	// ssr: {
 	// 	noExternal: ['bits-ui'],
