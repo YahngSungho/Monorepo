@@ -68,7 +68,7 @@ const allLanguages_sorted = Array.from(allLanguages).sort((a, b) => {
 	return rankA[2] - rankB[2]
 })
 let open = $state(false)
-let value = $state(getLocale())
+let value = $derived(getLocale())
 
 const selectedValue = $derived(allLanguages_sorted.find((f) => f.value === value)?.label ?? value)
 

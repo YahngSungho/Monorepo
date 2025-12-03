@@ -2,6 +2,7 @@
 import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 import IconText from '@library/ui/icon-text'
+import { resolve } from '$app/paths'
 
 const newTabProperties = {
 	rel: 'noopener noreferrer',
@@ -23,7 +24,7 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#if isHeadingLink}
-	<a class={cx(linkStyle, incomingClass)} {href} {...rest}>
+	<a class={cx(linkStyle, incomingClass)} href={resolve(href, {})} {...rest}>
 		<IconText iconName="mdi:hashtag" noMargin right small>
 			{@render children?.()}
 		</IconText>
@@ -31,7 +32,7 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {:else if isInternalLink}
 	<a
 		class={cx(linkStyle, incomingClass)}
-		href={isInternalLink ? localizeHref(href) : href}
+		href={resolve(isInternalLink ? localizeHref(href) : href, {})}
 		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
 	>
@@ -42,7 +43,7 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {:else}
 	<a
 		class={cx(linkStyle, incomingClass)}
-		href={isInternalLink ? localizeHref(href) : href}
+		href={resolve(isInternalLink ? localizeHref(href) : href, {})}
 		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
 	>
