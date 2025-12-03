@@ -1,6 +1,5 @@
-// This file has been automatically migrated to valid ESM format by Storybook.
-import { createRequire } from 'node:module'
 import path from 'node:path'
+import { mergeConfig, searchForWorkspaceRoot } from 'vite'
 
 /** @type {import('@storybook/sveltekit').StorybookConfig} */
 const config = {
@@ -17,11 +16,25 @@ const config = {
 	},
 
 	stories: ['../../../*/*/src/**/*.stories.*'],
+
+	// Extend Vite config so Storybook can serve assets from `libraries/base/static`
+	async viteFinal(baseConfig) {
+		return mergeConfig(baseConfig, {
+			server: {
+				fs: {
+					allow: [
+						...(baseConfig.server && baseConfig.server.fs && baseConfig.server.fs.allow
+							? baseConfig.server.fs.allow
+							: []),
+						// Monorepo root
+						searchForWorkspaceRoot(process.cwd()),
+						// Shared base library static path (fonts 등)
+						path.resolve(__dirname, '../../libraries/base/static'),
+					],
+				},
+			},
+		})
+	},
 }
 
 export default config
-
-function getAbsolutePath(value) {
-	const require = createRequire(import.meta.url)
-	return path.dirname(require.resolve(path.join(value, 'package.json')))
-}

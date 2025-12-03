@@ -16,16 +16,5 @@ export default mergeConfig(
 	defineConfig({
 		// @ts-ignore
 		plugins: [sveltekit()],
-		server: {
-			fs: {
-				allow: [
-					'.',
-					path.resolve(__dirname, '../../libraries/base/static'),
-					path.resolve(__dirname, '../../../libraries/base/static'),
-					searchForWorkspaceRoot(process.cwd()),
-					path.resolve(__dirname, '../../../'),
-				],
-			},
-		}
 	}),
 )
