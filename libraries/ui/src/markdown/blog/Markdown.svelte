@@ -15,6 +15,7 @@ import themeLight from 'shiki/themes/vitesse-light.mjs'
 
 import Markdown from '../default/Markdown.svelte'
 import Mermaid from './mermaid.svelte'
+import smartypants from 'remark-smartypants'
 
 const highlighter = createHighlighterCoreSync({
 	engine: createJavaScriptRegexEngine(),
@@ -36,6 +37,9 @@ const shikiPlugin = {
 }
 
 const addedPlugins = [
+	{
+			remarkPlugin: smartypants,
+		},
 	{
 		renderer: {
 			mermaid: Mermaid,

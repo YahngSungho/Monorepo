@@ -3,10 +3,14 @@ import rehypeRaw from 'rehype-raw'
 
 import Markdown from '../default/Markdown.svelte'
 import Mermaid from './mermaid.svelte'
+import smartypants from 'remark-smartypants'
 
 const addedPlugins = [
 	{
 		rehypePlugin: rehypeRaw,
+	},
+	{
+			remarkPlugin: smartypants,
 	},
 	{
 		renderer: {
