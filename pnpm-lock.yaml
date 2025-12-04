@@ -18,8 +18,8 @@ importers:
         specifier: ^10.15.0
         version: 10.27.0(@cloudflare/workers-types@4.20251202.0)(@sveltejs/kit@2.49.1(@opentelemetry/api@1.9.0)(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.45.4)(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)))(svelte@5.45.4)(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)))(svelte@5.45.4)(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       daisyui:
-        specifier: 5.1.25
-        version: 5.1.25
+        specifier: 5.5.8
+        version: 5.5.8
       zod:
         specifier: ^3.25.36
         version: 3.25.76
@@ -437,8 +437,8 @@ importers:
         specifier: workspace:*
         version: link:../../libraries/scripts
       daisyui:
-        specifier: 5.1.25
-        version: 5.1.25
+        specifier: 5.5.8
+        version: 5.5.8
       tailwindcss:
         specifier: 4.1.8
         version: 4.1.8
@@ -495,8 +495,8 @@ importers:
         specifier: workspace:*
         version: link:../../libraries/scripts
       daisyui:
-        specifier: 5.1.25
-        version: 5.1.25
+        specifier: 5.5.8
+        version: 5.5.8
       tailwindcss:
         specifier: 4.1.8
         version: 4.1.8
@@ -545,8 +545,8 @@ importers:
         specifier: 4.1.13
         version: 4.1.13(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       daisyui:
-        specifier: 5.1.25
-        version: 5.1.25
+        specifier: 5.5.8
+        version: 5.5.8
       fontaine:
         specifier: ^0.5.0
         version: 0.5.0
@@ -921,8 +921,8 @@ importers:
         specifier: workspace:*
         version: link:../../libraries/scripts
       daisyui:
-        specifier: 5.1.25
-        version: 5.1.25
+        specifier: 5.5.8
+        version: 5.5.8
       tailwindcss:
         specifier: 4.1.8
         version: 4.1.8
@@ -970,8 +970,8 @@ importers:
         specifier: ^10.4.21
         version: 10.4.22(postcss@8.5.6)
       daisyui:
-        specifier: 5.1.25
-        version: 5.1.25
+        specifier: 5.5.8
+        version: 5.5.8
       eslint:
         specifier: ^9.28.0
         version: 9.39.1(jiti@2.6.1)
@@ -4894,8 +4894,8 @@ packages:
   dagre-d3-es@7.0.13:
     resolution: {integrity: sha512-efEhnxpSuwpYOKRm/L5KbqoZmNNukHa/Flty4Wp62JRvgH2ojwVgPgdYyr4twpieZnyRDdIH7PY2mopX26+j2Q==}
 
-  daisyui@5.1.25:
-    resolution: {integrity: sha512-LYOGVIzTCCucEFkKmdj0fxbHHPZ83fpkYD7jXYF3/7UwrUu68TtXkIdGtEXadzeqUT361hCe6cj5tBB/7mvszw==}
+  daisyui@5.5.8:
+    resolution: {integrity: sha512-6psL9jIEOFOw68V10j/BKCWcRgx8dh81mmNxShr+g7HDM6UHNoPharlp9zq/PQkHNuGU1ZQsajR3HgpvavbRKQ==}
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -14363,7 +14363,7 @@ snapshots:
       d3: 7.9.0
       lodash-es: 4.17.21
 
-  daisyui@5.1.25: {}
+  daisyui@5.5.8: {}
 
   damerau-levenshtein@1.0.8: {}
 

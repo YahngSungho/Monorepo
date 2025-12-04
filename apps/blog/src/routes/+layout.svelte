@@ -83,7 +83,7 @@ async function handleSubscribeSubmit_action(event) {
 		}
 		if (success) {
 			isSubscribed = true
-			// eslint-disable-next-line require-atomic-updates
+			store.set('email', emailValue)
 			emailValue = ''
 		} else {
 			if (response.status === 400) {
