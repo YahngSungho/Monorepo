@@ -6,7 +6,8 @@ import Markdown from '@library/ui/markdown-blog'
 import { getContext } from 'svelte'
 
 import { page } from '$app/state'
-import PostList from '$lib/components/postList.svelte'
+import LinkList from '@library/ui/linkList'
+import { getLinkObjectArray } from '$lib/helpers.js'
 import { EMAIL_SENDER_NAME,URL } from '$lib/info.js'
 
 const getAllMetadata = getContext('getAllMetadata')
@@ -130,7 +131,7 @@ let jsonLd = $derived({
 <div class="divider divider-neutral"></div>
 
 <div>
-	<PostList allMetadata={nearMetadata} />
+	<LinkList linkObjectArray={getLinkObjectArray(nearMetadata)} />
 </div>
 
 <div id="Page_Check"></div>
