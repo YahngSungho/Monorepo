@@ -68,7 +68,8 @@ const allLanguages_sorted = Array.from(allLanguages).sort((a, b) => {
 	return rankA[2] - rankB[2]
 })
 let open = $state(false)
-let value = $derived(getLocale())
+// svelte-ignore state_referenced_locally
+let value = $state(getLocale())
 
 const selectedValue = $derived(allLanguages_sorted.find((f) => f.value === value)?.label ?? value)
 

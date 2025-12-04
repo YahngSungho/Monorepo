@@ -1,9 +1,11 @@
 <script module>
-import { css, cx } from '@emotion/css'
-import { localizeHref } from '@library/paraglide/helpers'
-import IconText from '@library/ui/icon-text'
+	import { css, cx } from '@emotion/css'
+	import { localizeHref } from '@library/paraglide/helpers'
+	import IconText from '@library/ui/icon-text'
 
-import { resolve } from '$app/paths'
+	import { resolve } from '$app/paths'
+
+	/* eslint-disable svelte/no-navigation-without-resolve */
 
 const newTabProps = {
 	rel: 'noopener noreferrer',
@@ -100,7 +102,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		class:icon-only={iconName && !children}
 		class:loadingButton
 		class:visibilityHidden
-		href={resolve(isInternalLink ? localizeHref(href) : href)}
+		href={isInternalLink ? resolve(localizeHref(href), {}) : href}
 		role="button"
 		type="button"
 		{...isInternalLink ? {} : newTabProps}
