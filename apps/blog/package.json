@@ -40,6 +40,7 @@
 		"@library/ui": "workspace:*",
 		"nanoid": "^5.1.6",
 		"store": "^2.0.12",
+		"svelte-action-balancer": "^1.0.4",
 		"svelte-sonner": "^1.0.3",
 		"zod": "^3.25.36"
 	},

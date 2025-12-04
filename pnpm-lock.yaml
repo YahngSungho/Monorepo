@@ -420,6 +420,9 @@ importers:
       store:
         specifier: ^2.0.12
         version: 2.0.12
+      svelte-action-balancer:
+        specifier: ^1.0.4
+        version: 1.0.4
       svelte-sonner:
         specifier: ^1.0.3
         version: 1.0.7(svelte@5.45.4)
@@ -828,6 +831,9 @@ importers:
       svelte:
         specifier: ^5.45.4
         version: 5.45.4
+      svelte-action-balancer:
+        specifier: ^1.0.4
+        version: 1.0.4
       svelte-confetti:
         specifier: ^2.3.2
         version: 2.3.2(svelte@5.45.4)
@@ -9183,6 +9189,9 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  svelte-action-balancer@1.0.4:
+    resolution: {integrity: sha512-QEJ/UJ576/wt+Sr3Uhswg/6k1s98034QZQBbO3WuNeyPYKa+9w2z/W5SFlusdAi8H7IF+s8BaMptEsUZINfxbw==}
 
   svelte-ast-print@0.4.2:
     resolution: {integrity: sha512-hRHHufbJoArFmDYQKCpCvc0xUuIEfwYksvyLYEQyH+1xb5LD5sM/IthfooCdXZQtOIqXz6xm7NmaqdfwG4kh6w==}
@@ -19686,6 +19695,8 @@ snapshots:
       supports-color: 7.2.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  svelte-action-balancer@1.0.4: {}
 
   svelte-ast-print@0.4.2(svelte@5.45.4):
     dependencies:

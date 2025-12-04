@@ -2,7 +2,8 @@
 	import { css } from '@emotion/css'
 	import IconText from '@library/ui/icon-text'
 	import Link from '@library/ui/link'
-	</script>
+  import { balancer } from "svelte-action-balancer"
+</script>
 
 	<script>
 	let { linkObjectArray } = $props()
@@ -15,7 +16,7 @@
 		style:inline-size="100%"
 	>
 		{#each linkObjectArray as linkObject (linkObject.href)}
-			<div style:display="flex">
+			<span use:balancer={{ enabled: true, ratio: 0.7 }}>
 				{#snippet link()}
 					<Link
 						class={css`
@@ -42,6 +43,6 @@
 						{@render link()}
 					</IconText>
 				{/if}
-			</div>
+			</span>
 		{/each}
 	</div>
