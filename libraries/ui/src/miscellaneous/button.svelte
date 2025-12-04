@@ -1,11 +1,11 @@
 <script module>
-	import { css, cx } from '@emotion/css'
-	import { localizeHref } from '@library/paraglide/helpers'
-	import IconText from '@library/ui/icon-text'
+import { css, cx } from '@emotion/css'
+import { localizeHref } from '@library/paraglide/helpers'
+import IconText from '@library/ui/icon-text'
 
-	import { resolve } from '$app/paths'
+import { resolve } from '$app/paths'
 
-	/* eslint-disable svelte/no-navigation-without-resolve */
+/* eslint-disable svelte/no-navigation-without-resolve */
 
 const newTabProps = {
 	rel: 'noopener noreferrer',
