@@ -6,7 +6,7 @@ export const getHrefFromSlug = (slug) => {
 
 export const getLinkObjectArray = (allMetadata) => {
 	return allMetadata.map((postMetadata) => {
-		return create(postMetadata, draft => {
+		return create(postMetadata, (draft) => {
 			draft.href = getHrefFromSlug(draft.slug)
 		})
 	})

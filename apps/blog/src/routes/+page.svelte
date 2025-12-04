@@ -1,7 +1,7 @@
 <script module>
+import LinkList from '@library/ui/linkList'
 import { getContext } from 'svelte'
 
-import LinkList from '@library/ui/linkList'
 import { getLinkObjectArray } from '$lib/helpers.js'
 </script>
 
