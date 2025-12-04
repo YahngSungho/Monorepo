@@ -13,18 +13,23 @@ import { sendMails_immediate_action } from '$lib/wrappers/sendMails.js'
 const urlPost = `https://${URL}/posts/`
 
 async function addSubscription_action(email) {
-	const { error: error1 } = await supabase_admin.from('user-information').upsert({ email: email, locale: getLocale()
-	}, { onConflict: 'email' })
+	const { error: error1 } = await supabase_admin
+		.from('user-information')
+		.upsert({ email: email, locale: getLocale() }, { onConflict: 'email' })
 	if (error1) {
 		throw error1
 	}
 
-  const { error: error2 } = await supabase_admin.from('user-activity').upsert([
-	 { email: email, project_name: '@app/blog', activity_type: 'visited' },
-	 { email: email, project_name: '@app/blog', activity_type: 'subscribed' },
- ], {
-	 onConflict: 'email, project_name, activity_type', ignoreDuplicates: true
- })
+	const { error: error2 } = await supabase_admin.from('user-activity').upsert(
+		[
+			{ activity_type: 'visited', email: email, project_name: '@app/blog' },
+			{ activity_type: 'subscribed', email: email, project_name: '@app/blog' },
+		],
+		{
+			ignoreDuplicates: true,
+			onConflict: 'email, project_name, activity_type',
+		},
+	)
 	if (error2) {
 		throw error2
 	}
