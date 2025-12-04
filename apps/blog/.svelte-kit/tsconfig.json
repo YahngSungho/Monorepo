@@ -5,7 +5,19 @@
 				"../../../libraries/ui/src/shadcn"
 			],
 			"$shadcn/*": [
-				"../../../libraries/ui/src/shadcn/*"
+				"../../../libraries/ui/src/shadcn/*/*"
+			],
+			"$daisy": [
+				"../../../libraries/ui/src/daisyui"
+			],
+			"$daisy/*": [
+				"../../../libraries/ui/src/daisyui/*/*"
+			],
+			"$miscellaneous": [
+				"../../../libraries/ui/src/miscellaneous"
+			],
+			"$miscellaneous/*": [
+				"../../../libraries/ui/src/miscellaneous/*/*"
 			],
 			"$lib": [
 				"../src/lib"

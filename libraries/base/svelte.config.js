@@ -21,6 +21,11 @@ const config = {
 		}),
 		alias: {
 			$shadcn: path.join(__dirname, '../ui/src/shadcn'),
+			"$shadcn/*": path.join(__dirname, '../ui/src/shadcn/*'),
+			"$daisy": path.join(__dirname, '../ui/src/daisyui'),
+			"$daisy/*": path.join(__dirname, '../ui/src/daisyui/*'),
+			"$miscellaneous": path.join(__dirname, '../ui/src/miscellaneous'),
+			"$miscellaneous/*": path.join(__dirname, '../ui/src/miscellaneous/*')
 		},
 	},
 	preprocess: [vitePreprocess()],
