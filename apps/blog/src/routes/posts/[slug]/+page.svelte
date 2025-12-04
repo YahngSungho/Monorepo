@@ -9,6 +9,7 @@ import { page } from '$app/state'
 import LinkList from '@library/ui/linkList'
 import { getLinkObjectArray } from '$lib/helpers.js'
 import { EMAIL_SENDER_NAME,URL } from '$lib/info.js'
+import { balancer } from "svelte-action-balancer"
 
 const getAllMetadata = getContext('getAllMetadata')
 const markAsVisited = getContext('markAsVisited')
@@ -120,7 +121,7 @@ let jsonLd = $derived({
 </svelte:head>
 
 <div>
-	<h1>
+	<h1 use:balancer={{ enabled: true, ratio: 0.7 }}>
 		{data.currentMetadata.title}
 	</h1>
 	{#if data.post}
