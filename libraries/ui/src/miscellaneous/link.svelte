@@ -3,6 +3,10 @@ import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 import IconText from '@library/ui/icon-text'
 
+import { resolve } from '$app/paths'
+
+/* eslint-disable svelte/no-navigation-without-resolve */
+
 const newTabProperties = {
 	rel: 'noopener noreferrer',
 	target: '_blank',
@@ -31,7 +35,7 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {:else if isInternalLink}
 	<a
 		class={cx(linkStyle, incomingClass)}
-		href={isInternalLink ? localizeHref(href) : href}
+		href={isInternalLink ? resolve(localizeHref(href), {}) : href}
 		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
 	>
@@ -42,7 +46,7 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 {:else}
 	<a
 		class={cx(linkStyle, incomingClass)}
-		href={isInternalLink ? localizeHref(href) : href}
+		href={isInternalLink ? resolve(localizeHref(href), {}) : href}
 		{...isInternalLink ? {} : newTabProperties}
 		{...rest}
 	>

@@ -3,6 +3,10 @@ import { css, cx } from '@emotion/css'
 import { localizeHref } from '@library/paraglide/helpers'
 import IconText from '@library/ui/icon-text'
 
+import { resolve } from '$app/paths'
+
+/* eslint-disable svelte/no-navigation-without-resolve */
+
 const newTabProps = {
 	rel: 'noopener noreferrer',
 	target: '_blank',
@@ -57,8 +61,8 @@ let {
 	...restProps
 } = $props()
 
-const buttonShape = shape ? `btn-${shape}` : ''
-const buttonClass = `btn btn-${variant} btn-${size} ${buttonShape}`
+const buttonShape = $derived(shape ? `btn-${shape}` : '')
+const buttonClass = $derived(`btn btn-${variant} btn-${size} ${buttonShape}`)
 const extraStyles1 = css`
 	position: relative;
 	inset-block-end: 0.15em;
@@ -98,7 +102,7 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		class:icon-only={iconName && !children}
 		class:loadingButton
 		class:visibilityHidden
-		href={isInternalLink ? localizeHref(href) : href}
+		href={isInternalLink ? resolve(localizeHref(href), {}) : href}
 		role="button"
 		type="button"
 		{...isInternalLink ? {} : newTabProps}

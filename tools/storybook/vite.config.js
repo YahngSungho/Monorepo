@@ -1,13 +1,20 @@
-import { svelte } from '@sveltejs/vite-plugin-svelte'
-import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { defaultConfig, isDev } from '@library/base/vite.config.js'
+import { sveltekit } from '@sveltejs/kit/vite'
+import { searchForWorkspaceRoot } from 'vite'
+import { defineConfig, mergeConfig } from 'vitest/config'
+// Simulate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // https://vitejs.dev/config/
-export default defineConfig({
-	css: {
-		devSourcemap: true,
-	},
-	// Fix: storybook 업데이트 하면서 svelte() 이거 sveltekit으로 바꾸고, base/vite.config.js 에서 import 한 거 사용하게 만들기
-	plugins: [tsconfigPaths(), tailwindcss(), svelte()],
-})
+export default mergeConfig(
+	defaultConfig,
+	// @ts-ignore
+	defineConfig({
+		// @ts-ignore
+		plugins: [sveltekit()],
+	}),
+)

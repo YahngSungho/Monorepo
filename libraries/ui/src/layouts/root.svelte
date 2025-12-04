@@ -1,6 +1,5 @@
 <script>
 import { css } from '@emotion/css'
-import * as Sentry from '@sentry/sveltekit'
 import { ModeWatcher } from 'mode-watcher'
 import { onMount } from 'svelte'
 
@@ -12,8 +11,6 @@ import { init } from './base.js'
 // Warn: 여기서 default로 가져오는 게 늘면 emailContent/emialContent.svelte에도 추가해야 할 수 있음
 
 let { appName, children } = $props()
-
-Sentry.setTag('App Name', appName)
 
 onMount(() => {
 	init(appName)

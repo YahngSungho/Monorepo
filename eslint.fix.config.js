@@ -12,6 +12,8 @@ const overrideConfig = [
 			'array-func/prefer-flat': 'warn',
 			'array-func/prefer-flat-map': 'warn',
 			'functional/readonly-type': 'warn',
+			'no-extra-boolean-cast': 'warn',
+			'no-regex-spaces': 'warn',
 			'one-var': 'warn',
 			'prefer-template': 'warn',
 			'svelte/first-attribute-linebreak': 'warn',

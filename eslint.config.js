@@ -94,11 +94,14 @@ const baseRules = {
 	'n/no-missing-import': 'off',
 	'n/prefer-global/process': 'off',
 	'no-console': 'off',
+	'no-extra-boolean-cast': 'off',
 	'no-lonely-if': 'off',
 	'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
+	'no-regex-spaces': 'off',
 	'no-secrets/no-secrets': ['error', { tolerance: 4.3 }],
 	'no-shadow': 'warn',
 	'no-unused-expressions': 1,
+	'no-unused-labels': 'off',
 	'no-unused-vars': 1,
 	'no-use-before-define': 'off',
 	'no-warning-comments': 'off',
@@ -280,7 +283,6 @@ const gitignorePath = path.join(__dirname, '.gitignore')
 const flatCompat = new FlatCompat({
 	allConfig: js.configs.all,
 	baseDirectory: __dirname,
-	recommendedConfig: js.configs.recommended,
 })
 
 export default defineFlatConfig([
