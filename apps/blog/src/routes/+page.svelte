@@ -1,7 +1,8 @@
 <script module>
+import LinkList from '@library/ui/linkList'
 import { getContext } from 'svelte'
 
-import PostList from '$lib/components/postList.svelte'
+import { getLinkObjectArray } from '$lib/helpers.js'
 </script>
 
 <script>
@@ -24,7 +25,7 @@ let postsOpen = $state(true)
 
 		{#if pinnedPostsOpen}
 			<div transition:slide={{ duration: 250 }}>
-				<PostList allMetadata={allMetadata_pinned} />
+				<LinkList linkObjectArray={getLinkObjectArray(allMetadata_pinned)} />
 			</div>
 		{/if}
 	</div>
@@ -34,7 +35,7 @@ let postsOpen = $state(true)
 
 		{#if postsOpen}
 			<div transition:slide={{ duration: 250 }}>
-				<PostList {allMetadata} />
+				<LinkList linkObjectArray={getLinkObjectArray(allMetadata)} />
 			</div>
 		{/if}
 	</div>

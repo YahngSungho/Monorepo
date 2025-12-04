@@ -2,10 +2,11 @@
 import { css } from '@emotion/css'
 import IconText from '@library/ui/icon-text'
 import Link from '@library/ui/link'
+import { balancer } from 'svelte-action-balancer'
 </script>
 
 <script>
-let { allMetadata } = $props()
+let { linkObjectArray } = $props()
 </script>
 
 <div
@@ -14,26 +15,26 @@ let { allMetadata } = $props()
 	style:gap="var(--space-em-cqi-2xs)"
 	style:inline-size="100%"
 >
-	{#each allMetadata as postMetadata (postMetadata.slug)}
-		<div style:display="flex">
+	{#each linkObjectArray as linkObject (linkObject.href)}
+		<span use:balancer={{ enabled: true, ratio: 0.7 }}>
 			{#snippet link()}
 				<Link
 					class={css`
 						display: block;
 						inline-size: fit-content;
 					`}
-					active={postMetadata.current}
-					href={`/posts/${postMetadata.slug}`}
+					active={linkObject.current}
+					href={linkObject.href}
 				>
-					{postMetadata.title}
+					{linkObject.title}
 				</Link>
 			{/snippet}
 
-			{#if postMetadata.current}
+			{#if linkObject.current}
 				<IconText iconName="mdi:chevron-right">
 					{@render link()}
 				</IconText>
-			{:else if postMetadata.visited}
+			{:else if linkObject.visited}
 				<IconText iconName="mdi:check">
 					{@render link()}
 				</IconText>
@@ -42,6 +43,6 @@ let { allMetadata } = $props()
 					{@render link()}
 				</IconText>
 			{/if}
-		</div>
+		</span>
 	{/each}
 </div>

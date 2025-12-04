@@ -4,6 +4,7 @@ import './style.css'
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeRaw from 'rehype-raw'
+import smartypants from 'remark-smartypants'
 import { createHighlighterCoreSync } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import langCss from 'shiki/langs/css.mjs'
@@ -36,6 +37,9 @@ const shikiPlugin = {
 }
 
 const addedPlugins = [
+	{
+		remarkPlugin: smartypants,
+	},
 	{
 		renderer: {
 			mermaid: Mermaid,

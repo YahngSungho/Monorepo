@@ -1,7 +1,8 @@
 <script>
 let { children, ...rest } = $props()
+import { balancer } from 'svelte-action-balancer'
 </script>
 
-<h5 {...rest}>
+<h5 use:balancer={{ enabled: true, ratio: 0.7 }} {...rest}>
 	{@render children()}
 </h5>

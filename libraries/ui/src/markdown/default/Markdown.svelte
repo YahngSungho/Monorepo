@@ -7,7 +7,6 @@ import remarkBreaks from 'remark-breaks'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import remarkCustomHeaderId from 'remark-custom-header-id'
-import smartypants from 'remark-smartypants'
 import { Markdown } from 'svelte-exmarkdown'
 import { gfmPlugin } from 'svelte-exmarkdown/gfm'
 
@@ -54,9 +53,7 @@ let { plugins = [], value } = $props()
 		{
 			remarkPlugin: remarkCjkFriendlyGfmStrikethrough,
 		},
-		{
-			remarkPlugin: smartypants,
-		},
+
 		{
 			remarkPlugin: remarkCustomHeaderId,
 		},

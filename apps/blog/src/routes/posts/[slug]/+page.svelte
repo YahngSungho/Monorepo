@@ -2,12 +2,14 @@
 import { create } from '@library/helpers/mutative'
 // 'as * from m'이 Sherlock extension의 inline annotation을 작동시키는 트리거
 import * as m from '@library/paraglide/messages'
+import LinkList from '@library/ui/linkList'
 import Markdown from '@library/ui/markdown-blog'
 import { getContext } from 'svelte'
+import { balancer } from 'svelte-action-balancer'
 
 import { page } from '$app/state'
-import PostList from '$lib/components/postList.svelte'
-import { EMAIL_SENDER_NAME,URL } from '$lib/info.js'
+import { getLinkObjectArray } from '$lib/helpers.js'
+import { EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 
 const getAllMetadata = getContext('getAllMetadata')
 const markAsVisited = getContext('markAsVisited')
@@ -20,9 +22,9 @@ let nearMetadata = $derived.by(() => {
 	const currentIndex = allMetadata.findIndex((item) => item.slug === data.currentMetadata.slug)
 
 	const allMetadata2 = create(allMetadata, (draft) => {
-		const prevCurrent = draft[currentIndex]
+		const previousCurrent = draft[currentIndex]
 		draft[currentIndex] = {
-			...prevCurrent,
+			...previousCurrent,
 			current: true,
 		}
 	})
@@ -119,7 +121,7 @@ let jsonLd = $derived({
 </svelte:head>
 
 <div>
-	<h1>
+	<h1 use:balancer={{ enabled: true, ratio: 0.7 }}>
 		{data.currentMetadata.title}
 	</h1>
 	{#if data.post}
@@ -130,7 +132,7 @@ let jsonLd = $derived({
 <div class="divider divider-neutral"></div>
 
 <div>
-	<PostList allMetadata={nearMetadata} />
+	<LinkList linkObjectArray={getLinkObjectArray(nearMetadata)} />
 </div>
 
 <div id="Page_Check"></div>
