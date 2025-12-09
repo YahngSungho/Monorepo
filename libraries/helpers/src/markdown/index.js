@@ -78,7 +78,7 @@ export function getDescriptionFromMD(string) {
 		// eslint-disable-next-line
 		R.replace(/^#+ (.+) \{#.+\}$/gm, '<$1>'),
 		removeMDAndTags,
-		R.replace(/\s/g, ' '), // 여러 공백을 하나로
+		R.replaceAll(/\s/g, ' '), // 여러 공백을 하나로
 		R.trim,
 		R.slice(0, 300),
 		(string) => `${string}...`,
