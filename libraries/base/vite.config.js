@@ -90,13 +90,11 @@ const baseConfig = defineConfig({
 				// 8. 데바나가리/힌디어 (Devanagari)
 				'IBM Plex Sans Devanagari': [
 					'Noto Sans Devanagari', // 안드로이드
-					'Arial',
 				].concat(defaultFallbackFonts),
 
 				// 9. 태국어 (Thai)
 				'IBM Plex Sans Thai': [
 					'Noto Sans Thai', // 안드로이드
-					'Arial',
 				].concat(defaultFallbackFonts),
 
 				// 10. 모노스페이스 (Code/Monospace)
