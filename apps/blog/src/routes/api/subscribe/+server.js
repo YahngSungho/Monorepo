@@ -40,7 +40,6 @@ async function addSubscription_action(email) {
 const WELCOME_SLUG = 'welcome'
 
 async function sendWelcomeEmail_action(email) {
-
 	const markdown = await getOneMarkdownBody(WELCOME_SLUG)
 	if (!markdown) {
 		throw new Error('markdown not found')
@@ -74,7 +73,6 @@ ${meanwhileLinksString}`
 	await sendMails_immediate_action({ campaignID: WELCOME_SLUG, markdownText: sendText }, [
 		String(email),
 	])
-
 }
 
 export const POST = async ({ request }) => {
@@ -93,10 +91,7 @@ export const POST = async ({ request }) => {
 	}
 
 	try {
-		await Promise.all([
-			addSubscription_action(email),
-			sendWelcomeEmail_action(email),
-		])
+		await Promise.all([addSubscription_action(email), sendWelcomeEmail_action(email)])
 		return json({ email }, { headers: { 'content-type': 'application/json' }, status: 200 })
 	} catch (error) {
 		console.error(error)

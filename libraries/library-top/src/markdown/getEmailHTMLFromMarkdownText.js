@@ -8,7 +8,7 @@ const EMAIL_MINIMAL_STYLES = `
   section { padding-top: 2em !important; }
   h2[id$='footnote-label'] { display: none; }
 `
-export function getEmailHTMLFromMarkdownText_onlyContent (markdownText) {
+export function getEmailHTMLFromMarkdownText_onlyContent(markdownText) {
 	const { body } = render(MarkdownComponent, { props: { value: markdownText } })
 
 	return body

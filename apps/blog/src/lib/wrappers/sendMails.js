@@ -19,8 +19,11 @@ import { EMAIL, EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 const sendMails_base0_action = sendMails_base_action({
 	domain: URL,
 	emailOfSender: EMAIL,
+	fixLink: (string) =>
+		string
+			.replaceAll('href="/', `href="https://${URL}/`)
+			.replaceAll('src="/', `src="https://${URL}/`),
 	name: EMAIL_SENDER_NAME,
-	fixLink: (string) => string.replaceAll('href="/', `href="https://${URL}/`).replaceAll('src="/', `src="https://${URL}/`),
 })
 
 /** @type {SendMailsAction} */

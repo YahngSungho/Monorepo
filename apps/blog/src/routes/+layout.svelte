@@ -375,7 +375,7 @@ let jsonLd = $derived({
 		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 	{/if}
 
-	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+	<link href="/rss.xml" rel="alternate" title="RSS Feed" type="application/rss+xml" />
 </svelte:head>
 
 {#snippet scrollButtons()}

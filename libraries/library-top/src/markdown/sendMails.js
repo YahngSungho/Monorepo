@@ -2,11 +2,11 @@ import { createMessage_action } from '@library/backends/mailgun'
 import { getFrontmatterObject, removeMDAndTags } from '@library/helpers/markdown'
 import { R } from '@library/helpers/R'
 
-import { replaceImageTag } from './replaceImageTag'
 import { getEmailHTMLFromMarkdownText } from './getEmailHTMLFromMarkdownText'
+import { replaceImageTag } from './replaceImageTag'
 
 export const sendMails_base_action = R.curry(async (info, config, content, emailList) => {
-	const { domain, emailOfSender, name, fixLink = R.identity } = info
+	const { domain, emailOfSender, fixLink = R.identity, name } = info
 	const { campaignID, markdownText } = content
 	const { deliveryTimeOptimize = true } = config
 
