@@ -39,6 +39,42 @@ async function addSubscription_action(email) {
 
 const WELCOME_SLUG = 'welcome'
 
+async function sendWelcomeEmail_action(email) {
+	const markdown = await getOneMarkdownBody(WELCOME_SLUG)
+	if (!markdown) {
+		throw new Error('markdown not found')
+	}
+
+	const allMetadataObject = await getAllMetadataObject()
+	const markdownMetadata_pinned = R.applyPipe(
+		allMetadataObject,
+		Object.values,
+		R.filter(R.prop('pinned')),
+		shuffleArray,
+	)
+	const markdownLinks = markdownMetadata_pinned.map((item) => {
+		return `- [${item.title}](${urlPost}${item.slug})`
+	})
+	const markdownLinksString = markdownLinks.join('\n')
+	const meanwhileLinksString =
+		markdownLinksString ?
+			`## Meanwhile, you can read:
+
+${markdownLinksString}`
+		:	''
+
+	const sendText =
+		meanwhileLinksString ?
+			`${markdown.body}
+
+${meanwhileLinksString}`
+		:	markdown.body
+
+	await sendMails_immediate_action({ campaignID: WELCOME_SLUG, markdownText: sendText }, [
+		String(email),
+	])
+}
+
 export const POST = async ({ request }) => {
 	const formData = await request.formData()
 	const email = formData.get('email')
@@ -55,44 +91,7 @@ export const POST = async ({ request }) => {
 	}
 
 	try {
-		await Promise.all([
-			addSubscription_action(email),
-			(async () => {
-				const markdown = await getOneMarkdownBody(WELCOME_SLUG)
-				if (!markdown) {
-					throw new Error('markdown not found')
-				}
-
-				const allMetadataObject = await getAllMetadataObject()
-				const markdownMetadata_pinned = R.applyPipe(
-					allMetadataObject,
-					Object.values,
-					R.filter(R.prop('pinned')),
-					shuffleArray,
-				)
-				const markdownLinks = markdownMetadata_pinned.map((item) => {
-					return `- [${item.title}](${urlPost}${item.slug})`
-				})
-				const markdownLinksString = markdownLinks.join('\n')
-				const meanwhileLinksString =
-					markdownLinksString ?
-						`## Meanwhile, you can read:
-
-${markdownLinksString}`
-					:	''
-
-				const sendText =
-					meanwhileLinksString ?
-						`${markdown.body}
-
-${meanwhileLinksString}`
-					:	markdown.body
-
-				await sendMails_immediate_action({ campaignID: WELCOME_SLUG, markdownText: sendText }, [
-					String(email),
-				])
-			})(),
-		])
+		await Promise.all([addSubscription_action(email), sendWelcomeEmail_action(email)])
 		return json({ email }, { headers: { 'content-type': 'application/json' }, status: 200 })
 	} catch (error) {
 		console.error(error)
