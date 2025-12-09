@@ -75,10 +75,10 @@ export function removeMDAndTags(string) {
 export function getDescriptionFromMD(string) {
 	const result = R.applyPipe(
 		string,
-		// eslint-disable-next-line redos/no-vulnerable
-		R.replaceAll(/^#+ (.+) {#.+}$/gm, '<$1>'),
+		// eslint-disable-next-line
+		R.replace(/^#+ (.+) \{#.+\}$/gm, '<$1>'),
 		removeMDAndTags,
-		R.replaceAll(/\s/g, ' '), // 여러 공백을 하나로
+		R.replace(/\s/g, ' '), // 여러 공백을 하나로
 		R.trim,
 		R.slice(0, 300),
 		(string) => `${string}...`,
