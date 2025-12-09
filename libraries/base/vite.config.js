@@ -38,11 +38,6 @@ const baseConfig = defineConfig({
 		// @ts-ignore
 		FontaineTransform.vite({
 			fallbacks: {},
-			resolvePath(id) {
-				// 여기서 id는 @font-face에서 url에 주어진 string. 거기서부터 파일 경로를 찾아가야 하기 때문에 package.json의 exports에서 이름을 파일 경로로 변환할 수 있는 것들로 했음
-				const absolutePath = path.join(__dirname, 'static', 'fonts', id.replace(/^.+\//, ''))
-				return absolutePath
-			},
 		}),
 	],
 	server: {
