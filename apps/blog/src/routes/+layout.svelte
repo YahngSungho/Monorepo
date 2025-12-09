@@ -374,6 +374,8 @@ let jsonLd = $derived({
 		<!-- eslint-disable-next-line -->
 		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
 	{/if}
+
+	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
 </svelte:head>
 
 {#snippet scrollButtons()}
@@ -446,7 +448,7 @@ let jsonLd = $derived({
 					style:flex-direction="column"
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-size: min(calc(100cqi / 7), 5em); font-weight: 900;" href="/">
+					<Link style="font-size: min(calc(100cqi / 7.2), 4.8em); font-weight: 900;" href="/">
 						{URL}
 					</Link>
 				</div>

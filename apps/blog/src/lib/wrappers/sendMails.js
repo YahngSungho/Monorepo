@@ -20,7 +20,7 @@ const sendMails_base0_action = sendMails_base_action({
 	domain: URL,
 	emailOfSender: EMAIL,
 	name: EMAIL_SENDER_NAME,
-	preprocessMarkdownText: (string) => string.replaceAll('(/', `(https://${URL}/`),
+	fixLink: (string) => string.replaceAll('href="/', `href="https://${URL}/`).replaceAll('src="/', `src="https://${URL}/`),
 })
 
 /** @type {SendMailsAction} */

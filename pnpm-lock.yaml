@@ -414,6 +414,9 @@ importers:
       '@library/ui':
         specifier: workspace:*
         version: link:../../libraries/ui
+      feed:
+        specifier: ^5.1.0
+        version: 5.1.0
       nanoid:
         specifier: ^5.1.6
         version: 5.1.6
@@ -5820,6 +5823,10 @@ packages:
       picomatch:
         optional: true
 
+  feed@5.1.0:
+    resolution: {integrity: sha512-qGNhgYygnefSkAHHrNHqC7p3R8J0/xQDS/cYUud8er/qD9EFGWyCdUDfULHTJQN1d3H3WprzVwMc9MfB4J50Wg==}
+    engines: {node: '>=20', pnpm: '>=10'}
+
   file-entry-cache@11.1.1:
     resolution: {integrity: sha512-TPVFSDE7q91Dlk1xpFLvFllf8r0HyOMOlnWy7Z2HBku5H3KhIeOGInexrIeg2D64DosVB/JXkrrk6N/7Wriq4A==}
 
@@ -10162,6 +10169,10 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+
+  xml-js@1.6.11:
+    resolution: {integrity: sha512-7rVi2KMfwfWFl+GpPg6m80IVMWXLRjO+PxTq7V2CDhoGak0wzYzFgUY2m4XJ47OGdXd8eLE8EmwfAmdjw7lC1g==}
+    hasBin: true
 
   xml-name-validator@5.0.0:
     resolution: {integrity: sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==}
@@ -15596,6 +15607,10 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.3
 
+  feed@5.1.0:
+    dependencies:
+      xml-js: 1.6.11
+
   file-entry-cache@11.1.1:
     dependencies:
       flat-cache: 6.1.19
@@ -20792,6 +20807,10 @@ snapshots:
   ws@8.18.0: {}
 
   ws@8.18.3: {}
+
+  xml-js@1.6.11:
+    dependencies:
+      sax: 1.4.3
 
   xml-name-validator@5.0.0: {}
 

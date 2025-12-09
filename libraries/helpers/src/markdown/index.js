@@ -2,6 +2,7 @@ export * from './getFrontmatters.js'
 
 import removeMD from 'remove-markdown'
 import sanitizeHtml from 'sanitize-html'
+import { R } from '@library/helpers/R'
 
 /**
  * @param {string} string - 문자열
@@ -72,11 +73,16 @@ export function removeMDAndTags(string) {
  * @returns {string} meta name="description"
  */
 export function getDescriptionFromMD(string) {
-	let result = removeMDAndTags(string)
-	result = result
-		.replaceAll(/\s/g, ' ') // 여러 공백을 하나로
-		.trim()
-	result = `${result.slice(0, 155)}...` // 155자로 자르고 말줄임표 추가
+	const result = R.applyPipe(
+		string,
+		// eslint-disable-next-line redos/no-vulnerable
+		R.replace(/^#+ (.+) \{#.+\}$/gm, '<$1>'), 
+		removeMDAndTags,
+		R.replace(/\s/g, ' '), // 여러 공백을 하나로
+		R.trim,
+		R.slice(0, 300),
+		(string) => `${string}...`,
+	)
 
 	return result
 }

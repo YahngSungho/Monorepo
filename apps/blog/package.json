@@ -26,7 +26,7 @@
 		"test:unit": "vitest run",
 		"type-sync": "svelte-kit sync",
 		"update-translations": "dotenvx run -f ../../.env.public -f ../../.env.private -- node ./scripts/update-translations-scripts.js",
-		"preview": "pnpm run generate-env && wrangler dev --port 5002",
+		"preview": "pnpm run generate-env && wrangler dev --port 5003",
 		"watch:dev": "turbo run dev --filter={./} --filter=@tool/storybook --output-logs=new-only"
 	},
 	"dependencies": {
@@ -38,6 +38,7 @@
 		"@library/library-top": "workspace:*",
 		"@library/paraglide": "workspace:*",
 		"@library/ui": "workspace:*",
+		"feed": "^5.1.0",
 		"nanoid": "^5.1.6",
 		"store": "^2.0.12",
 		"svelte-action-balancer": "^1.0.4",
