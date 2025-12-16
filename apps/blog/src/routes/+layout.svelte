@@ -7,6 +7,7 @@ import { emailSchema } from '@library/helpers/zod-schemas'
 import { getLocale, setLocale } from '@library/paraglide/helpers'
 import Button from '@library/ui/button'
 import ConfettiButtonDecorator from '@library/ui/confettiButtonDecorator'
+import IconText from '@library/ui/icon-text'
 import BaseLayout from '@library/ui/layouts/root'
 import Link from '@library/ui/link'
 import SharingButtons from '@library/ui/sharingButtons'
@@ -37,9 +38,15 @@ function validateEmail(emailValue0) {
 	const result = emailSchema.safeParse(emailValue0)
 	return result.success
 }
+
 function handleInput_action() {
 	emailErrorMessage = ''
 	isSubscribed = false
+}
+
+let inputElement
+function focusToInput_action() {
+	inputElement?.focus()
 }
 
 const emailErrorMessageList = {
@@ -342,8 +349,8 @@ let jsonLd = $derived({
 		'@type': 'WebPage',
 	},
 	publisher: {
-		'@type': 'Organization',
-		name: URL,
+		'@type': 'Person',
+		name: EMAIL_SENDER_NAME,
 	},
 	url: currentCanonicalUrl,
 })
@@ -459,74 +466,101 @@ let jsonLd = $derived({
 					method="post"
 					onsubmit={handleSubscribeSubmit_action}
 				>
-					<div
-						style:z-index="1"
-						style:inline-size="17em"
-						style:background-color="var(--background)"
-						style:max-inline-size="90%"
-						class="join"
+					<fieldset
+						style:border="none"
+						style:width="auto"
+						style:gap="0"
+						style:font-size="1em"
+						class="fieldset"
 					>
-						<div style:flex-grow="1">
-							<label
-								style="border: 1px solid currentcolor !important;"
-								class="input input-sm floating-label join-item"
-								for="email"
+						<div
+							style:display="flex"
+							style:font-size="var(--font-size-fluid-em-cqi-01)"
+							style:align-items="flex-end"
+						>
+							<div style:display="flex">
+								<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+								<!-- svelte-ignore a11y_click_events_have_key_events -->
+								<legend style:font-weight="var(--font-weight-6)" onclick={focusToInput_action}>
+									<IconText iconName="mdi:arrow-down-bold" right>이메일</IconText>
+								</legend>
+							</div>
+
+							<div class="divider divider-horizontal divider-neutral"></div>
+
+							<div>
+								<Link href="/rss.xml" noIcon>
+									<IconText iconName="mdi:rss" noMargin right small>RSS</IconText>
+								</Link>
+							</div>
+						</div>
+						<div
+							style:z-index="1"
+							style:inline-size="17em"
+							style:max-inline-size="90%"
+							class="join"
+						>
+							<div style:flex-grow="1">
+								<label
+									style="border: 1px solid currentcolor !important;"
+									class="input input-sm join-item"
+									for="email"
+								>
+									<input
+										bind:this={inputElement}
+										id="email"
+										name="email"
+										autocapitalize="none"
+										autocomplete="email"
+										autocorrect="off"
+										disabled={isSubmitting}
+										oninput={handleInput_action}
+										required
+										spellcheck="false"
+										type="email"
+										bind:value={emailValue}
+									/>
+								</label>
+							</div>
+
+							<ConfettiButtonDecorator
+								class="join-item"
+								amount={10}
+								colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
+								duration={750}
+								isConfettiActivated={isSubscribed && !isSubmitting}
+								noGravity
+								x={[-0.5, 0.5]}
+								y={[-0.5, 0.5]}
 							>
-								<input
-									id="email"
-									name="email"
-									autocapitalize="none"
-									autocomplete="email"
-									autocorrect="off"
-									disabled={isSubmitting}
-									oninput={handleInput_action}
-									placeholder="나의@이메일.com"
-									required
-									spellcheck="false"
-									type="email"
-									bind:value={emailValue}
-								/>
-								<span>이메일</span>
-							</label>
+								<Button class="join-item" loading={isSubmitting} size="sm" type="submit">
+									{isSubscribed ? '구독 됨!' : '구독하기'}
+								</Button>
+							</ConfettiButtonDecorator>
 						</div>
 
-						<ConfettiButtonDecorator
-							class="join-item"
-							amount={10}
-							colorArray={['var(--gray-0)', 'var(--gray-4)', 'var(--gray-8)', 'var(--gray-12)']}
-							duration={750}
-							isConfettiActivated={isSubscribed && !isSubmitting}
-							noGravity
-							x={[-0.5, 0.5]}
-							y={[-0.5, 0.5]}
+						<div
+							style:font-size="var(--font-size-fluid-em-cqi-01)"
+							style:z-index="1"
+							style:position="relative"
 						>
-							<Button class="join-item" loading={isSubmitting} size="sm" type="submit">
-								{isSubscribed ? '구독 됨!' : '구독하기'}
-							</Button>
-						</ConfettiButtonDecorator>
-					</div>
+							{#if emailErrorMessage}
+								<div
+									style:color="var(--color-destructive)"
+									role="alert"
+									transition:slide={{ duration: 250 }}
+								>
+									{emailErrorMessage}
+								</div>
+							{/if}
 
-					<div
-						style:font-size="var(--font-size-fluid-em-cqi-01)"
-						style:z-index="1"
-						style:position="relative"
-					>
-						{#if emailErrorMessage}
-							<div
-								style:color="var(--color-destructive)"
-								role="alert"
-								transition:slide={{ duration: 250 }}
-							>
-								{emailErrorMessage}
-							</div>
-						{/if}
-
-						{#if isSubscribed && formResult?.submittedEmail && !emailErrorMessage}
-							<div role="status" transition:slide={{ duration: 250 }}>
-								{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}
-							</div>
-						{/if}
-					</div>
+							{#if isSubscribed && formResult?.submittedEmail && !emailErrorMessage}
+								<div role="status" transition:slide={{ duration: 250 }}>
+									{`구독이 완료되었습니다: ${formResult?.submittedEmail}`}
+								</div>
+							{/if}
+						</div>
+					</fieldset>
 				</form>
 
 				<div style:z-index="1" style:overflow="visible">
@@ -542,19 +576,20 @@ let jsonLd = $derived({
 							'이 포스트 공유하기...'
 						:	'이 블로그 공유하기...'}
 					</Button>
-					{#if sharingButtonsOpen}
-						<div style:cursor="default" transition:slide={{ duration: 250 }}>
-							<div
-								style:inline-size="100%"
-								style:padding="var(--space-em-cqi-xs-s)"
-								style:background-color="var(--background)"
-								style:font-size="var(--font-size-fluid-em-cqi-01)"
-							>
-								<SharingButtons title={sharingData.title} url={sharingData.url} />
-							</div>
-						</div>
-					{/if}
 				</div>
+
+				{#if sharingButtonsOpen}
+					<div style:cursor="default" transition:slide={{ duration: 250 }}>
+						<div
+							style:inline-size="100%"
+							style:padding="var(--space-em-cqi-xs-s)"
+							style:background-color="var(--background)"
+							style:font-size="var(--font-size-fluid-em-cqi-01)"
+						>
+							<SharingButtons title={sharingData.title} url={sharingData.url} />
+						</div>
+					</div>
+				{/if}
 
 				<div id="Top2_Layout_Check"></div>
 			</div>

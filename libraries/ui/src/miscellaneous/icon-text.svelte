@@ -6,6 +6,7 @@ let {
 	bottom = false,
 	children = null,
 	class: incomingClass = '',
+	iconAnimation = '',
 	iconName = '',
 	iconProps: iconProperties = {},
 	noMargin = false,
@@ -21,6 +22,7 @@ let {
 		class="icon-container"
 		class:alone={alone || (!children && !text)}
 		class:bottom
+		class:iconShakeY={iconAnimation === 'shake-y'}
 		class:noMargin
 		class:right
 		class:small
@@ -71,6 +73,12 @@ let {
 
 		font-size: 1.2em;
 		color: color-mix(in srgb, currentcolor 80%, transparent);
+
+		&.iconShakeY {
+			animation: var(--animation-shake-y);
+			animation-duration: 5s;
+			animation-iteration-count: infinite;
+		}
 
 		&.alone {
 			margin-inline-end: 0;
