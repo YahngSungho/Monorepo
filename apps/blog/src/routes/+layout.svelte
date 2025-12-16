@@ -483,22 +483,24 @@ let jsonLd = $derived({
 							style:display="flex"
 							style:font-size="var(--font-size-fluid-em-cqi-01)"
 							style:align-items="flex-end"
-							style="z-index: 1;"
+							style:z-index="1"
 						>
-							<div style:display="flex" >
+							<div style:display="flex">
 								<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 								<!-- svelte-ignore a11y_click_events_have_key_events -->
-								<legend style:font-weight="var(--font-weight-6)"
-								style="position: relative;
-    inset-block-start: 0.1em;"
-								onclick={focusToInput_action}>
+								<legend
+									style:font-weight="var(--font-weight-6)"
+									style:position="relative"
+									style:inset-block-start="0.1em"
+									onclick={focusToInput_action}
+								>
 									<IconText iconName="mdi:arrow-down-bold" right>이메일</IconText>
 								</legend>
 							</div>
 
-							<div class="divider divider-horizontal divider-neutral" ></div>
+							<div class="divider divider-horizontal divider-neutral"></div>
 
-							<div >
+							<div>
 								<Link href="/rss.xml" noIcon>
 									<IconText iconName="mdi:rss" noMargin right small>RSS</IconText>
 								</Link>
