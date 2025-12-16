@@ -269,11 +269,16 @@ onMount(() => {
 	const ro = new ResizeObserver(() => {
 		idleRun_action(() => {
 			activeElement = pickScrollTarget()
+			setupScrollElement_action(activeElement)
 		})
 	})
-	if (withSidebarElement) ro.observe(withSidebarElement)
-	if (mainElement) ro.observe(mainElement)
-	queueMicrotask(() => {
+	if (withSidebarElement) {
+		ro.observe(withSidebarElement)
+	}
+	if (mainElement) {
+		ro.observe(mainElement)
+	}
+	idleRun_action(() => {
 		activeElement = pickScrollTarget()
 		setupScrollElement_action(activeElement)
 	})
