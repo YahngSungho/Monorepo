@@ -54,11 +54,11 @@ let {
 	iconName = '',
 	iconProps = {},
 	loading: loadingButton = false,
+	notTransparent = false,
 	shape = '',
 	size = 'md',
 	variant = 'primary',
 	visibilityHidden = false,
-	notTransparent = false,
 	...restProps
 } = $props()
 
@@ -96,43 +96,43 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 
 <span class:notTransparent>
 	{#if href}
-	<a
-		class={cx(buttonClass, incomingClass)}
-		class:clearBackground
-		class:dimBackground
-		class:hoverButton={loadingButton}
-		class:icon-only={iconName && !children}
-		class:loadingButton
-		class:visibilityHidden
-		href={isInternalLink ? resolve(localizeHref(href), {}) : href}
-		role="button"
-		type="button"
-		{...isInternalLink ? {} : newTabProps}
-		{...restProps}
-	>
-		{@render content()}
-	</a>
-{:else}
-	<button
-		class={cx(buttonClass, incomingClass)}
-		class:clearBackground
-		class:dimBackground
-		class:hoverButton={loadingButton}
-		class:icon-only={iconName && !children}
-		class:loadingButton
-		class:visibilityHidden
-		type="button"
-		{...restProps}
-	>
-		{@render content()}
-	</button>
-{/if}
+		<a
+			class={cx(buttonClass, incomingClass)}
+			class:clearBackground
+			class:dimBackground
+			class:hoverButton={loadingButton}
+			class:icon-only={iconName && !children}
+			class:loadingButton
+			class:visibilityHidden
+			href={isInternalLink ? resolve(localizeHref(href), {}) : href}
+			role="button"
+			type="button"
+			{...isInternalLink ? {} : newTabProps}
+			{...restProps}
+		>
+			{@render content()}
+		</a>
+	{:else}
+		<button
+			class={cx(buttonClass, incomingClass)}
+			class:clearBackground
+			class:dimBackground
+			class:hoverButton={loadingButton}
+			class:icon-only={iconName && !children}
+			class:loadingButton
+			class:visibilityHidden
+			type="button"
+			{...restProps}
+		>
+			{@render content()}
+		</button>
+	{/if}
 </span>
 
 <style>
 .notTransparent {
-	background-color: var(--background);
 	display: inline-block;
+	background-color: var(--background);
 }
 
 .loadingButton {
