@@ -533,7 +533,7 @@ let jsonLd = $derived({
 								x={[-0.5, 0.5]}
 								y={[-0.5, 0.5]}
 							>
-								<Button class="join-item" loading={isSubmitting} size="sm" type="submit">
+								<Button class="join-item" loading={isSubmitting} size="sm" type="submit" notTransparent>
 									{isSubscribed ? '구독 됨!' : '구독하기'}
 								</Button>
 							</ConfettiButtonDecorator>

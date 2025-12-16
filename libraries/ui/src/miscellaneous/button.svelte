@@ -58,6 +58,7 @@ let {
 	size = 'md',
 	variant = 'primary',
 	visibilityHidden = false,
+	notTransparent = false,
 	...restProps
 } = $props()
 
@@ -93,7 +94,8 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	{/if}
 {/snippet}
 
-{#if href}
+<span class:notTransparent>
+	{#if href}
 	<a
 		class={cx(buttonClass, incomingClass)}
 		class:clearBackground
@@ -125,8 +127,14 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 		{@render content()}
 	</button>
 {/if}
+</span>
 
 <style>
+.notTransparent {
+	background-color: var(--background);
+	display: inline-block;
+}
+
 .loadingButton {
 	cursor: not-allowed !important;
 }
