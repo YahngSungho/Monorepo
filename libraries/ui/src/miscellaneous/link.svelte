@@ -30,7 +30,7 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	<a
 		class={cx(linkStyle, incomingClass)}
 		href={isInternalLink ? resolve(localizeHref(href), {}) : href}
-		{...((isInternalLink || isHeadingLink) ? {} : newTabProperties)}
+		{...isInternalLink || isHeadingLink ? {} : newTabProperties}
 		{...rest}
 	>
 		{@render children?.()}
