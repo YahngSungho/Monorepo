@@ -94,8 +94,8 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 	{/if}
 {/snippet}
 
-<span class:notTransparent>
-	{#if href}
+{#snippet buttonElement()}
+	 {#if href}
 		<a
 			class={cx(buttonClass, incomingClass)}
 			class:clearBackground
@@ -126,7 +126,18 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 			{@render content()}
 		</button>
 	{/if}
+{/snippet}
+
+
+{#if notTransparent}
+<span class:notTransparent>
+	{@render buttonElement()}
 </span>
+	 
+{:else}
+{@render buttonElement()}
+{/if}
+
 
 <style>
 .notTransparent {
