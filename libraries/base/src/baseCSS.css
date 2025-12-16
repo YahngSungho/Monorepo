@@ -7,8 +7,6 @@ html {
 	block-size: 100svb;
 
 	font-size: var(--font-size-fluid-0p6);
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--font-lineheight-4);
 	color: var(--foreground);
 	text-wrap: stable;
@@ -20,6 +18,9 @@ html {
 	white-space: normal;
 
 	color-scheme: light dark;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 body {
