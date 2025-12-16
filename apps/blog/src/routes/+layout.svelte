@@ -626,7 +626,7 @@ let jsonLd = $derived({
 }
 
 .progress_100 {
-	color: var(--color-success);
+	color: var(--color-success) !important;
 }
 
 .with-sidebar {
@@ -698,6 +698,7 @@ let jsonLd = $derived({
 	inset-inline-end: 0;
 	transform: scaleY(-1) scaleX(-1);
 	z-index: 0;
+	color: var(--color-neutral);
 }
 
 .title-font-size {
