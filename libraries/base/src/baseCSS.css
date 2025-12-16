@@ -59,7 +59,8 @@ input:focus {
 }
 
 button,
-*[type='button'] {
+*[type='button'],
+*[role='button'] {
 	cursor: pointer;
 	user-select: none;
 

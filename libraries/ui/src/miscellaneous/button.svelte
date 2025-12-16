@@ -106,7 +106,6 @@ const isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 			class:visibilityHidden
 			href={isInternalLink ? resolve(localizeHref(href), {}) : href}
 			role="button"
-			type="button"
 			{...isInternalLink ? {} : newTabProps}
 			{...restProps}
 		>
