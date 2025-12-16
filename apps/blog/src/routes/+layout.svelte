@@ -607,7 +607,7 @@ let jsonLd = $derived({
 .scroll-buttons {
 	position: absolute;
 	z-index: var(--layer-important);
-	inset-block-start: var(--space-m);
+	inset-block-start: var(--shared-padding);
 	inset-inline-end: var(--space-m);
 }
 
