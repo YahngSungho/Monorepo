@@ -533,7 +533,13 @@ let jsonLd = $derived({
 								x={[-0.5, 0.5]}
 								y={[-0.5, 0.5]}
 							>
-								<Button class="join-item" loading={isSubmitting} size="sm" type="submit">
+								<Button
+									class="join-item"
+									loading={isSubmitting}
+									notTransparent
+									size="sm"
+									type="submit"
+								>
 									{isSubscribed ? '구독 됨!' : '구독하기'}
 								</Button>
 							</ConfettiButtonDecorator>
@@ -601,7 +607,7 @@ let jsonLd = $derived({
 .scroll-buttons {
 	position: absolute;
 	z-index: var(--layer-important);
-	inset-block-end: var(--space-m);
+	inset-block-start: var(--space-m);
 	inset-inline-end: var(--space-m);
 }
 
@@ -649,7 +655,6 @@ let jsonLd = $derived({
 	}
 
 	& > .scroll-buttons {
-		inset-block-start: var(--shared-padding);
 		inset-inline-end: calc(var(--shared-padding) + 25rem);
 	}
 }
