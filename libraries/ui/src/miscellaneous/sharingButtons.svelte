@@ -41,6 +41,7 @@ let isCopied = $state(false)
 					})
 				}}
 				size="sm"
+				variant="outline"
 			>
 				전달하기...
 			</Button>

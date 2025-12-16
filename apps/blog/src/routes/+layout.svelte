@@ -20,6 +20,10 @@ import { page } from '$app/state'
 import { globalVariables } from '$lib/globalVariables.js'
 import { APP_NAME, EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 
+import IconText from '@library/ui/icon-text'
+
+
+
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()
 let visited = $state({})
@@ -37,9 +41,18 @@ function validateEmail(emailValue0) {
 	const result = emailSchema.safeParse(emailValue0)
 	return result.success
 }
+
 function handleInput_action() {
 	emailErrorMessage = ''
 	isSubscribed = false
+}
+
+let isInpuFocused = $state(false)
+function handleInputFocus_action () {
+	isInpuFocused = true
+}
+function handleInputBlur_action () {
+	isInpuFocused = false
 }
 
 const emailErrorMessageList = {
@@ -459,17 +472,24 @@ let jsonLd = $derived({
 					method="post"
 					onsubmit={handleSubscribeSubmit_action}
 				>
+				<fieldset class="fieldset" style="border: none; width: auto; font-size: 1em; padding-block: 0;">
+					<div style="display: flex; font-size: var(--font-size-fluid-em-cqi-01);">
+					<legend style="font-weight: var(--font-weight-6);">
+						<IconText iconName="mdi:arrow-down-bold" right>
+							이메일
+							</IconText>
+					</legend>
+					</div>
 					<div
 						style:z-index="1"
 						style:inline-size="17em"
-						style:background-color="var(--background)"
 						style:max-inline-size="90%"
 						class="join"
 					>
 						<div style:flex-grow="1">
 							<label
 								style="border: 1px solid currentcolor !important;"
-								class="input input-sm floating-label join-item"
+								class="input input-sm join-item"
 								for="email"
 							>
 								<input
@@ -480,14 +500,15 @@ let jsonLd = $derived({
 									autocorrect="off"
 									disabled={isSubmitting}
 									oninput={handleInput_action}
-									placeholder="나의@이메일.com"
+									onfocus={handleInputFocus_action}
+									onblur={handleInputBlur_action}
 									required
 									spellcheck="false"
 									type="email"
 									bind:value={emailValue}
 								/>
-								<span>이메일</span>
 							</label>
+
 						</div>
 
 						<ConfettiButtonDecorator
@@ -527,34 +548,52 @@ let jsonLd = $derived({
 							</div>
 						{/if}
 					</div>
+				</fieldset>
 				</form>
 
-				<div style:z-index="1" style:overflow="visible">
-					<Button
-						style="min-block-size: auto;"
-						onclick={() => {
-							sharingButtonsOpen = !sharingButtonsOpen
-						}}
-						size="sm"
-						variant="outline"
-					>
-						{page.url.pathname.includes('posts') ?
-							'이 포스트 공유하기...'
-						:	'이 블로그 공유하기...'}
-					</Button>
-					{#if sharingButtonsOpen}
-						<div style:cursor="default" transition:slide={{ duration: 250 }}>
-							<div
-								style:inline-size="100%"
-								style:padding="var(--space-em-cqi-xs-s)"
-								style:background-color="var(--background)"
-								style:font-size="var(--font-size-fluid-em-cqi-01)"
-							>
-								<SharingButtons title={sharingData.title} url={sharingData.url} />
-							</div>
-						</div>
-					{/if}
+				<div style="display: flex; gap: var(--space-em-cqi-xs-s);">
+
+
+					<div style:z-index="1" style:overflow="visible">
+						<Button
+							style="min-block-size: auto;"
+							onclick={() => {
+								sharingButtonsOpen = !sharingButtonsOpen
+							}}
+							size="sm"
+							variant="outline"
+						>
+							{page.url.pathname.includes('posts') ?
+								'이 포스트 공유하기...'
+							:	'이 블로그 공유하기...'}
+						</Button>
+
+					</div>
+
+					<div class="divider divider-horizontal"></div>
+
+					<div style="font-size: var(--font-size-fluid-em-cqi-0); align-self: center;">
+						<Link href='/rss.xml' noIcon>
+							<IconText iconName='mdi:rss' right noMargin small>
+								RSS
+							</IconText>
+						</Link>
+					</div>
 				</div>
+
+				{#if sharingButtonsOpen}
+							<div style:cursor="default" transition:slide={{ duration: 250 }}>
+								<div
+									style:inline-size="100%"
+									style:padding="var(--space-em-cqi-xs-s)"
+									style:background-color="var(--background)"
+									style:font-size="var(--font-size-fluid-em-cqi-01)"
+								>
+									<SharingButtons title={sharingData.title} url={sharingData.url} />
+								</div>
+							</div>
+						{/if}
+
 
 				<div id="Top2_Layout_Check"></div>
 			</div>

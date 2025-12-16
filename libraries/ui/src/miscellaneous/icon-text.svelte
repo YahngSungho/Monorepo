@@ -12,6 +12,7 @@ let {
 	right = false,
 	small = false,
 	text = '',
+	iconAnimation = '',
 	...restProperties
 } = $props()
 </script>
@@ -24,6 +25,7 @@ let {
 		class:noMargin
 		class:right
 		class:small
+		class:iconShakeY={iconAnimation === 'shake-y'}
 	>
 		<span>
 			{#if iconName}
@@ -62,15 +64,21 @@ let {
 
 	& .icon-container {
 		position: relative;
-		inset-block-start: 0.45ex;
+		inset-block-start: 0.25ex;
 
 		display: inline-block;
 		flex-shrink: 0;
 
 		margin-inline-end: 0.5ch;
 
-		font-size: 1.2em;
+		font-size: 1em;
 		color: color-mix(in srgb, currentcolor 80%, transparent);
+
+		&.iconShakeY {
+			animation: var(--animation-shake-y);
+			animation-iteration-count: infinite;
+			animation-duration: 5s;
+		}
 
 		&.alone {
 			margin-inline-end: 0;
