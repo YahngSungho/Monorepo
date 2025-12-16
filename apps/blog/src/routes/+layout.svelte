@@ -691,7 +691,7 @@ let jsonLd = $derived({
 
 .radial-progress {
 	--size: 3.5em;
-	--thickness: 0.1em;
+	--thickness: 0.3em;
 
 	position: absolute;
 	inset-block-start: 0;
