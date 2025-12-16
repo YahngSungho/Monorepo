@@ -47,12 +47,9 @@ function handleInput_action() {
 	isSubscribed = false
 }
 
-let isInpuFocused = $state(false)
-function handleInputFocus_action () {
-	isInpuFocused = true
-}
-function handleInputBlur_action () {
-	isInpuFocused = false
+let inputElement
+function focusToInput_action () {
+	inputElement?.focus()
 }
 
 const emailErrorMessageList = {
@@ -472,13 +469,27 @@ let jsonLd = $derived({
 					method="post"
 					onsubmit={handleSubscribeSubmit_action}
 				>
-				<fieldset class="fieldset" style="border: none; width: auto; font-size: 1em; padding-block: 0;">
-					<div style="display: flex; font-size: var(--font-size-fluid-em-cqi-01);">
-					<legend style="font-weight: var(--font-weight-6);">
-						<IconText iconName="mdi:arrow-down-bold" right>
-							이메일
-							</IconText>
-					</legend>
+				<fieldset class="fieldset" style="border: none; width: auto; font-size: 1em; gap: 0;">
+					<div style="display: flex; font-size: var(--font-size-fluid-em-cqi-01); align-items: flex-end;">
+						<div style="display: flex;">
+							<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<legend style="font-weight: var(--font-weight-6);" onclick={focusToInput_action}>
+								<IconText iconName="mdi:arrow-down-bold" right>
+									이메일
+									</IconText>
+							</legend>
+							</div>
+
+							<div class="divider divider-horizontal divider-neutral"></div>
+
+							<div>
+								<Link href='/rss.xml' noIcon>
+									<IconText iconName='mdi:rss' right noMargin small>
+										RSS
+									</IconText>
+								</Link>
+							</div>
 					</div>
 					<div
 						style:z-index="1"
@@ -500,12 +511,11 @@ let jsonLd = $derived({
 									autocorrect="off"
 									disabled={isSubmitting}
 									oninput={handleInput_action}
-									onfocus={handleInputFocus_action}
-									onblur={handleInputBlur_action}
 									required
 									spellcheck="false"
 									type="email"
 									bind:value={emailValue}
+									bind:this={inputElement}
 								/>
 							</label>
 
@@ -551,34 +561,20 @@ let jsonLd = $derived({
 				</fieldset>
 				</form>
 
-				<div style="display: flex; gap: var(--space-em-cqi-xs-s);">
+				<div style:z-index="1" style:overflow="visible">
+					<Button
+						style="min-block-size: auto;"
+						onclick={() => {
+							sharingButtonsOpen = !sharingButtonsOpen
+						}}
+						size="sm"
+						variant="outline"
+					>
+						{page.url.pathname.includes('posts') ?
+							'이 포스트 공유하기...'
+						:	'이 블로그 공유하기...'}
+					</Button>
 
-
-					<div style:z-index="1" style:overflow="visible">
-						<Button
-							style="min-block-size: auto;"
-							onclick={() => {
-								sharingButtonsOpen = !sharingButtonsOpen
-							}}
-							size="sm"
-							variant="outline"
-						>
-							{page.url.pathname.includes('posts') ?
-								'이 포스트 공유하기...'
-							:	'이 블로그 공유하기...'}
-						</Button>
-
-					</div>
-
-					<div class="divider divider-horizontal"></div>
-
-					<div style="font-size: var(--font-size-fluid-em-cqi-0); align-self: center;">
-						<Link href='/rss.xml' noIcon>
-							<IconText iconName='mdi:rss' right noMargin small>
-								RSS
-							</IconText>
-						</Link>
-					</div>
 				</div>
 
 				{#if sharingButtonsOpen}

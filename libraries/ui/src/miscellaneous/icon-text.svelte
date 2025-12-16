@@ -64,14 +64,14 @@ let {
 
 	& .icon-container {
 		position: relative;
-		inset-block-start: 0.25ex;
+		inset-block-start: 0.45ex;
 
 		display: inline-block;
 		flex-shrink: 0;
 
 		margin-inline-end: 0.5ch;
 
-		font-size: 1em;
+		font-size: 1.2em;
 		color: color-mix(in srgb, currentcolor 80%, transparent);
 
 		&.iconShakeY {
