@@ -121,7 +121,7 @@ let jsonLd = $derived({
 </svelte:head>
 
 <div>
-	<h1 use:balancer={{ enabled: true, ratio: 0.7 }}>
+	<h1 use:balancer={{ enabled: true, ratio: 0.8 }}>
 		{data.currentMetadata.title}
 	</h1>
 	{#if data.post}

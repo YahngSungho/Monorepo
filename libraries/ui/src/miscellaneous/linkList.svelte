@@ -16,7 +16,7 @@ let { linkObjectArray } = $props()
 	style:inline-size="100%"
 >
 	{#each linkObjectArray as linkObject (linkObject.href)}
-		<div use:balancer={{ enabled: true, ratio: 0.7 }}>
+		<div use:balancer={{ enabled: true, ratio: 0.8 }}>
 			{#snippet link()}
 				<Link
 					class={css`

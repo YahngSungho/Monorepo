@@ -6,7 +6,7 @@ html {
 
 	block-size: 100svb;
 
-	font-size: var(--font-size-fluid-0p6);
+	font-size: var(--font-size-fluid-1);
 	line-height: var(--font-lineheight-4);
 	color: var(--foreground);
 	text-wrap: stable;

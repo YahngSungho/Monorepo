@@ -269,11 +269,16 @@ onMount(() => {
 	const ro = new ResizeObserver(() => {
 		idleRun_action(() => {
 			activeElement = pickScrollTarget()
+			setupScrollElement_action(activeElement)
 		})
 	})
-	if (withSidebarElement) ro.observe(withSidebarElement)
-	if (mainElement) ro.observe(mainElement)
-	queueMicrotask(() => {
+	if (withSidebarElement) {
+		ro.observe(withSidebarElement)
+	}
+	if (mainElement) {
+		ro.observe(mainElement)
+	}
+	idleRun_action(() => {
 		activeElement = pickScrollTarget()
 		setupScrollElement_action(activeElement)
 	})
@@ -433,7 +438,7 @@ let jsonLd = $derived({
 			>
 				<div
 					style:--value={progress}
-					class="radial-progress"
+					class="radial-progress title-font-size"
 					class:progress_0={progress === 0}
 					class:progress_100={progress === 100}
 					aria-valuenow={progress}
@@ -453,9 +458,10 @@ let jsonLd = $derived({
 					style:display="flex"
 					style:inline-size="fit-content"
 					style:flex-direction="column"
+					class="title-font-size"
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-size: min(calc(100cqi / 7.2), 4.8em); font-weight: 900;" href="/">
+					<Link style="font-weight: 900;" href="/">
 						{URL}
 					</Link>
 				</div>
@@ -477,11 +483,17 @@ let jsonLd = $derived({
 							style:display="flex"
 							style:font-size="var(--font-size-fluid-em-cqi-01)"
 							style:align-items="flex-end"
+							style:z-index="1"
 						>
 							<div style:display="flex">
 								<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 								<!-- svelte-ignore a11y_click_events_have_key_events -->
-								<legend style:font-weight="var(--font-weight-6)" onclick={focusToInput_action}>
+								<legend
+									style:font-weight="var(--font-weight-6)"
+									style:position="relative"
+									style:inset-block-start="0.1em"
+									onclick={focusToInput_action}
+								>
 									<IconText iconName="mdi:arrow-down-bold" right>이메일</IconText>
 								</legend>
 							</div>
@@ -496,7 +508,7 @@ let jsonLd = $derived({
 						</div>
 						<div
 							style:z-index="1"
-							style:inline-size="17em"
+							style:inline-size="15em"
 							style:max-inline-size="90%"
 							class="join"
 						>
@@ -607,7 +619,7 @@ let jsonLd = $derived({
 .scroll-buttons {
 	position: absolute;
 	z-index: var(--layer-important);
-	inset-block-start: var(--shared-padding);
+	inset-block-start: var(--space-m);
 	inset-inline-end: var(--space-m);
 }
 
@@ -616,7 +628,7 @@ let jsonLd = $derived({
 }
 
 .progress_100 {
-	color: var(--color-success);
+	color: var(--color-success) !important;
 }
 
 .with-sidebar {
@@ -641,7 +653,6 @@ let jsonLd = $derived({
 
 		margin-block-start: auto;
 		padding: var(--shared-padding);
-		padding-block-end: calc(var(--shared-padding) + var(--space-cqi-xl));
 	}
 
 	& > .main {
@@ -652,9 +663,11 @@ let jsonLd = $derived({
 		min-inline-size: 60%;
 		max-block-size: none;
 		padding: var(--shared-padding);
+		font-size: var(--font-size-fluid-cqi-2);
 	}
 
 	& > .scroll-buttons {
+		inset-block-start: var(--shared-padding);
 		inset-inline-end: calc(var(--shared-padding) + 25rem);
 	}
 }
@@ -668,6 +681,7 @@ let jsonLd = $derived({
 		& > .main {
 			overflow: auto;
 			max-block-size: 100svb;
+			padding-inline: var(--space-3xl);
 		}
 
 		& > .sidebar {
@@ -678,13 +692,18 @@ let jsonLd = $derived({
 }
 
 .radial-progress {
-	--size: 10em;
-	--thickness: 0.5em;
+	--size: 3.5em;
+	--thickness: 0.3em;
 
 	position: absolute;
 	inset-block-start: 0;
 	inset-inline-end: 0;
 	transform: scaleY(-1) scaleX(-1);
 	z-index: 0;
+	color: var(--color-neutral);
+}
+
+.title-font-size {
+	font-size: min(calc(100cqi / 7.2), 4.8em);
 }
 </style>
