@@ -6,13 +6,13 @@ let {
 	bottom = false,
 	children = null,
 	class: incomingClass = '',
+	iconAnimation = '',
 	iconName = '',
 	iconProps: iconProperties = {},
 	noMargin = false,
 	right = false,
 	small = false,
 	text = '',
-	iconAnimation = '',
 	...restProperties
 } = $props()
 </script>
@@ -22,10 +22,10 @@ let {
 		class="icon-container"
 		class:alone={alone || (!children && !text)}
 		class:bottom
+		class:iconShakeY={iconAnimation === 'shake-y'}
 		class:noMargin
 		class:right
 		class:small
-		class:iconShakeY={iconAnimation === 'shake-y'}
 	>
 		<span>
 			{#if iconName}
@@ -76,8 +76,8 @@ let {
 
 		&.iconShakeY {
 			animation: var(--animation-shake-y);
-			animation-iteration-count: infinite;
 			animation-duration: 5s;
+			animation-iteration-count: infinite;
 		}
 
 		&.alone {

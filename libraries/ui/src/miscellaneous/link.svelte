@@ -27,43 +27,30 @@ let isInternalLink = $derived(href?.startsWith('.') || href?.startsWith('/'))
 </script>
 
 {#if noIcon}
-<a
-	class={cx(linkStyle, incomingClass)}
-	href={isInternalLink ? resolve(localizeHref(href), {}) : href}
-	{...isInternalLink ? {} : newTabProperties}
-	{...rest}
->
+	<a
+		class={cx(linkStyle, incomingClass)}
+		href={isInternalLink ? resolve(localizeHref(href), {}) : href}
+		{...isInternalLink ? {} : newTabProperties}
+		{...rest}
+	>
 		{@render children?.()}
-</a>	 
-{:else}
-{#if isHeadingLink}
-<a class={cx(linkStyle, incomingClass)} {href} {...rest}>
-	<IconText iconName="mdi:hashtag" noMargin right small>
-		{@render children?.()}
-	</IconText>
-</a>
+	</a>
+{:else if isHeadingLink}
+	<a class={cx(linkStyle, incomingClass)} {href} {...rest}>
+		<IconText iconName="mdi:hashtag" noMargin right small>
+			{@render children?.()}
+		</IconText>
+	</a>
 {:else if isInternalLink}
-<a
-	class={cx(linkStyle, incomingClass)}
-	href={resolve(localizeHref(href), {})}
-	{...rest}
->
-	<IconText iconName="mdi:file-document-arrow-right-outline" noMargin right small>
-		{@render children?.()}
-	</IconText>
-</a>
+	<a class={cx(linkStyle, incomingClass)} href={resolve(localizeHref(href), {})} {...rest}>
+		<IconText iconName="mdi:file-document-arrow-right-outline" noMargin right small>
+			{@render children?.()}
+		</IconText>
+	</a>
 {:else}
-<a
-	class={cx(linkStyle, incomingClass)}
-	href={href}
-	{...newTabProperties}
-	{...rest}
->
-	<IconText iconName="mdi:external-link" noMargin right small>
-		{@render children?.()}
-	</IconText>
-</a>
+	<a class={cx(linkStyle, incomingClass)} {href} {...newTabProperties} {...rest}>
+		<IconText iconName="mdi:external-link" noMargin right small>
+			{@render children?.()}
+		</IconText>
+	</a>
 {/if}
-
-{/if}
-
