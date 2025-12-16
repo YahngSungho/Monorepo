@@ -22,15 +22,22 @@ let checked = $derived(mode.current === 'dark')
 		type="checkbox"
 	/>
 
-	<span style:inline-size="28px" style:block-size="28px">
+	<span class="icon-container">
 		<iconify-icon height="20" icon="mdi:white-balance-sunny" width="20"></iconify-icon>
 	</span>
-	<span style:inline-size="28px" style:block-size="28px">
+	<span class="icon-container">
 		<iconify-icon height="20" icon="mdi:weather-night" width="20"></iconify-icon>
 	</span>
 </label>
 
 <style>
+.icon-container {
+	display: inline-flex;
+	align-items: flex-end;
+	inline-size: 26px;
+	block-size: 26px;
+}
+
 .opacity-0 {
 	opacity: 0 !important;
 }
