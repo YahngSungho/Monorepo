@@ -661,6 +661,7 @@ let jsonLd = $derived({
 		min-inline-size: 60%;
 		max-block-size: none;
 		padding: var(--shared-padding);
+		font-size: var(--font-size-fluid-cqi-2);
 	}
 
 	& > .scroll-buttons {

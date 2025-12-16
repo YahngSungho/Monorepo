@@ -12,7 +12,7 @@
 .boxed {
 	position: relative;
 	container: boxed / inline-size;
-	font-size: var(--font-size-fluid-cqi-2);
+	font-size: var(--font-size-fluid-cqi-1);
 }
 
 .gutter {
