@@ -903,6 +903,7 @@
 }
 
 html {
+	font-family: 'IBM Plex Sans fallback';
 	font-variant-numeric: slashed-zero;
 }
 
@@ -954,7 +955,10 @@ html[lang^='uk'], /* Ukrainian (Cyrillic) */
 html[lang^='uz'], /* Uzbek (Latin default) */
 html[lang^='vi'], /* Vietnamese (Latin) */
 html[lang^='yo']  /* Yoruba (Latin) */ {
-	font-family: 'IBM Plex Sans';
+	font-family:
+		'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Arabic', 'IBM Plex Sans Thai',
+		'IBM Plex Sans Hebrew', 'IBM Plex Sans Devanagari', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 /* Arabic script languages */
@@ -968,7 +972,10 @@ html[lang^='ps'], /* Pashto */
 html[lang^='sd'], /* Sindhi (Arabic script default) */
 html[lang='sd-Arab'], /* Sindhi (Arabic script explicit) */
 html[lang^='ur']  /* Urdu */ {
-	font-family: 'IBM Plex Sans Arabic';
+	font-family:
+		'IBM Plex Sans Arabic', 'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Thai',
+		'IBM Plex Sans Hebrew', 'IBM Plex Sans Devanagari', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 /* Chinese Simplified */
@@ -976,7 +983,10 @@ html[lang^='zh'], /* General Chinese, defaults to Simplified */
 html[lang^='zh-Hans'],
 html[lang='zh-CN'],
 html[lang='zh-SG'] {
-	font-family: 'IBM Plex Sans SC';
+	font-family:
+		'IBM Plex Sans SC', 'IBM Plex Sans TC', 'IBM Plex Sans', 'IBM Plex Sans KR',
+		'IBM Plex Sans Arabic', 'IBM Plex Sans Thai', 'IBM Plex Sans Hebrew',
+		'IBM Plex Sans Devanagari', 'IBM Plex Sans JP', 'IBM Plex Sans fallback';
 }
 
 /* Chinese Traditional */
@@ -987,22 +997,34 @@ html[lang='zh-MO'],
 html[lang='zh-tw'], /* (lowercase variant from original) */
 html[lang='zh-hk'], /* (lowercase variant from original) */
 html[lang='zh-tTW'] /* (non-standard, from original) */ {
-	font-family: 'IBM Plex Sans TC';
+	font-family:
+		'IBM Plex Sans TC', 'IBM Plex Sans SC', 'IBM Plex Sans', 'IBM Plex Sans KR',
+		'IBM Plex Sans Arabic', 'IBM Plex Sans Thai', 'IBM Plex Sans Hebrew',
+		'IBM Plex Sans Devanagari', 'IBM Plex Sans JP', 'IBM Plex Sans fallback';
 }
 
 /* Japanese */
 html[lang^='ja'] {
-	font-family: 'IBM Plex Sans JP';
+	font-family:
+		'IBM Plex Sans JP', 'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Arabic',
+		'IBM Plex Sans Thai', 'IBM Plex Sans Hebrew', 'IBM Plex Sans Devanagari', 'IBM Plex Sans TC',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 /* Korean */
 html[lang^='ko'] {
-	font-family: 'IBM Plex Sans KR';
+	font-family:
+		'IBM Plex Sans KR', 'IBM Plex Sans', 'IBM Plex Sans Arabic', 'IBM Plex Sans Thai',
+		'IBM Plex Sans Hebrew', 'IBM Plex Sans Devanagari', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 /* Hebrew */
 html[lang^='he'] {
-	font-family: 'IBM Plex Sans Hebrew';
+	font-family:
+		'IBM Plex Sans Hebrew', 'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Arabic',
+		'IBM Plex Sans Thai', 'IBM Plex Sans Devanagari', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 /* Devanagari script languages */
@@ -1011,25 +1033,41 @@ html[lang^='mr'], /* Marathi */
 html[lang^='ne'], /* Nepali */
 html[lang^='sa'], /* Sanskrit (from original CSS example) */
 html[lang='sd-Deva'] /* Sindhi (Devanagari script) */ {
-	font-family: 'IBM Plex Sans Devanagari';
+	font-family:
+		'IBM Plex Sans Devanagari', 'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Arabic',
+		'IBM Plex Sans Thai', 'IBM Plex Sans Hebrew', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 /* Thai */
 html[lang^='th'] {
-	font-family: 'IBM Plex Sans Thai';
+	font-family:
+		'IBM Plex Sans Thai', 'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Arabic',
+		'IBM Plex Sans Devanagari', 'IBM Plex Sans TC', 'IBM Plex Sans JP', 'IBM Plex Sans SC',
+		'IBM Plex Sans fallback';
 }
 
+/* 문자 기반 지정. 우선순위 더 높게 뒤에 위치 */
 html[lang$='Latn'],
 html[lang$='Cyrl'] {
-	font-family: 'IBM Plex Sans';
+	font-family:
+		'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Arabic', 'IBM Plex Sans Thai',
+		'IBM Plex Sans Hebrew', 'IBM Plex Sans Devanagari', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 html[lang$='Arab'] {
-	font-family: 'IBM Plex Sans Arabic';
+	font-family:
+		'IBM Plex Sans Arabic', 'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Thai',
+		'IBM Plex Sans Hebrew', 'IBM Plex Sans Devanagari', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 html[lang$='Deva'] {
-	font-family: 'IBM Plex Sans Devanagari';
+	font-family:
+		'IBM Plex Sans Devanagari', 'IBM Plex Sans', 'IBM Plex Sans KR', 'IBM Plex Sans Arabic',
+		'IBM Plex Sans Thai', 'IBM Plex Sans Hebrew', 'IBM Plex Sans TC', 'IBM Plex Sans JP',
+		'IBM Plex Sans SC', 'IBM Plex Sans fallback';
 }
 
 code,
