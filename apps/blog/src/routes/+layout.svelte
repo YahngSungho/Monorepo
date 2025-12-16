@@ -352,8 +352,8 @@ let jsonLd = $derived({
 		'@type': 'WebPage',
 	},
 	publisher: {
-		'@type': 'Organization',
-		name: URL,
+		'@type': 'Person',
+		name: EMAIL_SENDER_NAME,
 	},
 	url: currentCanonicalUrl,
 })
