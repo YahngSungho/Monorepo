@@ -4,7 +4,7 @@ import { redirect } from '@sveltejs/kit'
 import { getOneMarkdown } from '$lib/wrappers/markdown/getMarkdown'
 
 /** @type {import('./$types').PageServerLoad} */
-export const load = async ({ params, parent }) => {
+export const load = async ({ params, parent, request }) => {
 	const post = await getOneMarkdown(params.slug)
 	const { allMetadataObject } = await parent()
 	const currentMetadata = allMetadataObject[params.slug]

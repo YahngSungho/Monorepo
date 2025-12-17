@@ -58,11 +58,11 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
       '@inlang/cli':
-        specifier: ^3.0.11
+        specifier: ^3.0.12
         version: 3.0.12(babel-plugin-macros@3.1.0)
       '@inlang/paraglide-js':
-        specifier: 2.2.0
-        version: 2.2.0(babel-plugin-macros@3.1.0)
+        specifier: 2.7.0
+        version: 2.7.0(babel-plugin-macros@3.1.0)
       '@intlify/eslint-plugin-svelte':
         specifier: ^1.0.0
         version: 1.0.0(eslint@9.39.1(jiti@2.6.1))(svelte@5.45.4)
@@ -2256,8 +2256,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@inlang/paraglide-js@2.2.0':
-    resolution: {integrity: sha512-pkpXu1LanvpcAbvpVPf7PgF11Uq7DliSEBngrcUN36l4ZOOpzn3QBTvVr/tJxvks0O67WseQgiMHet8KH7Oz5A==}
+  '@inlang/paraglide-js@2.7.0':
+    resolution: {integrity: sha512-R03uEk8C3p3rP1uRXvaVcbA7DClGWdQDmBhWF5B3tLgAwZGPRpCuo8iSie55cErVvZpydC+DLAuZIbrNcojd3w==}
     hasBin: true
 
   '@inlang/recommend-sherlock@0.2.1':
@@ -11481,7 +11481,7 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
-  '@inlang/paraglide-js@2.2.0(babel-plugin-macros@3.1.0)':
+  '@inlang/paraglide-js@2.7.0(babel-plugin-macros@3.1.0)':
     dependencies:
       '@inlang/recommend-sherlock': 0.2.1
       '@inlang/sdk': 2.4.9(babel-plugin-macros@3.1.0)
