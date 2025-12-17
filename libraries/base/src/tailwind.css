@@ -8,7 +8,6 @@
 @source '../../../libraries/*/src/**/*.{html,js,ts,svelte,mdx}';
 @source '../../../tools/storybook/src/**/*.{html,js,ts,svelte,mdx}';
 
-
 @theme inline {
 	/* Radius (for rounded-*) */
 	--radius-sm: var(--radius-1);
