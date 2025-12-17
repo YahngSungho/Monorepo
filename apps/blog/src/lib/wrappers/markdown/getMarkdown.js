@@ -2,6 +2,7 @@ import { getOneMarkdown_base } from '@library/backends/supabase'
 import { getLocale } from '@library/paraglide/helpers'
 
 import { APP_NAME } from '$lib/info.js'
+import { idleRun_action } from '@library/helpers/functions'
 
 /**
  * @typedef {Object} MarkdownWithMermaid
@@ -14,6 +15,10 @@ import { APP_NAME } from '$lib/info.js'
  * @property {string} body
  */
 
+console.log('💬 getMarkdown.js ~ getLocale():', getLocale())
+idleRun_action(() => {
+	console.log('💬 getMarkdown.js ~ getLocale():', getLocale())
+})
 const getOneMarkdown_base0 = getOneMarkdown_base(APP_NAME, getLocale())
 
 /**
