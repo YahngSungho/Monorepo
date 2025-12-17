@@ -11,10 +11,6 @@ import { page } from '$app/state'
 import { getLinkObjectArray } from '$lib/helpers.js'
 import { EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 
-import { getLocale } from '@library/paraglide/helpers'
-
-console.log('💬 posts/[slug]/+page.svelte ~ getLocale():', getLocale())
-
 const getAllMetadata = getContext('getAllMetadata')
 const markAsVisited = getContext('markAsVisited')
 

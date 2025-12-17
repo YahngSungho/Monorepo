@@ -2,7 +2,6 @@ import { getOneMarkdown_base } from '@library/backends/supabase'
 import { getLocale } from '@library/paraglide/helpers'
 
 import { APP_NAME } from '$lib/info.js'
-import { idleRun_action } from '@library/helpers/functions'
 
 /**
  * @typedef {Object} MarkdownWithMermaid
@@ -15,10 +14,6 @@ import { idleRun_action } from '@library/helpers/functions'
  * @property {string} body
  */
 
-console.log('💬 getMarkdown.js ~ getLocale():', getLocale())
-idleRun_action(() => {
-	console.log('💬 getMarkdown.js ~ getLocale():', getLocale())
-})
 const getOneMarkdown_base0 = getOneMarkdown_base(APP_NAME)
 
 /**
@@ -29,7 +24,6 @@ const getOneMarkdown_base0 = getOneMarkdown_base(APP_NAME)
 /** @type {GetOneMarkdown} */
 export async function getOneMarkdown(key) {
 	const locale = getLocale()
-	console.log('💬 ~ getOneMarkdown ~ locale:', locale)
 	return await getOneMarkdown_base0(locale, 'body, mermaid_svg_object', key)
 }
 
@@ -41,6 +35,5 @@ export async function getOneMarkdown(key) {
 /** @type {GetOneMarkdownBody} */
 export async function getOneMarkdownBody (key) {
 	const locale = getLocale()
-	console.log('💬 ~ getOneMarkdownBody ~ locale:', locale)
 	return await getOneMarkdown_base0(locale, 'body', key)
 }

@@ -11,7 +11,6 @@ import { metadata } from '../../markdown-helpers/metadata.js'
 export async function getAllMetadataObject() {
 	const lang = getLocale()
 
-	console.log('💬 ~ getAllMetadataObject ~ lang:', lang)
 
 	const frontmatterList = await getMarkdownFrontmatterList(APP_NAME, lang)
 	const frontmatterObjectObject = {}
