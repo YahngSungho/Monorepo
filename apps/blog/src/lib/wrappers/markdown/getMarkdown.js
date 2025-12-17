@@ -19,7 +19,7 @@ console.log('💬 getMarkdown.js ~ getLocale():', getLocale())
 idleRun_action(() => {
 	console.log('💬 getMarkdown.js ~ getLocale():', getLocale())
 })
-const getOneMarkdown_base0 = getOneMarkdown_base(APP_NAME, getLocale())
+const getOneMarkdown_base0 = getOneMarkdown_base(APP_NAME)
 
 /**
  * @callback GetOneMarkdown
@@ -27,7 +27,11 @@ const getOneMarkdown_base0 = getOneMarkdown_base(APP_NAME, getLocale())
  * @returns {Promise<MarkdownWithMermaid | undefined>}
  */
 /** @type {GetOneMarkdown} */
-export const getOneMarkdown = getOneMarkdown_base0('body, mermaid_svg_object')
+export async function getOneMarkdown(key) {
+	const locale = getLocale()
+	console.log('💬 ~ getOneMarkdown ~ locale:', locale)
+	return await getOneMarkdown_base0(locale, 'body, mermaid_svg_object', key)
+}
 
 /**
  * @callback GetOneMarkdownBody
@@ -35,4 +39,8 @@ export const getOneMarkdown = getOneMarkdown_base0('body, mermaid_svg_object')
  * @returns {Promise<MarkdownBody | undefined>}
  */
 /** @type {GetOneMarkdownBody} */
-export const getOneMarkdownBody = getOneMarkdown_base0('body')
+export async function getOneMarkdownBody (key) {
+	const locale = getLocale()
+	console.log('💬 ~ getOneMarkdownBody ~ locale:', locale)
+	return await getOneMarkdown_base0(locale, 'body', key)
+}
