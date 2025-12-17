@@ -33,7 +33,7 @@ export async function getOneMarkdown(key) {
  * @returns {Promise<MarkdownBody | undefined>}
  */
 /** @type {GetOneMarkdownBody} */
-export async function getOneMarkdownBody (key) {
+export async function getOneMarkdownBody(key) {
 	const locale = getLocale()
 	return await getOneMarkdown_base0(locale, 'body', key)
 }

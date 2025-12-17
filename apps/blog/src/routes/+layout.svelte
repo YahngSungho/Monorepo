@@ -21,7 +21,6 @@ import { page } from '$app/state'
 import { globalVariables } from '$lib/globalVariables.js'
 import { APP_NAME, EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 
-
 /** @type {import('./$types').LayoutProps} */
 let { children, data } = $props()
 let visited = $state({})
