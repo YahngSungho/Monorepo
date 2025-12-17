@@ -66,7 +66,7 @@ export async function GET() {
 		},
 		copyright: `Copyright ${new Date().getFullYear().toString()}, ${EMAIL_SENDER_NAME}`,
 		description: description,
-		favicon: `${httpsURL}/favicon.png`,
+		favicon: `${httpsURL}/favicon.ico`,
 		feedLinks: {
 			rss: `${httpsURLWithLocale}/rss.xml`,
 		},
