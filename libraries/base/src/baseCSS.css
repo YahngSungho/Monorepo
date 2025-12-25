@@ -18,7 +18,7 @@ html {
 	white-space: normal;
 
 font-weight: 450;
-	
+
 	color-scheme: light dark;
 
 	-webkit-font-smoothing: antialiased;
@@ -58,7 +58,7 @@ label:focus-within,
 }
 
 input:focus {
-	outline: transparent;
+	z-index: 1;
 }
 
 button,

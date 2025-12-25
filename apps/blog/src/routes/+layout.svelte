@@ -511,6 +511,7 @@ let jsonLd = $derived({
 									for="email"
 								>
 									<input
+									style="outline: none;"
 										bind:this={inputElement}
 										id="email"
 										name="email"
@@ -673,7 +674,7 @@ let jsonLd = $derived({
 		min-inline-size: 60%;
 		max-block-size: none;
 		padding: var(--shared-padding);
-		font-size: var(--font-size-fluid-cqi-2);
+		font-size: var(--font-size-fluid-cqi-1);
 	}
 
 	& > .scroll-buttons {

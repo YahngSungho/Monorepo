@@ -26,6 +26,7 @@ let {
 			),
 			css`
 				border: none;
+				outline: none !important;
 			`,
 		)}
 		data-slot="command-input"

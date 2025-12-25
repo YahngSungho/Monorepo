@@ -29,7 +29,7 @@ let isCopied = $state(false)
 			{isCopied ? '복사 됨' : '복사하기'}
 		</Button>
 		<input value={url} class="input input-sm join-item"
-style="border: 1px solid currentcolor !important;"
+style="border: 1px solid currentcolor !important; width: fit-content;"
 		type="url" 	oninput={(e) => {
 			e.currentTarget.value = url;
 		}}  />
