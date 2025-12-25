@@ -53,12 +53,12 @@ label:focus-within,
 	outline-offset: 2px;
 }
 
-*:target {
-	outline-style: groove;
+label > input:focus {
+	outline: none;
 }
 
-input:focus {
-	z-index: 1;
+*:target {
+	outline-style: groove;
 }
 
 button,

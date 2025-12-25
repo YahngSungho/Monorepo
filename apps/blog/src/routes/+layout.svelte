@@ -511,7 +511,6 @@ let jsonLd = $derived({
 									for="email"
 								>
 									<input
-									style="outline: none;"
 										bind:this={inputElement}
 										id="email"
 										name="email"
