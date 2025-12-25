@@ -131,9 +131,3 @@ const LOADING_VALUE = '$loading'
 		</Popover.Content>
 	</Popover.Root>
 </div>
-
-<style>
-* *:focus {
-	outline: transparent;
-}
-</style>
