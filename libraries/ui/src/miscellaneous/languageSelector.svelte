@@ -97,7 +97,7 @@ const LOADING_VALUE = '$loading'
 						<span style:margin-inline="1em" class="loading loading-dots loading-sm"></span>
 					{:else}
 						<IconText
-							iconName="mdi:chevron-up-down"
+							iconName="mdi:language"
 							text={selectedValue || 'Select a framework...'}
 						/>
 					{/if}

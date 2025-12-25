@@ -24,6 +24,7 @@ let isCopied = $state(false)
 			}}
 			size="sm"
 			variant="outline"
+			iconName="mdi:content-copy"
 		>
 			{isCopied ? '복사 됨' : '복사하기'}
 		</Button>
