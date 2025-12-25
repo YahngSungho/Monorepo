@@ -69,6 +69,7 @@ async function handleSubscribeSubmit_action(event) {
 	const isValid = validateEmail(emailValue)
 	if (!isValid) {
 		emailErrorMessage = emailErrorMessageList.incorrectFormat
+		isSubmitting = false
 		return
 	}
 	emailErrorMessage = ''

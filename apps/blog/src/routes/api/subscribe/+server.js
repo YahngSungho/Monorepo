@@ -14,24 +14,11 @@ const urlPost = `https://${URL}/posts/`
 
 async function addSubscription_action(email) {
 	const { error: error1 } = await supabase_admin
-		.from('user-information')
-		.upsert({ email: email, locale: getLocale() }, { onConflict: 'email' })
+		.from('blog-subscribe')
+		.upsert({ email: email, locale: getLocale(), is_subscribed: true, updated_at: (new Date()).toISOString() }, { onConflict: 'email' })
+
 	if (error1) {
 		throw error1
-	}
-
-	const { error: error2 } = await supabase_admin.from('user-activity').upsert(
-		[
-			{ activity_type: 'visited', email: email, project_name: '@app/blog' },
-			{ activity_type: 'subscribed', email: email, project_name: '@app/blog' },
-		],
-		{
-			ignoreDuplicates: true,
-			onConflict: 'email, project_name, activity_type',
-		},
-	)
-	if (error2) {
-		throw error2
 	}
 
 	return true
@@ -91,7 +78,8 @@ export const POST = async ({ request }) => {
 	}
 
 	try {
-		await Promise.all([addSubscription_action(email), sendWelcomeEmail_action(email)])
+		// await Promise.all([addSubscription_action(email), sendWelcomeEmail_action(email)])
+		await addSubscription_action(email)
 		return json({ email }, { headers: { 'content-type': 'application/json' }, status: 200 })
 	} catch (error) {
 		console.error(error)
