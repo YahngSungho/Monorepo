@@ -602,22 +602,19 @@ let jsonLd = $derived({
 					</div>
 				{/if}
 
-
-
 				<div id="Top2_Layout_Check"></div>
 			</div>
 
-
-			<div style="margin-top: auto; display: flex; gap: var(--space-em-cqi-m); font-size: var(--font-size-fluid-cqi-0); height: var(--shared-padding); justify-content: flex-end; align-items: center;">
+			<div
+				style="margin-top: auto; display: flex; gap: var(--space-em-cqi-m); font-size: var(--font-size-fluid-cqi-0); height: var(--shared-padding); justify-content: flex-end; align-items: center;"
+			>
 				<div>
 					<Link href="/rss.xml" noIcon>
 						<IconText iconName="mdi:rss" noMargin right small>RSS</IconText>
 					</Link>
 				</div>
 				<div>
-					<Link href="/privacy-policy">
-						Privacy Policy
-					</Link>
+					<Link href="/privacy-policy">Privacy Policy</Link>
 				</div>
 			</div>
 		</div>

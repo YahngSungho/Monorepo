@@ -12,7 +12,7 @@ let isCopied = $state(false)
 </script>
 
 <div style:flex-direction="column" class="flex-container">
-	<div class="join" style="max-width: 20em;">
+	<div class="join" style="max-inline-size: 20em;">
 		<Button
 			class="join-item"
 			onclick={() => {
@@ -28,11 +28,15 @@ let isCopied = $state(false)
 		>
 			{isCopied ? '복사 됨' : '복사하기'}
 		</Button>
-		<input value={url} class="input input-sm join-item"
-style="border: 1px solid currentcolor !important; width: fit-content;"
-		type="url" 	oninput={(e) => {
-			e.currentTarget.value = url;
-		}}  />
+		<input
+			value={url}
+			class="input input-sm join-item"
+			style=" inline-size: fit-content;border: 1px solid currentcolor !important;"
+			type="url"
+			oninput={(e) => {
+				e.currentTarget.value = url
+			}}
+		/>
 	</div>
 
 	{#if navigator.share && navigator.canShare({ text: title, title, url })}
