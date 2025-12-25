@@ -7,6 +7,7 @@ html {
 	block-size: 100svb;
 
 	font-size: var(--font-size-fluid-1);
+	font-weight: 450;
 	line-height: var(--font-lineheight-4);
 	color: var(--foreground);
 	text-wrap: stable;
@@ -51,12 +52,12 @@ label:focus-within,
 	outline-offset: 2px;
 }
 
-*:target {
-	outline-style: groove;
+label > input:focus {
+	outline: none;
 }
 
-input:focus {
-	outline: transparent;
+*:target {
+	outline-style: groove;
 }
 
 button,

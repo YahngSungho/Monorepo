@@ -129,7 +129,7 @@ let jsonLd = $derived({
 	{/if}
 </div>
 
-<div class="divider divider-neutral"></div>
+<div style="height: var(--space-em-cqi-l);"></div>
 
 <div>
 	<LinkList linkObjectArray={getLinkObjectArray(nearMetadata)} />

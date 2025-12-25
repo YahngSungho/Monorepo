@@ -461,7 +461,7 @@ let jsonLd = $derived({
 					class="title-font-size"
 				>
 					<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
-					<Link style="font-weight: 900;" href="/">
+					<Link style="font-weight: 700;" href="/">
 						{URL}
 					</Link>
 				</div>
@@ -494,16 +494,8 @@ let jsonLd = $derived({
 									style:inset-block-start="0.1em"
 									onclick={focusToInput_action}
 								>
-									<IconText iconName="mdi:arrow-down-bold" right>이메일</IconText>
+									<IconText iconName="mdi:alternate-email">이메일</IconText>
 								</legend>
-							</div>
-
-							<div class="divider divider-horizontal divider-neutral"></div>
-
-							<div>
-								<Link href="/rss.xml" noIcon>
-									<IconText iconName="mdi:rss" noMargin right small>RSS</IconText>
-								</Link>
 							</div>
 						</div>
 						<div
@@ -589,6 +581,7 @@ let jsonLd = $derived({
 						}}
 						size="sm"
 						variant="outline"
+						iconName="mdi:chevron-down"
 					>
 						{page.url.pathname.includes('posts') ?
 							'이 포스트 공유하기...'
@@ -610,6 +603,19 @@ let jsonLd = $derived({
 				{/if}
 
 				<div id="Top2_Layout_Check"></div>
+			</div>
+
+			<div
+				style="margin-top: auto; display: flex; gap: var(--space-em-cqi-m); font-size: var(--font-size-fluid-cqi-0); height: var(--shared-padding); justify-content: flex-end; align-items: center;"
+			>
+				<div>
+					<Link href="/rss.xml" noIcon>
+						<IconText iconName="mdi:rss" noMargin right small>RSS</IconText>
+					</Link>
+				</div>
+				<div>
+					<Link href="/privacy-policy">Privacy Policy</Link>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -652,7 +658,8 @@ let jsonLd = $derived({
 		gap: var(--space-em-cqi-m);
 
 		margin-block-start: auto;
-		padding: var(--shared-padding);
+		padding-inline: var(--shared-padding);
+		padding-block-start: var(--shared-padding);
 	}
 
 	& > .main {
@@ -663,7 +670,7 @@ let jsonLd = $derived({
 		min-inline-size: 60%;
 		max-block-size: none;
 		padding: var(--shared-padding);
-		font-size: var(--font-size-fluid-cqi-2);
+		font-size: var(--font-size-fluid-cqi-1);
 	}
 
 	& > .scroll-buttons {
@@ -686,7 +693,6 @@ let jsonLd = $derived({
 
 		& > .sidebar {
 			margin-block-start: 0;
-			padding: var(--shared-padding);
 		}
 	}
 }
