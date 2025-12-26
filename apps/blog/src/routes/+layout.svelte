@@ -361,8 +361,8 @@ let jsonLd = $derived({
 	url: currentCanonicalUrl,
 })
 
-// eslint-disable-next-line github/unescaped-html-literal, no-useless-escape
 let jsonLD_script = $derived(
+	// eslint-disable-next-line github/unescaped-html-literal, no-useless-escape
 	`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`,
 )
 </script>
