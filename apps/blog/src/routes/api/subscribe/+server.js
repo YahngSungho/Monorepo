@@ -13,9 +13,15 @@ import { sendMails_immediate_action } from '$lib/wrappers/sendMails.js'
 const urlPost = `https://${URL}/posts/`
 
 async function addSubscription_action(email) {
-	const { error: error1 } = await supabase_admin
-		.from('blog-subscribe')
-		.upsert({ email: email, locale: getLocale(), is_subscribed: true, updated_at: (new Date()).toISOString() }, { onConflict: 'email' })
+	const { error: error1 } = await supabase_admin.from('blog-subscribe').upsert(
+		{
+			email: email,
+			is_subscribed: true,
+			locale: getLocale(),
+			updated_at: new Date().toISOString(),
+		},
+		{ onConflict: 'email' },
+	)
 
 	if (error1) {
 		throw error1

@@ -361,7 +361,9 @@ let jsonLd = $derived({
 	url: currentCanonicalUrl,
 })
 // eslint-disable-next-line github/unescaped-html-literal, no-useless-escape
-let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`)
+let jsonLD_script = $derived(
+	`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`,
+)
 </script>
 
 <svelte:head>
@@ -579,12 +581,12 @@ let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringif
 				<div style:z-index="1" style:overflow="visible">
 					<Button
 						style="min-block-size: auto;"
+						iconName="mdi:chevron-down"
 						onclick={() => {
 							sharingButtonsOpen = !sharingButtonsOpen
 						}}
 						size="sm"
 						variant="outline"
-						iconName="mdi:chevron-down"
 					>
 						{page.url.pathname.includes('posts') ?
 							'이 포스트 공유하기...'
@@ -609,7 +611,13 @@ let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringif
 			</div>
 
 			<div
-				style="margin-top: auto; display: flex; gap: var(--space-em-cqi-m); font-size: var(--font-size-fluid-cqi-0); height: var(--shared-padding); justify-content: flex-end; align-items: center;"
+				style:display="flex"
+				style:gap="var(--space-em-cqi-m)"
+				style:justify-content="flex-end"
+				style:block-size="var(--shared-padding)"
+				style:font-size="var(--font-size-fluid-cqi-0)"
+				style:margin-block-start="auto"
+				style:align-items="center"
 			>
 				<div>
 					<Link href="/rss.xml" noIcon>
@@ -641,6 +649,8 @@ let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringif
 }
 
 .with-sidebar {
+	--shared-padding: var(--space-s-l);
+
 	scrollbar-gutter: stable;
 
 	overflow: auto;
@@ -649,8 +659,6 @@ let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringif
 	gap: 0;
 
 	block-size: 100svb;
-
-	--shared-padding: var(--space-s-l);
 
 	& > .sidebar {
 		display: flex;
@@ -661,8 +669,8 @@ let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringif
 		gap: var(--space-em-cqi-m);
 
 		margin-block-start: auto;
-		padding-inline: var(--shared-padding);
 		padding-block-start: var(--shared-padding);
+		padding-inline: var(--shared-padding);
 	}
 
 	& > .main {
@@ -673,6 +681,7 @@ let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringif
 		min-inline-size: 60%;
 		max-block-size: none;
 		padding: var(--shared-padding);
+
 		font-size: var(--font-size-fluid-cqi-1);
 	}
 
@@ -705,10 +714,11 @@ let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringif
 	--thickness: 0.3em;
 
 	position: absolute;
+	z-index: 0;
 	inset-block-start: 0;
 	inset-inline-end: 0;
 	transform: scaleY(-1) scaleX(-1);
-	z-index: 0;
+
 	color: var(--color-neutral);
 }
 

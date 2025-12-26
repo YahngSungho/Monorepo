@@ -12,9 +12,10 @@ let isCopied = $state(false)
 </script>
 
 <div style:flex-direction="column" class="flex-container">
-	<div class="join" style="max-inline-size: 100%;">
+	<div style:max-inline-size="100%" class="join">
 		<Button
 			class="join-item"
+			iconName="mdi:content-copy"
 			onclick={() => {
 				navigator.clipboard.writeText(url)
 				isCopied = true
@@ -24,16 +25,15 @@ let isCopied = $state(false)
 			}}
 			size="sm"
 			variant="outline"
-			iconName="mdi:content-copy"
 		>
 			{isCopied ? '복사 됨' : '복사하기'}
 		</Button>
 		<input
-			value={url}
-			class="input input-sm join-item"
 			style="border: 1px solid currentcolor !important;"
-			type="url"
+			class="input input-sm join-item"
 			readonly
+			type="url"
+			value={url}
 		/>
 	</div>
 
