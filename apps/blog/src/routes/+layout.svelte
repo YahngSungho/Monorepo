@@ -361,9 +361,8 @@ let jsonLd = $derived({
 	url: currentCanonicalUrl,
 })
 
-let jsonLD_script = $derived(
-	`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`,
-)
+// eslint-disable-next-line github/unescaped-html-literal, no-useless-escape
+let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`,)
 </script>
 
 <svelte:head>
