@@ -611,7 +611,7 @@ let jsonLd = $derived({
 			>
 				<div>
 					<Link href="/rss.xml" noIcon>
-						<IconText iconName="mdi:rss" noMargin right small>RSS</IconText>
+						<IconText iconName="vscode-icons:file-type-rss" noMargin right small>RSS</IconText>
 					</Link>
 				</div>
 				<div>

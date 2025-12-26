@@ -33,9 +33,7 @@ let isCopied = $state(false)
 			class="input input-sm join-item"
 			style="border: 1px solid currentcolor !important;"
 			type="url"
-			oninput={(e) => {
-				e.currentTarget.value = url
-			}}
+			readonly
 		/>
 	</div>
 
