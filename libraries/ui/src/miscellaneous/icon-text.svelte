@@ -54,17 +54,13 @@ let {
 </span>
 
 <style>
-:dir(rtl) .icon-container {
-	transform: scaleX(-1);
-}
-
 .with-icon {
 	display: inline-flex;
 	align-items: baseline;
 
 	& .icon-container {
 		position: relative;
-		inset-block-start: 0.45ex;
+		inset-block-start: 0.4ex;
 
 		display: inline-block;
 		flex-shrink: 0;

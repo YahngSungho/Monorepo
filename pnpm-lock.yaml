@@ -262,14 +262,14 @@ importers:
         specifier: ^2.12.1
         version: 2.13.1
       stylelint:
-        specifier: ^16.23.1
+        specifier: ^16.26.1
         version: 16.26.1(typescript@5.9.3)
       stylelint-color-format:
         specifier: ^1.1.0
         version: 1.1.0(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-clean-order:
-        specifier: ^7.0.0
-        version: 7.2.2(stylelint-order@7.0.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3))
+        specifier: ^8.0.0
+        version: 8.0.0(stylelint-order@7.0.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-html:
         specifier: ^1.1.0
         version: 1.1.0(postcss-html@1.8.0)(stylelint@16.26.1(typescript@5.9.3))
@@ -277,7 +277,7 @@ importers:
         specifier: ^9.0.5
         version: 9.0.5(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-standard:
-        specifier: ^39.0.0
+        specifier: ^39.0.1
         version: 39.0.1(stylelint@16.26.1(typescript@5.9.3))
       stylelint-declaration-block-no-ignored-properties:
         specifier: ^2.8.0
@@ -295,10 +295,10 @@ importers:
         specifier: ^2.3.1
         version: 2.3.1(stylelint@16.26.1(typescript@5.9.3))
       stylelint-no-unresolved-module:
-        specifier: ^2.3.0
+        specifier: ^2.5.2
         version: 2.5.2(stylelint@16.26.1(typescript@5.9.3))
       stylelint-no-unsupported-browser-features:
-        specifier: ^8.0.4
+        specifier: ^8.0.5
         version: 8.0.5(stylelint@16.26.1(typescript@5.9.3))
       stylelint-plugin-defensive-css:
         specifier: ^1.0.4
@@ -307,8 +307,8 @@ importers:
         specifier: ^1.2.3
         version: 1.2.3(stylelint@16.26.1(typescript@5.9.3))
       stylelint-use-nesting:
-        specifier: ^6.0.0
-        version: 6.0.0(stylelint@16.26.1(typescript@5.9.3))
+        specifier: ^6.0.1
+        version: 6.0.1(stylelint@16.26.1(typescript@5.9.3))
       stylelint-value-no-exposed-custom-properties:
         specifier: ^2.3.1
         version: 2.3.1(stylelint@16.26.1(typescript@5.9.3))
@@ -9041,9 +9041,8 @@ packages:
     peerDependencies:
       stylelint: '>=8.0.0'
 
-  stylelint-config-clean-order@7.2.2:
-    resolution: {integrity: sha512-m2Z0m0qb0NSYxa6AesJ/ghiCMF37dkjXjEtQ6ugzqKe5S5YwmLqSxdpCI373eLlTZSpF6oZ/EQl1mvNy7EC5qg==}
-    deprecated: This version contains breaking changes and was incorrectly published without a major version increment.
+  stylelint-config-clean-order@8.0.0:
+    resolution: {integrity: sha512-Ub+1k1OQvJPf6HKMRyku6DgOmdhD5ZTrevcbfyHP21Zf7pbs5ds4a8HbKY8iadA5RFlwiXwkzqLDytxQOqfDnA==}
     peerDependencies:
       stylelint: '>=16'
       stylelint-order: '>=6'
@@ -9129,8 +9128,8 @@ packages:
     peerDependencies:
       stylelint: ^14.0.0 || ^15.0.0 || ^16.0.0
 
-  stylelint-use-nesting@6.0.0:
-    resolution: {integrity: sha512-5/Icok0O35pU3DpHRmISTsElba2btHpPlNcbVrwy6AhapIPKE1QqaMslYhI0Cjt5/w4ALS4iICde9BhVq7HYKA==}
+  stylelint-use-nesting@6.0.1:
+    resolution: {integrity: sha512-3wA3DXKSkn1+RpEY22XHkiWRjiQNVuzWEmlERSkd2QtWZz1jaSKb63MHRnhtZTr+0v75NpgIOABsYU9Vcl97mw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       stylelint: '>= 16.9.0'
@@ -19495,7 +19494,7 @@ snapshots:
       style-search: 0.1.0
       stylelint: 16.26.1(typescript@5.9.3)
 
-  stylelint-config-clean-order@7.2.2(stylelint-order@7.0.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3)):
+  stylelint-config-clean-order@8.0.0(stylelint-order@7.0.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
       stylelint-order: 7.0.0(stylelint@16.26.1(typescript@5.9.3))
@@ -19577,7 +19576,7 @@ snapshots:
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
 
-  stylelint-use-nesting@6.0.0(stylelint@16.26.1(typescript@5.9.3)):
+  stylelint-use-nesting@6.0.1(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
 

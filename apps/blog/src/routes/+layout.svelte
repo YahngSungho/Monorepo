@@ -69,6 +69,7 @@ async function handleSubscribeSubmit_action(event) {
 	const isValid = validateEmail(emailValue)
 	if (!isValid) {
 		emailErrorMessage = emailErrorMessageList.incorrectFormat
+		isSubmitting = false
 		return
 	}
 	emailErrorMessage = ''
@@ -359,16 +360,21 @@ let jsonLd = $derived({
 	},
 	url: currentCanonicalUrl,
 })
+
+let jsonLD_script = $derived(
+	// eslint-disable-next-line github/unescaped-html-literal, no-useless-escape
+	`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`,
+)
 </script>
 
 <svelte:head>
-	<!-- 🌐 사이트 공통 메타태그 (모든 페이지에 적용) -->
+	<!-- 사이트 공통 메타태그 (모든 페이지에 적용) -->
 	<meta name="author" content={EMAIL_SENDER_NAME} />
 	<meta content={URL} property="og:site_name" />
 	<!-- <meta name="twitter:site" content="@sungho_yahng" /> -->
 	<!-- <meta name="twitter:creator" content="@sungho_yahng" /> -->
 
-	<!-- 🏠 홈페이지 전용 메타태그 -->
+	<!-- 홈페이지 전용 메타태그 -->
 	{#if !page.url.pathname.includes('posts')}
 		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 		<title>{URL}</title>
@@ -383,8 +389,9 @@ let jsonLd = $derived({
 		<meta name="twitter:description" content={data.description} />
 		<meta name="twitter:url" content={currentCanonicalUrl} />
 
+		<!-- 여기서 "@html `<script ..." 이렇게 하면 stylelint가 그 부분때문에 작동을 안하게 됨 -->
 		<!-- eslint-disable-next-line -->
-		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
+		{@html jsonLD_script}
 	{/if}
 
 	<link href="/rss.xml" rel="alternate" title="RSS Feed" type="application/rss+xml" />
@@ -576,12 +583,12 @@ let jsonLd = $derived({
 				<div style:z-index="1" style:overflow="visible">
 					<Button
 						style="min-block-size: auto;"
+						iconName="mdi:chevron-down"
 						onclick={() => {
 							sharingButtonsOpen = !sharingButtonsOpen
 						}}
 						size="sm"
 						variant="outline"
-						iconName="mdi:chevron-down"
 					>
 						{page.url.pathname.includes('posts') ?
 							'이 포스트 공유하기...'
@@ -606,11 +613,17 @@ let jsonLd = $derived({
 			</div>
 
 			<div
-				style="margin-top: auto; display: flex; gap: var(--space-em-cqi-m); font-size: var(--font-size-fluid-cqi-0); height: var(--shared-padding); justify-content: flex-end; align-items: center;"
+				style:display="flex"
+				style:gap="var(--space-em-cqi-m)"
+				style:justify-content="flex-end"
+				style:block-size="var(--shared-padding)"
+				style:font-size="var(--font-size-fluid-cqi-0)"
+				style:margin-block-start="auto"
+				style:align-items="center"
 			>
 				<div>
 					<Link href="/rss.xml" noIcon>
-						<IconText iconName="mdi:rss" noMargin right small>RSS</IconText>
+						<IconText iconName="vscode-icons:file-type-rss" noMargin right small>RSS</IconText>
 					</Link>
 				</div>
 				<div>
@@ -638,6 +651,8 @@ let jsonLd = $derived({
 }
 
 .with-sidebar {
+	--shared-padding: var(--space-s-l);
+
 	scrollbar-gutter: stable;
 
 	overflow: auto;
@@ -646,8 +661,6 @@ let jsonLd = $derived({
 	gap: 0;
 
 	block-size: 100svb;
-
-	--shared-padding: var(--space-s-l);
 
 	& > .sidebar {
 		display: flex;
@@ -658,8 +671,8 @@ let jsonLd = $derived({
 		gap: var(--space-em-cqi-m);
 
 		margin-block-start: auto;
-		padding-inline: var(--shared-padding);
 		padding-block-start: var(--shared-padding);
+		padding-inline: var(--shared-padding);
 	}
 
 	& > .main {
@@ -670,6 +683,7 @@ let jsonLd = $derived({
 		min-inline-size: 60%;
 		max-block-size: none;
 		padding: var(--shared-padding);
+
 		font-size: var(--font-size-fluid-cqi-1);
 	}
 
@@ -702,10 +716,11 @@ let jsonLd = $derived({
 	--thickness: 0.3em;
 
 	position: absolute;
+	z-index: 0;
 	inset-block-start: 0;
 	inset-inline-end: 0;
 	transform: scaleY(-1) scaleX(-1);
-	z-index: 0;
+
 	color: var(--color-neutral);
 }
 
