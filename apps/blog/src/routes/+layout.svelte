@@ -360,7 +360,7 @@ let jsonLd = $derived({
 	},
 	url: currentCanonicalUrl,
 })
-// eslint-disable-next-line github/unescaped-html-literal, no-useless-escape
+// eslint-disable-next-line
 let jsonLD_script = $derived(
 	`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`,
 )
@@ -388,6 +388,7 @@ let jsonLD_script = $derived(
 		<meta name="twitter:description" content={data.description} />
 		<meta name="twitter:url" content={currentCanonicalUrl} />
 
+		<!-- 여기서 "@html `<script ..." 이렇게 하면 stylelint가 그 부분때문에 작동을 안하게 됨 -->
 		<!-- eslint-disable-next-line -->
 		{@html jsonLD_script}
 	{/if}
