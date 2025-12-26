@@ -360,16 +360,18 @@ let jsonLd = $derived({
 	},
 	url: currentCanonicalUrl,
 })
+// eslint-disable-next-line github/unescaped-html-literal, no-useless-escape
+let jsonLD_script = $derived(`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`)
 </script>
 
 <svelte:head>
-	<!-- 🌐 사이트 공통 메타태그 (모든 페이지에 적용) -->
+	<!-- 사이트 공통 메타태그 (모든 페이지에 적용) -->
 	<meta name="author" content={EMAIL_SENDER_NAME} />
 	<meta content={URL} property="og:site_name" />
 	<!-- <meta name="twitter:site" content="@sungho_yahng" /> -->
 	<!-- <meta name="twitter:creator" content="@sungho_yahng" /> -->
 
-	<!-- 🏠 홈페이지 전용 메타태그 -->
+	<!-- 홈페이지 전용 메타태그 -->
 	{#if !page.url.pathname.includes('posts')}
 		<!-- eslint-disable-next-line @intlify/svelte/no-raw-text -->
 		<title>{URL}</title>
@@ -385,7 +387,7 @@ let jsonLd = $derived({
 		<meta name="twitter:url" content={currentCanonicalUrl} />
 
 		<!-- eslint-disable-next-line -->
-		{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`}
+		{@html jsonLD_script}
 	{/if}
 
 	<link href="/rss.xml" rel="alternate" title="RSS Feed" type="application/rss+xml" />
