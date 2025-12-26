@@ -360,7 +360,7 @@ let jsonLd = $derived({
 	},
 	url: currentCanonicalUrl,
 })
-// eslint-disable-next-line
+
 let jsonLD_script = $derived(
 	`<script type="application/ld+json">${JSON.stringify(jsonLd)}<\/script>`,
 )
