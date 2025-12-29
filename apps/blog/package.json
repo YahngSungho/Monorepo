@@ -31,12 +31,12 @@
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
-		"@library/third-parties": "workspace:*",
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-bottom": "workspace:*",
 		"@library/library-top": "workspace:*",
 		"@library/paraglide": "workspace:*",
+		"@library/third-parties": "workspace:*",
 		"@library/ui": "workspace:*",
 		"feed": "^5.1.0",
 		"nanoid": "^5.1.6",

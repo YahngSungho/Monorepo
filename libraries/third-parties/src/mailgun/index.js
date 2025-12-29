@@ -17,21 +17,21 @@ const encodeBasicAuth = (username, password) => {
  * @param {Record<string, any>} data
  */
 export const toMailgunParams = (data) => {
-	const params = new URLSearchParams()
+	const parameters = new URLSearchParams()
 	const entries = Object.entries(data).filter(([, value]) => value !== undefined && value !== null)
 	for (const [key, value] of entries) {
 		if (key === 'to') {
 			const toValue = Array.isArray(value) ? value.join(',') : String(value)
-			params.append('to', toValue)
+			parameters.append('to', toValue)
 			continue
 		}
 		if (Array.isArray(value)) {
-			for (const item of value) params.append(key, String(item))
+			for (const item of value) parameters.append(key, String(item))
 			continue
 		}
-		params.append(key, String(value))
+		parameters.append(key, String(value))
 	}
-	return params
+	return parameters
 }
 
 /**

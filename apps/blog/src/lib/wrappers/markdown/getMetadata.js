@@ -1,8 +1,8 @@
 // @ts-ignore
-import { getMarkdownFrontmatterList } from '@library/third-parties/supabase'
 import { R } from '@library/helpers/R'
 // @ts-ignore
 import { getLocale } from '@library/paraglide/helpers'
+import { getMarkdownFrontmatterList } from '@library/third-parties/supabase'
 
 import { APP_NAME } from '$lib/info.js'
 

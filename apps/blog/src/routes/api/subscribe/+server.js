@@ -1,8 +1,8 @@
-import { supabase_admin } from '@library/third-parties/supabase_admin'
 import { R } from '@library/helpers/R'
 import { shuffleArray } from '@library/helpers/random'
 import { emailSchema } from '@library/helpers/zod-schemas'
 import { getLocale } from '@library/paraglide/helpers'
+import { supabase_admin } from '@library/third-parties/supabase_admin'
 import { json } from '@sveltejs/kit'
 
 import { URL } from '$lib/info.js'
