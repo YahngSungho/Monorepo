@@ -11,3 +11,5 @@ updates:
       interval: daily
     labels:
       - dependabot
+    cooldown:
+      default-days: 15

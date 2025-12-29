@@ -86,7 +86,7 @@ const LOADING_VALUE = '$loading'
 			{#snippet child({ props })}
 				<Button
 					{...props}
-					style="font-weight: normal;"
+					style="font-weight: 450;"
 					class={buttonClass}
 					aria-expanded={open}
 					role="combobox"
