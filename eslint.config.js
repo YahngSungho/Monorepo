@@ -39,15 +39,11 @@ import { configs as sonarjs_configs } from 'eslint-plugin-sonarjs'
 import sql from 'eslint-plugin-sql'
 import storybook from 'eslint-plugin-storybook'
 import svelte from 'eslint-plugin-svelte'
-import toml from 'eslint-plugin-toml'
 import unicorn from 'eslint-plugin-unicorn'
 import xstate from 'eslint-plugin-xstate'
-import yml from 'eslint-plugin-yml'
 import globals from 'globals'
 import parser_jsonc from 'jsonc-eslint-parser'
 import * as parser_svelte from 'svelte-eslint-parser'
-import parser_toml from 'toml-eslint-parser'
-import parser_yaml from 'yaml-eslint-parser'
 
 import svelteConfig from './libraries/base/svelte.config.js'
 
@@ -514,24 +510,6 @@ export default defineFlatConfig([
 		...json.configs.recommended,
 	},
 
-	...yml.configs['flat/standard'],
-	{
-		files: ['**/*.yaml', '**/*.yml'],
-
-		languageOptions: {
-			parser: parser_yaml,
-		},
-	},
-
-	...toml.configs['flat/standard'],
-	{
-		files: ['**/*.toml'],
-
-		languageOptions: {
-			parser: parser_toml,
-		},
-	},
-
 	{
 		files: ['**/*.mdx'],
 
@@ -644,7 +622,7 @@ export default defineFlatConfig([
 	},
 
 	...jsonc.configs['flat/prettier'],
-	...yml.configs['flat/prettier'],
+
 	...svelte.configs.prettier,
 	eslintConfigPrettier,
 
