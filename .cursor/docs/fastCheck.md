@@ -14,8 +14,8 @@ Generate any bigint value taken into the specified range. Both lower bound and u
 
 **with:**
 
-- `min?` --- _lower bound of the range (included)_
-- `max?` --- _upper bound of the range (included)_
+- `min?` --- *lower bound of the range (included)*
+- `max?` --- *upper bound of the range (included)*
 
 **Usages:**
 
@@ -68,9 +68,9 @@ Generate any possible dates in the specified range. Both the lower bound and upp
 
 **with:**
 
-- `min?` --- default: `new Date(-8640000000000000)` --- _lower bound of the range (included)_
-- `max?` --- default: `new Date(8640000000000000)` --- _upper bound of the range (included)_
-- `noInvalidDate?` --- default: `false` --- _when `true` the Date "Invalid Date" will never be defined_
+- `min?` --- default: `new Date(-8640000000000000)` --- *lower bound of the range (included)*
+- `max?` --- default: `new Date(8640000000000000)` --- *upper bound of the range (included)*
+- `noInvalidDate?` --- default: `false` --- *when `true` the Date "Invalid Date" will never be defined*
 
 **Usages:**
 
@@ -132,8 +132,8 @@ Generate any possible integer in the specified range. Both the lower bound and u
 
 **with:**
 
-- `min?` --- default: `-2147483648` --- _lower bound of the range (included)_
-- `max?` --- default: `2147483647` --- _upper bound of the range (included)_
+- `min?` --- default: `-2147483648` --- *lower bound of the range (included)*
+- `max?` --- default: `2147483647` --- *upper bound of the range (included)*
 
 **Usages:**
 
@@ -166,7 +166,7 @@ Generate any possible positive integer between zero and the upper bound. Both ze
 
 **with:**
 
-- `max?` --- default: `2147483647` --- _upper bound of the range (included)_
+- `max?` --- default: `2147483647` --- *upper bound of the range (included)*
 
 **Usages:**
 
@@ -240,13 +240,13 @@ It always generates valid 32-bit floating point values.
 
 **with:**
 
-- `min?` --- default: `-∞` and `-3.4028234663852886e+38` when `noDefaultInfinity:true` --- _lower bound for the generated 32-bit floats (included)_
-- `max?` --- default: `+∞` and `+3.4028234663852886e+38` when `noDefaultInfinity:true` --- _upper bound for the generated 32-bit floats (included)_
-- `minExcluded?` --- default: `false` --- _do not include `min` in the set of possible values_
-- `maxExcluded?` --- default: `false` --- _do not include `max` in the set of possible values_
-- `noDefaultInfinity?` --- default: `false` --- _use finite values for `min` and `max` by default_
-- `noNaN?` --- default: `false` --- _do not generate `Number.NaN`_
-- `noInteger?` --- default: `false` --- _do not generate values matching `Number.isInteger`_
+- `min?` --- default: `-∞` and `-3.4028234663852886e+38` when `noDefaultInfinity:true` --- *lower bound for the generated 32-bit floats (included)*
+- `max?` --- default: `+∞` and `+3.4028234663852886e+38` when `noDefaultInfinity:true` --- *upper bound for the generated 32-bit floats (included)*
+- `minExcluded?` --- default: `false` --- *do not include `min` in the set of possible values*
+- `maxExcluded?` --- default: `false` --- *do not include `max` in the set of possible values*
+- `noDefaultInfinity?` --- default: `false` --- *use finite values for `min` and `max` by default*
+- `noNaN?` --- default: `false` --- *do not generate `Number.NaN`*
+- `noInteger?` --- default: `false` --- *do not generate values matching `Number.isInteger`*
 
 **Usages:**
 
@@ -293,13 +293,13 @@ Generate any floating point value taken into the specified range. The lower and 
 
 **with:**
 
-- `min?` --- default: `-∞` and `-Number.MAX_VALUE` when `noDefaultInfinity:true` --- _lower bound for the generated 32-bit floats (included)_
-- `max?` --- default: `+∞` and `Number.MAX_VALUE` when `noDefaultInfinity:true` --- _upper bound for the generated 32-bit floats (included)_
-- `minExcluded?` --- default: `false` --- _do not include `min` in the set of possible values_
-- `maxExcluded?` --- default: `false` --- _do not include `max` in the set of possible values_
-- `noDefaultInfinity?` --- default: `false` --- _use finite values for `min` and `max` by default_
-- `noNaN?` --- default: `false` --- _do not generate `Number.NaN`_
-- `noInteger?` --- default: `false` --- _do not generate values matching `Number.isInteger`_
+- `min?` --- default: `-∞` and `-Number.MAX_VALUE` when `noDefaultInfinity:true` --- *lower bound for the generated 32-bit floats (included)*
+- `max?` --- default: `+∞` and `Number.MAX_VALUE` when `noDefaultInfinity:true` --- *upper bound for the generated 32-bit floats (included)*
+- `minExcluded?` --- default: `false` --- *do not include `min` in the set of possible values*
+- `maxExcluded?` --- default: `false` --- *do not include `max` in the set of possible values*
+- `noDefaultInfinity?` --- default: `false` --- *use finite values for `min` and `max` by default*
+- `noNaN?` --- default: `false` --- *do not generate `Number.NaN`*
+- `noInteger?` --- default: `false` --- *do not generate values matching `Number.isInteger`*
 
 **Usages:**
 
@@ -350,10 +350,10 @@ String containing characters produced by the character generator defined for `u
 
 **with:**
 
-- `unit?` --- default: `'grapheme-ascii'` --- _how to generate the characters that will be joined together to create the resulting string_
-- `minLength?` --- default: `0` --- _minimal number of units (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal number of units (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `unit?` --- default: `'grapheme-ascii'` --- *how to generate the characters that will be joined together to create the resulting string*
+- `minLength?` --- default: `0` --- *minimal number of units (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal number of units (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -408,7 +408,7 @@ Generate array values.
 
 ---
 
-Generate _tuples_ \- or more precisely arrays - by aggregating the values generated by its underlying arbitraries.
+Generate *tuples* \- or more precisely arrays - by aggregating the values generated by its underlying arbitraries.
 
 **Signatures:**
 
@@ -416,7 +416,7 @@ Generate _tuples_ \- or more precisely arrays - by aggregating the values gene
 
 **with:**
 
-- `...arbitraries` --- _arbitraries that should be used to generate the values of our tuple_
+- `...arbitraries` --- *arbitraries that should be used to generate the values of our tuple*
 
 **Usages:**
 
@@ -441,11 +441,11 @@ Array of random length containing values generated by `arb`.
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
-- `depthIdentifier?` --- default: `undefined` --- _when specified, the array will impact the depth attached to the identifier to avoid going too deep if it already generated lots of items for current level_
+- `arb` --- *arbitrary instance responsible to generate values*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
+- `depthIdentifier?` --- default: `undefined` --- *when specified, the array will impact the depth attached to the identifier to avoid going too deep if it already generated lots of items for current level*
 
 **Usages:**
 
@@ -550,17 +550,17 @@ For performance reasons, we highly discourage the use of a fully custom `compar
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `selector?` --- default: `v => v` --- _project the generated value in order to compare it_
-- `comparator?` --- default: `SameValue` --- _compare two projected values and returns `true` whenever the projected values should be considered equal. Possible values for `comparator` are:_
+- `arb` --- *arbitrary instance responsible to generate values*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `selector?` --- default: `v => v` --- *project the generated value in order to compare it*
+- `comparator?` --- default: `SameValue` --- *compare two projected values and returns `true` whenever the projected values should be considered equal. Possible values for `comparator` are:*
   - `SameValue` to rely on `Object.is` to compare items (more details)
   - `SameValueZero` to rely on the same logic as the one of `Set` or `Map` to compare items (more details)
   - `IsStrictlyEqual` to rely on `===` to compare items (more details)
   - Fully custom function having the signature: `(selectedValueA, seletedValueB) => aIsEqualToB`
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
-- `depthIdentifier?` --- default: `undefined` --- _when specified, the array will impact the depth attached to the identifier to avoid going too deep if it already generated lots of items for current level_
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
+- `depthIdentifier?` --- default: `undefined` --- *when specified, the array will impact the depth attached to the identifier to avoid going too deep if it already generated lots of items for current level*
 
 **Usages:**
 
@@ -623,13 +623,13 @@ By default, the generated array may end by a hole (see `noTrailingHole`).
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
-- `minNumElements?` --- default: `0` --- _minimal number of elements (included)_
-- `maxNumElements?` --- default: `0x7fffffff` more --- _maximal number of elements (included) - when not specified, the algorithm generating random values will consider it equal to `maxGeneratedLengthFromSizeForArbitrary(minNumElements, size)` but the shrinking one will use `0x7fffffff`_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included) - length includes elements but also holes for sparse arrays - when not specified, the algorithm generating random values will consider it equal to `maxGeneratedLengthFromSizeForArbitrary(maxNumElements used by generate, size)` but the shrinking one will use `0x7fffffff`_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
-- `noTrailingHole?` --- default: `false` --- _when enabled, all generated arrays will either be the empty array or end by a non-hole_
-- `depthIdentifier?` --- default: `undefined` --- _when specified, the array will impact the depth attached to the identifier to avoid going too deep if it already generated lots of items for current level_
+- `arb` --- *arbitrary instance responsible to generate values*
+- `minNumElements?` --- default: `0` --- *minimal number of elements (included)*
+- `maxNumElements?` --- default: `0x7fffffff` more --- *maximal number of elements (included) - when not specified, the algorithm generating random values will consider it equal to `maxGeneratedLengthFromSizeForArbitrary(minNumElements, size)` but the shrinking one will use `0x7fffffff`*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included) - length includes elements but also holes for sparse arrays - when not specified, the algorithm generating random values will consider it equal to `maxGeneratedLengthFromSizeForArbitrary(maxNumElements used by generate, size)` but the shrinking one will use `0x7fffffff`*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
+- `noTrailingHole?` --- default: `false` --- *when enabled, all generated arrays will either be the empty array or end by a non-hole*
+- `depthIdentifier?` --- default: `undefined` --- *when specified, the array will impact the depth attached to the identifier to avoid going too deep if it already generated lots of items for current level*
 
 **Usages:**
 
@@ -806,7 +806,7 @@ Generate a function producing values using an underlying arbitrary.
 
 **with:**
 
-- `arb` --- _arbitrary responsible to produce the values_
+- `arb` --- *arbitrary responsible to produce the values*
 
 **Usages:**
 
@@ -859,7 +859,7 @@ The `Stream` structure provided by fast-check implements `IterableIterator<T>
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
+- `arb` --- *arbitrary instance responsible to generate values*
 
 **Usages:**
 
@@ -885,13 +885,13 @@ Generate dictionaries containing keys generated using `keyArb` and values gene
 
 **with:**
 
-- `keyArb` --- _arbitrary instance responsible to generate keys_
-- `valueArb` --- _arbitrary instance responsible to generate values_
-- `minKeys?` --- default: `0` --- _minimal number of keys in the generated instances (included)_
-- `maxKeys?` --- default: `0x7fffffff` more --- _maximal number of keys in the generated instances (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
-- `noNullPrototype?` --- default: `false` --- _only generate objects based on the Object-prototype, do not generate any object with null-prototype_
-- `depthIdentifier?` --- default: `undefined` --- _share the depth between instances using the same `depthIdentifier`_
+- `keyArb` --- *arbitrary instance responsible to generate keys*
+- `valueArb` --- *arbitrary instance responsible to generate values*
+- `minKeys?` --- default: `0` --- *minimal number of keys in the generated instances (included)*
+- `maxKeys?` --- default: `0x7fffffff` more --- *maximal number of keys in the generated instances (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
+- `noNullPrototype?` --- default: `false` --- *only generate objects based on the Object-prototype, do not generate any object with null-prototype*
+- `depthIdentifier?` --- default: `undefined` --- *share the depth between instances using the same `depthIdentifier`*
 
 **Usages:**
 
@@ -948,9 +948,9 @@ It comes very useful when dealing with settings.
 
 **with:**
 
-- `recordModel` --- _structure of the resulting instance_
-- `requiredKeys?` --- default: `[all keys of recordModel]` --- _list of keys that should never be deleted_
-- `noNullPrototype?` --- default: `false` --- _only generate records based on the Object-prototype, do not generate any record with null-prototype_
+- `recordModel` --- *structure of the resulting instance*
+- `requiredKeys?` --- default: `[all keys of recordModel]` --- *list of keys that should never be deleted*
+- `noNullPrototype?` --- default: `false` --- *only generate records based on the Object-prototype, do not generate any record with null-prototype*
 
 **Usages:**
 
@@ -1045,23 +1045,23 @@ Generate objects (key/values).
 
 **with:**
 
-- `key?` --- default: `fc.string()` --- _arbitrary responsible to generate keys used for instances of objects_
-- `depthSize?` --- default: `undefined` more --- _how much we allow our recursive structures to be deep?_
-- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- _maximal depth for generated objects (Map and Set included into objects)_
-- `maxKeys?` --- default: `0x7fffffff` more --- _maximal number of keys in generated objects (Map and Set included into objects)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
-- `withBigInt?` --- default: `false` --- _enable `bigint` \- eg.: `1n`_
-- `withBoxedValues?` --- default: `false` --- _enable boxed values - eg.: `new Number(5)`_
-- `withDate?` --- default: `false` --- _enable `Date` \- eg.: `new Date('2020-10-14T16:52:36.736Z')`_
-- `withMap?` --- default: `false` --- _enable `Map` \- eg.: `new Map([['key', 'value']])`_
-- `withNullPrototype?` --- default: `false` --- _enable objects not defining any prototype - eg.: `Object.create(null)`_
-- `withObjectString?` --- default: `false` --- _enable strings looking as string representations of JavaScript instances - eg.: `"{}"`, `"new Set([1])"`_
-- `withSet?` --- default: `false` --- _enable `Set` \- eg.: `new Set([1, 2, 3])`_
-- `withTypedArray?` --- default: `false` --- _enable typed arrays for ints, uints and floats - eg.: `Int8Array.from([1, 2, 3])`_
-- `withSparseArray?` --- default: `false` --- _enable sparse arrays - eg.: `[1,,,3]`_
-- `withUnicodeString?` --- default: `false` --- _change the default for `key` and `values` so that they produce unicode strings with non-ascii characters --- shadowed by `stringUnit`_
-- `stringUnit?` --- default: `undefined` --- _customize the set of characters being used by the `string` arbitrary_
-- `values?` --- default: _booleans, numbers, strings, null and undefined_ --- _array of arbitraries producing the root\* values - \*non-object ones_
+- `key?` --- default: `fc.string()` --- *arbitrary responsible to generate keys used for instances of objects*
+- `depthSize?` --- default: `undefined` more --- *how much we allow our recursive structures to be deep?*
+- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- *maximal depth for generated objects (Map and Set included into objects)*
+- `maxKeys?` --- default: `0x7fffffff` more --- *maximal number of keys in generated objects (Map and Set included into objects)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
+- `withBigInt?` --- default: `false` --- *enable `bigint` \- eg.: `1n`*
+- `withBoxedValues?` --- default: `false` --- *enable boxed values - eg.: `new Number(5)`*
+- `withDate?` --- default: `false` --- *enable `Date` \- eg.: `new Date('2020-10-14T16:52:36.736Z')`*
+- `withMap?` --- default: `false` --- *enable `Map` \- eg.: `new Map([['key', 'value']])`*
+- `withNullPrototype?` --- default: `false` --- *enable objects not defining any prototype - eg.: `Object.create(null)`*
+- `withObjectString?` --- default: `false` --- *enable strings looking as string representations of JavaScript instances - eg.: `"{}"`, `"new Set([1])"`*
+- `withSet?` --- default: `false` --- *enable `Set` \- eg.: `new Set([1, 2, 3])`*
+- `withTypedArray?` --- default: `false` --- *enable typed arrays for ints, uints and floats - eg.: `Int8Array.from([1, 2, 3])`*
+- `withSparseArray?` --- default: `false` --- *enable sparse arrays - eg.: `[1,,,3]`*
+- `withUnicodeString?` --- default: `false` --- *change the default for `key` and `values` so that they produce unicode strings with non-ascii characters --- shadowed by `stringUnit`*
+- `stringUnit?` --- default: `undefined` --- *customize the set of characters being used by the `string` arbitrary*
+- `values?` --- default: *booleans, numbers, strings, null and undefined* --- *array of arbitraries producing the root\* values - \*non-object ones*
 
 **Usages:**
 
@@ -1152,23 +1152,23 @@ Generate any kind of entities.
 
 **with:**
 
-- `key?` --- default: `fc.string()` --- _arbitrary responsible to generate keys used for instances of objects_
-- `depthSize?` --- default: `undefined` more --- _how much we allow our recursive structures to be deep?_
-- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- _maximal depth for generated objects (Map and Set included into objects)_
-- `maxKeys?` --- default: `0x7fffffff` more --- _maximal number of keys in generated objects (Map and Set included into objects)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
-- `withBigInt?` --- default: `false` --- _enable `bigint` \- eg.: `1n`_
-- `withBoxedValues?` --- default: `false` --- _enable boxed values - eg.: `new Number(5)`_
-- `withDate?` --- default: `false` --- _enable `Date` \- eg.: `new Date('2020-10-14T16:52:36.736Z')`_
-- `withMap?` --- default: `false` --- _enable `Map` \- eg.: `new Map([['key', 'value']])`_
-- `withNullPrototype?` --- default: `false` --- _enable objects not defining any prototype - eg.: `Object.create(null)`_
-- `withObjectString?` --- default: `false` --- _enable strings looking as string representations of JavaScript instances - eg.: `"{}"`, `"new Set([1])"`_
-- `withSet?` --- default: `false` --- _enable `Set` \- eg.: `new Set([1, 2, 3])`_
-- `withTypedArray?` --- default: `false` --- _enable typed arrays for ints, uints and floats - eg.: `Int8Array.from([1, 2, 3])`_
-- `withSparseArray?` --- default: `false` --- _enable sparse arrays - eg.: `[1,,,3]`_
-- `withUnicodeString?` --- default: `false` --- _change the default for `key` and `values` so that they produce unicode strings with non-ascii characters_
-- `stringUnit?` --- default: `undefined` --- _customize the set of characters being used by the `string` arbitrary --- shadowed by `stringUnit`_
-- `values?` --- default: _booleans, numbers, strings, null and undefined_ --- _array of arbitraries producing the root\* values - \*non-object ones_
+- `key?` --- default: `fc.string()` --- *arbitrary responsible to generate keys used for instances of objects*
+- `depthSize?` --- default: `undefined` more --- *how much we allow our recursive structures to be deep?*
+- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- *maximal depth for generated objects (Map and Set included into objects)*
+- `maxKeys?` --- default: `0x7fffffff` more --- *maximal number of keys in generated objects (Map and Set included into objects)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
+- `withBigInt?` --- default: `false` --- *enable `bigint` \- eg.: `1n`*
+- `withBoxedValues?` --- default: `false` --- *enable boxed values - eg.: `new Number(5)`*
+- `withDate?` --- default: `false` --- *enable `Date` \- eg.: `new Date('2020-10-14T16:52:36.736Z')`*
+- `withMap?` --- default: `false` --- *enable `Map` \- eg.: `new Map([['key', 'value']])`*
+- `withNullPrototype?` --- default: `false` --- *enable objects not defining any prototype - eg.: `Object.create(null)`*
+- `withObjectString?` --- default: `false` --- *enable strings looking as string representations of JavaScript instances - eg.: `"{}"`, `"new Set([1])"`*
+- `withSet?` --- default: `false` --- *enable `Set` \- eg.: `new Set([1, 2, 3])`*
+- `withTypedArray?` --- default: `false` --- *enable typed arrays for ints, uints and floats - eg.: `Int8Array.from([1, 2, 3])`*
+- `withSparseArray?` --- default: `false` --- *enable sparse arrays - eg.: `[1,,,3]`*
+- `withUnicodeString?` --- default: `false` --- *change the default for `key` and `values` so that they produce unicode strings with non-ascii characters*
+- `stringUnit?` --- default: `undefined` --- *customize the set of characters being used by the `string` arbitrary --- shadowed by `stringUnit`*
+- `values?` --- default: *booleans, numbers, strings, null and undefined* --- *array of arbitraries producing the root\* values - \*non-object ones*
 
 **Usages:**
 
@@ -1248,7 +1248,7 @@ Generate typed array values.
 
 ---
 
-Generate _Int8Array_
+Generate *Int8Array*
 
 **Signatures:**
 
@@ -1257,11 +1257,11 @@ Generate _Int8Array_
 
 **with:**
 
-- `min?` --- default: `-128` --- _minimal value (included)_
-- `max?` --- default: `127` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `-128` --- *minimal value (included)*
+- `max?` --- default: `127` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1289,7 +1289,7 @@ fc.int8Array({min:0,minLength:1});
 
 ---
 
-Generate _Uint8Array_
+Generate *Uint8Array*
 
 **Signatures:**
 
@@ -1298,11 +1298,11 @@ Generate _Uint8Array_
 
 **with:**
 
-- `min?` --- default: `0` --- _minimal value (included)_
-- `max?` --- default: `255` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `0` --- *minimal value (included)*
+- `max?` --- default: `255` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1330,7 +1330,7 @@ fc.uint8Array({max:42,minLength:1});
 
 ---
 
-Generate _Uint8ClampedArray_
+Generate *Uint8ClampedArray*
 
 **Signatures:**
 
@@ -1339,11 +1339,11 @@ Generate _Uint8ClampedArray_
 
 **with:**
 
-- `min?` --- default: `0` --- _minimal value (included)_
-- `max?` --- default: `255` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `0` --- *minimal value (included)*
+- `max?` --- default: `255` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1371,7 +1371,7 @@ fc.uint8ClampedArray({max:42,minLength:1});
 
 ---
 
-Generate _Int16Array_
+Generate *Int16Array*
 
 **Signatures:**
 
@@ -1380,11 +1380,11 @@ Generate _Int16Array_
 
 **with:**
 
-- `min?` --- default: `-32768` --- _minimal value (included)_
-- `max?` --- default: `32767` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `-32768` --- *minimal value (included)*
+- `max?` --- default: `32767` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1412,7 +1412,7 @@ fc.int16Array({min:0,minLength:1});
 
 ---
 
-Generate _Uint16Array_
+Generate *Uint16Array*
 
 **Signatures:**
 
@@ -1421,11 +1421,11 @@ Generate _Uint16Array_
 
 **with:**
 
-- `min?` --- default: `0` --- _minimal value (included)_
-- `max?` --- default: `65535` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `0` --- *minimal value (included)*
+- `max?` --- default: `65535` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1453,7 +1453,7 @@ fc.uint16Array({max:42,minLength:1});
 
 ---
 
-Generate _Int32Array_
+Generate *Int32Array*
 
 **Signatures:**
 
@@ -1462,11 +1462,11 @@ Generate _Int32Array_
 
 **with:**
 
-- `min?` --- default: `-0x80000000` --- _minimal value (included)_
-- `max?` --- default: `0x7fffffff` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `-0x80000000` --- *minimal value (included)*
+- `max?` --- default: `0x7fffffff` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1494,7 +1494,7 @@ fc.int32Array({min:0,minLength:1});
 
 ---
 
-Generate _Uint32Array_
+Generate *Uint32Array*
 
 **Signatures:**
 
@@ -1503,11 +1503,11 @@ Generate _Uint32Array_
 
 **with:**
 
-- `min?` --- default: `0` --- _minimal value (included)_
-- `max?` --- default: `0xffffffff` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `0` --- *minimal value (included)*
+- `max?` --- default: `0xffffffff` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1535,7 +1535,7 @@ fc.uint32Array({max:42,minLength:1});
 
 ---
 
-Generate _Float32Array_
+Generate *Float32Array*
 
 **Signatures:**
 
@@ -1544,14 +1544,14 @@ Generate _Float32Array_
 
 **with:**
 
-- `min?` --- default: `-∞` and `-3.4028234663852886e+38` when `noDefaultInfinity:true` --- _lower bound for the generated 32-bit floats (included)_
-- `max?` --- default: `+∞` and `+3.4028234663852886e+38` when `noDefaultInfinity:true` --- _upper bound for the generated 32-bit floats (included)_
-- `noDefaultInfinity?` --- default: `false` --- _use finite values for `min` and `max` by default_
-- `noNaN?` --- default: `false` --- _do not generate `Number.NaN`_
-- `noInteger?` --- default: `false` --- _do not generate values matching `Number.isInteger`_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `-∞` and `-3.4028234663852886e+38` when `noDefaultInfinity:true` --- *lower bound for the generated 32-bit floats (included)*
+- `max?` --- default: `+∞` and `+3.4028234663852886e+38` when `noDefaultInfinity:true` --- *upper bound for the generated 32-bit floats (included)*
+- `noDefaultInfinity?` --- default: `false` --- *use finite values for `min` and `max` by default*
+- `noNaN?` --- default: `false` --- *do not generate `Number.NaN`*
+- `noInteger?` --- default: `false` --- *do not generate values matching `Number.isInteger`*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1579,7 +1579,7 @@ fc.float32Array({minLength:1});
 
 ---
 
-Generate _Float64Array_
+Generate *Float64Array*
 
 **Signatures:**
 
@@ -1588,14 +1588,14 @@ Generate _Float64Array_
 
 **with:**
 
-- `min?` --- default: `-∞` and `-Number.MAX_VALUE` when `noDefaultInfinity:true` --- _lower bound for the generated 32-bit floats (included)_
-- `max?` --- default: `+∞` and `Number.MAX_VALUE` when `noDefaultInfinity:true` --- _upper bound for the generated 32-bit floats (included)_
-- `noDefaultInfinity?` --- default: `false` --- _use finite values for `min` and `max` by default_
-- `noNaN?` --- default: `false` --- _do not generate `Number.NaN`_
-- `noInteger?` --- default: `false` --- _do not generate values matching `Number.isInteger`_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `min?` --- default: `-∞` and `-Number.MAX_VALUE` when `noDefaultInfinity:true` --- *lower bound for the generated 32-bit floats (included)*
+- `max?` --- default: `+∞` and `Number.MAX_VALUE` when `noDefaultInfinity:true` --- *upper bound for the generated 32-bit floats (included)*
+- `noDefaultInfinity?` --- default: `false` --- *use finite values for `min` and `max` by default*
+- `noNaN?` --- default: `false` --- *do not generate `Number.NaN`*
+- `noInteger?` --- default: `false` --- *do not generate values matching `Number.isInteger`*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -1623,7 +1623,7 @@ fc.float64Array({minLength:1});
 
 ---
 
-Generate _BigInt64Array_
+Generate *BigInt64Array*
 
 **Signatures:**
 
@@ -1632,10 +1632,10 @@ Generate _BigInt64Array_
 
 **with:**
 
-- `min?` --- default: `-18446744073709551616n` --- _minimal value (included)_
-- `max?` --- default: `18446744073709551615n` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
+- `min?` --- default: `-18446744073709551616n` --- *minimal value (included)*
+- `max?` --- default: `18446744073709551615n` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
 
 **Usages:**
 
@@ -1663,7 +1663,7 @@ fc.bigInt64Array({min:0n,minLength:1});
 
 ---
 
-Generate _BigUint64Array_
+Generate *BigUint64Array*
 
 **Signatures:**
 
@@ -1672,10 +1672,10 @@ Generate _BigUint64Array_
 
 **with:**
 
-- `min?` --- default: `0n` --- _minimal value (included)_
-- `max?` --- default: `36893488147419103231n` --- _maximal value (included)_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal length (included)_
+- `min?` --- default: `0n` --- *minimal value (included)*
+- `max?` --- default: `36893488147419103231n` --- *maximal value (included)*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal length (included)*
 
 **Usages:**
 
@@ -1717,12 +1717,12 @@ Randomly chooses between producing a value using the underlying arbitrary or ret
 
 **with:**
 
-- `arb` --- _arbitrary that will be called to generate normal values_
-- `freq?` --- default: `5` --- _probability to build the nil value is of 1 / freq_
-- `nil?` --- default: `null` --- _nil value_
-- `depthSize?` --- default: `undefined` more --- _how much we allow our recursive structures to be deep? The chance to select the nil value will increase as we go deeper in the structure_
-- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- _when reaching maxDepth, only nil could be produced_
-- `depthIdentifier?` --- default: `undefined` --- _share the depth between instances using the same `depthIdentifier`_
+- `arb` --- *arbitrary that will be called to generate normal values*
+- `freq?` --- default: `5` --- *probability to build the nil value is of 1 / freq*
+- `nil?` --- default: `null` --- *nil value*
+- `depthSize?` --- default: `undefined` more --- *how much we allow our recursive structures to be deep? The chance to select the nil value will increase as we go deeper in the structure*
+- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- *when reaching maxDepth, only nil could be produced*
+- `depthIdentifier?` --- default: `undefined` --- *share the depth between instances using the same `depthIdentifier`*
 
 **Usages:**
 
@@ -1759,11 +1759,11 @@ The first arbitrary specified on `oneof` will have a privileged position. Cons
 
 **with:**
 
-- `...arbitraries` --- _arbitraries that could be used to generate a value. The received instances can either be raw instances of arbitraries (meaning weight is 1) or objects containing the arbitrary and its associated weight (integer value ≥0)_
-- `withCrossShrink?` --- default: `false` --- _in case of failure the shrinker will try to check if a failure can be found by using the first specified arbitrary. It may be pretty useful for recursive structures as it can easily help reducing their depth in case of failure_
-- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- _when reaching maxDepth, the first arbitrary will be used to generate the value_
-- `depthSize?` --- default: `undefined` more --- _how much we allow our recursive structures to be deep? The chance to select the first specified arbitrary will increase as we go deeper in the structure_
-- `depthIdentifier?` --- default: `undefined` --- _share the depth between instances using the same `depthIdentifier`_
+- `...arbitraries` --- *arbitraries that could be used to generate a value. The received instances can either be raw instances of arbitraries (meaning weight is 1) or objects containing the arbitrary and its associated weight (integer value ≥0)*
+- `withCrossShrink?` --- default: `false` --- *in case of failure the shrinker will try to check if a failure can be found by using the first specified arbitrary. It may be pretty useful for recursive structures as it can easily help reducing their depth in case of failure*
+- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- *when reaching maxDepth, the first arbitrary will be used to generate the value*
+- `depthSize?` --- default: `undefined` more --- *how much we allow our recursive structures to be deep? The chance to select the first specified arbitrary will increase as we go deeper in the structure*
+- `depthIdentifier?` --- default: `undefined` --- *share the depth between instances using the same `depthIdentifier`*
 
 **Usages:**
 
@@ -1804,8 +1804,8 @@ Generate tuple containing multiple instances of the same value - values are inde
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
-- `numValues` --- _number of clones (including itself)_
+- `arb` --- *arbitrary instance responsible to generate values*
+- `numValues` --- *number of clones (including itself)*
 
 **Usages:**
 
@@ -1835,7 +1835,7 @@ Drop bias from an existing arbitrary. Instead of being more likely to generate c
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
+- `arb` --- *arbitrary instance responsible to generate values*
 
 **Usages:**
 
@@ -1865,7 +1865,7 @@ The only potentially legitimate use of dropping shrinking is when creating new c
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
+- `arb` --- *arbitrary instance responsible to generate values*
 
 **Usages:**
 
@@ -1893,8 +1893,8 @@ The only potentially legitimate use of limiting shrinking is when creating new c
 
 **with:**
 
-- `arb` --- _arbitrary instance responsible to generate values_
-- `maxShrinks` --- _the maximal number of shrunk values that could be pulled from the arbitrary in case of shrink_
+- `arb` --- *arbitrary instance responsible to generate values*
+- `maxShrinks` --- *the maximal number of shrunk values that could be pulled from the arbitrary in case of shrink*
 
 **Usages:**
 
@@ -1916,7 +1916,7 @@ Filter an existing arbitrary.
 
 **with:**
 
-- `predicate` --- _only keeps values such as `predicate(value) === true`_
+- `predicate` --- *only keeps values such as `predicate(value) === true`*
 
 **Usages:**
 
@@ -1945,7 +1945,7 @@ Map an existing arbitrary.
 
 **with:**
 
-- `mapper` --- _transform the produced value into another one_
+- `mapper` --- *transform the produced value into another one*
 
 **Usages:**
 
@@ -1980,7 +1980,7 @@ Be aware that the shrinker of such construct might not be able to shrink as much
 
 **with:**
 
-- `fmapper` --- _produce an arbitrary based on a generated value_
+- `fmapper` --- *produce an arbitrary based on a generated value*
 
 **Usages:**
 
@@ -2007,7 +2007,7 @@ Always produce the same value
 
 **with:**
 
-- `value` --- _value that will be produced by the arbitrary_
+- `value` --- *value that will be produced by the arbitrary*
 
 **Usages:**
 
@@ -2033,7 +2033,7 @@ Randomly chooses among the provided values. It considers the first value as the 
 
 **with:**
 
-- `...values` --- _all the values that could possibly be generated by the arbitrary_
+- `...values` --- *all the values that could possibly be generated by the arbitrary*
 
 **Usages:**
 
@@ -2059,7 +2059,7 @@ Generate non-contiguous ranges of values by mapping integer values to constant.
 
 **with:**
 
-- `...{ num, build }` --- _describe how to map integer values to their final values. For each entry, the entry defines `num` corresponding to the number of integer values it covers and `build`, a method that will produce a value given an integer in the range `0` (included) to `num - 1` (included)_
+- `...{ num, build }` --- *describe how to map integer values to their final values. For each entry, the entry defines `num` corresponding to the number of integer values it covers and `build`, a method that will produce a value given an integer in the range `0` (included) to `num - 1` (included)*
 
 **Usages:**
 
@@ -2087,9 +2087,9 @@ Values of the resulting subarray are ordered the same way they were in the origi
 
 **with:**
 
-- `originalArray` --- _the array from which we want to extract sub-arrays_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `originalArray.length` --- _maximal length (included)_
+- `originalArray` --- *the array from which we want to extract sub-arrays*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `originalArray.length` --- *maximal length (included)*
 
 **Usages:**
 
@@ -2120,9 +2120,9 @@ Values of the resulting subarray are ordered randomly.
 
 **with:**
 
-- `originalArray` --- _the array from which we want to extract sub-arrays_
-- `minLength?` --- default: `0` --- _minimal length (included)_
-- `maxLength?` --- default: `originalArray.length` --- _maximal length (included)_
+- `originalArray` --- *the array from which we want to extract sub-arrays*
+- `minLength?` --- default: `0` --- *minimal length (included)*
+- `maxLength?` --- default: `originalArray.length` --- *maximal length (included)*
 
 **Usages:**
 
@@ -2155,7 +2155,7 @@ Prefer `fc.letrec` over `fc.memo`. Most of the features offered by `fc.memo`
 
 **with:**
 
-- `builder` --- _builder function defining how to build the recursive structure, it answers to the signature `(tie) =>`object with key corresponding to the name of the arbitrary and with vaue the arbitrary itself. The `tie` function given to builder should be used as a placeholder to handle the recursion. It takes as input the name of the arbitrary to use in the recursion._
+- `builder` --- *builder function defining how to build the recursive structure, it answers to the signature `(tie) =>`object with key corresponding to the name of the arbitrary and with vaue the arbitrary itself. The `tie` function given to builder should be used as a placeholder to handle the recursion. It takes as input the name of the arbitrary to use in the recursion.*
 
 **Usages:**
 
@@ -2345,7 +2345,7 @@ Initially `fc.memo` has been designed to offer a higher control over the gener
 
 **with:**
 
-- `builder` --- _builder function defining how to build the recursive structure. It receives as input the remaining depth and has to return an arbitrary (potentially another `memo` or itself)_
+- `builder` --- *builder function defining how to build the recursive structure. It receives as input the remaining depth and has to return an arbitrary (potentially another `memo` or itself)*
 
 **Usages:**
 
@@ -2386,8 +2386,8 @@ String matching the passed regex.
 
 **with:**
 
-- `regex` --- _the regex to be matched by produced strings_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `regex` --- *the regex to be matched by produced strings*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -2428,9 +2428,9 @@ Switch the case of characters generated by an underlying arbitrary.
 
 **with:**
 
-- `stringArb` --- _arbitrary producing random strings_
-- `toggleCase?` --- default: _try `toUpperCase` on the received code-point, if no effect try `toLowerCase`_ --- _custom toggle case function that will be called on some of the code-points to toggle the character_
-- `untoggleAll?` --- default: `undefined` --- _transform a string containing possibly toggled items to its untoggled version, when provided it makes it possible to shrink user-definable values, otherwise user-definable values will not be shrinkable BUT values generated by the framework will be shrinkable_
+- `stringArb` --- *arbitrary producing random strings*
+- `toggleCase?` --- default: *try `toUpperCase` on the received code-point, if no effect try `toLowerCase`* --- *custom toggle case function that will be called on some of the code-points to toggle the character*
+- `untoggleAll?` --- default: `undefined` --- *transform a string containing possibly toggled items to its untoggled version, when provided it makes it possible to shrink user-definable values, otherwise user-definable values will not be shrinkable BUT values generated by the framework will be shrinkable*
 
 **Usages:**
 
@@ -2479,11 +2479,11 @@ Provide valid base64 strings: length always multiple of 4 padded with '=' charac
 
 **with:**
 
-- `minLength?` --- default: `0` --- _minimal number of characters (included)_
-- `maxLength?` --- default: `0x7fffffff` more --- _maximal number of characters (included if multiple of 4)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `minLength?` --- default: `0` --- *minimal number of characters (included)*
+- `maxLength?` --- default: `0x7fffffff` more --- *maximal number of characters (included if multiple of 4)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
-_When using `minLength` and `maxLength` make sure that they are compatible together. For instance: asking for `minLength=2` and `maxLength=3` is impossible for base64 strings as produced by the framework_
+*When using `minLength` and `maxLength` make sure that they are compatible together. For instance: asking for `minLength=2` and `maxLength=3` is impossible for base64 strings as produced by the framework*
 
 **Usages:**
 
@@ -2517,10 +2517,10 @@ The generated values can be parsed by `JSON.parse`. All the string values (from
 
 **with:**
 
-- `depthSize?` --- default: `undefined` more --- _how much we allow our recursive structures to be deep?_
-- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- _maximal depth of generated objects_
-- `noUnicodeString?` --- default: `true` --- _toggle on/off the generation of strings used either as keys or values of the instance and including non-ascii characters --- shadowed by `stringUnit`_
-- `stringUnit?` --- default: `undefined` --- _customize the set of characters being used by the `string` arbitrary_
+- `depthSize?` --- default: `undefined` more --- *how much we allow our recursive structures to be deep?*
+- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- *maximal depth of generated objects*
+- `noUnicodeString?` --- default: `true` --- *toggle on/off the generation of strings used either as keys or values of the instance and including non-ascii characters --- shadowed by `stringUnit`*
+- `stringUnit?` --- default: `undefined` --- *customize the set of characters being used by the `string` arbitrary*
 
 **Usages:**
 
@@ -2560,7 +2560,7 @@ fc.json({depthSize:'medium'});
 
 ---
 
-Generate any value eligible to be stringified in JSON and parsed back to itself - _in other words, JSON compatible instances_.
+Generate any value eligible to be stringified in JSON and parsed back to itself - *in other words, JSON compatible instances*.
 
 As `JSON.parse` preserves `-0`, `jsonValue` can also have `-0` as a value. `jsonValue` must be seen as: any value that could have been built by doing a `JSON.parse` on a given string.
 
@@ -2575,10 +2575,10 @@ Note
 
 **with:**
 
-- `depthSize?` --- default: `undefined` more --- _how much we allow our recursive structures to be deep?_
-- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- _maximal depth for generated objects (Map and Set included into objects)_
-- `noUnicodeString?` --- default: `true` --- _toggle on/off the generation of strings used either as keys or values of the instance and including non-ascii characters --- shadowed by `stringUnit`_
-- `stringUnit?` --- default: `undefined` --- _customize the set of characters being used by the `string` arbitrary_
+- `depthSize?` --- default: `undefined` more --- *how much we allow our recursive structures to be deep?*
+- `maxDepth?` --- default: `Number.POSITIVE_INFINITY` --- *maximal depth for generated objects (Map and Set included into objects)*
+- `noUnicodeString?` --- default: `true` --- *toggle on/off the generation of strings used either as keys or values of the instance and including non-ascii characters --- shadowed by `stringUnit`*
+- `stringUnit?` --- default: `undefined` --- *customize the set of characters being used by the `string` arbitrary*
 
 **Usages:**
 
@@ -2681,8 +2681,8 @@ Lorem ipsum values.
 **with:**
 
 - `maxCount?` --- default: `0x7fffffff` more --- if `mode` is `"words"`: lorem ipsum sentence containing at most `maxCount` sentences, otherwise: containing at most `maxCount` words\_
-- `mode?` --- default: `"words"` --- _enable sentence mode by setting its value to `"sentences"`_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `mode?` --- default: `"words"` --- *enable sentence mode by setting its value to `"sentences"`*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -2744,7 +2744,7 @@ UUID values including versions 1 to 5 and going up to 15 when asked to.
 
 **with:**
 
-- `version` --- default: `[1,2,3,4,5,6,7,8]` --- _version or versions of the uuid to produce: 1, 2, 3, 4, 5... or 15. By default, we only produce UUIDs with versions being officially assigned, ie. from 1 to 8_
+- `version` --- default: `[1,2,3,4,5,6,7,8]` --- *version or versions of the uuid to produce: 1, 2, 3, 4, 5... or 15. By default, we only produce UUIDs with versions being officially assigned, ie. from 1 to 8*
 
 **Usages:**
 
@@ -2846,7 +2846,7 @@ Following RFC 1034, RFC 1123 and WHATWG URL Standard.
 
 **with:**
 
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -2882,11 +2882,11 @@ Following RFC 3986.
 **with:**
 
 - `withIPv4?` --- default: `false` --- \_enable ip v4
-- `withIPv4Extended?` --- default: `false` --- _enable ip v4 extended_
-- `withIPv6?` --- default: `false` --- _enable ip v6_
-- `withPort?` --- default: `false` --- _enable port_
-- `withUserInfo?` --- default: `false` --- _enable user info_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `withIPv4Extended?` --- default: `false` --- *enable ip v4 extended*
+- `withIPv6?` --- default: `false` --- *enable ip v6*
+- `withPort?` --- default: `false` --- *enable port*
+- `withUserInfo?` --- default: `false` --- *enable user info*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -2924,7 +2924,7 @@ Fragment is the optional part right after the # in an URI.
 
 **with:**
 
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -2947,7 +2947,7 @@ Following the specs specified by RFC 3986 and WHATWG URL Standard.
 
 **with:**
 
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -2978,7 +2978,7 @@ Query parameters part is the optional part right after the ? in an URI.
 
 **with:**
 
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -2999,7 +2999,7 @@ Web URL path segment.
 
 **with:**
 
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -3022,11 +3022,11 @@ Following the specs specified by RFC 3986 and WHATWG URL Standard.
 
 **with:**
 
-- `authoritySettings?` --- default: `{}` --- _constraints on the web authority_
-- `validSchemes?` --- default: `['http', 'https']` --- _list all the valid schemes_
-- `withFragments?` --- default: `false` --- _enable fragments_
-- `withQueryParameters?` --- default: `false` --- _enable query parameters_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `authoritySettings?` --- default: `{}` --- *constraints on the web authority*
+- `validSchemes?` --- default: `['http', 'https']` --- *list all the valid schemes*
+- `withFragments?` --- default: `false` --- *enable fragments*
+- `withQueryParameters?` --- default: `false` --- *enable query parameters*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -3073,7 +3073,7 @@ Following RFC 1123 and RFC 5322.
 
 **with:**
 
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
 
 **Usages:**
 
@@ -3149,7 +3149,7 @@ Iterables of commands.
 Model based testing approach extends the power of property based testing to state machines. It relies on commands or operations that a user can run on the system. Those commands define:
 
 - pre-condition --- confirm whether or not the command can be executed given the current context
-- execution --- update a simplified context or _model_ while updating and checking the _real_ system
+- execution --- update a simplified context or *model* while updating and checking the *real* system
 
 **Signatures:**
 
@@ -3158,11 +3158,11 @@ Model based testing approach extends the power of property based testing to stat
 
 **with:**
 
-- `commandArbs` --- _array of arbitraries responsible to generate commands_
-- `disableReplayLog?` --- default: `false` --- _disable the display of details regarding the replay for commands_
-- `maxCommands?` --- default: `0x7fffffff` more --- _maximal number of commands to generate (included)_
-- `size?` --- default: `undefined` more --- _how large should the generated values be?_
-- `replayPath?` --- _only used when replaying commands_
+- `commandArbs` --- *array of arbitraries responsible to generate commands*
+- `disableReplayLog?` --- default: `false` --- *disable the display of details regarding the replay for commands*
+- `maxCommands?` --- default: `0x7fffffff` more --- *maximal number of commands to generate (included)*
+- `size?` --- default: `undefined` more --- *how large should the generated values be?*
+- `replayPath?` --- *only used when replaying commands*
 
 **Usages:**
 
@@ -3243,7 +3243,7 @@ Scheduler for asynchronous tasks.
 
 **with:**
 
-- `act` --- _ensure that all scheduled tasks will be executed in the right context_
+- `act` --- *ensure that all scheduled tasks will be executed in the right context*
 
 # Properties
 
@@ -3267,9 +3267,9 @@ Equivalence in fast-check
 
 Each part of the definition can be achieved directly within fast-check:
 
-- "_for any (x, y, ...)_" via arbitraries
-- "_such that precondition(x, y, ...) holds_" via `fc.pre` or `.filter`
-- "_predicate(x, y, ...) is true_" via the predicate
+- "*for any (x, y, ...)*" via arbitraries
+- "*such that precondition(x, y, ...) holds*" via `fc.pre` or `.filter`
+- "*predicate(x, y, ...) is true*" via the predicate
 
 ## Synchronous properties​
 
@@ -3420,7 +3420,7 @@ The structure `RunDetails` provides all the details needed to report what happ
 
 | Reasons                                                 | `failed` | `interrupted`  | `counterexample`/`counterexamplePath`/`error` |
 | ------------------------------------------------------- | -------- | -------------- | --------------------------------------------- |
-| failure of the predicate                                | `true`   | `true`/`false` | _not null_                                    |
+| failure of the predicate                                | `true`   | `true`/`false` | *not null*                                    |
 | ---                                                     | ---      | ---            | ---                                           |
 | too many pre-conditions failures                        | `true`   | `false`        | `null`                                        |
 | execution took too long given `interruptAfterTimeLimit` | `true`   | `true`         | `null`                                        |

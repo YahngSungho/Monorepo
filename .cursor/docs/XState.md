@@ -16,7 +16,7 @@
 - Use `getNextSnapshot(…)` instead of `machine.transition(…)`
   - The `machine.transition(...)` method now requires an "actor scope" for the 3rd argument, which is internally created by `createActor(...)`. Instead, use `getNextSnapshot(...)` to get the next snapshot from some actor logic based on the current snapshot and event:
 - Send events explictly instead of using `autoForward`
-  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's _not_ recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
+  - The `autoForward` property on invoke configs has been removed. Instead, send events explicitly. In general, it's *not* recommended to forward all events to an actor. Instead, only forward the specific events that the actor needs.
 - The `state.toStrings()` method has been removed
 
 #### states
@@ -143,8 +143,8 @@
     - Parallel State Node: Object with multiple properties for each region (e.g., `{ monitor: 'on', mode: 'dark' }`).
   - `snapshot.context`: The current context data of the machine.
 - **Getting Meta Data**:
-  - `snapshot.meta`: Merged `meta` data from all _currently active_ state nodes.
-  - `snapshot.getMeta()`: Returns _all_ meta data defined on _all_ state nodes within the machine configuration (not just active ones).
+  - `snapshot.meta`: Merged `meta` data from all *currently active* state nodes.
+  - `snapshot.getMeta()`: Returns *all* meta data defined on *all* state nodes within the machine configuration (not just active ones).
 - **Current Actors**:
   - `snapshot.children`: An object containing references to currently invoked or spawned actors.
   - Access individual actors via their `id`: `snapshot.children[actorId]` yields the actor's `ref`.
@@ -208,7 +208,7 @@
 - **Self-Transition**: A transition that doesn't change the state but can execute actions. Defined by omitting the `target` property.
   - `on: { myEvent: { actions: [ /* ... */ ] /* no target here */ } }`
 - **Relative Targeting**:
-  - Target Sibling State: Use a dot prefix (`.`). Defined in the _parent_ state's `on` object.
+  - Target Sibling State: Use a dot prefix (`.`). Defined in the *parent* state's `on` object.
 
     ```js
     // In parent state config
@@ -226,7 +226,7 @@
   - `{ target: '#myStateId' }`
 - **Re-entering States**: Force exit and entry actions to run even if transitioning to the same state (or a descendant).
   - `on: { myEvent: { target: 'someState', reenter: true } }`
-- **`always` Transitions (Transient Transitions)**: Automatically taken if the condition (guard) is met upon entering the state. Evaluated _after_ entry actions.
+- **`always` Transitions (Transient Transitions)**: Automatically taken if the condition (guard) is met upon entering the state. Evaluated *after* entry actions.
   - `myState: { always: { guard: 'someCondition', target: 'nextState', actions: [/* ... */] } }` (Can be an array for multiple conditions).
 - **`after` Transitions (Delayed Transitions)**: Transition after a specified delay.
   - `myState: { after: { 5000: { target: 'nextState', actions: [/* ... */] } } }` (Delay in milliseconds)
@@ -320,9 +320,9 @@
   - Reference by ID: `myEvent: { target: '...', guard: 'myGuard' }`
   - Inline Guard: `myEvent: { target: '...', guard: ({ context, event }) => context.count > 10 }`
   - Parameterized Guard: `myEvent: { target: '...', guard: { type: 'myGuard', params: { threshold: 5 } } }`
-- **`stateIn` Guard**: A built-in guard creator to check if the machine is currently in a specific state (using ID). This check is relative to the _entire_ machine.
+- **`stateIn` Guard**: A built-in guard creator to check if the machine is currently in a specific state (using ID). This check is relative to the *entire* machine.
   - `myEvent: { guard: stateIn('#someStateId'), target: '...' }`
-- **Conditional Transitions (Guard Array)**: Define multiple transitions for the same event, guarded differently. The _first_ one whose guard evaluates to `true` is taken.
+- **Conditional Transitions (Guard Array)**: Define multiple transitions for the same event, guarded differently. The *first* one whose guard evaluates to `true` is taken.
 
   ```js
   {
@@ -353,7 +353,7 @@
 
 ### 히스토리 상태 (History State)
 
-- **Purpose**: Remembers the last active state configuration of its parent state. Transitioning _to_ a history state redirects the transition _to_ the remembered state(s).
+- **Purpose**: Remembers the last active state configuration of its parent state. Transitioning *to* a history state redirects the transition *to* the remembered state(s).
 - **Set**: Define a state node with `type: 'history'`. A `target` is required as a fallback if no history exists.
   - `historyNode: { type: 'history', target: 'defaultChildState' }`
 - **Shallow vs. Deep**:
@@ -366,7 +366,7 @@
 - Allows multiple state regions to be active simultaneously.
 - **Set**: Define a state node with `type: 'parallel'`.
   - `myParallelState: { type: 'parallel', states: { regionA: { ... }, regionB: { ... } } }`
-- **`onDone` Condition**: The parent state's `onDone` transition is only triggered when _all_ regions within the parallel state have reached their own final state.
+- **`onDone` Condition**: The parent state's `onDone` transition is only triggered when *all* regions within the parallel state have reached their own final state.
 
 ## 액터 모델 (Actor Model)
 
@@ -376,7 +376,7 @@
 
 ### 내부 상태 업데이트 (Internal State Update)
 
-- An actor can only update its _own_ internal state.
+- An actor can only update its *own* internal state.
 - Updates happen in response to received messages (events).
 - External entities cannot directly modify an actor's state.
 
@@ -422,7 +422,7 @@
 ### 액터 로직 생성 함수 (Actor Logic Creators)
 
 - **`createMachine`**: (Already covered) Creates state machine logic.
-  - _Snapshot Spec_: `{ value: string | object, context: any }`
+  - *Snapshot Spec*: `{ value: string | object, context: any }`
 - **`fromTransition`**: Simple logic that only determines the next state based on the current state and received event. No actions, context changes built-in.
 
   - ```js
@@ -439,7 +439,7 @@
     ```
 
   - `initialState` can be a value or a function `({ input }) => initialStateValue`.
-  - _Snapshot Spec_: `{ context: currentState }` (The state _is_ the context).
+  - *Snapshot Spec*: `{ context: currentState }` (The state *is* the context).
 
 - **`fromObservable`**: Logic driven by an external Observable stream.
   - **Implementation**:
@@ -453,7 +453,7 @@
 
     The actor's snapshot context will reflect the latest value emitted by the observable.
 
-  - _Snapshot Spec_: `{ context: latestValueFromObservable }`
+  - *Snapshot Spec*: `{ context: latestValueFromObservable }`
   - **Note**: All XState actors are themselves `observable`.
 
 - **`fromCallback`**: Intended for invoking callback-based services. Sends events back to the parent/invoker.
@@ -494,11 +494,11 @@
     })
     ```
 
-  - _Snapshot Spec_: `{ status: 'pending' | 'error' | 'done', output: any | undefined, error: any | undefined }`
+  - *Snapshot Spec*: `{ status: 'pending' | 'error' | 'done', output: any | undefined, error: any | undefined }`
   - **Convert Actor to Promise**: `toPromise(promiseActor)` (Resolves/rejects based on the actor's final state).
 
 - **`fromEventObservable`**: Creates an actor that forwards events sent to it directly to its parent/invoker, acting as a proxy.
-  - **Effect**: When invoked, events sent _to_ this actor logic instance go _directly_ to the invoking machine, bypassing the event observable actor itself.
+  - **Effect**: When invoked, events sent *to* this actor logic instance go *directly* to the invoking machine, bypassing the event observable actor itself.
 
 ### 고차 액터 로직 (Higher-Level Actor Logic)
 
@@ -526,7 +526,7 @@
 
 ### 액터 시스템 (Actor System)
 
-- **Creation**: An actor system is implicitly created when you create a "root" actor using `createActor(actorLogic)`. All actors spawned _by_ this root actor (and their descendants) become part of that system.
+- **Creation**: An actor system is implicitly created when you create a "root" actor using `createActor(actorLogic)`. All actors spawned *by* this root actor (and their descendants) become part of that system.
 - **Accessing the System**:
   - From an actor instance: `actor.system`
   - From within state machine actions/guards/etc.: Use the `system` property from the function arguments (`{ system }`).
@@ -559,8 +559,8 @@
 ### 스테이트머신 내 액터 라이프사이클 (Actor Lifecycle within State Machines)
 
 - **`invoke` Start/Stop**:
-  - Starts when the parent machine _enters_ the state where the actor is invoked.
-  - Stops when the parent machine _exits_ that state.
+  - Starts when the parent machine *enters* the state where the actor is invoked.
+  - Stops when the parent machine *exits* that state.
 - **`spawn` Start/Stop**:
   - Starts when the `spawn` action is executed during a transition.
   - Stops when:
@@ -615,7 +615,7 @@
 - **`State machines`** can invoke actors.
 - **vs. Actions**:
   - Allows two-way communication (sending/receiving events) between parent machine and invoked actor.
-  - Invoked machine actors can invoke/spawn their _own_ child actors, forming hierarchies.
+  - Invoked machine actors can invoke/spawn their *own* child actors, forming hierarchies.
 - **Implementation (within a state node's config)**:
 
   ```js
@@ -640,7 +640,7 @@
 
   - **Invoking Registered Actors**: Use the string key from `setup`: `setup({ actors: { myService: someLogic } })` then `invoke: { src: 'myService', ... }`.
   - **Multiple Invokes**: Use an array: `invoke: [ { src: 'actor1', id: 'a1' }, { src: 'actor2', id: 'a2' } ]`.
-  - **Provided `src`**: Define `src` as a string ID (`'myActor'`) in the machine, then provide the actual logic when creating the _parent_ actor: `createActor(myMachine.provide({ actors: { myActor: actualLogic } }))`.
+  - **Provided `src`**: Define `src` as a string ID (`'myActor'`) in the machine, then provide the actual logic when creating the *parent* actor: `createActor(myMachine.provide({ actors: { myActor: actualLogic } }))`.
 
 - **Lifecycle**: The invoked actor starts when the invoking state is entered and stops when it's exited.
 - **Root Invokes**: Define `invoke` at the top level of `createMachine` for actors active throughout the machine's lifetime.
@@ -652,12 +652,12 @@
 - **Accessing Invoked Actors from Parent Snapshot**:
   - `parentSnapshot.children.myInvokedActorId` provides access to the actor's reference, allowing:
     - `id`: The actor's ID.
-    - `send`: A function to send events _to_ the actor.
-    - `getSnapshot`: A function to get the actor's _current_ snapshot synchronously.
+    - `send`: A function to send events *to* the actor.
+    - `getSnapshot`: A function to get the actor's *current* snapshot synchronously.
 
 ### 글로벌 완료 이벤트 (Global Done Event)
 
-- Access the output of a _done_ invoked actor using a special event type structure: `xstate.done.actor.[actorId]`. This can be useful for transitions defined higher up in the machine.
+- Access the output of a *done* invoked actor using a special event type structure: `xstate.done.actor.[actorId]`. This can be useful for transitions defined higher up in the machine.
 
 ### Invoke vs. Spawn 차이점
 

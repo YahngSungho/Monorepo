@@ -867,13 +867,12 @@ jobs:
   lint-format:
     runs-on: ubuntu-latest
     needs:
-      [
-        path-filter,
-        fix-package-json,
-        update-translations,
-        fix-markdown,
-        update-third-parties-config,
-      ]
+      - path-filter
+      - fix-package-json
+      - update-translations
+      - fix-markdown
+      - update-third-parties-config
+
     if: |
       needs.path-filter.result == 'success' && !failure() && !cancelled()
     env:

@@ -16,9 +16,9 @@ You MUST adhere to the following principles when writing tests. These principles
    - **EXTREME MOCK MINIMIZATION**: **Strongly prefer testing with REAL dependencies**. Mocks (`vi.fn()`, `vi.spyOn()`) are a **last resort** and should ONLY be used for:
      - **True External Systems with I/O**: Dependencies performing actual Network requests, Database interactions, File System operations, or interacting with other processes/hardware.
      - **Non-Deterministic Behavior**: Controlling inherently unpredictable factors like `Date.now()`, `Math.random()`, or system timers (`setTimeout`, `setInterval`) for consistent assertions.
-     - **Prohibitively Complex/Slow Setup**: When a real dependency\'s setup is excessively complicated or slow, making the test impractical _and_ the dependency is not the focus of the test.
-   - **DO NOT MOCK**: Pure functions, simple utility functions, or collaborators whose side effects are negligible or irrelevant within the test context, _even if they reside in separate modules_. Use the actual implementations.
-   - **Mocking Built-ins (e.g., `fs`, `path`)**: When mocking built-in modules is necessary (due to I/O), carefully replicate the _specific exports_ (default, named functions like `readFileSync`, `join`) and the _expected return data structure_ that the code under test actually uses. Check the module\'s API if unsure. Ensure `path` module is correctly imported (`import path from \'node:path\'`) if used within mock factories.
+     - **Prohibitively Complex/Slow Setup**: When a real dependency\'s setup is excessively complicated or slow, making the test impractical *and* the dependency is not the focus of the test.
+   - **DO NOT MOCK**: Pure functions, simple utility functions, or collaborators whose side effects are negligible or irrelevant within the test context, *even if they reside in separate modules*. Use the actual implementations.
+   - **Mocking Built-ins (e.g., `fs`, `path`)**: When mocking built-in modules is necessary (due to I/O), carefully replicate the *specific exports* (default, named functions like `readFileSync`, `join`) and the *expected return data structure* that the code under test actually uses. Check the module\'s API if unsure. Ensure `path` module is correctly imported (`import path from \'node:path\'`) if used within mock factories.
    - **Goal**: Create tests that verify the integrated behavior of the unit with its essential collaborators, ensuring the system works together as expected. Mock only to isolate from true external boundaries or non-determinism.
 
 2. **Clarity and Simplicity**:
@@ -27,21 +27,21 @@ You MUST adhere to the following principles when writing tests. These principles
 
 3. **Readability and Structure**:
    - **Naming**: **한국어**로 된, 길고 **설명적인** 테스트 이름을 사용하여 테스트 중인 시나리오를 명확하게 설명하세요 (예: `it(\'입금액이 음수일 경우 RangeError를 발생시켜야 한다\')`).
-   - **AAA Pattern**: Strictly follow the **Arrange-Act-Assert (AAA)** pattern within each _example-based_ test body. Clearly separate the setup (Arrange), execution of the code under test (Act), and verification of the outcome (Assert) with comments or spacing.
+   - **AAA Pattern**: Strictly follow the **Arrange-Act-Assert (AAA)** pattern within each *example-based* test body. Clearly separate the setup (Arrange), execution of the code under test (Act), and verification of the outcome (Assert) with comments or spacing.
 
 4. **Keep Relevant Setup Visible**:
    - **Focus**: Inline necessary setup code (variable declarations, simple mock setups) directly within the test function where it significantly enhances clarity about what that specific test is doing.
-   - **Avoid**: Avoid hiding critical setup details in `beforeEach` or complex helper functions if doing so makes the individual test harder to understand on its own. Accept _some_ redundancy if it greatly improves the clarity and isolation of a test case. PRIORITIZE CLARITY OVER STRICT DRY for test setup.
+   - **Avoid**: Avoid hiding critical setup details in `beforeEach` or complex helper functions if doing so makes the individual test harder to understand on its own. Accept *some* redundancy if it greatly improves the clarity and isolation of a test case. PRIORITIZE CLARITY OVER STRICT DRY for test setup.
 
 5. **Use Literal Values**:
    - **Focus**: Use explicit "magic" numbers and strings directly in tests for inputs and expected outputs when it makes the specific scenario crystal clear (e.g., `expect(sum(2, 3)).toBe(5);`).
-   - **Avoid**: Avoid defining test-specific constants unless they represent a shared, meaningful concept used across _multiple_ tests AND defining them clarifies intent rather than obscuring the specific values being tested. Referencing constants exported from PRODUCTION code is generally acceptable.
+   - **Avoid**: Avoid defining test-specific constants unless they represent a shared, meaningful concept used across *multiple* tests AND defining them clarifies intent rather than obscuring the specific values being tested. Referencing constants exported from PRODUCTION code is generally acceptable.
 
 6. **Focused Tests**:
    - **Focus**: Each `test` or `it` block should ideally verify ONE specific behavior, condition, branch, or outcome. Avoid testing multiple unrelated things in a single test block.
 
 7. **Helper Functions**:
-   - **Use Sparingly**: If used, helper functions MUST NOT obscure the core logic or critical values of the test. Interactions with the code under test (the \'Act\' phase) should generally happen directly within the main test function. Helpers are best for complex, shared _setup_ (Arrange) that doesn\'t hide essential test parameters.
+   - **Use Sparingly**: If used, helper functions MUST NOT obscure the core logic or critical values of the test. Interactions with the code under test (the \'Act\' phase) should generally happen directly within the main test function. Helpers are best for complex, shared *setup* (Arrange) that doesn\'t hide essential test parameters.
 
 8. **Vitest Syntax & Mocking Best Practices (NEW EMPHASIS)**:
    - **Use Correctly**: Employ correct Vitest imports and matchers.
@@ -126,15 +126,15 @@ You MUST adhere to the following principles when writing tests. These principles
        - **Mixed Exports**: If `moduleMixed.js` has `export default myDefault; export const namedThing;`, the factory must return `return { default: mockMyDefault, namedThing: mockNamedThing };`.
        - **Re-exporting all from another module (`export * from './other'`)**: This can be tricky. Often better to mock `'./other'` directly if its exports are what you need to control. If mocking the re-exporting module, the factory needs to provide all re-exported names.
      - **`__esModule: true`**: For modules that are strictly ES Modules (ESM) and have named exports, Vitest sometimes requires `__esModule: true` to be part of the returned object from the mock factory, alongside your named mocks: `return { __esModule: true, namedExport1: vi.fn() };`. This is more often needed when mocking CommonJS modules that are being imported by ESM, or when there are interop complexities. Check Vitest documentation or experiment if mocks aren't applying for ESM named exports.
-     - **Verifying**: If mocks are not working, `console.log(await import('./yourModule'))` _within your test (after mocks are set up)_ to see what the SUT is actually receiving. It should show your mock functions/values. If it shows originals or `undefined`, your mock factory structure or path is likely wrong.
-   - **`vi.mock` Factory Implementation vs. `vi.mocked`**: If a `vi.mock('module', () => { ... })` factory provides a complete mock implementation (e.g., by returning an object with `vi.fn()` instances), **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` or `vi.mocked(...).mockReturnValue(...)` for the _same mock functions_ in `beforeEach` or individual tests _unless you are intentionally overriding the factory's default mock behavior for a specific test case_. The factory already sets the initial implementation. For test-specific overrides, using `mockReturnValueOnce`, `mockImplementationOnce`, or re-assigning properties on a mocked object (if the factory returned a plain object for a default export) is appropriate.
+     - **Verifying**: If mocks are not working, `console.log(await import('./yourModule'))` *within your test (after mocks are set up)* to see what the SUT is actually receiving. It should show your mock functions/values. If it shows originals or `undefined`, your mock factory structure or path is likely wrong.
+   - **`vi.mock` Factory Implementation vs. `vi.mocked`**: If a `vi.mock('module', () => { ... })` factory provides a complete mock implementation (e.g., by returning an object with `vi.fn()` instances), **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` or `vi.mocked(...).mockReturnValue(...)` for the *same mock functions* in `beforeEach` or individual tests *unless you are intentionally overriding the factory's default mock behavior for a specific test case*. The factory already sets the initial implementation. For test-specific overrides, using `mockReturnValueOnce`, `mockImplementationOnce`, or re-assigning properties on a mocked object (if the factory returned a plain object for a default export) is appropriate.
 
 9. **Principle Justification Comments**:
    - **Explain WHY**: 생성된 테스트 코드 내부에 **한국어**로 간결한 주석을 추가하여 특정 구조나 접근 방식이 선택된 _이유_를 설명하고, 이러한 원칙을 명시적으로 참조하세요 (예: `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`, `// 원칙: 최후 수단 모의 (네트워크 I/O 격리)`, `// 원칙: vi.hoisted 사용 (모의 범위 및 초기화 보장)`). 이는 원칙 준수를 보여주고 이해를 돕습니다.
 
 10. **Property-Based Testing (PBT) with fast-check**:
     - **Leverage Power**: Where applicable (e.g., functions processing diverse inputs, complex logical conditions, algorithms, state machines, potential edge cases), proactively use property-based testing via `@fast-check/vitest`. PBT automatically generates a wide range of inputs, often finding edge cases missed by traditional example-based tests.
-    - **Focus on Invariants**: Define properties using `test.prop` or `it.prop` and `fc` arbitraries. Focus on defining the _invariant_ (the property or rule that should always hold true for any valid input) rather than specific input/output pairs. (e.g., "for any two numbers a and b, sum(a, b) should equal sum(b, a)").
+    - **Focus on Invariants**: Define properties using `test.prop` or `it.prop` and `fc` arbitraries. Focus on defining the *invariant* (the property or rule that should always hold true for any valid input) rather than specific input/output pairs. (e.g., "for any two numbers a and b, sum(a, b) should equal sum(b, a)").
     - **Integration**: Combine PBT with example-based tests for comprehensive coverage. Use examples for specific known edge cases or core happy paths, and PBT for broader correctness.
 
 11. **Mock Function Call Record Initialization**:

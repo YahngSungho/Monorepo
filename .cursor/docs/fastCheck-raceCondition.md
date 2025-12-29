@@ -10,7 +10,7 @@ Race conditions can easily occur in JavaScript due to its event-driven nature. A
 
 > A race condition \[...\] is the condition \[...\] where the system's substantive behavior is dependent on the **sequence** or timing of other **uncontrollable events**.
 
-_Source: <https://en.wikipedia.org/wiki/Race_condition>_
+*Source: <https://en.wikipedia.org/wiki/Race_condition>*
 
 Identifying and fixing race conditions can be challenging as they can occur unexpectedly. It requires a thorough understanding of potential event flows and often involves using advanced debugging and testing tools.
 To address this issue, fast-check includes a set of built-in tools specifically designed to help in detecting race conditions. The `scheduler` arbitrary has been specifically designed for detecting and testing race conditions, making it an ideal tool for addressing these challenges in your testing process.
@@ -26,7 +26,7 @@ The `scheduler` arbitrary is able to generate instances of `Scheduler`. They 
 - `scheduleSequence(sequenceBuilders: SchedulerSequenceItem<TMetadata>[], act?: SchedulerAct): { done: boolean; faulty: boolean, task: Promise<{ done: boolean; faulty: boolean }> }` \- Schedule a sequence of operations. Each operation requires the previous one to be resolved before being started. Each of the operations will be executed until its end before starting any other scheduled operation.
 - `count(): number` \- Number of pending tasks waiting to be scheduled by the scheduler.
 - `waitOne: (act?: SchedulerAct) => Promise<void>` \- Wait one scheduled task to be executed. Throws if there is no more pending tasks.
-- `waitAll: (act?: SchedulerAct) => Promise<void>` \- Wait all scheduled tasks, including the ones that might be created by one of the resolved task. Do not use if `waitAll` call has to be wrapped into an helper function such as `act` that can relaunch new tasks afterwards. In this specific case use a `while` loop running while `count() !== 0` and calling `waitOne` \- _see CodeSandbox example on userProfile_.
+- `waitAll: (act?: SchedulerAct) => Promise<void>` \- Wait all scheduled tasks, including the ones that might be created by one of the resolved task. Do not use if `waitAll` call has to be wrapped into an helper function such as `act` that can relaunch new tasks afterwards. In this specific case use a `while` loop running while `count() !== 0` and calling `waitOne` \- *see CodeSandbox example on userProfile*.
 - `waitFor: <T>(unscheduledTask: Promise<T>, act?: SchedulerAct) => Promise<T>` \- Wait as many scheduled tasks as need to resolve the received task. Contrary to `waitOne` or `waitAll` it can be used to wait for calls not yet scheduled when calling it (some test solutions like supertest use such trick not to run any query before the user really calls then on the request itself). Be aware that while this helper will wait eveything to be ready for `unscheduledTask` to resolve, having uncontrolled tasks triggering stuff required for `unscheduledTask` might make replay of failures harder as such asynchronous triggers stay out-of-control for fast-check.
 - `report: () => SchedulerReportItem<TMetaData>[]` \- Produce an array containing all the scheduled tasks so far with their execution status. If the task has been executed, it includes a string representation of the associated output or error produced by the task if any.
   Tasks will be returned in the order they get executed by the scheduler.
@@ -40,7 +40,7 @@ typeSchedulerSequenceItem<TMetadata>=
 
 ```
 
-You can also define an hardcoded scheduler by using `fc.schedulerFor(ordering: number[])` \- _should be passed through `fc.constant` if you want to use it as an arbitrary_. For instance: `fc.schedulerFor([1,3,2])` means that the first scheduled promise will resolve first, the third one second and at the end we will resolve the second one that have been scheduled.
+You can also define an hardcoded scheduler by using `fc.schedulerFor(ordering: number[])` \- *should be passed through `fc.constant` if you want to use it as an arbitrary*. For instance: `fc.schedulerFor([1,3,2])` means that the first scheduled promise will resolve first, the third one second and at the end we will resolve the second one that have been scheduled.
 
 ## Scheduling methods​
 
@@ -48,7 +48,7 @@ You can also define an hardcoded scheduler by using `fc.schedulerFor(ordering: 
 
 ### schedule​
 
-Create a scheduled `Promise` based on an existing one --- _aka. wrapped `Promise`_. The life-cycle of the wrapped `Promise` will not be altered at all. On its side the scheduled `Promise` will only resolve when the scheduler decides it.
+Create a scheduled `Promise` based on an existing one --- *aka. wrapped `Promise`*. The life-cycle of the wrapped `Promise` will not be altered at all. On its side the scheduled `Promise` will only resolve when the scheduler decides it.
 
 Once scheduled by the scheduler, the scheduler will wait the wrapped `Promise` to resolve before sheduling anything else.
 
@@ -144,7 +144,7 @@ Create a sequence of asynchrnous calls running in a precise order.
 While running, tasks prevent others to complete
 
 One important fact about scheduled sequence is that whenever one task of the sequence gets scheduled, no other scheduled task in the scheduler can be unqueued while this task has not ended.
-It means that tasks defined within a scheduled sequence must not require other scheduled task to end to fulfill themselves --- _it does not mean that they should not force the scheduling of other scheduled tasks_.
+It means that tasks defined within a scheduled sequence must not require other scheduled task to end to fulfill themselves --- *it does not mean that they should not force the scheduling of other scheduled tasks*.
 
 **Signature**
 

@@ -19,7 +19,7 @@ Follow these steps precisely:
    - Carefully examine the provided `target` function's code.
    - Identify ALL points where the function interacts with the outside world or causes side effects. These are the 'Actions' (`액션`). List them explicitly. Examples include: `await` calls (especially for I/O or APIs), direct data mutation (if violating expected immutability), `console.log`, DOM manipulation, file system access, network requests, calls to other impure functions, modifying external state.
    - Identify ALL blocks of logic within the function that perform pure computations (`계산`). These are segments of code that, given the same inputs, always produce the same outputs and have no side effects. These can appear before, between, or after Actions.
-   - _Suggestion_: You may use a Markdown table in your reasoning phase to clearly map snippets from the original function to 'Action' or 'Pure Computation -> [New Function Name]' for clarity.
+   - *Suggestion*: You may use a Markdown table in your reasoning phase to clearly map snippets from the original function to 'Action' or 'Pure Computation -> [New Function Name]' for clarity.
 3. **Extract Pure Computations**:
    - For EACH identified block of pure computation logic, extract it into a NEW, separate function.
    - Give each new function a clear, descriptive name that reflects its specific computation (e.g., `calculateDiscount`, `validateUserData`, `formatApiResponse`).
@@ -71,7 +71,7 @@ Your final output MUST be structured as follows:
      - Use a diff format or show the code snippets with enough surrounding context (e.g., 3 lines before and after) so the changes are unambiguous. Use `// ... existing code ...` markers.
    - **Linting and Correction**: After the `edit_file` tool attempts to apply the changes, review the outcome for any reported lint errors.
      - If lint errors exist, analyze them and attempt to fix the code directly within the proposed changes.
-     - Use the `edit_file` tool _again_ with the corrected code changes.
+     - Use the `edit_file` tool *again* with the corrected code changes.
      - Repeat this lint-check-correct cycle up to **3 times** for the same file.
      - If errors persist after 3 attempts, stop, report the remaining errors, and ask the user for further instructions.
 5. **Final Confirmation**: A brief statement confirming the plan is ready for execution (or reporting persistent lint errors).

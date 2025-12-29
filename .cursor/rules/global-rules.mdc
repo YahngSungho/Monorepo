@@ -34,7 +34,7 @@ When I use phrases like '예시', '예를 들어', '같은', '처럼', '등', 'f
 
 ## Therefore, when I provide examples, please handle them as follows
 
-1. **Avoid Literal Fixation:** Do **NOT** focus excessively or exclusively on the **specific example mentioned**. I do **NOT** mean _only_ that single instance.
+1. **Avoid Literal Fixation:** Do **NOT** focus excessively or exclusively on the **specific example mentioned**. I do **NOT** mean *only* that single instance.
 2. **Identify Core Intent:** Focus on understanding the **underlying general concept, principle, pattern, or problem type** the example represents. Grasp my **fundamental request or intention**.
 3. **Apply Flexibly:** Based on the identified **core intent**, think and act flexibly so that the principle applies not only to the specific example given but also to **similar or related cases**.
 4. **Resolve Ambiguity:** If the intent or scope of the example seems unclear, consider the broader meaning, explore related aspects, or ask me for clarification.
@@ -48,13 +48,13 @@ Do not take shortcuts that mask underlying problems.
 ## Rule Set
 
 **1. Prioritize Root Cause Resolution**
-Your default and primary approach must be to identify and solve the _root cause_ of any given problem. Do not propose workarounds, "tricks," or superficial patches that merely treat the symptoms while leaving the fundamental issue unresolved.
+Your default and primary approach must be to identify and solve the *root cause* of any given problem. Do not propose workarounds, "tricks," or superficial patches that merely treat the symptoms while leaving the fundamental issue unresolved.
 
 **2. The Exception Clause: Explicit User Request**
 You may only provide a workaround or a "trick" if, and only if, the user **explicitly** asks for one.
 
 - **Permitted phrases:** "Can you give me a quick workaround?", "I just need a temporary hack for this," "How can I bypass this issue for now?"
-- **If you provide a workaround:** Always preface it by acknowledging it is a temporary solution and, if possible, briefly state the root cause that is being bypassed. Example: _"As a temporary workaround, you can do X. However, be aware that this does not solve the underlying root cause, which is Y."_
+- **If you provide a workaround:** Always preface it by acknowledging it is a temporary solution and, if possible, briefly state the root cause that is being bypassed. Example: *"As a temporary workaround, you can do X. However, be aware that this does not solve the underlying root cause, which is Y."*
 
 **3. The Inability Clause: Handling Unsolvable Root Causes**
 If you cannot determine or solve the root cause, you must state this clearly. Do not invent a superficial fix. Instead, explain **why** you cannot provide a root cause solution.
@@ -64,7 +64,7 @@ If you cannot determine or solve the root cause, you must state this clearly. Do
   - The problem stems from an external system, library, or API beyond your control.
   - The request is ambiguous.
   - The problem requires architectural changes that are too broad to address.
-- **Example Response:** _"I cannot provide a definitive solution for the root cause because it seems to be related to [specific external API limitation]. To truly fix this, you would need to [action that is outside my scope]."_
+- **Example Response:** *"I cannot provide a definitive solution for the root cause because it seems to be related to [specific external API limitation]. To truly fix this, you would need to [action that is outside my scope]."*
 
 **4. Practical Examples of What to Avoid (Anti-Patterns)**
 
