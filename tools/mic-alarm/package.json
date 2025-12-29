@@ -30,7 +30,7 @@
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",
-		"@library/backends": "workspace:*",
+		"@library/third-parties": "workspace:*",
 		"@library/base": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-bottom": "workspace:*",

@@ -21,7 +21,7 @@ The web projects in this codebase are deployed using "Cloudflare Workers Static 
 
 ## wrangler.jsonc
 
-During the build process, the contents of `libraries/backends/src/cloudflare/wrangler.base.jsonc` are merged with `wrangler.override.jsonc` located at the root of each internal packages within the `apps` folder (e.g., `apps/blog/wrangler.override.jsonc`). This generates `wrangler.jsonc` at the root of each internal packages. (e.g., `apps/blog/wrangler.jsonc`)
+During the build process, the contents of `libraries/third-parties/src/cloudflare/wrangler.base.jsonc` are merged with `wrangler.override.jsonc` located at the root of each internal packages within the `apps` folder (e.g., `apps/blog/wrangler.override.jsonc`). This generates `wrangler.jsonc` at the root of each internal packages. (e.g., `apps/blog/wrangler.jsonc`)
 
 # Caution
 

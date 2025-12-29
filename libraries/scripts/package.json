@@ -11,7 +11,7 @@
 	"dependencies": {
 		"@ai-sdk/google": "^1.2.18",
 		"@ai-sdk/openai": "^1.3.18",
-		"@library/backends": "workspace:*",
+		"@library/third-parties": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-bottom": "workspace:*",
 		"@library/llms": "workspace:*",

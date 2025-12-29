@@ -1,5 +1,5 @@
 // @ts-ignore
-import { getMarkdownFrontmatterList } from '@library/backends/supabase'
+import { getMarkdownFrontmatterList } from '@library/third-parties/supabase'
 import { R } from '@library/helpers/R'
 // @ts-ignore
 import { getLocale } from '@library/paraglide/helpers'

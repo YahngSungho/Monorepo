@@ -393,9 +393,6 @@ importers:
       '@formkit/auto-animate':
         specifier: ^0.8.2
         version: 0.8.4
-      '@library/backends':
-        specifier: workspace:*
-        version: link:../../libraries/backends
       '@library/base':
         specifier: workspace:*
         version: link:../../libraries/base
@@ -411,6 +408,9 @@ importers:
       '@library/paraglide':
         specifier: workspace:*
         version: link:../../libraries/paraglide
+      '@library/third-parties':
+        specifier: workspace:*
+        version: link:../../libraries/third-parties
       '@library/ui':
         specifier: workspace:*
         version: link:../../libraries/ui
@@ -507,22 +507,6 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
 
-  libraries/backends:
-    dependencies:
-      '@library/helpers':
-        specifier: workspace:*
-        version: link:../helpers
-      '@library/library-bottom':
-        specifier: workspace:*
-        version: link:../library-bottom
-      '@supabase/supabase-js':
-        specifier: ^2.57.4
-        version: 2.86.0
-    devDependencies:
-      jsonc-parser:
-        specifier: ^3.3.1
-        version: 3.3.1
-
   libraries/base:
     dependencies:
       '@library/library-bottom':
@@ -615,15 +599,15 @@ importers:
 
   libraries/library-top:
     dependencies:
-      '@library/backends':
-        specifier: workspace:*
-        version: link:../backends
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
       '@library/library-bottom':
         specifier: workspace:*
         version: link:../library-bottom
+      '@library/third-parties':
+        specifier: workspace:*
+        version: link:../third-parties
       '@library/ui':
         specifier: workspace:*
         version: link:../ui
@@ -675,9 +659,6 @@ importers:
       '@ai-sdk/openai':
         specifier: ^1.3.18
         version: 1.3.24(zod@3.25.76)
-      '@library/backends':
-        specifier: workspace:*
-        version: link:../backends
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
@@ -687,6 +668,9 @@ importers:
       '@library/llms':
         specifier: workspace:*
         version: link:../llms
+      '@library/third-parties':
+        specifier: workspace:*
+        version: link:../third-parties
       ai:
         specifier: ^4.3.9
         version: 4.3.19(react@19.2.0)(zod@3.25.76)
@@ -705,6 +689,22 @@ importers:
       zod:
         specifier: ^3.25.36
         version: 3.25.76
+
+  libraries/third-parties:
+    dependencies:
+      '@library/helpers':
+        specifier: workspace:*
+        version: link:../helpers
+      '@library/library-bottom':
+        specifier: workspace:*
+        version: link:../library-bottom
+      '@supabase/supabase-js':
+        specifier: ^2.57.4
+        version: 2.86.0
+    devDependencies:
+      jsonc-parser:
+        specifier: ^3.3.1
+        version: 3.3.1
 
   libraries/ui:
     dependencies:
@@ -883,9 +883,6 @@ importers:
       '@formkit/auto-animate':
         specifier: ^0.8.2
         version: 0.8.4
-      '@library/backends':
-        specifier: workspace:*
-        version: link:../../libraries/backends
       '@library/base':
         specifier: workspace:*
         version: link:../../libraries/base
@@ -901,6 +898,9 @@ importers:
       '@library/paraglide':
         specifier: workspace:*
         version: link:../../libraries/paraglide
+      '@library/third-parties':
+        specifier: workspace:*
+        version: link:../../libraries/third-parties
       '@library/ui':
         specifier: workspace:*
         version: link:../../libraries/ui
@@ -12878,7 +12878,7 @@ snapshots:
 
   '@types/concat-stream@2.0.3':
     dependencies:
-      '@types/node': 22.19.1
+      '@types/node': 24.10.1
 
   '@types/connect@3.4.38':
     dependencies:
@@ -13067,7 +13067,7 @@ snapshots:
 
   '@types/node-fetch@2.6.13':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.10.1
       form-data: 4.0.5
 
   '@types/node@18.19.130':

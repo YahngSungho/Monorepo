@@ -9,7 +9,7 @@
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
-		"@library/backends": "workspace:*",
+		"@library/third-parties": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-bottom": "workspace:*",
 		"@library/ui": "workspace:*"

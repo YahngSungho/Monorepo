@@ -1,4 +1,4 @@
-import { getOneMarkdown_base } from '@library/backends/supabase'
+import { getOneMarkdown_base } from '@library/third-parties/supabase'
 import { getLocale } from '@library/paraglide/helpers'
 
 import { APP_NAME } from '$lib/info.js'

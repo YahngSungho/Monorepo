@@ -1,4 +1,4 @@
-import { createMessage_action } from '@library/backends/mailgun'
+import { createMessage_action } from '@library/third-parties/mailgun'
 import { getFrontmatterObject, removeMDAndTags } from '@library/helpers/markdown'
 import { R } from '@library/helpers/R'
 

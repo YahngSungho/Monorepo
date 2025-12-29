@@ -1,4 +1,4 @@
-import { supabase_admin } from '@library/backends/supabase_admin'
+import { supabase_admin } from '@library/third-parties/supabase_admin'
 import { R } from '@library/helpers/R'
 import { shuffleArray } from '@library/helpers/random'
 import { emailSchema } from '@library/helpers/zod-schemas'

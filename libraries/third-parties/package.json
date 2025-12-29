@@ -1,5 +1,5 @@
 {
-	"name": "@library/backends",
+	"name": "@library/third-parties",
 	"type": "module",
 	"scripts": {
 		"build:cloudflare": "pnpm run build:wrangler && pnpm run build:headers",
