@@ -3,7 +3,7 @@ import { R } from '@library/helpers/R'
 import { ai } from './ai.js'
 import { flashModel, latestModel } from './modelNames.js'
 
-export const getCachBySystemInstructions = R.curry(
+export const getCacheBySystemInstructions = R.curry(
 	async (modelName, duration, options, willBeCachedData) => {
 		if (!Number.isInteger(duration) || duration <= 0) {
 			throw new Error('Duration must be a positive integer.')
@@ -15,17 +15,17 @@ export const getCachBySystemInstructions = R.curry(
 		const options0 = options || {}
 
 		const { name: cacheName } = await ai.caches.create({
-			model: modelName,
 			config: {
 				systemInstruction: willBeCachedData,
 				ttl: `${60 * duration}s`,
 				...options0,
 			},
+			model: modelName,
 		})
 
 		return cacheName
 	},
 )
 
-export const getCacheBySystemInstructions_latestModel = getCachBySystemInstructions(latestModel)
-export const getCacheBySystemInstructions_flashModel = getCachBySystemInstructions(flashModel)
+export const getCacheBySystemInstructions_latestModel = getCacheBySystemInstructions(latestModel)
+export const getCacheBySystemInstructions_flashModel = getCacheBySystemInstructions(flashModel)

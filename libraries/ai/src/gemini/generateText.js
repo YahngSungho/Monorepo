@@ -7,17 +7,17 @@ export const generateText = R.curry(async (model, config, cache, contents) => {
 	const config0 = config || {}
 
 	const result = await ai.models.generateContent({
-		model,
-		contents,
 		config: {
 			cachedContent: cache,
-			topP: 0.2,
 			responseMimeType: 'application/json',
 			thinkingConfig: {
 				thinkingBudget: 5000,
 			},
+			topP: 0.2,
 			...config0,
 		},
+		contents,
+		model,
 	})
 
 	return result.text
