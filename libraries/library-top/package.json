@@ -9,9 +9,9 @@
 		"test:unit": "vitest run"
 	},
 	"dependencies": {
-		"@library/backends": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-bottom": "workspace:*",
+		"@library/third-parties": "workspace:*",
 		"@library/ui": "workspace:*"
 	},
 	"exports": {

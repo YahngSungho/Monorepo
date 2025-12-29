@@ -16,8 +16,8 @@ await generateHeaders_action()
  */
 export async function generateHeaders_action() {
 	const headersContent = await fs.readFile(headersBasePath, 'utf8')
-	const appDirs = await getAppDirs_action(appsPath)
-	for (const appDir of appDirs) {
+	const appDirectories = await getAppDirectories_action(appsPath)
+	for (const appDir of appDirectories) {
 		const outPath = path.join(appDir, '_headers')
 		await fs.writeFile(outPath, headersContent, 'utf8')
 	}
@@ -28,7 +28,7 @@ export async function generateHeaders_action() {
  * @param {string} absoluteAppsPath
  * @returns {Promise<string[]>}
  */
-async function getAppDirs_action(absoluteAppsPath) {
+async function getAppDirectories_action(absoluteAppsPath) {
 	const dirents = await fs.readdir(absoluteAppsPath, { withFileTypes: true })
 	return dirents.filter((d) => d.isDirectory()).map((d) => path.join(absoluteAppsPath, d.name))
 }

@@ -1,6 +1,6 @@
-import { createMessage_action } from '@library/backends/mailgun'
 import { getFrontmatterObject, removeMDAndTags } from '@library/helpers/markdown'
 import { R } from '@library/helpers/R'
+import { createMessage_action } from '@library/third-parties/mailgun'
 
 import { getEmailHTMLFromMarkdownText } from './getEmailHTMLFromMarkdownText'
 import { replaceImageTag } from './replaceImageTag'

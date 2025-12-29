@@ -89,7 +89,7 @@ jobs:
   path-filter:
     runs-on: ubuntu-latest
     outputs:
-      libraries_backends: ${{ steps.filter.outputs.libraries_backends }}
+      libraries_third-parties: ${{ steps.filter.outputs.libraries_third-parties }}
       images: ${{ steps.filter.outputs.images }}
       markdown: ${{ steps.filter.outputs.markdown }}
       package-json: ${{ steps.filter.outputs.package-json }}
@@ -100,8 +100,8 @@ jobs:
         id: filter
         with:
           filters: |
-            libraries_backends:
-              - 'libraries/backends/**'
+            libraries_third-parties:
+              - 'libraries/third-parties/**'
               - '**/wrangler.override.*'
             images:
               - '**/**.jpg'
@@ -191,11 +191,11 @@ jobs:
           name: package-json-patch
           path: package-json.patch
 
-  update-backend-config:
+  update-third-parties-config:
     runs-on: ubuntu-latest
     needs: [path-filter, fix-package-json]
     if: |
-      needs.path-filter.outputs.libraries_backends == 'true' && !failure() && !cancelled()
+      needs.path-filter.outputs.libraries_third-parties == 'true' && !failure() && !cancelled()
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
@@ -205,8 +205,8 @@ jobs:
           fetch-depth: 0
 
       # package-json 패치 다운로드/적용 (fix-package-json 산출물 연동)
-      - name: package-json 패치 존재 여부 확인 (backend)
-        id: check_package-json_patch_backend
+      - name: package-json 패치 존재 여부 확인 (third-parties)
+        id: check_package-json_patch_third-parties
         uses: actions/github-script@v7
         with:
           script: |
@@ -220,27 +220,27 @@ jobs:
             );
             return !!matchArtifact;
 
-      - name: package-json 패치 아티팩트 다운로드 (backend)
-        if: steps.check_package-json_patch_backend.outputs.result == 'true'
+      - name: package-json 패치 아티팩트 다운로드 (third-parties)
+        if: steps.check_package-json_patch_third-parties.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: package-json-patch
           path: .
 
-      - name: package-json 패치 적용 (backend)
-        if: steps.check_package-json_patch_backend.outputs.result == 'true'
+      - name: package-json 패치 적용 (third-parties)
+        if: steps.check_package-json_patch_third-parties.outputs.result == 'true'
         run: |
           if [ -f package-json.patch ]; then
-            echo "package.json 포맷팅 변경사항 패치를 적용합니다 (backend)..."
+            echo "package.json 포맷팅 변경사항 패치를 적용합니다 (third-parties)..."
             if ! git apply --check package-json.patch; then
               echo "::error::package-json.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
             git apply package-json.patch
-            echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다 (backend)."
+            echo "package.json 포맷팅 패치가 성공적으로 적용되었습니다 (third-parties)."
             rm package-json.patch
           else
-            echo "적용할 package.json 포맷팅 변경사항이 없습니다 (backend)."
+            echo "적용할 package.json 포맷팅 변경사항이 없습니다 (third-parties)."
           fi
 
       - name: pnpm 설정
@@ -257,26 +257,26 @@ jobs:
       - name: 의존성 설치
         run: pnpm install --prefer-offline
 
-      # 임시 커밋 생성 (패치 + 설치 후 상태 기준) — backend build 전 기준점 마련
-      - name: diff 비교를 위한 임시 커밋 생성 (backend)
+      # 임시 커밋 생성 (패치 + 설치 후 상태 기준) — third-parties build 전 기준점 마련
+      - name: diff 비교를 위한 임시 커밋 생성 (third-parties)
         run: |
-          echo "--- 임시 커밋 생성 중 (backend 빌드 전) ---"
+          echo "--- 임시 커밋 생성 중 (third-parties 빌드 전) ---"
           git config user.name "GitHub Actions Temp"
           git config user.email "actions-temp@github.com"
           git add -A
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json patch and install (before backend build)"
-            echo "임시 커밋 (backend 빌드 전)이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
+            git commit -m "Temporary commit after applying package-json patch and install (before third-parties build)"
+            echo "임시 커밋 (third-parties 빌드 전)이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
-            echo "backend 빌드 전 임시로 커밋할 변경사항이 없습니다."
+            echo "third-parties 빌드 전 임시로 커밋할 변경사항이 없습니다."
           fi
-          echo "--- 임시 커밋 (backend 빌드 전) 완료 ---"
+          echo "--- 임시 커밋 (third-parties 빌드 전) 완료 ---"
 
-      - name: Run @library/backends build:external
-        run: pnpm -w --filter @library/backends run build:external
+      - name: Run @library/third-parties build:external
+        run: pnpm -w --filter @library/third-parties run build:external
 
-      - name: 백엔드 구성 변경사항 확인 및 패치 생성
-        id: check_backend_config_changes
+      - name: 서드파티 구성 변경사항 확인 및 패치 생성
+        id: check_third-parties_config_changes
         run: |
           echo "현재 상태:"
           git status --short
@@ -286,26 +286,26 @@ jobs:
           git status --short
 
           if ! git diff --quiet --staged HEAD --exit-code; then
-            echo "백엔드 구성 변경사항이 있습니다. 패치 생성 중..."
-            git diff --staged HEAD > backend-config.patch
+            echo "서드파티 구성 변경사항이 있습니다. 패치 생성 중..."
+            git diff --staged HEAD > third-parties-config.patch
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "backend-config.patch 내용:"
-            cat backend-config.patch || true
+            echo "third-parties-config.patch 내용:"
+            cat third-parties-config.patch || true
           else
-            echo "백엔드 구성 변경사항이 없습니다."
+            echo "서드파티 구성 변경사항이 없습니다."
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: 백엔드 구성 패치 아티팩트 업로드
-        if: steps.check_backend_config_changes.outputs.has_changes == 'true'
+      - name: 서드파티 구성 패치 아티팩트 업로드
+        if: steps.check_third-parties_config_changes.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: backend-config-patch
-          path: backend-config.patch
+          name: third-parties-config-patch
+          path: third-parties-config.patch
 
   fix-markdown:
     runs-on: ubuntu-latest
-    needs: [path-filter, fix-package-json, update-backend-config]
+    needs: [path-filter, fix-package-json, update-third-parties-config]
     if: |
       needs.path-filter.outputs.markdown == 'true' && !failure() && !cancelled()
     steps:
@@ -356,9 +356,9 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-      # backend-config 패치 다운로드/적용
-      - name: backend-config 패치 존재 여부 확인
-        id: check_backend_patch_fix_md
+      # third-parties-config 패치 다운로드/적용
+      - name: third-parties-config 패치 존재 여부 확인
+        id: check_third-parties_patch_fix_md
         uses: actions/github-script@v7
         with:
           script: |
@@ -368,31 +368,31 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-patch"
+              artifact => artifact.name === "third-parties-config-patch"
             );
             return !!matchArtifact;
 
-      - name: backend-config 패치 아티팩트 다운로드
-        if: steps.check_backend_patch_fix_md.outputs.result == 'true'
+      - name: third-parties-config 패치 아티팩트 다운로드
+        if: steps.check_third-parties_patch_fix_md.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-patch
+          name: third-parties-config-patch
           path: .
 
-      - name: backend-config 패치 적용
-        if: steps.check_backend_patch_fix_md.outputs.result == 'true'
+      - name: third-parties-config 패치 적용
+        if: steps.check_third-parties_patch_fix_md.outputs.result == 'true'
         run: |
-          if [ -f backend-config.patch ]; then
-            echo "backend-config 변경사항 패치를 적용합니다..."
-            if ! git apply --check backend-config.patch; then
-              echo "::error::backend-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+          if [ -f third-parties-config.patch ]; then
+            echo "third-parties-config 변경사항 패치를 적용합니다..."
+            if ! git apply --check third-parties-config.patch; then
+              echo "::error::third-parties-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply backend-config.patch
-            echo "backend-config 패치가 성공적으로 적용되었습니다."
-            rm backend-config.patch
+            git apply third-parties-config.patch
+            echo "third-parties-config 패치가 성공적으로 적용되었습니다."
+            rm third-parties-config.patch
           else
-            echo "적용할 backend-config 변경사항이 없습니다."
+            echo "적용할 third-parties-config 변경사항이 없습니다."
           fi
 
       # pnpm 설치 및 의존성 설치 (패치 적용 후)
@@ -416,7 +416,7 @@ jobs:
           git config user.email "actions-temp@github.com"
           git add . # 모든 변경사항 스테이징 (패치 적용 + install 결과 포함)
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json and backend patches and install"
+            git commit -m "Temporary commit after applying package-json and third-parties patches and install"
             echo "임시 커밋 (마크다운 수정 전)이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
             echo "마크다운 수정 전 임시로 커밋할 변경사항이 없습니다."
@@ -563,7 +563,7 @@ jobs:
 
   update-translations:
     runs-on: ubuntu-latest
-    needs: [path-filter, fix-package-json, fix-markdown, update-backend-config]
+    needs: [path-filter, fix-package-json, fix-markdown, update-third-parties-config]
     if: |
       needs.path-filter.outputs.translation-targets == 'true' && !failure() && !cancelled()
     steps:
@@ -651,9 +651,9 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-      # backend-config 패치 다운로드
-      - name: backend-config 패치 존재 여부 확인
-        id: check_backend_patch_translate
+      # third-parties-config 패치 다운로드
+      - name: third-parties-config 패치 존재 여부 확인
+        id: check_third-parties_patch_translate
         uses: actions/github-script@v7
         with:
           script: |
@@ -663,32 +663,32 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-patch"
+              artifact => artifact.name === "third-parties-config-patch"
             );
             return !!matchArtifact;
 
-      - name: backend-config 패치 아티팩트 다운로드
-        if: steps.check_backend_patch_translate.outputs.result == 'true'
+      - name: third-parties-config 패치 아티팩트 다운로드
+        if: steps.check_third-parties_patch_translate.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-patch
+          name: third-parties-config-patch
           path: .
 
-      # backend-config 패치 적용
-      - name: backend-config 패치 적용
-        if: steps.check_backend_patch_translate.outputs.result == 'true'
+      # third-parties-config 패치 적용
+      - name: third-parties-config 패치 적용
+        if: steps.check_third-parties_patch_translate.outputs.result == 'true'
         run: |
-          if [ -f backend-config.patch ]; then
-            echo "backend-config 변경사항 패치를 적용합니다..."
-            if ! git apply --check backend-config.patch; then
-              echo "::error::backend-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+          if [ -f third-parties-config.patch ]; then
+            echo "third-parties-config 변경사항 패치를 적용합니다..."
+            if ! git apply --check third-parties-config.patch; then
+              echo "::error::third-parties-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply backend-config.patch
-            echo "backend-config 패치가 성공적으로 적용되었습니다."
-            rm backend-config.patch
+            git apply third-parties-config.patch
+            echo "third-parties-config 패치가 성공적으로 적용되었습니다."
+            rm third-parties-config.patch
           else
-            echo "적용할 backend-config 변경사항이 없습니다."
+            echo "적용할 third-parties-config 변경사항이 없습니다."
           fi
 
       # markdown patch 다운로드
@@ -790,7 +790,7 @@ jobs:
           echo "임시 커밋을 위한 스테이징된 변경사항 diff 통계:"
           git diff --staged --stat # 스테이징된 내용 확인
           if ! git diff --staged --quiet; then
-            git commit -m "Temporary commit after applying package-json and backend patches and install"
+            git commit -m "Temporary commit after applying package-json and third-parties patches and install"
             echo "임시 커밋이 생성되었습니다. HEAD는 이제 $(git rev-parse HEAD) 입니다."
           else
             echo "번역 전 임시로 커밋할 변경사항이 없습니다."
@@ -839,7 +839,7 @@ jobs:
           git status --short # 스테이징 후 상태 확인
 
           # 이제 스테이징된 변경사항을 기준으로 diff를 생성합니다.
-          # HEAD는 "Temporary commit after applying package-json and backend patches and install" 커밋을 가리킵니다.
+          # HEAD는 "Temporary commit after applying package-json and third-parties patches and install" 커밋을 가리킵니다.
           # 따라서 이 diff는 번역 작업으로 인해 발생한 변경사항(새 파일 추가 포함)만을 포함하게 됩니다.
           echo "임시 커밋(HEAD) 대비 스테이징된 변경사항 diff 통계 실행 중:"
           git diff --stat --staged HEAD # 스테이징된 변경사항과 임시 커밋(HEAD) 비교
@@ -866,7 +866,14 @@ jobs:
 
   lint-format:
     runs-on: ubuntu-latest
-    needs: [path-filter, fix-package-json, update-translations, fix-markdown, update-backend-config]
+    needs:
+      [
+        path-filter,
+        fix-package-json,
+        update-translations,
+        fix-markdown,
+        update-third-parties-config,
+      ]
     if: |
       needs.path-filter.result == 'success' && !failure() && !cancelled()
     env:
@@ -953,9 +960,9 @@ jobs:
             echo "적용할 package.json 포맷팅 변경사항이 없습니다."
           fi
 
-      # backend-config 패치 다운로드 (lint-format)
-      - name: 백엔드 패치 존재 여부 확인
-        id: check_backend_patch_lint-format
+      # third-parties-config 패치 다운로드 (lint-format)
+      - name: 서드파티 패치 존재 여부 확인
+        id: check_third-parties_patch_lint-format
         uses: actions/github-script@v7
         with:
           script: |
@@ -965,32 +972,32 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-patch"
+              artifact => artifact.name === "third-parties-config-patch"
             );
             return !!matchArtifact;
 
-      - name: 백엔드 패치 아티팩트 다운로드
-        if: steps.check_backend_patch_lint-format.outputs.result == 'true'
+      - name: 서드파티 패치 아티팩트 다운로드
+        if: steps.check_third-parties_patch_lint-format.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-patch
+          name: third-parties-config-patch
           path: .
 
-      # backend-config 패치 적용 (lint-format)
-      - name: 백엔드 패치 적용
-        if: steps.check_backend_patch_lint-format.outputs.result == 'true'
+      # third-parties-config 패치 적용 (lint-format)
+      - name: 서드파티 패치 적용
+        if: steps.check_third-parties_patch_lint-format.outputs.result == 'true'
         run: |
-          if [ -f backend-config.patch ]; then
-            echo "백엔드 변경사항 패치를 적용합니다..."
-            if ! git apply --check backend-config.patch; then
-              echo "::error::backend-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
+          if [ -f third-parties-config.patch ]; then
+            echo "서드파티 변경사항 패치를 적용합니다..."
+            if ! git apply --check third-parties-config.patch; then
+              echo "::error::third-parties-config.patch 확인에 실패했습니다. 깔끔하게 적용할 수 없습니다."
               exit 1
             fi
-            git apply backend-config.patch
-            echo "백엔드 패치가 성공적으로 적용되었습니다."
-            rm backend-config.patch
+            git apply third-parties-config.patch
+            echo "서드파티 패치가 성공적으로 적용되었습니다."
+            rm third-parties-config.patch
           else
-            echo "적용할 백엔드 변경사항이 없습니다."
+            echo "적용할 서드파티 변경사항이 없습니다."
           fi
 
       # markdown patch 다운로드
@@ -1073,7 +1080,7 @@ jobs:
             echo "적용할 번역 변경사항이 없습니다."
           fi
 
-      # backend-config patch 다운로드
+      # third-parties-config patch 다운로드
 
       # Node.js 및 pnpm 설정
       - name: pnpm 설정
@@ -1287,7 +1294,7 @@ jobs:
       - fix-package-json
       - fix-markdown
       - update-translations
-      - update-backend-config
+      - update-third-parties-config
 
     if: needs.path-filter.result == 'success' && !failure() && !cancelled()
     runs-on: ubuntu-latest
@@ -1301,7 +1308,7 @@ jobs:
           token: ${{ secrets.TOKEN1 }}
           fetch-depth: 0 # diff를 위해 전체 히스토리 가져오기
 
-      # images → 2) package-json → 3) backend → 4) markdown → 5) translation → 6) changes
+      # images → 2) package-json → 3) third-parties → 4) markdown → 5) translation → 6) changes
 
       - name: 이미지 패치 존재 여부 확인
         id: check_images_patch_push
@@ -1344,8 +1351,8 @@ jobs:
           name: package-json-patch
           path: .
 
-      - name: 백엔드 패치 존재 여부 확인
-        id: check_backend_patch_push
+      - name: 서드파티 패치 존재 여부 확인
+        id: check_third-parties_patch_push
         uses: actions/github-script@v7
         with:
           script: |
@@ -1355,15 +1362,15 @@ jobs:
               run_id: context.runId
             });
             const matchArtifact = artifacts.data.artifacts.find(
-              artifact => artifact.name === "backend-config-patch"
+              artifact => artifact.name === "third-parties-config-patch"
             );
             return !!matchArtifact;
 
-      - name: 백엔드 패치 아티팩트 다운로드
-        if: steps.check_backend_patch_push.outputs.result == 'true'
+      - name: 서드파티 패치 아티팩트 다운로드
+        if: steps.check_third-parties_patch_push.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: backend-config-patch
+          name: third-parties-config-patch
           path: .
 
       - name: 마크다운 패치 존재 여부 확인
@@ -1464,7 +1471,7 @@ jobs:
 
           apply_patch "images.patch" "이미지 압축"
           apply_patch "package-json.patch" "Package.json 포맷팅"
-          apply_patch "backend-config.patch" "백엔드 구성"
+          apply_patch "third-parties-config.patch" "서드파티 구성"
           apply_patch "markdown.patch" "마크다운 포맷팅"
           apply_patch "translation.patch" "번역"
           apply_patch "lint-format.patch" "코드 포맷팅 (린트/스타일)"

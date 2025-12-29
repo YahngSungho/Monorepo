@@ -1,8 +1,8 @@
 import path from 'node:path'
 
-import { saveMarkdownList_action } from '@library/backends/supabase_admin'
 import { writeFile_async } from '@library/helpers/fs-async'
 import { getFrontmatterObject } from '@library/helpers/markdown'
+import { saveMarkdownList_action } from '@library/third-parties/supabase_admin'
 
 import { getNewCache } from '../translation/helpers.js'
 import { dictFolderPath } from '../translation/markdown/translation.js'
