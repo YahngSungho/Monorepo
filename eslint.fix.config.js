@@ -1,5 +1,9 @@
 import perfectionist from 'eslint-plugin-perfectionist'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import toml from 'eslint-plugin-toml'
+import yml from 'eslint-plugin-yml'
+import parser_toml from 'toml-eslint-parser'
+import parser_yaml from 'yaml-eslint-parser'
 
 import defaultConfig from './eslint.config.js'
 
@@ -143,6 +147,26 @@ const overrideConfig = [
 			'unicorn/throw-new-error': 'warn',
 		},
 	},
+
+	{
+		files: ['**/*.yaml', '**/*.yml'],
+
+		languageOptions: {
+			parser: parser_yaml,
+		},
+	},
+	...yml.configs['flat/standard'],
+	...yml.configs['flat/prettier'],
+
+	{
+		files: ['**/*.toml'],
+
+		languageOptions: {
+			parser: parser_toml,
+		},
+	},
+	...toml.configs['flat/standard'],
+
 	{
 		files: ['**/*.md/*.*', '**/*.mdc/*.*', '**/*.mdx/*.*'],
 		rules: {
