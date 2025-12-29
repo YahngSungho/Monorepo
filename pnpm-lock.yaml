@@ -507,6 +507,33 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
 
+  libraries/ai:
+    dependencies:
+      '@ai-sdk/google':
+        specifier: ^1.2.18
+        version: 1.2.22(zod@3.25.76)
+      '@ai-sdk/openai':
+        specifier: ^1.3.18
+        version: 1.3.24(zod@3.25.76)
+      '@google/genai':
+        specifier: ^0.14.1
+        version: 0.14.1
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
+      '@library/helpers':
+        specifier: workspace:*
+        version: link:../helpers
+      '@library/library-bottom':
+        specifier: workspace:*
+        version: link:../library-bottom
+      ai:
+        specifier: ^4.3.9
+        version: 4.3.19(react@19.2.0)(zod@3.25.76)
+      zod:
+        specifier: ^3.25.36
+        version: 3.25.76
+
   libraries/base:
     dependencies:
       '@library/library-bottom':
@@ -612,33 +639,6 @@ importers:
         specifier: workspace:*
         version: link:../ui
 
-  libraries/llms:
-    dependencies:
-      '@ai-sdk/google':
-        specifier: ^1.2.18
-        version: 1.2.22(zod@3.25.76)
-      '@ai-sdk/openai':
-        specifier: ^1.3.18
-        version: 1.3.24(zod@3.25.76)
-      '@google/genai':
-        specifier: ^0.14.1
-        version: 0.14.1
-      '@google/generative-ai':
-        specifier: ^0.24.1
-        version: 0.24.1
-      '@library/helpers':
-        specifier: workspace:*
-        version: link:../helpers
-      '@library/library-bottom':
-        specifier: workspace:*
-        version: link:../library-bottom
-      ai:
-        specifier: ^4.3.9
-        version: 4.3.19(react@19.2.0)(zod@3.25.76)
-      zod:
-        specifier: ^3.25.36
-        version: 3.25.76
-
   libraries/paraglide:
     dependencies:
       '@library/helpers':
@@ -659,15 +659,15 @@ importers:
       '@ai-sdk/openai':
         specifier: ^1.3.18
         version: 1.3.24(zod@3.25.76)
+      '@library/ai':
+        specifier: workspace:*
+        version: link:../ai
       '@library/helpers':
         specifier: workspace:*
         version: link:../helpers
       '@library/library-bottom':
         specifier: workspace:*
         version: link:../library-bottom
-      '@library/llms':
-        specifier: workspace:*
-        version: link:../llms
       '@library/third-parties':
         specifier: workspace:*
         version: link:../third-parties

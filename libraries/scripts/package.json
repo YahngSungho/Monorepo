@@ -11,9 +11,9 @@
 	"dependencies": {
 		"@ai-sdk/google": "^1.2.18",
 		"@ai-sdk/openai": "^1.3.18",
+		"@library/ai": "workspace:*",
 		"@library/helpers": "workspace:*",
 		"@library/library-bottom": "workspace:*",
-		"@library/ai": "workspace:*",
 		"@library/third-parties": "workspace:*",
 		"ai": "^4.3.9",
 		"mermaid": "^11.10.0",

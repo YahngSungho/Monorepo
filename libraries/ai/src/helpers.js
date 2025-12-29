@@ -11,11 +11,11 @@ import { R } from '@library/helpers/R'
  * @throws {Error} - 최대 재시도 후에도 실패하거나 'quota' 이외의 에러 발생 시
  */
 export const generateWithRetry_atQuotaLimit = R.curry(
-	async (generateFunc, maxRetries, delaySeconds, options) => {
+	async (generateFunction, maxRetries, delaySeconds, options) => {
 		let attempts = 0
 		while (attempts < maxRetries) {
 			try {
-				const result = await generateFunc(
+				const result = await generateFunction(
 					options.model,
 					options.config,
 					options.cache,
