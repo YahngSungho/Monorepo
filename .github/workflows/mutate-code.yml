@@ -693,7 +693,7 @@ jobs:
 
       # markdown patch 다운로드
       - name: 마크다운 패치 존재 여부 확인
-        id: check_markdown_patch_lint-format
+        id: check_markdown_patch_translate
         uses: actions/github-script@v7
         with:
           script: |
@@ -708,7 +708,7 @@ jobs:
             return !!matchArtifact;
 
       - name: 마크다운 패치 아티팩트 다운로드
-        if: steps.check_markdown_patch_lint-format.outputs.result == 'true'
+        if: steps.check_markdown_patch_translate.outputs.result == 'true'
         uses: actions/download-artifact@v4
         with:
           name: markdown-patch
@@ -716,7 +716,7 @@ jobs:
 
       # markdown patch 적용
       - name: 마크다운 패치 적용
-        if: steps.check_markdown_patch_lint-format.outputs.result == 'true'
+        if: steps.check_markdown_patch_translate.outputs.result == 'true'
         run: |
           if [ -f markdown.patch ]; then
             echo "markdown 변경사항 패치를 적용합니다..."
