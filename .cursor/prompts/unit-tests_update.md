@@ -28,9 +28,9 @@ You MUST strictly adhere to the following principles when updating or writing te
    - **EXTREME MOCK MINIMIZATION**: **Strongly prefer testing with REAL dependencies**. Mocks (`vi.fn()`, `vi.spyOn()`) are a **last resort** and should ONLY be used for:
      - **True External Systems with I/O**: Dependencies performing actual Network requests, Database interactions, File System operations, or interacting with other processes/hardware.
      - **Non-Deterministic Behavior**: Controlling inherently unpredictable factors like `Date.now()`, `Math.random()`, or system timers (`setTimeout`, `setInterval`) for consistent assertions.
-     - **Prohibitively Complex/Slow Setup**: When a real dependency's setup is excessively complicated or slow, making the test impractical _and_ the dependency is not the focus of the test.
-   - **DO NOT MOCK**: Pure functions, simple utility functions, or collaborators whose side effects are negligible or irrelevant within the test context, _even if they reside in separate modules_. Use the actual implementations.
-   - **Mocking Built-ins (e.g., `fs`, `path`)**: When mocking built-in modules is necessary (due to I/O), carefully replicate the _specific exports_ (default, named functions like `readFileSync`, `join`) and the _expected return data structure_ that the code under test actually uses. Check the module's API if unsure.
+     - **Prohibitively Complex/Slow Setup**: When a real dependency's setup is excessively complicated or slow, making the test impractical *and* the dependency is not the focus of the test.
+   - **DO NOT MOCK**: Pure functions, simple utility functions, or collaborators whose side effects are negligible or irrelevant within the test context, *even if they reside in separate modules*. Use the actual implementations.
+   - **Mocking Built-ins (e.g., `fs`, `path`)**: When mocking built-in modules is necessary (due to I/O), carefully replicate the *specific exports* (default, named functions like `readFileSync`, `join`) and the *expected return data structure* that the code under test actually uses. Check the module's API if unsure.
    - **Goal**: Create tests that verify the integrated behavior of the unit with its essential collaborators, ensuring the system works together as expected. Mock only to isolate from true external boundaries or non-determinism.
 
 2. **Clarity and Simplicity**:
@@ -53,7 +53,7 @@ You MUST strictly adhere to the following principles when updating or writing te
    - **Focus**: Each `it` block should ideally verify ONE specific behavior or outcome.
 
 7. **Helper Functions**:
-   - **Use Sparingly**: Best for complex, shared _setup_ (Arrange) that doesn't hide essential test parameters or logic. The 'Act' phase should generally be within the test.
+   - **Use Sparingly**: Best for complex, shared *setup* (Arrange) that doesn't hide essential test parameters or logic. The 'Act' phase should generally be within the test.
 
 8. **Vitest Syntax & Mocking Best Practices (NEW EMPHASIS)**:
    - **Use Correctly**: Employ correct Vitest imports and matchers.
@@ -72,15 +72,15 @@ You MUST strictly adhere to the following principles when updating or writing te
          - Default Export (Object with properties): `factory returns { default: { key1: mockVal, method1: mockMethod } }`
          - Mixed Exports: `factory returns { default: mockMyDefault, namedThing: mockNamedThing }`
        - **`__esModule: true`**: For ESM modules with named exports, especially with CJS/ESM interop, the factory might need to return `{ __esModule: true, namedExport1: vi.fn() }`.
-       - **Verification**: If mocks aren't working, `console.log(await import('./yourModule'))` _within your test (after mocks are set up)_ to see what the SUT is actually receiving. If it shows originals or `undefined`, your mock factory structure or path is likely wrong.
+       - **Verification**: If mocks aren't working, `console.log(await import('./yourModule'))` *within your test (after mocks are set up)* to see what the SUT is actually receiving. If it shows originals or `undefined`, your mock factory structure or path is likely wrong.
      - **`vi.doMock` as an Alternative**: `vi.doMock` is NOT hoisted. It mocks modules only for subsequent `await import('./module')` calls. Consider if hoisting is problematic AND dynamic imports are used.
-     - **`vi.mock` Factory Implementation vs. `vi.mocked`**: If a `vi.mock('module', () => { ... })` factory provides a complete mock implementation, **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` or `vi.mocked(...).mockReturnValue(...)` for the _same mock functions_ in `beforeEach` or individual tests _unless intentionally overriding the factory's default behavior for a specific test case_.
+     - **`vi.mock` Factory Implementation vs. `vi.mocked`**: If a `vi.mock('module', () => { ... })` factory provides a complete mock implementation, **DO NOT** redundantly call `vi.mocked(...).mockImplementation(...)` or `vi.mocked(...).mockReturnValue(...)` for the *same mock functions* in `beforeEach` or individual tests *unless intentionally overriding the factory's default behavior for a specific test case*.
 
 9. **Principle Justification Comments**:
-   - **Explain WHY (in Korean)**: Add concise **Korean** comments explaining _why_ a specific approach was chosen, referencing these principles (e.g., `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`).
+   - **Explain WHY (in Korean)**: Add concise **Korean** comments explaining *why* a specific approach was chosen, referencing these principles (e.g., `// 원칙: 동작 테스트 (실제 의존성 사용)`, `// 원칙: 모의 최소화 (순수 함수 협력자)`).
 
 10. **Property-Based Testing (PBT) with fast-check**:
-    - **Leverage Power**: Where applicable (diverse inputs, complex logic), proactively use `@fast-check/vitest` (`test.prop`, `fc`) to test _invariants_.
+    - **Leverage Power**: Where applicable (diverse inputs, complex logic), proactively use `@fast-check/vitest` (`test.prop`, `fc`) to test *invariants*.
     - **Integration**: Combine PBT with example-based tests for comprehensive coverage.
 
 11. **Mock Function Call Record Initialization**: \* **Reset**: Use `beforeEach` to reset mocks (`vi.clearAllMocks()`, `vi.resetAllMocks()`) or manage timers (`vi.useRealTimers()`, `vi.useFakeTimers()`). Ensure mock implementations use correct control flow (e.g., `if/else if/else`).
@@ -101,15 +101,15 @@ Follow these steps meticulously:
    - List the specific tests that need to be fixed and how.
    - List the new tests required, outlining the scenarios they will cover (happy path, negative cases, boundary values, edge cases, error handling). Explicitly consider if Property-Based Testing (PBT) is applicable for any new/modified functions.
    - Specify the mocking strategy. State explicitly if NO mocks are needed. If mocks ARE deemed necessary (as a LAST RESORT according to Principle #1), clearly state WHICH dependencies will be mocked and provide a STRONG justification based on the criteria in Principle #1.
-4. **Generate Updated Test Code**: Write the _complete_ content for the target test file, incorporating all fixes and new tests according to your plan and RIGOROUSLY applying ALL `Core_Testing_Principles`. Ensure all necessary imports (`vitest`, `@fast-check/vitest` if used) are included. Use **Korean** for test names and justification comments.
-5. **Describe Tool Call**: Clearly state your intention to use the `edit_file` tool. Specify the `target_file` (the path to the test file) and provide the _complete_ updated code (from step 4) that will be used for the `code_edit` parameter.
+4. **Generate Updated Test Code**: Write the *complete* content for the target test file, incorporating all fixes and new tests according to your plan and RIGOROUSLY applying ALL `Core_Testing_Principles`. Ensure all necessary imports (`vitest`, `@fast-check/vitest` if used) are included. Use **Korean** for test names and justification comments.
+5. **Describe Tool Call**: Clearly state your intention to use the `edit_file` tool. Specify the `target_file` (the path to the test file) and provide the *complete* updated code (from step 4) that will be used for the `code_edit` parameter.
 6. **Execute Tool Call**: Invoke the `edit_file` tool as described.
 7. **Linting and Correction Workflow (CRITICAL)**:
    _After the `edit_file` tool runs, CAREFULLY examine its output for any reported linting errors.
    _ **If lint errors exist**:
    _Analyze the errors. Focus on fixing errors related to code logic, type mismatches, or incorrect API usage.
    _ Generate the corrected code addressing ONLY the lint errors.
-   _Describe the \_next_ `edit_file` tool call, specifying the `target_file` and the _corrected_ code for the `code_edit` parameter.
+   *Describe the \_next* `edit_file` tool call, specifying the `target_file` and the *corrected* code for the `code_edit` parameter.
    _Execute the `edit_file` tool again with the corrected code.
    _**Repeat this check-fix-edit cycle up to a MAXIMUM of 3 attempts for this file.**
    _Be cautious with persistent, non-code-related linter messages (e.g., test descriptions repeatedly flagged) after multiple fixes; they might indicate environmental issues.

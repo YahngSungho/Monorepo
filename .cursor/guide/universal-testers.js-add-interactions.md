@@ -35,7 +35,7 @@
 
 새로운 인터랙션을 추가하는 과정은 단순히 코드를 추가하는 것 이상으로, fast-check의 핵심 기능인 **shrinking**(실패 원인을 최소화하는 기능)을 유지하는 것이 매우 중요합니다. 또한, Playwright의 비동기적 특성과 브라우저 환경의 동적인 상태 변화를 고려해야 안정적인 테스트를 보장할 수 있습니다. 이 가이드에서는 이러한 점들을 중점적으로 다룹니다.
 
-_(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인터랙션을 확장하는 데 초점을 맞춥니다. Playwright와 fast-check를 워커(worker) 환경에서 사용하거나, 보다 일반적인 PBT 설정에 대한 내용은 첨부된 `playwright-with-fastCheck.mdc` 문서를 참조하십시오.)_
+*(참고: 이 가이드는 `universal-testers.js`의 기존 구조 내에서 인터랙션을 확장하는 데 초점을 맞춥니다. Playwright와 fast-check를 워커(worker) 환경에서 사용하거나, 보다 일반적인 PBT 설정에 대한 내용은 첨부된 `playwright-with-fastCheck.mdc` 문서를 참조하십시오.)*
 
 ### 2. 기존 인터랙션 처리 방식 심층 분석
 

@@ -27,7 +27,7 @@ Sends your request along with the **entire codebase** to an AI assistant special
 **Details:**
 
 - **Functionality**: Analyzes the request against the full codebase context using a large context window model (e.g., Gemini 2.0 Flash).
-- **Use Case**: Comprehensive codebase understanding, global search/analysis, high-level planning, broad code review & cross-file debugging. Think of it as a teammate who knows the _entire codebase_ inside out.
+- **Use Case**: Comprehensive codebase understanding, global search/analysis, high-level planning, broad code review & cross-file debugging. Think of it as a teammate who knows the *entire codebase* inside out.
 - **Trade-offs**: Provides the most complete context but can be slower. Less focused on generating granular, step-by-step implementation plans compared to `plan`.
 - **Expected Output**: Explanations, relevant code snippets, file paths, high-level analysis, architectural insights.
 
@@ -56,8 +56,8 @@ Generates a step-by-step plan for well-defined tasks within a specific set of fi
 
 - **Functionality**:
   1. Performs a whole-repo search to identify files relevant to the request.
-  2. Sends _only the relevant files_ to a reasoning model to generate a detailed plan.
-- **Use Case**: Detailed task planning, specific refactoring guidance, targeted debugging procedures, generating implementation steps for a feature within known components. Think of it as a smart teammate focused on a _well-defined problem_.
+  2. Sends *only the relevant files* to a reasoning model to generate a detailed plan.
+- **Use Case**: Detailed task planning, specific refactoring guidance, targeted debugging procedures, generating implementation steps for a feature within known components. Think of it as a smart teammate focused on a *well-defined problem*.
 - **Trade-offs**: Faster for focused tasks and provides concrete steps. May lack full context if the initial file identification step misses relevant files outside the immediate scope.
 - **Expected Output**: Step-by-step plans, specific code modification suggestions, debugging procedures, list of files to modify.
 
