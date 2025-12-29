@@ -19,7 +19,7 @@
 		"zod": "^3.25.36"
 	},
 	"exports": {
-		"./heleprs": "./src/heleprs.js",
+		"./helpers": "./src/helpers.js",
 		"./gemini/getCache": "./src/gemini/getCache.js",
 		"./gemini/generate": "./src/gemini/generate.js"
 	}
