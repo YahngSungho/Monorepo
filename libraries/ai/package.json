@@ -1,5 +1,5 @@
 {
-	"name": "@library/llms",
+	"name": "@library/ai",
 	"type": "module",
 	"scripts": {
 		"depCheck": "npx depcheck",
