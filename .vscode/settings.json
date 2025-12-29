@@ -1,35 +1,4 @@
 {
-	"multiCommand.commands": [
-		{
-			"command": "multiCommand.joinAndFocus",
-			"interval": 10,
-			"sequence": [
-				"workbench.action.joinAllGroups",
-				"workbench.action.focusActiveEditorGroup"
-			]
-		},
-		{
-			"command": "multiCommand.saveAndOtherAction",
-			"sequence": [
-				"workbench.action.files.save",
-				"workbench.debug.viewlet.action.reapplyBreakpointsAction"
-			]
-		},
-		{
-			"command": "multiCommand.consoleNinjaStartAllTogether",
-			"interval": 100,
-			"sequence": [
-				"console-ninja.start",
-				"console-ninja.showOutput",
-				"workbench.action.moveEditorGroupToNewWindow"
-			]
-		},
-		{
-			"command": "multiCommand.wallabyStartAllTogether",
-			"interval": 10000,
-			"sequence": ["wallaby.smartStart", "wallaby.openInBrowser"]
-		}
-	],
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -163,6 +132,34 @@
 				"allowTrailingCommas": true, // 후행 쉼표 허용
 				"allowComments": true // (선택 사항) 주석도 허용
 			}
+		}
+	],
+	"multiCommand.commands": [
+		{
+			"command": "multiCommand.joinAndFocus",
+			"interval": 10,
+			"sequence": ["workbench.action.joinAllGroups", "workbench.action.focusActiveEditorGroup"]
+		},
+		{
+			"command": "multiCommand.saveAndOtherAction",
+			"sequence": [
+				"workbench.action.files.save",
+				"workbench.debug.viewlet.action.reapplyBreakpointsAction"
+			]
+		},
+		{
+			"command": "multiCommand.consoleNinjaStartAllTogether",
+			"interval": 100,
+			"sequence": [
+				"console-ninja.start",
+				"console-ninja.showOutput",
+				"workbench.action.moveEditorGroupToNewWindow"
+			]
+		},
+		{
+			"command": "multiCommand.wallabyStartAllTogether",
+			"interval": 10000,
+			"sequence": ["wallaby.smartStart", "wallaby.openInBrowser"]
 		}
 	],
 	"peacock.color": "#79021b",

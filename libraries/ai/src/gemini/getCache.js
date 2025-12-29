@@ -15,12 +15,12 @@ export const getCacheBySystemInstructions = R.curry(
 		const options0 = options || {}
 
 		const { name: cacheName } = await ai.caches.create({
-			model: modelName,
 			config: {
 				systemInstruction: willBeCachedData,
 				ttl: `${60 * duration}s`,
 				...options0,
 			},
+			model: modelName,
 		})
 
 		return cacheName
