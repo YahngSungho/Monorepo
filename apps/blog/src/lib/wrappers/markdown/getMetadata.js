@@ -1,17 +1,13 @@
 // @ts-ignore
 import { R } from '@library/helpers/R'
-// @ts-ignore
-import { getLocale } from '@library/paraglide/helpers'
 import { getMarkdownFrontmatterList } from '@library/third-parties/supabase'
 
 import { APP_NAME } from '$lib/info.js'
 
 import { metadata } from '../../markdown-helpers/metadata.js'
 
-export async function getAllMetadataObject() {
-	const lang = getLocale()
-
-	const frontmatterList = await getMarkdownFrontmatterList(APP_NAME, lang)
+export async function getAllMetadataObject(locale) {
+	const frontmatterList = await getMarkdownFrontmatterList(APP_NAME, locale)
 	const frontmatterObjectObject = {}
 	for (const value of frontmatterList) {
 		frontmatterObjectObject[value.key] = value.frontmatter

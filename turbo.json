@@ -28,6 +28,10 @@
 		"deploy:env-vars": {
 			"cache": false
 		},
+		"preview": {
+			"dependsOn": ["build"],
+			"cache": false
+		},
 		"build": {
 			"dependsOn": ["^build"]
 		},
