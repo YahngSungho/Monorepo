@@ -45,10 +45,9 @@ body {
 }
 
 *:focus,
-label:focus-within,
-*:target {
+label:focus-within {
 	z-index: var(--layer-important);
-	outline: 2px dashed color-mix(in srgb, var(--gray-6) 80%, transparent 20%);
+	outline: 2px dashed var(--gray-6);
 	outline-offset: 2px;
 }
 
@@ -57,7 +56,9 @@ label > input:focus {
 }
 
 *:target {
-	outline-style: groove;
+	z-index: var(--layer-important);
+	outline: 2px solid var(--gray-8);
+	outline-offset: 2px;
 }
 
 button,
