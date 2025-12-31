@@ -29,7 +29,6 @@ let {
 		group-data-[viewport=false]/navigation-menu:top-full
 		group-data-[viewport=false]/navigation-menu:mt-1.5
 		group-data-[viewport=false]/navigation-menu:overflow-hidden
-		group-data-[viewport=false]/navigation-menu:rounded-md
 		group-data-[viewport=false]/navigation-menu:border
 		group-data-[viewport=false]/navigation-menu:shadow
 		group-data-[viewport=false]/navigation-menu:duration-200`,

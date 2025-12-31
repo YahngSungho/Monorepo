@@ -23,7 +23,7 @@ let {
 			data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2
 			data-[side=top]:slide-in-from-bottom-2 max-h-(--radix-dropdown-menu-content-available-height)
 			origin-(--radix-dropdown-menu-content-transform-origin) z-50 min-w-[8rem] overflow-y-auto
-			overflow-x-hidden rounded-md border p-1 shadow-md`,
+			overflow-x-hidden border p-1 shadow-md`,
 			className,
 		)}
 		data-slot="dropdown-menu-content"

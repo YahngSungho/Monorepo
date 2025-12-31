@@ -13,7 +13,7 @@ let {
 </script>
 
 <ProgressPrimitive.Root
-	class={cn('bg-primary/20 relative h-2 w-full overflow-hidden rounded-full', className)}
+	class={cn('bg-primary/20 relative h-2 w-full overflow-hidden', className)}
 	data-slot="progress"
 	{max}
 	{value}

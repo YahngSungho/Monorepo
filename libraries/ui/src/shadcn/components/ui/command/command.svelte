@@ -13,7 +13,7 @@ let {
 
 <CommandPrimitive.Root
 	class={cn(
-		'bg-popover text-popover-foreground flex h-full w-full flex-col overflow-visible rounded-md',
+		'bg-popover text-popover-foreground flex h-full w-full flex-col overflow-visible',
 		className,
 	)}
 	data-slot="command"
