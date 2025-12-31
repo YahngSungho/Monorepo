@@ -37,7 +37,7 @@ get along, so we shut typescript up by casting `value` to `never`.
 -->
 <ToggleGroupPrimitive.Root
 	class={cn(
-		'group/toggle-group data-[variant=outline]:shadow-xs flex w-fit items-center rounded-md',
+		'group/toggle-group data-[variant=outline]:shadow-xs flex w-fit items-center',
 		className,
 	)}
 	data-size={size}

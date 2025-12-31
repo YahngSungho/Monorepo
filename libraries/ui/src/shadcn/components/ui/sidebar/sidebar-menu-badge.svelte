@@ -15,7 +15,7 @@ let {
 	bind:this={ref}
 	class={cn(
 		`text-sidebar-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 select-none
-		items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums`,
+		items-center justify-center px-1 text-xs font-medium tabular-nums`,
 		`peer-hover/menu-button:text-sidebar-accent-foreground
 		peer-data-[active=true]/menu-button:text-sidebar-accent-foreground`,
 		'peer-data-[size=sm]/menu-button:top-1',

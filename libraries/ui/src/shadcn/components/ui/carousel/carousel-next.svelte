@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import type { WithoutChildren } from 'bits-ui'
 
 import { Button, type Props } from '$shadcn/components/ui/button/index.js'
@@ -21,7 +19,7 @@ const emblaCtx = getEmblaContext('<Carousel.Next/>')
 
 <Button
 	class={cn(
-		'absolute size-8 rounded-full',
+		'absolute size-8',
 		emblaCtx.orientation === 'horizontal' ?
 			'-right-12 top-1/2 -translate-y-1/2'
 		:	'-bottom-12 left-1/2 -translate-x-1/2 rotate-90',

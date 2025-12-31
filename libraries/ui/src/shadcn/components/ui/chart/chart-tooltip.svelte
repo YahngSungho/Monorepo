@@ -44,7 +44,7 @@ let {
 	label?: string
 	labelClassName?: string
 	labelFormatter?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-	((value: any, payload: TooltipPayload[]) => number | Snippet | string) | null
+		((value: any, payload: TooltipPayload[]) => number | Snippet | string) | null
 	labelKey?: string
 	nameKey?: string
 } = $props()
@@ -88,7 +88,7 @@ const nestLabel = $derived(tooltipCtx.payload.length === 1 && indicator !== 'dot
 <TooltipPrimitive.Root variant="none">
 	<div
 		class={cn(
-			`border-border/50 bg-background grid min-w-[9rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5
+			`border-border/50 bg-background grid min-w-[9rem] items-start gap-1.5 border px-2.5 py-1.5
 			text-xs shadow-xl`,
 			className,
 		)}
@@ -122,7 +122,7 @@ const nestLabel = $derived(tooltipCtx.payload.length === 1 && indicator !== 'dot
 						{:else if !hideIndicator}
 							<div
 								style="--color-bg: {indicatorColor}; --color-border: {indicatorColor};"
-								class={cn('border-(--color-border) bg-(--color-bg) shrink-0 rounded-[2px]', {
+								class={cn('border-(--color-border) bg-(--color-bg) shrink-0', {
 									'size-2.5': indicator === 'dot',
 									'h-full w-1': indicator === 'line',
 									'w-0 border-[1.5px] border-dashed bg-transparent': indicator === 'dashed',

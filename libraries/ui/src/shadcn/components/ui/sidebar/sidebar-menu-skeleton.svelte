@@ -20,13 +20,13 @@ const width = `${Math.floor(Math.random() * 40) + 50}%`
 
 <div
 	bind:this={ref}
-	class={cn('flex h-8 items-center gap-2 rounded-md px-2', className)}
+	class={cn('flex h-8 items-center gap-2 px-2', className)}
 	data-sidebar="menu-skeleton"
 	data-slot="sidebar-menu-skeleton"
 	{...restProps}
 >
 	{#if showIcon}
-		<Skeleton class="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />
+		<Skeleton class="size-4" data-sidebar="menu-skeleton-icon" />
 	{/if}
 	<Skeleton
 		style="--skeleton-width: {width};"

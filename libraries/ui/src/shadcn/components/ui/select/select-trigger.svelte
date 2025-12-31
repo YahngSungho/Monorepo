@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import { Select as SelectPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChild } from '$shadcn/utils'
@@ -22,7 +20,7 @@ let {
 		[&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring
 		focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40
 		aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 shadow-xs flex w-fit
-		items-center justify-between gap-2 whitespace-nowrap rounded-md border bg-transparent px-3 py-2
+		items-center justify-between gap-2 whitespace-nowrap border bg-transparent px-3 py-2
 		text-sm outline-none transition-[color,box-shadow] focus-visible:ring-[3px]
 		disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8
 		*:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex

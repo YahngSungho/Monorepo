@@ -27,7 +27,7 @@ let {
 			data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2
 			data-[side=top]:slide-in-from-bottom-2 max-h-(--bits-select-content-available-height)
 			origin-(--bits-select-content-transform-origin) relative z-50 min-w-[8rem] overflow-y-auto
-			overflow-x-hidden rounded-md border shadow-md data-[side=bottom]:translate-y-1
+			overflow-x-hidden border shadow-md data-[side=bottom]:translate-y-1
 			data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1`,
 			className,
 		)}

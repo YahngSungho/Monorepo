@@ -27,7 +27,7 @@ let {
 	{...restProps}
 >
 	<ScrollAreaPrimitive.Viewport
-		class="ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 size-full rounded-[inherit]
+		class="ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 size-full"
 			transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-4"
 		data-slot="scroll-area-viewport"
 	>

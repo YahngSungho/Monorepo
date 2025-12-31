@@ -32,7 +32,7 @@ get along, so we shut typescript up by casting `value` to `never`.
 	{#snippet children({ thumbs })}
 		<span
 			class={cn(
-				`bg-muted relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5
+				`bg-muted relative grow overflow-hidden data-[orientation=horizontal]:h-1.5
 				data-[orientation=vertical]:h-full data-[orientation=horizontal]:w-full
 				data-[orientation=vertical]:w-1.5`,
 			)}
@@ -49,7 +49,7 @@ get along, so we shut typescript up by casting `value` to `never`.
 		{#each thumbs as thumb (thumb)}
 			<SliderPrimitive.Thumb
 				class="border-primary bg-background ring-ring/50 focus-visible:outline-hidden block size-4 shrink-0
-					rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4
+					border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4
 					disabled:pointer-events-none disabled:opacity-50"
 				data-slot="slider-thumb"
 				index={thumb}
