@@ -1,6 +1,6 @@
 .dimBackground {
 	/* Semi-transparent background to reveal blur */
-	background-color: color-mix(in oklab, var(--background) 30%, transparent) !important;
+	background-color: color-mix(in oklab, var(--background) 20%, transparent 80%) !important;
 	/* Backdrop blur for frosted-glass effect */
 	backdrop-filter: blur(0.5px);
 }

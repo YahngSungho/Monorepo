@@ -143,10 +143,6 @@
 	writing-mode: lr;
 }
 
-:where(p) {
-	max-inline-size: var(--size-content-long);
-}
-
 :where(figure) {
 	display: grid;
 	place-items: center;
