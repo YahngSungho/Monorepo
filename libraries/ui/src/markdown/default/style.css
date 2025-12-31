@@ -1,6 +1,6 @@
 section.footnotes {
 	margin-block-start: var(--space-em-cqi-l);
-	border: 2px var(--gray-4) solid;
+	border: 4px var(--gray-4) solid;
 
 	& h2 {
 		margin: 0;

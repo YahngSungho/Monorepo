@@ -47,7 +47,7 @@ body {
 *:focus,
 label:focus-within {
 	z-index: var(--layer-important);
-	outline: 2px dashed var(--gray-6);
+	outline: 4px dashed var(--gray-6);
 	outline-offset: 2px;
 }
 
@@ -57,7 +57,7 @@ label > input:focus {
 
 *:target {
 	z-index: var(--layer-important);
-	outline: 2px solid var(--gray-8);
+	outline: 4px solid var(--gray-8);
 	outline-offset: 2px;
 }
 
