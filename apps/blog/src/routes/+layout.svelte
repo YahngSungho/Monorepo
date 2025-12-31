@@ -132,7 +132,7 @@ onMount(() => {
 })
 
 /** @type {Array<Object>} */
-let allMetadata = $derived.by(() => {
+let allMetadataSortedArray = $derived.by(() => {
 	if (!data.allMetadataObject) return []
 	return R.applyPipe(
 		data.allMetadataObject,
@@ -145,7 +145,8 @@ let allMetadata = $derived.by(() => {
 	)
 })
 $effect(() => {
-	globalVariables.markdownMetadata = allMetadata
+	globalVariables.allMetadataObject = data.allMetadataObject
+	globalVariables.allMetadataSortedArray = allMetadataSortedArray
 })
 
 function markAsVisited(slug) {
@@ -163,11 +164,12 @@ function markAsVisited(slug) {
 	visited = newVisited
 }
 
-setContext('getAllMetadata', () => allMetadata)
+setContext('getAllMetadataObject', () => data.allMetadataObject)
+setContext('getAllMetadataSortedArray', () => allMetadataSortedArray)
 setContext('markAsVisited', markAsVisited)
 
-let totalCount = $derived(allMetadata.length)
-let visitedCount = $derived(allMetadata.filter((item) => item.visited).length)
+let totalCount = $derived(allMetadataSortedArray.length)
+let visitedCount = $derived(allMetadataSortedArray.filter((item) => item.visited).length)
 let progress = $derived(Math.floor((visitedCount / (totalCount || 1)) * 100))
 
 let sharingButtonsOpen = $state(false)

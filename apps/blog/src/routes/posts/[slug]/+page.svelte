@@ -11,17 +11,26 @@ import { page } from '$app/state'
 import { getLinkObjectArray } from '$lib/helpers.js'
 import { EMAIL_SENDER_NAME, URL } from '$lib/info.js'
 
-const getAllMetadata = getContext('getAllMetadata')
-const markAsVisited = getContext('markAsVisited')
-
 /** @type {import('./$types').PageProps} */
 let { data } = $props()
 
-let allMetadata = $derived(getAllMetadata())
-let nearMetadata = $derived.by(() => {
-	const currentIndex = allMetadata.findIndex((item) => item.slug === data.currentMetadata.slug)
+const getAllMetadataSortedArray = getContext('getAllMetadataSortedArray')
+let allMetadataSortedArray = $derived(getAllMetadataSortedArray())
+const getAllMetadataObject = getContext('getAllMetadataObject')
+let allMetadataObject = $derived(getAllMetadataObject())
 
-	const allMetadata2 = create(allMetadata, (draft) => {
+const markAsVisited = getContext('markAsVisited')
+
+const slug = $derived(page.params.slug)
+// @ts-ignore
+const currentMetadata = $derived(allMetadataObject[slug])
+
+let nearMetadata = $derived.by(() => {
+	const currentIndex = allMetadataSortedArray.findIndex(
+		(item) => item.slug === currentMetadata.slug,
+	)
+
+	const allMetadata2 = create(allMetadataSortedArray, (draft) => {
 		const previousCurrent = draft[currentIndex]
 		draft[currentIndex] = {
 			...previousCurrent,
@@ -42,26 +51,21 @@ let nearMetadata = $derived.by(() => {
 
 	// 시작점이 보정된 후, 끝점이 배열 범위를 벗어나는지 확인하고 보정
 	// (배열 끝에서 windowSize만큼을 확보하기 위함)
-	if (startIndex + windowSize > allMetadata.length) {
-		startIndex = Math.max(0, allMetadata.length - windowSize)
+	if (startIndex + windowSize > allMetadataSortedArray.length) {
+		startIndex = Math.max(0, allMetadataSortedArray.length - windowSize)
 	}
 
-	const endIndex = Math.min(allMetadata.length, startIndex + windowSize)
+	const endIndex = Math.min(allMetadataSortedArray.length, startIndex + windowSize)
 
 	return allMetadata2.slice(startIndex, endIndex)
 })
 
 $effect(() => {
-	markAsVisited(data.currentMetadata?.slug)
+	markAsVisited(currentMetadata?.slug)
 })
 
 // 현재 URL 계산 (경로의 마지막 부분만 사용)
-let currentCanonicalUrl = $derived.by(() => {
-	// 경로의 마지막 segment(slug)만 추출
-	const pathSegments = page.url.pathname.split('/').filter(Boolean)
-	const slug = pathSegments.at(-1)
-	return `https://${URL}/posts/${slug}`
-})
+let currentCanonicalUrl = $derived(`https://${URL}/posts/${slug}`)
 
 // JSON-LD 데이터 생성
 let jsonLd = $derived({
@@ -71,9 +75,9 @@ let jsonLd = $derived({
 		'@type': 'Person',
 		name: EMAIL_SENDER_NAME,
 	},
-	datePublished: data.currentMetadata.date,
+	datePublished: currentMetadata.date,
 	description: data.description,
-	headline: data.currentMetadata.title,
+	headline: currentMetadata.title,
 	mainEntityOfPage: {
 		'@id': currentCanonicalUrl,
 		'@type': 'WebPage',
@@ -88,7 +92,7 @@ let jsonLd = $derived({
 
 <svelte:head>
 	<!-- 📄 페이지별 메타 태그들 -->
-	<title>{data.currentMetadata.title} - {URL}</title>
+	<title>{currentMetadata.title} - {URL}</title>
 	<meta name="description" content={data.description} />
 
 	<!-- Canonical URL -->
@@ -96,20 +100,20 @@ let jsonLd = $derived({
 
 	<!-- Open Graph 메타 태그들 -->
 	<meta content="article" property="og:type" />
-	<meta content={data.currentMetadata.title} property="og:title" />
+	<meta content={currentMetadata.title} property="og:title" />
 	<meta content={data.description} property="og:description" />
 	<meta content={currentCanonicalUrl} property="og:url" />
 	<meta content={URL} property="og:site_name" />
 
 	<!-- Article 관련 Open Graph -->
-	{#if data.currentMetadata.date}
-		<meta content={data.currentMetadata.date} property="article:published_time" />
+	{#if currentMetadata.date}
+		<meta content={currentMetadata.date} property="article:published_time" />
 	{/if}
 	<meta content={EMAIL_SENDER_NAME} property="article:author" />
 
 	<!-- Twitter Cards -->
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content={data.currentMetadata.title} />
+	<meta name="twitter:title" content={currentMetadata.title} />
 	<meta name="twitter:description" content={data.description} />
 	<meta name="twitter:url" content={currentCanonicalUrl} />
 	<!-- <meta name="twitter:site" content="@sungho_yahng" /> -->
@@ -122,14 +126,14 @@ let jsonLd = $derived({
 
 <div>
 	<h1 use:balancer={{ enabled: true, ratio: 0.8 }}>
-		{data.currentMetadata.title}
+		{currentMetadata.title}
 	</h1>
 	{#if data.post}
 		<Markdown mermaidSVGObject={data.post.mermaid_svg_object} value={data.post.body} />
 	{/if}
 </div>
 
-<div style="height: var(--space-em-cqi-l);"></div>
+<div style:height="var(--space-em-cqi-l)"></div>
 
 <div>
 	<LinkList linkObjectArray={getLinkObjectArray(nearMetadata)} />
