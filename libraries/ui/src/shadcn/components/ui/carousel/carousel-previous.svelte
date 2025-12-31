@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import type { WithoutChildren } from 'bits-ui'
 
 import { Button, type Props } from '$shadcn/components/ui/button/index.js'

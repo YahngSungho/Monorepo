@@ -44,7 +44,7 @@ let {
 	label?: string
 	labelClassName?: string
 	labelFormatter?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-	((value: any, payload: TooltipPayload[]) => number | Snippet | string) | null
+		((value: any, payload: TooltipPayload[]) => number | Snippet | string) | null
 	labelKey?: string
 	nameKey?: string
 } = $props()

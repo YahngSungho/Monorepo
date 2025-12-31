@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChild } from '$shadcn/utils'

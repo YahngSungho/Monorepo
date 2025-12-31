@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import * as ResizablePrimitive from 'paneforge'
 
 import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'

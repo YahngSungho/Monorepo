@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import { ContextMenu as ContextMenuPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 

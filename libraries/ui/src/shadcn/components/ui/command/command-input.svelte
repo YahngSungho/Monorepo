@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import { css, cx } from '@emotion/css'
 import { Command as CommandPrimitive } from 'bits-ui'
 import IconText from '@library/ui/icon-text'

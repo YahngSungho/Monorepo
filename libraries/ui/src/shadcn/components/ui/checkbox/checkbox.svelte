@@ -1,6 +1,4 @@
 <script lang="ts">
-
-
 import { Checkbox as CheckboxPrimitive } from 'bits-ui'
 
 import { cn, type WithoutChildrenOrChild } from '$shadcn/utils'

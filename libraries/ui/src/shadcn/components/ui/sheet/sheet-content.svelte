@@ -21,8 +21,6 @@ export type Side = VariantProps<typeof sheetVariants>['side']
 </script>
 
 <script lang="ts">
-
-
 import { Dialog as SheetPrimitive } from 'bits-ui'
 import type { Snippet } from 'svelte'
 
