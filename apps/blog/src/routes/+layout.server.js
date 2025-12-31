@@ -1,5 +1,6 @@
-import { getAllMetadataObject } from '$lib/wrappers/markdown/getMetadata'
 import { getLocale } from '@library/paraglide/helpers'
+
+import { getAllMetadataObject } from '$lib/wrappers/markdown/getMetadata'
 
 export const load = async () => {
 	const allMetadataObject = await getAllMetadataObject(getLocale())

@@ -1,6 +1,5 @@
 // @ts-ignore
 import { R } from '@library/helpers/R'
-
 import { getMarkdownFrontmatterList } from '@library/third-parties/supabase'
 
 import { APP_NAME } from '$lib/info.js'

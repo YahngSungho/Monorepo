@@ -1,6 +1,6 @@
 import { getDescriptionFromMD } from '@library/helpers/markdown'
-import { redirect } from '@sveltejs/kit'
 import { getLocale } from '@library/paraglide/helpers'
+import { redirect } from '@sveltejs/kit'
 
 import { getOneMarkdown } from '$lib/wrappers/markdown/getMarkdown'
 
