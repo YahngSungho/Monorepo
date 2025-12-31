@@ -25,9 +25,10 @@ const slug = $derived(page.params.slug)
 // @ts-ignore
 const currentMetadata = $derived(allMetadataObject[slug])
 
-
 let nearMetadata = $derived.by(() => {
-	const currentIndex = allMetadataSortedArray.findIndex((item) => item.slug === currentMetadata.slug)
+	const currentIndex = allMetadataSortedArray.findIndex(
+		(item) => item.slug === currentMetadata.slug,
+	)
 
 	const allMetadata2 = create(allMetadataSortedArray, (draft) => {
 		const previousCurrent = draft[currentIndex]
@@ -132,7 +133,7 @@ let jsonLd = $derived({
 	{/if}
 </div>
 
-<div style="height: var(--space-em-cqi-l);"></div>
+<div style:height="var(--space-em-cqi-l)"></div>
 
 <div>
 	<LinkList linkObjectArray={getLinkObjectArray(nearMetadata)} />
