@@ -8,9 +8,9 @@ import { getLinkObjectArray } from '$lib/helpers.js'
 <script>
 import { slide } from 'svelte/transition'
 
-const getAllMetadata = getContext('getAllMetadata')
-let allMetadata = $derived(getAllMetadata())
-let allMetadata_pinned = $derived(allMetadata.filter((item) => item.pinned))
+const getAllMetadataSortedArray = getContext('getAllMetadataSortedArray')
+let allMetadataSortedArray = $derived(getAllMetadataSortedArray())
+let allMetadataSortedArray_pinned = $derived(allMetadataSortedArray.filter((item) => item.pinned))
 let pinnedPostsOpen = $state(true)
 let postsOpen = $state(true)
 </script>
@@ -30,7 +30,7 @@ let postsOpen = $state(true)
 
 		{#if pinnedPostsOpen}
 			<div transition:slide={{ duration: 250 }}>
-				<LinkList linkObjectArray={getLinkObjectArray(allMetadata_pinned)} />
+				<LinkList linkObjectArray={getLinkObjectArray(allMetadataSortedArray_pinned)} />
 			</div>
 		{/if}
 	</div>
@@ -40,7 +40,7 @@ let postsOpen = $state(true)
 
 		{#if postsOpen}
 			<div transition:slide={{ duration: 250 }}>
-				<LinkList linkObjectArray={getLinkObjectArray(allMetadata)} />
+				<LinkList linkObjectArray={getLinkObjectArray(allMetadataSortedArray)} />
 			</div>
 		{/if}
 	</div>
