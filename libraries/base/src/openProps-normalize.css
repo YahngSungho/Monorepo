@@ -52,16 +52,6 @@
 	margin: 0;
 }
 
-@media (--motionOK) {
-	:where(:focus-visible) {
-		transition: outline-offset 145ms var(--ease-2);
-	}
-
-	:where(:not(:active):focus-visible) {
-		transition-duration: 0.25s;
-	}
-}
-
 :where(a, u, ins, abbr) {
 	text-underline-offset: 1px;
 
@@ -130,10 +120,9 @@
 
 :where(textarea) {
 	resize: block;
+	field-sizing: content;
 	min-inline-size: var(--size-content-1);
 	min-block-size: 2lh;
-
-	field-sizing: content;
 }
 
 :where(svg:not([width])) {
